@@ -1,0 +1,266 @@
+export const dynamic = 'force-dynamic';
+
+/**
+ * Coaching API
+ * GET  — List coaching sessions (with filters)
+ * POST — Create session, start call, supervisor actions, scoring
+ */
+
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/db';
+import { auth } from '@/lib/auth-config';
+import {
+  startCoachingCall,
+  supervisorJoin,
+  changeSupervisorMode,
+  endCoachingCall,
+  type SupervisorMode,
+} from '@/lib/voip/coaching-engine';
+import { scoreCoachingSession, getStudentProgress } from '@/lib/voip/scoring-engine';
+import {
+  createTrainingRoom,
+  addStudent,
+  unmuteStudent,
+  muteStudent,
+  muteAllStudents,
+  endTrainingRoom,
+  listActiveRooms,
+  getRoomStatus,
+  raiseHand,
+} from '@/lib/voip/training-conference';
+
+export async function GET(request: NextRequest) {
+  const session = await auth();
+  if (!session?.user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const { searchParams } = request.nextUrl;
+  const companyId = searchParams.get('companyId');
+  const coachId = searchParams.get('coachId');
+  const studentId = searchParams.get('studentId');
+  const status = searchParams.get('status');
+  const view = searchParams.get('view');
+
+  // List active training rooms
+  if (view === 'training-rooms') {
+    return NextResponse.json({ data: listActiveRooms() });
+  }
+
+  // Student progress report
+  if (view === 'student-progress' && studentId) {
+    const progress = await getStudentProgress(studentId);
+    return NextResponse.json({ data: progress });
+  }
+
+  const sessions = await prisma.coachingSession.findMany({
+    where: {
+      ...(companyId ? { companyId } : {}),
+      ...(coachId ? { coachId } : {}),
+      ...(studentId ? { studentId } : {}),
+      ...(status ? { status: status as never } : {}),
+    },
+    include: {
+      coach: { select: { id: true, name: true } },
+      student: { select: { id: true, name: true } },
+      supervisor: { select: { id: true, name: true } },
+      scores: true,
+      _count: { select: { scores: true } },
+    },
+    orderBy: { scheduledAt: 'desc' },
+    take: 50,
+  });
+
+  return NextResponse.json({ data: sessions });
+}
+
+export async function POST(request: NextRequest) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const body = await request.json();
+  const { action } = body;
+
+  switch (action) {
+    // ── Session CRUD ──────────────────
+    case 'create': {
+      const { companyId, coachId, studentId, scheduledAt, topic, objectives } = body;
+      if (!companyId || !coachId || !studentId || !scheduledAt) {
+        return NextResponse.json(
+          { error: 'companyId, coachId, studentId, scheduledAt required' },
+          { status: 400 }
+        );
+      }
+      const created = await prisma.coachingSession.create({
+        data: {
+          companyId,
+          coachId,
+          studentId,
+          scheduledAt: new Date(scheduledAt),
+          topic,
+          objectives,
+        },
+      });
+      return NextResponse.json({ data: created }, { status: 201 });
+    }
+
+    // ── Call Control ──────────────────
+    case 'start-call': {
+      if (!body.sessionId) {
+        return NextResponse.json({ error: 'sessionId required' }, { status: 400 });
+      }
+      const result = await startCoachingCall(body.sessionId, {
+        callerIdNumber: body.callerIdNumber,
+      });
+      return NextResponse.json(result, {
+        status: result.status === 'ok' ? 200 : 400,
+      });
+    }
+
+    case 'end-call': {
+      if (!body.sessionId) {
+        return NextResponse.json({ error: 'sessionId required' }, { status: 400 });
+      }
+      await endCoachingCall(body.sessionId);
+      return NextResponse.json({ status: 'ended' });
+    }
+
+    // ── Supervisor ──────────────────
+    case 'supervisor-join': {
+      const { sessionId, supervisorPhone, mode } = body;
+      if (!sessionId || !supervisorPhone || !mode) {
+        return NextResponse.json(
+          { error: 'sessionId, supervisorPhone, mode required' },
+          { status: 400 }
+        );
+      }
+      const validModes: SupervisorMode[] = ['LISTEN', 'WHISPER', 'BARGE'];
+      if (!validModes.includes(mode)) {
+        return NextResponse.json({ error: 'mode must be LISTEN, WHISPER, or BARGE' }, { status: 400 });
+      }
+
+      // Update session with supervisor
+      await prisma.coachingSession.update({
+        where: { id: sessionId },
+        data: { supervisorId: session.user.id },
+      });
+
+      const result = await supervisorJoin(sessionId, supervisorPhone, mode);
+      return NextResponse.json(result, {
+        status: result.status === 'ok' ? 200 : 400,
+      });
+    }
+
+    case 'supervisor-mode': {
+      if (!body.sessionId || !body.mode) {
+        return NextResponse.json({ error: 'sessionId and mode required' }, { status: 400 });
+      }
+      await changeSupervisorMode(body.sessionId, body.mode);
+      return NextResponse.json({ status: 'mode_changed', mode: body.mode });
+    }
+
+    // ── Scoring ──────────────────
+    case 'score': {
+      if (!body.sessionId) {
+        return NextResponse.json({ error: 'sessionId required' }, { status: 400 });
+      }
+      const scores = await scoreCoachingSession(body.sessionId);
+      return NextResponse.json({ data: scores });
+    }
+
+    case 'feedback': {
+      if (!body.sessionId || !body.feedback) {
+        return NextResponse.json({ error: 'sessionId and feedback required' }, { status: 400 });
+      }
+      await prisma.coachingSession.update({
+        where: { id: body.sessionId },
+        data: { feedback: body.feedback },
+      });
+      return NextResponse.json({ status: 'saved' });
+    }
+
+    // ── Training Rooms ──────────────────
+    case 'create-room': {
+      const { name, instructorPhone } = body;
+      if (!name || !instructorPhone) {
+        return NextResponse.json({ error: 'name and instructorPhone required' }, { status: 400 });
+      }
+      const result = await createTrainingRoom({
+        name,
+        instructorPhone,
+        instructorUserId: session.user.id,
+        sessionId: body.sessionId,
+        callerIdNumber: body.callerIdNumber,
+      });
+      if (result.error) {
+        return NextResponse.json({ error: result.error }, { status: 500 });
+      }
+      return NextResponse.json({ data: result }, { status: 201 });
+    }
+
+    case 'add-student': {
+      const { conferenceId, studentPhone, studentUserId, studentName } = body;
+      if (!conferenceId || !studentPhone || !studentUserId) {
+        return NextResponse.json(
+          { error: 'conferenceId, studentPhone, studentUserId required' },
+          { status: 400 }
+        );
+      }
+      const result = await addStudent(conferenceId, studentPhone, studentUserId, studentName || 'Student');
+      return NextResponse.json({ data: result });
+    }
+
+    case 'unmute-student': {
+      if (!body.conferenceId || !body.callControlId) {
+        return NextResponse.json({ error: 'conferenceId and callControlId required' }, { status: 400 });
+      }
+      await unmuteStudent(body.conferenceId, body.callControlId);
+      return NextResponse.json({ status: 'unmuted' });
+    }
+
+    case 'mute-student': {
+      if (!body.conferenceId || !body.callControlId) {
+        return NextResponse.json({ error: 'conferenceId and callControlId required' }, { status: 400 });
+      }
+      await muteStudent(body.conferenceId, body.callControlId);
+      return NextResponse.json({ status: 'muted' });
+    }
+
+    case 'mute-all': {
+      if (!body.conferenceId) {
+        return NextResponse.json({ error: 'conferenceId required' }, { status: 400 });
+      }
+      await muteAllStudents(body.conferenceId);
+      return NextResponse.json({ status: 'all_muted' });
+    }
+
+    case 'raise-hand': {
+      if (!body.conferenceId || !body.callControlId) {
+        return NextResponse.json({ error: 'conferenceId and callControlId required' }, { status: 400 });
+      }
+      const hands = raiseHand(body.conferenceId, body.callControlId);
+      return NextResponse.json({ data: hands });
+    }
+
+    case 'room-status': {
+      if (!body.conferenceId) {
+        return NextResponse.json({ error: 'conferenceId required' }, { status: 400 });
+      }
+      const status = getRoomStatus(body.conferenceId);
+      return NextResponse.json({ data: status });
+    }
+
+    case 'end-room': {
+      if (!body.conferenceId) {
+        return NextResponse.json({ error: 'conferenceId required' }, { status: 400 });
+      }
+      await endTrainingRoom(body.conferenceId);
+      return NextResponse.json({ status: 'ended' });
+    }
+
+    default:
+      return NextResponse.json({ error: `Unknown action: ${action}` }, { status: 400 });
+  }
+}
