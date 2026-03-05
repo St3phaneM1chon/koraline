@@ -19,13 +19,9 @@ export const GET = withAdminGuard(async (request, _ctx) => {
   const tab = searchParams.get('tab') || 'permissions';
 
   if (tab === 'permissions') {
-    // TODO: FAILLE-076 - Auto-seeding permissions in a GET handler violates REST (GET should be read-only).
-    //       Move seeding to a dedicated POST endpoint or CLI script. Keep this as temporary bootstrap only.
-    const count = await prisma.permission.count();
-    if (count === 0) {
-      await seedPermissions();
-    }
-
+    // FAILLE-076 RESOLVED: Auto-seeding removed from GET handler (GET must be read-only / idempotent).
+    // Bootstrap: call POST { action: 'seed' } once as an OWNER to populate the permissions table.
+    // That endpoint is already implemented below and restricted to OWNER role.
     const permissions = await prisma.permission.findMany({
       orderBy: { module: 'asc' },
       take: 200,

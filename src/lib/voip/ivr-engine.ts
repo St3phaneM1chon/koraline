@@ -16,20 +16,37 @@ import * as telnyx from '@/lib/telnyx';
 
 /**
  * Check if current time is within business hours for a menu.
+ * Uses Intl.DateTimeFormat for timezone-aware comparison.
  */
 function isBusinessHours(menu: {
   businessHoursStart?: string | null;
   businessHoursEnd?: string | null;
+  timezone?: string | null;
 }): boolean {
   if (!menu.businessHoursStart || !menu.businessHoursEnd) return true;
 
   const now = new Date();
-  const day = now.getDay(); // 0=Sun, 6=Sat
-  if (day === 0 || day === 6) return false; // Weekend
+  const tz = menu.timezone || 'America/New_York';
+
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: tz,
+    weekday: 'short',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false,
+  });
+
+  const parts = formatter.formatToParts(now);
+  const weekday = parts.find(p => p.type === 'weekday')?.value || '';
+  const hour = parseInt(parts.find(p => p.type === 'hour')?.value || '0', 10);
+  const minute = parseInt(parts.find(p => p.type === 'minute')?.value || '0', 10);
+
+  // Weekend check
+  if (weekday === 'Sat' || weekday === 'Sun') return false;
 
   const [startH, startM] = menu.businessHoursStart.split(':').map(Number);
   const [endH, endM] = menu.businessHoursEnd.split(':').map(Number);
-  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const currentMinutes = hour * 60 + minute;
   const startMinutes = startH * 60 + startM;
   const endMinutes = endH * 60 + endM;
 

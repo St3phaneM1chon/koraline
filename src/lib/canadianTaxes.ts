@@ -735,9 +735,38 @@ export function getFreeShippingThreshold(productTypes?: string[]): number {
 }
 
 /**
- * Calculate shipping cost based on destination country/region
+ * Weight-based shipping rate tiers (CAD).
+ * Used when cart items carry weightGrams data.
+ * CA domestic: free over $100, else $5.99 base + $1.50/kg.
+ * US: $9.99 base + $3.00/kg.
+ * International (any other region): $19.99 base + $5.00/kg.
  */
-export function calculateShipping(subtotal: number, countryOrRegion: string, productTypes?: string[]): {
+const WEIGHT_RATES: Record<'CA' | 'US' | 'INTL', { baseRate: number; perKgRate: number }> = {
+  CA:   { baseRate: 5.99,  perKgRate: 1.50 },
+  US:   { baseRate: 9.99,  perKgRate: 3.00 },
+  INTL: { baseRate: 19.99, perKgRate: 5.00 },
+};
+
+/** Free shipping threshold for CA domestic (weight-based path). */
+const CA_WEIGHT_FREE_THRESHOLD = 100;
+
+/**
+ * Calculate shipping cost based on destination country/region.
+ *
+ * When `totalWeightGrams` is provided (and > 0), weight-based rates are used:
+ *   - CA domestic: free if subtotal >= $100, else $5.99 + $1.50/kg
+ *   - US: $9.99 + $3.00/kg (no free threshold)
+ *   - International: $19.99 + $5.00/kg (no free threshold)
+ *
+ * When `totalWeightGrams` is absent or 0, the existing flat-rate logic applies
+ * (preserving all region-specific rates and free-shipping thresholds).
+ */
+export function calculateShipping(
+  subtotal: number,
+  countryOrRegion: string,
+  productTypes?: string[],
+  totalWeightGrams?: number,
+): {
   shippingCAD: number;
   shippingUSD: number;
   isFree: boolean;
@@ -745,11 +774,46 @@ export function calculateShipping(subtotal: number, countryOrRegion: string, pro
   requiresCERS: boolean;
   regionName: string;
   freeShippingThreshold: number | null;
+  weightBased: boolean;
 } {
   const region = getShippingRegion(countryOrRegion);
   const rates = SHIPPING_RATES[region] || SHIPPING_RATES.LATAM;
 
-  // Product-type-aware threshold for Canada
+  // Weight-based path: activate when caller provides a positive weight total.
+  if (totalWeightGrams && totalWeightGrams > 0) {
+    const weightKg = totalWeightGrams / 1000;
+    const weightRegion: 'CA' | 'US' | 'INTL' =
+      region === 'CA' ? 'CA' : region === 'US' ? 'US' : 'INTL';
+    const wr = WEIGHT_RATES[weightRegion];
+
+    // CA domestic free-shipping threshold ($100 CAD)
+    if (weightRegion === 'CA' && subtotal >= CA_WEIGHT_FREE_THRESHOLD) {
+      return {
+        shippingCAD: 0,
+        shippingUSD: 0,
+        isFree: true,
+        estimatedDays: rates.estimatedDays,
+        requiresCERS: rates.requiresCERS,
+        regionName: rates.region,
+        freeShippingThreshold: CA_WEIGHT_FREE_THRESHOLD,
+        weightBased: true,
+      };
+    }
+
+    const shippingCAD = Math.round((wr.baseRate + weightKg * wr.perKgRate) * 100) / 100;
+    return {
+      shippingCAD,
+      shippingUSD: shippingCAD * CAD_TO_USD_RATE,
+      isFree: false,
+      estimatedDays: rates.estimatedDays,
+      requiresCERS: rates.requiresCERS,
+      regionName: rates.region,
+      freeShippingThreshold: weightRegion === 'CA' ? CA_WEIGHT_FREE_THRESHOLD : null,
+      weightBased: true,
+    };
+  }
+
+  // Flat-rate fallback (original logic — unchanged)
   const threshold = region === 'CA'
     ? getFreeShippingThreshold(productTypes)
     : rates.freeShippingThreshold;
@@ -765,6 +829,7 @@ export function calculateShipping(subtotal: number, countryOrRegion: string, pro
     requiresCERS: rates.requiresCERS,
     regionName: rates.region,
     freeShippingThreshold: threshold,
+    weightBased: false,
   };
 }
 

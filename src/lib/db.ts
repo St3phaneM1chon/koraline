@@ -3,10 +3,9 @@
  * Singleton pattern pour éviter les connexions multiples
  * Connection pool configured for production performance
  *
- * TODO: FAILLE-067 - Add retry mechanism for transient Prisma errors (connection pool exhausted, timeout).
- *       Consider using Prisma middleware or wrapping critical queries in a retry loop with exponential backoff.
- * TODO: FAILLE-072 - Add explicit query timeout configuration. Consider $queryRawUnsafe with statement_timeout
- *       or use Promise.race([query, timeout]) for critical admin routes.
+ * Transient error retry: use withRetry() to wrap queries that should be
+ * retried on P1001/P1002/P1017 (connection dropped, timeout, server closed).
+ * Statement timeout: configured via statement_timeout URL parameter (default 30s).
  */
 
 import { PrismaClient } from '@prisma/client';
@@ -19,7 +18,8 @@ const globalForPrisma = globalThis as unknown as {
  * Build the datasource URL with connection pool parameters.
  * Uses DATABASE_URL from env, appending pool settings if not already present.
  * - connection_limit: Max connections in the pool (default 10)
- * - pool_timeout: Seconds to wait for a connection before erroring (default 30)
+ * - pool_timeout:     Seconds to wait for a free connection (default 30)
+ * - statement_timeout: Max milliseconds a single query may run (default 30000)
  */
 function getDatasourceUrl(): string | undefined {
   const baseUrl = process.env.DATABASE_URL;
@@ -33,8 +33,9 @@ function getDatasourceUrl(): string | undefined {
   const separator = baseUrl.includes('?') ? '&' : '?';
   const connectionLimit = process.env.DATABASE_CONNECTION_LIMIT || '10';
   const poolTimeout = process.env.DATABASE_POOL_TIMEOUT || '30';
+  const statementTimeout = process.env.DATABASE_STATEMENT_TIMEOUT || '30000';
 
-  return `${baseUrl}${separator}connection_limit=${connectionLimit}&pool_timeout=${poolTimeout}`;
+  return `${baseUrl}${separator}connection_limit=${connectionLimit}&pool_timeout=${poolTimeout}&statement_timeout=${statementTimeout}`;
 }
 
 const datasourceUrl = getDatasourceUrl();
@@ -56,6 +57,41 @@ export const prisma =
 
 if (process.env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = prisma;
+}
+
+// ---------------------------------------------------------------------------
+// Retry helper for transient connection errors
+// ---------------------------------------------------------------------------
+// Prisma error codes that are safe to retry automatically:
+//   P1001 - Can't reach database server
+//   P1002 - Database server timed out
+//   P1017 - Server closed the connection
+const RETRYABLE_CODES = new Set(['P1001', 'P1002', 'P1017']);
+
+/**
+ * Executes `fn` up to MAX_RETRIES times, retrying only on transient
+ * Prisma connection errors (P1001, P1002, P1017) with linear backoff.
+ *
+ * Usage:
+ *   const user = await withRetry(() => prisma.user.findUnique({ where: { id } }));
+ */
+export async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (e: unknown) {
+      const isLast = attempt === maxRetries - 1;
+      if (isLast) throw e;
+      const code = (e as { code?: string })?.code;
+      if (code && RETRYABLE_CODES.has(code)) {
+        await new Promise(r => setTimeout(r, 100 * (attempt + 1)));
+        continue;
+      }
+      throw e;
+    }
+  }
+  // Unreachable, but satisfies TypeScript's control flow analysis
+  throw new Error('withRetry: exhausted retries');
 }
 
 /** @deprecated Use 'prisma' instead. This alias is kept for backward compatibility. */

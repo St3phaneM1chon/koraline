@@ -59,7 +59,6 @@ export async function onboardTenant(options: {
   }
 
   const companyId = company.id;
-  const brandConfig = options.brandKey ? BRAND_CONFIGS[options.brandKey] : null;
 
   // Step 2: Assign DID
   let phoneNumberAssigned: string | undefined;
@@ -90,18 +89,16 @@ export async function onboardTenant(options: {
         companyId,
         name: `${options.name} - Menu principal`,
         greetingText: `Bienvenue chez ${options.name}. Pour les ventes, appuyez 1. Pour le support, appuyez 2. Pour laisser un message, appuyez 0.`,
-        timeoutSeconds: 10,
+        inputTimeout: 10,
         maxRetries: 3,
         isActive: true,
         businessHoursStart: '09:00',
         businessHoursEnd: '17:00',
-        businessDays: ['mon', 'tue', 'wed', 'thu', 'fri'],
-        afterHoursAction: 'VOICEMAIL',
         options: {
           create: [
-            { digit: '1', label: 'Ventes', action: 'QUEUE', targetId: 'sales' },
-            { digit: '2', label: 'Support', action: 'QUEUE', targetId: 'support' },
-            { digit: '0', label: 'Message vocal', action: 'VOICEMAIL' },
+            { digit: '1', label: 'Ventes', action: 'QUEUE', target: 'sales' },
+            { digit: '2', label: 'Support', action: 'QUEUE', target: 'support' },
+            { digit: '0', label: 'Message vocal', action: 'VOICEMAIL', target: 'default' },
           ],
         },
       },
@@ -122,7 +119,7 @@ export async function onboardTenant(options: {
         companyId,
         name: 'General',
         strategy: 'RING_ALL',
-        maxWaitSeconds: 120,
+        maxWaitTime: 120,
         announcePosition: true,
       },
     });

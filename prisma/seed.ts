@@ -1,6 +1,7 @@
 import { PrismaClient, ProductType, FormatType, DiscountType, StockStatus } from '@prisma/client';
 import { seedAccounting } from './seed-accounting';
 import { seedCustomerData } from './seed-customer-data';
+import { seedCrmPipeline } from './seed-crm';
 
 const prisma = new PrismaClient();
 
@@ -1172,6 +1173,11 @@ async function main() {
   // DONNÉES CLIENT DE TEST (Commandes, Factures, Abonnements)
   // =====================================================
   await seedCustomerData();
+
+  // =====================================================
+  // CRM — Pipeline par défaut + SLA policies
+  // =====================================================
+  await seedCrmPipeline();
 
   // Count totals
   const productCount = await prisma.product.count();

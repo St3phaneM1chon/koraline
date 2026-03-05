@@ -6,6 +6,7 @@ import { prisma } from '@/lib/db';
 import { createShippingZoneSchema } from '@/lib/validations/shipping';
 import { logAdminAction, getClientIpFromRequest } from '@/lib/admin-audit';
 import { logger } from '@/lib/logger';
+import { getShippingZones as getCalculatorZones } from '@/lib/shipping/calculator';
 
 /**
  * GET /api/admin/shipping/zones
@@ -126,6 +127,62 @@ export const POST = withAdminGuard(async (request, { session }) => {
     logger.error('Create shipping zone error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { error: 'Error creating shipping zone' },
+      { status: 500 }
+    );
+  }
+});
+
+/**
+ * PUT /api/admin/shipping/zones
+ * I-SHIPPING: Validate and return the code-level shipping zone constants.
+ * Since calculator zones are code constants (not DB-driven), this endpoint
+ * validates any submitted zone config against the current constants and
+ * returns the authoritative zone configuration.
+ *
+ * This is useful for admin UIs that want to compare DB zones against
+ * the calculator defaults, or to reset zones to defaults.
+ */
+export const PUT = withAdminGuard(async (request, _ctx) => {
+  try {
+    const body = await request.json().catch(() => null);
+
+    // Get the authoritative calculator zones (code constants)
+    const calculatorZones = getCalculatorZones();
+
+    // If a body was provided, validate it against our zone codes
+    let validation: { valid: boolean; errors: string[] } | null = null;
+    if (body && typeof body === 'object' && 'zones' in body) {
+      const errors: string[] = [];
+      const submitted = body.zones as Array<{ code?: string; flatRate?: number; freeThreshold?: number }>;
+
+      if (!Array.isArray(submitted)) {
+        errors.push('zones must be an array');
+      } else {
+        const validCodes = new Set(calculatorZones.map(z => z.code));
+        for (const zone of submitted) {
+          if (!zone.code || !validCodes.has(zone.code)) {
+            errors.push(`Unknown zone code: ${zone.code}. Valid codes: ${[...validCodes].join(', ')}`);
+          }
+          if (zone.flatRate !== undefined && (typeof zone.flatRate !== 'number' || zone.flatRate < 0)) {
+            errors.push(`Invalid flatRate for zone ${zone.code}: must be a non-negative number`);
+          }
+          if (zone.freeThreshold !== undefined && (typeof zone.freeThreshold !== 'number' || zone.freeThreshold < 0)) {
+            errors.push(`Invalid freeThreshold for zone ${zone.code}: must be a non-negative number`);
+          }
+        }
+      }
+      validation = { valid: errors.length === 0, errors };
+    }
+
+    return NextResponse.json({
+      calculatorZones,
+      validation,
+      message: 'Calculator zone constants are code-defined. Use the DB-backed zones (GET/POST/PATCH) for runtime configuration.',
+    });
+  } catch (error) {
+    logger.error('PUT shipping zones error', { error: error instanceof Error ? error.message : String(error) });
+    return NextResponse.json(
+      { error: 'Error processing zone configuration' },
       { status: 500 }
     );
   }

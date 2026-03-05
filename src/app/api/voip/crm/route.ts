@@ -21,62 +21,69 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const body = await request.json();
-  const { action } = body;
+  try {
+    const body = await request.json();
+    const { action } = body;
 
-  switch (action) {
-    case 'screen-pop': {
-      if (!body.phoneNumber) {
-        return NextResponse.json({ error: 'phoneNumber required' }, { status: 400 });
+    switch (action) {
+      case 'screen-pop': {
+        if (!body.phoneNumber) {
+          return NextResponse.json({ error: 'phoneNumber required' }, { status: 400 });
+        }
+        const result = await screenPop(body.phoneNumber);
+        return NextResponse.json({ data: result });
       }
-      const result = await screenPop(body.phoneNumber);
-      return NextResponse.json({ data: result });
+
+      case 'click-to-call': {
+        if (!body.phoneNumber) {
+          return NextResponse.json({ error: 'phoneNumber required' }, { status: 400 });
+        }
+        const result = await clickToCall({
+          clientId: body.clientId,
+          phoneNumber: body.phoneNumber,
+          agentUserId: session.user.id,
+          callerIdNumber: body.callerIdNumber,
+        });
+        if (result.error) {
+          return NextResponse.json({ error: result.error }, { status: 500 });
+        }
+        return NextResponse.json({ data: result });
+      }
+
+      case 'call-history': {
+        if (!body.clientId) {
+          return NextResponse.json({ error: 'clientId required' }, { status: 400 });
+        }
+        const result = await getClientCallHistory(body.clientId, {
+          page: body.page,
+          limit: body.limit,
+        });
+        return NextResponse.json({ data: result });
+      }
+
+      case 'link-call': {
+        if (!body.callLogId || !body.clientId) {
+          return NextResponse.json({ error: 'callLogId and clientId required' }, { status: 400 });
+        }
+        await linkCallToClient(body.callLogId, body.clientId);
+        return NextResponse.json({ status: 'linked' });
+      }
+
+      case 'add-notes': {
+        if (!body.callLogId || !body.notes) {
+          return NextResponse.json({ error: 'callLogId and notes required' }, { status: 400 });
+        }
+        await addCallNotes(body.callLogId, body.notes, body.disposition, body.tags);
+        return NextResponse.json({ status: 'saved' });
+      }
+
+      default:
+        return NextResponse.json({ error: `Unknown action: ${action}` }, { status: 400 });
     }
-
-    case 'click-to-call': {
-      if (!body.phoneNumber) {
-        return NextResponse.json({ error: 'phoneNumber required' }, { status: 400 });
-      }
-      const result = await clickToCall({
-        clientId: body.clientId,
-        phoneNumber: body.phoneNumber,
-        agentUserId: session.user.id,
-        callerIdNumber: body.callerIdNumber,
-      });
-      if (result.error) {
-        return NextResponse.json({ error: result.error }, { status: 500 });
-      }
-      return NextResponse.json({ data: result });
-    }
-
-    case 'call-history': {
-      if (!body.clientId) {
-        return NextResponse.json({ error: 'clientId required' }, { status: 400 });
-      }
-      const result = await getClientCallHistory(body.clientId, {
-        page: body.page,
-        limit: body.limit,
-      });
-      return NextResponse.json({ data: result });
-    }
-
-    case 'link-call': {
-      if (!body.callLogId || !body.clientId) {
-        return NextResponse.json({ error: 'callLogId and clientId required' }, { status: 400 });
-      }
-      await linkCallToClient(body.callLogId, body.clientId);
-      return NextResponse.json({ status: 'linked' });
-    }
-
-    case 'add-notes': {
-      if (!body.callLogId || !body.notes) {
-        return NextResponse.json({ error: 'callLogId and notes required' }, { status: 400 });
-      }
-      await addCallNotes(body.callLogId, body.notes, body.disposition, body.tags);
-      return NextResponse.json({ status: 'saved' });
-    }
-
-    default:
-      return NextResponse.json({ error: `Unknown action: ${action}` }, { status: 400 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Internal server error', details: error instanceof Error ? error.message : String(error) },
+      { status: 500 }
+    );
   }
 }

@@ -37,14 +37,12 @@ import {
   type FunctionAuditResult,
 } from './audit-config';
 import { extractAllFunctions, type ExtractedFunction } from './function-extractor';
-import { buildFunctionContext, DIMENSION_PROMPTS, ADVERSARIAL_PROMPT, TRIAGE_PROMPT } from './audit-prompts';
+import { buildFunctionContext, DIMENSION_PROMPTS } from './audit-prompts';
 import {
   runAllStaticValidations,
-  applyAdversarialVerdicts,
   buildFunctionResult,
   diffBaseline,
   type StaticValidationResult,
-  type AdversarialVerdict,
 } from './audit-validators';
 import { buildReport, writeJsonReport, writeMarkdownReport, writeBaseline } from './audit-reporter';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useI18n } from '@/i18n/client';
@@ -91,15 +91,34 @@ export default function AmbassadorPage() {
   const [isApplying, setIsApplying] = useState(false);
   const [applicationSubmitted, setApplicationSubmitted] = useState(false);
   
-  // Ambassador data loaded from API when available
-  const [isAmbassador] = useState(false);
-  const [ambassadorStats] = useState<AmbassadorStats>({
+  // Ambassador data loaded from API
+  const [isAmbassador, setIsAmbassador] = useState(false);
+  const [ambassadorStats, setAmbassadorStats] = useState<AmbassadorStats>({
     referrals: 0,
     earnings: 0,
     clicks: 0,
     conversionRate: 0,
     tier: 'starter',
   });
+  // Fetch ambassador status from API when user is logged in
+  useEffect(() => {
+    if (!session?.user?.id) return;
+    fetch('/api/ambassador/status')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data?.isAmbassador) {
+          setIsAmbassador(true);
+          setAmbassadorStats({
+            referrals: data.referrals ?? 0,
+            earnings: data.earnings ?? 0,
+            clicks: data.clicks ?? 0,
+            conversionRate: data.conversionRate ?? 0,
+            tier: data.tier ?? 'starter',
+          });
+        }
+      })
+      .catch(() => { /* Ambassador API not available yet */ });
+  }, [session?.user?.id]);
 
   const [applicationData, setApplicationData] = useState({
     website: '',

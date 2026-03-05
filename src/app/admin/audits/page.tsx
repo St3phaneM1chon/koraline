@@ -917,9 +917,9 @@ export default function AuditDashboardPage() {
                             </td>
                             <td className="px-3 py-2 text-center">
                               {chainStatus === 'valid' ? (
-                                <ShieldCheck className="w-4 h-4 text-green-500 mx-auto" title={isFr ? 'Chaine valide' : 'Chain valid'} />
+                                <span title={isFr ? 'Chaine valide' : 'Chain valid'}><ShieldCheck className="w-4 h-4 text-green-500 mx-auto" /></span>
                               ) : chainStatus === 'broken' ? (
-                                <ShieldAlert className="w-4 h-4 text-red-500 mx-auto" title={isFr ? 'Rupture de chaine' : 'Chain broken'} />
+                                <span title={isFr ? 'Rupture de chaine' : 'Chain broken'}><ShieldAlert className="w-4 h-4 text-red-500 mx-auto" /></span>
                               ) : (
                                 <span className="text-xs text-slate-300" title={isFr ? 'Pas de hash' : 'No hash'}>-</span>
                               )}

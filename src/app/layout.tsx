@@ -190,7 +190,7 @@ export default async function RootLayout({
         ))}
         <link rel="alternate" hrefLang="x-default" href="https://biocyclepeptides.com" />
         <Script id="sw-register" strategy="afterInteractive">
-          {`if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); }`}
+          {`if ('serviceWorker' in navigator && location.hostname !== 'localhost') { navigator.serviceWorker.register('/sw.js'); }`}
         </Script>
         {/* Anti-FOUC: apply dark class before first paint to avoid white flash */}
         <script dangerouslySetInnerHTML={{ __html: `try{if(localStorage.getItem('admin-theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}` }} />

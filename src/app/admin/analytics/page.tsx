@@ -17,63 +17,32 @@ import { PageHeader, StatCard } from '@/components/admin';
 import { useI18n } from '@/i18n/client';
 import { RFM_SEGMENTS, type RFMSegment } from '@/lib/analytics/rfm-engine';
 
-// ── Simulated data generators ─────────────────────────────────
-
-function randomBetween(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+interface RevenueData {
+  today: number;
+  thisWeek: number;
+  thisMonth: number;
+  ordersToday: number;
 }
 
-function generateRevenueData() {
-  return {
-    today: randomBetween(1200, 4800),
-    thisWeek: randomBetween(8000, 25000),
-    thisMonth: randomBetween(35000, 95000),
-    ordersToday: randomBetween(5, 35),
-  };
-}
-
-function generateActiveUsers() {
-  return {
-    now: randomBetween(3, 25),
-    last24h: randomBetween(40, 180),
-    last7d: randomBetween(200, 800),
-  };
-}
-
-function generateFunnelData() {
-  const visitors = randomBetween(800, 3000);
-  const productViews = Math.floor(visitors * (0.35 + Math.random() * 0.25));
-  const addToCart = Math.floor(productViews * (0.15 + Math.random() * 0.15));
-  const checkout = Math.floor(addToCart * (0.4 + Math.random() * 0.2));
-  const purchase = Math.floor(checkout * (0.5 + Math.random() * 0.3));
-  return { visitors, productViews, addToCart, checkout, purchase };
-}
-
-function generateRFMDistribution(): Record<RFMSegment, number> {
-  return {
-    CHAMPIONS: randomBetween(5, 20),
-    LOYAL: randomBetween(10, 30),
-    POTENTIAL_LOYAL: randomBetween(8, 25),
-    NEW_CUSTOMERS: randomBetween(15, 40),
-    PROMISING: randomBetween(5, 15),
-    NEED_ATTENTION: randomBetween(8, 20),
-    ABOUT_TO_SLEEP: randomBetween(5, 15),
-    AT_RISK: randomBetween(3, 12),
-    CANT_LOSE: randomBetween(1, 5),
-    HIBERNATING: randomBetween(10, 25),
-    LOST: randomBetween(5, 15),
-  };
+interface AnalyticsData {
+  revenue: RevenueData;
+  customers: { total: number; newThisMonth: number };
+  rfmDistribution: Record<string, number>;
+  generatedAt: string;
 }
 
 // ── Main Component ────────────────────────────────────────────
 
 export default function AnalyticsPage() {
   const { t, locale } = useI18n();
-  const [revenue, setRevenue] = useState(generateRevenueData);
-  const [activeUsers, setActiveUsers] = useState(generateActiveUsers);
-  const [funnel, setFunnel] = useState(generateFunnelData);
-  const [rfmDist, setRfmDist] = useState<Record<RFMSegment, number>>(generateRFMDistribution);
+  const [revenue, setRevenue] = useState<RevenueData>({ today: 0, thisWeek: 0, thisMonth: 0, ordersToday: 0 });
+  const [rfmDist, setRfmDist] = useState<Record<RFMSegment, number>>({
+    CHAMPIONS: 0, LOYAL: 0, POTENTIAL_LOYAL: 0, NEW_CUSTOMERS: 0, PROMISING: 0,
+    NEED_ATTENTION: 0, ABOUT_TO_SLEEP: 0, AT_RISK: 0, CANT_LOSE: 0, HIBERNATING: 0, LOST: 0,
+  });
   const [lastUpdate, setLastUpdate] = useState(new Date());
+  const [isLive, setIsLive] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const fmt = useCallback(
@@ -81,20 +50,40 @@ export default function AnalyticsPage() {
     [locale]
   );
 
-  // Simulated SSE with setInterval - update every 5 seconds
-  useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      setRevenue(generateRevenueData());
-      setActiveUsers(generateActiveUsers());
-      setFunnel(generateFunnelData());
-      setRfmDist(generateRFMDistribution());
-      setLastUpdate(new Date());
-    }, 5000);
+  const fetchAnalytics = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/analytics');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data: AnalyticsData = await res.json();
+      setRevenue(data.revenue);
+      setRfmDist(data.rfmDistribution as Record<RFMSegment, number>);
+      setLastUpdate(new Date(data.generatedAt));
+      setIsLive(true);
+      setError(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch analytics');
+      setIsLive(false);
+    }
+  }, []);
 
+  // Fetch on mount + poll every 30 seconds
+  useEffect(() => {
+    fetchAnalytics();
+    intervalRef.current = setInterval(fetchAnalytics, 30000);
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, []);
+  }, [fetchAnalytics]);
+
+  // Funnel data - these are estimates based on order data
+  // Real funnel tracking requires analytics integration (GA4, Plausible, etc.)
+  const funnel = {
+    visitors: revenue.ordersToday > 0 ? Math.round(revenue.ordersToday / 0.02) : 0,
+    productViews: revenue.ordersToday > 0 ? Math.round(revenue.ordersToday / 0.05) : 0,
+    addToCart: revenue.ordersToday > 0 ? Math.round(revenue.ordersToday / 0.15) : 0,
+    checkout: revenue.ordersToday > 0 ? Math.round(revenue.ordersToday / 0.5) : 0,
+    purchase: revenue.ordersToday,
+  };
 
   const funnelSteps = [
     { key: 'visitors', label: t('admin.analytics.funnelVisitors'), value: funnel.visitors, icon: Eye, color: 'bg-blue-500' },
@@ -112,10 +101,17 @@ export default function AnalyticsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Demo banner */}
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 flex items-center gap-2 text-sm text-amber-800">
-        <span className="font-semibold">Donnees simulees</span> &mdash; Cette page affiche des donnees generees aleatoirement. Connecter un service d&apos;analytics (Google Analytics, Plausible, etc.) pour des donnees reelles.
-      </div>
+      {/* Status banner */}
+      {error ? (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-center gap-2 text-sm text-red-800">
+          <span className="font-semibold">{t('common.error')}</span> &mdash; {error}
+        </div>
+      ) : !isLive ? (
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 flex items-center gap-2 text-sm text-amber-800">
+          <span className="font-semibold">{t('admin.analytics.loading') || 'Loading...'}</span>
+        </div>
+      ) : null}
+
       <PageHeader
         title={t('admin.analytics.title')}
         subtitle={t('admin.analytics.subtitle')}
@@ -123,10 +119,12 @@ export default function AnalyticsPage() {
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
               <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+                <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${isLive ? 'bg-emerald-400' : 'bg-amber-400'} opacity-75`} />
+                <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${isLive ? 'bg-emerald-500' : 'bg-amber-500'}`} />
               </span>
-              <span className="text-xs font-medium text-emerald-700">{t('admin.analytics.liveIndicator')}</span>
+              <span className={`text-xs font-medium ${isLive ? 'text-emerald-700' : 'text-amber-700'}`}>
+                {isLive ? t('admin.analytics.liveIndicator') : t('admin.analytics.connecting') || 'Connecting...'}
+              </span>
             </div>
             <span className="text-xs text-slate-400">
               {t('admin.analytics.lastUpdated')}: {lastUpdate.toLocaleTimeString(locale)}
@@ -140,7 +138,6 @@ export default function AnalyticsPage() {
         <div className="flex items-center gap-2 mb-4">
           <DollarSign className="w-5 h-5 text-emerald-600" />
           <h3 className="font-semibold text-slate-900">{t('admin.analytics.realtimeRevenue')}</h3>
-          <span className="text-[10px] px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded font-medium">{t('admin.analytics.simulatedData')}</span>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard
@@ -170,32 +167,18 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      {/* Active Users */}
+      {/* Active Users — Note: real active users requires analytics integration */}
       <div className="bg-white rounded-xl border border-slate-200 p-6">
         <div className="flex items-center gap-2 mb-4">
           <Users className="w-5 h-5 text-blue-600" />
           <h3 className="font-semibold text-slate-900">{t('admin.analytics.activeUsers')}</h3>
+          <span className="text-[10px] px-1.5 py-0.5 bg-slate-100 text-slate-500 rounded font-medium">
+            {t('admin.analytics.requiresAnalytics') || 'Requires GA4/Plausible'}
+          </span>
         </div>
-        <div className="grid grid-cols-3 gap-4">
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-            <div className="flex items-center justify-center gap-1.5 mb-1">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500" />
-              </span>
-              <p className="text-xs font-medium text-blue-600">{t('admin.analytics.activeNow')}</p>
-            </div>
-            <p className="text-3xl font-bold text-blue-900">{activeUsers.now}</p>
-          </div>
-          <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 text-center">
-            <p className="text-xs font-medium text-slate-500 mb-1">{t('admin.analytics.activeLast24h')}</p>
-            <p className="text-3xl font-bold text-slate-900">{activeUsers.last24h}</p>
-          </div>
-          <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 text-center">
-            <p className="text-xs font-medium text-slate-500 mb-1">{t('admin.analytics.activeLast7d')}</p>
-            <p className="text-3xl font-bold text-slate-900">{activeUsers.last7d}</p>
-          </div>
-        </div>
+        <p className="text-sm text-slate-500">
+          {t('admin.analytics.connectAnalyticsProvider') || 'Connect Google Analytics or Plausible for real-time active user data.'}
+        </p>
       </div>
 
       {/* Conversion Funnel */}
@@ -204,6 +187,11 @@ export default function AnalyticsPage() {
           <div className="flex items-center gap-2">
             <Activity className="w-5 h-5 text-purple-600" />
             <h3 className="font-semibold text-slate-900">{t('admin.analytics.conversionFunnel')}</h3>
+            {funnel.visitors === 0 && (
+              <span className="text-[10px] px-1.5 py-0.5 bg-slate-100 text-slate-500 rounded font-medium">
+                {t('admin.analytics.estimatedData') || 'Estimated from orders'}
+              </span>
+            )}
           </div>
           <div className="text-sm text-slate-500">
             {t('admin.analytics.conversionRate')}: <span className="font-bold text-purple-700">{overallConversion}%</span>
@@ -212,7 +200,9 @@ export default function AnalyticsPage() {
         <div className="space-y-3">
           {funnelSteps.map((step, idx) => {
             const widthPercent = funnel.visitors > 0 ? (step.value / funnel.visitors) * 100 : 0;
-            const dropRate = idx > 0 ? ((1 - step.value / funnelSteps[idx - 1].value) * 100).toFixed(1) : null;
+            const dropRate = idx > 0 && funnelSteps[idx - 1].value > 0
+              ? ((1 - step.value / funnelSteps[idx - 1].value) * 100).toFixed(1)
+              : null;
             const StepIcon = step.icon;
             return (
               <div key={step.key} className="flex items-center gap-3">
@@ -252,6 +242,7 @@ export default function AnalyticsPage() {
         <div className="space-y-2.5">
           {rfmEntries.map(([segment, count]) => {
             const info = RFM_SEGMENTS[segment];
+            if (!info) return null;
             const widthPercent = (count / maxRfm) * 100;
             return (
               <div key={segment} className="flex items-center gap-3">

@@ -12,13 +12,14 @@
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import * as telnyx from '@/lib/telnyx';
+import { VoipStateMap } from './voip-state';
 
-// Track active voicemail recordings
-const activeVoicemails = new Map<string, {
+// Track active voicemail recordings — Redis-backed
+const activeVoicemails = new VoipStateMap<{
   extensionId: string;
   callerNumber: string;
   callerName?: string;
-}>();
+}>('voip:voicemail:');
 
 /**
  * Start voicemail recording for a call.
@@ -135,19 +136,68 @@ export async function handleVoicemailSaved(
 }
 
 /**
- * Transcribe a voicemail recording using Telnyx or external engine.
+ * Transcribe a voicemail recording using OpenAI Whisper.
+ * Downloads the audio, transcribes via Whisper, updates the Voicemail record.
  */
 async function transcribeVoicemail(voicemailId: string, audioUrl: string): Promise<void> {
-  // For now, use Telnyx transcription if available on the recording.
-  // In production, this could call Whisper or OpenAI.
-  // The webhook handler will receive transcription events if
-  // transcription was started during the call.
+  logger.info('[Voicemail] Starting Whisper transcription', { voicemailId, audioUrl });
 
-  logger.info('[Voicemail] Transcription queued', { voicemailId, audioUrl });
+  try {
+    // Lazy-load OpenAI to avoid top-level init (KB-PP-BUILD-002)
+    const { default: OpenAI } = await import('openai');
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-  // Placeholder: In Phase 3 we'll integrate Whisper/OpenAI for
-  // post-call transcription of voicemail recordings.
-  // For now, live transcription during the call captures the text.
+    if (!process.env.OPENAI_API_KEY) {
+      logger.warn('[Voicemail] OPENAI_API_KEY not configured, skipping transcription', { voicemailId });
+      return;
+    }
+
+    // Download the audio file
+    const audioResponse = await fetch(audioUrl);
+    if (!audioResponse.ok) {
+      throw new Error(`Failed to download voicemail audio: ${audioResponse.status}`);
+    }
+
+    const audioBuffer = Buffer.from(await audioResponse.arrayBuffer());
+
+    // Create a File-like object for Whisper API
+    const audioFile = new File([audioBuffer], 'voicemail.wav', { type: 'audio/wav' });
+
+    // Transcribe with Whisper
+    const transcription = await openai.audio.transcriptions.create({
+      file: audioFile,
+      model: 'whisper-1',
+      language: 'fr', // French-first (Quebec business)
+      response_format: 'text',
+    });
+
+    const transcriptText = typeof transcription === 'string'
+      ? transcription
+      : (transcription as { text?: string }).text ?? '';
+
+    if (!transcriptText.trim()) {
+      logger.info('[Voicemail] Empty transcription (silence or noise)', { voicemailId });
+      return;
+    }
+
+    // Update the Voicemail record with transcription
+    await prisma.voicemail.update({
+      where: { id: voicemailId },
+      data: { transcription: transcriptText },
+    });
+
+    logger.info('[Voicemail] Transcription completed', {
+      voicemailId,
+      textLength: transcriptText.length,
+      preview: transcriptText.substring(0, 100),
+    });
+  } catch (error) {
+    logger.error('[Voicemail] Whisper transcription failed', {
+      voicemailId,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    // Non-critical: voicemail is still saved without transcription
+  }
 }
 
 /**

@@ -120,8 +120,7 @@ export async function scoreCoachingSession(
 
   const criteria = customCriteria || DEFAULT_CRITERIA;
   const lowerTranscript = transcript.toLowerCase();
-  const words = lowerTranscript.split(/\s+/);
-  const wordCount = words.length;
+  const wordCount = lowerTranscript.split(/\s+/).length;
 
   // Score each criterion
   const criteriaResults = criteria.map(criterion => {
@@ -352,9 +351,6 @@ function analyzeSentiment(text: string): { positive: number; negative: number; n
     'problème', 'malheureusement', 'désolé', 'impossible', 'difficile',
     'plainte', 'insatisfait', 'mécontent', 'erreur', 'mauvais', 'non',
   ];
-
-  const words = text.split(/\s+/);
-  const total = words.length || 1;
 
   let positiveCount = 0;
   let negativeCount = 0;

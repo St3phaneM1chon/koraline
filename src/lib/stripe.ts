@@ -10,8 +10,18 @@ import { logger } from '@/lib/logger';
 /**
  * Centralized Stripe API version. Update here when upgrading the Stripe SDK
  * and all modules will pick up the new version automatically.
+ *
+ * NOTE: The installed stripe SDK v14.25.0 types define LatestApiVersion as '2023-10-16'.
+ * To use the latest Stripe API version ('2025-12-18.acacia' or newer),
+ * upgrade the stripe npm package:
+ *   npm install stripe@latest
+ * Then update this constant to the SDK's new LatestApiVersion and remove the cast.
+ *
+ * Current: '2024-06-20' - forward-compatible bump from the SDK's typed version.
+ * The Stripe API accepts any version string; the SDK sends it as Stripe-Version header.
+ * Cast to Stripe.LatestApiVersion to satisfy TypeScript until the SDK is upgraded.
  */
-export const STRIPE_API_VERSION = '2023-10-16' as const;
+export const STRIPE_API_VERSION = '2024-06-20' as unknown as Stripe.LatestApiVersion;
 
 // Lazy-initialized Stripe client to avoid crashing during Next.js build/SSG
 // when STRIPE_SECRET_KEY is not available in the CI environment.

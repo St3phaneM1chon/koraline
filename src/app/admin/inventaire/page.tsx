@@ -20,6 +20,13 @@ import {
   ArrowRightLeft,
   Clock,
   TrendingDown,
+  Plus,
+  Building2,
+  ClipboardList,
+  Globe,
+  Phone,
+  Mail,
+  Scale,
 } from 'lucide-react';
 import { Button } from '@/components/admin/Button';
 import { StatCard } from '@/components/admin/StatCard';
@@ -51,6 +58,722 @@ interface ProductFormat {
   lowStockThreshold: number;
   availability: string;
   isActive: boolean;
+}
+
+interface Supplier {
+  id: string;
+  name: string;
+  contactName?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  website?: string;
+  notes?: string;
+  isActive?: boolean;
+  createdAt?: string;
+}
+
+interface PurchaseOrder {
+  id: string;
+  supplierId: string;
+  items: { productId: string; formatId?: string; quantity: number; unitCost: number }[];
+  expectedDelivery?: string;
+  notes?: string;
+  status: 'DRAFT' | 'ORDERED' | 'PARTIAL' | 'RECEIVED' | 'CANCELLED';
+  totalCost: number;
+  createdBy?: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+type InventoryTab = 'stock' | 'suppliers' | 'purchase-orders' | 'reconciliation';
+
+// ── Suppliers Sub-Component ──────────────────────────────────
+
+function SuppliersTab() {
+  const { t } = useI18n();
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState({ name: '', contactName: '', email: '', phone: '', address: '', website: '', notes: '' });
+
+  const fetchSuppliers = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/inventory/suppliers');
+      const data = await res.json();
+      setSuppliers(data.suppliers || []);
+    } catch {
+      toast.error(t('common.error'));
+    }
+    setLoading(false);
+  }, [t]);
+
+  useEffect(() => { fetchSuppliers(); }, [fetchSuppliers]);
+
+  const handleCreate = async () => {
+    if (!form.name.trim()) { toast.error('Supplier name is required'); return; }
+    setSaving(true);
+    try {
+      const res = await fetch('/api/admin/inventory/suppliers', {
+        method: 'POST',
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({
+          name: form.name,
+          contactName: form.contactName || undefined,
+          email: form.email || undefined,
+          phone: form.phone || undefined,
+          address: form.address || undefined,
+          website: form.website || undefined,
+          notes: form.notes || undefined,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        toast.error(data.error || 'Failed to create supplier');
+        return;
+      }
+      const newSupplier = await res.json();
+      setSuppliers(prev => [...prev, newSupplier]);
+      setForm({ name: '', contactName: '', email: '', phone: '', address: '', website: '', notes: '' });
+      setShowForm(false);
+      toast.success('Supplier created');
+    } catch {
+      toast.error(t('common.networkError'));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64" role="status">
+        <Loader2 className="w-8 h-8 animate-spin text-sky-500" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-lg font-semibold text-slate-900">Suppliers</h2>
+          <p className="text-sm text-slate-500">{suppliers.length} supplier(s)</p>
+        </div>
+        <Button variant="primary" icon={Plus} size="sm" onClick={() => setShowForm(true)}>
+          Add Supplier
+        </Button>
+      </div>
+
+      {/* Supplier creation form */}
+      {showForm && (
+        <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4">
+          <h3 className="text-base font-semibold text-slate-900">New Supplier</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">Name *</label>
+              <input type="text" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500" placeholder="Supplier name" />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">Contact Name</label>
+              <input type="text" value={form.contactName} onChange={e => setForm(f => ({ ...f, contactName: e.target.value }))}
+                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500" placeholder="Contact person" />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">Email</label>
+              <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500" placeholder="email@supplier.com" />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">Phone</label>
+              <input type="text" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500" placeholder="+1 555 123 4567" />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-xs font-medium text-slate-600 mb-1">Address</label>
+              <input type="text" value={form.address} onChange={e => setForm(f => ({ ...f, address: e.target.value }))}
+                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500" placeholder="123 Supplier St, City" />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">Website</label>
+              <input type="url" value={form.website} onChange={e => setForm(f => ({ ...f, website: e.target.value }))}
+                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500" placeholder="https://supplier.com" />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">Notes</label>
+              <input type="text" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
+                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500" placeholder="Internal notes" />
+            </div>
+          </div>
+          <div className="flex justify-end gap-2 pt-2">
+            <Button variant="secondary" size="sm" onClick={() => setShowForm(false)}>Cancel</Button>
+            <Button variant="primary" size="sm" onClick={handleCreate} loading={saving}>Create Supplier</Button>
+          </div>
+        </div>
+      )}
+
+      {/* Suppliers list */}
+      {suppliers.length === 0 && !showForm ? (
+        <div className="bg-white border border-slate-200 rounded-xl p-12 text-center">
+          <Building2 className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+          <h3 className="text-lg font-semibold text-slate-900 mb-1">No suppliers yet</h3>
+          <p className="text-sm text-slate-500 mb-4">Add your first supplier to manage inventory procurement.</p>
+          <Button variant="primary" icon={Plus} size="sm" onClick={() => setShowForm(true)}>Add Supplier</Button>
+        </div>
+      ) : (
+        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 border-b border-slate-200">
+              <tr>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">Name</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600 hidden md:table-cell">Contact</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600 hidden md:table-cell">Email</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600 hidden lg:table-cell">Phone</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600 hidden lg:table-cell">Website</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {suppliers.map(s => (
+                <tr key={s.id} className="hover:bg-slate-50 transition-colors">
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2">
+                      <Building2 className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                      <span className="font-medium text-slate-900">{s.name}</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-slate-600 hidden md:table-cell">{s.contactName || '-'}</td>
+                  <td className="px-4 py-3 hidden md:table-cell">
+                    {s.email ? (
+                      <a href={`mailto:${s.email}`} className="text-sky-600 hover:underline flex items-center gap-1">
+                        <Mail className="w-3 h-3" /> {s.email}
+                      </a>
+                    ) : '-'}
+                  </td>
+                  <td className="px-4 py-3 text-slate-600 hidden lg:table-cell">
+                    {s.phone ? <span className="flex items-center gap-1"><Phone className="w-3 h-3" /> {s.phone}</span> : '-'}
+                  </td>
+                  <td className="px-4 py-3 hidden lg:table-cell">
+                    {s.website ? (
+                      <a href={s.website} target="_blank" rel="noopener noreferrer" className="text-sky-600 hover:underline flex items-center gap-1">
+                        <Globe className="w-3 h-3" /> Visit
+                      </a>
+                    ) : '-'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Purchase Orders Sub-Component ────────────────────────────
+
+function PurchaseOrdersTab() {
+  const { t } = useI18n();
+  const [orders, setOrders] = useState<PurchaseOrder[]>([]);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [form, setForm] = useState({
+    supplierId: '',
+    expectedDelivery: '',
+    notes: '',
+    items: [{ productId: '', formatId: '', quantity: 1, unitCost: 0 }],
+  });
+
+  const fetchData = useCallback(async () => {
+    try {
+      const [poRes, supRes] = await Promise.all([
+        fetch('/api/admin/inventory/purchase-orders'),
+        fetch('/api/admin/inventory/suppliers'),
+      ]);
+      const poData = await poRes.json();
+      const supData = await supRes.json();
+      setOrders(poData.purchaseOrders || []);
+      setSuppliers(supData.suppliers || []);
+    } catch {
+      toast.error(t('common.error'));
+    }
+    setLoading(false);
+  }, [t]);
+
+  useEffect(() => { fetchData(); }, [fetchData]);
+
+  const filteredOrders = useMemo(() => {
+    if (statusFilter === 'all') return orders;
+    return orders.filter(o => o.status === statusFilter);
+  }, [orders, statusFilter]);
+
+  const addItem = () => {
+    setForm(f => ({ ...f, items: [...f.items, { productId: '', formatId: '', quantity: 1, unitCost: 0 }] }));
+  };
+
+  const removeItem = (idx: number) => {
+    setForm(f => ({ ...f, items: f.items.filter((_, i) => i !== idx) }));
+  };
+
+  const updateItem = (idx: number, field: string, value: string | number) => {
+    setForm(f => ({
+      ...f,
+      items: f.items.map((item, i) => i === idx ? { ...item, [field]: value } : item),
+    }));
+  };
+
+  const handleCreate = async () => {
+    if (!form.supplierId) { toast.error('Select a supplier'); return; }
+    if (form.items.some(i => !i.productId || i.quantity < 1 || i.unitCost <= 0)) {
+      toast.error('Each item requires a product ID, quantity >= 1, and unit cost > 0');
+      return;
+    }
+    setSaving(true);
+    try {
+      const res = await fetch('/api/admin/inventory/purchase-orders', {
+        method: 'POST',
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({
+          supplierId: form.supplierId,
+          items: form.items.map(i => ({
+            productId: i.productId,
+            formatId: i.formatId || undefined,
+            quantity: Number(i.quantity),
+            unitCost: Number(i.unitCost),
+          })),
+          expectedDelivery: form.expectedDelivery ? new Date(form.expectedDelivery).toISOString() : undefined,
+          notes: form.notes || undefined,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        toast.error(data.error || 'Failed to create PO');
+        return;
+      }
+      const newPO = await res.json();
+      setOrders(prev => [newPO, ...prev]);
+      setForm({ supplierId: '', expectedDelivery: '', notes: '', items: [{ productId: '', formatId: '', quantity: 1, unitCost: 0 }] });
+      setShowForm(false);
+      toast.success('Purchase order created');
+    } catch {
+      toast.error(t('common.networkError'));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const poStatusBadge = (status: string) => {
+    const map: Record<string, { bg: string; text: string }> = {
+      DRAFT: { bg: 'bg-slate-100', text: 'text-slate-700' },
+      ORDERED: { bg: 'bg-sky-100', text: 'text-sky-700' },
+      PARTIAL: { bg: 'bg-amber-100', text: 'text-amber-700' },
+      RECEIVED: { bg: 'bg-emerald-100', text: 'text-emerald-700' },
+      CANCELLED: { bg: 'bg-red-100', text: 'text-red-700' },
+    };
+    const s = map[status] || map.DRAFT;
+    return <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${s.bg} ${s.text}`}>{status}</span>;
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64" role="status">
+        <Loader2 className="w-8 h-8 animate-spin text-sky-500" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-lg font-semibold text-slate-900">Purchase Orders</h2>
+          <p className="text-sm text-slate-500">{orders.length} order(s)</p>
+        </div>
+        <Button variant="primary" icon={Plus} size="sm" onClick={() => setShowForm(true)}>
+          New Purchase Order
+        </Button>
+      </div>
+
+      {/* Status filter */}
+      <div className="flex gap-2 flex-wrap">
+        {['all', 'DRAFT', 'ORDERED', 'PARTIAL', 'RECEIVED', 'CANCELLED'].map(s => (
+          <button
+            key={s}
+            onClick={() => setStatusFilter(s)}
+            className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
+              statusFilter === s
+                ? 'bg-sky-50 text-sky-700 border-sky-200'
+                : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+            }`}
+          >
+            {s === 'all' ? 'All' : s}
+            {s !== 'all' && <span className="ml-1 text-slate-400">({orders.filter(o => o.status === s).length})</span>}
+          </button>
+        ))}
+      </div>
+
+      {/* PO creation form */}
+      {showForm && (
+        <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4">
+          <h3 className="text-base font-semibold text-slate-900">New Purchase Order</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">Supplier *</label>
+              <select
+                value={form.supplierId}
+                onChange={e => setForm(f => ({ ...f, supplierId: e.target.value }))}
+                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
+              >
+                <option value="">Select supplier</option>
+                {suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">Expected Delivery</label>
+              <input type="date" value={form.expectedDelivery} onChange={e => setForm(f => ({ ...f, expectedDelivery: e.target.value }))}
+                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500" />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">Notes</label>
+              <input type="text" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
+                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500" placeholder="Internal notes" />
+            </div>
+          </div>
+
+          {/* Line items */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-xs font-medium text-slate-600">Line Items *</label>
+              <button onClick={addItem} className="text-xs text-sky-600 hover:text-sky-700 font-medium">+ Add Item</button>
+            </div>
+            <div className="space-y-2">
+              {form.items.map((item, idx) => (
+                <div key={idx} className="grid grid-cols-12 gap-2 items-center">
+                  <div className="col-span-4">
+                    <input type="text" value={item.productId} onChange={e => updateItem(idx, 'productId', e.target.value)}
+                      className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm" placeholder="Product ID" />
+                  </div>
+                  <div className="col-span-3">
+                    <input type="text" value={item.formatId} onChange={e => updateItem(idx, 'formatId', e.target.value)}
+                      className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm" placeholder="Format ID (opt)" />
+                  </div>
+                  <div className="col-span-2">
+                    <input type="number" value={item.quantity} onChange={e => updateItem(idx, 'quantity', parseInt(e.target.value) || 0)}
+                      className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm" placeholder="Qty" min={1} />
+                  </div>
+                  <div className="col-span-2">
+                    <input type="number" value={item.unitCost} onChange={e => updateItem(idx, 'unitCost', parseFloat(e.target.value) || 0)}
+                      className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm" placeholder="Unit $" min={0} step="0.01" />
+                  </div>
+                  <div className="col-span-1">
+                    {form.items.length > 1 && (
+                      <button onClick={() => removeItem(idx)} className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg">
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-slate-500 mt-2">
+              Total: ${form.items.reduce((sum, i) => sum + i.quantity * i.unitCost, 0).toFixed(2)}
+            </p>
+          </div>
+
+          <div className="flex justify-end gap-2 pt-2">
+            <Button variant="secondary" size="sm" onClick={() => setShowForm(false)}>Cancel</Button>
+            <Button variant="primary" size="sm" onClick={handleCreate} loading={saving}>Create PO</Button>
+          </div>
+        </div>
+      )}
+
+      {/* PO list */}
+      {filteredOrders.length === 0 && !showForm ? (
+        <div className="bg-white border border-slate-200 rounded-xl p-12 text-center">
+          <ClipboardList className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+          <h3 className="text-lg font-semibold text-slate-900 mb-1">No purchase orders</h3>
+          <p className="text-sm text-slate-500 mb-4">Create your first purchase order to track inventory procurement.</p>
+          <Button variant="primary" icon={Plus} size="sm" onClick={() => setShowForm(true)}>New Purchase Order</Button>
+        </div>
+      ) : (
+        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 border-b border-slate-200">
+              <tr>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">PO ID</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">Supplier</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600 hidden md:table-cell">Items</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">Total</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">Status</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600 hidden lg:table-cell">Expected</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600 hidden lg:table-cell">Created</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {filteredOrders.map(po => {
+                const supplier = suppliers.find(s => s.id === po.supplierId);
+                return (
+                  <tr key={po.id} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-4 py-3 font-mono text-xs text-slate-700">{po.id.slice(0, 16)}...</td>
+                    <td className="px-4 py-3 text-slate-900 font-medium">{supplier?.name || po.supplierId}</td>
+                    <td className="px-4 py-3 text-slate-600 hidden md:table-cell">{po.items?.length || 0} item(s)</td>
+                    <td className="px-4 py-3 font-medium text-slate-900">${Number(po.totalCost).toFixed(2)}</td>
+                    <td className="px-4 py-3">{poStatusBadge(po.status)}</td>
+                    <td className="px-4 py-3 text-slate-600 hidden lg:table-cell">
+                      {po.expectedDelivery ? new Date(po.expectedDelivery).toLocaleDateString() : '-'}
+                    </td>
+                    <td className="px-4 py-3 text-slate-600 hidden lg:table-cell">
+                      {new Date(po.createdAt).toLocaleDateString()}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Reconciliation Sub-Component ──────────────────────────────
+
+interface ReconciliationItem {
+  productId: string;
+  productName: string;
+  formatId: string;
+  formatName: string;
+  recordedStock: number;
+  calculatedStock: number;
+  discrepancy: number;
+  status: 'MATCH' | 'DISCREPANCY';
+}
+
+interface ReconciliationData {
+  totalProducts: number;
+  matchCount: number;
+  discrepancyCount: number;
+  lastReconciled: string | null;
+  items: ReconciliationItem[];
+}
+
+function ReconciliationTab() {
+  const [data, setData] = useState<ReconciliationData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<'all' | 'discrepancy'>('all');
+  const [adjusting, setAdjusting] = useState<string | null>(null);
+  const [adjustForm, setAdjustForm] = useState({ adjustedStock: 0, reason: '' });
+
+  const fetchReconciliation = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetchWithRetry('/api/admin/inventory/reconciliation');
+      const json = await res.json();
+      if (json.data) setData(json.data);
+    } catch {
+      toast.error('Failed to load reconciliation data');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { fetchReconciliation(); }, [fetchReconciliation]);
+
+  const filteredItems = useMemo(() => {
+    if (!data) return [];
+    if (filter === 'discrepancy') return data.items.filter(i => i.status === 'DISCREPANCY');
+    return data.items;
+  }, [data, filter]);
+
+  const handleReconcile = async (item: ReconciliationItem) => {
+    if (!adjustForm.reason.trim()) {
+      toast.error('A reason is required');
+      return;
+    }
+    try {
+      const res = await fetchWithRetry('/api/admin/inventory/reconciliation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...addCSRFHeader() },
+        body: JSON.stringify({
+          productId: item.productId,
+          formatId: item.formatId || undefined,
+          adjustedStock: adjustForm.adjustedStock,
+          reason: adjustForm.reason,
+        }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        toast.success(json.message);
+        setAdjusting(null);
+        setAdjustForm({ adjustedStock: 0, reason: '' });
+        fetchReconciliation();
+      } else {
+        toast.error(json.error || 'Reconciliation failed');
+      }
+    } catch {
+      toast.error('Failed to apply reconciliation');
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="w-6 h-6 animate-spin text-sky-500" />
+      </div>
+    );
+  }
+
+  if (!data) {
+    return <p className="text-slate-500 text-center py-10">No reconciliation data available.</p>;
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Summary cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard label="Total Products" value={data.totalProducts} icon={Package} />
+        <StatCard label="Matched" value={data.matchCount} icon={PackageCheck} />
+        <StatCard label="Discrepancies" value={data.discrepancyCount} icon={AlertTriangle} />
+        <StatCard
+          label="Last Reconciled"
+          value={data.lastReconciled ? new Date(data.lastReconciled).toLocaleDateString() : 'Never'}
+          icon={Clock}
+        />
+      </div>
+
+      {/* Filter toggle */}
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => setFilter('all')}
+          className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+            filter === 'all' ? 'bg-sky-100 text-sky-700 font-medium' : 'text-slate-500 hover:bg-slate-100'
+          }`}
+        >
+          All ({data.totalProducts})
+        </button>
+        <button
+          onClick={() => setFilter('discrepancy')}
+          className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+            filter === 'discrepancy' ? 'bg-orange-100 text-orange-700 font-medium' : 'text-slate-500 hover:bg-slate-100'
+          }`}
+        >
+          Discrepancies ({data.discrepancyCount})
+        </button>
+        <div className="flex-1" />
+        <Button variant="ghost" icon={History} size="sm" onClick={fetchReconciliation}>
+          Refresh
+        </Button>
+      </div>
+
+      {/* Table */}
+      <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 border-b border-slate-200">
+              <tr>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">Product</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">Format</th>
+                <th className="text-right px-4 py-3 font-medium text-slate-600">Recorded</th>
+                <th className="text-right px-4 py-3 font-medium text-slate-600">Calculated</th>
+                <th className="text-right px-4 py-3 font-medium text-slate-600">Discrepancy</th>
+                <th className="text-center px-4 py-3 font-medium text-slate-600">Status</th>
+                <th className="text-center px-4 py-3 font-medium text-slate-600">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {filteredItems.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="text-center py-8 text-slate-400">
+                    {filter === 'discrepancy' ? 'No discrepancies found' : 'No inventory items found'}
+                  </td>
+                </tr>
+              ) : (
+                filteredItems.map((item) => {
+                  const itemKey = `${item.productId}:${item.formatId}`;
+                  const isAdjusting = adjusting === itemKey;
+
+                  return (
+                    <tr key={itemKey} className={item.status === 'DISCREPANCY' ? 'bg-orange-50/50' : ''}>
+                      <td className="px-4 py-3 font-medium text-slate-900">{item.productName}</td>
+                      <td className="px-4 py-3 text-slate-600">{item.formatName}</td>
+                      <td className="px-4 py-3 text-right font-mono">{item.recordedStock}</td>
+                      <td className="px-4 py-3 text-right font-mono">{item.calculatedStock}</td>
+                      <td className={`px-4 py-3 text-right font-mono font-medium ${
+                        item.discrepancy !== 0 ? 'text-orange-600' : 'text-green-600'
+                      }`}>
+                        {item.discrepancy > 0 ? '+' : ''}{item.discrepancy}
+                      </td>
+                      <td className="px-4 py-3 text-center">
+                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
+                          item.status === 'MATCH'
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-orange-100 text-orange-700'
+                        }`}>
+                          {item.status === 'MATCH' ? <Check className="w-3 h-3" /> : <AlertTriangle className="w-3 h-3" />}
+                          {item.status}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-center">
+                        {item.status === 'DISCREPANCY' && !isAdjusting && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            icon={Pencil}
+                            onClick={() => {
+                              setAdjusting(itemKey);
+                              setAdjustForm({ adjustedStock: item.recordedStock, reason: '' });
+                            }}
+                          >
+                            Reconcile
+                          </Button>
+                        )}
+                        {isAdjusting && (
+                          <div className="flex items-center gap-2">
+                            <Input
+                              type="number"
+                              value={adjustForm.adjustedStock}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                setAdjustForm(f => ({ ...f, adjustedStock: parseInt(e.target.value, 10) || 0 }))
+                              }
+                              className="w-20 text-sm"
+                            />
+                            <Input
+                              type="text"
+                              placeholder="Reason..."
+                              value={adjustForm.reason}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                setAdjustForm(f => ({ ...f, reason: e.target.value }))
+                              }
+                              className="w-32 text-sm"
+                            />
+                            <button
+                              onClick={() => handleReconcile(item)}
+                              className="p-1 text-green-600 hover:bg-green-50 rounded"
+                            >
+                              <Check className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => setAdjusting(null)}
+                              className="p-1 text-red-500 hover:bg-red-50 rounded"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 // ── Helpers ───────────────────────────────────────────────────
@@ -111,6 +834,7 @@ const ABC_BADGE: Record<string, { bg: string; text: string }> = {
 
 export default function InventairePage() {
   const { t, locale, formatCurrency } = useI18n();
+  const [activeTab, setActiveTab] = useState<InventoryTab>('stock');
   const [inventory, setInventory] = useState<ProductFormat[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
@@ -413,7 +1137,7 @@ export default function InventairePage() {
         ...item,
         urgency: reorderUrgency(item),
         abcClass: abcClassification.get(item.id) || 'C',
-        estimatedLeadDays: Math.floor(Math.random() * 14) + 3, // Simulated lead time
+        estimatedLeadDays: 7, // Default lead time in days (replace with supplier data when available)
       }))
       .sort((a, b) => b.urgency - a.urgency);
   }, [inventory, abcClassification]);
@@ -463,13 +1187,63 @@ export default function InventairePage() {
 
   return (
     <div className="h-full flex flex-col">
-      {/* Stat cards row */}
+      {/* Tab navigation */}
       <div className="p-4 lg:p-6 pb-0 flex-shrink-0">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-xl font-bold text-slate-900">{t('admin.inventory.title')}</h1>
             <p className="text-sm text-slate-500 mt-0.5">{t('admin.inventory.subtitle')}</p>
           </div>
+        </div>
+        <div className="flex gap-1 border-b border-slate-200 mb-4">
+          {([
+            { key: 'stock' as InventoryTab, label: 'Stock', icon: Package },
+            { key: 'suppliers' as InventoryTab, label: 'Suppliers', icon: Building2 },
+            { key: 'purchase-orders' as InventoryTab, label: 'Purchase Orders', icon: ClipboardList },
+            { key: 'reconciliation' as InventoryTab, label: 'Reconciliation', icon: Scale },
+          ]).map(tab => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors -mb-px ${
+                activeTab === tab.key
+                  ? 'border-sky-500 text-sky-700'
+                  : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+              }`}
+            >
+              <tab.icon className="w-4 h-4" />
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Tab content: Suppliers */}
+      {activeTab === 'suppliers' && (
+        <div className="p-4 lg:p-6 pt-0 flex-1 overflow-y-auto">
+          <SuppliersTab />
+        </div>
+      )}
+
+      {/* Tab content: Purchase Orders */}
+      {activeTab === 'purchase-orders' && (
+        <div className="p-4 lg:p-6 pt-0 flex-1 overflow-y-auto">
+          <PurchaseOrdersTab />
+        </div>
+      )}
+
+      {/* Tab content: Reconciliation */}
+      {activeTab === 'reconciliation' && (
+        <div className="p-4 lg:p-6 pt-0 flex-1 overflow-y-auto">
+          <ReconciliationTab />
+        </div>
+      )}
+
+      {/* Tab content: Stock (original content) */}
+      {activeTab === 'stock' && (<>
+      {/* Stat cards row */}
+      <div className="p-4 lg:p-6 pb-0 pt-0 flex-shrink-0">
+        <div className="flex items-center justify-end mb-4">
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
@@ -658,15 +1432,15 @@ export default function InventairePage() {
                     </div>
                     <div className="grid grid-cols-3 gap-3">
                       <div className="text-center p-2 bg-white rounded border border-sky-100">
-                        <p className="text-lg font-bold text-sky-700">{Math.floor(Math.random() * 7) + 3}j</p>
+                        <p className="text-lg font-bold text-sky-700">5j</p>
                         <p className="text-[10px] text-sky-600">Delai moyen</p>
                       </div>
                       <div className="text-center p-2 bg-white rounded border border-sky-100">
-                        <p className="text-lg font-bold text-sky-700">{Math.floor(Math.random() * 5) + 2}j</p>
+                        <p className="text-lg font-bold text-sky-700">3j</p>
                         <p className="text-[10px] text-sky-600">Dernier delai</p>
                       </div>
                       <div className="text-center p-2 bg-white rounded border border-sky-100">
-                        <p className="text-lg font-bold text-sky-700">{Math.floor(Math.random() * 14) + 7}j</p>
+                        <p className="text-lg font-bold text-sky-700">10j</p>
                         <p className="text-[10px] text-sky-600">Delai max</p>
                       </div>
                     </div>
@@ -1165,6 +1939,7 @@ export default function InventairePage() {
           </div>
         </div>
       </Modal>
+      </>)}
     </div>
   );
 }

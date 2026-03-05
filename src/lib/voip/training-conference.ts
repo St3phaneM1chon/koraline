@@ -10,9 +10,10 @@
  * - Session linked to CoachingSession for tracking
  */
 
-import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import * as telnyx from '@/lib/telnyx';
+import { getTelnyxConnectionId, getDefaultCallerId } from '@/lib/telnyx';
+import { VoipStateMap } from './voip-state';
 
 interface TrainingRoom {
   conferenceId: string;
@@ -31,8 +32,8 @@ interface TrainingRoom {
   createdAt: Date;
 }
 
-// Active training rooms keyed by conferenceId
-const trainingRooms = new Map<string, TrainingRoom>();
+// Active training rooms keyed by conferenceId — Redis-backed
+const trainingRooms = new VoipStateMap<TrainingRoom>('voip:training:');
 
 /**
  * Create a training room and dial the instructor in.
@@ -44,8 +45,8 @@ export async function createTrainingRoom(options: {
   sessionId?: string;
   callerIdNumber?: string;
 }): Promise<{ conferenceId?: string; error?: string }> {
-  const connectionId = process.env.TELNYX_CONNECTION_ID || '';
-  const from = options.callerIdNumber || process.env.TELNYX_DEFAULT_CALLER_ID || '';
+  const connectionId = getTelnyxConnectionId();
+  const from = options.callerIdNumber || getDefaultCallerId();
   const webhookUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/voip/webhooks/telnyx`;
 
   try {
@@ -146,8 +147,8 @@ export async function addStudent(
     return { status: 'error: room not found' };
   }
 
-  const connectionId = process.env.TELNYX_CONNECTION_ID || '';
-  const from = process.env.TELNYX_DEFAULT_CALLER_ID || '';
+  const connectionId = getTelnyxConnectionId();
+  const from = getDefaultCallerId();
   const webhookUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/voip/webhooks/telnyx`;
 
   try {

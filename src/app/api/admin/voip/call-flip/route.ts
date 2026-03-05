@@ -1,0 +1,49 @@
+export const dynamic = 'force-dynamic';
+
+/**
+ * Admin VoIP Call Flip API
+ * POST /api/admin/voip/call-flip — Flip an active call to another device
+ *
+ * Called by Softphone.tsx handleFlipCall(). Delegates to call-flip lib.
+ */
+
+import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/lib/auth-config';
+import { flipCall, getUserDevices } from '@/lib/voip/call-flip';
+
+export async function POST(request: NextRequest) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const body = await request.json();
+    const { callId, target } = body as {
+      callId?: string;
+      target?: string;
+    };
+
+    if (!callId) {
+      return NextResponse.json({ error: 'callId required' }, { status: 400 });
+    }
+
+    // Map target name to a device from user's device list
+    const devices = await getUserDevices(session.user.id);
+    const device = devices.find(d => d.type === target) || devices[0];
+
+    if (!device) {
+      return NextResponse.json({ error: 'No device found for flip target' }, { status: 404 });
+    }
+
+    const result = await flipCall(callId, device, session.user.id);
+
+    if (!result.success) {
+      return NextResponse.json({ error: result.error || 'Call flip failed' }, { status: 422 });
+    }
+
+    return NextResponse.json({ flipped: true, target });
+  } catch {
+    return NextResponse.json({ error: 'Call flip operation failed' }, { status: 500 });
+  }
+}

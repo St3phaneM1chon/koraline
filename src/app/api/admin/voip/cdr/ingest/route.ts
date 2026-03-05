@@ -21,8 +21,12 @@ import { logger } from '@/lib/logger';
 function validateWebhookAuth(request: NextRequest): boolean {
   const secret = process.env.VOIP_CDR_WEBHOOK_SECRET;
   if (!secret) {
-    // If no secret configured, accept all (dev mode)
-    logger.warn('[CDR Webhook] No VOIP_CDR_WEBHOOK_SECRET configured');
+    // F7 FIX: Reject in production if no secret configured
+    if (process.env.NODE_ENV === 'production') {
+      logger.error('[CDR Webhook] VOIP_CDR_WEBHOOK_SECRET not set in production — rejecting request');
+      return false;
+    }
+    logger.warn('[CDR Webhook] No VOIP_CDR_WEBHOOK_SECRET configured (dev mode)');
     return true;
   }
 

@@ -174,6 +174,7 @@ export async function GET(request: NextRequest) {
     // Build a map: userId -> latest paid order date
     const userLatestOrderMap = new Map<string, Date>();
     for (const order of recentPaidOrders) {
+      if (!order.userId) continue;
       const existing = userLatestOrderMap.get(order.userId);
       if (!existing || order.createdAt > existing) {
         userLatestOrderMap.set(order.userId, order.createdAt);

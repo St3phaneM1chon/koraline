@@ -13,6 +13,7 @@ import { createAccountingEntriesForOrder } from '@/lib/accounting/webhook-accoun
 import { generateCOGSEntry } from '@/lib/inventory';
 import { qualifyReferral } from '@/lib/referral-qualify';
 import { logger } from '@/lib/logger';
+import { validateTransition } from '@/lib/order-status-machine';
 import { sendOrderNotificationSms, sendPaymentFailureAlertSms } from '@/lib/sms';
 import { sanitizeWebhookPayload } from '@/lib/sanitize';
 import { getRedisClient, isRedisAvailable } from '@/lib/redis';
@@ -977,6 +978,20 @@ async function handleRefund(charge: Stripe.Charge, eventId: string) {
   // BUG FIX: Wrap order status update + inventory restore in a single $transaction
   // to ensure atomicity. Previously the order status update was standalone, so if the
   // inventory restore failed the order would be marked REFUNDED without stock restoration.
+
+  // Validate transition (webhook: log warning but proceed — Stripe data is authoritative)
+  if (isFullRefund) {
+    const refundTransition = validateTransition(order.status, 'CANCELLED');
+    if (!refundTransition.valid) {
+      logger.warn('[stripe-webhook] Unexpected refund transition (proceeding anyway)', {
+        orderId: order.id,
+        currentStatus: order.status,
+        targetStatus: 'CANCELLED',
+        reason: refundTransition.error,
+      });
+    }
+  }
+
   await prisma.$transaction(async (tx) => {
     // Update order status
     await tx.order.update({
@@ -1188,11 +1203,31 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
   });
 }
 
+/**
+ * Determine if a Stripe payment error is retryable.
+ * Card declines, insufficient funds, and processing errors may succeed on retry.
+ * Authentication failures, stolen cards, and fraud are not retryable.
+ */
+function isPaymentErrorRetryable(declineCode?: string, errorCode?: string): boolean {
+  // Non-retryable decline codes (permanent failures)
+  const nonRetryable = new Set([
+    'stolen_card', 'lost_card', 'fraudulent', 'do_not_honor',
+    'invalid_account', 'card_not_supported', 'expired_card',
+    'incorrect_number', 'invalid_cvc', 'authentication_required',
+    'card_declined', // generic decline — usually not retryable
+  ]);
+  if (declineCode && nonRetryable.has(declineCode)) return false;
+  if (errorCode === 'card_declined' && !declineCode) return false;
+  // Retryable: processing_error, insufficient_funds, rate_limit, etc.
+  return true;
+}
+
 async function handlePaymentFailure(paymentIntent: Stripe.PaymentIntent) {
   logger.warn('Payment failed', { paymentIntentId: paymentIntent.id });
 
   const errorMessage = paymentIntent.last_payment_error?.message || 'Unknown error';
   const errorCode = paymentIntent.last_payment_error?.code || 'unknown';
+  const declineCode = paymentIntent.last_payment_error?.decline_code;
   const customerEmail = paymentIntent.receipt_email || paymentIntent.metadata?.customerEmail;
   const amount = paymentIntent.amount / 100;
 
@@ -1209,7 +1244,7 @@ async function handlePaymentFailure(paymentIntent: Stripe.PaymentIntent) {
         customerEmail: customerEmail || null,
         metadata: JSON.stringify({
           paymentMethodType: paymentIntent.payment_method_types,
-          declineCode: paymentIntent.last_payment_error?.decline_code,
+          declineCode,
         }),
       },
     });
@@ -1217,10 +1252,102 @@ async function handlePaymentFailure(paymentIntent: Stripe.PaymentIntent) {
     logger.error('Failed to log payment error', { error: String(logError) });
   }
 
+  // Payment retry logic: attempt up to 2 retries for retryable errors
+  // Uses Stripe's built-in idempotency via payment intent ID
+  const MAX_PAYMENT_RETRIES = 2;
+  const retryable = isPaymentErrorRetryable(declineCode || undefined, errorCode);
+
+  if (retryable && paymentIntent.status !== 'canceled') {
+    logger.info('Payment error is retryable, attempting retry', {
+      paymentIntentId: paymentIntent.id,
+      errorCode,
+      declineCode,
+    });
+
+    for (let attempt = 1; attempt <= MAX_PAYMENT_RETRIES; attempt++) {
+      try {
+        // Exponential backoff: 2s, 8s
+        const delay = 2000 * Math.pow(4, attempt - 1);
+        await new Promise(resolve => setTimeout(resolve, delay));
+
+        // Attempt to confirm the payment intent again
+        const stripe = getStripeWebhook();
+        const retryResult = await stripe.paymentIntents.confirm(paymentIntent.id);
+
+        if (retryResult.status === 'succeeded') {
+          logger.info('Payment retry succeeded', {
+            paymentIntentId: paymentIntent.id,
+            attempt,
+          });
+
+          // Update order status to reflect successful payment
+          await prisma.order.updateMany({
+            where: { stripePaymentId: paymentIntent.id },
+            data: { paymentStatus: 'PAID', status: 'CONFIRMED' },
+          });
+
+          // Log the successful retry
+          await prisma.paymentError.create({
+            data: {
+              orderId: paymentIntent.metadata?.orderId || null,
+              stripePaymentId: paymentIntent.id,
+              errorType: 'retry_success',
+              errorMessage: `Payment succeeded on retry attempt ${attempt}`,
+              amount,
+              currency: paymentIntent.currency?.toUpperCase() || 'CAD',
+              customerEmail: customerEmail || null,
+              metadata: JSON.stringify({ retryAttempt: attempt }),
+            },
+          });
+
+          return; // Payment succeeded, no need to mark as failed
+        }
+
+        if (retryResult.status === 'requires_action' || retryResult.status === 'requires_payment_method') {
+          logger.info('Payment retry requires customer action, stopping retries', {
+            paymentIntentId: paymentIntent.id,
+            status: retryResult.status,
+            attempt,
+          });
+          break; // Can't retry without customer interaction
+        }
+      } catch (retryError) {
+        logger.warn('Payment retry attempt failed', {
+          paymentIntentId: paymentIntent.id,
+          attempt,
+          error: retryError instanceof Error ? retryError.message : String(retryError),
+        });
+        // Continue to next retry attempt
+      }
+    }
+
+    logger.warn('All payment retries exhausted', {
+      paymentIntentId: paymentIntent.id,
+      attempts: MAX_PAYMENT_RETRIES,
+    });
+  }
+
   // Send SMS alert (non-blocking)
   sendPaymentFailureAlertSms(errorCode, amount, customerEmail || undefined).catch((err) => {
     logger.error('Failed to send payment failure SMS', { error: String(err) });
   });
+
+  // Validate transition (webhook: log warning but proceed — payment failure is authoritative)
+  const failedOrder = await prisma.order.findFirst({
+    where: { stripePaymentId: paymentIntent.id },
+    select: { id: true, status: true },
+  });
+  if (failedOrder) {
+    const failTransition = validateTransition(failedOrder.status, 'CANCELLED');
+    if (!failTransition.valid) {
+      logger.warn('[stripe-webhook] Unexpected payment failure transition (proceeding anyway)', {
+        orderId: failedOrder.id,
+        currentStatus: failedOrder.status,
+        targetStatus: 'CANCELLED',
+        reason: failTransition.error,
+      });
+    }
+  }
 
   await prisma.order.updateMany({
     where: { stripePaymentId: paymentIntent.id },

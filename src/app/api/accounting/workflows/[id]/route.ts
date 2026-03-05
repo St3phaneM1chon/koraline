@@ -29,21 +29,10 @@ const actionSchema = z.object({
     .optional(),
 });
 
-const updateWorkflowRuleSchema = z.object({
+const updateWorkflowSchema = z.object({
   name: z.string().min(1).max(200).optional(),
   description: z.string().max(1000).optional().nullable(),
-  entityType: z
-    .enum([
-      'JOURNAL_ENTRY',
-      'EXPENSE',
-      'PURCHASE_ORDER',
-      'INVOICE',
-      'CREDIT_NOTE',
-      'PAYROLL_RUN',
-      'TIME_ENTRY',
-    ])
-    .optional(),
-  triggerEvent: z.enum(['CREATE', 'UPDATE', 'STATUS_CHANGE', 'AMOUNT_THRESHOLD']).optional(),
+  trigger: z.string().min(1).optional(),
   conditions: z.array(conditionSchema).optional(),
   actions: z.array(actionSchema).min(1).optional(),
   priority: z.number().int().min(0).max(1000).optional(),
@@ -51,52 +40,52 @@ const updateWorkflowRuleSchema = z.object({
 });
 
 // ---------------------------------------------------------------------------
-// GET /api/accounting/workflows/[id] - Get single rule
+// GET /api/accounting/workflows/[id] - Get single workflow
 // ---------------------------------------------------------------------------
 
 export const GET = withAdminGuard(async (request: NextRequest, { params }) => {
   try {
     const { id } = params;
 
-    const rule = await prisma.workflowRule.findUnique({
+    const workflow = await prisma.workflow.findUnique({
       where: { id },
     });
 
-    if (!rule || rule.deletedAt) {
-      return apiError('Workflow rule not found', 'NOT_FOUND', { status: 404, request });
+    if (!workflow) {
+      return apiError('Workflow not found', 'NOT_FOUND', { status: 404, request });
     }
 
     return apiSuccess(
       {
-        ...rule,
-        conditions: JSON.parse(rule.conditions),
-        actions: JSON.parse(rule.actions),
+        ...workflow,
+        conditions: workflow.conditions ?? [],
+        actions: workflow.actions,
       },
       { request },
     );
   } catch (error) {
-    logger.error('Error fetching workflow rule', {
+    logger.error('Error fetching workflow', {
       error: error instanceof Error ? error.message : String(error),
     });
-    return apiError('Error fetching workflow rule', 'INTERNAL_ERROR', { status: 500, request });
+    return apiError('Error fetching workflow', 'INTERNAL_ERROR', { status: 500, request });
   }
 });
 
 // ---------------------------------------------------------------------------
-// PUT /api/accounting/workflows/[id] - Update rule
+// PUT /api/accounting/workflows/[id] - Update workflow
 // ---------------------------------------------------------------------------
 
-export const PUT = withAdminGuard(async (request: NextRequest, { params, session }) => {
+export const PUT = withAdminGuard(async (request: NextRequest, { params }) => {
   try {
     const { id } = params;
 
-    const existing = await prisma.workflowRule.findUnique({ where: { id } });
-    if (!existing || existing.deletedAt) {
-      return apiError('Workflow rule not found', 'NOT_FOUND', { status: 404, request });
+    const existing = await prisma.workflow.findUnique({ where: { id } });
+    if (!existing) {
+      return apiError('Workflow not found', 'NOT_FOUND', { status: 404, request });
     }
 
     const body = await request.json();
-    const parsed = updateWorkflowRuleSchema.safeParse(body);
+    const parsed = updateWorkflowSchema.safeParse(body);
 
     if (!parsed.success) {
       return apiError('Invalid data', 'VALIDATION_ERROR', {
@@ -111,68 +100,65 @@ export const PUT = withAdminGuard(async (request: NextRequest, { params, session
     const updateData: Record<string, unknown> = {};
     if (data.name !== undefined) updateData.name = data.name;
     if (data.description !== undefined) updateData.description = data.description;
-    if (data.entityType !== undefined) updateData.entityType = data.entityType;
-    if (data.triggerEvent !== undefined) updateData.triggerEvent = data.triggerEvent;
-    if (data.conditions !== undefined) updateData.conditions = JSON.stringify(data.conditions);
-    if (data.actions !== undefined) updateData.actions = JSON.stringify(data.actions);
+    if (data.trigger !== undefined) updateData.trigger = data.trigger;
+    if (data.conditions !== undefined) updateData.conditions = data.conditions;
+    if (data.actions !== undefined) updateData.actions = data.actions;
     if (data.priority !== undefined) updateData.priority = data.priority;
     if (data.isActive !== undefined) updateData.isActive = data.isActive;
 
-    const updated = await prisma.workflowRule.update({
+    const updated = await prisma.workflow.update({
       where: { id },
       data: updateData,
     });
 
-    logger.info('Workflow rule updated', {
-      ruleId: id,
-      updatedBy: session.user?.email,
+    logger.info('Workflow updated', {
+      workflowId: id,
       changes: Object.keys(updateData),
     });
 
     return apiSuccess(
       {
         ...updated,
-        conditions: JSON.parse(updated.conditions),
-        actions: JSON.parse(updated.actions),
+        conditions: updated.conditions ?? [],
+        actions: updated.actions,
       },
       { request },
     );
   } catch (error) {
-    logger.error('Error updating workflow rule', {
+    logger.error('Error updating workflow', {
       error: error instanceof Error ? error.message : String(error),
     });
-    return apiError('Error updating workflow rule', 'INTERNAL_ERROR', { status: 500, request });
+    return apiError('Error updating workflow', 'INTERNAL_ERROR', { status: 500, request });
   }
 });
 
 // ---------------------------------------------------------------------------
-// DELETE /api/accounting/workflows/[id] - Soft-delete rule
+// DELETE /api/accounting/workflows/[id] - Delete workflow
 // ---------------------------------------------------------------------------
 
 export const DELETE = withAdminGuard(async (request: NextRequest, { params, session }) => {
   try {
     const { id } = params;
 
-    const existing = await prisma.workflowRule.findUnique({ where: { id } });
-    if (!existing || existing.deletedAt) {
-      return apiError('Workflow rule not found', 'NOT_FOUND', { status: 404, request });
+    const existing = await prisma.workflow.findUnique({ where: { id } });
+    if (!existing) {
+      return apiError('Workflow not found', 'NOT_FOUND', { status: 404, request });
     }
 
-    await prisma.workflowRule.update({
+    await prisma.workflow.delete({
       where: { id },
-      data: { deletedAt: new Date() },
     });
 
-    logger.info('Workflow rule soft-deleted', {
-      ruleId: id,
+    logger.info('Workflow deleted', {
+      workflowId: id,
       deletedBy: session.user?.email,
     });
 
     return apiNoContent({ request });
   } catch (error) {
-    logger.error('Error deleting workflow rule', {
+    logger.error('Error deleting workflow', {
       error: error instanceof Error ? error.message : String(error),
     });
-    return apiError('Error deleting workflow rule', 'INTERNAL_ERROR', { status: 500, request });
+    return apiError('Error deleting workflow', 'INTERNAL_ERROR', { status: 500, request });
   }
 });

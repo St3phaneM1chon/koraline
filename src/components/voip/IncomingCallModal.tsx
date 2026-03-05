@@ -27,17 +27,17 @@ export default function IncomingCallModal({ call, onAnswer, onReject }: Incoming
   const { t } = useI18n();
   const [callerInfo, setCallerInfo] = useState<CallerInfo | null>(null);
 
-  // Lookup caller in CRM
+  // Lookup caller in CRM by phone number
   useEffect(() => {
     if (call.remoteNumber) {
-      fetch(`/api/admin/voip/call-logs?search=${encodeURIComponent(call.remoteNumber)}&limit=1`)
+      fetch(`/api/admin/customers?search=${encodeURIComponent(call.remoteNumber)}&limit=1`)
         .then((res) => res.json())
         .then((data) => {
-          const recent = data.callLogs?.[0];
-          if (recent?.client) {
+          const customer = data.customers?.[0];
+          if (customer) {
             setCallerInfo({
-              name: recent.client.name,
-              email: recent.client.email,
+              name: customer.name || `${customer.firstName ?? ''} ${customer.lastName ?? ''}`.trim() || null,
+              email: customer.email || null,
               isClient: true,
             });
           }

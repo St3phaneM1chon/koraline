@@ -33,14 +33,14 @@ export interface CreateEntityInput {
 
 export interface UpdateEntityInput {
   name?: string;
-  legalName?: string;
-  taxNumber?: string;
-  gstNumber?: string;
-  qstNumber?: string;
-  address?: string;
-  city?: string;
-  province?: string;
-  postalCode?: string;
+  legalName?: string | null;
+  taxNumber?: string | null;
+  gstNumber?: string | null;
+  qstNumber?: string | null;
+  address?: string | null;
+  city?: string | null;
+  province?: string | null;
+  postalCode?: string | null;
   country?: string;
   currency?: string;
   fiscalYearStart?: number;

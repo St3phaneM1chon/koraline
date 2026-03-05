@@ -13,6 +13,7 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
+import { validateTransition } from '@/lib/order-status-machine';
 import { createAccountingEntriesForOrder, createRefundAccountingEntries } from '@/lib/accounting/webhook-accounting.service';
 import { consumeReservation } from '@/lib/inventory';
 import { getPayPalAccessToken, PAYPAL_API_URL } from '@/lib/paypal';
@@ -202,6 +203,17 @@ async function handleCaptureCompleted(event: any, webhookRecordId: string) {
     return;
   }
 
+  // Validate transition (webhook: log warning but proceed — PayPal data is authoritative)
+  const confirmTransition = validateTransition(order.status, 'CONFIRMED');
+  if (!confirmTransition.valid) {
+    logger.warn('[paypal-webhook] Unexpected capture transition (proceeding anyway)', {
+      orderId: order.id,
+      currentStatus: order.status,
+      targetStatus: 'CONFIRMED',
+      reason: confirmTransition.error,
+    });
+  }
+
   // Update order status to paid
   order = await prisma.order.update({
     where: { id: order.id },
@@ -273,6 +285,19 @@ async function handleCaptureRefunded(event: any, webhookRecordId: string) {
   // Determine if full or partial refund
   const orderTotal = Number(order.total);
   const isFullRefund = refundAmount >= orderTotal;
+
+  // Validate transition (webhook: log warning but proceed — PayPal data is authoritative)
+  if (isFullRefund) {
+    const refundTransition = validateTransition(order.status, 'CANCELLED');
+    if (!refundTransition.valid) {
+      logger.warn('[paypal-webhook] Unexpected refund transition (proceeding anyway)', {
+        orderId: order.id,
+        currentStatus: order.status,
+        targetStatus: 'CANCELLED',
+        reason: refundTransition.error,
+      });
+    }
+  }
 
   // Update order status
   await prisma.order.update({
@@ -397,6 +422,17 @@ async function handleCaptureDenied(event: any, webhookRecordId: string) {
   if (!order) {
     logger.warn('Order not found for PayPal denied capture', { orderId: paypalOrderId });
     return;
+  }
+
+  // Validate transition (webhook: log warning but proceed — PayPal data is authoritative)
+  const deniedTransition = validateTransition(order.status, 'CANCELLED');
+  if (!deniedTransition.valid) {
+    logger.warn('[paypal-webhook] Unexpected denied transition (proceeding anyway)', {
+      orderId: order.id,
+      currentStatus: order.status,
+      targetStatus: 'CANCELLED',
+      reason: deniedTransition.error,
+    });
   }
 
   await prisma.order.update({

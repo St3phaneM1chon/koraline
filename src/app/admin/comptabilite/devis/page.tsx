@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
   Plus, Eye, Send, FileText, Copy, Trash2,
-  CheckCircle, XCircle, Clock, AlertTriangle,
+  CheckCircle, XCircle, Clock,
   ArrowRightCircle, Pencil, RefreshCw,
 } from 'lucide-react';
 import { PageHeader } from '@/components/admin/PageHeader';
@@ -16,6 +16,7 @@ import { DataTable, type Column } from '@/components/admin/DataTable';
 import { FormField, Input, Textarea } from '@/components/admin/FormField';
 import { useI18n } from '@/i18n/client';
 import { sectionThemes } from '@/lib/admin/section-themes';
+
 import { toast } from 'sonner';
 import { GST_RATE, QST_RATE } from '@/lib/tax-constants';
 import { addCSRFHeader } from '@/lib/csrf';
@@ -142,9 +143,7 @@ function computeTotals(items: LineItemForm[], globalDiscountPercent: number) {
 // ---------------------------------------------------------------------------
 
 export default function DevisPage() {
-  const { t, formatCurrency } = useI18n();
-  const theme = sectionThemes.accounts;
-
+  const { formatCurrency } = useI18n();
   // Status config
   const statusConfig: Record<string, { label: string; variant: BadgeVariant }> = {
     DRAFT: { label: 'Brouillon', variant: 'neutral' },
@@ -503,7 +502,7 @@ export default function DevisPage() {
       header: 'Statut',
       render: (est) => {
         const config = statusConfig[est.status] || { label: est.status, variant: 'neutral' as BadgeVariant };
-        return <StatusBadge label={config.label} variant={config.variant} />;
+        return <StatusBadge variant={config.variant}>{config.label}</StatusBadge>;
       },
     },
     {
@@ -606,9 +605,9 @@ export default function DevisPage() {
       <PageHeader
         title="Devis / Estimations"
         subtitle="Gérez vos devis et estimations clients"
-        icon={<FileText className="w-6 h-6" />}
+        theme={sectionThemes.compliance}
         actions={
-          <Button onClick={openCreateModal} icon={<Plus className="w-4 h-4" />}>
+          <Button onClick={openCreateModal} icon={Plus}>
             Nouveau devis
           </Button>
         }
@@ -619,32 +618,38 @@ export default function DevisPage() {
         <StatCard
           label="Total"
           value={stats.total}
-          icon={<FileText className="w-5 h-5 text-indigo-600" />}
+          icon={FileText}
+          theme={sectionThemes.compliance}
         />
         <StatCard
           label="Brouillons"
           value={stats.draft}
-          icon={<Clock className="w-5 h-5 text-gray-500" />}
+          icon={Clock}
+          theme={sectionThemes.compliance}
         />
         <StatCard
           label="Envoyés"
           value={stats.sent}
-          icon={<Send className="w-5 h-5 text-blue-500" />}
+          icon={Send}
+          theme={sectionThemes.compliance}
         />
         <StatCard
           label="Acceptés"
           value={stats.accepted}
-          icon={<CheckCircle className="w-5 h-5 text-green-500" />}
+          icon={CheckCircle}
+          theme={sectionThemes.compliance}
         />
         <StatCard
           label="Refusés"
           value={stats.declined}
-          icon={<XCircle className="w-5 h-5 text-red-500" />}
+          icon={XCircle}
+          theme={sectionThemes.compliance}
         />
         <StatCard
           label="Valeur acceptée"
           value={formatCurrency ? formatCurrency(stats.acceptedValue) : `$${stats.acceptedValue.toFixed(2)}`}
-          icon={<CheckCircle className="w-5 h-5 text-green-600" />}
+          icon={CheckCircle}
+          theme={sectionThemes.compliance}
         />
       </div>
 
@@ -655,6 +660,7 @@ export default function DevisPage() {
         searchPlaceholder="Rechercher par client ou numéro..."
       >
         <SelectFilter
+          label="Tous les statuts"
           value={selectedStatus}
           onChange={setSelectedStatus}
           options={statusFilterOptions}
@@ -663,26 +669,26 @@ export default function DevisPage() {
           variant="outline"
           size="sm"
           onClick={fetchEstimates}
-          icon={<RefreshCw className="w-4 h-4" />}
+          icon={RefreshCw}
         >
           Actualiser
         </Button>
       </FilterBar>
 
       {/* Data Table */}
-      <DataTable
+      <DataTable<Estimate>
         columns={columns}
         data={estimates}
+        keyExtractor={(est) => est.id}
         loading={loading}
-        emptyMessage="Aucun devis trouvé"
-        emptyIcon={<FileText className="w-12 h-12 text-gray-300" />}
+        emptyTitle="Aucun devis trouvé"
       />
 
       {/* ================================================================== */}
       {/* CREATE / EDIT MODAL */}
       {/* ================================================================== */}
       <Modal
-        open={showCreateModal}
+        isOpen={showCreateModal}
         onClose={() => setShowCreateModal(false)}
         title={editingEstimate ? `Modifier ${editingEstimate.estimateNumber}` : 'Nouveau devis'}
         size="xl"
@@ -748,7 +754,7 @@ export default function DevisPage() {
           <div>
             <div className="flex justify-between items-center mb-2">
               <h3 className="text-sm font-semibold text-gray-700">Articles</h3>
-              <Button size="sm" variant="outline" onClick={addLine} icon={<Plus className="w-3 h-3" />}>
+              <Button size="sm" variant="outline" onClick={addLine} icon={Plus}>
                 Ajouter une ligne
               </Button>
             </div>
@@ -917,7 +923,7 @@ export default function DevisPage() {
       {/* DETAIL MODAL */}
       {/* ================================================================== */}
       <Modal
-        open={showDetailModal}
+        isOpen={showDetailModal}
         onClose={() => { setShowDetailModal(false); setSelectedEstimate(null); }}
         title={selectedEstimate ? `Devis ${selectedEstimate.estimateNumber}` : 'Détail du devis'}
         size="lg"
@@ -940,9 +946,8 @@ export default function DevisPage() {
               </div>
               <div className="text-right">
                 <StatusBadge
-                  label={statusConfig[selectedEstimate.status]?.label || selectedEstimate.status}
                   variant={statusConfig[selectedEstimate.status]?.variant || 'neutral'}
-                />
+                >{statusConfig[selectedEstimate.status]?.label || selectedEstimate.status}</StatusBadge>
                 <p className="text-xs text-gray-500 mt-1">
                   Émis le {new Date(selectedEstimate.issueDate).toLocaleDateString('fr-CA')}
                 </p>
@@ -1063,13 +1068,13 @@ export default function DevisPage() {
                   <Button
                     variant="outline"
                     onClick={() => { setShowDetailModal(false); openEditModal(selectedEstimate); }}
-                    icon={<Pencil className="w-4 h-4" />}
+                    icon={Pencil}
                   >
                     Modifier
                   </Button>
                   <Button
                     onClick={() => { setShowDetailModal(false); handleSend(selectedEstimate); }}
-                    icon={<Send className="w-4 h-4" />}
+                    icon={Send}
                     disabled={saving || !selectedEstimate.customerEmail}
                   >
                     Envoyer au client
@@ -1079,7 +1084,7 @@ export default function DevisPage() {
               {selectedEstimate.status === 'ACCEPTED' && !selectedEstimate.invoiceId && (
                 <Button
                   onClick={() => { setShowDetailModal(false); handleConvert(selectedEstimate); }}
-                  icon={<ArrowRightCircle className="w-4 h-4" />}
+                  icon={ArrowRightCircle}
                   disabled={saving}
                 >
                   Convertir en facture
@@ -1089,7 +1094,7 @@ export default function DevisPage() {
                 <Button
                   variant="outline"
                   onClick={() => window.open('/admin/comptabilite/factures-clients', '_blank')}
-                  icon={<FileText className="w-4 h-4" />}
+                  icon={FileText}
                 >
                   Voir la facture
                 </Button>
@@ -1097,7 +1102,7 @@ export default function DevisPage() {
               <Button
                 variant="outline"
                 onClick={() => { setShowDetailModal(false); handleDuplicate(selectedEstimate); }}
-                icon={<Copy className="w-4 h-4" />}
+                icon={Copy}
               >
                 Dupliquer
               </Button>
@@ -1110,7 +1115,7 @@ export default function DevisPage() {
       {/* DELETE CONFIRM */}
       {/* ================================================================== */}
       <Modal
-        open={showDeleteConfirm}
+        isOpen={showDeleteConfirm}
         onClose={() => setShowDeleteConfirm(false)}
         title="Confirmer la suppression"
         size="sm"

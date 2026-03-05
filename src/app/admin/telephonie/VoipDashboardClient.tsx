@@ -11,7 +11,7 @@ import SatisfactionBadge from '@/components/voip/SatisfactionBadge';
 import { formatDuration } from '@/hooks/useCallState';
 import {
   Phone, PhoneIncoming, PhoneOutgoing,
-  ArrowRight, Voicemail, CheckCircle, XCircle, Wifi,
+  ArrowRight, CheckCircle, XCircle,
 } from 'lucide-react';
 import Link from 'next/link';
 

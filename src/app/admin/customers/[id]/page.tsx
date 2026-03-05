@@ -32,6 +32,7 @@ import {
   CalendarDays,
   Hash,
   ExternalLink,
+  GitMerge,
 } from 'lucide-react';
 import { PageHeader } from '@/components/admin/PageHeader';
 import { Button } from '@/components/admin/Button';
@@ -290,6 +291,11 @@ export default function ClientDetailPage() {
   const [pointsReason, setPointsReason] = useState('');
   const [pointsLoading, setPointsLoading] = useState(false);
 
+  // Merge state
+  const [showMergeModal, setShowMergeModal] = useState(false);
+  const [mergeTargetId, setMergeTargetId] = useState('');
+  const [mergeLoading, setMergeLoading] = useState(false);
+
   // Expanded conversations
   const [expandedConversations, setExpandedConversations] = useState<Set<string>>(new Set());
 
@@ -349,6 +355,40 @@ export default function ClientDetailPage() {
   function formatCurrency(amount: number): string {
     return new Intl.NumberFormat(locale, { style: 'currency', currency: 'CAD' }).format(amount);
   }
+
+  // Merge customer handler
+  const handleMerge = async () => {
+    if (!mergeTargetId.trim() || !id) return;
+    if (mergeTargetId === id) {
+      toast.error('Cannot merge a customer into themselves');
+      return;
+    }
+    setMergeLoading(true);
+    try {
+      const res = await fetch('/api/admin/customers/merge', {
+        method: 'POST',
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({
+          primaryId: id,
+          secondaryId: mergeTargetId.trim(),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error || 'Failed to merge customers');
+        return;
+      }
+      toast.success(data.message || 'Customer merged successfully');
+      setShowMergeModal(false);
+      setMergeTargetId('');
+      // Refresh customer data to show merged data
+      fetchUserDetail();
+    } catch {
+      toast.error(t('common.networkError'));
+    } finally {
+      setMergeLoading(false);
+    }
+  };
 
   // Toggle expanded conversation
   const toggleConversation = (convId: string) => {
@@ -482,6 +522,15 @@ export default function ClientDetailPage() {
               >
                 {t('admin.customerDetail.actions.adjustPoints')}
               </Button>
+              <Button
+                variant="secondary"
+                icon={GitMerge}
+                size="sm"
+                onClick={() => setShowMergeModal(true)}
+                title="Merge another customer into this account"
+              >
+                Merge
+              </Button>
               <Button variant="danger" icon={Ban} size="sm">
                 {t('admin.customerDetail.actions.block')}
               </Button>
@@ -489,6 +538,68 @@ export default function ClientDetailPage() {
           }
         />
       </div>
+
+      {/* Customer Merge Modal */}
+      {showMergeModal && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="merge-modal-title">
+          <div className="bg-white rounded-xl shadow-xl max-w-lg w-full p-6">
+            <h3 id="merge-modal-title" className="text-lg font-semibold text-slate-900 mb-2">
+              Merge Customer
+            </h3>
+            <p className="text-sm text-slate-500 mb-4">
+              Merge another customer account into <strong>{user.name || user.email}</strong>.
+              All orders, loyalty points, reviews, and addresses from the secondary account will be transferred here.
+              The secondary account will be disabled.
+            </p>
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4">
+              <p className="text-xs text-amber-800 font-medium">
+                Warning: This action cannot be undone. Please verify the secondary customer ID carefully.
+              </p>
+            </div>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Secondary Customer ID (to merge into this account)
+                </label>
+                <input
+                  type="text"
+                  value={mergeTargetId}
+                  onChange={(e) => setMergeTargetId(e.target.value)}
+                  placeholder="e.g. cm123abc..."
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
+                />
+              </div>
+              <div className="bg-slate-50 rounded-lg p-3 text-xs text-slate-600">
+                <p className="font-medium mb-1">What will be transferred:</p>
+                <ul className="list-disc list-inside space-y-0.5">
+                  <li>Orders</li>
+                  <li>Loyalty points and transactions</li>
+                  <li>Reviews and product questions</li>
+                  <li>Addresses and wishlists</li>
+                  <li>Return requests and notes</li>
+                </ul>
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 mt-6">
+              <button
+                onClick={() => { setShowMergeModal(false); setMergeTargetId(''); }}
+                className="px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+              >
+                Cancel
+              </button>
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={handleMerge}
+                disabled={!mergeTargetId.trim() || mergeLoading}
+                loading={mergeLoading}
+              >
+                Merge Customer
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Points Adjustment Modal */}
       {showPointsModal && (

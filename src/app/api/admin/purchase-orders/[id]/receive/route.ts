@@ -93,7 +93,7 @@ export const POST = withAdminGuard(async (request, { session, params }) => {
 
     if (receiveAll) {
       for (const item of po.items) {
-        const remaining = item.quantity - item.receivedQty;
+        const remaining = Number(item.quantity) - item.receivedQty;
         if (remaining > 0) {
           receiveMap.set(item.id, remaining);
         }
@@ -115,7 +115,7 @@ export const POST = withAdminGuard(async (request, { session, params }) => {
           );
         }
 
-        const remaining = poItem.quantity - poItem.receivedQty;
+        const remaining = Number(poItem.quantity) - poItem.receivedQty;
         if (ri.receivedQty > remaining) {
           return NextResponse.json(
             {
@@ -237,7 +237,7 @@ export const POST = withAdminGuard(async (request, { session, params }) => {
       });
 
       const allFullyReceived = updatedItems.every(
-        (item) => item.receivedQty >= item.quantity
+        (item) => item.receivedQty >= Number(item.quantity)
       );
       const someReceived = updatedItems.some(
         (item) => item.receivedQty > 0

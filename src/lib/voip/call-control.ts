@@ -15,6 +15,7 @@ import { resolveIvrMenu, playIvrMenu, handleIvrInput, handleIvrTimeout } from '.
 import { routeToQueue, removeFromQueue } from './queue-engine';
 import { handleVoicemailSaved, isVoicemailActive, cleanupVoicemail, startVoicemail } from './voicemail-engine';
 import { cleanupTransferState } from './transfer-engine';
+import { VoipStateMap } from './voip-state';
 
 // Event payload shape from webhook handler
 export interface CallEventPayload {
@@ -36,8 +37,8 @@ export interface CallEventPayload {
   transcriptionData?: { text: string; confidence: number; is_final: boolean };
 }
 
-// Active call state cache (in-memory for now, Redis later)
-export const activeCallStates = new Map<string, {
+// Active call state cache — Redis-backed with in-memory fallback
+export const activeCallStates = new VoipStateMap<{
   callLogId?: string;
   ivrMenuId?: string;
   ivrAttempts?: number;
@@ -47,7 +48,7 @@ export const activeCallStates = new Map<string, {
   isVoicemail?: boolean;
   callerNumber?: string;
   callerName?: string;
-}>();
+}>('voip:call:');
 
 /**
  * Main event router — dispatches Telnyx events to handlers.

@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useState, useMemo, useEffect, useCallback, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSession, signIn, getProviders } from 'next-auth/react';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { useCart } from '@/contexts/CartContext';
 import { useI18n } from '@/i18n/client';
+import SharedCartBanner from '@/components/cart/SharedCartBanner';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { toast } from 'sonner';
 import { checkoutShippingSchema, validateForm } from '@/lib/form-validation';
@@ -290,9 +291,13 @@ export default function CheckoutPage() {
 
   // Calculate shipping based on country and product types in cart
   const cartProductTypes = useMemo(() => items.map(i => i.productType).filter(Boolean) as string[], [items]);
+  // Sum total weight across all line items (grams). Falls back to flat-rate when weight data is absent.
+  const cartTotalWeightGrams = useMemo(() =>
+    items.reduce((sum, i) => sum + (i.weightGrams ?? 0) * i.quantity, 0),
+  [items]);
   const shippingCalc = useMemo(() => {
-    return calculateShipping(subtotal, shippingInfo.country, cartProductTypes);
-  }, [subtotal, shippingInfo.country, cartProductTypes]);
+    return calculateShipping(subtotal, shippingInfo.country, cartProductTypes, cartTotalWeightGrams || undefined);
+  }, [subtotal, shippingInfo.country, cartProductTypes, cartTotalWeightGrams]);
 
   // Get countries and provinces/states lists
   const countries = useMemo(() => getCountriesList(locale?.startsWith('fr') ? 'fr' : 'en'), [locale]);
@@ -470,6 +475,11 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Shared cart banner - shown when visiting via a share link */}
+      <Suspense fallback={null}>
+        <SharedCartBanner />
+      </Suspense>
+
       {/* Breadcrumbs */}
       <Breadcrumbs
         items={[

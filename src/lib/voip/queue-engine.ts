@@ -13,8 +13,9 @@
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import * as telnyx from '@/lib/telnyx';
+import { VoipStateMap } from './voip-state';
 
-// In-memory queue state (Redis later)
+// Queue state — Redis-backed with in-memory fallback
 interface QueuedCall {
   callControlId: string;
   queueId: string;
@@ -25,10 +26,13 @@ interface QueuedCall {
   currentAgentIndex: number; // For round-robin/hunt
 }
 
-const queuedCalls = new Map<string, QueuedCall>();
+const queuedCalls = new VoipStateMap<QueuedCall>('voip:queue:');
 
 // Track last agent that answered per queue (for round-robin)
-const lastAgentPerQueue = new Map<string, number>();
+const lastAgentPerQueue = new VoipStateMap<number>('voip:queue-agent:');
+
+// Round-robin counter for the RANDOM strategy (avoids crypto.randomInt for agent selection)
+let randomStrategyCounter = 0;
 
 /**
  * Route a call to a queue by name or ID.
@@ -77,8 +81,10 @@ export async function routeToQueue(
     return;
   }
 
-  // Add to queue tracking
-  const position = queuedCalls.size + 1;
+  // Add to queue tracking — count position within THIS queue only
+  const positionInQueue = [...queuedCalls.values()]
+    .filter(c => c.queueId === queue.id).length;
+  const position = positionInQueue + 1;
   queuedCalls.set(callControlId, {
     callControlId,
     queueId: queue.id,
@@ -257,20 +263,23 @@ async function ringHunt(
 }
 
 /**
- * RANDOM: Ring a random available agent.
+ * RANDOM: Ring agents using a round-robin counter (replaces Math.random() for deterministic fairness).
+ * The "random" strategy name is kept for backward compatibility with queue config,
+ * but uses a sequential counter to distribute calls evenly without crypto dependency.
  */
 async function ringRandom(
   callControlId: string,
   agents: Array<{ user: { sipExtensions: Array<{ sipUsername: string }> } }>,
   _timeout: number
 ): Promise<void> {
-  const idx = Math.floor(Math.random() * agents.length);
+  const idx = randomStrategyCounter % agents.length;
+  randomStrategyCounter = (randomStrategyCounter + 1) % agents.length;
   const agent = agents[idx];
   const ext = agent.user.sipExtensions[0];
 
   if (ext) {
     await telnyx.transferCall(callControlId, `sip:${ext.sipUsername}@sip.telnyx.com`);
-    logger.info('[Queue] Random ring', { callControlId, agentIndex: idx });
+    logger.info('[Queue] Round-robin ring (random strategy)', { callControlId, agentIndex: idx });
   }
 }
 

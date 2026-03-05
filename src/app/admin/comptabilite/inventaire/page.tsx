@@ -37,7 +37,6 @@ import {
 } from '@/components/admin';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { useI18n } from '@/i18n/client';
-import { sectionThemes } from '@/lib/admin/section-themes';
 import { toast } from 'sonner';
 import { addCSRFHeader } from '@/lib/csrf';
 
@@ -186,8 +185,6 @@ function movementTypeBadge(type: string): BadgeVariant {
 
 export default function InventairePage() {
   const { t, formatCurrency } = useI18n();
-  const theme = sectionThemes.entry;
-
   // Tab state
   const [activeTab, setActiveTab] = useState<TabId>('stock');
 

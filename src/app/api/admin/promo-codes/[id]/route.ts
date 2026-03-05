@@ -129,8 +129,8 @@ export const PUT = withAdminGuard(async (request, { session, params }) => {
     }
 
     // Check for duplicate code (excluding current)
-    const upperCode = code.toUpperCase();
-    if (upperCode !== existing.code) {
+    const upperCode = code?.toUpperCase();
+    if (upperCode && upperCode !== existing.code) {
       const duplicate = await prisma.promoCode.findUnique({
         where: { code: upperCode },
       });

@@ -22,7 +22,6 @@ import {
   Meh,
   Frown,
   Copy,
-  Send,
   ToggleLeft,
   ToggleRight,
   ChevronLeft,
@@ -141,12 +140,59 @@ export default function AvisPage() {
 
   // Review request automation state
   const [autoRequestEnabled, setAutoRequestEnabled] = useState(false);
-  const [showTemplateSelector, setShowTemplateSelector] = useState(false);
 
   // F-073 FIX: Lightbox state for viewing review images at full size
   const [lightboxImages, setLightboxImages] = useState<string[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  // Bulk actions state
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [bulkProcessing, setBulkProcessing] = useState(false);
+
+  const toggleSelectReview = useCallback((id: string) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
+  // selectAllVisible is defined after filteredReviews below
+
+  const clearSelection = useCallback(() => {
+    setSelectedIds(new Set());
+  }, []);
+
+  const handleBulkAction = useCallback(async (action: 'approve' | 'reject') => {
+    if (selectedIds.size === 0) return;
+    setBulkProcessing(true);
+    try {
+      const res = await fetch('/api/admin/reviews/bulk', {
+        method: 'PATCH',
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ reviewIds: Array.from(selectedIds), action }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        toast.error(data.error || `Failed to ${action} reviews`);
+        return;
+      }
+      const data = await res.json();
+      // Update local state: reflect the bulk action
+      const newStatus = action === 'approve' ? 'APPROVED' : 'REJECTED';
+      setReviews(prev => prev.map(r =>
+        selectedIds.has(r.id) ? { ...r, status: newStatus as Review['status'] } : r
+      ));
+      setSelectedIds(new Set());
+      toast.success(`${data.updated || selectedIds.size} review(s) ${action === 'approve' ? 'approved' : 'rejected'}`);
+    } catch {
+      toast.error(t('common.networkError'));
+    } finally {
+      setBulkProcessing(false);
+    }
+  }, [selectedIds, t]);
 
   // FIX F-070: ConfirmDialog state for approve/reject actions
   const [confirmAction, setConfirmAction] = useState<{
@@ -278,6 +324,10 @@ export default function AvisPage() {
       return true;
     });
   }, [reviews, statusFilter, searchValue]);
+
+  const selectAllVisible = useCallback(() => {
+    setSelectedIds(new Set(filteredReviews.map(r => r.id)));
+  }, [filteredReviews]);
 
   const stats = useMemo(() => ({
     total: reviews.length,
@@ -505,6 +555,51 @@ export default function AvisPage() {
         </div>
       </div>
 
+      {/* Bulk Actions Bar */}
+      {selectedIds.size > 0 && (
+        <div className="mx-4 lg:mx-6 mb-2 flex items-center gap-3 bg-sky-50 border border-sky-200 rounded-lg px-4 py-2.5 flex-shrink-0">
+          <span className="text-sm font-medium text-sky-800">
+            {selectedIds.size} review(s) selected
+          </span>
+          <div className="flex items-center gap-2 ml-auto">
+            <button
+              onClick={selectAllVisible}
+              className="text-xs text-sky-600 hover:text-sky-700 font-medium"
+            >
+              Select all visible
+            </button>
+            <span className="text-slate-300">|</span>
+            <button
+              onClick={clearSelection}
+              className="text-xs text-slate-500 hover:text-slate-700 font-medium"
+            >
+              Clear
+            </button>
+            <span className="text-slate-300">|</span>
+            <Button
+              size="sm"
+              variant="primary"
+              icon={CheckCircle2}
+              onClick={() => handleBulkAction('approve')}
+              disabled={bulkProcessing}
+              loading={bulkProcessing}
+            >
+              Approve All
+            </Button>
+            <Button
+              size="sm"
+              variant="danger"
+              icon={ThumbsDown}
+              onClick={() => handleBulkAction('reject')}
+              disabled={bulkProcessing}
+              loading={bulkProcessing}
+            >
+              Reject All
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Main content: list + detail */}
       <div className="flex-1 min-h-0">
         <MobileSplitLayout
@@ -538,6 +633,16 @@ export default function AvisPage() {
                   backLabel: t('admin.reviews.title'),
                   actions: (
                     <div className="flex items-center gap-2">
+                      {/* Bulk selection checkbox */}
+                      <label className="flex items-center gap-1.5 cursor-pointer mr-1" title="Select for bulk actions">
+                        <input
+                          type="checkbox"
+                          checked={selectedIds.has(selectedReview.id)}
+                          onChange={() => toggleSelectReview(selectedReview.id)}
+                          className="w-4 h-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500"
+                        />
+                        <span className="text-xs text-slate-500">Select</span>
+                      </label>
                       {selectedReview.status === 'PENDING' && (
                         <>
                           <Button

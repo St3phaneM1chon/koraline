@@ -13,6 +13,7 @@ import { prisma } from '@/lib/db';
 import { getServerLocale } from '@/i18n/server';
 import { getTranslatedFields, DB_SOURCE_LOCALE } from '@/lib/translation';
 import { JsonLd } from '@/components/seo/JsonLd';
+import BlogComments from '@/components/blog/BlogComments';
 
 // ISR: revalidate every 5 minutes
 // FIX: force-dynamic because getServerLocale() calls cookies()/headers()
@@ -358,6 +359,9 @@ export default async function BlogPostPage({ params }: PageProps) {
           </p>
         )}
       </article>
+
+      {/* Comments section */}
+      <BlogComments slug={slug} />
 
       {/* Back to blog */}
       <div style={{ textAlign: 'center', padding: '48px 24px' }}>

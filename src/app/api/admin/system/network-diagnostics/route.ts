@@ -64,7 +64,7 @@ async function checkEndpoint(url: string, label: string, timeoutMs = 10000): Pro
   }
 }
 
-async function checkDownloadSpeed(url: string, label: string, sizeBytes: number): Promise<DiagnosticResult> {
+async function checkDownloadSpeed(url: string, label: string, _sizeBytes: number): Promise<DiagnosticResult> {
   const start = Date.now();
   try {
     const controller = new AbortController();

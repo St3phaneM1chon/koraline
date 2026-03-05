@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { Toaster } from 'sonner';
 import CsrfInit from '@/components/admin/CsrfInit';
@@ -162,10 +162,30 @@ function AdminLayoutShell({ children }: { children: React.ReactNode }) {
         </main>
       </div>
 
-      <Softphone />
+      <SoftphoneErrorBoundary>
+        <Softphone />
+      </SoftphoneErrorBoundary>
       <AdminCommandPalette open={commandPaletteOpen} onClose={() => setCommandPaletteOpen(false)} />
       <KeyboardShortcutsDialog open={helpOpen} onClose={() => setHelpOpen(false)} />
       <Toaster position={dir === 'rtl' ? 'top-left' : 'top-right'} richColors closeButton dir={dir} />
     </div>
   );
+}
+
+class SoftphoneErrorBoundary extends React.Component<{ children: React.ReactNode }, { error: Error | null }> {
+  state = { error: null as Error | null };
+  static getDerivedStateFromError(error: Error) { return { error }; }
+  componentDidCatch(error: Error, info: React.ErrorInfo) {
+    console.error('[SoftphoneErrorBoundary]', error, info.componentStack);
+  }
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="fixed bottom-0 start-0 end-0 z-50 bg-red-100 text-red-700 p-3 text-sm text-center">
+          Softphone error: {this.state.error.message}
+        </div>
+      );
+    }
+    return this.props.children;
+  }
 }

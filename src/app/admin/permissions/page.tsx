@@ -1,10 +1,10 @@
-// TODO: FAILLE-051 - This page is fully client-side ('use client') without server-side permission check before render.
-//       Add a server layout or middleware check that verifies admin.permissions access before serving this component.
+// FAILLE-051 RESOLVED: Server-side auth is enforced by src/app/admin/layout.tsx (async auth() + role check →
+//   redirects to /auth/signin for unauthenticated users and for roles other than EMPLOYEE/OWNER).
+//   No additional guard is needed in this client component; the layout wraps every /admin/* page.
 // FIX: FAILLE-052 / AMELIORATION-042 - Debounce checkbox mutations (300ms) to prevent rapid-fire API calls and race conditions.
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { useSession } from 'next-auth/react';
 import { Shield, Users, UserCog, Settings, Plus, Trash2, Check, X, Search, ChevronDown, ChevronRight } from 'lucide-react';
 import { PageHeader } from '@/components/admin/PageHeader';
 import { Button } from '@/components/admin/Button';
@@ -61,10 +61,6 @@ interface Override {
 
 export default function PermissionsPage() {
   const { t } = useI18n();
-  // TODO: use session for owner-only UI permissions
-  // const { data: session } = useSession();
-  // const isOwner = session?.user?.role === 'OWNER';
-  useSession(); // keep auth hook active
   const [activeTab, setActiveTab] = useState<Tab>('defaults');
   const [permissions, setPermissions] = useState<Permission[]>([]);
   const [modules, setModules] = useState<Record<string, { label: string; permissions: string[] }>>({});

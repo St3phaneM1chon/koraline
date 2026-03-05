@@ -7,6 +7,7 @@ import { prisma } from '@/lib/db';
 import { LOYALTY_POINTS_CONFIG } from '@/lib/constants';
 // FLAW-077 FIX: Use structured logger instead of console.log
 import { logger } from '@/lib/logger';
+import { checkReferralMilestones } from '@/lib/loyalty/referral-milestones';
 
 // Minimum order amount to qualify a referral ($25)
 const MIN_ORDER_AMOUNT = 25;
@@ -133,6 +134,16 @@ export async function qualifyReferral(
 
     // FLAW-077 FIX: Use structured logger
     logger.info(`Referral qualified: ${REFERRAL_BONUS_POINTS} points awarded to referrer ${referral.referrerId} for order ${orderId}`);
+
+    // Check and award any newly-crossed referral milestone bonuses.
+    // This is intentionally non-blocking: milestone failures do not roll
+    // back the primary qualification result.
+    const milestonesAwarded = await checkReferralMilestones(referral.referrerId);
+    if (milestonesAwarded.length > 0) {
+      logger.info(
+        `Referral milestones awarded to ${referral.referrerId}: ${milestonesAwarded.map(m => `${m.count} refs → ${m.points} pts`).join(', ')}`
+      );
+    }
 
     return {
       success: true,

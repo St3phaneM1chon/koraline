@@ -3,15 +3,14 @@
 import { useState, useEffect, useCallback, useRef, Component, type ReactNode, type ErrorInfo, type MouseEvent as ReactMouseEvent } from 'react';
 import { useSearchParams } from 'next/navigation';
 import {
-  Mail, SendHorizontal, CheckCircle2, XCircle, BarChart3,
+  Mail, SendHorizontal, CheckCircle2, XCircle,
   LayoutTemplate, Save, Eye, Inbox, Megaphone, GitBranch,
   PieChart, Settings, Users, AlertTriangle, RefreshCw,
   Upload, Plus, Calendar, FlaskConical,
-  UserPlus, Copy, Shield, CalendarDays, Paintbrush,
-  Activity, TrendingDown,
+  UserPlus, Copy, CalendarDays, Paintbrush,
 } from 'lucide-react';
 import {
-  PageHeader, StatCard, StatusBadge, Button, Modal,
+  StatusBadge, Button, Modal,
   EmptyState, DataTable, FormField, Input, Textarea,
   type Column,
   type BadgeVariant,

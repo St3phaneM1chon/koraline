@@ -78,7 +78,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
         slug,
         description: description || null,
         type: type as 'VIDEO_APPEARANCE' | 'TESTIMONIAL' | 'PHOTO' | 'CASE_STUDY' | 'MARKETING' | 'OTHER',
-        questions,
+        questions: questions as unknown as import('@prisma/client').Prisma.InputJsonValue,
         legalText: legalText || null,
         isActive: isActive ?? true,
         ...(translations && translations.length > 0
@@ -88,7 +88,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
                   locale: t.locale,
                   name: t.name || null,
                   description: t.description || null,
-                  questions: t.questions || null,
+                  questions: t.questions ? (t.questions as unknown as import('@prisma/client').Prisma.InputJsonValue) : undefined,
                   legalText: t.legalText || null,
                 })),
               },

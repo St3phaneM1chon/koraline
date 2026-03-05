@@ -23,9 +23,11 @@ import { generateCOGSEntry } from '@/lib/inventory';
 import { sendOrderLifecycleEmail } from '@/lib/email';
 import { getPayPalAccessToken, PAYPAL_API_URL } from '@/lib/paypal';
 import { updateOrderStatusSchema, createRefundSchema } from '@/lib/validations/order';
+import { validateTransition } from '@/lib/order-status-machine';
 import { clawbackAmbassadorCommission } from '@/lib/ambassador-commission';
 import { z } from 'zod';
 import { logger } from '@/lib/logger';
+import { recordOrderEvent } from '@/lib/order-events';
 
 const reshipSchema = z.object({
   reason: z.string().min(1, 'A reason is required for re-shipment').max(500),
@@ -79,7 +81,7 @@ export const GET = withAdminGuard(async (_request, { params }) => {
     const [user, journalEntries, inventoryTransactions, creditNotes, paymentErrors] = await Promise.all([
       // Fetch customer info
       prisma.user.findUnique({
-        where: { id: order.userId },
+        where: { id: order.userId ?? undefined },
         select: {
           id: true,
           name: true,
@@ -239,37 +241,13 @@ async function handleOrderUpdate(
   }
 
   // BE-PAY-09 + PAY-005: Order state machine - validate transitions
-  // Note: CONFIRMED is set by payment webhooks (Stripe/PayPal), not by admin manual action.
-  // Admin uses this map to advance orders through fulfillment (CONFIRMED -> PROCESSING -> SHIPPED -> etc.)
-  const VALID_TRANSITIONS: Record<string, string[]> = {
-    'PENDING': ['CONFIRMED', 'PROCESSING', 'CANCELLED'],
-    'CONFIRMED': ['PROCESSING', 'CANCELLED'],
-    'PROCESSING': ['SHIPPED', 'CANCELLED'],
-    'SHIPPED': ['DELIVERED', 'RETURNED'],
-    'DELIVERED': ['RETURNED', 'REFUNDED'],
-    'CANCELLED': [],   // Terminal state
-    'RETURNED': ['REFUNDED'],
-    'REFUNDED': [],    // Terminal state
-  };
-
-  const validStatuses = Object.keys(VALID_TRANSITIONS);
-  if (status && !validStatuses.includes(status)) {
-    return NextResponse.json(
-      { error: `Invalid status. Must be one of: ${validStatuses.join(', ')}` },
-      { status: 400 }
-    );
-  }
-
-  // Validate state transition if status is changing
+  // Uses the centralized transition map from @/lib/order-status-machine.
   // OWNER role can bypass the state machine for edge cases (e.g., correcting data entry errors)
   if (status && status !== existingOrder.status && session.user.role !== 'OWNER') {
-    const allowedNextStatuses = VALID_TRANSITIONS[existingOrder.status] || [];
-    if (!allowedNextStatuses.includes(status)) {
+    const transition = validateTransition(existingOrder.status, status);
+    if (!transition.valid) {
       return NextResponse.json(
-        {
-          error: `Invalid status transition: ${existingOrder.status} -> ${status}. ` +
-            `Allowed transitions from ${existingOrder.status}: ${allowedNextStatuses.length > 0 ? allowedNextStatuses.join(', ') : 'none (terminal state)'}`,
-        },
+        { error: transition.error },
         { status: 400 }
       );
     }
@@ -322,6 +300,27 @@ async function handleOrderUpdate(
     ipAddress: getClientIpFromRequest(request),
     userAgent: request.headers.get('user-agent') || undefined,
   }).catch((err: unknown) => { logger.error('[AdminOrder] Non-blocking audit log for order update failed', { error: err instanceof Error ? err.message : String(err) }); });
+
+  // Record timeline event on status change (fire-and-forget)
+  if (status && status !== existingOrder.status) {
+    recordOrderEvent(
+      id,
+      'STATUS_CHANGE',
+      `Status changed from ${existingOrder.status} to ${status}`,
+      adminNotes || undefined,
+      {
+        previousStatus: existingOrder.status,
+        newStatus: status,
+        trackingNumber: trackingNumber ?? null,
+        carrier: carrier ?? null,
+      },
+      session.user.id
+    ).catch((err: unknown) => {
+      logger.error('[AdminOrder] Non-blocking timeline event for status change failed', {
+        error: err instanceof Error ? err.message : String(err),
+      });
+    });
+  }
 
   // Send lifecycle email on status change (fire-and-forget)
   if (status && status !== existingOrder.status) {
@@ -667,7 +666,7 @@ async function handleRefund(
       select: { id: true },
     }),
     prisma.user.findUnique({
-      where: { id: order.userId },
+      where: { id: order.userId ?? undefined },
       select: { name: true, email: true },
     }),
   ]);

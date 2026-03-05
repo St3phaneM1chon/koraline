@@ -14,11 +14,12 @@ import { withTranslations, getTranslatedFieldsBatch, DB_SOURCE_LOCALE } from '@/
 import { defaultLocale } from '@/i18n/config';
 import { cacheGetOrSet } from '@/lib/cache';
 import { createHash } from 'crypto';
-import { logSearch } from '@/lib/search-analytics';
+import { logSearch, getTopQueries } from '@/lib/search-analytics';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
 // BUG-035 FIX: Import fullTextSearch for real ts_rank relevance scoring
 // BUG-077 FIX: Import multiLanguageSearch for non-English locales
 import { fullTextSearch, multiLanguageSearch } from '@/lib/search';
+import { auth } from '@/lib/auth-config';
 
 export async function GET(request: NextRequest) {
   try {
@@ -30,6 +31,9 @@ export async function GET(request: NextRequest) {
     }
 
     const searchStart = Date.now();
+    // I-SEARCH: Extract userId for search analytics (non-blocking, optional)
+    const session = await auth().catch(() => null);
+    const searchUserId = session?.user?.id || undefined;
     const { searchParams } = new URL(request.url);
     // BUG-034 FIX: Limit search query length to prevent oversized DB queries
     const q = (searchParams.get('q')?.trim() || '').slice(0, 200);
@@ -142,11 +146,22 @@ export async function GET(request: NextRequest) {
         };
       }, { ttl: 300, tags: ['products-search'] });
 
+      // I-SEARCH: When search returns 0 results, include popular product recommendations and query suggestions
+      if (responseData.total === 0 && q) {
+        const [recommendations, topQueries] = await Promise.all([
+          getPopularRecommendations(locale, 6),
+          getTopQueries({ limit: 5, days: 30 }).catch(() => []),
+        ]);
+        (responseData as Record<string, unknown>).recommendations = recommendations;
+        (responseData as Record<string, unknown>).suggestions = topQueries.map(tq => tq.query);
+      }
+
       // Log search analytics (fire-and-forget)
       const duration = Date.now() - searchStart;
       logSearch({
         query: q,
         resultCount: responseData.total,
+        userId: searchUserId,
         filters: { category, minPrice, maxPrice, inStock, purity, sort },
         locale,
         duration,
@@ -378,12 +393,23 @@ export async function GET(request: NextRequest) {
       };
     }, { ttl: 300, tags: ['products-search'] });
 
+    // I-SEARCH: When search returns 0 results, include popular product recommendations and query suggestions
+    if (responseData.total === 0 && q) {
+      const [recommendations, topQueries] = await Promise.all([
+        getPopularRecommendations(locale, 6),
+        getTopQueries({ limit: 5, days: 30 }).catch(() => []),
+      ]);
+      (responseData as Record<string, unknown>).recommendations = recommendations;
+      (responseData as Record<string, unknown>).suggestions = topQueries.map(tq => tq.query);
+    }
+
     // #59: Log search analytics (fire-and-forget)
     const duration = Date.now() - searchStart;
     if (q) {
       logSearch({
         query: q,
         resultCount: responseData.total,
+        userId: searchUserId,
         filters: { category, minPrice, maxPrice, inStock, purity, sort },
         locale,
         duration,
@@ -394,5 +420,64 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     logger.error('Search error', { error: error instanceof Error ? error.message : String(error) });
     return apiError('Search failed', ErrorCode.INTERNAL_ERROR, { request });
+  }
+}
+
+// ---------------------------------------------------------------------------
+// I-SEARCH: Popular product recommendations for zero-result searches
+// ---------------------------------------------------------------------------
+
+/**
+ * Fetch popular/featured products as recommendations when search yields 0 results.
+ * Returns bestsellers and featured products, translated if needed.
+ */
+async function getPopularRecommendations(locale: string, limit: number = 6) {
+  try {
+    const products = await prisma.product.findMany({
+      where: {
+        isActive: true,
+        OR: [
+          { isFeatured: true },
+          { isBestseller: true },
+        ],
+      },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        price: true,
+        imageUrl: true,
+        isFeatured: true,
+        isBestseller: true,
+        averageRating: true,
+        reviewCount: true,
+      },
+      orderBy: [
+        { isBestseller: 'desc' },
+        { isFeatured: 'desc' },
+        { reviewCount: 'desc' },
+      ],
+      take: limit,
+    });
+
+    // Apply translations if needed
+    if (locale !== DB_SOURCE_LOCALE && products.length > 0) {
+      const transMap = await getTranslatedFieldsBatch(
+        'Product',
+        products.map(p => p.id),
+        locale
+      );
+      return products.map(p => {
+        const trans = transMap.get(p.id);
+        return { ...p, name: trans?.name || p.name };
+      });
+    }
+
+    return products;
+  } catch (error) {
+    logger.warn('Failed to fetch recommendations', {
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return [];
   }
 }

@@ -6,7 +6,6 @@ import { withAdminGuard } from '@/lib/admin-api-guard';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { apiSuccess, apiError, apiPaginated } from '@/lib/api-response';
-import { seedDefaultWorkflowRules } from '@/lib/accounting/workflow-engine.service';
 
 // ---------------------------------------------------------------------------
 // Zod Schemas
@@ -30,87 +29,69 @@ const actionSchema = z.object({
     .optional(),
 });
 
-const createWorkflowRuleSchema = z.object({
+const createWorkflowSchema = z.object({
   name: z.string().min(1, 'Name is required').max(200),
   description: z.string().max(1000).optional(),
-  entityType: z.enum([
-    'JOURNAL_ENTRY',
-    'EXPENSE',
-    'PURCHASE_ORDER',
-    'INVOICE',
-    'CREDIT_NOTE',
-    'PAYROLL_RUN',
-    'TIME_ENTRY',
-  ]),
-  triggerEvent: z.enum(['CREATE', 'UPDATE', 'STATUS_CHANGE', 'AMOUNT_THRESHOLD']),
-  conditions: z.array(conditionSchema),
+  trigger: z.string().min(1, 'Trigger is required'),
+  conditions: z.array(conditionSchema).optional(),
   actions: z.array(actionSchema).min(1, 'At least one action is required'),
   priority: z.number().int().min(0).max(1000).default(0),
   isActive: z.boolean().default(true),
 });
 
 // ---------------------------------------------------------------------------
-// GET /api/accounting/workflows - List workflow rules
+// GET /api/accounting/workflows - List workflows
 // ---------------------------------------------------------------------------
 
 export const GET = withAdminGuard(async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
-    const entityType = searchParams.get('entityType');
+    const trigger = searchParams.get('trigger');
     const isActive = searchParams.get('isActive');
     const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
     const limit = Math.min(Math.max(1, parseInt(searchParams.get('limit') || '50') || 50), 200);
-    const seedDefaults = searchParams.get('seedDefaults');
-
-    // Optional: seed default rules
-    if (seedDefaults === 'true') {
-      const seeded = await seedDefaultWorkflowRules();
-      if (seeded > 0) {
-        logger.info(`Seeded ${seeded} default workflow rules via API`);
-      }
-    }
 
     // Build where clause
-    const where: Record<string, unknown> = { deletedAt: null };
-    if (entityType) where.entityType = entityType;
+    const where: Record<string, unknown> = {};
+    if (trigger) where.trigger = trigger;
     if (isActive !== null && isActive !== undefined && isActive !== '') {
       where.isActive = isActive === 'true';
     }
 
-    const [rules, total] = await Promise.all([
-      prisma.workflowRule.findMany({
+    const [workflows, total] = await Promise.all([
+      prisma.workflow.findMany({
         where,
         orderBy: { priority: 'desc' },
         skip: (page - 1) * limit,
         take: limit,
       }),
-      prisma.workflowRule.count({ where }),
+      prisma.workflow.count({ where }),
     ]);
 
-    // Parse JSON fields for the response
-    const mapped = rules.map((rule) => ({
+    // Serialize for response
+    const mapped = workflows.map((rule: typeof workflows[number]) => ({
       ...rule,
-      conditions: JSON.parse(rule.conditions),
-      actions: JSON.parse(rule.actions),
+      conditions: rule.conditions ?? [],
+      actions: rule.actions,
     }));
 
     return apiPaginated(mapped, page, limit, total, { request });
   } catch (error) {
-    logger.error('Error fetching workflow rules', {
+    logger.error('Error fetching workflows', {
       error: error instanceof Error ? error.message : String(error),
     });
-    return apiError('Error fetching workflow rules', 'INTERNAL_ERROR', { status: 500, request });
+    return apiError('Error fetching workflows', 'INTERNAL_ERROR', { status: 500, request });
   }
 });
 
 // ---------------------------------------------------------------------------
-// POST /api/accounting/workflows - Create workflow rule
+// POST /api/accounting/workflows - Create workflow
 // ---------------------------------------------------------------------------
 
 export const POST = withAdminGuard(async (request: NextRequest, { session }) => {
   try {
     const body = await request.json();
-    const parsed = createWorkflowRuleSchema.safeParse(body);
+    const parsed = createWorkflowSchema.safeParse(body);
 
     if (!parsed.success) {
       return apiError('Invalid data', 'VALIDATION_ERROR', {
@@ -122,39 +103,38 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
 
     const data = parsed.data;
 
-    const rule = await prisma.workflowRule.create({
+    const workflow = await prisma.workflow.create({
       data: {
         name: data.name,
         description: data.description || null,
-        entityType: data.entityType,
-        triggerEvent: data.triggerEvent,
-        conditions: JSON.stringify(data.conditions),
-        actions: JSON.stringify(data.actions),
+        trigger: data.trigger,
+        conditions: data.conditions ?? [],
+        actions: data.actions,
         priority: data.priority,
         isActive: data.isActive,
         createdBy: session.user?.email || null,
       },
     });
 
-    logger.info('Workflow rule created', {
-      ruleId: rule.id,
-      name: rule.name,
-      entityType: rule.entityType,
+    logger.info('Workflow created', {
+      workflowId: workflow.id,
+      name: workflow.name,
+      trigger: workflow.trigger,
       createdBy: session.user?.email,
     });
 
     return apiSuccess(
       {
-        ...rule,
-        conditions: JSON.parse(rule.conditions),
-        actions: JSON.parse(rule.actions),
+        ...workflow,
+        conditions: workflow.conditions ?? [],
+        actions: workflow.actions,
       },
       { status: 201, request },
     );
   } catch (error) {
-    logger.error('Error creating workflow rule', {
+    logger.error('Error creating workflow', {
       error: error instanceof Error ? error.message : String(error),
     });
-    return apiError('Error creating workflow rule', 'INTERNAL_ERROR', { status: 500, request });
+    return apiError('Error creating workflow', 'INTERNAL_ERROR', { status: 500, request });
   }
 });

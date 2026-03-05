@@ -34,7 +34,7 @@ export const PUT = withAdminGuard(async (request, { params }: { params: Promise<
     const { id } = await params;
     const body = await request.json();
     const parsed = updateSchema.parse(body);
-    const project = await updateProject(id, parsed);
+    const project = await updateProject(id, parsed as Parameters<typeof updateProject>[1]);
     return NextResponse.json(project);
   } catch (error) {
     if (error instanceof z.ZodError) {

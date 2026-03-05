@@ -8,7 +8,8 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
-import { getServerLocale } from '@/i18n/server';
+import { getServerLocale, createServerTranslator } from '@/i18n/server';
+import type { Locale } from '@/i18n/config';
 import { withTranslations, DB_SOURCE_LOCALE } from '@/lib/translation';
 import { JsonLd } from '@/components/seo/JsonLd';
 
@@ -144,6 +145,8 @@ export default async function BlogPage() {
     locale = 'en';
   }
 
+  const t = createServerTranslator(locale as Locale);
+
   let posts: BlogPostRow[] = [];
   try {
     posts = await getBlogPosts(locale);
@@ -176,7 +179,7 @@ export default async function BlogPage() {
         >
           <h1 style={{ fontSize: '42px', fontWeight: 700, marginBottom: '16px' }}>Blog</h1>
           <p style={{ fontSize: '18px', opacity: 0.9 }}>
-            Conseils, tendances et bonnes pratiques en formation professionnelle
+            {t('blog.subtitle') || 'Research insights, protocols, and scientific discoveries in peptide research'}
           </p>
         </section>
 
@@ -198,10 +201,10 @@ export default async function BlogPage() {
                 color: 'var(--gray-500)',
               }}
             >
-              Aucun article pour le moment
+              {t('blog.noArticlesYet') || 'No articles yet'}
             </h2>
             <p style={{ fontSize: '16px', color: 'var(--gray-400)' }}>
-              Revenez bientôt pour découvrir nos prochains articles.
+              {t('blog.comingSoon') || 'Check back soon for upcoming articles.'}
             </p>
           </div>
         </section>
@@ -217,10 +220,10 @@ export default async function BlogPage() {
                 color: 'var(--gray-500)',
               }}
             >
-              Restez informé
+              {t('blog.stayInformed') || 'Stay Informed'}
             </h2>
             <p style={{ fontSize: '14px', color: 'var(--gray-400)', marginBottom: '24px' }}>
-              Recevez nos derniers articles directement dans votre boîte courriel.
+              {t('blog.newsletterCta') || 'Receive our latest articles directly in your inbox.'}
             </p>
           </div>
         </section>
@@ -243,7 +246,7 @@ export default async function BlogPage() {
       >
         <h1 style={{ fontSize: '42px', fontWeight: 700, marginBottom: '16px' }}>Blog</h1>
         <p style={{ fontSize: '18px', opacity: 0.9 }}>
-          Conseils, tendances et bonnes pratiques en formation professionnelle
+          {t('blog.heroSubtitle')}
         </p>
       </section>
 
@@ -341,8 +344,9 @@ export default async function BlogPage() {
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           {categories.map((cat, i) => (
-            <span
+            <Link
               key={cat}
+              href={i === 0 ? '/blog' : `/blog?category=${encodeURIComponent(cat)}`}
               style={{
                 padding: '8px 16px',
                 backgroundColor: i === 0 ? 'var(--gray-500)' : 'white',
@@ -351,10 +355,11 @@ export default async function BlogPage() {
                 borderRadius: '20px',
                 fontSize: '14px',
                 cursor: 'pointer',
+                textDecoration: 'none',
               }}
             >
               {cat}
-            </span>
+            </Link>
           ))}
         </div>
       </div>

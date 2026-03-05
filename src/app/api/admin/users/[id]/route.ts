@@ -283,7 +283,7 @@ export const PATCH = withAdminGuard(async (request, { session, params }) => {
         );
       }
       // Prevent assigning the OWNER role to any other user
-      if (data.role === UserRole.OWNER) {
+      if ((data.role as string) === UserRole.OWNER) {
         return NextResponse.json(
           { error: 'Le rôle OWNER ne peut pas être attribué à un autre utilisateur' },
           { status: 403 }

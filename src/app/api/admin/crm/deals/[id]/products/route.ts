@@ -1,0 +1,110 @@
+export const dynamic = 'force-dynamic';
+
+/**
+ * CRM Deal Products API
+ * GET:  List products attached to a deal
+ * POST: Add a product to a deal
+ */
+
+import { Prisma } from '@prisma/client';
+import { withAdminGuard } from '@/lib/admin-api-guard';
+import { apiSuccess, apiError } from '@/lib/api-response';
+import { prisma } from '@/lib/db';
+
+export const GET = withAdminGuard(async (request, { params: paramsPromise }) => {
+  const { id } = await paramsPromise as unknown as { id: string };
+
+  const products = await prisma.crmDealProduct.findMany({
+    where: { dealId: id },
+    include: { product: { select: { id: true, name: true, slug: true, imageUrl: true, price: true } } },
+    orderBy: { createdAt: 'asc' },
+  });
+
+  const totalValue = products.reduce((sum, p) => sum + Number(p.total), 0);
+
+  return apiSuccess({ products, totalValue }, { request });
+});
+
+export const POST = withAdminGuard(async (request, { params: paramsPromise }) => {
+  const { id: dealId } = await paramsPromise as unknown as { id: string };
+  const body = await request.json();
+  const { productId, quantity = 1, unitPrice, discount = 0, notes } = body;
+
+  if (!productId) return apiError('productId required', 'VALIDATION_ERROR', { status: 400 });
+
+  // Verify deal exists
+  const deal = await prisma.crmDeal.findUnique({ where: { id: dealId }, select: { id: true } });
+  if (!deal) return apiError('Deal not found', 'NOT_FOUND', { status: 404 });
+
+  // Get product price if unitPrice not provided
+  let price = unitPrice;
+  if (!price) {
+    const product = await prisma.product.findUnique({ where: { id: productId }, select: { price: true } });
+    if (!product) return apiError('Product not found', 'NOT_FOUND', { status: 404 });
+    price = Number(product.price);
+  }
+
+  const discountMultiplier = 1 - (Number(discount) / 100);
+  const total = Number(price) * quantity * discountMultiplier;
+
+  const dealProduct = await prisma.crmDealProduct.upsert({
+    where: { dealId_productId: { dealId, productId } },
+    create: {
+      dealId,
+      productId,
+      quantity,
+      unitPrice: new Prisma.Decimal(price),
+      discount: new Prisma.Decimal(discount),
+      total: new Prisma.Decimal(total),
+      notes,
+    },
+    update: {
+      quantity,
+      unitPrice: new Prisma.Decimal(price),
+      discount: new Prisma.Decimal(discount),
+      total: new Prisma.Decimal(total),
+      notes,
+    },
+    include: { product: { select: { id: true, name: true, slug: true, imageUrl: true } } },
+  });
+
+  // Update deal value to sum of all products
+  const allProducts = await prisma.crmDealProduct.findMany({
+    where: { dealId },
+    select: { total: true },
+  });
+  const newDealValue = allProducts.reduce((sum, p) => sum + Number(p.total), 0);
+  await prisma.crmDeal.update({
+    where: { id: dealId },
+    data: { value: new Prisma.Decimal(newDealValue) },
+  });
+
+  return apiSuccess(dealProduct, { request, status: 201 });
+});
+
+export const DELETE = withAdminGuard(async (request) => {
+  const { searchParams } = new URL(request.url);
+  const dealProductId = searchParams.get('dealProductId');
+  if (!dealProductId) return apiError('dealProductId required', 'VALIDATION_ERROR', { status: 400 });
+
+  const dp = await prisma.crmDealProduct.findUnique({
+    where: { id: dealProductId },
+    select: { dealId: true },
+  });
+  if (!dp) return apiError('Not found', 'NOT_FOUND', { status: 404 });
+
+  await prisma.crmDealProduct.delete({ where: { id: dealProductId } });
+
+  // Recalculate deal value
+  const remaining = await prisma.crmDealProduct.findMany({
+    where: { dealId: dp.dealId },
+    select: { total: true },
+  });
+  const newValue = remaining.reduce((sum, p) => sum + Number(p.total), 0);
+  await prisma.crmDeal.update({
+    where: { id: dp.dealId },
+    data: { value: new Prisma.Decimal(newValue) },
+  });
+
+  return apiSuccess({ deleted: true }, { request });
+});

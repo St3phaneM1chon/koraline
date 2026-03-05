@@ -6,8 +6,6 @@ import {
   Plus,
   Trash2,
   Copy,
-  Eye,
-  EyeOff,
   Shield,
   Activity,
   Clock,

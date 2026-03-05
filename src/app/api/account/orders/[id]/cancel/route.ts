@@ -8,6 +8,7 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth-config';
 import { prisma } from '@/lib/db';
+import { validateTransition } from '@/lib/order-status-machine';
 import { sendOrderCancellation } from '@/lib/email-service';
 import { validateCsrf } from '@/lib/csrf-middleware';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
@@ -82,12 +83,13 @@ export async function POST(
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });
     }
 
-    // Check if order can be cancelled (only PENDING or CONFIRMED status)
-    if (order.status !== 'PENDING' && order.status !== 'CONFIRMED') {
+    // Validate transition using centralized state machine
+    const transition = validateTransition(order.status, 'CANCELLED');
+    if (!transition.valid) {
       return NextResponse.json(
         {
           error: 'Cannot cancel order',
-          message: `Orders with status "${order.status}" cannot be cancelled. Only PENDING or CONFIRMED orders can be cancelled.`
+          message: transition.error,
         },
         { status: 400 }
       );

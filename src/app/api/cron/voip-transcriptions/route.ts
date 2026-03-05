@@ -3,7 +3,9 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { timingSafeEqual } from 'crypto';
 import { processPendingTranscriptions } from '@/lib/voip/transcription';
+import { KeywordDetector, type KeywordAlert } from '@/lib/voip/keyword-detection';
 import { withJobLock } from '@/lib/cron-lock';
+import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 
 /**
@@ -55,11 +57,21 @@ export async function POST(request: NextRequest) {
     try {
       const transcribed = await processPendingTranscriptions(5);
 
-      logger.info('[Cron] voip-transcriptions completed', { transcribed });
+      // ── Keyword detection on newly transcribed recordings ────────────
+      let keywordAlertCount = 0;
+      if (transcribed > 0) {
+        keywordAlertCount = await runKeywordDetectionOnRecent(transcribed);
+      }
+
+      logger.info('[Cron] voip-transcriptions completed', {
+        transcribed,
+        keywordAlertCount,
+      });
 
       return NextResponse.json({
         success: true,
         transcribed,
+        keywordAlertCount,
         timestamp: new Date().toISOString(),
       });
     } catch (error) {
@@ -72,4 +84,64 @@ export async function POST(request: NextRequest) {
       );
     }
   }, { maxDurationMs: 10 * 60 * 1000 }); // 10 min timeout (Whisper can be slow)
+}
+
+// ---------------------------------------------------------------------------
+// Keyword detection helper — runs after transcription completes
+// ---------------------------------------------------------------------------
+
+async function runKeywordDetectionOnRecent(limit: number): Promise<number> {
+  try {
+    // Fetch recently transcribed recordings (last 30 minutes, matching cron interval)
+    const recent = await prisma.callTranscription.findMany({
+      where: {
+        createdAt: { gte: new Date(Date.now() - 30 * 60 * 1000) },
+      },
+      select: {
+        id: true,
+        callLogId: true,
+        fullText: true,
+      },
+      take: limit,
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (recent.length === 0) return 0;
+
+    const detector = new KeywordDetector();
+    const allAlerts: Array<KeywordAlert & { transcriptionId: string; callLogId: string }> = [];
+
+    for (const transcription of recent) {
+      if (!transcription.fullText) continue;
+
+      // Run detection on the full transcription text (assume customer speaker for post-call analysis)
+      const alerts = detector.detect(transcription.fullText, 'customer');
+
+      for (const alert of alerts) {
+        allAlerts.push({
+          ...alert,
+          transcriptionId: transcription.id,
+          callLogId: transcription.callLogId,
+        });
+      }
+
+      // Reset deduplication between transcriptions
+      detector.reset();
+    }
+
+    if (allAlerts.length > 0) {
+      logger.info('[Cron] Keyword alerts detected in transcriptions', {
+        alertCount: allAlerts.length,
+        criticalCount: allAlerts.filter((a) => a.alertLevel === 'critical').length,
+        categories: [...new Set(allAlerts.map((a) => a.category))],
+      });
+    }
+
+    return allAlerts.length;
+  } catch (error) {
+    logger.warn('[Cron] Keyword detection failed (non-fatal)', {
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return 0;
+  }
 }

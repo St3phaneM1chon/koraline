@@ -22,10 +22,7 @@ interface SearchModalProps {
 
 const MAX_SEARCH_RESULTS = 8;
 
-// BUG-027 FIX: Extract hardcoded popular searches to a named constant (fallback)
-// TODO: Replace with a public API endpoint (e.g., GET /api/search/popular) that
-// calls getTopQueries() from '@/lib/search-analytics' so popular searches are
-// driven by real user analytics instead of a static list.
+// Static fallback for popular searches when /api/search/popular is unavailable
 const FALLBACK_POPULAR_SEARCHES = [
   'BPC-157',
   'TB-500',
@@ -147,10 +144,8 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
     };
   }, [open]);
 
-  // BUG-027 FIX: Try to load popular searches from analytics API
+  // Load popular searches from analytics API, fall back to static list on error
   useEffect(() => {
-    // TODO: Create GET /api/search/popular public endpoint to serve top queries
-    // For now, fetch is attempted but falls back gracefully to FALLBACK_POPULAR_SEARCHES
     fetch('/api/search/popular')
       .then(res => res.ok ? res.json() : null)
       .then(data => {
@@ -159,7 +154,7 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
         }
       })
       .catch(() => {
-        // Silently keep fallback - analytics endpoint may not exist yet
+        // Silently keep FALLBACK_POPULAR_SEARCHES
       });
   }, []);
 

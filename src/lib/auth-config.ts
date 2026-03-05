@@ -1,6 +1,20 @@
 /**
  * CONFIGURATION AUTHENTIFICATION MULTI-PROVIDERS
  * Google, Apple, X (Twitter), Shopify, Email/Password + MFA
+ *
+ * PINNED DEPENDENCY: next-auth@5.0.0-beta.4
+ * -------------------------------------------------
+ * This project uses next-auth v5 beta.4 (see package.json: "next-auth": "^5.0.0-beta.4").
+ * DO NOT auto-update to newer beta versions without thorough testing.
+ * Known issues with beta.4:
+ *   - Cookie encryption uses the cookie NAME as salt for key derivation.
+ *     If the name changes between set/read (e.g., __Secure- prefix vs no prefix),
+ *     decryption fails with "could not be parsed" (see cookies config below).
+ *   - The CredentialsProvider returns null for auth failures (not throwing) to
+ *     avoid misleading "Configuration" error pages in the beta.
+ *   - PrismaAdapter linkAccount needs explicit token encryption wrapping.
+ * These behaviors may change in future betas or the stable v5 release.
+ * Always test with a staging environment before upgrading.
  */
 
 import NextAuth from 'next-auth';
@@ -340,10 +354,13 @@ export const authConfig: NextAuthConfig = {
             // We allow the signIn to proceed (user is authenticated) but flag
             // the need for terms acceptance in the JWT callback below.
             if (!existingUser || !existingUser.mfaEnabled) {
-              // Permettre la connexion, MFA optionnel
-              // TODO: FAILLE-053 - If existingUser has MFA enabled, OAuth login should redirect to MFA verification page
+              // No MFA required — allow login
               return true;
             }
+            // FAILLE-053 FIX: OAuth user with MFA enabled — allow login but
+            // mark as MFA-unverified in JWT callback (token.mfaVerified = false).
+            // The middleware/session callback will enforce MFA verification.
+            return true;
           } catch (dbError) {
             logger.error('Database error in signIn', { error: dbError instanceof Error ? dbError.message : String(dbError) });
             // SECURITY FIX: Fail-closed -- deny login if DB is unavailable
@@ -407,10 +424,12 @@ export const authConfig: NextAuthConfig = {
           }
         }
 
-        // Rafraîchir les données utilisateur périodiquement
-        // TODO: FAILLE-054 - Role JWT is only refreshed on trigger 'update'. Consider adding periodic re-fetch
-        //       (e.g., every 5 minutes based on token.iat) to detect role changes made by other admins.
-        if (trigger === 'update' && token.id) {
+        // I-SECURITY-9: Periodic JWT role refresh every 15 minutes
+        // FAILLE-054 FIX: Detect role changes made by other admins
+        const tokenAge = token.iat ? (Math.floor(Date.now() / 1000) - (token.iat as number)) : 0;
+        const shouldRefreshRole = tokenAge > 900; // 15 minutes
+
+        if ((trigger === 'update' || shouldRefreshRole) && token.id) {
           try {
             const dbUser = await prisma.user.findUnique({
               where: { id: token.id as string },

@@ -8,9 +8,12 @@ export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { withAdminGuard } from '@/lib/admin-api-guard';
+import { AuditLogger } from '@/lib/voip/audit-log';
 import type { Prisma } from '@prisma/client';
 
-export const GET = withAdminGuard(async (request) => {
+const auditLogger = new AuditLogger({ flushSize: 20, flushIntervalMs: 60_000 });
+
+export const GET = withAdminGuard(async (request, { session }) => {
   const { searchParams } = new URL(request.url);
 
   // Pagination
@@ -72,6 +75,23 @@ export const GET = withAdminGuard(async (request) => {
     }),
     prisma.callLog.count({ where }),
   ]);
+
+  // Log call log access for compliance audit trail when export or filtered queries are made
+  const isExport = searchParams.get('export') === 'true';
+  if (isExport) {
+    await auditLogger.log({
+      userId: session.user.id,
+      action: 'report.export',
+      resource: 'CallLog',
+      ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || undefined,
+      userAgent: request.headers.get('user-agent') || undefined,
+      result: 'success',
+      details: {
+        filters: { direction, status, agentId, clientId, dateFrom, dateTo, search },
+        resultCount: total,
+      },
+    });
+  }
 
   return NextResponse.json({
     callLogs,

@@ -386,6 +386,7 @@ export default function ConsentTemplatesPage() {
       {/* Delete Confirmation */}
       {deleteId && (
         <ConfirmDialog
+          isOpen={!!deleteId}
           title={t('admin.consentTemplates.deleteTitle')}
           message={t('admin.consentTemplates.deleteMessage')}
           confirmLabel={t('common.delete')}

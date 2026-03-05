@@ -7,4 +7,5 @@ export {
   adjustStock,
   generateCOGSEntry,
   getInventorySummary,
+  logStockChange,
 } from './inventory.service';

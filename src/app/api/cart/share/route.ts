@@ -1,0 +1,194 @@
+export const dynamic = 'force-dynamic';
+
+/**
+ * Cart Sharing API
+ * POST  - Generate a shareable cart token (JWT-encoded, rate-limited)
+ * GET   - Load shared cart items from token (?token=xxx)
+ *
+ * Uses JWT encoding to keep it simple without needing a DB table.
+ * The token encodes the cart items and expires after 7 days.
+ *
+ * POST is rate-limited per IP (10 req/min) to prevent abuse.
+ * GET is public (anyone with the token can load a shared cart).
+ */
+
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { SignJWT, jwtVerify } from 'jose';
+import { logger } from '@/lib/logger';
+
+// ---------------------------------------------------------------------------
+// Config
+// ---------------------------------------------------------------------------
+
+const SHARE_SECRET = new TextEncoder().encode(
+  process.env.NEXTAUTH_SECRET || 'cart-share-fallback-secret-key-min-32chars!'
+);
+const SHARE_TOKEN_EXPIRY = '7d'; // 7 days
+
+// ---------------------------------------------------------------------------
+// Rate limiting (10 creates per minute per IP)
+// ---------------------------------------------------------------------------
+
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_MAX = 10;
+const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+
+  if (!entry || now >= entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    // Cleanup old entries periodically
+    if (rateLimitMap.size > 5000) {
+      for (const [key, val] of rateLimitMap) {
+        if (now >= val.resetAt) rateLimitMap.delete(key);
+      }
+    }
+    return true;
+  }
+
+  entry.count++;
+  return entry.count <= RATE_LIMIT_MAX;
+}
+
+// ---------------------------------------------------------------------------
+// Validation
+// ---------------------------------------------------------------------------
+
+const sharedCartItemSchema = z.object({
+  productId: z.string().min(1),
+  formatId: z.string().nullable().optional(),
+  name: z.string().min(1).max(200),
+  price: z.number().min(0),
+  quantity: z.number().int().min(1).max(10),
+  image: z.string().nullable().optional(),
+});
+
+const shareCartSchema = z.object({
+  items: z.array(sharedCartItemSchema).min(1).max(50),
+}).strict();
+
+// ---------------------------------------------------------------------------
+// Interfaces
+// ---------------------------------------------------------------------------
+
+interface SharedCartPayload {
+  items: Array<{
+    productId: string;
+    formatId?: string | null;
+    name: string;
+    price: number;
+    quantity: number;
+    image?: string | null;
+  }>;
+}
+
+// ---------------------------------------------------------------------------
+// POST /api/cart/share - Generate shareable token
+// ---------------------------------------------------------------------------
+
+export async function POST(request: NextRequest) {
+  try {
+    // Rate limit by IP
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+      || request.headers.get('x-real-ip')
+      || 'unknown';
+
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json(
+        { error: 'Rate limit exceeded. Try again later.' },
+        { status: 429 }
+      );
+    }
+
+    const body = await request.json();
+    const parsed = shareCartSchema.safeParse(body);
+
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: 'Validation failed', details: parsed.error.flatten().fieldErrors },
+        { status: 400 }
+      );
+    }
+
+    const { items } = parsed.data;
+
+    // Encode cart items into a JWT token
+    const payload: SharedCartPayload = {
+      items: items.map((item) => ({
+        productId: item.productId,
+        formatId: item.formatId ?? null,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        image: item.image ?? null,
+      })),
+    };
+
+    const token = await new SignJWT({ cart: payload })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setIssuedAt()
+      .setExpirationTime(SHARE_TOKEN_EXPIRY)
+      .sign(SHARE_SECRET);
+
+    // Build shareable URL
+    const baseUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_URL || '';
+    const shareUrl = baseUrl ? `${baseUrl}/cart/shared?token=${token}` : undefined;
+
+    return NextResponse.json({
+      success: true,
+      token,
+      shareUrl,
+      expiresIn: '7 days',
+    });
+  } catch (error) {
+    logger.error('Cart share POST failed', {
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+// ---------------------------------------------------------------------------
+// GET /api/cart/share?token=xxx - Load shared cart
+// ---------------------------------------------------------------------------
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const token = searchParams.get('token');
+
+    if (!token) {
+      return NextResponse.json({ error: 'Missing token parameter' }, { status: 400 });
+    }
+
+    // Verify and decode the JWT
+    let payload: SharedCartPayload;
+    try {
+      const { payload: decoded } = await jwtVerify(token, SHARE_SECRET);
+      payload = (decoded as { cart: SharedCartPayload }).cart;
+    } catch {
+      return NextResponse.json(
+        { error: 'Invalid or expired share token' },
+        { status: 400 }
+      );
+    }
+
+    if (!payload?.items || !Array.isArray(payload.items)) {
+      return NextResponse.json({ error: 'Invalid cart data in token' }, { status: 400 });
+    }
+
+    return NextResponse.json({
+      success: true,
+      items: payload.items,
+      itemCount: payload.items.reduce((sum, item) => sum + item.quantity, 0),
+    });
+  } catch (error) {
+    logger.error('Cart share GET failed', {
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}

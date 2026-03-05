@@ -1,45 +1,29 @@
 export const dynamic = 'force-dynamic';
 
 /**
- * DEPRECATED: Stripe webhook handler
- * All Stripe webhook processing is now handled by /api/payments/webhook
- * This route exists only as a fallback redirect.
+ * REMOVED: Stripe webhook handler
+ * All Stripe webhook processing is handled by /api/payments/webhook
+ * This route returns 410 Gone to signal the URL is no longer valid.
  *
  * Update your Stripe dashboard webhook endpoint to:
  *   https://biocyclepeptides.com/api/payments/webhook
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { logger } from '@/lib/logger';
+import { NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest) {
-  try {
-    // Forward the raw request to the canonical webhook handler
-    const body = await request.text();
-    const signature = request.headers.get('stripe-signature');
+export async function POST() {
+  return NextResponse.json(
+    {
+      error: 'This webhook endpoint has been removed. Use /api/payments/webhook instead.',
+      redirect: '/api/payments/webhook',
+    },
+    { status: 410 }
+  );
+}
 
-    if (!signature) {
-      return NextResponse.json({ error: 'Missing stripe-signature header' }, { status: 400 });
-    }
-
-    const url = new URL('/api/payments/webhook', request.url);
-
-    const forwardResponse = await fetch(url.toString(), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'text/plain',
-        'stripe-signature': signature,
-      },
-      body,
-    });
-
-    const result = await forwardResponse.json();
-    return NextResponse.json(result, { status: forwardResponse.status });
-  } catch (error) {
-    logger.error('[Stripe Webhook Forwarder] Error', { error: error instanceof Error ? error.message : String(error) });
-    return NextResponse.json(
-      { error: 'Webhook forwarding failed' },
-      { status: 500 }
-    );
-  }
+export async function GET() {
+  return NextResponse.json(
+    { message: 'Stripe webhook endpoint moved to /api/payments/webhook', status: 'gone' },
+    { status: 410 }
+  );
 }

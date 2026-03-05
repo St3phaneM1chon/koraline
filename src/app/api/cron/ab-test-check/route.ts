@@ -27,7 +27,6 @@ import { sendEmail } from '@/lib/email/email-service';
 import { generateUnsubscribeUrl } from '@/lib/email/unsubscribe';
 import { shouldSuppressEmail } from '@/lib/email/bounce-handler';
 import {
-  selectWinner,
   isStatisticallySignificant,
   getMetricValue,
   type ABTest,
@@ -173,8 +172,6 @@ export async function GET(request: NextRequest) {
           const rateA = getMetricValue(updatedVariantA, abTest.winningMetric);
           const rateB = getMetricValue(updatedVariantB, abTest.winningMetric);
           const winnerVariant = rateA >= rateB ? 'A' : 'B';
-          const winnerData = winnerVariant === 'A' ? updatedVariantA : updatedVariantB;
-
           logger.info('[AB Test Check] Winner determined', {
             campaignId: campaign.id,
             winner: winnerVariant,

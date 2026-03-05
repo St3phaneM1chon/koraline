@@ -492,8 +492,8 @@ async function detectAnomalies(): Promise<Anomaly[]> {
       if (change >= ANOMALY_THRESHOLD) {
         anomalies.push({
           platform: recent.platform,
-          campaignId: recent.campaignId,
-          campaignName: recent.campaignName,
+          campaignId: recent.campaignId ?? '',
+          campaignName: recent.campaignName ?? '',
           metric,
           previousValue: prevVal,
           currentValue: currVal,

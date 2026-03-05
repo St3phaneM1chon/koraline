@@ -22,16 +22,39 @@ import type { ChatStatus } from '@prisma/client';
 import { z } from 'zod';
 
 // GET - Liste des conversations (admin only)
+// When ?conversationId=XXX is provided, returns a single conversation with its messages (paginated).
 export async function GET(request: NextRequest) {
   try {
     const session = await auth();
-    
+
     // Vérifier si admin
     if (!session?.user || !['OWNER', 'EMPLOYEE'].includes(session.user.role as string)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { searchParams } = new URL(request.url);
+    const conversationId = searchParams.get('conversationId');
+
+    // --- Single conversation detail mode (for admin chat panel message loading) ---
+    if (conversationId) {
+      const conversation = await db.chatConversation.findUnique({
+        where: { id: conversationId },
+        include: {
+          messages: {
+            orderBy: { createdAt: 'asc' },
+            take: 50,
+          },
+        },
+      });
+
+      if (!conversation) {
+        return NextResponse.json({ error: 'Conversation not found' }, { status: 404 });
+      }
+
+      return NextResponse.json({ conversation });
+    }
+
+    // --- List mode ---
     const status = searchParams.get('status');
     // FIX F-013: Cap limit to prevent abuse (was unbounded)
     const limit = Math.min(parseInt(searchParams.get('limit') || '50') || 50, 100);

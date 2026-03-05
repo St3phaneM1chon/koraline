@@ -6,22 +6,18 @@ import { withAdminGuard } from '@/lib/admin-api-guard';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { apiSuccess, apiError } from '@/lib/api-response';
-import {
-  approveRequest,
-  rejectRequest,
-} from '@/lib/accounting/workflow-engine.service';
 
 // ---------------------------------------------------------------------------
 // Zod Schemas
 // ---------------------------------------------------------------------------
 
-const approvalActionSchema = z.object({
+const respondSchema = z.object({
   action: z.enum(['approve', 'reject']),
-  note: z.string().max(1000).optional(),
+  note: z.string().max(2000).optional(),
 });
 
 // ---------------------------------------------------------------------------
-// GET /api/accounting/approvals/[id] - Approval details
+// GET /api/accounting/approvals/[id] - Approval request details
 // ---------------------------------------------------------------------------
 
 export const GET = withAdminGuard(async (request: NextRequest, { params }) => {
@@ -30,6 +26,7 @@ export const GET = withAdminGuard(async (request: NextRequest, { params }) => {
 
     const approval = await prisma.approvalRequest.findUnique({
       where: { id },
+      include: { workflowRule: { select: { id: true, name: true, entityType: true } } },
     });
 
     if (!approval) {
@@ -45,20 +42,26 @@ export const GET = withAdminGuard(async (request: NextRequest, { params }) => {
       approval.status = 'EXPIRED';
     }
 
-    // Fetch the associated workflow rule for context
-    let rule = null;
-    if (approval.workflowRuleId) {
-      rule = await prisma.workflowRule.findUnique({
-        where: { id: approval.workflowRuleId },
-        select: { id: true, name: true, description: true, entityType: true },
-      });
-    }
-
     return apiSuccess(
       {
-        ...approval,
+        id: approval.id,
+        workflowRuleId: approval.workflowRuleId,
+        workflowRuleName: approval.workflowRule?.name ?? null,
+        entityType: approval.entityType,
+        entityId: approval.entityId,
+        entitySummary: approval.entitySummary,
         amount: approval.amount ? Number(approval.amount) : null,
-        workflowRule: rule,
+        status: approval.status,
+        requestedBy: approval.requestedBy,
+        requestedAt: approval.requestedAt,
+        assignedRole: approval.assignedRole,
+        assignedTo: approval.assignedTo,
+        expiresAt: approval.expiresAt,
+        respondedBy: approval.respondedBy,
+        respondedAt: approval.respondedAt,
+        responseNote: approval.responseNote,
+        createdAt: approval.createdAt,
+        updatedAt: approval.updatedAt,
       },
       { request },
     );
@@ -66,10 +69,7 @@ export const GET = withAdminGuard(async (request: NextRequest, { params }) => {
     logger.error('Error fetching approval request', {
       error: error instanceof Error ? error.message : String(error),
     });
-    return apiError('Error fetching approval request', 'INTERNAL_ERROR', {
-      status: 500,
-      request,
-    });
+    return apiError('Error fetching approval request', 'INTERNAL_ERROR', { status: 500, request });
   }
 });
 
@@ -82,7 +82,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { params, sessio
     const { id } = params;
 
     const body = await request.json();
-    const parsed = approvalActionSchema.safeParse(body);
+    const parsed = respondSchema.safeParse(body);
 
     if (!parsed.success) {
       return apiError('Invalid data', 'VALIDATION_ERROR', {
@@ -93,41 +93,67 @@ export const POST = withAdminGuard(async (request: NextRequest, { params, sessio
     }
 
     const { action, note } = parsed.data;
-    const userId = session.user?.email || session.user?.id || 'unknown';
 
-    if (action === 'approve') {
-      const result = await approveRequest(id, userId, note);
-      if (!result.success) {
-        return apiError(result.error || 'Approval failed', 'VALIDATION_ERROR', {
-          status: 400,
-          request,
-        });
-      }
-      return apiSuccess({ message: 'Approval granted', requestId: id }, { request });
-    } else {
-      // reject
-      if (!note) {
-        return apiError('A note is required when rejecting', 'VALIDATION_ERROR', {
-          status: 400,
-          request,
-        });
-      }
-      const result = await rejectRequest(id, userId, note);
-      if (!result.success) {
-        return apiError(result.error || 'Rejection failed', 'VALIDATION_ERROR', {
-          status: 400,
-          request,
-        });
-      }
-      return apiSuccess({ message: 'Approval rejected', requestId: id }, { request });
+    const approval = await prisma.approvalRequest.findUnique({
+      where: { id },
+    });
+
+    if (!approval) {
+      return apiError('Approval request not found', 'NOT_FOUND', { status: 404, request });
     }
+
+    if (approval.status !== 'PENDING') {
+      return apiError(
+        `Cannot ${action}: current status is ${approval.status}`,
+        'VALIDATION_ERROR',
+        { status: 400, request },
+      );
+    }
+
+    // Check expiry
+    if (approval.expiresAt && approval.expiresAt < new Date()) {
+      await prisma.approvalRequest.update({
+        where: { id },
+        data: { status: 'EXPIRED' },
+      });
+      return apiError('Approval request has expired', 'VALIDATION_ERROR', { status: 400, request });
+    }
+
+    const respondedBy = session.user?.email || session.user?.id || 'unknown';
+    const newStatus = action === 'approve' ? 'APPROVED' : 'REJECTED';
+
+    const updated = await prisma.approvalRequest.update({
+      where: { id },
+      data: {
+        status: newStatus,
+        respondedBy,
+        respondedAt: new Date(),
+        responseNote: note || null,
+      },
+    });
+
+    logger.info(`Approval request ${action}d`, {
+      requestId: id,
+      respondedBy,
+      entityType: approval.entityType,
+      entityId: approval.entityId,
+      newStatus,
+    });
+
+    return apiSuccess(
+      {
+        id: updated.id,
+        status: updated.status,
+        respondedBy: updated.respondedBy,
+        respondedAt: updated.respondedAt,
+        responseNote: updated.responseNote,
+      },
+      { request },
+    );
   } catch (error) {
-    logger.error('Error processing approval action', {
+    logger.error('Error responding to approval request', {
       error: error instanceof Error ? error.message : String(error),
     });
-    return apiError('Error processing approval action', 'INTERNAL_ERROR', {
-      status: 500,
-      request,
-    });
+    return apiError('Error processing approval response', 'INTERNAL_ERROR', { status: 500, request });
   }
 });

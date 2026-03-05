@@ -59,6 +59,7 @@ export const GET = withAdminGuard(async (request: NextRequest, _ctx) => {
           isPublished: true,
           reply: true,
           repliedAt: true,
+          repliedBy: true,
           createdAt: true,
           updatedAt: true,
           user: {
@@ -111,6 +112,8 @@ export const GET = withAdminGuard(async (request: NextRequest, _ctx) => {
         isVerifiedPurchase: r.isVerified,
         status: reviewStatus,
         adminResponse: r.reply,
+        adminResponseAt: r.repliedAt?.toISOString() || null,
+        adminResponseBy: r.repliedBy || null,
         createdAt: r.createdAt.toISOString(),
       };
     });

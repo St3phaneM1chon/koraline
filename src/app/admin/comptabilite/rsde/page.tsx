@@ -3,8 +3,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
   FlaskConical, Plus, Calculator, FileText, BarChart3,
-  Edit3, Trash2, RefreshCw, Check, X, AlertTriangle,
-  DollarSign, TrendingUp, Search, ChevronRight,
+  RefreshCw, Check, X,
+  DollarSign, TrendingUp,
 } from 'lucide-react';
 import { PageHeader, Button, SectionCard, StatusBadge, Modal, StatCard } from '@/components/admin';
 import type { BadgeVariant } from '@/components/admin';
@@ -48,11 +48,11 @@ const fmt = (n: number) => new Intl.NumberFormat('fr-CA', { style: 'currency', c
 const pct = (n: number) => `${(n * 100).toFixed(1)}%`;
 
 const STATUS_MAP: Record<string, { label: string; variant: BadgeVariant }> = {
-  DRAFT: { label: 'Brouillon', variant: 'default' },
+  DRAFT: { label: 'Brouillon', variant: 'neutral' },
   ACTIVE: { label: 'Actif', variant: 'info' },
   SUBMITTED: { label: 'Soumis', variant: 'warning' },
   APPROVED: { label: 'Approuvé', variant: 'success' },
-  REJECTED: { label: 'Rejeté', variant: 'destructive' },
+  REJECTED: { label: 'Rejeté', variant: 'error' },
 };
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -138,9 +138,9 @@ export default function RSDeAdminPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="RS&DE — Crédits R&D" description="Suivi des dépenses éligibles, calcul crédits fédéraux et provinciaux (CRIC Québec)" accentBarClass={theme.accentBar} accentBgClass={theme.accentBg}>
-        <Button onClick={() => setShowModal(true)} className={theme.btnPrimary}><Plus className="w-4 h-4 mr-1" />Nouveau projet</Button>
-      </PageHeader>
+      <PageHeader title="RS&DE — Crédits R&D" subtitle="Suivi des dépenses éligibles, calcul crédits fédéraux et provinciaux (CRIC Québec)" theme={theme}
+        actions={<Button onClick={() => setShowModal(true)} icon={Plus}>Nouveau projet</Button>}
+      />
 
       {/* Tabs */}
       <div className="flex gap-1 bg-gray-100 p-1 rounded-xl overflow-x-auto">
@@ -214,14 +214,14 @@ export default function RSDeAdminPage() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Calcul — {selectedProject.name}</h3>
-                <Button onClick={() => calculateCredits(selectedProject.id)} className={theme.btnPrimary}><Calculator className="w-4 h-4 mr-1" />Calculer</Button>
+                <Button onClick={() => calculateCredits(selectedProject.id)} icon={Calculator}>Calculer</Button>
               </div>
               {calculation && (
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                  <StatCard title="Total éligible" value={fmt(calculation.totalEligible)} icon={<DollarSign />} iconBg={theme.statIconBg} iconColor={theme.statIconColor} />
-                  <StatCard title="Crédit fédéral" value={fmt(calculation.federalCredit)} subtitle={`Taux: ${pct(calculation.federalRate)}`} icon={<TrendingUp />} iconBg="bg-blue-50" iconColor="text-blue-600" />
-                  <StatCard title="Crédit provincial" value={fmt(calculation.provincialCredit)} subtitle={`CRIC: ${pct(calculation.provincialRate)}`} icon={<TrendingUp />} iconBg="bg-green-50" iconColor="text-green-600" />
-                  <StatCard title="TOTAL CRÉDITS" value={fmt(calculation.totalCredit)} subtitle={calculation.isRefundable ? 'Remboursable' : 'Non-remboursable'} icon={<Calculator />} iconBg="bg-purple-50" iconColor="text-purple-600" />
+                  <StatCard label="Total éligible" value={fmt(calculation.totalEligible)} icon={DollarSign} theme={theme} />
+                  <StatCard label="Crédit fédéral" value={`${fmt(calculation.federalCredit)} (${pct(calculation.federalRate)})`} icon={TrendingUp} theme={theme} />
+                  <StatCard label="Crédit provincial" value={`${fmt(calculation.provincialCredit)} (CRIC: ${pct(calculation.provincialRate)})`} icon={TrendingUp} theme={theme} />
+                  <StatCard label="TOTAL CRÉDITS" value={`${fmt(calculation.totalCredit)} ${calculation.isRefundable ? '(Remb.)' : '(Non-remb.)'}`} icon={Calculator} theme={theme} />
                 </div>
               )}
             </div>
@@ -236,7 +236,7 @@ export default function RSDeAdminPage() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Formulaire T661 — {selectedProject.name}</h3>
-                <Button onClick={() => generateT661(selectedProject.id)} className={theme.btnPrimary}><FileText className="w-4 h-4 mr-1" />Générer</Button>
+                <Button onClick={() => generateT661(selectedProject.id)} icon={FileText}>Générer</Button>
               </div>
               {t661Data && (
                 <pre className="bg-gray-50 border rounded-lg p-4 text-xs overflow-auto max-h-96">{JSON.stringify(t661Data, null, 2)}</pre>
@@ -252,10 +252,10 @@ export default function RSDeAdminPage() {
           {!summary ? <div className="flex justify-center py-8"><RefreshCw className="w-5 h-5 animate-spin" /></div> : (
             <div className="space-y-4">
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <StatCard title="Projets actifs" value={String((summary as { activeProjects: number }).activeProjects)} icon={<FlaskConical />} iconBg={theme.statIconBg} iconColor={theme.statIconColor} />
-                <StatCard title="Dépenses éligibles" value={fmt((summary as { totalEligibleExpenses: number }).totalEligibleExpenses)} icon={<DollarSign />} iconBg="bg-blue-50" iconColor="text-blue-600" />
-                <StatCard title="Crédits totaux" value={fmt((summary as { totalCreditsEarned: number }).totalCreditsEarned)} icon={<TrendingUp />} iconBg="bg-green-50" iconColor="text-green-600" />
-                <StatCard title="Total projets" value={String((summary as { totalProjects: number }).totalProjects)} icon={<BarChart3 />} iconBg="bg-purple-50" iconColor="text-purple-600" />
+                <StatCard label="Projets actifs" value={String((summary as { activeProjects: number }).activeProjects)} icon={FlaskConical} theme={theme} />
+                <StatCard label="Dépenses éligibles" value={fmt((summary as { totalEligibleExpenses: number }).totalEligibleExpenses)} icon={DollarSign} theme={theme} />
+                <StatCard label="Crédits totaux" value={fmt((summary as { totalCreditsEarned: number }).totalCreditsEarned)} icon={TrendingUp} theme={theme} />
+                <StatCard label="Total projets" value={String((summary as { totalProjects: number }).totalProjects)} icon={BarChart3} theme={theme} />
               </div>
             </div>
           )}
@@ -263,8 +263,7 @@ export default function RSDeAdminPage() {
       )}
 
       {/* Create Project Modal */}
-      {showModal && (
-        <Modal title="Nouveau Projet RS&DE" onClose={() => setShowModal(false)}>
+      <Modal isOpen={showModal} title="Nouveau Projet RS&DE" onClose={() => setShowModal(false)}>
           <div className="space-y-3">
             <input type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Nom du projet *" className="w-full border rounded-lg px-3 py-2 text-sm" />
             <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Description" className="w-full border rounded-lg px-3 py-2 text-sm" rows={3} />
@@ -283,7 +282,6 @@ export default function RSDeAdminPage() {
             </div>
           </div>
         </Modal>
-      )}
     </div>
   );
 }

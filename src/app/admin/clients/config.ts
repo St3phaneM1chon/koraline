@@ -91,9 +91,26 @@ export const clientConfig: ContactListPageConfig = {
         ),
         createElement(Button, {
           variant: 'ghost' as const, size: 'sm' as const, icon: Mail,
-          onClick: () => {
-            // TODO: Create API endpoint POST /api/admin/users/:id/email for sending emails
-            toast.info(t('admin.clients.sendEmail') + ' - Coming soon');
+          onClick: async () => {
+            const subject = prompt('Email subject:');
+            if (!subject) return;
+            const body = prompt('Email body:');
+            if (!body) return;
+            try {
+              const res = await fetch(`/api/admin/users/${item.id}/email`, {
+                method: 'POST',
+                headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
+                body: JSON.stringify({ subject, body }),
+              });
+              if (!res.ok) {
+                const data = await res.json().catch(() => ({}));
+                toast.error(data.error || 'Failed to send email');
+                return;
+              }
+              toast.success(t('admin.clients.emailSent') || 'Email sent successfully');
+            } catch {
+              toast.error('Failed to send email');
+            }
           },
         },
           t('admin.clients.sendEmail')
@@ -110,8 +127,7 @@ export const clientConfig: ContactListPageConfig = {
               }
               toast.success(t('admin.clients.passwordResetSent') || 'Password reset email sent');
             } catch {
-              // TODO: Create API endpoint POST /api/admin/users/:id/reset-password
-              toast.info(t('admin.clients.resetPassword') + ' - Coming soon');
+              toast.error('Failed to send password reset email');
             }
           },
         },
@@ -125,7 +141,7 @@ export const clientConfig: ContactListPageConfig = {
               const res = await fetch(`/api/admin/users/${item.id}`, {
                 method: 'PATCH',
                 headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
-                body: JSON.stringify({ isBanned: true }),
+                body: JSON.stringify({ isActive: false }),
               });
               if (!res.ok) {
                 const data = await res.json().catch(() => ({}));
@@ -134,8 +150,7 @@ export const clientConfig: ContactListPageConfig = {
               }
               toast.success(t('admin.clients.userSuspended') || 'User suspended');
             } catch {
-              // TODO: Create API endpoint PATCH /api/admin/users/:id with isBanned field
-              toast.info(t('admin.clients.suspend') + ' - Coming soon');
+              toast.error('Failed to suspend user');
             }
           },
         },

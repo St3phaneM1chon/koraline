@@ -59,12 +59,17 @@ const config: Config = {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
+        'bounce-gentle': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-6px)' },
+        },
       },
       animation: {
         shimmer: 'shimmer 3s infinite',
         'slide-in-right': 'slide-in-right 200ms ease-out',
         'slide-in-left': 'slide-in-left 200ms ease-out',
         'fade-in': 'fade-in 150ms ease-out',
+        'bounce-gentle': 'bounce-gentle 2s ease-in-out infinite',
       },
     },
   },

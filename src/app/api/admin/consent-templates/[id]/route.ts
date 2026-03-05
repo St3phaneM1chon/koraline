@@ -58,7 +58,7 @@ export const PATCH = withAdminGuard(async (request, { session, routeContext }) =
 
     const { translations, ...rest } = parsed.data;
 
-    const template = await prisma.consentFormTemplate.update({
+    await prisma.consentFormTemplate.update({
       where: { id },
       data: rest,
     });
@@ -80,7 +80,7 @@ export const PATCH = withAdminGuard(async (request, { session, routeContext }) =
               locale: t.locale,
               name: t.name || null,
               description: t.description || null,
-              questions: t.questions || null,
+              questions: t.questions ? (t.questions as unknown as import('@prisma/client').Prisma.InputJsonValue) : undefined,
               legalText: t.legalText || null,
             },
           })

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Shield, AlertTriangle, CheckCircle, XCircle, Clock, Lock, Eye, FileSearch } from 'lucide-react';
+import { Shield, AlertTriangle, CheckCircle, XCircle, Clock, Eye, FileSearch } from 'lucide-react';
 
 interface SecurityCheck {
   id: string;

@@ -48,7 +48,7 @@ export const GET = withAdminGuard(async (_request, { session }) => {
         escapeField(a.gifiCode),
         escapeField(a.gifiName),
         escapeField(a.ccaClass),
-        escapeField(a.ccaRate),
+        escapeField(a.ccaRate !== null ? Number(a.ccaRate) : null),
         escapeField(a.deductiblePercent),
         escapeField(a.isContra ? 'Yes' : 'No'),
       ].join(',')

@@ -3,6 +3,12 @@ export const dynamic = 'force-dynamic';
 /**
  * API Reorder - Reconstruit un panier à partir d'une commande existante
  * POST /api/account/orders/[id]/reorder
+ *
+ * Returns:
+ *   { items: ReorderItem[], skipped: SkippedItem[] }
+ *
+ * - items: products/formats that are still available and can be added to cart
+ * - skipped: items that could not be re-ordered, with a reason string
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -21,6 +27,13 @@ interface ReorderItem {
   quantity: number;
   price: number;
   image: string | null;
+}
+
+interface SkippedItem {
+  productId: string;
+  formatId: string | null;
+  name: string;
+  reason: string;
 }
 
 export async function POST(
@@ -111,15 +124,30 @@ export async function POST(
     // Build a lookup map for products
     const productMap = new Map(products.map((p) => [p.id, p]));
 
-    const availableItems: ReorderItem[] = [];
-    const unavailable: string[] = [];
+    const items: ReorderItem[] = [];
+    const skipped: SkippedItem[] = [];
 
     for (const item of order.items) {
       const product = productMap.get(item.productId);
 
       // Product no longer exists or is inactive
-      if (!product || !product.isActive) {
-        unavailable.push(item.productName + (item.formatName ? ` - ${item.formatName}` : ''));
+      if (!product) {
+        skipped.push({
+          productId: item.productId,
+          formatId: item.formatId,
+          name: item.productName + (item.formatName ? ` - ${item.formatName}` : ''),
+          reason: 'product_not_found',
+        });
+        continue;
+      }
+
+      if (!product.isActive) {
+        skipped.push({
+          productId: item.productId,
+          formatId: item.formatId,
+          name: item.productName + (item.formatName ? ` - ${item.formatName}` : ''),
+          reason: 'product_unavailable',
+        });
         continue;
       }
 
@@ -127,13 +155,51 @@ export async function POST(
       if (item.formatId) {
         const format = product.formats.find((f) => f.id === item.formatId);
 
-        // Format no longer exists, is inactive, or out of stock
-        if (!format || !format.isActive || !format.inStock || format.availability === 'OUT_OF_STOCK' || format.availability === 'DISCONTINUED') {
-          unavailable.push(`${item.productName} - ${item.formatName || format?.name || 'Unknown format'}`);
+        // Format no longer exists
+        if (!format) {
+          skipped.push({
+            productId: item.productId,
+            formatId: item.formatId,
+            name: `${item.productName} - ${item.formatName || 'Unknown format'}`,
+            reason: 'format_not_found',
+          });
           continue;
         }
 
-        availableItems.push({
+        // Format is inactive
+        if (!format.isActive) {
+          skipped.push({
+            productId: item.productId,
+            formatId: item.formatId,
+            name: `${item.productName} - ${format.name}`,
+            reason: 'format_unavailable',
+          });
+          continue;
+        }
+
+        // Format is discontinued
+        if (format.availability === 'DISCONTINUED') {
+          skipped.push({
+            productId: item.productId,
+            formatId: item.formatId,
+            name: `${item.productName} - ${format.name}`,
+            reason: 'discontinued',
+          });
+          continue;
+        }
+
+        // Format is out of stock
+        if (!format.inStock || format.availability === 'OUT_OF_STOCK') {
+          skipped.push({
+            productId: item.productId,
+            formatId: item.formatId,
+            name: `${item.productName} - ${format.name}`,
+            reason: 'out_of_stock',
+          });
+          continue;
+        }
+
+        items.push({
           productId: product.id,
           formatId: format.id,
           slug: product.slug,
@@ -145,7 +211,7 @@ export async function POST(
         });
       } else {
         // Product without a specific format — use base product price
-        availableItems.push({
+        items.push({
           productId: product.id,
           formatId: null,
           slug: product.slug,
@@ -158,10 +224,7 @@ export async function POST(
       }
     }
 
-    return NextResponse.json({
-      items: availableItems,
-      unavailable,
-    });
+    return NextResponse.json({ items, skipped });
   } catch (error) {
     logger.error('Reorder error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(

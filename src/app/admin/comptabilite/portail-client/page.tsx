@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import {
-  Plus, Copy, Check, XCircle, Eye, Clock,
+  Plus, Copy, Check, XCircle, Clock,
   Shield, ShieldOff, Loader2, ExternalLink, Users,
   Mail, Building2, CalendarDays, AlertTriangle,
 } from 'lucide-react';

@@ -616,7 +616,7 @@ export default function MultiEntityPage() {
       header: t('admin.multiEntity.amount'),
       render: (tx) => (
         <span className="font-semibold">
-          {formatCurrency(tx.amount, tx.currency)}
+          {formatCurrency(tx.amount)}
         </span>
       ),
     },
@@ -688,7 +688,7 @@ export default function MultiEntityPage() {
         theme={theme}
         actions={
           activeTab === 'entities' ? (
-            <Button onClick={openCreateEntity} icon={<Plus className="h-4 w-4" />}>
+            <Button onClick={openCreateEntity} icon={Plus}>
               {t('admin.multiEntity.addEntity')}
             </Button>
           ) : activeTab === 'interco' ? (
@@ -696,7 +696,7 @@ export default function MultiEntityPage() {
               <Button
                 onClick={autoMatch}
                 variant="secondary"
-                icon={<Zap className="h-4 w-4" />}
+                icon={Zap}
               >
                 {t('admin.multiEntity.autoMatch')}
               </Button>
@@ -711,7 +711,7 @@ export default function MultiEntityPage() {
                   });
                   setShowIntercoModal(true);
                 }}
-                icon={<Plus className="h-4 w-4" />}
+                icon={Plus}
               >
                 {t('admin.multiEntity.addInterco')}
               </Button>
@@ -866,7 +866,7 @@ export default function MultiEntityPage() {
               <Button
                 onClick={eliminate}
                 variant="secondary"
-                icon={<Ban className="h-4 w-4" />}
+                icon={Ban}
               >
                 {t('admin.multiEntity.eliminatePosted')}
               </Button>
@@ -940,7 +940,7 @@ export default function MultiEntityPage() {
             <Button
               onClick={fetchConsolidation}
               variant="secondary"
-              icon={<RefreshCw className="h-4 w-4" />}
+              icon={RefreshCw}
             >
               {t('admin.multiEntity.refresh')}
             </Button>
@@ -1142,7 +1142,7 @@ export default function MultiEntityPage() {
               <Button
                 onClick={fetchComparison}
                 disabled={selectedCompareIds.length < 2}
-                icon={<BarChart3 className="h-4 w-4" />}
+                icon={BarChart3}
               >
                 {t('admin.multiEntity.compare')}
               </Button>

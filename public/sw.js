@@ -1,23 +1,32 @@
 /**
- * Service Worker for BioCycle Peptides PWA
- * Cache-first for static assets, network-first for API/HTML
+ * Service Worker for BioCycle CRM PWA
+ * - Cache-first for static assets (CSS, JS, images, fonts, icons)
+ * - Network-first for API calls (with cache fallback)
+ * - Offline fallback page for navigation requests
+ * - Push notification handler
  */
 
-const CACHE_VERSION = 'v1';
-const STATIC_CACHE = `biocycle-static-${CACHE_VERSION}`;
-const DYNAMIC_CACHE = `biocycle-dynamic-${CACHE_VERSION}`;
+const CACHE_VERSION = 'v2';
+const STATIC_CACHE = `biocycle-crm-static-${CACHE_VERSION}`;
+const DYNAMIC_CACHE = `biocycle-crm-dynamic-${CACHE_VERSION}`;
 const OFFLINE_PAGE = '/offline.html';
 
-// Static assets to cache on install
+// Static assets to precache on install
 const STATIC_ASSETS = [
   '/',
   '/offline.html',
   '/manifest.json',
+  '/icon-192.png',
+  '/icon-512.png',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
+  '/icons/icon-96.png',
 ];
 
-// Install event - cache static assets
+// ---------------------------------------------------------------------------
+// Install: precache static assets
+// ---------------------------------------------------------------------------
+
 self.addEventListener('install', (event) => {
   console.log('[SW] Installing service worker...');
 
@@ -34,7 +43,10 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Activate event - clean up old caches
+// ---------------------------------------------------------------------------
+// Activate: clean up old caches
+// ---------------------------------------------------------------------------
+
 self.addEventListener('activate', (event) => {
   console.log('[SW] Activating service worker...');
 
@@ -44,9 +56,8 @@ self.addEventListener('activate', (event) => {
         return Promise.all(
           cacheNames
             .filter((cacheName) => {
-              // Delete old caches that don't match current version
-              return cacheName.startsWith('biocycle-') &&
-                     !cacheName.endsWith(CACHE_VERSION);
+              return (cacheName.startsWith('biocycle-crm-') || cacheName.startsWith('biocycle-'))
+                && !cacheName.endsWith(CACHE_VERSION);
             })
             .map((cacheName) => {
               console.log('[SW] Deleting old cache:', cacheName);
@@ -58,40 +69,44 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch event - handle requests with appropriate caching strategy
+// ---------------------------------------------------------------------------
+// Fetch: routing strategies
+// ---------------------------------------------------------------------------
+
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Skip non-GET requests
+  // Skip non-GET requests (mutations always go to network)
   if (request.method !== 'GET') {
     return;
   }
 
-  // Skip Chrome extension requests
-  if (url.protocol === 'chrome-extension:') {
+  // Skip chrome-extension and other non-http(s) protocols
+  if (!url.protocol.startsWith('http')) {
     return;
   }
 
-  // API requests - Network first, fallback to cache
+  // API requests: Network-first with cache fallback
   if (url.pathname.startsWith('/api/')) {
     event.respondWith(networkFirst(request));
     return;
   }
 
-  // Static assets (images, fonts, CSS, JS) - Cache first
-  if (
-    url.pathname.match(/\.(png|jpg|jpeg|svg|gif|webp|woff|woff2|ttf|css|js)$/)
-  ) {
+  // Static assets (images, fonts, CSS, JS): Cache-first
+  if (url.pathname.match(/\.(png|jpg|jpeg|svg|gif|webp|ico|woff|woff2|ttf|eot|css|js)$/)) {
     event.respondWith(cacheFirst(request));
     return;
   }
 
-  // HTML pages - Network first, fallback to cache, then offline page
+  // HTML pages: Network-first with offline fallback
   event.respondWith(networkFirstWithOfflineFallback(request));
 });
 
-// Cache-first strategy (for static assets)
+// ---------------------------------------------------------------------------
+// Cache-first strategy (static assets)
+// ---------------------------------------------------------------------------
+
 async function cacheFirst(request) {
   const cache = await caches.open(STATIC_CACHE);
   const cached = await cache.match(request);
@@ -112,7 +127,10 @@ async function cacheFirst(request) {
   }
 }
 
-// Network-first strategy (for API calls)
+// ---------------------------------------------------------------------------
+// Network-first strategy (API calls)
+// ---------------------------------------------------------------------------
+
 async function networkFirst(request) {
   const cache = await caches.open(DYNAMIC_CACHE);
 
@@ -127,11 +145,18 @@ async function networkFirst(request) {
     if (cached) {
       return cached;
     }
-    throw error;
+    // Return a JSON error response for offline API calls
+    return new Response(
+      JSON.stringify({ success: false, error: { message: 'Offline', code: 'OFFLINE' } }),
+      { status: 503, headers: { 'Content-Type': 'application/json' } }
+    );
   }
 }
 
-// Network-first with offline fallback (for HTML pages)
+// ---------------------------------------------------------------------------
+// Network-first with offline fallback (HTML pages)
+// ---------------------------------------------------------------------------
+
 async function networkFirstWithOfflineFallback(request) {
   const cache = await caches.open(DYNAMIC_CACHE);
 
@@ -150,7 +175,7 @@ async function networkFirstWithOfflineFallback(request) {
 
     // Fall back to offline page for navigation requests
     if (request.mode === 'navigate') {
-      const offlinePage = await cache.match(OFFLINE_PAGE);
+      const offlinePage = await caches.match(OFFLINE_PAGE);
       if (offlinePage) {
         return offlinePage;
       }
@@ -160,18 +185,23 @@ async function networkFirstWithOfflineFallback(request) {
   }
 }
 
-// Listen for messages from the client
+// ---------------------------------------------------------------------------
+// Messages from client
+// ---------------------------------------------------------------------------
+
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
   if (event.data && event.data.type === 'SYNC_QUEUE') {
-    // Trigger sync queue processing from PWA service
     console.log('[SW] Sync queue triggered');
   }
 });
 
-// Background sync for offline POST requests
+// ---------------------------------------------------------------------------
+// Background sync for offline mutations
+// ---------------------------------------------------------------------------
+
 self.addEventListener('sync', (event) => {
   if (event.tag === 'sync-queue') {
     event.waitUntil(
@@ -182,21 +212,66 @@ self.addEventListener('sync', (event) => {
   }
 });
 
+// ---------------------------------------------------------------------------
 // Push notifications
+// ---------------------------------------------------------------------------
+
 self.addEventListener('push', (event) => {
-  const data = event.data ? event.data.json() : { title: 'BioCycle Compta', body: 'Nouvelle notification' };
+  let data = { title: 'BioCycle CRM', body: 'New notification' };
+
+  if (event.data) {
+    try {
+      data = event.data.json();
+    } catch {
+      data = { title: 'BioCycle CRM', body: event.data.text() };
+    }
+  }
+
+  const options = {
+    body: data.body || '',
+    icon: '/icon-192.png',
+    badge: '/icons/icon-96.png',
+    vibrate: [100, 50, 100],
+    data: {
+      url: data.url || '/admin/crm',
+      dateOfArrival: Date.now(),
+    },
+    actions: [
+      { action: 'open', title: 'Open' },
+      { action: 'dismiss', title: 'Dismiss' },
+    ],
+  };
+
   event.waitUntil(
-    self.registration.showNotification(data.title || 'BioCycle Compta', {
-      body: data.body || '',
-      icon: '/icons/icon-192.png',
-      badge: '/icons/icon-96.png',
-      data: { url: data.url || '/mobile/dashboard' },
-    })
+    self.registration.showNotification(data.title || 'BioCycle CRM', options)
   );
 });
 
+// ---------------------------------------------------------------------------
+// Notification click handler
+// ---------------------------------------------------------------------------
+
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  const url = event.notification.data?.url || '/mobile/dashboard';
-  event.waitUntil(self.clients.openWindow(url));
+
+  if (event.action === 'dismiss') {
+    return;
+  }
+
+  const url = event.notification.data?.url || '/admin/crm';
+
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+      .then((windowClients) => {
+        // Focus existing window if available
+        for (const client of windowClients) {
+          if (client.url.includes('/admin/crm') && 'focus' in client) {
+            client.navigate(url);
+            return client.focus();
+          }
+        }
+        // Open new window
+        return self.clients.openWindow(url);
+      })
+  );
 });

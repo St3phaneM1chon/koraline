@@ -11,6 +11,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useI18n } from '@/i18n/client';
 import { useCart } from '@/contexts/CartContext';
+import CartShareButton from '@/components/cart/CartShareButton';
 
 // Re-export CartProvider and useCart from the canonical source
 export { CartProvider, useCart } from '@/contexts/CartContext';
@@ -174,6 +175,7 @@ export default function CartDrawer() {
             <button className="cart-drawer__continue" onClick={closeCart}>
               {t('cart.continueShopping')}
             </button>
+            <CartShareButton items={items} />
           </div>
         )}
       </div>

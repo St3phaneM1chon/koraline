@@ -11,6 +11,8 @@
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import * as telnyx from '@/lib/telnyx';
+import { getTelnyxConnectionId, getDefaultCallerId } from '@/lib/telnyx';
+import { VoipStateMap } from './voip-state';
 
 // Track attended transfer state
 interface AttendedTransferState {
@@ -20,7 +22,7 @@ interface AttendedTransferState {
   status: 'consulting' | 'bridging' | 'cancelled';
 }
 
-const attendedTransfers = new Map<string, AttendedTransferState>();
+const attendedTransfers = new VoipStateMap<AttendedTransferState>('voip:transfer:');
 
 // Track active conferences
 interface ConferenceState {
@@ -30,7 +32,7 @@ interface ConferenceState {
   createdAt: Date;
 }
 
-const activeConferences = new Map<string, ConferenceState>();
+const activeConferences = new VoipStateMap<ConferenceState>('voip:conference:');
 
 // ── Blind Transfer ──────────────────
 
@@ -78,12 +80,12 @@ export async function startAttendedTransfer(
     "Veuillez patienter pendant le transfert.");
 
   // Dial the target for consultation
-  const connectionId = options?.connectionId || process.env.TELNYX_CONNECTION_ID || '';
+  const connectionId = options?.connectionId || getTelnyxConnectionId();
   const resolvedDest = await resolveDestination(targetNumber);
 
   const result = await telnyx.dialCall({
     to: resolvedDest,
-    from: options?.from || process.env.TELNYX_DEFAULT_CALLER_ID || '',
+    from: options?.from || getDefaultCallerId(),
     connectionId,
     webhookUrl: options?.webhookUrl,
     clientState: JSON.stringify({
@@ -315,6 +317,93 @@ export async function endConference(conferenceId: string): Promise<void> {
 
   activeConferences.delete(conferenceId);
   logger.info('[Conference] Ended', { conferenceId });
+}
+
+// ── Video Conference Rooms ──────────────────
+
+interface VideoRoomState {
+  roomId: string;
+  name: string;
+  participants: string[];
+  createdAt: Date;
+  isRecording: boolean;
+}
+
+const activeVideoRooms = new VoipStateMap<VideoRoomState>('voip:videoroom:');
+
+/**
+ * Create a Telnyx Video room for conference calls with video.
+ */
+export async function createVideoRoom(
+  roomName: string,
+  options?: {
+    maxParticipants?: number;
+    enableRecording?: boolean;
+  }
+): Promise<{ roomId: string; clientToken: string }> {
+  const result = await telnyx.telnyxFetch<{
+    id: string;
+    client_token: { token: string };
+  }>('/rooms', {
+    method: 'POST',
+    body: {
+      unique_name: roomName,
+      max_participants: options?.maxParticipants ?? 10,
+      enable_recording: options?.enableRecording ?? false,
+    },
+  });
+
+  const roomId = result.data.id;
+  const clientToken = result.data.client_token?.token || '';
+
+  activeVideoRooms.set(roomId, {
+    roomId,
+    name: roomName,
+    participants: [],
+    createdAt: new Date(),
+    isRecording: options?.enableRecording ?? false,
+  });
+
+  logger.info('[VideoRoom] Created', { roomId, name: roomName });
+  return { roomId, clientToken };
+}
+
+/**
+ * Generate a client token for joining a video room.
+ */
+export async function getVideoRoomToken(
+  roomId: string,
+  participantName: string
+): Promise<string> {
+  const result = await telnyx.telnyxFetch<{
+    token: string;
+  }>(`/rooms/${roomId}/actions/generate_join_client_token`, {
+    method: 'POST',
+    body: {
+      refresh_token_ttl_secs: 3600,
+      token_ttl_secs: 600,
+    },
+  });
+
+  const room = activeVideoRooms.get(roomId);
+  if (room) {
+    room.participants.push(participantName);
+  }
+
+  return result.data.token;
+}
+
+/**
+ * End a video room.
+ */
+export async function endVideoRoom(roomId: string): Promise<void> {
+  try {
+    await telnyx.telnyxFetch(`/rooms/${roomId}`, { method: 'DELETE' });
+  } catch {
+    // Room may already be closed
+  }
+  activeVideoRooms.delete(roomId);
+  logger.info('[VideoRoom] Ended', { roomId });
 }
 
 // ── Helpers ──────────────────

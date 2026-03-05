@@ -13,8 +13,9 @@ import {
   Megaphone, Inbox, FileBarChart, Layout, Receipt, CreditCard, Clock,
   BookOpen, Import, Ruler, Scale, Calendar, FileCheck, Zap, Target,
   Trash2, AlertTriangle, StickyNote, FolderSearch, FileEdit, Globe,
-  ClipboardCheck, Database, Sparkles, Play, Wifi,
-  Phone, PhoneCall, Voicemail, Headphones, BarChart3,
+  ClipboardCheck, Database, Sparkles, Play, Wifi, Monitor,
+  Phone, PhoneCall, Voicemail, Headphones, BarChart3, GitBranch,
+  Workflow, ClipboardList, Mic, ArrowRightLeft, PhoneForwarded,
 } from 'lucide-react';
 import { TeamsIcon, ZoomIcon, WebexIcon, GoogleMeetIcon, WhatsAppIcon } from '@/components/admin/icons/platform-icons';
 
@@ -278,9 +279,31 @@ export const folderSections: Record<string, NavFolderSection> = {
           { href: '/admin/telephonie/journal', labelKey: 'admin.nav.voipCallLog', icon: PhoneCall },
           { href: '/admin/telephonie/enregistrements', labelKey: 'admin.nav.voipRecordings', icon: Headphones },
           { href: '/admin/telephonie/messagerie', labelKey: 'admin.nav.voipVoicemail', icon: Voicemail },
-          { href: '/admin/telephonie/analytique', labelKey: 'admin.nav.voipAnalytics', icon: BarChart3 },
+          { href: '/admin/telephonie/wallboard', labelKey: 'admin.nav.voipWallboard', icon: Monitor },
         ],
         defaultOpen: true,
+      },
+      {
+        labelKey: 'admin.nav.voipOperations',
+        items: [
+          { href: '/admin/telephonie/campagnes', labelKey: 'admin.nav.voipCampaigns', icon: Target },
+          { href: '/admin/telephonie/coaching', labelKey: 'admin.nav.voipCoaching', icon: Mic },
+          { href: '/admin/telephonie/transferts', labelKey: 'admin.nav.voipForwarding', icon: PhoneForwarded },
+          { href: '/admin/telephonie/groupes', labelKey: 'admin.nav.voipRingGroups', icon: GitBranch },
+          { href: '/admin/telephonie/sondages', labelKey: 'admin.nav.voipSurveys', icon: ClipboardList },
+        ],
+        collapsible: true,
+        defaultOpen: false,
+      },
+      {
+        labelKey: 'admin.nav.voipAdvanced',
+        items: [
+          { href: '/admin/telephonie/ivr-builder', labelKey: 'admin.nav.voipIvrBuilder', icon: Workflow },
+          { href: '/admin/telephonie/webhooks', labelKey: 'admin.nav.voipWebhooks', icon: ArrowRightLeft },
+          { href: '/admin/telephonie/analytics', labelKey: 'admin.nav.voipAnalytics', icon: BarChart3 },
+        ],
+        collapsible: true,
+        defaultOpen: false,
       },
       {
         labelKey: 'admin.nav.voipSettings',
@@ -288,6 +311,7 @@ export const folderSections: Record<string, NavFolderSection> = {
           { href: '/admin/telephonie/connexions', labelKey: 'admin.nav.voipConnections', icon: Wifi },
           { href: '/admin/telephonie/numeros', labelKey: 'admin.nav.voipPhoneNumbers', icon: Phone },
           { href: '/admin/telephonie/extensions', labelKey: 'admin.nav.voipExtensions', icon: Users },
+          { href: '/admin/telephonie/parametres', labelKey: 'admin.nav.voipParameters', icon: Settings },
         ],
         collapsible: true,
         defaultOpen: false,

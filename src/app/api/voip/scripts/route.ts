@@ -16,20 +16,27 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { searchParams } = request.nextUrl;
-  const companyId = searchParams.get('companyId');
-  const category = searchParams.get('category');
+  try {
+    const { searchParams } = request.nextUrl;
+    const companyId = searchParams.get('companyId');
+    const category = searchParams.get('category');
 
-  const scripts = await prisma.dialerScript.findMany({
-    where: {
-      ...(companyId ? { companyId } : {}),
-      ...(category ? { category } : {}),
-      isActive: true,
-    },
-    orderBy: { updatedAt: 'desc' },
-  });
+    const scripts = await prisma.dialerScript.findMany({
+      where: {
+        ...(companyId ? { companyId } : {}),
+        ...(category ? { category } : {}),
+        isActive: true,
+      },
+      orderBy: { updatedAt: 'desc' },
+    });
 
-  return NextResponse.json({ data: scripts });
+    return NextResponse.json({ data: scripts });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Internal server error', details: error instanceof Error ? error.message : String(error) },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -38,24 +45,31 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const body = await request.json();
-  const { companyId, name, content, category } = body;
+  try {
+    const body = await request.json();
+    const { companyId, name, content, category } = body;
 
-  if (!companyId || !name || !content) {
+    if (!companyId || !name || !content) {
+      return NextResponse.json(
+        { error: 'companyId, name, and content required' },
+        { status: 400 }
+      );
+    }
+
+    const script = await prisma.dialerScript.create({
+      data: {
+        companyId,
+        name,
+        content,
+        category: category || 'general',
+      },
+    });
+
+    return NextResponse.json({ data: script }, { status: 201 });
+  } catch (error) {
     return NextResponse.json(
-      { error: 'companyId, name, and content required' },
-      { status: 400 }
+      { error: 'Internal server error', details: error instanceof Error ? error.message : String(error) },
+      { status: 500 }
     );
   }
-
-  const script = await prisma.dialerScript.create({
-    data: {
-      companyId,
-      name,
-      content,
-      category: category || 'general',
-    },
-  });
-
-  return NextResponse.json({ data: script }, { status: 201 });
 }

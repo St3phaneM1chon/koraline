@@ -235,6 +235,22 @@ export async function purchaseStock(
   createdBy?: string
 ): Promise<void> {
   for (const item of items) {
+    // Capture old stock before transaction for audit logging
+    let oldQty = 0;
+    if (item.formatId) {
+      const fmt = await prisma.productFormat.findUnique({
+        where: { id: item.formatId },
+        select: { stockQuantity: true },
+      });
+      oldQty = fmt?.stockQuantity || 0;
+    } else {
+      const prod = await prisma.product.findUnique({
+        where: { id: item.productId },
+        select: { stockQuantity: true },
+      });
+      oldQty = prod?.stockQuantity || 0;
+    }
+
     await prisma.$transaction(async (tx) => {
       // Get current stock quantity and WAC
       let currentQty = 0;
@@ -301,11 +317,71 @@ export async function purchaseStock(
         },
       });
     });
+
+    // Fire-and-forget audit log for stock purchase
+    logStockChange({
+      productId: item.productId,
+      formatId: item.formatId || null,
+      changeType: 'PURCHASE',
+      oldQuantity: oldQty,
+      newQuantity: oldQty + item.quantity,
+      quantity: item.quantity,
+      reason: supplierInvoiceId
+        ? `Purchase (invoice: ${supplierInvoiceId})`
+        : 'Purchase',
+      changedBy: createdBy || null,
+    });
   }
 }
 
 /**
+ * Log a stock change to the AuditLog table for inventory audit trail.
+ * Fire-and-forget: errors are logged but do not block the caller.
+ */
+export function logStockChange(params: {
+  productId: string;
+  formatId: string | null;
+  changeType: string;
+  oldQuantity: number;
+  newQuantity: number;
+  quantity: number;
+  reason: string;
+  changedBy: string | null;
+}): void {
+  const { productId, formatId, changeType, oldQuantity, newQuantity, quantity, reason, changedBy } = params;
+
+  prisma.auditLog
+    .create({
+      data: {
+        userId: changedBy,
+        action: 'INVENTORY_CHANGE',
+        entityType: 'ProductFormat',
+        entityId: formatId || productId,
+        details: JSON.stringify({
+          productId,
+          formatId,
+          changeType,
+          oldQuantity,
+          newQuantity,
+          quantityChanged: quantity,
+          reason,
+          changedBy,
+          timestamp: new Date().toISOString(),
+        }),
+      },
+    })
+    .catch((err) => {
+      logger.error('[logStockChange] Failed to write audit log', {
+        error: err instanceof Error ? err.message : String(err),
+        productId,
+        formatId,
+      });
+    });
+}
+
+/**
  * Manual stock adjustment
+ * Logs the change in both InventoryTransaction and AuditLog for audit trail.
  */
 export async function adjustStock(
   productId: string,
@@ -314,6 +390,22 @@ export async function adjustStock(
   reason: string,
   createdBy?: string
 ): Promise<void> {
+  // Capture old stock value for audit logging
+  let oldQuantity = 0;
+  if (formatId) {
+    const format = await prisma.productFormat.findUnique({
+      where: { id: formatId },
+      select: { stockQuantity: true },
+    });
+    oldQuantity = format?.stockQuantity || 0;
+  } else {
+    const product = await prisma.product.findUnique({
+      where: { id: productId },
+      select: { stockQuantity: true },
+    });
+    oldQuantity = product?.stockQuantity || 0;
+  }
+
   await prisma.$transaction(async (tx) => {
     if (formatId) {
       if (quantity > 0) {
@@ -377,6 +469,22 @@ export async function adjustStock(
         createdBy,
       },
     });
+  });
+
+  // Fire-and-forget audit log for stock change
+  const expectedNew = quantity > 0
+    ? oldQuantity + quantity
+    : Math.max(0, oldQuantity + quantity);
+
+  logStockChange({
+    productId,
+    formatId,
+    changeType: 'ADJUSTMENT',
+    oldQuantity,
+    newQuantity: expectedNew,
+    quantity,
+    reason,
+    changedBy: createdBy || null,
   });
 }
 

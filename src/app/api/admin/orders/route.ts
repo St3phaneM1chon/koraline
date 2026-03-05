@@ -339,14 +339,14 @@ export const PUT = withAdminGuard(async (request, { session }) => {
       const triggerEvent = automationMap[status];
       if (triggerEvent) {
         const user = await prisma.user.findUnique({
-          where: { id: order.userId },
+          where: { id: order.userId ?? undefined },
           select: { email: true, name: true },
         });
         if (user) {
           handleEvent(triggerEvent as Parameters<typeof handleEvent>[0], {
             email: user.email,
             name: user.name || undefined,
-            userId: order.userId,
+            userId: order.userId ?? undefined,
             orderId: order.id,
             orderNumber: order.orderNumber,
             trackingNumber: trackingNumber || order.trackingNumber || '',
@@ -486,7 +486,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
                 handleEvent(triggerEvent as Parameters<typeof handleEvent>[0], {
                   email: o.user.email,
                   name: o.user.name || undefined,
-                  userId: o.userId,
+                  userId: o.userId ?? undefined,
                   orderId,
                   orderNumber: o.orderNumber,
                   trackingNumber: o.trackingNumber || '',

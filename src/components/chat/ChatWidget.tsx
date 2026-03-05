@@ -1,562 +1,513 @@
 'use client';
 
 /**
- * Widget Chat Client - BioCycle Peptides
- * Bulle de chat en bas à droite de l'écran
+ * ChatWidget - Floating chat bubble for BioCycle Peptides
  *
- * IMP-032: Chat widget floats on all pages (except /admin), with open/close animation,
- *          unread badge, emoji picker, image upload support
- * IMP-045: Max character length enforcement on chat input (5000 chars)
+ * Features:
+ * - Floating button (bottom-right) with MessageCircle icon
+ * - Name/email collection before first message
+ * - Sends messages to /api/public/chat
+ * - Polls for new messages every 5 seconds
+ * - Dismissible / minimizable chat window
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { usePathname } from 'next/navigation';
 import { useI18n } from '@/i18n/client';
+import { toast } from 'sonner';
+import {
+  MessageCircle,
+  X,
+  Send,
+  Minimize2,
+  User,
+  Mail,
+  Loader2,
+} from 'lucide-react';
 
-interface Message {
+interface ChatMessage {
   id: string;
   content: string;
-  contentOriginal?: string;
-  sender: 'VISITOR' | 'ADMIN' | 'BOT';
+  role: 'user' | 'admin' | 'bot';
   senderName?: string;
   createdAt: string;
-  isFromBot: boolean;
-  type?: 'TEXT' | 'IMAGE' | 'FILE';
-  attachmentUrl?: string;
-  attachmentName?: string;
-  attachmentSize?: number;
 }
 
-interface ChatSettings {
-  isAdminOnline: boolean;
-  chatbotEnabled: boolean;
-  widgetColor: string;
-  widgetPosition: string;
-}
+type WidgetView = 'closed' | 'open' | 'minimized';
 
 export default function ChatWidget() {
   const { t, locale } = useI18n();
-  const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
+
+  const [view, setView] = useState<WidgetView>('closed');
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [conversationId, setConversationId] = useState<string | null>(null);
-  const [visitorId, setVisitorId] = useState<string | null>(null);
-  const [settings, setSettings] = useState<ChatSettings | null>(null);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
+
+  // Pre-chat form state
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [hasIdentified, setHasIdentified] = useState(false);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const lastMessageCountRef = useRef(0);
 
-  // F-009 FIX: Use fully random UUID for visitorId instead of timestamp-based format
-  // to prevent brute-force enumeration of conversation ownership.
-  // Old format (visitor_{timestamp}_{8chars}) was partially predictable.
+  // Restore identity from localStorage on mount
   useEffect(() => {
-    const stored = localStorage.getItem('biocycle_chat_visitor_id');
-    if (stored) {
-      setVisitorId(stored);
-    } else {
-      // F-009 FIX: Cryptographically random UUID - not guessable
-      const newId = crypto.randomUUID();
-      localStorage.setItem('biocycle_chat_visitor_id', newId);
-      setVisitorId(newId);
+    const storedName = localStorage.getItem('biocycle_chat_name');
+    const storedEmail = localStorage.getItem('biocycle_chat_email');
+    const storedConvId = localStorage.getItem('biocycle_chat_conversation_id');
+
+    if (storedName && storedEmail) {
+      setName(storedName);
+      setEmail(storedEmail);
+      setHasIdentified(true);
+    }
+    if (storedConvId) {
+      setConversationId(storedConvId);
     }
   }, []);
 
-  // Charger les settings
-  useEffect(() => {
-    fetch('/api/chat/settings')
-      .then(res => res.json())
-      .then(data => setSettings(data))
-      .catch(console.error);
-  }, []);
-
-  // Initialiser la conversation quand on ouvre le chat
-  const initConversation = useCallback(async () => {
-    if (!visitorId) return;
-    
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          visitorId,
-          visitorLanguage: navigator.language?.split('-')[0] || 'en',
-          currentPage: pathname,
-          userAgent: navigator.userAgent,
-        }),
-      });
-      
-      const data = await res.json();
-      if (data.conversation) {
-        setConversationId(data.conversation.id);
-        setMessages(data.conversation.messages || []);
-      }
-      // F-009 SYNC FIX: Server may generate a new visitorId for security.
-      // We MUST update our local state + localStorage to stay in sync,
-      // otherwise all subsequent messages/polls will fail (visitorId mismatch → 404).
-      if (data.visitorId && data.visitorId !== visitorId) {
-        setVisitorId(data.visitorId);
-        localStorage.setItem('biocycle_chat_visitor_id', data.visitorId);
-      }
-    } catch (error) {
-      console.error('Failed to init conversation:', error);
-    }
-  }, [visitorId, pathname]);
-
-  useEffect(() => {
-    if (isOpen && !conversationId) {
-      initConversation();
-    }
-  }, [isOpen, conversationId, initConversation]);
-
-  // Scroll to bottom on new messages
+  // Scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Focus input when opening
+  // Focus input when chat opens
   useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 100);
+    if (view === 'open') {
+      setTimeout(() => inputRef.current?.focus(), 150);
     }
-  }, [isOpen]);
+  }, [view, hasIdentified]);
 
-  // Reset unread count when opening
+  // Clear unread count when chat is opened
   useEffect(() => {
-    if (isOpen) {
+    if (view === 'open') {
       setUnreadCount(0);
     }
-  }, [isOpen]);
+  }, [view]);
 
-  // Polling for new messages (simple solution without WebSocket)
-  const pollingIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const messagesLengthRef = useRef(messages.length);
-  const pollIntervalMs = useRef(10000); // Start at 10s, backoff on 429
-
-  // Keep the ref in sync with messages length
+  // Poll for new messages every 5 seconds when chat is open and we have a conversation
   useEffect(() => {
-    messagesLengthRef.current = messages.length;
-  }, [messages.length]);
-
-  useEffect(() => {
-    // Clear any existing interval before setting a new one
-    if (pollingIntervalRef.current) {
-      clearInterval(pollingIntervalRef.current);
-      pollingIntervalRef.current = null;
+    if (pollingRef.current) {
+      clearInterval(pollingRef.current);
+      pollingRef.current = null;
     }
 
-    if (!isOpen || !conversationId) return;
+    if (view !== 'open' || !conversationId) return;
 
-    // Reset interval to default when chat opens
-    pollIntervalMs.current = 10000;
-
-    const pollMessages = async () => {
+    const poll = async () => {
       try {
-        const res = await fetch('/api/chat', {
+        const res = await fetch('/api/public/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ visitorId }),
+          body: JSON.stringify({
+            name,
+            email,
+            conversationId,
+          }),
         });
 
-        if (res.status === 429) {
-          // Rate limited — backoff: double the interval (max 60s)
-          pollIntervalMs.current = Math.min(pollIntervalMs.current * 2, 60000);
-          // Restart interval with new delay
-          if (pollingIntervalRef.current) {
-            clearInterval(pollingIntervalRef.current);
-            pollingIntervalRef.current = setInterval(pollMessages, pollIntervalMs.current);
-          }
-          return;
-        }
-
-        // Successful response — reset interval to default if it was backed off
-        if (pollIntervalMs.current > 10000) {
-          pollIntervalMs.current = 10000;
-          if (pollingIntervalRef.current) {
-            clearInterval(pollingIntervalRef.current);
-            pollingIntervalRef.current = setInterval(pollMessages, pollIntervalMs.current);
-          }
-        }
+        if (!res.ok) return;
 
         const data = await res.json();
-        if (data.conversation?.messages) {
-          const newMessages = data.conversation.messages;
-          if (newMessages.length > messagesLengthRef.current) {
-            setMessages(newMessages);
+        if (data.messages && Array.isArray(data.messages)) {
+          const incoming = data.messages as ChatMessage[];
+          if (incoming.length > lastMessageCountRef.current) {
+            setMessages(incoming);
+            lastMessageCountRef.current = incoming.length;
           }
         }
-      } catch (error) {
-        console.error('Polling error:', error);
+      } catch {
+        // Silently ignore polling errors to avoid toast spam
       }
     };
 
-    pollingIntervalRef.current = setInterval(pollMessages, pollIntervalMs.current);
+    pollingRef.current = setInterval(poll, 5000);
 
     return () => {
-      if (pollingIntervalRef.current) {
-        clearInterval(pollingIntervalRef.current);
-        pollingIntervalRef.current = null;
+      if (pollingRef.current) {
+        clearInterval(pollingRef.current);
+        pollingRef.current = null;
       }
     };
-  }, [isOpen, conversationId, visitorId]);
+  }, [view, conversationId, name, email]);
 
-  const sendMessage = async () => {
-    if (!inputValue.trim() || !conversationId || isLoading) return;
+  // Fetch existing messages when conversation is restored from localStorage
+  useEffect(() => {
+    if (hasIdentified && conversationId && view === 'open' && messages.length === 0) {
+      const fetchExisting = async () => {
+        try {
+          const res = await fetch('/api/public/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name,
+              email,
+              conversationId,
+            }),
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.messages && Array.isArray(data.messages)) {
+              setMessages(data.messages);
+              lastMessageCountRef.current = data.messages.length;
+            }
+            if (data.conversationId) {
+              setConversationId(data.conversationId);
+              localStorage.setItem('biocycle_chat_conversation_id', data.conversationId);
+            }
+          }
+        } catch {
+          // Ignore - will get messages on next poll
+        }
+      };
+      fetchExisting();
+    }
+  }, [hasIdentified, conversationId, view, messages.length, name, email]);
 
-    const messageContent = inputValue.trim();
+  const handleIdentify = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
+
+    if (!trimmedName) {
+      toast.error(t('chat.errors.nameRequired') || 'Please enter your name');
+      return;
+    }
+
+    if (!trimmedEmail) {
+      toast.error(t('chat.errors.emailRequired') || 'Please enter your email');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(trimmedEmail)) {
+      toast.error(t('chat.errors.emailInvalid') || 'Please enter a valid email address');
+      return;
+    }
+
+    localStorage.setItem('biocycle_chat_name', trimmedName);
+    localStorage.setItem('biocycle_chat_email', trimmedEmail);
+    setName(trimmedName);
+    setEmail(trimmedEmail);
+    setHasIdentified(true);
+  };
+
+  const sendMessage = useCallback(async () => {
+    const content = inputValue.trim();
+    if (!content || isLoading || !hasIdentified) return;
+
     setInputValue('');
     setIsLoading(true);
 
     // Optimistic update
-    const tempMessage: Message = {
-      id: `temp_${Date.now()}`,
-      content: messageContent,
-      sender: 'VISITOR',
+    const tempId = `temp_${Date.now()}`;
+    const optimisticMessage: ChatMessage = {
+      id: tempId,
+      content,
+      role: 'user',
+      senderName: name,
       createdAt: new Date().toISOString(),
-      isFromBot: false,
     };
-    setMessages(prev => [...prev, tempMessage]);
+    setMessages((prev) => [...prev, optimisticMessage]);
 
     try {
-      const res = await fetch('/api/chat/message', {
+      const res = await fetch('/api/public/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          name,
+          email,
+          message: content,
           conversationId,
-          content: messageContent,
-          sender: 'VISITOR',
-          visitorId,
         }),
       });
 
-      const data = await res.json();
-
-      if (!res.ok || !data.message) {
-        throw new Error(data.error || 'Failed to send message');
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to send message');
       }
 
-      // Replace temp message with real one
-      setMessages(prev => {
-        const filtered = prev.filter(m => m.id !== tempMessage.id);
-        const newMessages = [...filtered, data.message];
-        if (data.botMessage) {
-          newMessages.push(data.botMessage);
-        }
-        return newMessages;
-      });
+      const data = await res.json();
+
+      // Store the conversation ID from the server response
+      if (data.conversationId) {
+        setConversationId(data.conversationId);
+        localStorage.setItem('biocycle_chat_conversation_id', data.conversationId);
+      }
+
+      // Replace temp message with server response messages
+      if (data.messages && Array.isArray(data.messages)) {
+        setMessages(data.messages);
+        lastMessageCountRef.current = data.messages.length;
+      } else if (data.message) {
+        // Single message response - replace temp with real message
+        setMessages((prev) => {
+          const filtered = prev.filter((m) => m.id !== tempId);
+          const serverMsg: ChatMessage = {
+            id: data.message.id || `msg_${Date.now()}`,
+            content: data.message.content || content,
+            role: 'user',
+            senderName: name,
+            createdAt: data.message.createdAt || new Date().toISOString(),
+          };
+          const result = [...filtered, serverMsg];
+          if (data.botMessage) {
+            result.push({
+              id: data.botMessage.id || `bot_${Date.now()}`,
+              content: data.botMessage.content,
+              role: 'bot',
+              senderName: data.botMessage.senderName || 'Assistant',
+              createdAt: data.botMessage.createdAt || new Date().toISOString(),
+            });
+          }
+          lastMessageCountRef.current = result.length;
+          return result;
+        });
+      }
     } catch (error) {
-      console.error('Send message error:', error);
-      // Remove temp message on error and show error in chat
-      setMessages(prev => {
-        const filtered = prev.filter(m => m.id !== tempMessage.id);
-        return [...filtered, {
-          id: `error_${Date.now()}`,
-          content: t('common.error'),
-          sender: 'BOT' as const,
-          createdAt: new Date().toISOString(),
-          isFromBot: true,
-        }];
-      });
+      // Remove optimistic message on error
+      setMessages((prev) => prev.filter((m) => m.id !== tempId));
+      const errMsg = error instanceof Error ? error.message : 'Failed to send message';
+      toast.error(errMsg);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [inputValue, isLoading, hasIdentified, name, email, conversationId]);
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
     }
   };
 
-  // Emoji picker
-  const commonEmojis = [
-    '\u{1F600}', '\u{1F60A}', '\u{1F602}', '\u{1F923}', '\u{1F60D}', '\u{1F970}', '\u{1F618}', '\u{1F60E}',
-    '\u{1F914}', '\u{1F605}', '\u{1F622}', '\u{1F62D}', '\u{1F621}', '\u{1F92F}', '\u{1F973}', '\u{1F929}',
-    '\u{1F44D}', '\u{1F44E}', '\u2764\uFE0F', '\u{1F525}', '\u2705', '\u2B50', '\u{1F389}', '\u{1F4AF}',
-    '\u{1F44B}', '\u{1F64F}', '\u{1F4AA}', '\u{1F91D}', '\u{1F44F}', '\u{1F38A}', '\u{1F4A1}', '\u{1F4E6}',
-  ];
-
-  const insertEmoji = (emoji: string) => {
-    setInputValue(prev => prev + emoji);
-    setShowEmojiPicker(false);
-    inputRef.current?.focus();
+  const toggleChat = () => {
+    setView((prev) => (prev === 'closed' || prev === 'minimized' ? 'open' : 'closed'));
   };
 
-  // Image upload handler
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !conversationId) return;
+  const minimizeChat = () => {
+    setView('minimized');
+  };
 
-    // Reset file input so the same file can be re-selected
-    e.target.value = '';
-
-    setIsUploading(true);
-
-    // Optimistic update with a temporary image message
-    const tempMessage: Message = {
-      id: `temp_img_${Date.now()}`,
-      content: '[Uploading image...]',
-      sender: 'VISITOR',
-      createdAt: new Date().toISOString(),
-      isFromBot: false,
-      type: 'IMAGE',
-    };
-    setMessages(prev => [...prev, tempMessage]);
-
+  const formatTime = (dateStr: string) => {
     try {
-      // Upload file first
-      const formData = new FormData();
-      formData.append('image', file);
-      formData.append('conversationId', conversationId);
-
-      const uploadRes = await fetch('/api/chat/upload', { method: 'POST', body: formData });
-      const uploadData = await uploadRes.json();
-
-      if (!uploadRes.ok || !uploadData.success) {
-        throw new Error(uploadData.error || 'Upload failed');
-      }
-
-      // Send as image message
-      const msgRes = await fetch('/api/chat/message', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          conversationId,
-          content: uploadData.url,
-          sender: 'VISITOR',
-          visitorId,
-          type: 'IMAGE',
-          attachmentUrl: uploadData.url,
-          attachmentName: uploadData.name,
-          attachmentSize: uploadData.size,
-        }),
+      return new Date(dateStr).toLocaleTimeString(locale, {
+        hour: '2-digit',
+        minute: '2-digit',
       });
-
-      const msgData = await msgRes.json();
-
-      // Replace temp message with real one
-      setMessages(prev => {
-        const filtered = prev.filter(m => m.id !== tempMessage.id);
-        const newMessages = [...filtered, msgData.message];
-        if (msgData.botMessage) {
-          newMessages.push(msgData.botMessage);
-        }
-        return newMessages;
-      });
-    } catch (err) {
-      console.error('Image upload failed:', err);
-      // Remove temp message on error
-      setMessages(prev => prev.filter(m => m.id !== tempMessage.id));
-    } finally {
-      setIsUploading(false);
+    } catch {
+      return '';
     }
   };
 
-  // F-053 FIX: Align fallback with Prisma schema default (#f97316)
-  const widgetColor = settings?.widgetColor || '#f97316';
+  const getRoleBubbleClasses = (role: ChatMessage['role']) => {
+    switch (role) {
+      case 'user':
+        return 'bg-purple-600 text-white rounded-br-sm';
+      case 'admin':
+        return 'bg-blue-600 text-white rounded-bl-sm';
+      case 'bot':
+        return 'bg-white border border-gray-200 text-gray-800 rounded-bl-sm';
+      default:
+        return 'bg-gray-100 text-gray-800 rounded-bl-sm';
+    }
+  };
 
-  // Ne pas afficher sur les pages admin
-  if (pathname?.startsWith('/admin')) {
-    return null;
-  }
+  const getTimeClasses = (role: ChatMessage['role']) => {
+    return role === 'user' || role === 'admin' ? 'text-white/70' : 'text-gray-400';
+  };
 
   return (
     <>
-      {/* Chat Button */}
+      {/* Floating Chat Button */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 end-6 w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 z-50"
-        style={{ backgroundColor: widgetColor }}
-        aria-label={t('chat.aria.openChat')}
+        onClick={toggleChat}
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
+        aria-label={t('chat.aria.openChat') || 'Open chat'}
       >
-        {isOpen ? (
-          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
+        {view === 'open' ? (
+          <X className="w-6 h-6" />
         ) : (
-          <>
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
+          <div className="relative">
+            <MessageCircle className="w-6 h-6" />
             {unreadCount > 0 && (
-              <span className="absolute -top-1 -end-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
-                {unreadCount}
+              <span className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                {unreadCount > 9 ? '9+' : unreadCount}
               </span>
             )}
-          </>
+          </div>
         )}
       </button>
 
       {/* Chat Window */}
-      {isOpen && (
-        <div className="fixed bottom-24 end-6 w-[min(380px,calc(100vw-2rem))] bg-white rounded-2xl shadow-2xl overflow-hidden z-50 flex flex-col" style={{ height: '500px', maxHeight: 'calc(100vh - 140px)' }}>
+      {view === 'open' && (
+        <div className="fixed bottom-24 right-6 z-50 w-[min(380px,calc(100vw-2rem))] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col" style={{ height: '500px', maxHeight: 'calc(100vh - 140px)' }}>
           {/* Header */}
-          <div className="px-4 py-3 text-white flex items-center gap-3" style={{ backgroundColor: widgetColor }}>
+          <div className="bg-purple-600 text-white px-4 py-3 flex items-center gap-3 flex-shrink-0">
             <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-              <span className="text-xl">🔬</span>
+              <MessageCircle className="w-5 h-5" />
             </div>
-            <div className="flex-1">
-              <h3 className="font-semibold">BioCycle Peptides</h3>
-              <p className="text-xs opacity-80">
-                {settings?.isAdminOnline ? '🟢 Online' : '🤖 AI Assistant'}
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-sm truncate">
+                {t('chat.header.title') || 'BioCycle Peptides'}
+              </h3>
+              <p className="text-xs text-purple-200 truncate">
+                {t('chat.header.subtitle') || 'We typically reply within minutes'}
               </p>
             </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="p-1 hover:bg-white/20 rounded transition-colors"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${message.sender === 'VISITOR' ? 'justify-end' : 'justify-start'}`}
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <button
+                onClick={minimizeChat}
+                className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                aria-label={t('chat.aria.minimize') || 'Minimize chat'}
               >
-                <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-2 ${
-                    message.sender === 'VISITOR'
-                      ? 'bg-orange-500 text-white rounded-br-md'
-                      : message.sender === 'BOT'
-                      ? 'bg-white border border-gray-200 text-gray-800 rounded-bl-md'
-                      : 'bg-blue-500 text-white rounded-bl-md'
-                  }`}
-                >
-                  {message.sender !== 'VISITOR' && (
-                    <p className="text-xs opacity-70 mb-1">
-                      {message.senderName || (message.sender === 'BOT' ? '🤖 Assistant' : '👤 Support')}
-                    </p>
-                  )}
-                  {message.type === 'IMAGE' && message.attachmentUrl ? (
-                    <a href={message.attachmentUrl} target="_blank" rel="noopener noreferrer">
-                      <img
-                        src={message.attachmentUrl}
-                        alt={message.attachmentName || 'Image'}
-                        className="max-w-[200px] max-h-[200px] rounded-lg object-cover cursor-pointer hover:opacity-90 transition-opacity"
-                      />
-                    </a>
-                  ) : (
-                    <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                  )}
-                  <p className={`text-xs mt-1 ${message.sender === 'VISITOR' ? 'text-white/70' : 'text-gray-400'}`}>
-                    {new Date(message.createdAt).toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })}
-                  </p>
-                </div>
-              </div>
-            ))}
-            
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-md px-4 py-3">
-                  <div className="flex gap-1">
-                    <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                    <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                    <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
-                  </div>
-                </div>
-              </div>
-            )}
-            
-            <div ref={messagesEndRef} />
+                <Minimize2 className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => setView('closed')}
+                className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                aria-label={t('chat.aria.close') || 'Close chat'}
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
-          {/* Input */}
-          <div className="p-4 border-t bg-white">
-            <div className="flex items-center gap-1">
-              {/* Image upload button */}
-              <label className="p-2 hover:bg-slate-100 rounded-full cursor-pointer transition-colors flex-shrink-0" title={t('chat.uploadImage')}>
-                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" strokeWidth={2} />
-                  <circle cx="8.5" cy="8.5" r="1.5" strokeWidth={2} />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 15l-5-5L5 21" />
-                </svg>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp,image/gif"
-                  className="hidden"
-                  onChange={handleImageUpload}
-                  disabled={isLoading || isUploading}
-                />
-              </label>
+          {/* Body */}
+          {!hasIdentified ? (
+            /* Pre-chat: Name & Email form */
+            <div className="flex-1 flex flex-col items-center justify-center p-6 bg-gray-50">
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+                <MessageCircle className="w-8 h-8 text-purple-600" />
+              </div>
+              <h4 className="text-lg font-semibold text-gray-800 mb-1 text-center">
+                {t('chat.prechat.title') || 'Welcome!'}
+              </h4>
+              <p className="text-sm text-gray-500 mb-6 text-center">
+                {t('chat.prechat.subtitle') || 'Please introduce yourself to start chatting.'}
+              </p>
 
-              {/* Emoji picker */}
-              <div className="relative flex-shrink-0">
+              <form onSubmit={handleIdentify} className="w-full space-y-3">
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder={t('chat.prechat.namePlaceholder') || 'Your name'}
+                    className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    autoFocus
+                  />
+                </div>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder={t('chat.prechat.emailPlaceholder') || 'Your email'}
+                    className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  />
+                </div>
                 <button
-                  type="button"
-                  onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                  className="p-2 hover:bg-slate-100 rounded-full transition-colors"
-                  title={t('chat.emoji')}
+                  type="submit"
+                  className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2.5 rounded-lg text-sm transition-colors"
                 >
-                  <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10" strokeWidth={2} />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14s1.5 2 4 2 4-2 4-2" />
-                    <line x1="9" y1="9" x2="9.01" y2="9" strokeWidth={2} />
-                    <line x1="15" y1="9" x2="15.01" y2="9" strokeWidth={2} />
-                  </svg>
+                  {t('chat.prechat.startButton') || 'Start Chat'}
                 </button>
-                {showEmojiPicker && (
-                  <div className="absolute bottom-10 right-0 bg-white border border-slate-200 rounded-lg shadow-xl p-2 w-64 z-50">
-                    <div className="grid grid-cols-8 gap-1">
-                      {commonEmojis.map((emoji) => (
-                        <button
-                          key={emoji}
-                          type="button"
-                          onClick={() => insertEmoji(emoji)}
-                          className="w-7 h-7 flex items-center justify-center text-lg hover:bg-slate-100 rounded transition-colors"
-                        >
-                          {emoji}
-                        </button>
-                      ))}
+              </form>
+
+              <p className="text-xs text-gray-400 mt-4 text-center">
+                {t('chat.prechat.privacy') || 'Your information is kept private and secure.'}
+              </p>
+            </div>
+          ) : (
+            /* Chat messages area */
+            <>
+              <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
+                {messages.length === 0 && (
+                  <div className="flex flex-col items-center justify-center h-full text-center px-4">
+                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-3">
+                      <MessageCircle className="w-6 h-6 text-purple-600" />
+                    </div>
+                    <p className="text-sm text-gray-500">
+                      {t('chat.empty.message') || 'Send a message to start the conversation!'}
+                    </p>
+                  </div>
+                )}
+
+                {messages.map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${getRoleBubbleClasses(msg.role)}`}>
+                      {msg.role !== 'user' && msg.senderName && (
+                        <p className="text-xs opacity-70 mb-0.5 font-medium">
+                          {msg.senderName}
+                        </p>
+                      )}
+                      <p className="text-sm whitespace-pre-wrap break-words">{msg.content}</p>
+                      <p className={`text-xs mt-1 ${getTimeClasses(msg.role)}`}>
+                        {formatTime(msg.createdAt)}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-sm px-4 py-3">
+                      <div className="flex gap-1.5">
+                        <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      </div>
                     </div>
                   </div>
                 )}
+
+                <div ref={messagesEndRef} />
               </div>
 
-              {/* IMP-045: Max length enforcement on chat input */}
-              <input
-                ref={inputRef}
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value.slice(0, 5000))}
-                onKeyDown={handleKeyPress}
-                placeholder={t('chat.placeholder.typeMessage')}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-orange-500 text-sm"
-                disabled={isLoading || isUploading}
-                maxLength={5000}
-              />
-              <button
-                onClick={sendMessage}
-                disabled={(!inputValue.trim() || isLoading) && !isUploading}
-                className="w-10 h-10 rounded-full flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
-                style={{ backgroundColor: widgetColor }}
-              >
-                {isUploading ? (
-                  <svg className="w-5 h-5 text-white animate-spin" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth={4} />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                  </svg>
-                ) : (
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                  </svg>
-                )}
-              </button>
-            </div>
-            <p className="text-xs text-gray-400 text-center mt-2">
-              Powered by BioCycle Peptides
-            </p>
-          </div>
+              {/* Message input */}
+              <div className="p-3 border-t border-gray-200 bg-white flex-shrink-0">
+                <div className="flex items-center gap-2">
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value.slice(0, 5000))}
+                    onKeyDown={handleKeyDown}
+                    placeholder={t('chat.placeholder.typeMessage') || 'Type a message...'}
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    disabled={isLoading}
+                    maxLength={5000}
+                  />
+                  <button
+                    onClick={sendMessage}
+                    disabled={!inputValue.trim() || isLoading}
+                    className="w-10 h-10 bg-purple-600 hover:bg-purple-700 text-white rounded-full flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+                    aria-label={t('chat.aria.send') || 'Send message'}
+                  >
+                    {isLoading ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : (
+                      <Send className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
+                <p className="text-xs text-gray-400 text-center mt-2">
+                  Powered by BioCycle Peptides
+                </p>
+              </div>
+            </>
+          )}
         </div>
       )}
     </>

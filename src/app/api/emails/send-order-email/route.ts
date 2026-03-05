@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
 
     // Récupérer l'utilisateur
     const user = await db.user.findUnique({
-      where: { id: order.userId },
+      where: { id: order.userId ?? undefined },
       select: { name: true, email: true, locale: true },
     });
 
@@ -135,7 +135,7 @@ export async function POST(request: NextRequest) {
       refundAmount,
       refundIsPartial,
       // CAN-SPAM / RGPD / LCAP compliance
-      unsubscribeUrl: await generateUnsubscribeUrl(user.email, 'transactional', order.userId).catch(() => undefined),
+      unsubscribeUrl: await generateUnsubscribeUrl(user.email, 'transactional', order.userId ?? undefined).catch(() => undefined),
     };
 
     // Générer l'email selon le type

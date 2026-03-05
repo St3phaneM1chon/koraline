@@ -83,6 +83,9 @@ async function getEslClient() {
       host: config.host,
       port: config.port,
       password: config.password,
+      // esl-lite requires a pino Logger; our logger is compatible at runtime
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      logger: logger as any,
     });
     await _eslClient.connect();
     logger.info(`[ESL] Connected to FreeSWITCH at ${config.host}:${config.port}`);

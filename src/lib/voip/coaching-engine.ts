@@ -17,6 +17,8 @@
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import * as telnyx from '@/lib/telnyx';
+import { getTelnyxConnectionId, getDefaultCallerId } from '@/lib/telnyx';
+import { VoipStateMap } from './voip-state';
 
 export type SupervisorMode = 'LISTEN' | 'WHISPER' | 'BARGE';
 
@@ -32,8 +34,8 @@ interface ActiveCoachingCall {
   startedAt: Date;
 }
 
-// Active coaching calls keyed by sessionId
-const activeCoachingCalls = new Map<string, ActiveCoachingCall>();
+// Active coaching calls keyed by sessionId — Redis-backed
+const activeCoachingCalls = new VoipStateMap<ActiveCoachingCall>('voip:coaching:');
 
 /**
  * Start a coaching call: coach dials student, auto-records + transcribes.
@@ -59,8 +61,8 @@ export async function startCoachingCall(
     return { status: 'error', message: 'Student has no phone number' };
   }
 
-  const connectionId = process.env.TELNYX_CONNECTION_ID || '';
-  const from = options?.callerIdNumber || process.env.TELNYX_DEFAULT_CALLER_ID || '';
+  const connectionId = getTelnyxConnectionId();
+  const from = options?.callerIdNumber || getDefaultCallerId();
   const webhookUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/voip/webhooks/telnyx`;
 
   try {
@@ -173,8 +175,8 @@ export async function supervisorJoin(
     return { status: 'error', message: 'No active coaching call for this session' };
   }
 
-  const connectionId = process.env.TELNYX_CONNECTION_ID || '';
-  const from = process.env.TELNYX_DEFAULT_CALLER_ID || '';
+  const connectionId = getTelnyxConnectionId();
+  const from = getDefaultCallerId();
   const webhookUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/voip/webhooks/telnyx`;
 
   try {

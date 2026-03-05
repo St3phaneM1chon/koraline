@@ -74,7 +74,7 @@ export async function trackInteraction(params: {
         referrer: params.referrer || null,
         userAgent: params.userAgent?.slice(0, 500) || null,
         ipHash,
-        metadata: params.metadata || undefined,
+        metadata: params.metadata ? JSON.parse(JSON.stringify(params.metadata)) : undefined,
       },
     });
 
@@ -169,15 +169,6 @@ export async function getMediaAnalytics(options?: {
         conversions,
         engagementRate: views > 0 ? (clicks + shares) / views : 0,
       };
-    });
-
-    // Daily trend from ContentInteraction
-    const dailyInteractions = await prisma.contentInteraction.groupBy({
-      by: ['action'],
-      _count: { id: true },
-      where: { createdAt: { gte: since } },
-      // We need date grouping, but Prisma groupBy doesn't support date functions
-      // So we'll query raw data and aggregate in JS
     });
 
     // Fetch recent interactions for daily aggregation

@@ -7,10 +7,12 @@
  */
 
 import { logger } from '@/lib/logger';
+import { prisma } from '@/lib/db';
 
 interface SendSmsParams {
   to: string;
   body: string;
+  userId?: string; // H6: Link SMS to user for CRM tracking
 }
 
 /**
@@ -20,7 +22,7 @@ interface SendSmsParams {
  * - TWILIO_AUTH_TOKEN
  * - TWILIO_PHONE_NUMBER (sender)
  */
-export async function sendSms({ to, body }: SendSmsParams): Promise<boolean> {
+export async function sendSms({ to, body, userId }: SendSmsParams): Promise<boolean> {
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
   const authToken = process.env.TWILIO_AUTH_TOKEN;
   const fromNumber = process.env.TWILIO_PHONE_NUMBER;
@@ -61,20 +63,48 @@ export async function sendSms({ to, body }: SendSmsParams): Promise<boolean> {
         status: response.status,
         twilioError: error?.message || error?.code,
       });
+      // H6: Log failed SMS
+      await logSms(formattedTo, body, 'failed', userId, undefined, error?.message);
       return false;
     }
 
+    const result = await response.json();
     logger.info('SMS sent successfully', {
       to: formattedTo,
       bodyPreview: body.substring(0, 50),
     });
+    // H6: Log successful SMS
+    await logSms(formattedTo, body, 'sent', userId, result?.sid);
     return true;
   } catch (error) {
     logger.error('SMS service error', {
       error: error instanceof Error ? error.message : String(error),
       to,
     });
+    // H6: Log errored SMS
+    await logSms(to, body, 'failed', userId, undefined, error instanceof Error ? error.message : String(error));
     return false;
+  }
+}
+
+/**
+ * H6: Log SMS to SmsLog model for CRM tracking
+ */
+async function logSms(
+  to: string,
+  body: string,
+  status: string,
+  userId?: string,
+  messageId?: string,
+  errorMsg?: string
+): Promise<void> {
+  try {
+    await prisma.smsLog.create({
+      data: { to, body: body.substring(0, 500), status, userId, messageId, errorMsg },
+    });
+  } catch (err) {
+    // Non-blocking — don't fail SMS sending because of logging
+    logger.error('Failed to log SMS', { error: err instanceof Error ? err.message : String(err) });
   }
 }
 

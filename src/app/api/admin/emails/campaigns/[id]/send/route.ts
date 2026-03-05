@@ -18,7 +18,7 @@ import { sendEmail } from '@/lib/email/email-service';
 import { generateUnsubscribeUrl } from '@/lib/email/unsubscribe';
 import { shouldSuppressEmail } from '@/lib/email/bounce-handler';
 import { logAdminAction, getClientIpFromRequest } from '@/lib/admin-audit';
-import type { ABTest, ABTestVariant } from '@/lib/email/ab-test-engine';
+
 import { escapeHtml } from '@/lib/email/templates/base-template';
 import { logger } from '@/lib/logger';
 

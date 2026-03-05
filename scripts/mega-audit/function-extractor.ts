@@ -7,6 +7,7 @@
 import * as ts from 'typescript';
 import * as path from 'path';
 import * as fs from 'fs';
+// @ts-expect-error - glob does not ship declaration files
 import { glob } from 'glob';
 import type { DomainConfig } from './audit-config';
 

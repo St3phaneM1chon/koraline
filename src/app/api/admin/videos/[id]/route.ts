@@ -261,7 +261,7 @@ export const PATCH = withAdminGuard(async (request, { session, params }) => {
       const validTranslations = translations.filter((t: { locale?: string }) => t.locale);
       if (validTranslations.length > 0) {
         await prisma.$transaction(
-          validTranslations.map((t: { locale: string; title?: string; description?: string; isApproved?: boolean }) =>
+          validTranslations.map((t: { locale: string; title?: string | null; description?: string | null; isApproved?: boolean }) =>
             prisma.videoTranslation.upsert({
               where: { videoId_locale: { videoId: id, locale: t.locale } },
               update: {

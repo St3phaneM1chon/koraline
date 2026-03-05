@@ -252,7 +252,7 @@ export const BRAND_CONFIGS: Record<string, {
     name: 'BioCyclePeptides',
     slug: 'biocycle-peptides',
     description: 'E-commerce peptides recherche',
-    defaultCallerIdHint: '+14388030370',
+    defaultCallerIdHint: '+14388030370', // TODO: Shared with attitudes-vip — needs dedicated DID
     features: ['ivr', 'queues', 'recording', 'dialer', 'crm'],
   },
   'biocycle-supplements': {
@@ -273,7 +273,7 @@ export const BRAND_CONFIGS: Record<string, {
     name: 'BiocycleMedia',
     slug: 'biocycle-media',
     description: 'Contenu média, marketing',
-    defaultCallerIdHint: '+18443040370',
+    defaultCallerIdHint: '+18443040370', // TODO: Shared with biocycle-bienetre — needs dedicated DID
     features: ['ivr', 'recording', 'conference'],
   },
   'business-in-a-box': {

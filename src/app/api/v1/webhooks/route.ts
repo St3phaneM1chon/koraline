@@ -5,7 +5,7 @@
  */
 
 import { NextRequest } from 'next/server';
-import { randomBytes, createHmac } from 'crypto';
+import { randomBytes } from 'crypto';
 import { withApiAuth, jsonSuccess, jsonError } from '@/lib/api/api-auth.middleware';
 import { prisma } from '@/lib/db';
 
@@ -142,12 +142,3 @@ export const POST = withApiAuth(async (request: NextRequest) => {
     201
   );
 }, 'webhooks:write');
-
-/**
- * Utility: Generate webhook signature for payload verification.
- * The receiving endpoint should compute HMAC-SHA256 of the raw body
- * with the webhook secret and compare to the X-Webhook-Signature header.
- */
-export function signWebhookPayload(payload: string, secret: string): string {
-  return createHmac('sha256', secret).update(payload).digest('hex');
-}

@@ -129,12 +129,20 @@ export const PUT = withAdminGuard(async (request, { session }) => {
       return NextResponse.json({ error: 'No extension assigned' }, { status: 404 });
     }
 
+    // Determine WebSocket URL based on SIP domain / provider
+    // Telnyx credential connections use wss://sip.telnyx.com:7443
+    // FusionPBX uses wss://{sipDomain}:7443
+    const isTelnyx = ext.sipDomain.includes('telnyx.com');
+    const wsUrl = isTelnyx
+      ? 'wss://sip.telnyx.com:7443'
+      : `wss://${ext.sipDomain}:7443`;
+
     return NextResponse.json({
       extension: ext.extension,
       sipUsername: decryptToken(ext.sipUsername),
       sipPassword: decryptToken(ext.sipPassword),
       sipDomain: ext.sipDomain,
-      wsUrl: `wss://${ext.sipDomain}:7443`,
+      wsUrl,
     });
   }
 

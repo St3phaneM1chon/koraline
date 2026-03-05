@@ -10,6 +10,10 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { auth } from '@/lib/auth-config';
+import { markVoicemailRead, archiveVoicemail } from '@/lib/voip/voicemail-engine';
+import { AuditLogger } from '@/lib/voip/audit-log';
+
+const auditLogger = new AuditLogger({ flushSize: 10, flushIntervalMs: 60_000 });
 
 export async function GET(
   _request: NextRequest,
@@ -20,25 +24,47 @@ export async function GET(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { id } = await params;
+  try {
+    const { id } = await params;
 
-  const voicemail = await prisma.voicemail.findUnique({
-    where: { id },
-    include: {
-      extension: {
-        select: { extension: true, user: { select: { name: true } } },
+    const voicemail = await prisma.voicemail.findUnique({
+      where: { id },
+      include: {
+        extension: {
+          select: { extension: true, user: { select: { name: true } } },
+        },
+        client: {
+          select: { id: true, name: true, phone: true },
+        },
       },
-      client: {
-        select: { id: true, name: true, phone: true },
-      },
-    },
-  });
+    });
 
-  if (!voicemail) {
-    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    if (!voicemail) {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    }
+
+    // Log voicemail listen event for HIPAA compliance
+    await auditLogger.log({
+      userId: session.user.id,
+      action: 'voicemail.listen',
+      resource: 'Voicemail',
+      resourceId: id,
+      ipAddress: _request.headers.get('x-forwarded-for') || _request.headers.get('x-real-ip') || undefined,
+      userAgent: _request.headers.get('user-agent') || undefined,
+      result: 'success',
+      details: {
+        callerNumber: voicemail.callerNumber,
+        extensionId: voicemail.extensionId,
+      },
+    });
+
+    return NextResponse.json({ data: voicemail });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Internal server error', details: error instanceof Error ? error.message : String(error) },
+      { status: 500 }
+    );
   }
-
-  return NextResponse.json({ data: voicemail });
 }
 
 export async function PUT(
@@ -50,19 +76,40 @@ export async function PUT(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { id } = await params;
-  const body = await request.json();
-  const { isRead, isArchived } = body;
+  try {
+    const { id } = await params;
+    const body = await request.json();
+    const { isRead, isArchived } = body;
 
-  const voicemail = await prisma.voicemail.update({
-    where: { id },
-    data: {
-      ...(isRead !== undefined ? { isRead } : {}),
-      ...(isArchived !== undefined ? { isArchived } : {}),
-    },
-  });
+    // Use voicemail-engine functions for state changes (they handle
+    // business logic consistently, matching the recording engine pattern)
+    if (isRead === true) {
+      await markVoicemailRead(id);
+    }
+    if (isArchived === true) {
+      await archiveVoicemail(id);
+    }
 
-  return NextResponse.json({ data: voicemail });
+    // For other partial updates (e.g., marking unread), fall back to direct Prisma
+    if (isRead === false || (isRead === undefined && isArchived === undefined)) {
+      await prisma.voicemail.update({
+        where: { id },
+        data: {
+          ...(isRead !== undefined ? { isRead } : {}),
+          ...(isArchived !== undefined ? { isArchived } : {}),
+        },
+      });
+    }
+
+    const voicemail = await prisma.voicemail.findUnique({ where: { id } });
+
+    return NextResponse.json({ data: voicemail });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Internal server error', details: error instanceof Error ? error.message : String(error) },
+      { status: 500 }
+    );
+  }
 }
 
 export async function DELETE(
@@ -74,9 +121,27 @@ export async function DELETE(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { id } = await params;
+  try {
+    const { id } = await params;
 
-  await prisma.voicemail.delete({ where: { id } });
+    await prisma.voicemail.delete({ where: { id } });
 
-  return NextResponse.json({ status: 'deleted' });
+    // Log voicemail deletion for HIPAA compliance
+    await auditLogger.log({
+      userId: session.user.id,
+      action: 'voicemail.delete',
+      resource: 'Voicemail',
+      resourceId: id,
+      ipAddress: _request.headers.get('x-forwarded-for') || _request.headers.get('x-real-ip') || undefined,
+      userAgent: _request.headers.get('user-agent') || undefined,
+      result: 'success',
+    });
+
+    return NextResponse.json({ status: 'deleted' });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Internal server error', details: error instanceof Error ? error.message : String(error) },
+      { status: 500 }
+    );
+  }
 }

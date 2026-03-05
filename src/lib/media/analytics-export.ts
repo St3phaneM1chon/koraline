@@ -4,8 +4,7 @@
  * PDF generation would require a library like @react-pdf/renderer or puppeteer.
  */
 
-import { getMediaAnalytics, type AnalyticsSummary } from './content-analytics';
-import { logger } from '@/lib/logger';
+import { getMediaAnalytics } from './content-analytics';
 
 // ---------------------------------------------------------------------------
 // CSV Export

@@ -45,7 +45,7 @@ export default function WebhooksPage() {
     toast.success('Webhook mis à jour');
   };
 
-  const testWebhook = (id: string) => {
+  const testWebhook = (_id: string) => {
     toast.info('Test envoyé...');
     setTimeout(() => toast.success('Webhook test: 200 OK'), 1500);
   };

@@ -5,7 +5,9 @@
 
 import { logger } from '@/lib/logger';
 import { addEmailTracking } from '@/lib/email/tracking';
+import { shouldSuppressEmail } from '@/lib/email/bounce-handler';
 import { prisma } from '@/lib/db';
+import { getRedisClient, isRedisAvailable } from '@/lib/redis';
 
 // Types pour les emails
 export interface EmailRecipient {
@@ -141,14 +143,52 @@ function htmlToText(html: string): string {
 
 // ---------------------------------------------------------------------------
 // Rate limiting (Faille #3): prevent email flooding
+// Redis-backed with in-memory fallback for single-instance deployments
 // ---------------------------------------------------------------------------
 const EMAIL_RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const EMAIL_RATE_LIMIT_WINDOW_SECONDS = 3600; // 1 hour in seconds for Redis
 const EMAIL_RATE_LIMIT_MAX = 20; // Max emails per address per hour
+
+// In-memory fallback (used when Redis is unavailable)
 const emailRateMap = new Map<string, { count: number; resetAt: number }>();
 let rateLimitCheckCount = 0;
 
-function checkEmailRateLimit(toEmail: string): boolean {
-  const key = toEmail.toLowerCase().trim();
+/**
+ * Check email rate limit using Redis (preferred) or in-memory fallback.
+ * Uses Redis INCR + EXPIRE for atomic, distributed rate limiting.
+ */
+async function checkEmailRateLimit(toEmail: string): Promise<boolean> {
+  const normalizedEmail = toEmail.toLowerCase().trim();
+
+  // Try Redis first for distributed rate limiting
+  if (isRedisAvailable()) {
+    try {
+      const redis = await getRedisClient();
+      if (redis) {
+        const redisKey = `email_rl:${normalizedEmail}`;
+        const count = await redis.incr(redisKey);
+        if (count === 1) {
+          // First email in this window -- set TTL
+          await redis.expire(redisKey, EMAIL_RATE_LIMIT_WINDOW_SECONDS);
+        }
+        if (count > EMAIL_RATE_LIMIT_MAX) {
+          logger.warn('[EmailService] Redis rate limit exceeded', { email: normalizedEmail, count });
+          return false;
+        }
+        return true;
+      }
+    } catch (err) {
+      logger.warn('[EmailService] Redis rate limit check failed, falling back to memory', {
+        error: err instanceof Error ? err.message : String(err),
+      });
+    }
+  }
+
+  // Fallback: in-memory rate limiting
+  return checkEmailRateLimitMemory(normalizedEmail);
+}
+
+function checkEmailRateLimitMemory(key: string): boolean {
   const now = Date.now();
   const entry = emailRateMap.get(key);
   if (!entry || entry.resetAt < now) {
@@ -168,7 +208,7 @@ function checkEmailRateLimit(toEmail: string): boolean {
   return true;
 }
 
-// Evict expired entries from the rate limit cache
+// Evict expired entries from the in-memory rate limit cache
 function evictRateLimitCache(): void {
   const now = Date.now();
   for (const [key, entry] of emailRateMap) {
@@ -231,12 +271,21 @@ export async function sendEmail(options: SendEmailOptions): Promise<EmailResult>
     replyTo: sanitizeReplyTo(options.replyTo || config.replyEmail || undefined),
   };
 
-  // Rate limit check (Faille #3)
+  // Rate limit check (Faille #3) - now async for Redis support
   const recipients = Array.isArray(emailData.to) ? emailData.to : [emailData.to];
   for (const r of recipients) {
-    if (!checkEmailRateLimit(r.email)) {
+    if (!(await checkEmailRateLimit(r.email))) {
       logger.warn('Email rate limit exceeded', { requestId, recipient: r.email });
       return { success: false, error: 'Rate limit exceeded for this recipient' };
+    }
+  }
+
+  // Bounce auto-suppression: skip sending to addresses that have bounced
+  for (const r of recipients) {
+    const bounceCheck = await shouldSuppressEmail(r.email);
+    if (bounceCheck.suppressed) {
+      logger.info('Email suppressed due to bounce', { requestId, recipient: r.email, reason: bounceCheck.reason });
+      return { success: false, error: `Recipient suppressed: ${bounceCheck.reason}` };
     }
   }
 
@@ -262,28 +311,89 @@ export async function sendEmail(options: SendEmailOptions): Promise<EmailResult>
 
   logger.info('Sending email', { requestId, provider, to: recipients.map(r => r.email), subject: emailData.subject.slice(0, 80) });
 
-  try {
-    switch (provider) {
-      case 'resend':
-        return await sendViaResend(emailData);
-      case 'sendgrid':
-        return await sendViaSendGrid(emailData);
-      case 'smtp':
-        return await sendViaSMTP(emailData);
-      default:
-        // Mode développement: log l'email
-        return await logEmail(emailData);
+  // Retry logic with exponential backoff: 3 attempts (1s, 4s, 16s)
+  const MAX_RETRIES = 3;
+  const BACKOFF_BASE_MS = 1000; // 1s, 4s, 16s (base^(2*attempt))
+
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      let result: EmailResult;
+
+      switch (provider) {
+        case 'resend':
+          result = await sendViaResend(emailData);
+          break;
+        case 'sendgrid':
+          result = await sendViaSendGrid(emailData);
+          break;
+        case 'smtp':
+          result = await sendViaSMTP(emailData);
+          break;
+        default:
+          // Mode développement: log l'email (no retry needed)
+          return await logEmail(emailData);
+      }
+
+      // If the provider returned a non-retryable error (e.g., invalid address), don't retry
+      if (!result.success && attempt < MAX_RETRIES && isRetryableError(result.error)) {
+        const delay = BACKOFF_BASE_MS * Math.pow(4, attempt); // 1s, 4s, 16s
+        logger.warn('Email send failed, retrying', { requestId, provider, attempt: attempt + 1, delay, error: result.error });
+        await sleep(delay);
+        continue;
+      }
+
+      if (result.success && attempt > 0) {
+        logger.info('Email send succeeded after retry', { requestId, provider, attempts: attempt + 1 });
+      }
+
+      return result;
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+
+      if (attempt < MAX_RETRIES) {
+        const delay = BACKOFF_BASE_MS * Math.pow(4, attempt); // 1s, 4s, 16s
+        logger.warn('Email send threw error, retrying', { requestId, provider, attempt: attempt + 1, delay, error: errorMsg });
+        await sleep(delay);
+        continue;
+      }
+
+      // Faille #29: don't leak error details (may contain API keys/PII)
+      const isDevMode = process.env.NODE_ENV !== 'production';
+      if (isDevMode) logger.error('Email send error (all retries exhausted)', { error: errorMsg });
+      logger.error('Email send failed', { requestId, provider, attempts: attempt + 1, error: errorMsg });
+      return {
+        success: false,
+        error: 'Failed to send email',
+      };
     }
-  } catch (error) {
-    // Faille #29: don't leak error details (may contain API keys/PII)
-    const isDevMode = process.env.NODE_ENV !== 'production';
-    if (isDevMode) logger.error('Email send error', { error: error instanceof Error ? error.message : String(error) });
-    logger.error('Email send failed', { requestId, provider, error: error instanceof Error ? error.message : 'Unknown error' });
-    return {
-      success: false,
-      error: 'Failed to send email',
-    };
   }
+
+  // Should never reach here, but TypeScript needs a return
+  return { success: false, error: 'Failed to send email' };
+}
+
+// ---------------------------------------------------------------------------
+// Retry helpers
+// ---------------------------------------------------------------------------
+
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Determine if an email send error is retryable.
+ * Rate limits, server errors, and timeouts are retryable.
+ * Invalid addresses, auth errors, and payload errors are not.
+ */
+function isRetryableError(error?: string): boolean {
+  if (!error) return true; // Unknown errors are retried by default
+  const lower = error.toLowerCase();
+  // Non-retryable errors
+  if (lower.includes('invalid') || lower.includes('not found') || lower.includes('unauthorized') || lower.includes('forbidden') || lower.includes('bad request')) {
+    return false;
+  }
+  // Retryable errors
+  return true;
 }
 
 /**

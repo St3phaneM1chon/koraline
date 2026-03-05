@@ -24,6 +24,9 @@ import {
   Tag,
   StickyNote,
   History,
+  MessageSquare,
+  FileDown,
+  Loader2,
 } from 'lucide-react';
 
 import { Button } from '@/components/admin/Button';
@@ -111,6 +114,12 @@ interface PaymentErrorRef {
   customerEmail: string | null;
   metadata: { paymentMethodType?: string[]; declineCode?: string } | null;
   createdAt: string;
+}
+
+interface OrderNotesData {
+  customerNotes: string | null;
+  adminNotes: string | null;
+  updatedAt: string;
 }
 
 const statusOptionValues = ['PENDING', 'CONFIRMED', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
@@ -399,6 +408,16 @@ export default function OrdersPage() {
   // Bulk print
   const [bulkPrinting, setBulkPrinting] = useState(false);
 
+  // Notes panel state (via dedicated /notes API)
+  const [showNotesPanel, setShowNotesPanel] = useState(false);
+  const [orderNotes, setOrderNotes] = useState<OrderNotesData | null>(null);
+  const [loadingNotes, setLoadingNotes] = useState(false);
+  const [noteText, setNoteText] = useState('');
+  const [savingNoteApi, setSavingNoteApi] = useState(false);
+
+  // Server-side export
+  const [exportingServer, setExportingServer] = useState(false);
+
   // Fraud detection cache (lightweight client-side assessment)
   const [fraudResults, setFraudResults] = useState<Record<string, FraudResult>>({});
 
@@ -472,9 +491,29 @@ export default function OrdersPage() {
     }
     setCreditNotes([]);
     setPaymentErrors([]);
+    // Reset notes panel for the new order
+    setOrderNotes(null);
+    setNoteText('');
+    if (showNotesPanel) {
+      // Auto-fetch notes for the new order if the panel is open
+      setLoadingNotes(true);
+      fetch(`/api/admin/orders/${orderId}/notes`)
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
+          if (data?.order) {
+            setOrderNotes({
+              customerNotes: data.order.customerNotes || null,
+              adminNotes: data.order.adminNotes || null,
+              updatedAt: data.order.updatedAt || '',
+            });
+          }
+        })
+        .catch(() => { /* silently fail, user can retry */ })
+        .finally(() => setLoadingNotes(false));
+    }
     // Then fetch the full detail
     fetchOrderDetail(orderId);
-  }, [orders, fetchOrderDetail]);
+  }, [orders, fetchOrderDetail, showNotesPanel]);
 
   // ─── Filtering (moved up so bulk/print callbacks can reference filteredOrders) ──
 
@@ -766,6 +805,103 @@ export default function OrdersPage() {
     }
   }, [selectedOrder, newNote, t]);
 
+  // ─── Notes Panel (dedicated /notes API) ─────────────────────
+
+  const fetchOrderNotes = useCallback(async (orderId: string) => {
+    setLoadingNotes(true);
+    try {
+      const res = await fetch(`/api/admin/orders/${orderId}/notes`);
+      if (res.ok) {
+        const data = await res.json();
+        setOrderNotes({
+          customerNotes: data.order?.customerNotes || null,
+          adminNotes: data.order?.adminNotes || null,
+          updatedAt: data.order?.updatedAt || '',
+        });
+      } else {
+        setOrderNotes(null);
+        toast.error(t('admin.commandes.notesLoadError'));
+      }
+    } catch {
+      setOrderNotes(null);
+      toast.error(t('admin.commandes.networkError'));
+    } finally {
+      setLoadingNotes(false);
+    }
+  }, [t]);
+
+  const handleSaveNoteApi = useCallback(async () => {
+    if (!selectedOrder) return;
+    setSavingNoteApi(true);
+    try {
+      // Build the combined notes: append timestamped new note to existing adminNotes
+      const existingAdmin = orderNotes?.adminNotes || selectedOrder.adminNotes || '';
+      const timestamp = new Date().toLocaleString('fr-CA');
+      const updatedNotes = existingAdmin
+        ? `${existingAdmin}\n\n[${timestamp}] ${noteText.trim()}`
+        : `[${timestamp}] ${noteText.trim()}`;
+
+      const res = await fetch(`/api/admin/orders/${selectedOrder.id}/notes`, {
+        method: 'PATCH',
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ adminNotes: updatedNotes }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setOrderNotes(prev => prev ? { ...prev, adminNotes: data.order?.adminNotes ?? updatedNotes } : prev);
+        setSelectedOrder({ ...selectedOrder, adminNotes: updatedNotes });
+        setNoteText('');
+        toast.success(t('admin.commandes.notesSaved'));
+      } else {
+        const data = await res.json().catch(() => ({}));
+        toast.error(data.error || t('admin.commandes.networkError'));
+      }
+    } catch {
+      toast.error(t('admin.commandes.networkError'));
+    } finally {
+      setSavingNoteApi(false);
+    }
+  }, [selectedOrder, orderNotes, noteText, t]);
+
+  const toggleNotesPanel = useCallback(() => {
+    if (!showNotesPanel && selectedOrder) {
+      fetchOrderNotes(selectedOrder.id);
+    }
+    setShowNotesPanel(prev => !prev);
+  }, [showNotesPanel, selectedOrder, fetchOrderNotes]);
+
+  // ─── Server-side CSV Export ─────────────────────────────────
+
+  const handleServerExportCsv = useCallback(async () => {
+    setExportingServer(true);
+    try {
+      const params = new URLSearchParams();
+      if (statusFilter !== 'all') params.set('status', statusFilter);
+      const url = `/api/admin/orders/export${params.toString() ? '?' + params.toString() : ''}`;
+      const res = await fetch(url);
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        toast.error(data.error || t('admin.commandes.exportError'));
+        return;
+      }
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      const disposition = res.headers.get('content-disposition');
+      const filename = disposition?.match(/filename="(.+?)"/)?.[1] || `orders-export-${new Date().toISOString().slice(0, 10)}.csv`;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(blobUrl);
+      toast.success(t('admin.commandes.exportCsvSuccess'));
+    } catch {
+      toast.error(t('admin.commandes.networkError'));
+    } finally {
+      setExportingServer(false);
+    }
+  }, [statusFilter, t]);
+
   // ─── Bulk Print Batch ─────────────────────────────────────
 
   const handleBulkPrint = useCallback(async () => {
@@ -804,6 +940,13 @@ export default function OrdersPage() {
   }, [selectedOrderIds, t]);
 
   // ─── Bulk Selection Helpers ──────────────────────────────
+  // TODO(bulk-checkboxes): ContentList does not support per-row checkbox props today.
+  // Individual row selection currently works via "Select all filtered" (header button) only.
+  // To enable per-row toggle, ContentList would need:
+  //   - `selectedIds?: Set<string>` prop
+  //   - `onToggleSelect?: (id: string) => void` prop
+  //   - Rendering a <input type="checkbox"> beside each ListItem avatar
+  // The bulk-status API (/api/admin/orders/bulk-status) is already fully wired and ready.
 
   const selectAllFiltered = useCallback(() => {
     setSelectedOrderIds(new Set(filteredOrders.map(o => o.id)));
@@ -833,13 +976,11 @@ export default function OrdersPage() {
     setBulkUpdating(true);
     try {
       const payload = {
-        orders: Array.from(selectedOrderIds).map(orderId => ({
-          orderId,
-          status: newStatus,
-        })),
+        orderIds: Array.from(selectedOrderIds),
+        status: newStatus,
       };
 
-      const res = await fetch('/api/admin/orders', {
+      const res = await fetch('/api/admin/orders/bulk-status', {
         method: 'POST',
         headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(payload),
@@ -852,23 +993,19 @@ export default function OrdersPage() {
         return;
       }
 
-      const { summary, results } = data;
+      const { updated, skipped, notFound } = data;
 
-      if (summary.failed > 0) {
-        const failedOrders = results
-          .filter((r: { success: boolean }) => !r.success)
-          .map((r: { orderNumber?: string; error?: string }) => r.orderNumber || r.error)
-          .join(', ');
+      if (skipped > 0 || notFound > 0) {
         toast.warning(
           t('admin.commandes.bulkPartialSuccess', {
-            succeeded: String(summary.succeeded),
-            failed: String(summary.failed),
-          }) || `${summary.succeeded} updated, ${summary.failed} failed: ${failedOrders}`
+            succeeded: String(updated),
+            failed: String(skipped + notFound),
+          }) || `${updated} updated, ${skipped + notFound} skipped/not found`
         );
       } else {
         toast.success(
-          t('admin.commandes.bulkStatusUpdated', { count: String(summary.succeeded) })
-            || `${summary.succeeded} orders updated`
+          t('admin.commandes.bulkStatusUpdated', { count: String(updated) })
+            || `${updated} orders updated`
         );
       }
 
@@ -1126,9 +1263,20 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
             <h1 className="text-xl font-bold text-slate-900">{t('admin.commandes.title')}</h1>
             <p className="text-sm text-slate-500 mt-0.5">{t('admin.commandes.subtitle')}</p>
           </div>
-          <Button variant="secondary" icon={Download} size="sm" onClick={handleExportCsv}>
-            {t('admin.commandes.exportCsv')}
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="secondary" icon={Download} size="sm" onClick={handleExportCsv}>
+              {t('admin.commandes.exportCsv')}
+            </Button>
+            <Button
+              variant="secondary"
+              icon={exportingServer ? Loader2 : FileDown}
+              size="sm"
+              onClick={handleServerExportCsv}
+              disabled={exportingServer}
+            >
+              {exportingServer ? t('admin.commandes.processing') : t('admin.commandes.exportServerCsv')}
+            </Button>
+          </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
           <StatCard label={t('admin.commandes.statTotal')} value={stats.total} icon={ShoppingBag} />
@@ -1408,6 +1556,14 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
                     >
                       {showTimeline ? t('admin.commandes.hideTimeline') : t('admin.commandes.showTimeline')}
                     </Button>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      icon={MessageSquare}
+                      onClick={toggleNotesPanel}
+                    >
+                      {showNotesPanel ? t('admin.commandes.hideNotes') : t('admin.commandes.showNotes')}
+                    </Button>
                   </div>
 
                   {/* Order Timeline */}
@@ -1418,6 +1574,86 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
                         {t('admin.commandes.timelineTitle')}
                       </h3>
                       <OrderTimeline events={buildTimelineEvents(selectedOrder, creditNotes)} />
+                    </div>
+                  )}
+
+                  {/* Notes Panel (via dedicated /notes API) */}
+                  {showNotesPanel && (
+                    <div className="bg-slate-50 rounded-lg p-4">
+                      <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                        <MessageSquare className="w-4 h-4" />
+                        {t('admin.commandes.notesPanelTitle')}
+                      </h3>
+
+                      {loadingNotes ? (
+                        <div className="flex items-center justify-center py-6">
+                          <Loader2 className="w-5 h-5 animate-spin text-slate-400" />
+                          <span className="ml-2 text-sm text-slate-500">{t('admin.commandes.processing')}</span>
+                        </div>
+                      ) : orderNotes ? (
+                        <div className="space-y-4">
+                          {/* Customer notes (read-only) */}
+                          {orderNotes.customerNotes && (
+                            <div>
+                              <p className="text-xs font-medium text-slate-500 uppercase mb-1">
+                                {t('admin.commandes.customerNotesLabel')}
+                              </p>
+                              <div className="bg-white rounded-lg border border-slate-200 p-3 text-sm text-slate-700 whitespace-pre-wrap">
+                                {orderNotes.customerNotes}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Admin notes */}
+                          <div>
+                            <p className="text-xs font-medium text-slate-500 uppercase mb-1">
+                              {t('admin.commandes.adminNotesLabel')}
+                            </p>
+                            {orderNotes.adminNotes ? (
+                              <div className="bg-white rounded-lg border border-slate-200 p-3 text-sm text-slate-700 whitespace-pre-wrap mb-3">
+                                {orderNotes.adminNotes}
+                              </div>
+                            ) : (
+                              <p className="text-sm text-slate-400 italic mb-3">
+                                {t('admin.commandes.noNotesYet')}
+                              </p>
+                            )}
+                          </div>
+
+                          {/* Add new note form */}
+                          <div className="border-t border-slate-200 pt-3">
+                            <p className="text-xs font-medium text-slate-500 uppercase mb-1">
+                              {t('admin.commandes.addNewNote')}
+                            </p>
+                            <Textarea
+                              rows={3}
+                              value={noteText}
+                              onChange={(e) => setNoteText(e.target.value)}
+                              placeholder={t('admin.commandes.notePlaceholder')}
+                            />
+                            <div className="flex justify-end mt-2">
+                              <Button
+                                variant="primary"
+                                size="sm"
+                                icon={savingNoteApi ? Loader2 : StickyNote}
+                                onClick={handleSaveNoteApi}
+                                disabled={savingNoteApi || !noteText.trim()}
+                              >
+                                {savingNoteApi ? t('admin.commandes.processing') : t('admin.commandes.saveNote')}
+                              </Button>
+                            </div>
+                          </div>
+
+                          {/* Last updated */}
+                          {orderNotes.updatedAt && (
+                            <p className="text-xs text-slate-400">
+                              {t('admin.commandes.notesLastUpdated')}: {new Date(orderNotes.updatedAt).toLocaleString(locale)}
+                            </p>
+                          )}
+                        </div>
+                      ) : (
+                        <p className="text-sm text-slate-400 italic">{t('admin.commandes.noNotesYet')}</p>
+                      )}
                     </div>
                   )}
 

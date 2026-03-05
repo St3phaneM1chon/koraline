@@ -7,7 +7,7 @@
 
 import { useState, useEffect } from 'react';
 import { useI18n } from '@/i18n/client';
-import { Eye, MousePointer, Share2, TrendingUp, Loader2, Download } from 'lucide-react';
+import { Eye, MousePointer, Share2, TrendingUp, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import {
   AreaChart,

@@ -9,6 +9,7 @@ export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { withAdminGuard } from '@/lib/admin-api-guard';
+import { markVoicemailRead, archiveVoicemail } from '@/lib/voip/voicemail-engine';
 
 export const GET = withAdminGuard(async (request) => {
   const { searchParams } = new URL(request.url);
@@ -66,10 +67,8 @@ export const PUT = withAdminGuard(async (request) => {
 
   switch (action) {
     case 'markRead':
-      await prisma.voicemail.updateMany({
-        where: { id: { in: ids } },
-        data: { isRead: true },
-      });
+      // Use voicemail-engine for individual IDs to ensure consistent behavior
+      await Promise.all(ids.map((vmId: string) => markVoicemailRead(vmId)));
       break;
     case 'markUnread':
       await prisma.voicemail.updateMany({
@@ -78,10 +77,7 @@ export const PUT = withAdminGuard(async (request) => {
       });
       break;
     case 'archive':
-      await prisma.voicemail.updateMany({
-        where: { id: { in: ids } },
-        data: { isArchived: true },
-      });
+      await Promise.all(ids.map((vmId: string) => archiveVoicemail(vmId)));
       break;
     default:
       return NextResponse.json({ error: 'Invalid action' }, { status: 400 });

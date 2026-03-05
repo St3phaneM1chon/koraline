@@ -1,11 +1,11 @@
 # PROJECT MAP - peptide-plus (BioCycle Peptides)
-# LAST UPDATED: 2026-03-01 (VoIP/Telephony: 8 models, 12 API routes, 3 cron jobs, 8 admin pages, softphone WebRTC, ribbon config)
+# LAST UPDATED: 2026-03-04 (Softphone BEST-IN-CLASS: 42 features, 22 new lib/component files, 4 modified files, 100+ i18n keys)
 # RULE: This file MUST be updated after every feature addition/modification
 # SEE: .claude/rules/project-map-mandatory.md for enforcement rules
 
 ## QUICK STATS
-- **Pages**: 253 | **API Routes**: 521 | **Prisma Models**: 132 | **Enums**: 34 | **Components**: 132 | **Hooks**: 21 | **Lib files**: 255
-- **Loading skeletons**: 120 loading.tsx files (all admin pages covered)
+- **Pages**: 285 | **API Routes**: 627 | **Prisma Models**: 266 | **Enums**: 60 | **Components**: 139 | **Hooks**: 23 | **Lib files**: 365
+- **Loading skeletons**: 198 loading.tsx files (coverage expanded beyond admin pages)
 - **Stack**: Next.js 15 (App Router), TypeScript strict, Prisma 5.22, PostgreSQL 15, Redis
 - **i18n**: 22 languages (fr reference) | **Auth**: NextAuth v5 + MFA + WebAuthn
 - **Hosting**: Azure App Service | **Payments**: Stripe + PayPal
@@ -334,11 +334,58 @@ Each domain lists ALL pages, API routes, models, and components involved.
 | **API Routes** | `/api/admin/voip/dashboard`, `/api/admin/voip/connections`, `/api/admin/voip/extensions`, `/api/admin/voip/call-logs`, `/api/admin/voip/phone-numbers`, `/api/admin/voip/recordings/[id]`, `/api/admin/voip/voicemails`, `/api/admin/voip/cdr/ingest` (webhook), `/api/admin/voip/surveys/submit` (webhook) |
 | **Models** | `VoipConnection`, `PhoneNumber`, `SipExtension`, `CallLog`, `CallRecording`, `CallTranscription`, `CallSurvey`, `Voicemail` |
 | **Enums** | `PhoneNumberType`, `CallDirection`, `CallStatus`, `AgentStatus` |
-| **Components** | `Softphone`, `SoftphoneProvider`, `IncomingCallModal`, `CallControls`, `AgentStatus`, `AudioPlayer`, `CallStats`, `SatisfactionBadge` |
+| **Components** | `Softphone` (draggable, video, multi-line, notes, search, speed dial, recent, conference, warm transfer), `SoftphoneProvider`, `CtiToolbar` (supervisor listen/whisper/barge), `IncomingCallModal`, `CallControls`, `AgentStatus`, `AudioPlayer`, `RecordingPlayer` (WaveSurfer waveform), `ContactCard` (rich CRM contact), `CallStats`, `SatisfactionBadge` |
 | **Hooks** | `useVoip` (JsSIP WebRTC), `useCallState` (SWR polling) |
-| **Lib** | `voip/connection.ts`, `voip/cdr-sync.ts`, `voip/recording-upload.ts`, `voip/esl-client.ts`, `voip/transcription.ts` |
+| **Lib** | `voip/connection.ts`, `voip/cdr-sync.ts`, `voip/recording-upload.ts`, `voip/esl-client.ts`, `voip/transcription.ts`, `voip/call-control.ts`, `voip/voip-state.ts`, `voip/recording.ts`, `voip/power-dialer.ts`, `voip/queue-engine.ts`, `voip/ivr-engine.ts`, `voip/voicemail-engine.ts`, `voip/transfer-engine.ts`, `voip/coaching-engine.ts`, `voip/call-quality-monitor.ts`, `voip/pre-call-test.ts`, `voip/krisp-noise-cancel.ts`, `voip/call-flip.ts`, `voip/call-park.ts`, `voip/call-pickup.ts`, `voip/dnd-manager.ts`, `voip/multi-line.ts`, `voip/call-forwarding.ts`, `voip/e911.ts`, `voip/presence-manager.ts`, `voip/screen-share.ts`, `voip/virtual-background.ts`, `voip/video-recording.ts`, `voip/incoming-notification.ts`, `voip/ringtone-manager.ts`, `voip/cnam-lookup.ts`, `voip/ring-groups.ts`, `voip/simultaneous-ring.ts`, `voip/vad-analytics.ts` |
 | **External** | FreeSWITCH (ESL port 8021), FusionPBX, Telnyx SIP, VoIP.ms, OpenAI Whisper API |
 | **Affects** | User (reverse: sipExtensions, clientCalls, clientVoicemails), Company (reverse: companyCalls), Platform Integrations (reuses crypto.ts), Media (reuses StorageService for recordings) |
+
+---
+
+### 1.22 CRM ENTERPRISE (Phase 3)
+> **What**: Full CRM suite — leads, deals, quotes/CPQ, approvals, exchange rates, agent scheduling, QA scoring, AI chatbot, attribution, WhatsApp, email-inbound, Meta webhook, PWA
+
+| Layer | Elements |
+|-------|----------|
+| **Pages** | `/admin/crm/qualification`, `/admin/crm/recurring-revenue`, `/admin/crm/exchange-rates`, `/admin/crm/snippets`, `/admin/crm/quotes`, `/admin/crm/approvals`, `/admin/crm/attribution`, `/admin/crm/scheduling`, `/admin/crm/qa`, `/admin/crm/inbox` (enhanced), `/admin/crm/sms-templates` (enhanced) |
+| **API Routes** | `/api/admin/crm/snippets`, `/api/admin/crm/quotes`, `/api/admin/crm/quotes/[id]`, `/api/admin/crm/approvals`, `/api/admin/crm/approvals/[id]`, `/api/admin/crm/exchange-rates`, `/api/admin/crm/exchange-rates/sync`, `/api/admin/crm/recurring-revenue`, `/api/admin/crm/agent-schedules`, `/api/admin/crm/qa-forms`, `/api/admin/crm/qa-scores`, `/api/admin/crm/agent-breaks`, `/api/admin/crm/attribution`, `/api/public/chatbot`, `/api/webhooks/whatsapp`, `/api/webhooks/email-inbound`, `/api/webhooks/meta` |
+| **Models** | `CrmSnippet`, `CrmQuote`, `CrmQuoteItem`, `CrmApproval`, `ExchangeRate`, `AgentSchedule`, `CrmQaForm`, `CrmQaScore`, `AgentBreak` |
+| **Enums** | `CrmQuoteStatus`, `ApprovalStatus`, `AgentBreakType`, `AgentShiftType` |
+| **Fields added** | `CrmLead`: qualificationFramework, qualificationData; `CrmDeal`: isRecurring, recurringInterval, mrrValue, quotes[] |
+| **Components** | `ChatWidget` (src/components/chat/ChatWidget.tsx), `EmbedScript` (src/components/chat/EmbedScript.tsx) |
+| **Lib** | `@/lib/crm/exchange-rates`, `@/lib/crm/quote-pdf`, `@/lib/crm/predictive-dialer`, `@/lib/crm/voicemail-drop`, `@/lib/crm/call-blending`, `@/lib/crm/local-presence`, `@/lib/crm/recording-consent`, `@/lib/crm/whatsapp`, `@/lib/crm/email-sync`, `@/lib/crm/social-inbox`, `@/lib/crm/shared-inbox`, `@/lib/crm/chatbot-engine`, `@/lib/crm/ai-forecasting`, `@/lib/crm/realtime-sentiment`, `@/lib/crm/ai-coaching`, `@/lib/crm/best-time-to-send`, `@/lib/crm/push-notifications`, `@/lib/crm/attribution`, `@/lib/crm/ab-testing`, `@/lib/crm/mms`, `@/lib/crm/payment-ivr` |
+| **External** | OpenAI (chatbot + AI forecasting + sentiment + coaching), WhatsApp Business API, Facebook/Instagram Messenger, IMAP (email sync), Web Push API, Telnyx/VoIP (MMS, payment IVR) |
+| **Affects** | CrmLead (qualification fields), CrmDeal (MRR/ARR + quotes), VoIP (blending, local presence, recording consent, payment IVR), Email (inbound sync), Social (inbox), Attribution (campaigns) |
+| **PWA** | `public/manifest.json` (PWA manifest), `public/sw.js` (service worker, offline support) |
+
+---
+
+### 1.23 CRM ENTERPRISE ULTIMATE (Phase 4 — 62+ items)
+> **What**: Call center advanced (ACD, skills routing, streaming transcription, conference, surveys), telemarketing (lead recycling, disposition triggers, SMS drip/surveys/keyword), inbox (tickets, knowledge base, channel switching, customer portal), workflow advanced (parallel/loops/error handling, code sandbox, templates, versions), reporting (call center KPIs, dashboard builder, funnel, CLV, churn, heatmaps, activity reports), AI (conversation intelligence, anomaly detection, generative AI, streaming sentiment), WFM (adherence, volume forecasting, intraday management, shift bidding), deals (e-signature, playbooks, contracts, deal teams, price books), compliance (field security, data retention, GDPR delete, IP whitelist, TCPA manual touch), integrations (Zapier, calendar sync, Calendly), email (A/B testing, health, signatures), SMS (link tracking, keyword responders, drip sequences, surveys)
+
+| Layer | Elements |
+|-------|----------|
+| **Pages** | `/admin/crm/call-analytics`, `/admin/crm/adherence`, `/admin/crm/tickets`, `/admin/crm/knowledge-base`, `/admin/crm/workflow-analytics`, `/admin/crm/call-center-kpis`, `/admin/crm/dashboard-builder`, `/admin/crm/funnel-analysis`, `/admin/crm/activity-reports`, `/admin/crm/clv`, `/admin/crm/churn`, `/admin/crm/heatmaps`, `/admin/crm/playbooks`, `/admin/crm/contracts`, `/(shop)/portal` |
+| **API Routes** | `/api/admin/crm/call-analytics`, `/api/admin/crm/adherence`, `/api/admin/crm/tickets`, `/api/admin/crm/knowledge-base`, `/api/admin/crm/workflow-analytics`, `/api/admin/crm/workflow-versions`, `/api/admin/crm/call-center-kpis`, `/api/admin/crm/dashboard-builder`, `/api/admin/crm/activity-reports`, `/api/admin/crm/price-books`, `/api/admin/crm/deal-teams`, `/api/admin/crm/contracts`, `/api/admin/crm/gdpr-delete`, `/api/webhooks/zapier` |
+| **Models** | `PriceBook`, `PriceBookEntry`, `CrmDealTeam`, `CrmContract`, `CrmTicket`, `CrmTicketComment`, `KBArticle`, `KBCategory`, `CrmWorkflowVersion`, `CrmPlaybook`, `DataRetentionPolicy`, `IpWhitelist` |
+| **Enums** | `PriceBookType`, `ContractStatus`, `TicketStatus`, `TicketPriority`, `TicketCategory`, `KBArticleStatus`, `PlaybookStatus` |
+| **Components** | `CtiToolbar` (src/components/admin/crm/CtiToolbar.tsx) |
+| **Lib (37 new)** | `dialer-modes`, `agentless-dialer`, `skills-routing`, `acd-engine`, `streaming-transcription`, `conference-call`, `virtual-hold`, `post-call-survey`, `lead-recycling`, `whisper-preconnect`, `disposition-triggers`, `sms-link-tracking`, `sms-keyword-responder`, `sms-surveys`, `sms-drip-sequence`, `channel-switching`, `knowledge-base`, `workflow-code-sandbox`, `workflow-templates`, `conversation-intelligence`, `anomaly-detection`, `generative-ai`, `realtime-adherence`, `volume-forecasting`, `intraday-management`, `e-signature`, `sales-playbooks`, `field-security`, `data-retention`, `calendar-sync`, `calendly-integration`, `email-ab-testing`, `email-health`, `email-signature-manager`, `tcpa-manual-touch`, `clv-calculator`, `churn-analysis` |
+| **Lib (modified)** | `predictive-dialer` (+vertical dialing, pacing, list penetration), `call-supervision` (+takeover mode), `recording.ts` (+dual-channel forking), `workflow-engine` (+parallel/loops/error handling/cross-object), `realtime-sentiment` (+streaming mode), `contact-enrichment` (+web scraping), `email-sync` (+auto-create lead), `ai-assistant` (+conversation summaries all channels) |
+| **External** | DocuSign API, Zapier webhooks, Google Calendar API, Outlook Calendar API, Calendly webhooks, Telnyx streaming transcription, vm2 sandbox |
+| **Affects** | CrmDeal (teams, contracts, price books, playbooks), CrmLead (recycling, enrichment, GDPR), VoIP (ACD, skills routing, conference, dual-channel, streaming transcription), Inbox (tickets, KB, channel switching, customer portal), Workflow (parallel, loops, versions), Agent (WFM adherence, forecasting, intraday) |
+
+---
+
+### 1.24 CRM ENTERPRISE ULTIMATE (Phase 5 — 28 enterprise items)
+> **What**: AI enterprise (voice AI, auto-QM 100%, ML routing, experience memory), telephony advanced (no-pause predictive, IVR speech NLP, data-directed routing, voice biometrics, noise cancellation), WFM (screen recording, agent wellness, AI QA evaluation), compliance (HIPAA, regional recording storage), mobile (offline sync, mobile call log, business card scanner OCR, geolocation check-in), reporting (BI connector, cohort analysis, snapshot reporting), integrations (LinkedIn, BI export API, ERP QuickBooks/Xero, CDP Segment, Calendly), email (domain warmup), SMS (short code management), deal (revenue recognition ASC 606, deal journey analytics), buyer intent (web tracking, form shortening AI)
+
+| Layer | Elements |
+|-------|----------|
+| **Pages** | `/admin/crm/cohort-analysis`, `/admin/crm/snapshots`, `/admin/crm/deal-journey` |
+| **Lib (31 new)** | `voice-ai-agent`, `ai-quality-monitor`, `ml-routing`, `experience-memory`, `no-pause-predictive`, `ivr-speech-recognition`, `data-directed-routing`, `voice-biometrics`, `noise-cancellation`, `screen-recording`, `agent-wellness`, `ai-quality-evaluation`, `hipaa-compliance`, `regional-recording-storage`, `offline-sync`, `mobile-call-log`, `business-card-scanner`, `geolocation-checkin`, `bi-connector`, `cohort-analysis`, `snapshot-reporting`, `linkedin-integration`, `bi-export-api`, `erp-integration`, `cdp-integration`, `domain-warmup`, `short-code-management`, `revenue-recognition`, `deal-journey`, `buyer-intent`, `form-shortening-ai` |
+| **External** | OpenAI Vision (OCR), LinkedIn API, QuickBooks/Xero OAuth, Segment/RudderStack, Telnyx streaming, GPS API |
+| **Affects** | All CRM modules (AI quality monitoring covers calls/chat/email), Agent (wellness/burnout), VoIP (voice AI/biometrics/noise cancel), Pipeline (deal journey/revenue recognition), Lead (intent signals/form AI) |
 
 ---
 
@@ -453,7 +500,7 @@ User
 |------|------|--------|-----------|-----|--------|
 | Commandes | `/admin/commandes` | COMPLETE | OutlookUI, StatusBadge | `/api/admin/orders` | Order, OrderItem, User |
 | Clients B2B | `/admin/clients` | COMPLETE | ContactListPage | `/api/admin/users?role=CLIENT` | User, Company, CompanyCustomer |
-| Client Detail | `/admin/clients/[id]` | COMPLETE | RoleManagementSection, PointAdjustment | `/api/admin/users/[id]`, `/api/admin/users/[id]/reset-password` | User, LoyaltyTransaction |
+| Client Detail | `/admin/clients/[id]` | COMPLETE | RoleManagementSection, PointAdjustment | `/api/admin/users/[id]`, `/api/admin/users/[id]/reset-password`, `/api/admin/users/[id]/email` | User, LoyaltyTransaction |
 | Customers B2C | `/admin/customers` | COMPLETE | ContactListPage | `/api/admin/users?role=CUSTOMER` | User, Order, LoyaltyTransaction |
 | Customer Detail | `/admin/customers/[id]` | COMPLETE | Detailed order history | `/api/admin/users/[id]` | User, Order, OrderItem, Product |
 
@@ -562,6 +609,40 @@ All pages use Outlook UI pattern (SplitLayout, ContentList, DetailPane). Key bac
 | Country Detail | `/admin/fiscal/country/[code]` | COMPLETE |
 | Reports | `/admin/fiscal/reports` | COMPLETE |
 | Tasks | `/admin/fiscal/tasks` | COMPLETE |
+
+### CRM Enterprise (11 pages - Phase 3)
+| Page | Path | Status | Components | API | Notes |
+|------|------|--------|-----------|-----|-------|
+| BANT/MEDDIC Qualification | `/admin/crm/qualification` | COMPLETE | - | `/api/admin/crm/leads` | Qualification framework selector + data grid |
+| MRR/ARR Dashboard | `/admin/crm/recurring-revenue` | COMPLETE | - | `/api/admin/crm/recurring-revenue` | MRR/ARR KPIs, cohort charts |
+| Exchange Rates | `/admin/crm/exchange-rates` | COMPLETE | - | `/api/admin/crm/exchange-rates`, `/api/admin/crm/exchange-rates/sync` | Multi-currency management + live sync |
+| Canned Responses (Snippets) | `/admin/crm/snippets` | COMPLETE | - | `/api/admin/crm/snippets` | Canned response library for agents |
+| Quotes / CPQ | `/admin/crm/quotes` | COMPLETE | - | `/api/admin/crm/quotes`, `/api/admin/crm/quotes/[id]` | Quote builder, line items, PDF export |
+| Approval Workflows | `/admin/crm/approvals` | COMPLETE | - | `/api/admin/crm/approvals`, `/api/admin/crm/approvals/[id]` | Multi-step approval chains |
+| Attribution Reporting | `/admin/crm/attribution` | COMPLETE | - | `/api/admin/crm/attribution` | Multi-touch attribution analytics |
+| Agent Scheduling | `/admin/crm/scheduling` | COMPLETE | - | `/api/admin/crm/agent-schedules`, `/api/admin/crm/agent-breaks` | Shift management + break tracking |
+| QA Scoring | `/admin/crm/qa` | COMPLETE | - | `/api/admin/crm/qa-forms`, `/api/admin/crm/qa-scores` | Quality assurance form builder + scoring |
+| Inbox (Enhanced) | `/admin/crm/inbox` | COMPLETE (enhanced) | ChatWidget | - | Enhanced with full contact panel sidebar |
+| SMS Templates (Enhanced) | `/admin/crm/sms-templates` | COMPLETE (enhanced) | - | - | Enhanced with live SMS preview |
+
+### CRM Enterprise ULTIMATE (15 pages - Phase 4)
+| Page | Path | Status | Components | API | Notes |
+|------|------|--------|-----------|-----|-------|
+| Call Analytics | `/admin/crm/call-analytics` | COMPLETE | Recharts | `/api/admin/crm/call-analytics` | AHT/ASA/FCR/SL% KPI dashboard |
+| Real-time Adherence | `/admin/crm/adherence` | COMPLETE | - | `/api/admin/crm/adherence` | Agent schedule adherence monitoring |
+| Tickets | `/admin/crm/tickets` | COMPLETE | - | `/api/admin/crm/tickets` | Full ticket management with priority/category |
+| Knowledge Base | `/admin/crm/knowledge-base` | COMPLETE | - | `/api/admin/crm/knowledge-base` | KB articles with categories and status |
+| Workflow Analytics | `/admin/crm/workflow-analytics` | COMPLETE | Recharts | `/api/admin/crm/workflow-analytics` | Execution stats, error rates, durations |
+| Call Center KPIs | `/admin/crm/call-center-kpis` | COMPLETE | Recharts | `/api/admin/crm/call-center-kpis` | Comprehensive call center metrics |
+| Dashboard Builder | `/admin/crm/dashboard-builder` | COMPLETE | - | `/api/admin/crm/dashboard-builder` | Configurable widget dashboard |
+| Funnel Analysis | `/admin/crm/funnel-analysis` | COMPLETE | Recharts | - (client-side) | Stage-by-stage conversion funnel |
+| Activity Reports | `/admin/crm/activity-reports` | COMPLETE | Recharts | `/api/admin/crm/activity-reports` | Daily/weekly rep activity breakdown |
+| CLV Dashboard | `/admin/crm/clv` | COMPLETE | Recharts | - (client-side) | Customer Lifetime Value analysis |
+| Churn Analysis | `/admin/crm/churn` | COMPLETE | Recharts | - (client-side) | Churn rate, prediction, at-risk |
+| Heatmaps | `/admin/crm/heatmaps` | COMPLETE | - | - (client-side) | Best calling times heatmap |
+| Playbooks | `/admin/crm/playbooks` | COMPLETE | - | - (lib API) | Sales playbooks with stage guidance |
+| Contracts | `/admin/crm/contracts` | COMPLETE | - | `/api/admin/crm/contracts` | Contract management with renewals |
+| Customer Portal | `/(shop)/portal` | COMPLETE | - | - | Customer-facing tickets + KB |
 
 ---
 
@@ -759,7 +840,7 @@ All use `useI18n` only: `/mentions-legales/confidentialite`, `/mentions-legales/
 abandoned-cart, birthday-emails, data-retention, dependency-check, email-flows, points-expiring, price-drop-alerts, release-reservations, satisfaction-survey, stock-alerts, update-exchange-rates, welcome-series
 
 ### Admin Core (100+ routes)
-orders, users/[id], users/[id]/points, employees, inventory, **inventory/[id]** (PATCH - stock update), **inventory/history**, **inventory/import**, **inventory/export**, currencies, settings, seo, emails/send, emails/settings, emails/mailing-list, emails/mailing-list/import, promotions, promo-codes, reviews, suppliers, subscriptions, loyalty/*, translations, nav-sections, nav-subsections, nav-pages, medias, webinars, videos, logs, audit-log, **audits** (GET - audit dashboard), metrics, cache-stats, permissions, shipping/*, uat, reports
+orders, users/[id], users/[id]/points, **users/[id]/email** (POST - admin transactional email), users/[id]/reset-password, employees, inventory, **inventory/[id]** (PATCH - stock update), **inventory/history**, **inventory/import**, **inventory/export**, currencies, settings, seo, emails/send, emails/settings, emails/mailing-list, emails/mailing-list/import, promotions, promo-codes, reviews, suppliers, subscriptions, loyalty/*, translations, nav-sections, nav-subsections, nav-pages, medias, webinars, videos, logs, audit-log, **audits** (GET - audit dashboard), metrics, cache-stats, permissions, shipping/*, uat, reports
 
 ### Community Forum (7 routes) - NEW 2026-02-25
 | Route | Methods | Models | Auth | Notes |
@@ -844,6 +925,184 @@ orders, users/[id], users/[id]/points, employees, inventory, **inventory/[id]** 
 | /api/cron/voip-transcriptions | POST | CallRecording,CallTranscription | cron-secret | Whisper STT + GPT-4o-mini analysis |
 | /api/cron/voip-notifications | POST | CallLog,Voicemail,SipExtension,User | cron-secret | Email alerts for missed calls + voicemails |
 
+### CRM Enterprise Routes (17 new routes - Phase 3 2026-03-04)
+
+**CRM Admin**
+| Route | Methods | Models | Auth | Notes |
+|-------|---------|--------|------|-------|
+| /api/admin/crm/snippets | GET,POST | CrmSnippet | admin-guard | Canned responses CRUD |
+| /api/admin/crm/quotes | GET,POST | CrmQuote,CrmQuoteItem,CrmDeal | admin-guard | Quote/CPQ list and create |
+| /api/admin/crm/quotes/[id] | GET,PUT,DELETE | CrmQuote,CrmQuoteItem | admin-guard | Single quote management + PDF |
+| /api/admin/crm/approvals | GET,POST | CrmApproval | admin-guard | Approval request list and create |
+| /api/admin/crm/approvals/[id] | GET,PUT | CrmApproval | admin-guard | Single approval + status update |
+| /api/admin/crm/exchange-rates | GET,POST | ExchangeRate | admin-guard | Exchange rate management |
+| /api/admin/crm/exchange-rates/sync | POST | ExchangeRate | admin-guard | Sync rates from external API |
+| /api/admin/crm/recurring-revenue | GET | CrmDeal | admin-guard | MRR/ARR dashboard aggregation |
+| /api/admin/crm/agent-schedules | GET,POST | AgentSchedule | admin-guard | Agent shift management |
+| /api/admin/crm/qa-forms | GET,POST | CrmQaForm | admin-guard | QA form builder |
+| /api/admin/crm/qa-scores | GET,POST | CrmQaScore,CrmQaForm | admin-guard | QA scoring records |
+| /api/admin/crm/agent-breaks | GET,POST,PUT | AgentBreak | admin-guard | Agent break tracking |
+| /api/admin/crm/attribution | GET | - | admin-guard | Multi-touch attribution report |
+
+**Public / Webhooks**
+| Route | Methods | Models | Auth | Notes |
+|-------|---------|--------|------|-------|
+| /api/public/chatbot | POST | - | rate-limit | AI chatbot endpoint (OpenAI powered) |
+| /api/webhooks/whatsapp | POST | - | webhook-secret | WhatsApp Business API webhook |
+| /api/webhooks/email-inbound | POST | - | webhook-secret | Inbound email parsing + routing |
+| /api/webhooks/meta | GET,POST | - | webhook-secret | Facebook/Instagram Messenger webhook (GET=verify, POST=events) |
+
+### CRM Enterprise ULTIMATE Routes (14 new routes - Phase 4 2026-03-04)
+
+**CRM Admin**
+| Route | Methods | Models | Auth | Notes |
+|-------|---------|--------|------|-------|
+| /api/admin/crm/call-analytics | GET | CallLog, AgentDailyStats | admin-guard | AHT/ASA/FCR/SL% metrics |
+| /api/admin/crm/adherence | GET | AgentSchedule, User | admin-guard | Real-time adherence monitoring |
+| /api/admin/crm/tickets | GET,POST | CrmTicket, CrmTicketComment | admin-guard | Ticket CRUD with priority/category |
+| /api/admin/crm/knowledge-base | GET,POST | KBArticle, KBCategory | admin-guard | KB article CRUD |
+| /api/admin/crm/workflow-analytics | GET | CrmWorkflow | admin-guard | Workflow execution stats |
+| /api/admin/crm/workflow-versions | GET,POST | CrmWorkflowVersion | admin-guard | Workflow version history |
+| /api/admin/crm/call-center-kpis | GET | CallLog, CrmCampaignActivity | admin-guard | Comprehensive CC KPIs |
+| /api/admin/crm/dashboard-builder | GET,POST | - | admin-guard | Custom dashboard widget config |
+| /api/admin/crm/activity-reports | GET | CrmActivity, User | admin-guard | Rep activity breakdown |
+| /api/admin/crm/price-books | GET,POST | PriceBook, PriceBookEntry | admin-guard | Price book CRUD |
+| /api/admin/crm/deal-teams | GET,POST,DELETE | CrmDealTeam | admin-guard | Deal team member management |
+| /api/admin/crm/contracts | GET,POST | CrmContract, CrmDeal | admin-guard | Contract CRUD with renewals |
+| /api/admin/crm/gdpr-delete | POST | CrmLead, CrmActivity, User | admin-guard | GDPR Art 17 right to deletion |
+
+**Webhooks**
+| Route | Methods | Models | Auth | Notes |
+|-------|---------|--------|------|-------|
+| /api/webhooks/zapier | POST | Various | webhook-secret | Zapier trigger/action endpoint |
+
+### Mega-Audit v2 Routes (32 new routes - 2026-03-04)
+
+**Cart Enhancements**
+| Route | Methods | Auth | Notes |
+|-------|---------|------|-------|
+| /api/cart/sync | GET,POST | auth | Sync cart to DB for authenticated users |
+| /api/cart/saved | GET,POST,DEL | auth | Save cart for later |
+| /api/cart/share | GET,POST | rate-limit | JWT-based cart sharing (stateless) |
+
+**Order Management (Admin)**
+| Route | Methods | Auth | Notes |
+|-------|---------|------|-------|
+| /api/admin/orders/[id]/notes | GET,PATCH | admin-guard | Order notes (customer + admin) |
+| /api/admin/orders/export | GET | admin-guard | CSV export with status filter |
+| /api/admin/orders/bulk-status | PATCH | admin-guard | Bulk status update |
+| /api/admin/orders/[id]/split | POST | admin-guard | Split order into partial shipments |
+| /api/admin/orders/[id]/preorder | POST,PATCH | admin-guard | Pre-order management |
+| /api/admin/orders/backorders | GET | admin-guard | Backorder tracking |
+| /api/orders/[id]/invoice | GET | auth | Customer invoice HTML (print/PDF) |
+
+**Inventory & Suppliers (Admin)**
+| Route | Methods | Auth | Notes |
+|-------|---------|------|-------|
+| /api/admin/inventory/suppliers | GET,POST | admin-guard | Supplier CRUD via SiteSettings |
+| /api/admin/inventory/purchase-orders | GET,POST | admin-guard | Purchase order tracking |
+
+**Payments (Admin)**
+| Route | Methods | Auth | Notes |
+|-------|---------|------|-------|
+| /api/admin/payments/reconciliation | GET | admin-guard | Revenue reconciliation report |
+
+**CRM (Admin)**
+| Route | Methods | Auth | Notes |
+|-------|---------|------|-------|
+| /api/admin/crm/leads | GET,POST | admin-guard | Lead management |
+| /api/admin/crm/deals | GET,POST | admin-guard | Deal/pipeline tracking |
+| /api/admin/crm/dialer | GET,POST | admin-guard | Power dialer session (get state / start campaign or ad-hoc) |
+| /api/admin/crm/dialer/action | POST | admin-guard | Dialer actions: pause, resume, stop, disposition, skip |
+| /api/admin/customers/merge | POST | admin-guard | Merge two customer accounts |
+
+**Reviews (Admin + Customer)**
+| Route | Methods | Auth | Notes |
+|-------|---------|------|-------|
+| /api/admin/reviews/bulk | PATCH | admin-guard | Bulk approve/reject reviews |
+| /api/reviews/[id]/vote | POST | auth+csrf | Helpful vote toggle |
+
+**Blog**
+| Route | Methods | Auth | Notes |
+|-------|---------|------|-------|
+| /api/blog/[slug]/comments | GET,POST | GET:none POST:auth | Blog comments (moderated) |
+| /api/admin/blog/analytics | GET | admin-guard | Blog post analytics |
+
+**Security & Monitoring (Admin)**
+| Route | Methods | Auth | Notes |
+|-------|---------|------|-------|
+| /api/admin/security/headers-audit | GET | admin-guard | Security headers checklist |
+
+**Shipping**
+| Route | Methods | Auth | Notes |
+|-------|---------|------|-------|
+| /api/webhooks/shipping | POST | webhook-secret | Carrier tracking updates (idempotent) |
+| /api/admin/shipping/zones | GET,POST | admin-guard | Shipping zone management |
+
+**Cron Jobs (3 new)**
+| Route | Methods | Auth | Notes |
+|-------|---------|------|-------|
+| /api/cron/low-stock-alerts | POST | cron-secret | Email alerts for low inventory |
+| /api/cron/birthday-bonus | POST | cron-secret | Award birthday loyalty points |
+| /api/cron/calculate-metrics | POST | cron-secret | RFM/CLV customer metrics |
+
+**Ambassador**
+| Route | Methods | Auth | Notes |
+|-------|---------|------|-------|
+| /api/ambassador/status | GET | auth | Ambassador dashboard data |
+
+### Audit Session Routes (22 new routes - 2026-03-04)
+
+**Admin User/Customer CRM**
+| Route | Methods | Auth | Notes |
+|-------|---------|------|-------|
+| /api/admin/users/[id]/email | POST | admin-guard | Send transactional email to user |
+| /api/admin/users/[id]/reset-password | POST | admin-guard | Admin-initiated password reset |
+| /api/admin/users/[id]/notes | GET,POST,PUT,DEL | admin-guard | Customer notes CRUD |
+| /api/admin/users/[id]/tags | GET,POST,DEL | admin-guard | Customer tag management |
+| /api/admin/tags | GET | admin-guard | All unique customer tags (aggregated) |
+| /api/admin/sms-logs | GET | admin-guard | SMS log viewer |
+| /api/admin/customers/segments | GET | admin-guard | Dynamic customer segmentation |
+| /api/admin/customers/at-risk | GET | admin-guard | At-risk customers (churn prediction) |
+| /api/admin/customers/[id]/health | GET | admin-guard | Customer health score |
+
+**Order Enhancements**
+| Route | Methods | Auth | Notes |
+|-------|---------|------|-------|
+| /api/admin/orders/[id]/pdf | GET | admin-guard | Order invoice PDF generation |
+| /api/admin/orders/[id]/timeline | GET | admin-guard | Order event audit timeline |
+| /api/account/orders/[id]/receipt | GET | auth | Customer-facing order receipt |
+| /api/account/orders/[id]/reorder | POST | auth | Re-order from a past order |
+
+**Cart**
+| Route | Methods | Auth | Notes |
+|-------|---------|------|-------|
+| /api/account/saved-items | GET,POST,DEL | auth | Save items for later (wishlist-cart hybrid) |
+| /api/cart/shared/[code] | GET | rate-limit | Shared cart resolver (JWT stateless) |
+
+**Inventory & Analytics**
+| Route | Methods | Auth | Notes |
+|-------|---------|------|-------|
+| /api/admin/inventory/reconciliation | GET,POST | admin-guard | Stock reconciliation report |
+| /api/admin/search-analytics | GET | admin-guard | Search query analytics |
+
+**Reviews**
+| Route | Methods | Auth | Notes |
+|-------|---------|------|-------|
+| /api/admin/reviews/[id]/respond | POST | admin-guard | Admin response to a review |
+
+**Blog**
+| Route | Methods | Auth | Notes |
+|-------|---------|------|-------|
+| /api/blog/[slug]/comments | GET,POST | GET:none POST:auth | Blog post comments (moderated) |
+
+**Cron Jobs (3 new)**
+| Route | Methods | Auth | Notes |
+|-------|---------|------|-------|
+| /api/cron/low-stock-alerts | POST | cron-secret | Email alerts for low inventory |
+| /api/cron/churn-alerts | POST | cron-secret | Churn prediction email alerts |
+| /api/cron/birthday-bonus | POST | cron-secret | Birthday loyalty bonus points |
+
 ### Public Utility (30+ routes)
 products, categories, blog, articles, reviews, ambassadors, referrals, loyalty, gift-cards, currencies, contact, consent, csrf, health, hero-slides, testimonials, videos, webinars, search/suggest, social-proof, stock-alerts, price-watch, promo/validate, upsell, bundles
 
@@ -894,6 +1153,19 @@ PageHeader, StatCard, Modal, Button, DataTable, FilterBar, FormField, MediaUploa
 | `CallStats` | /admin/telephonie (dashboard), /admin/telephonie/analytique |
 | `SatisfactionBadge` | /admin/telephonie/journal (call log rows) |
 
+### Blog & Cart Components (3) - NEW 2026-03-04
+| Component | Used By (pages) |
+|-----------|-----------------|
+| `BlogComments` | /blog/[slug] |
+| `CartShareButton` | CartDrawer, /checkout |
+| `SharedCartBanner` | CartDrawer, /checkout (shared cart import banner) |
+
+### CRM Chat Components (2) - NEW Phase 3 2026-03-04
+| Component | Used By (pages) |
+|-----------|-----------------|
+| `ChatWidget` (src/components/chat/ChatWidget.tsx) | /admin/crm/inbox, embeddable on any page via EmbedScript |
+| `EmbedScript` (src/components/chat/EmbedScript.tsx) | Standalone embed snippet for external site integration of ChatWidget |
+
 ### Shop-Specific Components (57)
 Header, Footer, HeroBanner, ProductCard, ProductGallery, ProductReviews, ProductQA, CartDrawer, CartCrossSell, SearchModal, QuickViewModal, WishlistButton, FormatSelector, PeptideCalculator, CompareButton, CompareBar, NewsletterPopup, MailingListSignup, CookieConsent, FreeShippingBanner, FlashSaleBanner, TrustBadges, ShareButtons, UpsellInterstitialModal, StickyAddToCart, BundleCard, StockAlertButton, PriceDropButton, GiftCardRedeem, RecentlyViewed, TextToSpeechButton, DisclaimerModal, QuantityTiers, CategoryScroller, ProductBadges, HeroSlider, ProductVideo, SubscriptionOfferModal...
 
@@ -921,6 +1193,8 @@ Header, Footer, HeroBanner, ProductCard, ProductGallery, ProductReviews, Product
 | `useI18n` | Translations | Context | 35+ client pages |
 | `useVoip` | WebRTC softphone (JsSIP) | Memory+WSS | SoftphoneProvider |
 | `useCallState` | Real-time call stats | SWR API poll | VoipDashboardClient, AnalyticsClient |
+| `useDiscountCode` | Promo/gift code validation | API | Checkout |
+| `useCartShare` | Cart sharing (generate/resolve JWT link) | API | CartDrawer, /checkout |
 
 ---
 
@@ -1010,6 +1284,52 @@ ALL follow pattern: `1:N Cascade`, `@@unique([parentId, locale])`, `translatedBy
 
 **Enums**: `PhoneNumberType` (LOCAL/TOLL_FREE/MOBILE), `CallDirection` (INBOUND/OUTBOUND/INTERNAL), `CallStatus` (RINGING/IN_PROGRESS/COMPLETED/MISSED/VOICEMAIL/FAILED/TRANSFERRED), `AgentStatus` (ONLINE/BUSY/DND/AWAY/OFFLINE)
 
+### Audit Session Models (3) - NEW 2026-03-04
+| Model | Fields | Relations | Notes |
+|-------|--------|-----------|-------|
+| `OrderEvent` | id, orderId, type, description, metadata?, actorId?, actorType, createdAt | order(Order), actor(User?) | Immutable audit trail for order lifecycle events (status change, note, refund, split, etc.) |
+| `ApprovalRequest` | id, entityType, entityId, requestedBy, assignedTo?, status, reason?, resolvedAt?, createdAt | requester(User), assignee(User?) | Workflow approval requests for orders/returns/refunds pending manager sign-off |
+| `WorkflowRule` | id, name, trigger, conditions(Json), actions(Json), isActive, priority, createdAt, updatedAt | - | Configurable automation rules (e.g. auto-approve orders < $X, escalate returns) |
+
+### CRM Enterprise Models (9) + Enums (4) - NEW Phase 3 2026-03-04
+| Model | Fields | Relations | Notes |
+|-------|--------|-----------|-------|
+| `CrmSnippet` | id, title, body, category?, shortcut?, createdBy?, createdAt, updatedAt | createdBy(User?) | Canned response snippets for agents; shortcut = slash-command trigger |
+| `CrmQuote` | id, dealId, title, status(CrmQuoteStatus), validUntil?, totalAmount, currency, notes?, pdfUrl?, approvedAt?, approvedBy?, createdAt, updatedAt | deal(CrmDeal), items(CrmQuoteItem[]), approvedByUser(User?) | CPQ quotes linked to a deal; PDF generated via quote-pdf.ts |
+| `CrmQuoteItem` | id, quoteId, description, quantity, unitPrice, discount?, totalPrice, sortOrder | quote(CrmQuote) | Line items for a quote; discount is per-item percentage |
+| `CrmApproval` | id, entityType, entityId, requestedBy, assignedTo?, status(ApprovalStatus), reason?, approvalData?, resolvedAt?, createdAt | requester(User), assignee(User?) | Multi-step approval workflow for quotes, deals, refunds, etc. |
+| `ExchangeRate` | id, fromCurrency, toCurrency, rate, source?, syncedAt, createdAt, updatedAt | - | @@unique([fromCurrency, toCurrency]); auto-synced from external FX API |
+| `AgentSchedule` | id, agentId, shiftType(AgentShiftType), startTime, endTime, daysOfWeek, isActive, createdAt, updatedAt | agent(User) | Weekly shift schedule per agent; daysOfWeek is array of day integers (0-6) |
+| `CrmQaForm` | id, title, description?, sections(Json), isActive, createdAt, updatedAt | scores(CrmQaScore[]) | QA evaluation form template; sections JSON defines criteria and weights |
+| `CrmQaScore` | id, formId, agentId, callLogId?, evaluatorId, scores(Json), totalScore, feedback?, createdAt | form(CrmQaForm), agent(User), evaluator(User), callLog(CallLog?) | Individual QA evaluation results; scores JSON maps criterion to score |
+| `AgentBreak` | id, agentId, breakType(AgentBreakType), startedAt, endedAt?, durationSec?, notes?, createdAt | agent(User) | Agent break tracking for WFM compliance |
+
+**New Enums**: `CrmQuoteStatus` (DRAFT/SENT/ACCEPTED/REJECTED/EXPIRED), `ApprovalStatus` (PENDING/APPROVED/REJECTED/ESCALATED), `AgentBreakType` (LUNCH/SHORT/TRAINING/PERSONAL/OTHER), `AgentShiftType` (MORNING/AFTERNOON/EVENING/NIGHT/FLEXIBLE)
+
+### CRM Enterprise ULTIMATE Models (10) + Enums (7) - NEW Phase 4 2026-03-04
+| Model | Fields | Relations | Notes |
+|-------|--------|-----------|-------|
+| `PriceBook` | id, name, type(PriceBookType), currency, isActive, validFrom?, validUntil?, createdAt, updatedAt | entries(PriceBookEntry[]) | Standard/Custom/Promotional price books |
+| `PriceBookEntry` | id, priceBookId, productId, unitPrice, minQuantity?, maxQuantity?, createdAt | priceBook(PriceBook) | Product pricing per price book |
+| `CrmDealTeam` | id, dealId, userId, role, splitPercentage?, createdAt | deal(CrmDeal), user(User) | Deal team members with commission splits |
+| `CrmContract` | id, dealId, title, status(ContractStatus), startDate, endDate?, value?, autoRenew, renewalTermMonths?, terms?, signedAt?, signedBy?, createdAt, updatedAt | deal(CrmDeal), signer(User?) | Contract management with renewals |
+| `CrmTicket` | id, title, description?, status(TicketStatus), priority(TicketPriority), category(TicketCategory), assignedToId?, reportedById?, leadId?, resolvedAt?, createdAt, updatedAt | assignedTo(User?), reportedBy(User?), lead(CrmLead?), comments(CrmTicketComment[]) | Full ticket/case management |
+| `CrmTicketComment` | id, ticketId, authorId, body, isInternal, createdAt | ticket(CrmTicket), author(User) | Ticket comments (internal/external) |
+| `KBArticle` | id, title, slug, body, categoryId?, status(KBArticleStatus), authorId, viewCount, helpfulCount, createdAt, updatedAt | category(KBCategory?), author(User) | Knowledge base articles |
+| `KBCategory` | id, name, slug, description?, sortOrder, parentId?, createdAt | parent(KBCategory?), children(KBCategory[]), articles(KBArticle[]) | KB categories (self-referencing) |
+| `CrmWorkflowVersion` | id, workflowId, version, definition(Json), createdById, changelog?, createdAt | workflow(CrmWorkflow), createdBy(User) | Workflow version history with rollback |
+| `CrmPlaybook` | id, name, description?, pipelineId?, stages(Json), status(PlaybookStatus), createdById, createdAt, updatedAt | pipeline(CrmPipeline?), createdBy(User) | Sales playbooks with stage-based guidance |
+| `DataRetentionPolicy` | id, entityType, retentionDays, action, isActive, lastRunAt?, createdAt, updatedAt | - | GDPR data retention auto-purge rules |
+| `IpWhitelist` | id, ipAddress, description?, createdById, isActive, createdAt | createdBy(User) | IP whitelist for admin/API access |
+
+**New Enums**: `PriceBookType` (STANDARD/CUSTOM/PROMOTIONAL), `ContractStatus` (DRAFT/ACTIVE/EXPIRED/TERMINATED/RENEWED), `TicketStatus` (OPEN/IN_PROGRESS/WAITING/RESOLVED/CLOSED), `TicketPriority` (LOW/MEDIUM/HIGH/URGENT), `TicketCategory` (BUG/FEATURE_REQUEST/SUPPORT/BILLING/OTHER), `KBArticleStatus` (DRAFT/PUBLISHED/ARCHIVED), `PlaybookStatus` (DRAFT/ACTIVE/ARCHIVED)
+
+**Updated Models (Phase 3)**:
+| Model | Change | Details |
+|-------|--------|---------|
+| `CrmLead` | New fields | Added `qualificationFramework` (BANT/MEDDIC/SPIN/CUSTOM), `qualificationData` (Json) |
+| `CrmDeal` | New fields + relation | Added `isRecurring` (Boolean), `recurringInterval` (String?), `mrrValue` (Decimal?), `quotes(CrmQuote[])` relation |
+
 ### Updated Models (2026-03-01)
 | Model | Change | Details |
 |-------|--------|---------|
@@ -1071,6 +1391,9 @@ ALL follow pattern: `1:N Cascade`, `@@unique([parentId, locale])`, `translatedBy
 | **Validation** | 13 Zod schemas in `/validations/` | API routes |
 | **Audit** | admin-audit.ts (logAdminAction, getClientIpFromRequest), audit-engine.ts (getAuditDashboard) | Admin API routes, audit pages |
 | **Inventory** | inventory.ts (adjustStock) | Inventory API routes |
+| **Order** | order-status-machine.ts (valid transition validator), order-events.ts (OrderEvent recording) | Order API routes, admin order management |
+| **Cache** | cache.ts (Redis + in-memory TTL fallback) | API routes requiring caching |
+| **Loyalty** | loyalty/referral-milestones.ts (milestone-based referral bonus logic) | /api/cron/birthday-bonus, referral routes |
 
 ### `/src/lib/accounting/` (34 files)
 auto-entries, stripe-sync, reconciliation, pdf-reports, alerts, aging, recurring-entries, bank-import, ml-reconciliation, forecasting, audit-trail, tax-compliance, currency, integrations (QuickBooks/Sage), quick-entry, ocr, search, alert-rules, auto-reconciliation, scheduler, kpi, payment-matching, report-templates, **ai-accountant.service** (rule-based NLP chat, 18 intents, bilingual, session management)
@@ -1099,14 +1422,121 @@ email-service (multi-provider: Resend/SendGrid/SMTP), templates (base, order, ma
 |------|---------|---------|
 | `ads-sync.ts` | Ads sync service for 6 platforms (Google, YouTube, Meta, TikTok, X, LinkedIn) | /api/admin/ads/sync, /api/admin/ads/cron |
 
-### `/src/lib/voip/` (5 files) - NEW 2026-03-01
+### `/src/lib/voip/` (34 files) - EXPANDED 2026-03-04 (Softphone BEST-IN-CLASS)
 | File | Purpose | Used By |
 |------|---------|---------|
 | `connection.ts` | VoIP provider CRUD with encrypted credentials (Telnyx, VoIP.ms, FusionPBX) | /api/admin/voip/connections |
 | `cdr-sync.ts` | CDR ingestion from FreeSWITCH mod_json_cdr, caller-client matching | /api/admin/voip/cdr/ingest |
 | `recording-upload.ts` | Upload recordings PBX → Azure Blob, processing queue | /api/admin/voip/recordings/[id] |
-| `esl-client.ts` | FreeSWITCH ESL client (lazy singleton, esl-lite), originate/hangup/transfer/hold | Softphone actions, call controls |
-| `transcription.ts` | Whisper transcription + GPT-4o-mini analysis (sentiment, summary, keywords) | Post-call async processing |
+| `esl-client.ts` | FreeSWITCH ESL client (lazy singleton, esl-lite), originate/hangup/transfer/hold | Softphone actions |
+| `transcription.ts` | Whisper transcription + GPT-4o-mini analysis (sentiment, summary, keywords, video) | Post-call processing |
+| `call-control.ts` | Central event router, state machine, Telnyx webhook handler | All VoIP webhooks |
+| `voip-state.ts` | Redis-backed VoipStateMap with in-memory fallback, 24h TTL | All VoIP modules |
+| `recording.ts` | Dual-channel recording (caller L / agent R) + pause/resume (PCI) | Call recording |
+| `power-dialer.ts` | Auto-dial, AMD detection, DNCL, wrap-up timers | Dialer campaigns |
+| `queue-engine.ts` | 5 strategies (RING_ALL, ROUND_ROBIN, HUNT, RANDOM, LEAST_RECENT) | ACD routing |
+| `ivr-engine.ts` | IVR menus, DTMF navigation, time-based routing | Inbound call routing |
+| `voicemail-engine.ts` | VM recording, greeting, CRM linking, Whisper transcription | Voicemail system |
+| `transfer-engine.ts` | Blind/attended transfer, conference, video rooms (Telnyx Video API) | Softphone |
+| `coaching-engine.ts` | Listen/whisper/barge supervisor coaching | CtiToolbar |
+| `call-quality-monitor.ts` | getStats() polling, MOS/R-Factor (ITU-T G.107), quality alerts | Softphone quality bars |
+| `pre-call-test.ts` | STUN/TURN test, RTT/jitter/packet-loss measurement | Pre-call diagnostics |
+| `krisp-noise-cancel.ts` | AI noise cancellation via Krisp WASM SDK, WebAudio pipeline | Softphone audio |
+| `call-flip.ts` | Transfer active call to another device (mobile/desk phone) | Softphone |
+| `call-park.ts` | Park slot system (orbit 701-720), park/retrieve via DTMF/UI | Softphone |
+| `call-pickup.ts` | Directed pickup (*8+ext) + group pickup (*9) | Softphone |
+| `dnd-manager.ts` | DND modes, schedule, whitelist exceptions | Presence system |
+| `multi-line.ts` | Multi-line support (2-6 simultaneous calls), line switching | Softphone |
+| `call-forwarding.ts` | Rules: unconditional, busy, no-answer, unavailable + schedule | Call routing |
+| `e911.ts` | E911 emergency calling via Telnyx, location registration | Emergency routing |
+| `presence-manager.ts` | 6 presence states, auto-detect from call, custom message, schedule | Softphone, CtiToolbar |
+| `screen-share.ts` | Screen sharing via getDisplayMedia() + peer connection | Softphone video |
+| `virtual-background.ts` | MediaPipe Selfie Segmentation + canvas composite | Softphone video |
+| `video-recording.ts` | MediaRecorder API for video, upload Azure Blob | Video calls |
+| `incoming-notification.ts` | Browser Notification API + custom ringtone Audio API | Incoming calls |
+| `ringtone-manager.ts` | 5 ringtone presets + custom upload, Web Audio API synthesis | Incoming calls |
+| `cnam-lookup.ts` | CNAM DB lookup + spam score via Telnyx Number Lookup | Caller ID |
+| `ring-groups.ts` | Dedicated ring groups (simultaneous/sequential/round-robin) | Inbound routing |
+| `simultaneous-ring.ts` | Ring WebRTC + SIP extension + mobile simultaneously | Multi-device ring |
+| `vad-analytics.ts` | Voice Activity Detection, talk-time ratio, silence detection | Call analytics |
+
+### `/src/lib/crm/` (21 files) - NEW Phase 3 2026-03-04
+| File | Purpose | Used By |
+|------|---------|---------|
+| `exchange-rates.ts` | Currency conversion engine + external FX API sync (ECB, Open Exchange Rates) | /api/admin/crm/exchange-rates, /api/admin/crm/exchange-rates/sync |
+| `quote-pdf.ts` | PDF generation for CRM quotes using PDFKit/pdfmake | /api/admin/crm/quotes/[id] |
+| `predictive-dialer.ts` | Adaptive dial ratio calculation + lead scoring-based selection | /api/admin/crm/dialer |
+| `voicemail-drop.ts` | Pre-recorded voicemail drop service (Telnyx) | VoIP dialer campaign actions |
+| `call-blending.ts` | Inbound/outbound call blending with queue balancing | SoftphoneProvider, dialer |
+| `local-presence.ts` | Local caller ID matching by area code (DID pool lookup) | /api/admin/crm/dialer/action |
+| `recording-consent.ts` | PCI-DSS consent announcement before recording starts | VoIP recording pipeline |
+| `whatsapp.ts` | WhatsApp Business API integration (send messages, templates, media) | /api/webhooks/whatsapp, social-inbox |
+| `email-sync.ts` | Bidirectional IMAP email sync (fetch, parse, thread, store) | /api/webhooks/email-inbound, shared-inbox |
+| `social-inbox.ts` | Facebook/Instagram Messenger unified inbox (webhook events, replies) | /api/webhooks/meta |
+| `shared-inbox.ts` | Team shared mailbox routing (assignment, SLA, escalation) | /admin/crm/inbox |
+| `chatbot-engine.ts` | AI chatbot with OpenAI function-calling (FAQ, lead capture, handoff) | /api/public/chatbot |
+| `ai-forecasting.ts` | ML-based revenue forecasting (linear regression + seasonality on CrmDeal data) | /admin/crm/recurring-revenue |
+| `realtime-sentiment.ts` | Real-time call sentiment analysis (streaming transcript → GPT-4o-mini scoring) | VoIP transcription pipeline |
+| `ai-coaching.ts` | AI coaching suggestions for agents (next best action, script adherence) | /admin/crm/qa |
+| `best-time-to-send.ts` | Optimal send-time analysis per contact (email/SMS open-rate history) | CRM campaign scheduler |
+| `push-notifications.ts` | Web Push API integration (VAPID keys, subscription management, send) | Admin PWA notifications |
+| `attribution.ts` | Multi-touch attribution engine (first-touch, last-touch, linear, time-decay, data-driven) | /api/admin/crm/attribution |
+| `ab-testing.ts` | A/B testing framework for CRM campaigns (variant assignment, significance testing) | CRM email/SMS campaigns |
+| `mms.ts` | MMS media messaging service (Telnyx MMS, media upload, send) | CRM outbound campaigns |
+| `payment-ivr.ts` | PCI DSS compliant payment over phone via DTMF IVR (tokenized, no card data in logs) | /api/admin/voip/*, FreeSWITCH |
+
+### `/src/lib/crm/` (37 new files) - Phase 4 2026-03-04
+| File | Purpose | Used By |
+|------|---------|---------|
+| `dialer-modes.ts` | Progressive dialer mode with agent-controlled pacing | Dialer page |
+| `agentless-dialer.ts` | Outbound IVR without live agent (press-1 connect) | Campaign automation |
+| `skills-routing.ts` | Skills-based call routing with proficiency matching | ACD engine |
+| `acd-engine.ts` | Automatic Call Distribution with priority + overflow + longest-idle | Queue engine |
+| `streaming-transcription.ts` | Real-time transcription via Telnyx streaming WebSocket | Softphone, AI coaching |
+| `conference-call.ts` | Multi-party conference calling via Telnyx | Call supervision |
+| `virtual-hold.ts` | Estimated wait time calculation + virtual hold callback | Queue engine |
+| `post-call-survey.ts` | IVR DTMF + SMS post-call CSAT surveys | Campaign post-call |
+| `lead-recycling.ts` | Disposition-based lead recycling rules engine | Campaign lists |
+| `whisper-preconnect.ts` | Audio whisper message to agent before call connect | Predictive dialer |
+| `disposition-triggers.ts` | Auto-actions on call disposition (SMS, email, task, DNC) | Softphone, dialer |
+| `sms-link-tracking.ts` | Short URL generation + click tracking for SMS | SMS campaigns |
+| `sms-keyword-responder.ts` | Auto-reply on SMS keywords (HELP, INFO, etc.) | SMS inbound webhook |
+| `sms-surveys.ts` | SMS-based surveys and polls with response tracking | SMS campaigns |
+| `sms-drip-sequence.ts` | Dedicated SMS drip sequence builder + executor | SMS marketing |
+| `channel-switching.ts` | Seamless conversation handoff across email/chat/phone | Inbox routing |
+| `knowledge-base.ts` | KB article CRUD with search + categorization | KB page, customer portal |
+| `workflow-code-sandbox.ts` | Sandboxed JavaScript execution in workflows (Node vm) | Workflow engine |
+| `workflow-templates.ts` | 8 pre-built installable workflow templates | Workflow builder |
+| `conversation-intelligence.ts` | Gong-like analysis: topics, objections, talk ratio, keywords | AI analytics |
+| `anomaly-detection.ts` | Z-score based anomaly detection for pipeline + agent metrics | AI dashboards |
+| `generative-ai.ts` | Gen AI for proposals, scripts, reports, summaries | CRM content creation |
+| `realtime-adherence.ts` | Real-time schedule adherence tracking vs planned shifts | WFM adherence page |
+| `volume-forecasting.ts` | ML volume prediction with Erlang-C staffing calculation | WFM planning |
+| `intraday-management.ts` | Intraday staffing adjustments based on real-time volume | WFM management |
+| `e-signature.ts` | DocuSign API integration for quote/contract signing | Quotes, contracts |
+| `sales-playbooks.ts` | Stage-based selling guidance with best practices | Playbooks page |
+| `field-security.ts` | Field-level permissions per role/user for CRM fields | CRM data access |
+| `data-retention.ts` | GDPR auto-purge with configurable retention policies + cron | Data compliance |
+| `calendar-sync.ts` | Google Calendar + Outlook bidirectional sync | CRM activities |
+| `calendly-integration.ts` | Calendly webhook + embed integration for scheduling | Meeting booking |
+| `email-ab-testing.ts` | Email A/B split testing with Z-test significance | Email campaigns |
+| `email-health.ts` | Deliverability monitoring (bounce rate, spam score) | Email marketing |
+| `email-signature-manager.ts` | Centralized team email signature management | Email settings |
+| `tcpa-manual-touch.ts` | TCPA 1-to-1 manual touch mode for cell phones | Dialer compliance |
+| `clv-calculator.ts` | Customer Lifetime Value calculation (historical + predictive) | CLV dashboard |
+| `churn-analysis.ts` | Churn rate analysis + prediction with risk scoring | Churn dashboard |
+
+### `/src/lib/crm/` modified files - Phase 4 2026-03-04
+| File | Changes | Impact |
+|------|---------|--------|
+| `predictive-dialer.ts` | +vertical dialing, +campaign pacing slider, +list penetration mode | Dialer campaigns |
+| `call-supervision.ts` | +supervisor takeover mode (full call transfer) | Call monitoring |
+| `recording.ts` | +dual-channel recording via Telnyx media forking | Call recording |
+| `workflow-engine.ts` | +parallel execution paths, +loop/iteration, +try/catch error handling, +cross-object automation | All workflows |
+| `realtime-sentiment.ts` | +streaming sentiment analysis during live calls | Softphone, AI |
+| `contact-enrichment.ts` | +web scraping enrichment from company websites | Lead enrichment |
+| `email-sync.ts` | +auto-create lead from unknown inbound emails | Inbox routing |
+| `ai-assistant.ts` | +conversation summaries for all channels (not just calls) | Inbox, AI |
 
 ### `/src/lib/admin/` (6 files)
 admin-fetch, admin-layout-context, icon-resolver, outlook-nav, ribbon-config, section-themes
@@ -1127,8 +1557,8 @@ admin-fetch, admin-layout-context, icon-resolver, outlook-nav, ribbon-config, se
 ### Environment (120+ vars)
 DATABASE_URL, NEXTAUTH_*, OAuth (Google/Apple/Azure), STRIPE_*, PAYPAL_*, EMAIL_PROVIDER, REDIS_URL, OPENAI_API_KEY, ENCRYPTION_KEY, Business info, Tax numbers (TPS/TVQ/NEQ)
 
-### PWA
-manifest.json, sw.js, offline.html, icons
+### PWA (Phase 3 updated)
+`public/manifest.json` (PWA manifest - name, icons, theme_color, start_url, display: standalone), `public/sw.js` (service worker - cache-first for assets, network-first for API, offline fallback), `offline.html`, icons
 
 ### Tests (10 files)
 `src/__tests__/`: tax-calculations, products, form-validation, quick-entry, auth, checkout, products-api, webhook, health
@@ -1152,10 +1582,26 @@ manifest.json, sw.js, offline.html, icons
 6. ~~**Media Section Ads/Social**~~ -- FIXED 2026-02-28: 6 ads platform dashboards (AdsPlatformDashboard component) + social scheduler with real API. Only 2 STUB pages remain (media dashboard + library)
 7. ~~**Community Forum**~~ -- FIXED 2026-02-25: 5 Prisma models (ForumCategory, ForumPost, ForumReply, ForumVote, ContactMessage) + 7 API routes, /community page now uses real API
 8. **About Section** -- 6 STUB pages
-9. **Checkout Payment** -- Stripe integration incomplete
+9. ~~**Checkout Payment**~~ -- FIXED 2026-03-04 (Mega-Audit v2): 3D Secure enforcement, cart quantity limits, cart persistence
 10. **35 Orphan Models** -- Many should have proper FK constraints (InventoryReservation, Subscription, Refund, etc.)
 11. **UserPermissionGroup** -- Has userId but NO @relation to User (broken permission chain)
 12. **Payroll** -- Stub API route with in-memory data, no Prisma model yet
+13. ~~**Ambassador Dashboard**~~ -- FIXED 2026-03-04 (Mega-Audit v2 E1): isAmbassador now checks real status via API
+14. ~~**Analytics Dashboard Fake Data**~~ -- FIXED 2026-03-04 (Mega-Audit v2 E2): Real KPIs from Order/User/EmailLog
+15. ~~**OAuth MFA Bypass**~~ -- FIXED 2026-03-04 (Mega-Audit v2 E4): OAuth users with MFA redirect to /auth/mfa-verify
+16. ~~**CSP unsafe-inline**~~ -- FIXED 2026-03-04 (Mega-Audit v2 F2): strict-dynamic in production
+17. ~~**decryptToken plaintext fallback**~~ -- FIXED 2026-03-04 (Mega-Audit v2 F6): enc: prefix migration
+18. ~~**Tax 3 implementations**~~ -- FIXED 2026-03-04 (Mega-Audit v2 F1): Single canadian-tax-engine.ts
+19. ~~**Blog comments orphan**~~ -- FIXED 2026-03-04: BlogComments component + frontend integration
+20. ~~**Inventory reconciliation missing**~~ -- FIXED 2026-03-04: GET/POST /api/admin/inventory/reconciliation
+21. ~~**ApprovalRequest/WorkflowRule models**~~ -- FIXED 2026-03-04: Added to Prisma schema + restored routes
+22. **TS errors**: 167 → **2** (non-blocking: .next/ cache + seed script only)
+23. ~~**Customer health score**~~ -- DONE 2026-03-04: /api/admin/customers/[id]/health + segments + at-risk
+24. ~~**Order PDF/invoice**~~ -- DONE 2026-03-04: /api/admin/orders/[id]/pdf + /api/account/orders/[id]/receipt
+25. ~~**Order audit trail**~~ -- DONE 2026-03-04: OrderEvent model + /api/admin/orders/[id]/timeline
+26. ~~**Cart sharing**~~ -- DONE 2026-03-04: CartShareButton + SharedCartBanner + /api/cart/shared/[code]
+27. ~~**Blog comments**~~ -- DONE 2026-03-04: BlogComments component + /api/blog/[slug]/comments
+28. ~~**Churn alerts cron**~~ -- DONE 2026-03-04: /api/cron/churn-alerts
 
 ### New Files (2026-02-21 Session)
 - `src/lib/integrations/zoom.ts` -- Zoom S2S OAuth, meetings, connection test
@@ -1359,3 +1805,139 @@ manifest.json, sw.js, offline.html, icons
 #### Phase 5: i18n (22 locale files updated)
 - 45+ new keys added under `admin.media.*` (analytics, brandKit, dashboard, highlights, transcription, etc.)
 - All 22 locale files updated (fr + en reference, 20 others with English fallback)
+
+### New Files (2026-03-04 Audit Session - CRM, Orders, Cart, Blog, Loyalty)
+
+#### New API Routes (22 files)
+- `src/app/api/admin/users/[id]/email/route.ts` -- POST admin send transactional email to user
+- `src/app/api/admin/users/[id]/reset-password/route.ts` -- POST admin-initiated password reset
+- `src/app/api/admin/users/[id]/notes/route.ts` -- GET,POST,PUT,DEL customer notes CRUD
+- `src/app/api/admin/users/[id]/tags/route.ts` -- GET,POST,DEL customer tag management
+- `src/app/api/admin/tags/route.ts` -- GET all unique customer tags (aggregated)
+- `src/app/api/admin/sms-logs/route.ts` -- GET SMS log viewer
+- `src/app/api/admin/customers/segments/route.ts` -- GET dynamic customer segmentation
+- `src/app/api/admin/customers/at-risk/route.ts` -- GET at-risk customers (churn prediction)
+- `src/app/api/admin/customers/[id]/health/route.ts` -- GET customer health score
+- `src/app/api/admin/orders/[id]/pdf/route.ts` -- GET order invoice PDF generation
+- `src/app/api/admin/orders/[id]/timeline/route.ts` -- GET order event audit timeline (OrderEvent)
+- `src/app/api/admin/search-analytics/route.ts` -- GET search query analytics
+- `src/app/api/admin/inventory/reconciliation/route.ts` -- GET,POST stock reconciliation report
+- `src/app/api/admin/reviews/[id]/respond/route.ts` -- POST admin response to a review
+- `src/app/api/account/orders/[id]/receipt/route.ts` -- GET customer-facing order receipt
+- `src/app/api/account/orders/[id]/reorder/route.ts` -- POST re-order from a past order
+- `src/app/api/account/saved-items/route.ts` -- GET,POST,DEL save items for later
+- `src/app/api/cart/shared/[code]/route.ts` -- GET shared cart resolver (JWT stateless)
+- `src/app/api/blog/[slug]/comments/route.ts` -- GET,POST blog post comments (moderated)
+- `src/app/api/cron/low-stock-alerts/route.ts` -- POST low-stock email alert cron
+- `src/app/api/cron/churn-alerts/route.ts` -- POST churn prediction alert cron
+- `src/app/api/cron/birthday-bonus/route.ts` -- POST birthday loyalty bonus cron
+
+#### New Components (3)
+- `src/components/BlogComments.tsx` -- Blog post comments section (list, post, moderation status)
+- `src/components/CartShareButton.tsx` -- Cart sharing button (generates JWT share link)
+- `src/components/SharedCartBanner.tsx` -- Shared cart import banner (resolves shared cart on load)
+
+#### New Hooks (2)
+- `src/hooks/useDiscountCode.ts` -- Promo/gift code validation with API call and error handling
+- `src/hooks/useCartShare.ts` -- Cart sharing: generate share link, resolve shared cart from code
+
+#### New Lib Files (4)
+- `src/lib/order-status-machine.ts` -- Order status transition validator (FSM: valid next states per current status)
+- `src/lib/order-events.ts` -- OrderEvent recording utility (createOrderEvent, getOrderTimeline)
+- `src/lib/cache.ts` -- In-memory cache with TTL + Redis fallback (get, set, invalidate, namespace helpers)
+- `src/lib/loyalty/referral-milestones.ts` -- Referral milestone bonus logic (N referrals = bonus points tier)
+
+#### New Prisma Models (3)
+- `OrderEvent` -- Immutable order audit trail (type, description, metadata, actorId, actorType)
+- `ApprovalRequest` -- Workflow approval requests (entityType, entityId, status, requester, assignee)
+- `WorkflowRule` -- Configurable automation rules (trigger, conditions JSON, actions JSON, priority)
+
+### New Files (2026-03-04 Phase 3 - CRM Enterprise)
+
+#### New Prisma Models (9)
+- `CrmSnippet` -- Canned response snippets for agents (title, body, category, shortcut)
+- `CrmQuote` -- CPQ quotes linked to deals (status, validUntil, totalAmount, currency, pdfUrl)
+- `CrmQuoteItem` -- Quote line items (description, quantity, unitPrice, discount, totalPrice, sortOrder)
+- `CrmApproval` -- Multi-step approval workflow records (entityType, entityId, status, reason, approvalData)
+- `ExchangeRate` -- Currency exchange rates with auto-sync (fromCurrency, toCurrency, rate, source, syncedAt)
+- `AgentSchedule` -- Agent shift schedules (shiftType, startTime, endTime, daysOfWeek, isActive)
+- `CrmQaForm` -- QA evaluation form templates (title, sections JSON, isActive)
+- `CrmQaScore` -- QA scoring records (scores JSON, totalScore, feedback, callLogId)
+- `AgentBreak` -- Agent break tracking (breakType, startedAt, endedAt, durationSec)
+
+#### New Enums (4)
+- `CrmQuoteStatus` -- DRAFT, SENT, ACCEPTED, REJECTED, EXPIRED
+- `ApprovalStatus` -- PENDING, APPROVED, REJECTED, ESCALATED
+- `AgentBreakType` -- LUNCH, SHORT, TRAINING, PERSONAL, OTHER
+- `AgentShiftType` -- MORNING, AFTERNOON, EVENING, NIGHT, FLEXIBLE
+
+#### Updated Prisma Models (2)
+- `CrmLead` -- Added `qualificationFramework` (String: BANT/MEDDIC/SPIN/CUSTOM) and `qualificationData` (Json)
+- `CrmDeal` -- Added `isRecurring` (Boolean), `recurringInterval` (String?), `mrrValue` (Decimal?), `quotes(CrmQuote[])` relation
+
+#### New Admin CRM Pages (9)
+- `src/app/admin/crm/qualification/page.tsx` -- BANT/MEDDIC lead qualification framework + data grid
+- `src/app/admin/crm/recurring-revenue/page.tsx` -- MRR/ARR KPI dashboard with cohort charts
+- `src/app/admin/crm/exchange-rates/page.tsx` -- Multi-currency exchange rate management + live sync
+- `src/app/admin/crm/snippets/page.tsx` -- Canned response library CRUD
+- `src/app/admin/crm/quotes/page.tsx` -- Quote/CPQ builder with line items and PDF export
+- `src/app/admin/crm/approvals/page.tsx` -- Multi-step approval workflow management
+- `src/app/admin/crm/attribution/page.tsx` -- Multi-touch attribution reporting
+- `src/app/admin/crm/scheduling/page.tsx` -- Agent shift scheduling + break tracking
+- `src/app/admin/crm/qa/page.tsx` -- QA form builder and scoring dashboard
+
+#### Enhanced Admin CRM Pages (2)
+- `src/app/admin/crm/inbox/page.tsx` -- Enhanced with full contact panel sidebar
+- `src/app/admin/crm/sms-templates/page.tsx` -- Enhanced with live SMS preview
+
+#### New Admin CRM API Routes (13 files)
+- `src/app/api/admin/crm/snippets/route.ts` -- GET,POST canned responses
+- `src/app/api/admin/crm/quotes/route.ts` -- GET,POST CRM quotes
+- `src/app/api/admin/crm/quotes/[id]/route.ts` -- GET,PUT,DELETE single quote + PDF
+- `src/app/api/admin/crm/approvals/route.ts` -- GET,POST approval requests
+- `src/app/api/admin/crm/approvals/[id]/route.ts` -- GET,PUT single approval + status
+- `src/app/api/admin/crm/exchange-rates/route.ts` -- GET,POST exchange rates
+- `src/app/api/admin/crm/exchange-rates/sync/route.ts` -- POST sync from external FX API
+- `src/app/api/admin/crm/recurring-revenue/route.ts` -- GET MRR/ARR aggregation
+- `src/app/api/admin/crm/agent-schedules/route.ts` -- GET,POST agent schedules
+- `src/app/api/admin/crm/qa-forms/route.ts` -- GET,POST QA form templates
+- `src/app/api/admin/crm/qa-scores/route.ts` -- GET,POST QA scoring records
+- `src/app/api/admin/crm/agent-breaks/route.ts` -- GET,POST,PUT agent break tracking
+- `src/app/api/admin/crm/attribution/route.ts` -- GET attribution report
+
+#### New Public / Webhook API Routes (4 files)
+- `src/app/api/public/chatbot/route.ts` -- POST AI chatbot (OpenAI function-calling, rate-limited)
+- `src/app/api/webhooks/whatsapp/route.ts` -- POST WhatsApp Business API webhook handler
+- `src/app/api/webhooks/email-inbound/route.ts` -- POST inbound email parsing and routing
+- `src/app/api/webhooks/meta/route.ts` -- GET+POST Facebook/Instagram Messenger webhook
+
+#### New Components (2)
+- `src/components/chat/ChatWidget.tsx` -- Embeddable AI chat widget (WebSocket + REST fallback)
+- `src/components/chat/EmbedScript.tsx` -- Standalone embed script generator for external site integration
+
+#### New Lib CRM Files (21 files in `src/lib/crm/`)
+- `exchange-rates.ts` -- Currency conversion + external FX API sync
+- `quote-pdf.ts` -- PDF generation for CRM quotes
+- `predictive-dialer.ts` -- Adaptive dial ratio + lead scoring-based selection
+- `voicemail-drop.ts` -- Pre-recorded voicemail drop (Telnyx)
+- `call-blending.ts` -- Inbound/outbound blending with queue balancing
+- `local-presence.ts` -- Local caller ID matching by area code
+- `recording-consent.ts` -- PCI-DSS consent announcement before recording
+- `whatsapp.ts` -- WhatsApp Business API integration
+- `email-sync.ts` -- Bidirectional IMAP email sync
+- `social-inbox.ts` -- Facebook/Instagram Messenger unified inbox
+- `shared-inbox.ts` -- Team shared mailbox routing + SLA
+- `chatbot-engine.ts` -- AI chatbot with OpenAI function-calling
+- `ai-forecasting.ts` -- ML-based revenue forecasting (linear regression + seasonality)
+- `realtime-sentiment.ts` -- Real-time call sentiment analysis (streaming transcript)
+- `ai-coaching.ts` -- AI coaching suggestions for agents
+- `best-time-to-send.ts` -- Optimal send-time analysis per contact
+- `push-notifications.ts` -- Web Push API (VAPID, subscription management)
+- `attribution.ts` -- Multi-touch attribution engine (5 models: first-touch, last-touch, linear, time-decay, data-driven)
+- `ab-testing.ts` -- A/B testing framework for CRM campaigns
+- `mms.ts` -- MMS media messaging (Telnyx MMS)
+- `payment-ivr.ts` -- PCI DSS compliant payment over phone via DTMF IVR
+
+#### New PWA Files (2)
+- `public/manifest.json` -- PWA manifest (name, icons, theme_color, start_url, display: standalone)
+- `public/sw.js` -- Service worker (cache-first for assets, network-first for API, offline fallback)

@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useI18n } from '@/i18n/client';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import { useCsrf } from '@/hooks/useCsrf';
 import ReviewImageUpload from './ReviewImageUpload';
 import ReviewImageGallery from './ReviewImageGallery';
 
@@ -35,12 +36,15 @@ interface ProductReviewsProps {
 export default function ProductReviews({ productId, productName }: ProductReviewsProps) {
   const { data: session } = useSession();
   const { t, locale } = useI18n();
+  const { csrfHeaders } = useCsrf();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [showWriteReview, setShowWriteReview] = useState(false);
   const [sortBy, setSortBy] = useState<'recent' | 'helpful' | 'highest' | 'lowest'>('helpful');
   const [filterRating, setFilterRating] = useState<number | null>(null);
   const [filterWithPhotos, setFilterWithPhotos] = useState(false);
   const [isLoadingReviews, setIsLoadingReviews] = useState(true);
+  const [votingReviewId, setVotingReviewId] = useState<string | null>(null);
+  const [votedReviews, setVotedReviews] = useState<Set<string>>(new Set());
   
   // New review form state
   const [newReview, setNewReview] = useState({
@@ -163,11 +167,48 @@ export default function ProductReviews({ productId, productName }: ProductReview
     }
   };
 
-  const handleHelpful = (reviewId: string) => {
-    setReviews(prev => prev.map(r => 
-      r.id === reviewId ? { ...r, helpful: r.helpful + 1 } : r
-    ));
-  };
+  const handleHelpful = useCallback(async (reviewId: string) => {
+    if (!session?.user) {
+      toast.error(t('reviews.loginToVote'));
+      return;
+    }
+    if (votingReviewId) return; // prevent double-click
+    setVotingReviewId(reviewId);
+    try {
+      const response = await fetch(`/api/reviews/${reviewId}/vote`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...csrfHeaders(),
+        },
+        body: JSON.stringify({ type: 'helpful' }),
+      });
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error || 'Vote failed');
+      }
+      const data = await response.json();
+      const result = data.data || data;
+      // Update the review's helpful count and track voted state
+      setReviews(prev => prev.map(r =>
+        r.id === reviewId ? { ...r, helpful: result.helpfulCount ?? r.helpful } : r
+      ));
+      setVotedReviews(prev => {
+        const next = new Set(prev);
+        if (result.voted) {
+          next.add(reviewId);
+        } else {
+          next.delete(reviewId);
+        }
+        return next;
+      });
+      toast.success(result.voted ? t('reviews.voteRecorded') : t('reviews.voteRemoved'));
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : t('reviews.voteFailed'));
+    } finally {
+      setVotingReviewId(null);
+    }
+  }, [session, votingReviewId, csrfHeaders, t]);
 
   const StarRating = ({ rating, size = 'md', interactive = false, onChange }: { 
     rating: number; 
@@ -403,11 +444,20 @@ export default function ProductReviews({ productId, productName }: ProductReview
                 <div className="flex items-center gap-4 mt-4">
                   <button
                     onClick={() => handleHelpful(review.id)}
-                    className="text-sm text-neutral-500 hover:text-neutral-700 flex items-center gap-1"
+                    disabled={votingReviewId === review.id}
+                    className={`text-sm flex items-center gap-1 transition-colors ${
+                      votedReviews.has(review.id)
+                        ? 'text-orange-600 font-medium hover:text-orange-700'
+                        : 'text-neutral-500 hover:text-neutral-700'
+                    } disabled:opacity-50`}
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-                    </svg>
+                    {votingReviewId === review.id ? (
+                      <div className="w-4 h-4 border-2 border-neutral-400 border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <svg className="w-4 h-4" fill={votedReviews.has(review.id) ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                      </svg>
+                    )}
                     {t('reviews.helpfulCount', { count: String(review.helpful) })}
                   </button>
                   <button className="text-sm text-neutral-500 hover:text-neutral-700">

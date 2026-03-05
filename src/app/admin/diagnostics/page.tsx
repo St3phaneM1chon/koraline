@@ -36,13 +36,6 @@ function StatusIcon({ status }: { status: 'pass' | 'fail' | 'warn' }) {
   return <Icon className={`h-5 w-5 ${config.color}`} />;
 }
 
-function getCategoryIcon(name: string) {
-  if (name.startsWith('DNS')) return Globe;
-  if (name.startsWith('Download')) return Zap;
-  if (name.includes('Health') || name.includes('API')) return Server;
-  return Globe;
-}
-
 export default function NetworkDiagnosticsPage() {
   const [data, setData] = useState<NetworkDiagnostics | null>(null);
   const [loading, setLoading] = useState(false);

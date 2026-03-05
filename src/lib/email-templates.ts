@@ -1,6 +1,18 @@
 /**
  * EMAIL TEMPLATES
- * Templates d'emails traduits dans toutes les langues
+ * Templates d'emails internationalisés (i18n)
+ *
+ * Pattern d'internationalisation:
+ * - Chaque fonction accepte un paramètre `locale` (défaut: 'fr')
+ * - createServerTranslator(locale) fournit la fonction t()
+ * - Les clés sont dans l'espace de noms `email.*` dans les fichiers de locale
+ * - En cas d'échec i18n, t() retourne la clé comme fallback (pas de crash)
+ *
+ * Pour ajouter i18n à d'autres templates (backInStockEmail, orderCancellationEmail, etc.):
+ * 1. Remplacer les ternaires `locale === 'fr' ? '...' : '...'` par `t('email.SECTION.key')`
+ * 2. Ajouter les clés dans src/i18n/locales/*.json pour les 22 locales
+ * 3. Suivre le pattern établi dans orderConfirmationEmail, welcomeEmail,
+ *    passwordResetEmail et shippingUpdateEmail ci-dessous.
  */
 
 import { type Locale } from '@/i18n/config';
@@ -146,7 +158,7 @@ function baseTemplate(content: string, locale: Locale = 'fr', unsubscribeUrl?: s
       <p>
         <a href="${emailConfig.baseUrl}/mentions-legales/conditions">${t('footer.terms')}</a> |
         <a href="${emailConfig.baseUrl}/mentions-legales/confidentialite">${t('footer.privacy')}</a>
-        ${unsubscribeUrl ? ` | <a href="${unsubscribeUrl}" style="color: #666666;">${locale === 'fr' ? 'Se désabonner' : locale === 'en' ? 'Unsubscribe' : 'Cancelar suscripción'}</a>` : ''}
+        ${unsubscribeUrl ? ` | <a href="${unsubscribeUrl}" style="color: #666666;">${t('email.unsubscribe')}</a>` : ''}
       </p>
       <p>${emailConfig.supportEmail}</p>
     </div>
@@ -164,10 +176,10 @@ export function orderConfirmationEmail(data: OrderEmailData, locale: Locale = 'f
   const formattedAmount = formatCurrencyServer(data.amount, locale, data.currency);
 
   const content = `
-    <h2 style="margin-top: 0;">${t('order.tracking.title')} 🎉</h2>
-    <p>${t('dashboard.welcome', { name: data.customerName })},</p>
-    <p>${locale === 'fr' ? 'Merci pour votre commande!' : locale === 'en' ? 'Thank you for your order!' : '¡Gracias por su pedido!'}</p>
-    
+    <h2 style="margin-top: 0;">${t('email.order.confirmed')} 🎉</h2>
+    <p>${t('email.greeting', { name: data.customerName })}</p>
+    <p>${t('email.order.thankYou')}</p>
+
     <div class="order-box">
       <div class="order-row">
         <span>${t('order.number')}</span>
@@ -182,7 +194,7 @@ export function orderConfirmationEmail(data: OrderEmailData, locale: Locale = 'f
         <span><strong>${formattedAmount}</strong></span>
       </div>
     </div>
-    
+
     ${data.isDigital ? `
       <div style="background-color: #e8f5e9; padding: 16px; border-radius: 8px; margin: 20px 0;">
         <p style="margin: 0; color: #2e7d32;">
@@ -203,9 +215,7 @@ export function orderConfirmationEmail(data: OrderEmailData, locale: Locale = 'f
           <strong>📦 ${t('order.tracking.preparing')}</strong>
         </p>
         <p style="margin: 8px 0 0 0; color: #1976d2;">
-          ${locale === 'fr' ? 'Vous recevrez un email avec le numéro de suivi dès l\'expédition.' : 
-            locale === 'en' ? 'You will receive an email with tracking information once shipped.' :
-            'Recibirá un correo electrónico con información de seguimiento una vez enviado.'}
+          ${t('email.order.trackingInfo')}
         </p>
       </div>
       ${data.trackingUrl ? `
@@ -216,16 +226,14 @@ export function orderConfirmationEmail(data: OrderEmailData, locale: Locale = 'f
         </p>
       ` : ''}
     `}
-    
+
     <p style="color: #666; font-size: 14px;">
-      ${locale === 'fr' ? 'Si vous avez des questions, n\'hésitez pas à nous contacter.' :
-        locale === 'en' ? 'If you have any questions, please don\'t hesitate to contact us.' :
-        'Si tiene alguna pregunta, no dude en contactarnos.'}
+      ${t('email.order.questions')}
     </p>
   `;
 
   return {
-    subject: `${t('order.tracking.title')} #${data.orderNumber}`,
+    subject: `${t('email.order.confirmed')} #${data.orderNumber}`,
     html: baseTemplate(content, locale),
   };
 }
@@ -237,33 +245,29 @@ export function welcomeEmail(data: WelcomeEmailData, locale: Locale = 'fr'): { s
   const t = createServerTranslator(locale);
 
   const content = `
-    <h2 style="margin-top: 0;">${t('dashboard.welcome', { name: data.userName })} 👋</h2>
+    <h2 style="margin-top: 0;">${t('email.greeting', { name: data.userName })} 👋</h2>
     <p>
-      ${locale === 'fr' ? `Bienvenue chez ${emailConfig.companyName}! Votre compte a été créé avec succès.` :
-        locale === 'en' ? `Welcome to ${emailConfig.companyName}! Your account has been created successfully.` :
-        `¡Bienvenido a ${emailConfig.companyName}! Su cuenta ha sido creada con éxito.`}
+      ${t('email.welcome.accountCreated', { company: emailConfig.companyName })}
     </p>
-    
+
     ${data.verificationUrl ? `
       <p>
-        ${locale === 'fr' ? 'Veuillez vérifier votre adresse courriel en cliquant sur le bouton ci-dessous:' :
-          locale === 'en' ? 'Please verify your email address by clicking the button below:' :
-          'Por favor verifique su dirección de correo electrónico haciendo clic en el botón de abajo:'}
+        ${t('email.welcome.verifyPrompt')}
       </p>
       <p style="text-align: center;">
         <a href="${data.verificationUrl}" class="button">
-          ${locale === 'fr' ? 'Vérifier mon courriel' : locale === 'en' ? 'Verify my email' : 'Verificar mi correo'}
+          ${t('email.welcome.verifyButton')}
         </a>
       </p>
     ` : ''}
-    
-    <h3>${locale === 'fr' ? 'Prochaines étapes' : locale === 'en' ? 'Next steps' : 'Próximos pasos'}</h3>
+
+    <h3>${t('email.welcome.nextSteps')}</h3>
     <ul>
-      <li>${locale === 'fr' ? 'Explorez notre catalogue de formations' : locale === 'en' ? 'Explore our course catalog' : 'Explore nuestro catálogo de cursos'}</li>
-      <li>${locale === 'fr' ? 'Complétez votre profil' : locale === 'en' ? 'Complete your profile' : 'Complete su perfil'}</li>
-      <li>${locale === 'fr' ? 'Activez l\'authentification à deux facteurs' : locale === 'en' ? 'Enable two-factor authentication' : 'Active la autenticación de dos factores'}</li>
+      <li>${t('email.welcome.step1')}</li>
+      <li>${t('email.welcome.step2')}</li>
+      <li>${t('email.welcome.step3')}</li>
     </ul>
-    
+
     <p style="text-align: center;">
       <a href="${emailConfig.baseUrl}/shop" class="button">
         ${t('products.catalog')}
@@ -272,7 +276,7 @@ export function welcomeEmail(data: WelcomeEmailData, locale: Locale = 'fr'): { s
   `;
 
   return {
-    subject: `${t('dashboard.welcome', { name: '' }).trim()} ${emailConfig.companyName}!`,
+    subject: t('email.welcome.subject', { company: emailConfig.companyName }),
     html: baseTemplate(content, locale),
   };
 }
@@ -285,34 +289,28 @@ export function passwordResetEmail(data: PasswordResetData, locale: Locale = 'fr
 
   const content = `
     <h2 style="margin-top: 0;">${t('auth.resetPassword')}</h2>
-    <p>${t('dashboard.welcome', { name: data.userName })},</p>
+    <p>${t('email.greeting', { name: data.userName })}</p>
     <p>
-      ${locale === 'fr' ? 'Vous avez demandé la réinitialisation de votre mot de passe.' :
-        locale === 'en' ? 'You requested a password reset.' :
-        'Ha solicitado restablecer su contraseña.'}
+      ${t('email.passwordReset.requested')}
     </p>
-    
+
     <p style="text-align: center;">
       <a href="${data.resetUrl}" class="button">
         ${t('auth.resetPassword')}
       </a>
     </p>
-    
+
     <p style="color: #666; font-size: 14px;">
-      ${locale === 'fr' ? `Ce lien expirera dans ${data.expiresIn}.` :
-        locale === 'en' ? `This link will expire in ${data.expiresIn}.` :
-        `Este enlace expirará en ${data.expiresIn}.`}
+      ${t('email.passwordReset.expiry', { duration: data.expiresIn })}
     </p>
-    
+
     <p style="color: #666; font-size: 14px;">
-      ${locale === 'fr' ? 'Si vous n\'avez pas demandé cette réinitialisation, ignorez cet email.' :
-        locale === 'en' ? 'If you didn\'t request this reset, please ignore this email.' :
-        'Si no solicitó este restablecimiento, ignore este correo electrónico.'}
+      ${t('email.passwordReset.notRequested')}
     </p>
   `;
 
   return {
-    subject: t('auth.resetPassword'),
+    subject: t('email.passwordReset.subject'),
     html: baseTemplate(content, locale),
   };
 }
@@ -335,9 +333,9 @@ export function shippingUpdateEmail(data: ShippingUpdateData, locale: Locale = '
   const estimatedDate = data.estimatedDelivery ? formatDateServer(data.estimatedDelivery, locale) : null;
 
   const content = `
-    <h2 style="margin-top: 0;">📦 ${locale === 'fr' ? 'Mise à jour de votre commande' : locale === 'en' ? 'Order Update' : 'Actualización de su pedido'}</h2>
-    <p>${t('dashboard.welcome', { name: data.customerName })},</p>
-    
+    <h2 style="margin-top: 0;">📦 ${t('email.shipping.orderUpdate')}</h2>
+    <p>${t('email.greeting', { name: data.customerName })}</p>
+
     <div class="order-box">
       <div class="order-row">
         <span>${t('order.number')}</span>
@@ -364,7 +362,7 @@ export function shippingUpdateEmail(data: ShippingUpdateData, locale: Locale = '
         </div>
       ` : ''}
     </div>
-    
+
     ${data.trackingUrl ? `
       <p style="text-align: center;">
         <a href="${data.trackingUrl}" class="button">
@@ -375,7 +373,7 @@ export function shippingUpdateEmail(data: ShippingUpdateData, locale: Locale = '
   `;
 
   return {
-    subject: `📦 ${locale === 'fr' ? 'Votre commande' : locale === 'en' ? 'Your order' : 'Su pedido'} #${data.orderNumber} - ${statusLabel}`,
+    subject: `📦 ${t('email.shipping.subjectPrefix')} #${data.orderNumber} - ${statusLabel}`,
     html: baseTemplate(content, locale),
   };
 }
@@ -414,13 +412,11 @@ export function receiptEmail(
 
   const content = `
     <h2 style="margin-top: 0;">${t('order.receipt.title')} 🧾</h2>
-    <p>${t('dashboard.welcome', { name: data.customerName })},</p>
+    <p>${t('email.greeting', { name: data.customerName })}</p>
     <p>
-      ${locale === 'fr' ? 'Voici le reçu de votre commande.' :
-        locale === 'en' ? 'Here is the receipt for your order.' :
-        'Aquí está el recibo de su pedido.'}
+      ${t('email.order.receipt')}
     </p>
-    
+
     <div class="order-box">
       <div class="order-row">
         <span>${t('order.number')}</span>
@@ -437,7 +433,7 @@ export function receiptEmail(
         <span><strong>${formatCurrencyServer(data.total, locale)}</strong></span>
       </div>
     </div>
-    
+
     <p style="text-align: center;">
       <a href="${data.receiptUrl}" class="button">
         ${t('order.receipt.download')}
@@ -455,17 +451,15 @@ export function receiptEmail(
  * Email de retour en stock
  */
 export function backInStockEmail(data: BackInStockData, locale: Locale = 'fr', unsubscribeUrl?: string): { subject: string; html: string } {
-  // const t = createServerTranslator(locale); // TODO: Use t() for email i18n
+  const t = createServerTranslator(locale);
   const formattedPrice = formatCurrencyServer(data.price, locale, data.currency);
   const productUrl = `${emailConfig.baseUrl}/product/${data.productSlug}`;
 
   const content = `
-    <h2 style="margin-top: 0;">✨ ${locale === 'fr' ? 'Bonne nouvelle!' : locale === 'en' ? 'Good news!' : '¡Buenas noticias!'}</h2>
+    <h2 style="margin-top: 0;">✨ ${t('email.backInStock.goodNews')}</h2>
 
     <p>
-      ${locale === 'fr' ? 'Le produit que vous attendiez est de nouveau disponible!' :
-        locale === 'en' ? 'The product you were waiting for is back in stock!' :
-        '¡El producto que esperaba está de nuevo en stock!'}
+      ${t('email.backInStock.available')}
     </p>
 
     <div class="order-box" style="background-color: #f9f9f9; border-radius: 8px; padding: 20px; margin: 20px 0;">
@@ -486,27 +480,23 @@ export function backInStockEmail(data: BackInStockData, locale: Locale = 'fr', u
 
     <div style="background-color: #e8f5e9; padding: 16px; border-radius: 8px; margin: 20px 0;">
       <p style="margin: 0; color: #2e7d32; font-weight: 600;">
-        🎉 ${locale === 'fr' ? 'Disponible maintenant - Commandez avant qu\'il ne soit à nouveau en rupture!' :
-              locale === 'en' ? 'Available now - Order before it sells out again!' :
-              '¡Disponible ahora - Ordene antes de que se agote nuevamente!'}
+        🎉 ${t('email.backInStock.urgency')}
       </p>
     </div>
 
     <p style="text-align: center;">
       <a href="${productUrl}" class="button" style="display: inline-block; padding: 14px 28px; background-color: ${emailConfig.primaryColor}; color: #ffffff !important; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 16px 0;">
-        ${locale === 'fr' ? 'Voir le produit' : locale === 'en' ? 'View Product' : 'Ver producto'}
+        ${t('email.backInStock.viewProduct')}
       </a>
     </p>
 
     <p style="color: #666; font-size: 14px; margin-top: 24px;">
-      ${locale === 'fr' ? 'Vous recevez cet email car vous avez demandé à être notifié lorsque ce produit serait de nouveau disponible.' :
-        locale === 'en' ? 'You are receiving this email because you requested to be notified when this product is back in stock.' :
-        'Está recibiendo este correo electrónico porque solicitó ser notificado cuando este producto esté nuevamente en stock.'}
+      ${t('email.backInStock.reason')}
     </p>
   `;
 
   return {
-    subject: `🔔 ${data.productName} ${locale === 'fr' ? 'est de nouveau disponible!' : locale === 'en' ? 'is back in stock!' : '¡está de nuevo en stock!'}`,
+    subject: `🔔 ${t('email.backInStock.subject', { product: data.productName })}`,
     html: baseTemplate(content, locale, unsubscribeUrl),
   };
 }
@@ -531,16 +521,14 @@ export function orderCancellationEmail(
   const formattedRefund = data.refundAmount ? formatCurrencyServer(data.refundAmount, locale, data.currency) : null;
 
   const itemsList = data.items.map(item => `
-    <li>${item.name} (${locale === 'fr' ? 'Quantité' : locale === 'en' ? 'Quantity' : 'Cantidad'}: ${item.quantity})</li>
+    <li>${item.name} (${t('email.order.quantity')}: ${item.quantity})</li>
   `).join('');
 
   const content = `
-    <h2 style="margin-top: 0;">${locale === 'fr' ? 'Commande annulée' : locale === 'en' ? 'Order Cancelled' : 'Pedido cancelado'}</h2>
-    <p>${t('dashboard.welcome', { name: data.customerName })},</p>
+    <h2 style="margin-top: 0;">${t('email.order.cancelledTitle')}</h2>
+    <p>${t('email.greeting', { name: data.customerName })}</p>
     <p>
-      ${locale === 'fr' ? 'Votre commande a été annulée avec succès.' :
-        locale === 'en' ? 'Your order has been successfully cancelled.' :
-        'Su pedido ha sido cancelado con éxito.'}
+      ${t('email.order.cancelledSuccess')}
     </p>
 
     <div class="order-box">
@@ -549,8 +537,8 @@ export function orderCancellationEmail(
         <span><strong>${data.orderNumber}</strong></span>
       </div>
       <div class="order-row">
-        <span>${locale === 'fr' ? 'Statut' : locale === 'en' ? 'Status' : 'Estado'}</span>
-        <span style="color: #d32f2f; font-weight: 600;">${locale === 'fr' ? 'Annulée' : locale === 'en' ? 'Cancelled' : 'Cancelado'}</span>
+        <span>${t('email.order.status')}</span>
+        <span style="color: #d32f2f; font-weight: 600;">${t('email.order.cancelledStatus')}</span>
       </div>
       <div class="order-row">
         <span>${t('cart.total')}</span>
@@ -558,7 +546,7 @@ export function orderCancellationEmail(
       </div>
     </div>
 
-    <h3 style="margin-top: 24px;">${locale === 'fr' ? 'Articles annulés' : locale === 'en' ? 'Cancelled Items' : 'Artículos cancelados'}</h3>
+    <h3 style="margin-top: 24px;">${t('email.order.cancelledItems')}</h3>
     <ul style="color: #666;">
       ${itemsList}
     </ul>
@@ -566,31 +554,30 @@ export function orderCancellationEmail(
     ${data.refundAmount && data.refundAmount > 0 ? `
       <div style="background-color: #e8f5e9; padding: 16px; border-radius: 8px; margin: 20px 0;">
         <p style="margin: 0; color: #2e7d32;">
-          <strong>💰 ${locale === 'fr' ? 'Remboursement' : locale === 'en' ? 'Refund' : 'Reembolso'}</strong>
+          <strong>💰 ${t('email.order.refund')}</strong>
         </p>
         <p style="margin: 8px 0 0 0; color: #388e3c;">
-          ${locale === 'fr' ? `Un remboursement de ${formattedRefund} sera traité sur votre ${data.refundMethod || 'mode de paiement original'} dans les 5-10 jours ouvrables.` :
-            locale === 'en' ? `A refund of ${formattedRefund} will be processed to your ${data.refundMethod || 'original payment method'} within 5-10 business days.` :
-            `Un reembolso de ${formattedRefund} se procesará en su ${data.refundMethod || 'método de pago original'} dentro de 5-10 días hábiles.`}
+          ${t('email.order.refundInfo', {
+            amount: formattedRefund ?? '',
+            method: data.refundMethod || t('email.order.refundMethod'),
+          })}
         </p>
       </div>
     ` : ''}
 
     <p style="color: #666; font-size: 14px;">
-      ${locale === 'fr' ? 'Si vous avez des questions concernant cette annulation, n\'hésitez pas à nous contacter.' :
-        locale === 'en' ? 'If you have any questions about this cancellation, please don\'t hesitate to contact us.' :
-        'Si tiene alguna pregunta sobre esta cancelación, no dude en contactarnos.'}
+      ${t('email.order.cancelledQuestions')}
     </p>
 
     <p style="text-align: center; margin-top: 24px;">
       <a href="${emailConfig.baseUrl}/shop" class="button">
-        ${locale === 'fr' ? 'Continuer mes achats' : locale === 'en' ? 'Continue Shopping' : 'Seguir comprando'}
+        ${t('email.order.continueShopping')}
       </a>
     </p>
   `;
 
   return {
-    subject: `${locale === 'fr' ? 'Commande annulée' : locale === 'en' ? 'Order Cancelled' : 'Pedido cancelado'} #${data.orderNumber}`,
+    subject: `${t('email.order.cancelledTitle')} #${data.orderNumber}`,
     html: baseTemplate(content, locale),
   };
 }

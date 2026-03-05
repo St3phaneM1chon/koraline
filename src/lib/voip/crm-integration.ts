@@ -11,6 +11,7 @@
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import * as telnyx from '@/lib/telnyx';
+import { getTelnyxConnectionId, getDefaultCallerId } from '@/lib/telnyx';
 
 /**
  * Screen Pop: Find client by phone number on inbound call.
@@ -130,8 +131,8 @@ export async function clickToCall(options: {
   agentUserId: string;
   callerIdNumber?: string;
 }): Promise<{ callControlId?: string; error?: string }> {
-  const connectionId = process.env.TELNYX_CONNECTION_ID || '';
-  const from = options.callerIdNumber || process.env.TELNYX_DEFAULT_CALLER_ID || '';
+  const connectionId = getTelnyxConnectionId();
+  const from = options.callerIdNumber || getDefaultCallerId();
   const webhookUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/voip/webhooks/telnyx`;
 
   try {

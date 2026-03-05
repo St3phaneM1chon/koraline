@@ -18,8 +18,7 @@ import {
   Settings, Search, CreditCard, Scale, Wrench, Clock, Layers,
   FileText, AlertTriangle, DollarSign, Bookmark, Zap, Target,
   Wand2, Video, Shield, BookOpen, Scan, FileUp, LayoutGrid, List,
-  Users, Package, Phone, PhoneIncoming, PhoneOutgoing, Voicemail as VoicemailIcon,
-  Headphones,
+  Users, Package, Phone, PhoneIncoming,
 } from 'lucide-react';
 
 // ── Interfaces ────────────────────────────────────────────────
@@ -1079,6 +1078,114 @@ export const ribbonConfigs: Record<string, RibbonConfig> = {
       view: viewActions,
     },
   },
+
+  'telephonie.campaigns': {
+    tabs: defaultTabs,
+    actions: {
+      home: [
+        { key: 'newCampaign', labelKey: 'admin.ribbon.newCampaign', icon: Plus, variant: 'primary' },
+        { key: 'startCampaign', labelKey: 'admin.ribbon.start', icon: Play, separator: true },
+        { key: 'pauseCampaign', labelKey: 'admin.ribbon.pause', icon: Pause },
+        { key: 'delete', labelKey: 'admin.ribbon.delete', icon: Trash2, variant: 'danger' },
+      ],
+      view: viewActions,
+    },
+  },
+
+  'telephonie.coaching': {
+    tabs: defaultTabs,
+    actions: {
+      home: [
+        { key: 'newSession', labelKey: 'admin.ribbon.newSession', icon: Plus, variant: 'primary' },
+        { key: 'listen', labelKey: 'admin.ribbon.listen', icon: Phone, separator: true },
+        { key: 'refresh', labelKey: 'admin.ribbon.refresh', icon: RefreshCw },
+      ],
+      view: viewActions,
+    },
+  },
+
+  'telephonie.forwarding': {
+    tabs: defaultTabs,
+    actions: {
+      home: [
+        { key: 'newRule', labelKey: 'admin.ribbon.newRule', icon: Plus, variant: 'primary' },
+        { key: 'delete', labelKey: 'admin.ribbon.delete', icon: Trash2, variant: 'danger', separator: true },
+        { key: 'refresh', labelKey: 'admin.ribbon.refresh', icon: RefreshCw },
+      ],
+      view: viewActions,
+    },
+  },
+
+  'telephonie.ringGroups': {
+    tabs: defaultTabs,
+    actions: {
+      home: [
+        { key: 'newGroup', labelKey: 'admin.ribbon.newGroup', icon: Plus, variant: 'primary' },
+        { key: 'delete', labelKey: 'admin.ribbon.delete', icon: Trash2, variant: 'danger', separator: true },
+        { key: 'refresh', labelKey: 'admin.ribbon.refresh', icon: RefreshCw },
+      ],
+      view: viewActions,
+    },
+  },
+
+  'telephonie.surveys': {
+    tabs: defaultTabs,
+    actions: {
+      home: [
+        { key: 'newSurvey', labelKey: 'admin.ribbon.newSurvey', icon: Plus, variant: 'primary' },
+        { key: 'export', labelKey: 'admin.ribbon.export', icon: Download, separator: true },
+        { key: 'delete', labelKey: 'admin.ribbon.delete', icon: Trash2, variant: 'danger' },
+      ],
+      view: viewActions,
+    },
+  },
+
+  'telephonie.ivrBuilder': {
+    tabs: defaultTabs,
+    actions: {
+      home: [
+        { key: 'newIvr', labelKey: 'admin.ribbon.newIvr', icon: Plus, variant: 'primary' },
+        { key: 'save', labelKey: 'admin.ribbon.save', icon: Save, separator: true },
+        { key: 'delete', labelKey: 'admin.ribbon.delete', icon: Trash2, variant: 'danger' },
+      ],
+      view: viewActions,
+    },
+  },
+
+  'telephonie.webhooks': {
+    tabs: defaultTabs,
+    actions: {
+      home: [
+        { key: 'newWebhook', labelKey: 'admin.ribbon.newWebhook', icon: Plus, variant: 'primary' },
+        { key: 'testWebhook', labelKey: 'admin.ribbon.testWebhook', icon: Zap, separator: true },
+        { key: 'delete', labelKey: 'admin.ribbon.delete', icon: Trash2, variant: 'danger' },
+      ],
+      view: viewActions,
+    },
+  },
+
+  'telephonie.wallboard': {
+    tabs: defaultTabs,
+    actions: {
+      home: [
+        { key: 'refresh', labelKey: 'admin.ribbon.refresh', icon: RefreshCw, variant: 'primary' },
+        { key: 'fullscreen', labelKey: 'admin.ribbon.fullscreen', icon: ExternalLink, separator: true },
+        { key: 'export', labelKey: 'admin.ribbon.export', icon: Download },
+      ],
+      view: viewActions,
+    },
+  },
+
+  'telephonie.parameters': {
+    tabs: defaultTabs,
+    actions: {
+      home: [
+        { key: 'save', labelKey: 'admin.ribbon.save', icon: Save, variant: 'primary' },
+        { key: 'refresh', labelKey: 'admin.ribbon.refresh', icon: RefreshCw, separator: true },
+      ],
+      view: viewActions,
+    },
+  },
 };
 
 // ── Sub-section detection ─────────────────────────────────────
@@ -1189,7 +1296,16 @@ export function getSubSectionId(
   if (pathname.startsWith('/admin/telephonie/extensions')) return 'telephonie.extensions';
   if (pathname.startsWith('/admin/telephonie/numeros')) return 'telephonie.phoneNumbers';
   if (pathname.startsWith('/admin/telephonie/connexions')) return 'telephonie.connections';
-  if (pathname.startsWith('/admin/telephonie/analytics')) return 'telephonie.analytics';
+  if (pathname.startsWith('/admin/telephonie/analytics') || pathname.startsWith('/admin/telephonie/analytique')) return 'telephonie.analytics';
+  if (pathname.startsWith('/admin/telephonie/campagnes')) return 'telephonie.campaigns';
+  if (pathname.startsWith('/admin/telephonie/coaching')) return 'telephonie.coaching';
+  if (pathname.startsWith('/admin/telephonie/transferts')) return 'telephonie.forwarding';
+  if (pathname.startsWith('/admin/telephonie/groupes')) return 'telephonie.ringGroups';
+  if (pathname.startsWith('/admin/telephonie/sondages')) return 'telephonie.surveys';
+  if (pathname.startsWith('/admin/telephonie/ivr-builder')) return 'telephonie.ivrBuilder';
+  if (pathname.startsWith('/admin/telephonie/webhooks')) return 'telephonie.webhooks';
+  if (pathname.startsWith('/admin/telephonie/wallboard')) return 'telephonie.wallboard';
+  if (pathname.startsWith('/admin/telephonie/parametres')) return 'telephonie.parameters';
 
   // ── System ──────────────────────────────────────
   if (

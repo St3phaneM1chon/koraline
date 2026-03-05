@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { timingSafeEqual } from 'crypto';
 import { processPendingRecordings } from '@/lib/voip/recording-upload';
+import { getDualChannelRecording, saveDualChannelRecordingToDB } from '@/lib/voip/recording';
 import { withJobLock } from '@/lib/cron-lock';
 import { logger } from '@/lib/logger';
 
@@ -47,11 +48,41 @@ export async function POST(request: NextRequest) {
     try {
       const uploaded = await processPendingRecordings(20);
 
-      logger.info('[Cron] voip-recordings completed', { uploaded });
+      // Sync dual-channel recording metadata for recordings that exist
+      // in the DB but haven't been uploaded yet (blobUrl is null).
+      // getDualChannelRecording fetches from Telnyx API using the recording ID.
+      const { prisma } = await import('@/lib/db');
+      const pendingRecordings = await prisma.callRecording.findMany({
+        where: {
+          blobUrl: null,
+          isUploaded: false,
+        },
+        select: { id: true, callLogId: true },
+        take: 10,
+      });
+
+      let synced = 0;
+      for (const rec of pendingRecordings) {
+        try {
+          const result = await getDualChannelRecording(rec.id);
+          if (result && result.channels.mixed) {
+            await saveDualChannelRecordingToDB(rec.callLogId, result);
+            synced++;
+          }
+        } catch (e) {
+          logger.warn('[Cron] Failed to sync dual-channel recording', {
+            recordingId: rec.id,
+            error: e instanceof Error ? e.message : String(e),
+          });
+        }
+      }
+
+      logger.info('[Cron] voip-recordings completed', { uploaded, dualChannelSynced: synced });
 
       return NextResponse.json({
         success: true,
         uploaded,
+        dualChannelSynced: synced,
         timestamp: new Date().toISOString(),
       });
     } catch (error) {

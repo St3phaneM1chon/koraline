@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic';
 
 // TODO: FAILLE-094 - SiteSettings create uses empty defaults; provide sensible initial values or show setup wizard
 // FAILLE-095 FIX: parseSafe now uses generic type parameter for better type safety
-// TODO: FAILLE-098 - Every GET re-fetches SiteSettings from DB; add in-memory cache with 30s TTL
+// FAILLE-098 FIX: SiteSettings GET now uses in-memory cache with 30s TTL to reduce DB queries
 
 /**
  * Admin Settings API
@@ -52,6 +52,7 @@ import { prisma } from '@/lib/db';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { logAdminAction, getClientIpFromRequest } from '@/lib/admin-audit';
 import { logger } from '@/lib/logger';
+import { siteSettingsCache } from '@/lib/cache';
 
 // FAILLE-026 FIX: Zod schema for PUT body validation
 const settingsPutSchema = z.object({
@@ -71,19 +72,40 @@ const settingsPatchSchema = z.object({
   description: z.string().nullish(),
 }).strict();
 
+/**
+ * Fetch SiteSettings singleton with caching
+ * Returns cached result if available (within 30s TTL), otherwise fetches from DB
+ */
+async function getCachedSiteSettings(): Promise<Awaited<ReturnType<typeof prisma.siteSettings.create>>> {
+  // Check cache first
+  const cachedSettings = siteSettingsCache.get();
+  if (cachedSettings) {
+    logger.debug('SiteSettings cache hit');
+    return cachedSettings as Awaited<ReturnType<typeof prisma.siteSettings.create>>;
+  }
+
+  // Cache miss - fetch from DB
+  logger.debug('SiteSettings cache miss, fetching from DB');
+  let siteSettings = await prisma.siteSettings.findUnique({
+    where: { id: 'default' },
+  });
+
+  if (!siteSettings) {
+    siteSettings = await prisma.siteSettings.create({
+      data: { id: 'default' },
+    });
+  }
+
+  // Update cache
+  siteSettingsCache.set(siteSettings);
+  return siteSettings;
+}
+
 // GET /api/admin/settings - Get all settings
 export const GET = withAdminGuard(async (_request, { session: _session }) => {
   try {
-    // Fetch the singleton SiteSettings (create default if not exists)
-    let siteSettings = await prisma.siteSettings.findUnique({
-      where: { id: 'default' },
-    });
-
-    if (!siteSettings) {
-      siteSettings = await prisma.siteSettings.create({
-        data: { id: 'default' },
-      });
-    }
+    // Fetch the singleton SiteSettings with 30s in-memory cache
+    const siteSettings = await getCachedSiteSettings();
 
     // FAILLE-040 FIX: Add take limit to prevent unbounded query
     const siteSettingEntries = await prisma.siteSetting.findMany({
@@ -222,6 +244,8 @@ export const PUT = withAdminGuard(async (request, { session }) => {
           update: updateData,
           create: { id: 'default', ...updateData },
         });
+        // Invalidate cache when SiteSettings are updated
+        siteSettingsCache.invalidate();
       }
     }
 
@@ -342,6 +366,9 @@ export const PATCH = withAdminGuard(async (request, { session }) => {
         updatedBy: session.user.id,
       },
     });
+
+    // Invalidate cache when any setting is updated
+    siteSettingsCache.invalidate();
 
     logAdminAction({
       adminUserId: session.user.id,

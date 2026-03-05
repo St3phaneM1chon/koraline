@@ -36,7 +36,25 @@ function NavDropdownTab({
   }, [open]);
 
   const section = tab.railId ? folderSections[tab.railId] : null;
-  if (!section) return null;
+  // Never return null — doing so removes the element and shifts siblings,
+  // causing a hydration mismatch between server (renders all) and client.
+  if (!section) {
+    return (
+      <div ref={ref} className="relative">
+        <button
+          onClick={() => { setOpen(!open); onSelect(tab.key); }}
+          className={`flex items-center gap-1 px-3 py-1.5 text-xs font-medium transition-colors ${
+            isActive || open
+              ? 'text-sky-700 border-b-2 border-sky-700 -mb-px'
+              : 'text-slate-500 hover:text-slate-700'
+          }`}
+        >
+          {t(tab.labelKey)}
+          <ChevronDown className="w-3 h-3" />
+        </button>
+      </div>
+    );
+  }
 
   // Flatten all items from all groups
   const allItems = section.groups.flatMap((g) => g.items);

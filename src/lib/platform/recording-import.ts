@@ -4,6 +4,7 @@
  * creating Video records, and auto-creating consent when clients are detected.
  */
 
+import crypto from 'crypto';
 import { prisma } from '@/lib/db';
 import { getValidAccessToken, type Platform } from './oauth';
 import { logger } from '@/lib/logger';
@@ -655,10 +656,5 @@ function formatDuration(seconds: number): string {
 }
 
 function generateConsentToken(): string {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let token = '';
-  for (let i = 0; i < 48; i++) {
-    token += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return token;
+  return crypto.randomBytes(24).toString('hex'); // 24 bytes = 48 hex chars, cryptographically secure
 }

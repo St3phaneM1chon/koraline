@@ -70,45 +70,50 @@ const checkoutSchema = z.object({
   researchConsentTimestamp: z.string().optional(),
 });
 
-// Server-side tax calculation - all Canadian provinces/territories
-// BE-PAY-11, BE-PAY-20: Fixed to handle PST for BC/MB/SK, not just QC+HST
-const CANADIAN_TAX_RATES: Record<string, { gst: number; pst?: number; hst?: number; qst?: number; rst?: number }> = {
-  'AB': { gst: 0.05 },
-  'BC': { gst: 0.05, pst: 0.07 },
-  'MB': { gst: 0.05, rst: 0.07 },
-  'NB': { gst: 0, hst: 0.15 },
-  'NL': { gst: 0, hst: 0.15 },
-  'NS': { gst: 0, hst: 0.14 },
-  'NT': { gst: 0.05 },
-  'NU': { gst: 0.05 },
-  'ON': { gst: 0, hst: 0.13 },
-  'PE': { gst: 0, hst: 0.15 },
-  'QC': { gst: 0.05, qst: 0.09975 },
-  'SK': { gst: 0.05, pst: 0.06 },
-  'YT': { gst: 0.05 },
-};
+// F1 FIX: Consolidated tax calculation — single source of truth
+// Uses canadian-tax-engine.ts instead of duplicated inline rates
+import { calculateTax } from '@/lib/tax/canadian-tax-engine';
 
 function calculateServerTaxes(subtotal: number, province: string) {
+  const result = calculateTax(subtotal, province);
+  // Map breakdown to legacy format expected by checkout
   let tps = 0, tvq = 0, tvh = 0, pst = 0;
-  const rates = CANADIAN_TAX_RATES[province.toUpperCase()] || CANADIAN_TAX_RATES['QC'];
-
-  if (rates.hst) {
-    tvh = applyRate(subtotal, rates.hst);
-  } else if (rates.qst) {
-    tps = applyRate(subtotal, rates.gst);
-    tvq = applyRate(subtotal, rates.qst);
-  } else if (rates.pst || rates.rst) {
-    tps = applyRate(subtotal, rates.gst);
-    pst = applyRate(subtotal, rates.pst || rates.rst || 0);
-  } else {
-    tps = applyRate(subtotal, rates.gst);
+  for (const item of result.breakdown) {
+    if (item.name === 'TPS' || item.name === 'GST') tps = item.amount;
+    else if (item.name === 'TVQ' || item.name === 'QST') tvq = item.amount;
+    else if (item.name === 'TVH' || item.name === 'HST') tvh = item.amount;
+    else if (item.name === 'TVP' || item.name === 'PST' || item.name === 'RST') pst = item.amount;
   }
-
-  return { tps, tvq, tvh, pst, total: add(tps, tvq, tvh, pst) };
+  return { tps, tvq, tvh, pst, total: result.total };
 }
 
 // Server-side shipping calculation (product-type aware)
-function calculateServerShipping(subtotal: number, country: string, productTypes?: string[]): number {
+/**
+ * Weight-based rate tiers (CAD) mirroring src/lib/shipping/calculator.ts and canadianTaxes.ts.
+ * CA domestic: free if subtotal >= $100, else $5.99 + $1.50/kg.
+ * US: $9.99 + $3.00/kg.
+ * International: $19.99 + $5.00/kg.
+ */
+const SERVER_WEIGHT_RATES: Record<'CA' | 'US' | 'INTL', { baseRate: number; perKgRate: number }> = {
+  CA:   { baseRate: 5.99,  perKgRate: 1.50 },
+  US:   { baseRate: 9.99,  perKgRate: 3.00 },
+  INTL: { baseRate: 19.99, perKgRate: 5.00 },
+};
+
+function calculateServerShipping(subtotal: number, country: string, productTypes?: string[], totalWeightGrams?: number): number {
+  const weightRegion: 'CA' | 'US' | 'INTL' =
+    country === 'CA' ? 'CA' : country === 'US' ? 'US' : 'INTL';
+
+  // Weight-based path when total weight is known
+  if (totalWeightGrams && totalWeightGrams > 0) {
+    const weightKg = totalWeightGrams / 1000;
+    const wr = SERVER_WEIGHT_RATES[weightRegion];
+    // CA domestic: free over $100 CAD
+    if (weightRegion === 'CA' && subtotal >= 100) return 0;
+    return Math.round((wr.baseRate + weightKg * wr.perKgRate) * 100) / 100;
+  }
+
+  // Flat-rate fallback (original logic)
   if (country === 'CA') {
     const hasLabSupply = productTypes?.some(t => t === 'LAB_SUPPLY');
     const threshold = hasLabSupply ? 300 : 100;
@@ -229,7 +234,7 @@ export async function POST(request: NextRequest) {
     // SECURITY: Validate ALL prices from the database
     // N+1 FIX: Batch-fetch all products and formats upfront
     // =====================================================
-    const verifiedItems: { productId: string; formatId: string | null; name: string; formatName: string | null; quantity: number; price: number; priceConverted: number; imageUrl: string | null; productType: string }[] = [];
+    const verifiedItems: { productId: string; formatId: string | null; name: string; formatName: string | null; quantity: number; price: number; priceConverted: number; imageUrl: string | null; productType: string; weightGrams: number | null }[] = [];
     let serverSubtotal = 0;
 
     // Validate basic item structure first
@@ -262,7 +267,7 @@ export async function POST(request: NextRequest) {
           where: {
             OR: uniqueFormatPairs.map(pair => ({ id: pair.id, productId: pair.productId })),
           },
-          select: { id: true, name: true, price: true, imageUrl: true, productId: true },
+          select: { id: true, name: true, price: true, imageUrl: true, productId: true, weightGrams: true },
         })
       : [];
     const formatMap = new Map(allFormats.map(f => [f.id, f]));
@@ -276,8 +281,9 @@ export async function POST(request: NextRequest) {
 
       let verifiedPrice = Number(product.price);
       let formatName: string | null = null;
+      let weightGrams: number | null = null;
 
-      // If a format is specified, use its price instead
+      // If a format is specified, use its price and weight instead
       if (item.formatId) {
         const format = formatMap.get(item.formatId);
         if (!format) {
@@ -288,6 +294,7 @@ export async function POST(request: NextRequest) {
         }
         verifiedPrice = Number(format.price);
         formatName = format.name;
+        weightGrams = format.weightGrams ?? null;
       }
 
       const quantity = Math.max(1, Math.floor(item.quantity));
@@ -306,6 +313,7 @@ export async function POST(request: NextRequest) {
         priceConverted,       // Converted price (for Stripe)
         imageUrl: product.imageUrl,
         productType: product.productType,
+        weightGrams,
       });
     }
 
@@ -470,7 +478,9 @@ export async function POST(request: NextRequest) {
     const country = shippingInfo?.country || 'CA';
     const serverTaxes = calculateServerTaxes(subtotalAfterAllDiscounts, province);
     const cartProductTypes = verifiedItems.map(i => i.productType);
-    const serverShipping = calculateServerShipping(serverSubtotal, country, cartProductTypes);
+    // Sum weight across all line items; undefined when no format has weight data
+    const serverTotalWeightGrams = verifiedItems.reduce((sum, i) => sum + (i.weightGrams ?? 0) * i.quantity, 0);
+    const serverShipping = calculateServerShipping(serverSubtotal, country, cartProductTypes, serverTotalWeightGrams || undefined);
 
     // Reserve inventory atomically (prevents overselling)
     let reservationIds: string[] = [];
@@ -705,6 +715,8 @@ export async function POST(request: NextRequest) {
         : {
             card: {
               setup_future_usage: session?.user ? 'on_session' : undefined,
+              // I-PAYMENT-10: 3D Secure enforcement — request 3DS for all card payments
+              request_three_d_secure: 'any',
             },
           },
     };

@@ -20,7 +20,9 @@
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import * as telnyx from '@/lib/telnyx';
+import { getTelnyxConnectionId } from '@/lib/telnyx';
 import { checkDncl } from './dncl';
+import { VoipStateMap } from './voip-state';
 
 export type DialerState = 'IDLE' | 'DIALING' | 'RINGING' | 'AMD_CHECK' | 'CONNECTED' | 'WRAP_UP' | 'PAUSED';
 
@@ -36,8 +38,8 @@ interface ActiveDialerSession {
   connectCount: number;
 }
 
-// Active dialer sessions per agent
-const activeSessions = new Map<string, ActiveDialerSession>();
+// Active dialer sessions per agent — Redis-backed
+const activeSessions = new VoipStateMap<ActiveDialerSession>('voip:dialer:');
 
 /**
  * Start a power dialer session for an agent on a campaign.
@@ -93,138 +95,142 @@ export async function startDialerSession(
 
 /**
  * Dial the next contact in the campaign list.
+ * Uses iterative loop instead of recursion to avoid stack overflow with large DNCL lists.
  */
 async function dialNextContact(agentUserId: string): Promise<void> {
-  const session = activeSessions.get(agentUserId);
-  if (!session || session.state === 'PAUSED') return;
+  // Iterative loop — replaces recursive calls for DNCL skips
+  while (true) {
+    const session = activeSessions.get(agentUserId);
+    if (!session || session.state === 'PAUSED') return;
 
-  const campaign = await prisma.dialerCampaign.findUnique({
-    where: { id: session.campaignId },
-  });
-
-  if (!campaign || campaign.status !== 'ACTIVE') {
-    session.state = 'IDLE';
-    return;
-  }
-
-  // Check schedule
-  if (!isWithinSchedule(campaign)) {
-    session.state = 'PAUSED';
-    logger.info('[Dialer] Paused - outside schedule', { agentUserId });
-    return;
-  }
-
-  // Get next uncalled, non-DNCL contact
-  // Priority: scheduled callbacks first, then uncalled contacts
-  const nextEntry = await prisma.dialerListEntry.findFirst({
-    where: {
-      campaignId: session.campaignId,
-      isCalled: false,
-      isDncl: false,
-      OR: [
-        { scheduledAt: null },
-        { scheduledAt: { lte: new Date() } },
-      ],
-    },
-    orderBy: [
-      { scheduledAt: 'asc' }, // Callbacks first
-      { createdAt: 'asc' },  // Then by import order
-    ],
-  });
-
-  if (!nextEntry) {
-    // No more contacts — campaign done
-    session.state = 'IDLE';
-    await prisma.dialerCampaign.update({
+    const campaign = await prisma.dialerCampaign.findUnique({
       where: { id: session.campaignId },
-      data: { status: 'COMPLETED' },
-    });
-    logger.info('[Dialer] Campaign completed - no more contacts', {
-      campaignId: session.campaignId,
-    });
-    return;
-  }
-
-  // DNCL check
-  const isDncl = await checkDncl(nextEntry.phoneNumber);
-  if (isDncl) {
-    await prisma.dialerListEntry.update({
-      where: { id: nextEntry.id },
-      data: { isDncl: true, dnclCheckedAt: new Date() },
-    });
-    logger.info('[Dialer] Skipped DNCL number', { phone: nextEntry.phoneNumber });
-    // Try next contact
-    await dialNextContact(agentUserId);
-    return;
-  }
-
-  // Mark DNCL checked
-  await prisma.dialerListEntry.update({
-    where: { id: nextEntry.id },
-    data: { dnclCheckedAt: new Date() },
-  });
-
-  // Dial
-  session.state = 'DIALING';
-  session.currentEntryId = nextEntry.id;
-
-  const connectionId = process.env.TELNYX_CONNECTION_ID || '';
-  const webhookUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/voip/webhooks/telnyx`;
-
-  try {
-    const result = await telnyx.dialCall({
-      to: nextEntry.phoneNumber,
-      from: campaign.callerIdNumber,
-      connectionId,
-      webhookUrl,
-      clientState: JSON.stringify({
-        campaignId: session.campaignId,
-        listEntryId: nextEntry.id,
-        agentUserId,
-        dialer: true,
-      }),
-      timeout: 30,
     });
 
-    const callControlId = (result as { data?: { call_control_id?: string } })
-      ?.data?.call_control_id;
-
-    if (callControlId) {
-      session.currentCallControlId = callControlId;
-      session.state = 'RINGING';
+    if (!campaign || campaign.status !== 'ACTIVE') {
+      session.state = 'IDLE';
+      return;
     }
 
-    session.callCount++;
+    // Check schedule
+    if (!isWithinSchedule(campaign)) {
+      session.state = 'PAUSED';
+      logger.info('[Dialer] Paused - outside schedule', { agentUserId });
+      return;
+    }
 
-    // Update list entry
+    // Get next uncalled, non-DNCL contact
+    // Priority: scheduled callbacks first, then uncalled contacts
+    const nextEntry = await prisma.dialerListEntry.findFirst({
+      where: {
+        campaignId: session.campaignId,
+        isCalled: false,
+        isDncl: false,
+        OR: [
+          { scheduledAt: null },
+          { scheduledAt: { lte: new Date() } },
+        ],
+      },
+      orderBy: [
+        { scheduledAt: 'asc' }, // Callbacks first
+        { createdAt: 'asc' },  // Then by import order
+      ],
+    });
+
+    if (!nextEntry) {
+      // No more contacts — campaign done
+      session.state = 'IDLE';
+      await prisma.dialerCampaign.update({
+        where: { id: session.campaignId },
+        data: { status: 'COMPLETED' },
+      });
+      logger.info('[Dialer] Campaign completed - no more contacts', {
+        campaignId: session.campaignId,
+      });
+      return;
+    }
+
+    // DNCL check
+    const isDncl = await checkDncl(nextEntry.phoneNumber);
+    if (isDncl) {
+      await prisma.dialerListEntry.update({
+        where: { id: nextEntry.id },
+        data: { isDncl: true, dnclCheckedAt: new Date() },
+      });
+      logger.info('[Dialer] Skipped DNCL number', { phone: nextEntry.phoneNumber });
+      continue; // Try next contact (iterative, no recursion)
+    }
+
+    // Mark DNCL checked
     await prisma.dialerListEntry.update({
       where: { id: nextEntry.id },
-      data: {
-        isCalled: true,
-        callAttempts: { increment: 1 },
-        lastCalledAt: new Date(),
-      },
+      data: { dnclCheckedAt: new Date() },
     });
 
-    // Update campaign stats
-    await prisma.dialerCampaign.update({
-      where: { id: session.campaignId },
-      data: { totalCalled: { increment: 1 } },
-    });
+    // Dial
+    session.state = 'DIALING';
+    session.currentEntryId = nextEntry.id;
 
-    logger.info('[Dialer] Dialing', {
-      phone: nextEntry.phoneNumber,
-      entryId: nextEntry.id,
-      callControlId,
-    });
-  } catch (error) {
-    logger.error('[Dialer] Dial failed', {
-      phone: nextEntry.phoneNumber,
-      error: error instanceof Error ? error.message : String(error),
-    });
-    session.state = 'IDLE';
-    // Try next after short delay
-    setTimeout(() => dialNextContact(agentUserId), 2000);
+    const connectionId = getTelnyxConnectionId();
+    const webhookUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/voip/webhooks/telnyx`;
+
+    try {
+      const result = await telnyx.dialCall({
+        to: nextEntry.phoneNumber,
+        from: campaign.callerIdNumber,
+        connectionId,
+        webhookUrl,
+        clientState: JSON.stringify({
+          campaignId: session.campaignId,
+          listEntryId: nextEntry.id,
+          agentUserId,
+          dialer: true,
+        }),
+        timeout: 30,
+      });
+
+      const callControlId = (result as { data?: { call_control_id?: string } })
+        ?.data?.call_control_id;
+
+      if (callControlId) {
+        session.currentCallControlId = callControlId;
+        session.state = 'RINGING';
+      }
+
+      session.callCount++;
+
+      // Update list entry
+      await prisma.dialerListEntry.update({
+        where: { id: nextEntry.id },
+        data: {
+          isCalled: true,
+          callAttempts: { increment: 1 },
+          lastCalledAt: new Date(),
+        },
+      });
+
+      // Update campaign stats
+      await prisma.dialerCampaign.update({
+        where: { id: session.campaignId },
+        data: { totalCalled: { increment: 1 } },
+      });
+
+      logger.info('[Dialer] Dialing', {
+        phone: nextEntry.phoneNumber,
+        entryId: nextEntry.id,
+        callControlId,
+      });
+      return; // Successfully dialed — exit loop
+    } catch (error) {
+      logger.error('[Dialer] Dial failed', {
+        phone: nextEntry.phoneNumber,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      session.state = 'IDLE';
+      // Try next after short delay
+      setTimeout(() => dialNextContact(agentUserId), 2000);
+      return; // Exit loop — setTimeout will re-enter
+    }
   }
 }
 
@@ -262,10 +268,6 @@ export async function handleDialerAmd(
 export async function handleDialerHangup(agentUserId: string): Promise<void> {
   const session = activeSessions.get(agentUserId);
   if (!session) return;
-
-  const campaign = await prisma.dialerCampaign.findUnique({
-    where: { id: session.campaignId },
-  });
 
   session.state = 'WRAP_UP';
   session.currentCallControlId = undefined;
@@ -440,17 +442,30 @@ function isWithinSchedule(campaign: {
 }): boolean {
   if (!campaign.startTime || !campaign.endTime) return true;
 
+  // Use Intl.DateTimeFormat to get current time in campaign's timezone
   const now = new Date();
-  const dayNames = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-  const today = dayNames[now.getDay()];
+  const tz = campaign.timezone || 'America/New_York';
 
-  if (campaign.activeDays.length > 0 && !campaign.activeDays.includes(today)) {
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: tz,
+    weekday: 'short',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false,
+  });
+
+  const parts = formatter.formatToParts(now);
+  const weekday = (parts.find(p => p.type === 'weekday')?.value || '').toLowerCase().slice(0, 3);
+  const hour = parseInt(parts.find(p => p.type === 'hour')?.value || '0', 10);
+  const minute = parseInt(parts.find(p => p.type === 'minute')?.value || '0', 10);
+
+  if (campaign.activeDays.length > 0 && !campaign.activeDays.includes(weekday)) {
     return false;
   }
 
   const [startH, startM] = campaign.startTime.split(':').map(Number);
   const [endH, endM] = campaign.endTime.split(':').map(Number);
-  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const currentMinutes = hour * 60 + minute;
 
   return currentMinutes >= startH * 60 + startM && currentMinutes < endH * 60 + endM;
 }

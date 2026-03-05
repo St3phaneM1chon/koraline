@@ -283,7 +283,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
       }
 
       // C-09: Optimize images before upload + strip EXIF (C-18)
-      let uploadBuffer = buffer;
+      let uploadBuffer: Buffer = buffer as Buffer;
       let uploadMime = file.type;
       let variantUrls: Record<string, string> = {};
 

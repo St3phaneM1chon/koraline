@@ -15,7 +15,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { Activity, Clock, Zap, AlertTriangle, Server, Database, Globe, TrendingUp, Info } from 'lucide-react';
+import { Activity, Clock, Zap, Info } from 'lucide-react';
 
 interface HealthStatus {
   service: string;
@@ -56,8 +56,8 @@ function mapHealthCheckToService(check: { name: string; status: string; duration
 
 export default function MonitoringPage() {
   const [health, setHealth] = useState<HealthStatus[]>([]);
-  const [healthLoading, setHealthLoading] = useState(true);
-  const [healthError, setHealthError] = useState<string | null>(null);
+  const [, setHealthLoading] = useState(true);
+  const [, setHealthError] = useState<string | null>(null);
 
   const [metrics] = useState<PerformanceMetric[]>([
     { route: '/api/products', p50: 45, p95: 120, p99: 250, requests: 15420 },

@@ -1,6 +1,7 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useMemo, useRef, ReactNode } from 'react';
+import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 
 interface CartItem {
@@ -15,6 +16,8 @@ interface CartItem {
   sku?: string;
   maxQuantity?: number;
   productType?: string;
+  /** Weight of one unit in grams (from ProductFormat.weightGrams). Used for weight-based shipping. */
+  weightGrams?: number;
 }
 
 interface CartContextType {
@@ -43,9 +46,47 @@ interface StoredCart {
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
+  const { data: session } = useSession();
   const [items, setItems] = useState<CartItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const syncTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // G1: Sync cart to DB for authenticated users (debounced)
+  useEffect(() => {
+    if (!isLoaded || !session?.user?.id || items.length === 0) return;
+    if (syncTimeoutRef.current) clearTimeout(syncTimeoutRef.current);
+    syncTimeoutRef.current = setTimeout(() => {
+      fetch('/api/cart/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items }),
+      }).catch(() => { /* Cart sync is best-effort */ });
+    }, 2000);
+    return () => {
+      if (syncTimeoutRef.current) clearTimeout(syncTimeoutRef.current);
+    };
+  }, [items, isLoaded, session?.user?.id]);
+
+  // G1: Load cart from DB on login (merge with localStorage)
+  useEffect(() => {
+    if (!session?.user?.id || !isLoaded) return;
+    fetch('/api/cart/sync')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data?.items && Array.isArray(data.items) && data.items.length > 0) {
+          setItems(prev => {
+            // Merge: DB items that aren't already in local cart
+            const localIds = new Set(prev.map(i => `${i.productId}:${i.formatId || ''}`));
+            const newItems = data.items.filter(
+              (i: CartItem) => !localIds.has(`${i.productId}:${i.formatId || ''}`)
+            );
+            return newItems.length > 0 ? [...prev, ...newItems] : prev;
+          });
+        }
+      })
+      .catch(() => { /* DB cart load is best-effort */ });
+  }, [session?.user?.id, isLoaded]);
 
   // Load cart from localStorage with TTL check
   useEffect(() => {
@@ -114,25 +155,61 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const subtotal = useMemo(() => items.reduce((total, item) => total + item.price * item.quantity, 0), [items]);
 
+  // I-CART-7: Cart quantity limits
+  const MAX_ITEM_QUANTITY = 10;
+  const MAX_CART_ITEMS = 50;
+
   const addItem = useCallback((newItem: Omit<CartItem, 'quantity'> & { quantity?: number }) => {
+    let blocked = false;
+
     setItems((prevItems) => {
+      // I-CART-7: Enforce max total items in cart
+      const currentTotal = prevItems.reduce((sum, item) => sum + item.quantity, 0);
       const existingIndex = prevItems.findIndex(
         (item) => item.productId === newItem.productId && item.formatId === newItem.formatId
       );
 
       if (existingIndex >= 0) {
         const updated = [...prevItems];
-        const maxQty = newItem.maxQuantity || 99;
-        updated[existingIndex].quantity = Math.min(
-          updated[existingIndex].quantity + (newItem.quantity || 1),
-          maxQty
-        );
+        const maxQty = Math.min(newItem.maxQuantity || MAX_ITEM_QUANTITY, MAX_ITEM_QUANTITY);
+        const desiredQty = updated[existingIndex].quantity + (newItem.quantity || 1);
+        const cappedQty = Math.min(desiredQty, maxQty);
+
+        // Check total cart limit
+        const delta = cappedQty - updated[existingIndex].quantity;
+        if (currentTotal + delta > MAX_CART_ITEMS) {
+          blocked = true;
+          return prevItems;
+        }
+
+        if (desiredQty > maxQty) {
+          blocked = true; // will show max-per-item warning
+        }
+
+        updated[existingIndex] = { ...updated[existingIndex], quantity: cappedQty };
         return updated;
       }
 
-      return [...prevItems, { ...newItem, quantity: newItem.quantity || 1 }];
+      // I-CART-7: Enforce max distinct items in cart
+      if (prevItems.length >= MAX_CART_ITEMS) {
+        blocked = true;
+        return prevItems;
+      }
+
+      const addQty = Math.min(newItem.quantity || 1, MAX_ITEM_QUANTITY);
+      if (currentTotal + addQty > MAX_CART_ITEMS) {
+        blocked = true;
+        return prevItems;
+      }
+
+      return [...prevItems, { ...newItem, quantity: addQty }];
     });
-    toast.success(`${newItem.name} added to cart`);
+
+    if (blocked) {
+      toast.warning('Cart limit reached (max 10 per item, 50 total)');
+    } else {
+      toast.success(`${newItem.name} added to cart`);
+    }
     setIsOpen(true);
   }, []);
 
@@ -151,13 +228,30 @@ export function CartProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    setItems((prevItems) =>
-      prevItems.map((item) =>
+    // I-CART-7: Enforce per-item max quantity
+    const clampedQuantity = Math.min(quantity, MAX_ITEM_QUANTITY);
+
+    setItems((prevItems) => {
+      // I-CART-7: Enforce total cart limit
+      const otherItemsTotal = prevItems
+        .filter((item) => !(item.productId === productId && item.formatId === formatId))
+        .reduce((sum, item) => sum + item.quantity, 0);
+
+      const allowedQuantity = Math.min(clampedQuantity, MAX_CART_ITEMS - otherItemsTotal);
+      if (allowedQuantity <= 0) {
+        return prevItems; // Cannot increase — cart total limit reached
+      }
+
+      return prevItems.map((item) =>
         item.productId === productId && item.formatId === formatId
-          ? { ...item, quantity: Math.min(quantity, item.maxQuantity || 99) }
+          ? { ...item, quantity: Math.min(allowedQuantity, item.maxQuantity || MAX_ITEM_QUANTITY) }
           : item
-      )
-    );
+      );
+    });
+
+    if (clampedQuantity < quantity) {
+      toast.warning(`Maximum ${MAX_ITEM_QUANTITY} per item`);
+    }
   }, [removeItem]);
 
   const clearCart = useCallback(() => {

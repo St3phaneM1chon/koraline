@@ -19,8 +19,8 @@ export interface CreateProjectInput {
   name: string;
   description?: string;
   fiscalYear: number;
-  startDate?: string;
-  endDate?: string;
+  startDate?: string | null;
+  endDate?: string | null;
   technologicalUncertainty?: string;
   technologicalAdvancement?: string;
   systematicInvestigation?: string;

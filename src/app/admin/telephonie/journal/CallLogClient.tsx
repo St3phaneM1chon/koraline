@@ -12,7 +12,7 @@ import SatisfactionBadge from '@/components/voip/SatisfactionBadge';
 import AudioPlayer from '@/components/voip/AudioPlayer';
 import {
   Phone, PhoneIncoming, PhoneOutgoing, Search,
-  Filter, ChevronLeft, ChevronRight, FileText,
+  ChevronLeft, ChevronRight, FileText,
 } from 'lucide-react';
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());

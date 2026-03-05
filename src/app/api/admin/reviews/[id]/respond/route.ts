@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 /**
  * API - Admin Review Response
  * POST: Add or update admin response to a review
+ * DELETE: Remove the admin response from a review
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -59,6 +60,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
       data: {
         reply: response.trim(),
         repliedAt: new Date(),
+        repliedBy: session.user.id,
       },
     });
 
@@ -79,6 +81,52 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
     logger.error('Error responding to review', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { error: 'Erreur lors de l\'ajout de la réponse' },
+      { status: 500 }
+    );
+  }
+});
+
+export const DELETE = withAdminGuard(async (request: NextRequest, { session, params }) => {
+  try {
+    const id = params!.id;
+
+    // Check review exists
+    const existing = await prisma.review.findUnique({ where: { id } });
+    if (!existing) {
+      return NextResponse.json({ error: 'Avis introuvable' }, { status: 404 });
+    }
+
+    // Nothing to delete if there is no reply
+    if (!existing.reply) {
+      return NextResponse.json({ error: 'Aucune réponse à supprimer' }, { status: 404 });
+    }
+
+    const updated = await prisma.review.update({
+      where: { id },
+      data: {
+        reply: null,
+        repliedAt: null,
+        repliedBy: null,
+      },
+    });
+
+    // Audit trail: log response removal with previous state
+    logAdminAction({
+      adminUserId: session.user.id,
+      action: 'DELETE_REVIEW_RESPONSE',
+      targetType: 'Review',
+      targetId: id,
+      previousValue: { reply: existing.reply.substring(0, 200), repliedBy: existing.repliedBy },
+      newValue: null,
+      ipAddress: getClientIpFromRequest(request),
+      userAgent: request.headers.get('user-agent') || undefined,
+    }).catch((err) => logger.error('Audit log failed for DELETE_REVIEW_RESPONSE', { error: err instanceof Error ? err.message : String(err) }));
+
+    return NextResponse.json({ review: updated });
+  } catch (error) {
+    logger.error('Error deleting review response', { error: error instanceof Error ? error.message : String(error) });
+    return NextResponse.json(
+      { error: 'Erreur lors de la suppression de la réponse' },
       { status: 500 }
     );
   }

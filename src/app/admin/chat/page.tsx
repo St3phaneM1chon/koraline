@@ -112,13 +112,13 @@ export default function AdminChatPage() {
   }, [loadConversations]);
 
   // Charger les messages d'une conversation
+  // FIX: Use GET with conversationId instead of POST (which is the conversation
+  // creation endpoint and was causing heavy DB + OpenAI calls on every poll).
+  // Also removed dependency on `conversations` to prevent the polling useEffect
+  // from restarting every time the conversation list refreshes.
   const loadMessages = useCallback(async (conversationId: string) => {
     try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
-        body: JSON.stringify({ visitorId: conversations.find(c => c.id === conversationId)?.visitorId }),
-      });
+      const res = await fetch(`/api/chat?conversationId=${encodeURIComponent(conversationId)}`);
       const data = await res.json();
       if (data.conversation?.messages) {
         setMessages(data.conversation.messages);
@@ -127,7 +127,7 @@ export default function AdminChatPage() {
       console.error(error);
       toast.error(t('common.errorOccurred'));
     }
-  }, [conversations]);
+  }, [t]);
 
   // Polling pour les nouveaux messages
   useEffect(() => {

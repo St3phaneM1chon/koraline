@@ -1,0 +1,123 @@
+export const dynamic = 'force-dynamic';
+
+/**
+ * VoIP Conference API
+ * GET  /api/admin/voip/conference — List active training rooms
+ * POST /api/admin/voip/conference — Manage conferences
+ *
+ * Actions: create, add-participant, status, end
+ */
+
+import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/lib/auth-config';
+import {
+  createTrainingRoom,
+  addStudent,
+  listActiveRooms,
+  endTrainingRoom,
+  getRoomStatus,
+} from '@/lib/voip/training-conference';
+
+export async function GET() {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const rooms = listActiveRooms();
+    return NextResponse.json({ conferences: rooms });
+  } catch {
+    return NextResponse.json({ error: 'Failed to list conferences' }, { status: 500 });
+  }
+}
+
+export async function POST(request: NextRequest) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const body = await request.json();
+    const { action } = body as { action: string };
+
+    switch (action) {
+      case 'create': {
+        const { name, instructorPhone } = body as {
+          name: string;
+          instructorPhone?: string;
+        };
+
+        if (!name) {
+          return NextResponse.json({ error: 'name required' }, { status: 400 });
+        }
+
+        const result = await createTrainingRoom({
+          name,
+          instructorPhone: instructorPhone || '',
+          instructorUserId: session.user.id,
+        });
+
+        return NextResponse.json({ conference: result }, { status: 201 });
+      }
+
+      case 'add-participant': {
+        const { conferenceId, participantPhone, participantName } = body as {
+          conferenceId: string;
+          participantPhone: string;
+          participantName?: string;
+        };
+
+        if (!conferenceId || !participantPhone) {
+          return NextResponse.json(
+            { error: 'conferenceId and participantPhone required' },
+            { status: 400 }
+          );
+        }
+
+        const result = await addStudent(
+          conferenceId,
+          participantPhone,
+          session.user.id,
+          participantName || 'Participant'
+        );
+
+        if (result.status.startsWith('error')) {
+          return NextResponse.json({ error: result.status }, { status: 422 });
+        }
+
+        return NextResponse.json({ added: true, status: result.status });
+      }
+
+      case 'status': {
+        const { conferenceId } = body as { conferenceId: string };
+        if (!conferenceId) {
+          return NextResponse.json({ error: 'conferenceId required' }, { status: 400 });
+        }
+
+        const status = getRoomStatus(conferenceId);
+        if (!status) {
+          return NextResponse.json({ error: 'Conference not found' }, { status: 404 });
+        }
+
+        return NextResponse.json({ conference: status });
+      }
+
+      case 'end': {
+        const { conferenceId: endId } = body as { conferenceId: string };
+        if (!endId) {
+          return NextResponse.json({ error: 'conferenceId required' }, { status: 400 });
+        }
+
+        await endTrainingRoom(endId);
+        return NextResponse.json({ ended: true });
+      }
+
+      default:
+        return NextResponse.json({ error: `Unknown action: ${action}` }, { status: 400 });
+    }
+  } catch {
+    return NextResponse.json({ error: 'Conference operation failed' }, { status: 500 });
+  }
+}

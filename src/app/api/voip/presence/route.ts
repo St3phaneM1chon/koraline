@@ -10,11 +10,18 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { logger } from '@/lib/logger';
 import { prisma } from '@/lib/db';
+import { auth } from '@/lib/auth-config';
+import type { CalendarSyncConfig } from '@/lib/voip/calendar-sync';
 
 /**
  * GET - List agents with their current presence status.
  */
 export async function GET(request: NextRequest) {
+  const session = await auth();
+  if (!session?.user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
@@ -36,7 +43,17 @@ export async function GET(request: NextRequest) {
       orderBy: { updatedAt: 'desc' },
     });
 
-    return NextResponse.json({ data: presences });
+    // Expose calendar-sync availability hint.
+    // Clients can use /api/voip/calendar-sync to configure per-user calendar integration,
+    // which feeds into the MEETING presence status via CalendarSync.getCalendarPresence().
+    return NextResponse.json({
+      data: presences,
+      calendarSync: {
+        available: true,
+        configureUrl: '/api/voip/calendar-sync',
+        supportedProviders: ['google', 'outlook'] satisfies CalendarSyncConfig['provider'][],
+      },
+    });
   } catch (error) {
     logger.error('[VoIP Presence] Failed to list presence', {
       error: error instanceof Error ? error.message : String(error),
@@ -49,18 +66,27 @@ export async function GET(request: NextRequest) {
  * PUT - Update a user's presence status.
  */
 export async function PUT(request: NextRequest) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     const body = await request.json();
-    const { userId, status, statusText, deviceType } = body;
+    const { status, statusText, deviceType } = body;
+    // Force userId from session to prevent privilege escalation
+    // (ignore any userId provided in the request body)
+    const userId = session.user.id;
 
-    if (!userId || !status) {
+    if (!status) {
       return NextResponse.json(
-        { error: 'Missing userId or status' },
+        { error: 'Missing status' },
         { status: 400 }
       );
     }
 
-    const validStatuses = ['ONLINE', 'BUSY', 'DND', 'AWAY', 'OFFLINE'];
+    // MEETING status is derived from calendar-sync integration (CalendarSync.getCalendarPresence())
+    const validStatuses = ['ONLINE', 'BUSY', 'DND', 'AWAY', 'OFFLINE', 'MEETING'];
     if (!validStatuses.includes(status.toUpperCase())) {
       return NextResponse.json(
         { error: `Invalid status. Must be one of: ${validStatuses.join(', ')}` },

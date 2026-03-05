@@ -194,6 +194,29 @@ export async function gatherDtmf(callControlId: string, options: {
   });
 }
 
+/** Response from Telnyx Call Control dial */
+export interface TelnyxDialResult {
+  call_control_id: string;
+  call_leg_id: string;
+  call_session_id: string;
+  is_alive: boolean;
+  record_type: string;
+}
+
+/** Get the required Telnyx connection ID. Throws if not configured. */
+export function getTelnyxConnectionId(): string {
+  const id = process.env.TELNYX_CONNECTION_ID;
+  if (!id) throw new Error('TELNYX_CONNECTION_ID not configured');
+  return id;
+}
+
+/** Get the default caller ID number. Throws if not configured. */
+export function getDefaultCallerId(): string {
+  const id = process.env.TELNYX_DEFAULT_CALLER_ID;
+  if (!id) throw new Error('TELNYX_DEFAULT_CALLER_ID not configured');
+  return id;
+}
+
 /**
  * Initiate an outbound call via Call Control API.
  */
@@ -204,7 +227,7 @@ export async function dialCall(options: {
   webhookUrl?: string;  // Override webhook URL
   clientState?: string; // Opaque state to pass through webhooks
   timeout?: number;     // Ring timeout in seconds
-}) {
+}): Promise<{ data: TelnyxDialResult }> {
   return telnyxFetch('/calls', {
     method: 'POST',
     body: {

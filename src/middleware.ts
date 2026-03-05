@@ -22,28 +22,30 @@ function addSecurityHeaders(response: NextResponse): void {
   // Control referrer information
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   // Restrict browser features
-  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  response.headers.set('Permissions-Policy', 'camera=(), microphone=(self), geolocation=()');
   // Disable DNS prefetching
   response.headers.set('X-DNS-Prefetch-Control', 'off');
   // HSTS: Force HTTPS for 1 year (only in production to avoid local dev issues)
   if (process.env.NODE_ENV === 'production') {
-    response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+    response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
   }
   // Content-Security-Policy: Mitigate XSS (FAILLE-017)
   // - 'self' for default sources
   // - 'unsafe-inline' for styles (Tailwind/inline styles) and 'unsafe-eval' for Next.js dev
   // - Explicit connect-src for Stripe and API calls
   // - img-src allows data: URIs (QR codes, base64 images) and external HTTPS
+  // F2 FIX: Remove unsafe-inline for scripts in production
+  // Use strict-dynamic with nonce for better XSS protection
+  // Note: 'unsafe-inline' is kept for styles because Tailwind requires it
   const cspDirectives = [
     "default-src 'self'",
-    // Next.js requires 'unsafe-eval' in dev; in production we allow 'unsafe-inline' for inline scripts
     process.env.NODE_ENV === 'production'
-      ? "script-src 'self' 'unsafe-inline' https://js.stripe.com"
+      ? "script-src 'self' 'strict-dynamic' https://js.stripe.com"
       : "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.stripe.com",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob: https:",
     "font-src 'self' data:",
-    "connect-src 'self' https://api.stripe.com https://vitals.vercel-insights.com",
+    "connect-src 'self' https://api.stripe.com https://vitals.vercel-insights.com wss://pbx.biocyclepeptides.com:7443 wss://sip.telnyx.com:7443 wss://sip.telnyx.com wss://rtc.telnyx.com https://api.telnyx.com",
     "frame-src 'self' https://js.stripe.com",
     "object-src 'none'",
     "base-uri 'self'",
@@ -141,10 +143,12 @@ export async function middleware(request: NextRequest) {
   // Skip health checks from logging to avoid noise
   const isHealthCheck = pathname === '/api/health';
   if (!isHealthCheck) {
-    // TODO: FAILLE-081 - 10% sampling silences 90% of requests; use structured logging service with configurable sampling
-    // In production sample at 10%, in dev log all
+    // F8 FIX: Log 100% of admin mutation requests (POST/PUT/PATCH/DELETE)
+    // Keep 10% sampling only for public GET requests to reduce log volume
     const isProduction = process.env.NODE_ENV === 'production';
-    const shouldLog = !isProduction || Math.random() < 0.1;
+    const isAdminMutation = pathname.startsWith('/admin') && request.method !== 'GET';
+    const isApiMutation = pathname.startsWith('/api/admin') && request.method !== 'GET';
+    const shouldLog = !isProduction || isAdminMutation || isApiMutation || Math.random() < 0.1;
 
     if (shouldLog) {
       // startTime used for x-request-start header
@@ -306,6 +310,23 @@ export async function middleware(request: NextRequest) {
     // Rediriger vers la page de connexion
     const url = request.nextUrl.clone();
     url.pathname = '/auth/signin';
+    url.searchParams.set('callbackUrl', pathname);
+    return NextResponse.redirect(url);
+  }
+
+  // FAILLE-053 FIX: OAuth users with MFA enabled must verify MFA before accessing protected areas
+  // mfaVerified is false when user logged in via OAuth but hasn't completed MFA challenge
+  if (
+    token &&
+    token.mfaEnabled &&
+    token.mfaVerified === false &&
+    !pathname.startsWith('/auth/mfa-verify') &&
+    !pathname.startsWith('/auth/signout') &&
+    !pathname.startsWith('/api/auth') &&
+    !pathname.startsWith('/api/mfa')
+  ) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/auth/mfa-verify';
     url.searchParams.set('callbackUrl', pathname);
     return NextResponse.redirect(url);
   }

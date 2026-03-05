@@ -20,17 +20,24 @@ export async function GET(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { id } = await params;
+  try {
+    const { id } = await params;
 
-  const script = await prisma.dialerScript.findUnique({
-    where: { id },
-  });
+    const script = await prisma.dialerScript.findUnique({
+      where: { id },
+    });
 
-  if (!script) {
-    return NextResponse.json({ error: 'Script not found' }, { status: 404 });
+    if (!script) {
+      return NextResponse.json({ error: 'Script not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ data: script });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Internal server error', details: error instanceof Error ? error.message : String(error) },
+      { status: 500 }
+    );
   }
-
-  return NextResponse.json({ data: script });
 }
 
 export async function PUT(
@@ -42,22 +49,29 @@ export async function PUT(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { id } = await params;
-  const body = await request.json();
+  try {
+    const { id } = await params;
+    const body = await request.json();
 
-  const { name, content, category, isActive } = body;
+    const { name, content, category, isActive } = body;
 
-  const script = await prisma.dialerScript.update({
-    where: { id },
-    data: {
-      ...(name !== undefined ? { name } : {}),
-      ...(content !== undefined ? { content } : {}),
-      ...(category !== undefined ? { category } : {}),
-      ...(isActive !== undefined ? { isActive } : {}),
-    },
-  });
+    const script = await prisma.dialerScript.update({
+      where: { id },
+      data: {
+        ...(name !== undefined ? { name } : {}),
+        ...(content !== undefined ? { content } : {}),
+        ...(category !== undefined ? { category } : {}),
+        ...(isActive !== undefined ? { isActive } : {}),
+      },
+    });
 
-  return NextResponse.json({ data: script });
+    return NextResponse.json({ data: script });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Internal server error', details: error instanceof Error ? error.message : String(error) },
+      { status: 500 }
+    );
+  }
 }
 
 export async function DELETE(
@@ -69,12 +83,19 @@ export async function DELETE(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { id } = await params;
+  try {
+    const { id } = await params;
 
-  await prisma.dialerScript.update({
-    where: { id },
-    data: { isActive: false },
-  });
+    await prisma.dialerScript.update({
+      where: { id },
+      data: { isActive: false },
+    });
 
-  return NextResponse.json({ status: 'deactivated' });
+    return NextResponse.json({ status: 'deactivated' });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Internal server error', details: error instanceof Error ? error.message : String(error) },
+      { status: 500 }
+    );
+  }
 }

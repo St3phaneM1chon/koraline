@@ -61,6 +61,7 @@ export async function GET(request: NextRequest) {
           helpfulCount: true,
           reply: true,
           repliedAt: true,
+          repliedBy: true,
           createdAt: true,
           updatedAt: true,
           user: {
@@ -100,6 +101,7 @@ export async function GET(request: NextRequest) {
         ? {
             content: r.reply,
             createdAt: r.repliedAt?.toISOString() || r.updatedAt.toISOString(),
+            respondedBy: r.repliedBy || undefined,
           }
         : undefined,
     }));

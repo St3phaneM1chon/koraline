@@ -27,11 +27,26 @@ export const POINTS_RULES: PointsRule[] = [
   { id: 'first-order', action: 'FIRST_ORDER', points: 100, description: '100 bonus points on first order', descriptionFr: '100 points bonus première commande' },
 ];
 
-export function calculatePoints(action: string, value: number = 0): number {
+/**
+ * Calculate points for an action.
+ * G7 FIX: Apply tier multiplier at earn-time (not just display-time).
+ * @param action - The action type (PURCHASE, REVIEW, etc.)
+ * @param value - Amount for purchase-based calculations
+ * @param userTier - Optional user's loyalty tier ID for multiplier
+ */
+export function calculatePoints(action: string, value: number = 0, userTier?: string): number {
   const rule = POINTS_RULES.find(r => r.action === action);
   if (!rule) return 0;
-  if (typeof rule.points === 'function') return rule.points(value);
-  return rule.points;
+  const basePoints = typeof rule.points === 'function' ? rule.points(value) : rule.points;
+
+  // G7 FIX: Apply tier multiplier at earn-time
+  if (userTier) {
+    const tier = LOYALTY_TIERS.find(t => t.id === userTier);
+    if (tier && tier.multiplier > 1) {
+      return Math.floor(basePoints * tier.multiplier);
+    }
+  }
+  return basePoints;
 }
 
 export interface PointsBalance {
@@ -98,4 +113,84 @@ export function getNextTier(currentTier: string): LoyaltyTier | null {
 
 export function pointsToValue(points: number, conversionRate: number = 0.01): number {
   return Math.round(points * conversionRate * 100) / 100;
+}
+
+// ---------------------------------------------------------------------------
+// Streak Tracking
+// ---------------------------------------------------------------------------
+
+/**
+ * Streak bonus configuration.
+ * Consecutive days/weeks of activity (purchases, logins, reviews) earn bonus points.
+ */
+export interface StreakBonus {
+  /** Minimum streak length to earn this bonus */
+  minStreak: number;
+  /** Bonus points awarded when streak reaches this length */
+  bonusPoints: number;
+  /** Description of the bonus */
+  description: string;
+  descriptionFr: string;
+}
+
+export const STREAK_BONUSES: StreakBonus[] = [
+  { minStreak: 3,  bonusPoints: 25,  description: '3-day streak bonus',  descriptionFr: 'Bonus série 3 jours' },
+  { minStreak: 7,  bonusPoints: 75,  description: '7-day streak bonus',  descriptionFr: 'Bonus série 7 jours' },
+  { minStreak: 14, bonusPoints: 150, description: '14-day streak bonus', descriptionFr: 'Bonus série 14 jours' },
+  { minStreak: 30, bonusPoints: 500, description: '30-day streak bonus', descriptionFr: 'Bonus série 30 jours' },
+];
+
+/**
+ * Calculate the streak bonus for a given streak length.
+ * Returns the highest applicable bonus that hasn't been awarded yet.
+ * @param currentStreak - Current consecutive day count
+ * @param awardedStreakLevels - Set of streak levels already awarded (e.g. {3, 7})
+ */
+export function calculateStreakBonus(
+  currentStreak: number,
+  awardedStreakLevels: Set<number> = new Set()
+): StreakBonus | null {
+  // Find the highest applicable bonus not yet awarded
+  const eligible = STREAK_BONUSES
+    .filter(b => currentStreak >= b.minStreak && !awardedStreakLevels.has(b.minStreak))
+    .sort((a, b) => b.minStreak - a.minStreak);
+
+  return eligible[0] || null;
+}
+
+/**
+ * Evaluate whether a streak should increment, reset, or stay the same.
+ * @param lastActivityDate - The user's last recorded activity date (UTC midnight)
+ * @param now - Current date (defaults to now)
+ * @returns Object with action and new streak count
+ */
+export function evaluateStreak(
+  lastActivityDate: Date | null,
+  currentStreak: number,
+  longestStreak: number,
+  now: Date = new Date()
+): { newStreak: number; newLongest: number; streakBroken: boolean } {
+  if (!lastActivityDate) {
+    return { newStreak: 1, newLongest: Math.max(longestStreak, 1), streakBroken: false };
+  }
+
+  // Normalize to UTC date boundaries
+  const lastDay = new Date(Date.UTC(lastActivityDate.getUTCFullYear(), lastActivityDate.getUTCMonth(), lastActivityDate.getUTCDate()));
+  const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  const diffMs = today.getTime() - lastDay.getTime();
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) {
+    // Same day - no change
+    return { newStreak: currentStreak, newLongest: longestStreak, streakBroken: false };
+  }
+
+  if (diffDays === 1) {
+    // Consecutive day - increment streak
+    const newStreak = currentStreak + 1;
+    return { newStreak, newLongest: Math.max(longestStreak, newStreak), streakBroken: false };
+  }
+
+  // Gap of 2+ days - streak broken, reset to 1
+  return { newStreak: 1, newLongest: longestStreak, streakBroken: true };
 }

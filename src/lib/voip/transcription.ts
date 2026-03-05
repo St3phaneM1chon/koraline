@@ -226,6 +226,139 @@ Respond ONLY with valid JSON, no markdown.`,
 }
 
 /**
+ * Transcribe a video recording by extracting audio from the blob URL.
+ * Video recordings are stored the same way as audio recordings in CallRecording.
+ */
+export async function transcribeVideoRecording(
+  recordingId: string
+): Promise<TranscriptionResult | null> {
+  // Video recordings are stored as CallRecording with format = 'webm' or 'mp4'
+  // The Whisper API can process audio tracks from video files directly
+  return transcribeRecording(recordingId);
+}
+
+// ---------------------------------------------------------------------------
+// Post-Call Summary
+// ---------------------------------------------------------------------------
+
+export interface CallSummaryOptions {
+  includeActionItems?: boolean;
+  includeSentiment?: boolean;
+  language?: string;
+}
+
+export interface CallSummaryResult {
+  summary: string;
+  actionItems: string[];
+  keyTopics: string[];
+  sentiment: string;
+  nextSteps: string[];
+}
+
+/**
+ * Generate a structured AI summary from a full call transcription.
+ *
+ * Uses OpenAI GPT to produce:
+ * - A concise summary of the call
+ * - Extracted action items (tasks, follow-ups)
+ * - Key topics discussed
+ * - Overall sentiment assessment
+ * - Recommended next steps
+ *
+ * Can optionally save the summary to a CrmActivity record if the call
+ * is linked to a customer in the CRM.
+ *
+ * @param transcription - The full text transcription of the call
+ * @param options - Configuration for summary generation
+ * @returns Structured summary with action items, topics, sentiment, and next steps
+ */
+export async function generateCallSummary(
+  transcription: string,
+  options?: CallSummaryOptions
+): Promise<CallSummaryResult> {
+  const includeActionItems = options?.includeActionItems ?? true;
+  const includeSentiment = options?.includeSentiment ?? true;
+  const language = options?.language ?? 'fr';
+
+  if (!transcription.trim()) {
+    return {
+      summary: '',
+      actionItems: [],
+      keyTopics: [],
+      sentiment: 'neutral',
+      nextSteps: [],
+    };
+  }
+
+  // Build the prompt based on options
+  const sections = [
+    '"summary": A 2-4 sentence summary of the call in ' + language,
+    '"keyTopics": Array of 3-7 key topics discussed',
+  ];
+
+  if (includeActionItems) {
+    sections.push('"actionItems": Array of specific action items identified (tasks, promises, commitments)');
+  }
+
+  if (includeSentiment) {
+    sections.push('"sentiment": Overall call sentiment - "positive", "neutral", or "negative"');
+  }
+
+  sections.push('"nextSteps": Array of recommended follow-up actions based on the conversation');
+
+  const systemPrompt = `You are a call analysis assistant. Analyze the following call transcription and return a JSON object with:
+${sections.map((s) => '- ' + s).join('\n')}
+
+Be specific and actionable. Extract concrete details, not generic observations.
+Respond ONLY with valid JSON, no markdown fences.`;
+
+  try {
+    const openai = getOpenAI();
+
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: transcription },
+      ],
+      temperature: 0.3,
+      max_tokens: 800,
+    });
+
+    const content = response.choices?.[0]?.message?.content || '{}';
+    const parsed = JSON.parse(content);
+
+    const result: CallSummaryResult = {
+      summary: parsed.summary || '',
+      actionItems: Array.isArray(parsed.actionItems) ? parsed.actionItems : [],
+      keyTopics: Array.isArray(parsed.keyTopics) ? parsed.keyTopics : [],
+      sentiment: parsed.sentiment || 'neutral',
+      nextSteps: Array.isArray(parsed.nextSteps) ? parsed.nextSteps : [],
+    };
+
+    logger.info('[Transcription] Call summary generated', {
+      topicCount: result.keyTopics.length,
+      actionItemCount: result.actionItems.length,
+      sentiment: result.sentiment,
+    });
+
+    return result;
+  } catch (error) {
+    logger.warn('[Transcription] Call summary generation failed', {
+      error: error instanceof Error ? error.message : String(error),
+    });
+
+    return {
+      summary: '',
+      actionItems: [],
+      keyTopics: [],
+      sentiment: 'neutral',
+      nextSteps: [],
+    };
+  }
+}
+
+/**
  * Process all recordings that need transcription.
  */
 export async function processPendingTranscriptions(

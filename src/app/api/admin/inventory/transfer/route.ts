@@ -26,22 +26,26 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
     // Record inventory transaction
     const transfer = await prisma.inventoryTransaction.create({
       data: {
-        productFormatId: formatId,
-        type: 'TRANSFER',
+        productId: formatId,
+        type: 'ADJUSTMENT',
         quantity: -quantity, // Out from source
+        unitCost: 0,
+        runningWAC: 0,
         reason: `Transfer ${fromLocation} \u2192 ${toLocation}${reason ? `: ${reason}` : ''}`,
-        userId: session.user.id || 'system',
+        createdBy: session.user.id || 'system',
       },
     });
 
     // Create corresponding in transaction
     await prisma.inventoryTransaction.create({
       data: {
-        productFormatId: formatId,
-        type: 'TRANSFER',
+        productId: formatId,
+        type: 'ADJUSTMENT',
         quantity: quantity, // In to destination
+        unitCost: 0,
+        runningWAC: 0,
         reason: `Transfer ${fromLocation} \u2192 ${toLocation} (in)${reason ? `: ${reason}` : ''}`,
-        userId: session.user.id || 'system',
+        createdBy: session.user.id || 'system',
       },
     });
 

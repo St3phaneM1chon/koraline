@@ -36,6 +36,8 @@ export async function GET(_request: Request, { params }: RouteParams) {
       return NextResponse.json({ error: t('errors.unauthorized') }, { status: 401 });
     }
 
+    // FIX: Add take:100 to prevent loading unbounded messages for conversations
+    // with very long histories. The client can paginate via /messages?after=lastId.
     const conversation = await prisma.conversation.findUnique({
       where: { id },
       include: {
@@ -47,6 +49,7 @@ export async function GET(_request: Request, { params }: RouteParams) {
         },
         messages: {
           orderBy: { createdAt: 'asc' },
+          take: 100,
           include: {
             sender: {
               select: { id: true, name: true, image: true, role: true },

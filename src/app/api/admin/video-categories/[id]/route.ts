@@ -81,7 +81,7 @@ export const PATCH = withAdminGuard(async (request, { session, routeContext }) =
           return NextResponse.json({ error: 'Circular parent reference detected' }, { status: 400 });
         }
         visited.add(currentId);
-        const ancestor = await prisma.videoCategory.findUnique({
+        const ancestor: { parentId: string | null } | null = await prisma.videoCategory.findUnique({
           where: { id: currentId },
           select: { parentId: true },
         });
@@ -121,7 +121,7 @@ export const PATCH = withAdminGuard(async (request, { session, routeContext }) =
     if (slug !== undefined) updateData.slug = slug;
     if (parentId !== undefined) updateData.parentId = parentId || null;
 
-    const category = await prisma.videoCategory.update({
+    await prisma.videoCategory.update({
       where: { id },
       data: updateData,
       include: { translations: true },

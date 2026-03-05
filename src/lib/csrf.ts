@@ -46,8 +46,7 @@ function getCSRFSecret(): string {
 }
 const CSRF_COOKIE_NAME = 'csrf-token';
 const CSRF_HEADER_NAME = 'x-csrf-token';
-// TODO: FAILLE-065 - No auto-refresh mechanism for expired CSRF tokens. If admin leaves page open >1h,
-//       all mutations will fail 403. Add a refresh interceptor that detects 403 CSRF and re-fetches token.
+// CSRF auto-refresh: Implemented in fetchWithCSRF() below — detects 403 CSRF and re-fetches token automatically.
 const TOKEN_EXPIRY_MS = 3600000; // 1 heure
 
 interface CSRFToken {
@@ -215,20 +214,42 @@ export function addCSRFHeader(headers: HeadersInit = {}): HeadersInit {
 
 /**
  * Wrapper fetch avec CSRF automatique
+ * F5 FIX: Auto-refresh CSRF token on 403 (expired token)
  */
 export async function fetchWithCSRF(
   url: string | URL,
   init?: RequestInit
 ): Promise<Response> {
   const token = getCSRFTokenFromCookie();
-  
+
   const headers = new Headers(init?.headers);
   if (token) {
     headers.set(CSRF_HEADER_NAME, token);
   }
 
-  return fetch(url, {
-    ...init,
-    headers,
-  });
+  const response = await fetch(url, { ...init, headers });
+
+  // Auto-refresh: if 403 due to CSRF, re-fetch token and retry once
+  if (response.status === 403) {
+    try {
+      const body = await response.clone().json();
+      if (body?.error?.includes('CSRF') || body?.error?.includes('csrf')) {
+        // Fetch a fresh CSRF token
+        const refreshRes = await fetch('/api/auth/csrf-token');
+        if (refreshRes.ok) {
+          // Re-read the token from the newly set cookie
+          const newToken = getCSRFTokenFromCookie();
+          if (newToken) {
+            const retryHeaders = new Headers(init?.headers);
+            retryHeaders.set(CSRF_HEADER_NAME, newToken);
+            return fetch(url, { ...init, headers: retryHeaders });
+          }
+        }
+      }
+    } catch {
+      // If retry fails, return original 403 response
+    }
+  }
+
+  return response;
 }

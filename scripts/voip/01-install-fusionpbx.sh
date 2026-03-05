@@ -1,10 +1,10 @@
 #!/bin/bash
 # =============================================================================
-# Phase 0: FusionPBX + FreeSWITCH Installation on Debian 12 ARM64 (UTM VM)
+# Phase 0: FusionPBX + FreeSWITCH Installation on Debian 12/13 ARM64 (UTM VM)
 # BioCycle Peptides - VoIP Integration
 #
 # Prerequisites:
-#   - UTM VM created: Debian 12 ARM64, 4 cores, 8GB RAM, 40GB disk
+#   - UTM VM created: Debian 12/13 ARM64, 4 cores, 8GB RAM, 40GB disk
 #   - Network: bridged adapter (VM gets its own IP on LAN)
 #   - SSH access configured
 #

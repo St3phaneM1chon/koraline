@@ -156,7 +156,7 @@ export async function GET(request: NextRequest) {
 
     // FLAW-044 FIX: Check notification preferences and marketing consent
     // Filter out users who opted out of marketing or survey emails
-    const dedupedUserIds = [...new Set(dedupedOrders.map((o) => o.userId))];
+    const dedupedUserIds = [...new Set(dedupedOrders.map((o) => o.userId).filter((id): id is string => id !== null))];
     const optedOutUserIds = new Set<string>();
     if (dedupedUserIds.length > 0) {
       const notifPrefs = await db.notificationPreference.findMany({
@@ -172,13 +172,13 @@ export async function GET(request: NextRequest) {
       notifPrefs.forEach((p) => optedOutUserIds.add(p.userId));
     }
     const filteredOrders = dedupedOrders.filter(
-      (o) => !optedOutUserIds.has(o.userId)
+      (o) => o.userId !== null && !optedOutUserIds.has(o.userId)
     );
 
     logger.info(`Found ${deliveredOrders.length} delivered orders, ${filteredOrders.length} after dedup`);
 
     // DI-65: Batch fetch users to avoid N+1 queries
-    const userIds = [...new Set(filteredOrders.map((o) => o.userId))];
+    const userIds = [...new Set(filteredOrders.map((o) => o.userId).filter((id): id is string => id !== null))];
     const users = userIds.length > 0
       ? await db.user.findMany({
           where: { id: { in: userIds } },
@@ -191,7 +191,7 @@ export async function GET(request: NextRequest) {
 
     for (const order of filteredOrders) {
       try {
-        const user = userMap.get(order.userId);
+        const user = order.userId ? userMap.get(order.userId) : undefined;
         if (!user) continue;
 
         // Préparer les données

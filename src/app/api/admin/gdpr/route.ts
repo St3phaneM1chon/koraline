@@ -33,7 +33,7 @@ export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
       }),
       prisma.userAddress.findMany({
         where: { userId },
-        select: { id: true, name: true, address1: true, city: true, province: true, postalCode: true, country: true },
+        select: { id: true, recipientName: true, addressLine1: true, city: true, state: true, postalCode: true, country: true },
       }),
       prisma.loyaltyTransaction.findMany({
         where: { userId },

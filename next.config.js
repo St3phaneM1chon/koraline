@@ -91,7 +91,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https: blob:",
               "font-src 'self' data:",
-              "connect-src 'self' https://*.azure.com https://login.microsoftonline.com https://api.stripe.com https://www.paypal.com https://api.openai.com https://accounts.google.com https://oauth.googleapis.com https://appleid.apple.com https://graph.facebook.com https://api.x.com https://api.twitter.com https://twitter.com https://www.google-analytics.com https://www.googletagmanager.com",
+              "connect-src 'self' https://*.azure.com https://login.microsoftonline.com https://api.stripe.com https://www.paypal.com https://api.openai.com https://accounts.google.com https://oauth.googleapis.com https://appleid.apple.com https://graph.facebook.com https://api.x.com https://api.twitter.com https://twitter.com https://www.google-analytics.com https://www.googletagmanager.com wss://pbx.biocyclepeptides.com:7443",
               "frame-src https://js.stripe.com https://www.paypal.com https://hooks.stripe.com https://accounts.google.com",
               "frame-ancestors 'none'",
               "base-uri 'self'",
@@ -108,7 +108,39 @@ const nextConfig = {
 
   // Sécurité: Redirections HTTPS
   async redirects() {
-    return [];
+    return [
+      // Fix broken admin URLs: redirect to correct pages
+      {
+        source: '/admin/paiements',
+        destination: '/admin/commandes',
+        permanent: true,
+      },
+      {
+        source: '/admin/media/gallery',
+        destination: '/admin/media/library',
+        permanent: true,
+      },
+      {
+        source: '/admin/comptabilite/tps-tvq',
+        destination: '/admin/comptabilite/declaration-tps-tvq',
+        permanent: true,
+      },
+      {
+        source: '/admin/fiscal/exercices',
+        destination: '/admin/fiscal/tasks',
+        permanent: true,
+      },
+      {
+        source: '/admin/fiscal/periodes',
+        destination: '/admin/fiscal/tasks',
+        permanent: true,
+      },
+      {
+        source: '/admin/fiscal/rapports',
+        destination: '/admin/fiscal/reports',
+        permanent: true,
+      },
+    ];
   },
 
   // Optimisations

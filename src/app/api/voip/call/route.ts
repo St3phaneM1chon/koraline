@@ -10,6 +10,7 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { logger } from '@/lib/logger';
 import { prisma } from '@/lib/db';
+import { auth } from '@/lib/auth-config';
 import * as telnyx from '@/lib/telnyx';
 
 const TELNYX_CONNECTION_ID = process.env.TELNYX_CONNECTION_ID || '';
@@ -20,6 +21,11 @@ const WEBHOOK_BASE_URL = process.env.NEXTAUTH_URL || 'https://biocyclepeptides.c
  * POST - Initiate an outbound call via Telnyx Call Control.
  */
 export async function POST(request: NextRequest) {
+  const session = await auth();
+  if (!session?.user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     const body = await request.json();
     const { to, from, userId } = body;
@@ -72,6 +78,11 @@ export async function POST(request: NextRequest) {
  * GET - List recent calls with optional filters.
  */
 export async function GET(request: NextRequest) {
+  const session = await auth();
+  if (!session?.user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     const { searchParams } = new URL(request.url);
     const direction = searchParams.get('direction');

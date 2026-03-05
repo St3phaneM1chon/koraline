@@ -9,6 +9,7 @@ import {
   updateEntity,
   deleteEntity,
   setDefaultEntity,
+  type UpdateEntityInput,
 } from '@/lib/accounting/multi-entity.service';
 
 /**
@@ -85,7 +86,7 @@ export const PUT = withAdminGuard(async (request, { params }) => {
       return NextResponse.json({ success: true, entity });
     }
 
-    const entity = await updateEntity(id, updateData);
+    const entity = await updateEntity(id, updateData as UpdateEntityInput);
     return NextResponse.json({ success: true, entity });
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);

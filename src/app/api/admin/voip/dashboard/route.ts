@@ -8,6 +8,12 @@ export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { withAdminGuard } from '@/lib/admin-api-guard';
+import { VoipStateMap } from '@/lib/voip/voip-state';
+import { getQueueStats } from '@/lib/voip/queue-engine';
+
+// Access the active call state map to show live call counts on the dashboard
+// This uses the same Redis-backed state used by call-control.ts
+const activeCallStates = new VoipStateMap<{ callLogId?: string }>('voip:call:');
 
 export const GET = withAdminGuard(async (request) => {
   const { searchParams } = new URL(request.url);
@@ -112,5 +118,10 @@ export const GET = withAdminGuard(async (request) => {
     activeAgents,
     unreadVoicemails,
     recentCalls,
+    // Real-time state from VoipStateMap (Redis-backed, not DB queries)
+    liveState: {
+      activeCalls: activeCallStates.size,
+      queueStats: getQueueStats(),
+    },
   });
 }, { skipCsrf: true });

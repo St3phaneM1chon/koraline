@@ -3,12 +3,11 @@ export const dynamic = 'force-dynamic';
 import { NextRequest } from 'next/server';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { prisma } from '@/lib/db';
-import { Prisma } from '@prisma/client';
 import { logger } from '@/lib/logger';
-import { apiPaginated, apiError } from '@/lib/api-response';
+import { apiError, apiPaginated } from '@/lib/api-response';
 
 // ---------------------------------------------------------------------------
-// GET /api/accounting/approvals - List approval requests
+// GET /api/accounting/approvals - List approval requests with filtering
 // ---------------------------------------------------------------------------
 
 export const GET = withAdminGuard(async (request: NextRequest) => {
@@ -16,53 +15,56 @@ export const GET = withAdminGuard(async (request: NextRequest) => {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
     const entityType = searchParams.get('entityType');
-    const assignedTo = searchParams.get('assignedTo');
     const assignedRole = searchParams.get('assignedRole');
-    const requestedBy = searchParams.get('requestedBy');
     const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
-    const limit = Math.min(Math.max(1, parseInt(searchParams.get('limit') || '20') || 20), 200);
+    const limit = Math.min(Math.max(1, parseInt(searchParams.get('limit') || '20') || 20), 100);
 
     // Build where clause
-    const where: Prisma.ApprovalRequestWhereInput = {};
+    const where: Record<string, unknown> = {};
     if (status) where.status = status;
     if (entityType) where.entityType = entityType;
-    if (assignedTo) where.assignedTo = assignedTo;
     if (assignedRole) where.assignedRole = assignedRole;
-    if (requestedBy) where.requestedBy = requestedBy;
 
     // Auto-expire overdue PENDING requests
     const now = new Date();
-    const expiredPending = await prisma.approvalRequest.findMany({
+    await prisma.approvalRequest.updateMany({
       where: {
         status: 'PENDING',
         expiresAt: { lt: now },
       },
-      select: { id: true },
+      data: { status: 'EXPIRED' },
     });
 
-    if (expiredPending.length > 0) {
-      await prisma.approvalRequest.updateMany({
-        where: {
-          id: { in: expiredPending.map((r) => r.id) },
-        },
-        data: { status: 'EXPIRED' },
-      });
-    }
-
-    const [requests, total] = await Promise.all([
+    const [approvals, total] = await Promise.all([
       prisma.approvalRequest.findMany({
         where,
-        orderBy: { requestedAt: 'desc' },
+        include: { workflowRule: { select: { id: true, name: true } } },
+        orderBy: { createdAt: 'desc' },
         skip: (page - 1) * limit,
         take: limit,
       }),
       prisma.approvalRequest.count({ where }),
     ]);
 
-    // Map Decimal to number for JSON serialization
-    const mapped = requests.map((r) => ({
-      ...r,
-      amount: r.amount ? Number(r.amount) : null,
+    const mapped = approvals.map((a) => ({
+      id: a.id,
+      workflowRuleId: a.workflowRuleId,
+      workflowRuleName: a.workflowRule?.name ?? null,
+      entityType: a.entityType,
+      entityId: a.entityId,
+      entitySummary: a.entitySummary,
+      amount: a.amount ? Number(a.amount) : null,
+      status: a.status,
+      requestedBy: a.requestedBy,
+      requestedAt: a.requestedAt,
+      assignedRole: a.assignedRole,
+      assignedTo: a.assignedTo,
+      expiresAt: a.expiresAt,
+      respondedBy: a.respondedBy,
+      respondedAt: a.respondedAt,
+      responseNote: a.responseNote,
+      createdAt: a.createdAt,
+      updatedAt: a.updatedAt,
     }));
 
     return apiPaginated(mapped, page, limit, total, { request });
@@ -70,9 +72,6 @@ export const GET = withAdminGuard(async (request: NextRequest) => {
     logger.error('Error fetching approval requests', {
       error: error instanceof Error ? error.message : String(error),
     });
-    return apiError('Error fetching approval requests', 'INTERNAL_ERROR', {
-      status: 500,
-      request,
-    });
+    return apiError('Error fetching approval requests', 'INTERNAL_ERROR', { status: 500, request });
   }
 });

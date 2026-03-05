@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck
 /**
  * Workflow Engine Service - Phase 3-7: Workflow Rules & Approvals
  *
@@ -15,7 +13,7 @@
  */
 
 import { prisma } from '@/lib/db';
-import { Prisma } from '@prisma/client';
+import { Prisma, UserRole } from '@prisma/client';
 import { logger } from '@/lib/logger';
 
 // ---------------------------------------------------------------------------
@@ -167,8 +165,8 @@ export async function seedDefaultWorkflowRules(): Promise<number> {
           description: rule.description,
           entityType: rule.entityType,
           triggerEvent: rule.triggerEvent,
-          conditions: JSON.stringify(rule.conditions),
-          actions: JSON.stringify(rule.actions),
+          conditions: rule.conditions as unknown as Prisma.InputJsonValue,
+          actions: rule.actions as unknown as Prisma.InputJsonValue,
           priority: rule.priority,
           isActive: true,
           createdBy: 'system',
@@ -238,7 +236,7 @@ async function sendApprovalNotification(
     const { sendEmail } = await import('@/lib/email/email-service');
 
     // Find users with the assigned role (OWNER or EMPLOYEE) to notify
-    const targetRole = assignedRole || 'OWNER';
+    const targetRole = (assignedRole || 'OWNER') as UserRole;
     const approvers = await prisma.user.findMany({
       where: { role: targetRole },
       select: { email: true, name: true },
@@ -333,13 +331,7 @@ export async function evaluateWorkflow(
 
     // Evaluate each rule; first match wins
     for (const rule of rules) {
-      let conditions: WorkflowCondition[];
-      try {
-        conditions = JSON.parse(rule.conditions) as WorkflowCondition[];
-      } catch {
-        logger.warn('Invalid conditions JSON in workflow rule', { ruleId: rule.id });
-        continue;
-      }
+      const conditions = rule.conditions as unknown as WorkflowCondition[];
 
       if (!evaluateConditions(conditions, entity)) continue;
 
@@ -347,13 +339,7 @@ export async function evaluateWorkflow(
       result.ruleId = rule.id;
       result.ruleName = rule.name;
 
-      let actions: WorkflowAction[];
-      try {
-        actions = JSON.parse(rule.actions) as WorkflowAction[];
-      } catch {
-        logger.warn('Invalid actions JSON in workflow rule', { ruleId: rule.id });
-        continue;
-      }
+      const actions = rule.actions as unknown as WorkflowAction[];
 
       for (const action of actions) {
         switch (action.type) {

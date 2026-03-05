@@ -63,7 +63,7 @@ export async function sendConsentExpirationReminders(daysBeforeExpiry = 7): Prom
         if (typeof emailModule.sendEmail === 'function') {
           const daysLeft = Math.ceil((new Date(consent.expiresAt!).getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
           await emailModule.sendEmail({
-            to: email,
+            to: { email },
             subject: `Consent Expiration Reminder - ${consent.video?.title || 'Video'}`,
             html: `
               <p>Dear ${consent.client?.name || 'Client'},</p>
