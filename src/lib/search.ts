@@ -221,7 +221,7 @@ async function fallbackSearch(
   query: string,
   options: SearchOptions
 ): Promise<SearchResponse> {
-  const { limit = 20, offset = 0 } = options;
+  const { limit = 20, offset = 0, categoryIds, minPrice, maxPrice, inStock } = options;
   const where: Prisma.ProductWhereInput = {
     isActive: true,
     OR: [
@@ -231,6 +231,32 @@ async function fallbackSearch(
       { shortDescription: { contains: query, mode: 'insensitive' } },
     ],
   };
+
+  // Category filter
+  if (categoryIds && categoryIds.length > 0) {
+    where.categoryId = { in: categoryIds };
+  }
+
+  // Price range filter
+  if (minPrice !== undefined || maxPrice !== undefined) {
+    where.price = {};
+    if (minPrice !== undefined) {
+      (where.price as Prisma.DecimalFilter).gte = minPrice;
+    }
+    if (maxPrice !== undefined) {
+      (where.price as Prisma.DecimalFilter).lte = maxPrice;
+    }
+  }
+
+  // In-stock filter
+  if (inStock) {
+    where.formats = {
+      some: {
+        isActive: true,
+        stockQuantity: { gt: 0 },
+      },
+    };
+  }
 
   const [products, total] = await Promise.all([
     prisma.product.findMany({

@@ -12,6 +12,7 @@ import { getPayPalAccessToken, PAYPAL_API_URL } from '@/lib/paypal';
 import { validateCsrf } from '@/lib/csrf-middleware';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
 import { logger } from '@/lib/logger';
+import { add, applyRate } from '@/lib/decimal-calculator';
 
 const paypalCreateSchema = z.object({
   productId: z.string().min(1, 'Product ID requis'),
@@ -87,11 +88,14 @@ export async function POST(request: NextRequest) {
     const rates = TAX_RATES[province] || TAX_RATES['QC'];
     let taxAmount = 0;
     if (rates.hst) {
-      taxAmount = subtotal * rates.hst;
+      taxAmount = applyRate(subtotal, rates.hst);
     } else {
-      taxAmount = subtotal * rates.gst + subtotal * (rates.qst || rates.pst || rates.rst || 0);
+      taxAmount = add(
+        applyRate(subtotal, rates.gst),
+        applyRate(subtotal, rates.qst || rates.pst || rates.rst || 0)
+      );
     }
-    const total = (subtotal + taxAmount).toFixed(2);
+    const total = add(subtotal, taxAmount).toFixed(2);
     const taxTotal = taxAmount.toFixed(2);
 
     // Obtenir le token PayPal
@@ -133,7 +137,7 @@ export async function POST(request: NextRequest) {
                   value: subtotal.toFixed(2),
                 },
                 quantity: '1',
-                category: 'DIGITAL_GOODS',
+                category: 'PHYSICAL_GOODS',
               },
             ],
           },
@@ -161,7 +165,7 @@ export async function POST(request: NextRequest) {
         userId: session.user.id,
         productId,
         companyId: companyId || null,
-        amount: subtotal,
+        amount: parseFloat(total),
         currency: 'CAD',
         paymentMethod: 'PAYPAL',
         paypalOrderId: orderData.id,

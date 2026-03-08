@@ -25,6 +25,7 @@ import { sendOrderLifecycleEmail } from '@/lib/email';
 import { handleEvent } from '@/lib/email/automation-engine';
 
 import { updateOrderStatusSchema, batchOrderUpdateSchema } from '@/lib/validations/order';
+import { validateTransition, ALL_ORDER_STATUSES, type OrderStatus } from '@/lib/order-status-machine';
 import { logger } from '@/lib/logger';
 
 // Shared validation error helper
@@ -216,34 +217,20 @@ export const PUT = withAdminGuard(async (request, { session }) => {
     }
 
     // BE-PAY-09 + PAY-005: Order state machine - validate transitions
-    const VALID_TRANSITIONS: Record<string, string[]> = {
-      'PENDING': ['CONFIRMED', 'PROCESSING', 'CANCELLED'],
-      'CONFIRMED': ['PROCESSING', 'CANCELLED'],
-      'PROCESSING': ['SHIPPED', 'CANCELLED'],
-      'SHIPPED': ['DELIVERED', 'RETURNED'],
-      'DELIVERED': ['RETURNED', 'REFUNDED'],
-      'CANCELLED': [],   // Terminal state
-      'RETURNED': ['REFUNDED'],
-      'REFUNDED': [],    // Terminal state
-    };
-
-    const validStatuses = Object.keys(VALID_TRANSITIONS);
-    if (status && !validStatuses.includes(status)) {
+    // Uses the centralized transition map from @/lib/order-status-machine.
+    if (status && !ALL_ORDER_STATUSES.includes(status as OrderStatus)) {
       return NextResponse.json(
-        { error: `Invalid status. Must be one of: ${validStatuses.join(', ')}` },
+        { error: `Invalid status. Must be one of: ${ALL_ORDER_STATUSES.join(', ')}` },
         { status: 400 }
       );
     }
 
     // Validate state transition if status is changing
     if (status && status !== existingOrder.status) {
-      const allowedNextStatuses = VALID_TRANSITIONS[existingOrder.status] || [];
-      if (!allowedNextStatuses.includes(status)) {
+      const transition = validateTransition(existingOrder.status, status);
+      if (!transition.valid) {
         return NextResponse.json(
-          {
-            error: `Invalid status transition: ${existingOrder.status} -> ${status}. ` +
-              `Allowed transitions from ${existingOrder.status}: ${allowedNextStatuses.length > 0 ? allowedNextStatuses.join(', ') : 'none (terminal state)'}`,
-          },
+          { error: transition.error },
           { status: 400 }
         );
       }
@@ -384,17 +371,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
     }
     const { orders } = parsed.data;
 
-    // PAY-005: Valid state transitions (must match single-order handler)
-    const VALID_TRANSITIONS: Record<string, string[]> = {
-      'PENDING': ['CONFIRMED', 'PROCESSING', 'CANCELLED'],
-      'CONFIRMED': ['PROCESSING', 'CANCELLED'],
-      'PROCESSING': ['SHIPPED', 'CANCELLED'],
-      'SHIPPED': ['DELIVERED', 'RETURNED'],
-      'DELIVERED': ['RETURNED', 'REFUNDED'],
-      'CANCELLED': [],   // Terminal state
-      'RETURNED': ['REFUNDED'],
-      'REFUNDED': [],    // Terminal state
-    };
+    // PAY-005: Valid state transitions - uses centralized map from @/lib/order-status-machine
 
     const results: Array<{
       orderId: string;
@@ -425,16 +402,16 @@ export const POST = withAdminGuard(async (request, { session }) => {
           continue;
         }
 
-        // Validate state transition
+        // Validate state transition using centralized state machine
         if (status && status !== existingOrder.status) {
-          const allowedNextStatuses = VALID_TRANSITIONS[existingOrder.status] || [];
-          if (!allowedNextStatuses.includes(status)) {
+          const transition = validateTransition(existingOrder.status, status);
+          if (!transition.valid) {
             results.push({
               orderId,
               orderNumber: existingOrder.orderNumber,
               success: false,
               previousStatus: existingOrder.status,
-              error: `Invalid transition: ${existingOrder.status} -> ${status}`,
+              error: transition.error || `Invalid transition: ${existingOrder.status} -> ${status}`,
             });
             continue;
           }

@@ -708,6 +708,66 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session, eventId:
       }
     }
 
+    // E-12 FIX: Atomic promo code usage tracking inside the order transaction.
+    // Uses a conditional UPDATE to prevent race conditions where two concurrent
+    // webhooks both pass the usage check and both increment, exceeding the limit.
+    // Also enforces per-user usage limits (usageLimitPerUser).
+    if (promoCode && promoDiscount > 0) {
+      // Step 1: Atomic conditional increment — only succeeds if within global usage limit
+      const promoRowsAffected: number = await tx.$executeRaw`
+        UPDATE "PromoCode"
+        SET "usageCount" = "usageCount" + 1, "updatedAt" = NOW()
+        WHERE code = ${promoCode}
+          AND "isActive" = true
+          AND ("usageLimit" IS NULL OR "usageCount" < "usageLimit")
+      `;
+
+      if (promoRowsAffected === 0) {
+        // Promo exceeded its global usage limit between validation and capture.
+        // Payment is already captured so we log a warning but don't block the order.
+        logger.warn('[Stripe webhook] Promo code usage limit exceeded (atomic check failed)', {
+          promoCode,
+          orderNumber,
+        });
+      } else {
+        // Step 2: Fetch the promo to get its ID and per-user limit
+        const promoRecord = await tx.promoCode.findUnique({ where: { code: promoCode } });
+        if (promoRecord) {
+          // Step 3: Check per-user usage limit atomically
+          const perUserLimit = promoRecord.usageLimitPerUser ?? 1;
+          const existingUserUsage = await tx.promoCodeUsage.count({
+            where: { promoCodeId: promoRecord.id, userId: userId || 'anonymous' },
+          });
+
+          if (existingUserUsage >= perUserLimit) {
+            // Per-user limit exceeded — rollback the global increment
+            await tx.$executeRaw`
+              UPDATE "PromoCode"
+              SET "usageCount" = GREATEST("usageCount" - 1, 0), "updatedAt" = NOW()
+              WHERE code = ${promoCode}
+            `;
+            logger.warn('[Stripe webhook] Promo code per-user limit reached', {
+              promoCode,
+              userId,
+              perUserLimit,
+              existingUserUsage,
+              orderNumber,
+            });
+          } else {
+            // Step 4: Create per-user usage record inside the transaction
+            await tx.promoCodeUsage.create({
+              data: {
+                promoCodeId: promoRecord.id,
+                userId: userId || 'anonymous',
+                orderId: newOrder.id,
+                discount: promoDiscount,
+              },
+            });
+          }
+        }
+      }
+    }
+
     return newOrder;
   });
 
@@ -741,44 +801,6 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session, eventId:
       orderNumber,
       error: cogsError instanceof Error ? cogsError.message : String(cogsError),
     });
-  }
-
-  // Track promo code usage (with per-user limit check)
-  if (promoCode && promoDiscount > 0) {
-    try {
-      const promo = await prisma.promoCode.findUnique({ where: { code: promoCode } });
-      if (promo) {
-        // Check per-user usage limit (default: 1 use per user)
-        const maxUsesPerUser = (promo as Record<string, unknown>).maxUsesPerUser as number || 1;
-        const existingUsage = userId
-          ? await prisma.promoCodeUsage.count({
-              where: { promoCodeId: promo.id, userId },
-            })
-          : 0;
-
-        if (existingUsage < maxUsesPerUser) {
-          await prisma.promoCode.update({
-            where: { id: promo.id },
-            data: { usageCount: { increment: 1 } },
-          });
-          await prisma.promoCodeUsage.create({
-            data: {
-              promoCodeId: promo.id,
-              userId: userId || 'anonymous',
-              orderId: order.id,
-              discount: promoDiscount,
-            },
-          });
-        } else {
-          logger.warn('Promo code per-user limit reached', { promoCode, userId });
-        }
-      }
-    } catch (promoError) {
-      logger.error('Failed to track promo code usage', {
-        promoCode,
-        error: promoError instanceof Error ? promoError.message : String(promoError),
-      });
-    }
   }
 
   // Create ambassador commission if the order used a referral code

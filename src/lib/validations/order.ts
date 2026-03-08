@@ -14,10 +14,15 @@ export const orderStatusEnum = z.enum([
   'CONFIRMED',
   'PROCESSING',
   'SHIPPED',
+  'IN_TRANSIT',
+  'OUT_FOR_DELIVERY',
   'DELIVERED',
   'CANCELLED',
+  'FAILED',
   'RETURNED',
   'REFUNDED',
+  'EXCEPTION',
+  'PRE_ORDER',
 ]);
 
 export const paymentStatusEnum = z.enum([

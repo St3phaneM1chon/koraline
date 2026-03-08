@@ -13,6 +13,7 @@ import { getPayPalAccessToken, PAYPAL_API_URL } from '@/lib/paypal';
 import { validateCsrf } from '@/lib/csrf-middleware';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
 import { logger } from '@/lib/logger';
+import { add, multiply, subtract, applyRate, percentage } from '@/lib/decimal-calculator';
 
 const cartItemSchema = z.object({
   productId: z.string().optional(),
@@ -105,6 +106,78 @@ export async function POST(request: NextRequest) {
 
     if (captureData.status === 'COMPLETED') {
 
+      // SECURITY: Verify the PayPal order belongs to the authenticated user.
+      // Two verification paths:
+      // 1. Legacy "create" flow: a Purchase record with paypalOrderId + userId exists
+      // 2. Cart "create-order" flow: userId is embedded in the PayPal order's custom_id field
+      let ownershipVerified = false;
+
+      // Path 1: Check legacy Purchase record (created by /api/payments/paypal/create)
+      const existingPurchase = await prisma.purchase.findFirst({
+        where: { paypalOrderId },
+        select: { userId: true },
+      });
+      if (existingPurchase) {
+        if (existingPurchase.userId === userId) {
+          ownershipVerified = true;
+        } else {
+          logger.warn('[PayPal capture] Order ownership mismatch via Purchase record', {
+            paypalOrderId,
+            requestUserId: userId,
+            purchaseUserId: existingPurchase.userId,
+          });
+          return NextResponse.json(
+            { error: 'Cette commande ne vous appartient pas' },
+            { status: 403 }
+          );
+        }
+      }
+
+      // Path 2: Check custom_id from PayPal capture response (created by /api/payments/paypal/create-order)
+      if (!ownershipVerified) {
+        const customIdRaw = captureData.purchase_units?.[0]?.custom_id;
+        if (customIdRaw) {
+          try {
+            const customData = JSON.parse(customIdRaw);
+            if (customData.userId) {
+              if (customData.userId === userId) {
+                ownershipVerified = true;
+              } else {
+                logger.warn('[PayPal capture] Order ownership mismatch via custom_id', {
+                  paypalOrderId,
+                  requestUserId: userId,
+                  customIdUserId: customData.userId,
+                });
+                return NextResponse.json(
+                  { error: 'Cette commande ne vous appartient pas' },
+                  { status: 403 }
+                );
+              }
+            }
+          } catch {
+            // custom_id is not JSON or doesn't contain userId — legacy order without userId tracking
+            logger.warn('[PayPal capture] Could not parse custom_id for ownership check', {
+              paypalOrderId,
+              customIdRaw,
+            });
+          }
+        }
+      }
+
+      // If neither verification path succeeded, reject the capture.
+      // This prevents an attacker from capturing an arbitrary PayPal order that
+      // was not created through our system or was created by a different user.
+      if (!ownershipVerified) {
+        logger.warn('[PayPal capture] Could not verify order ownership — no Purchase record and no userId in custom_id', {
+          paypalOrderId,
+          requestUserId: userId,
+        });
+        return NextResponse.json(
+          { error: 'Impossible de vérifier la propriété de cette commande' },
+          { status: 403 }
+        );
+      }
+
       // SECURITY: Verify cart item prices from database and recalculate subtotal
       let serverSubtotal = 0;
       if (cartItems && cartItems.length > 0) {
@@ -130,10 +203,9 @@ export async function POST(request: NextRequest) {
               item.price = Number(product.price);
             }
           }
-          serverSubtotal += Number(item.price) * Number(item.quantity);
+          serverSubtotal = add(serverSubtotal, multiply(Number(item.price), Number(item.quantity)));
         }
       }
-      serverSubtotal = Math.round(serverSubtotal * 100) / 100;
 
       // SECURITY: Validate promo code server-side
       // E-02 FIX: Always validate when promoCode is provided (never trust client-sent promoDiscount)
@@ -146,7 +218,7 @@ export async function POST(request: NextRequest) {
           const withinUsageLimit = !promo.usageLimit || promo.usageCount < promo.usageLimit;
           if (notExpired && withinUsageLimit) {
             if (promo.type === 'PERCENTAGE') {
-              serverPromoDiscount = Math.round(serverSubtotal * (Number(promo.value) / 100) * 100) / 100;
+              serverPromoDiscount = percentage(serverSubtotal, Number(promo.value));
             } else {
               serverPromoDiscount = Math.min(Number(promo.value), serverSubtotal);
             }
@@ -157,7 +229,7 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      const discountedSubtotal = Math.max(0, serverSubtotal - serverPromoDiscount);
+      const discountedSubtotal = Math.max(0, subtract(serverSubtotal, serverPromoDiscount));
 
       // E-03 FIX: Apply gift card discount before calculating taxes (matches create-order flow)
       // E-02 FIX: Always validate gift card when code is provided (never trust client-sent discount amount)
@@ -177,7 +249,7 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      const subtotalAfterAllDiscounts = Math.max(0, discountedSubtotal - serverGiftCardDiscount);
+      const subtotalAfterAllDiscounts = Math.max(0, subtract(discountedSubtotal, serverGiftCardDiscount));
 
       // SECURITY: Calculate taxes server-side (never trust client values)
       // BE-PAY-11, BE-PAY-20: Fixed to handle PST for BC/MB/SK, not just QC+HST
@@ -193,17 +265,17 @@ export async function POST(request: NextRequest) {
       const rates = CANADIAN_TAX_RATES[province.toUpperCase()] || CANADIAN_TAX_RATES['QC'];
       let taxTps = 0, taxTvq = 0, taxTvh = 0, taxPst = 0;
       if (rates.hst) {
-        taxTvh = Math.round(subtotalAfterAllDiscounts * rates.hst * 100) / 100;
+        taxTvh = applyRate(subtotalAfterAllDiscounts, rates.hst);
       } else if (rates.qst) {
-        taxTps = Math.round(subtotalAfterAllDiscounts * rates.gst * 100) / 100;
-        taxTvq = Math.round(subtotalAfterAllDiscounts * rates.qst * 100) / 100;
+        taxTps = applyRate(subtotalAfterAllDiscounts, rates.gst);
+        taxTvq = applyRate(subtotalAfterAllDiscounts, rates.qst);
       } else if (rates.pst || rates.rst) {
-        taxTps = Math.round(subtotalAfterAllDiscounts * rates.gst * 100) / 100;
-        taxPst = Math.round(subtotalAfterAllDiscounts * (rates.pst || rates.rst || 0) * 100) / 100;
+        taxTps = applyRate(subtotalAfterAllDiscounts, rates.gst);
+        taxPst = applyRate(subtotalAfterAllDiscounts, rates.pst || rates.rst || 0);
       } else {
-        taxTps = Math.round(subtotalAfterAllDiscounts * rates.gst * 100) / 100;
+        taxTps = applyRate(subtotalAfterAllDiscounts, rates.gst);
       }
-      const totalTax = Math.round((taxTps + taxTvq + taxTvh + taxPst) * 100) / 100;
+      const totalTax = add(taxTps, taxTvq, taxTvh, taxPst);
 
       // SECURITY: Calculate shipping server-side
       const country = shippingInfo?.country || 'CA';
@@ -254,7 +326,7 @@ export async function POST(request: NextRequest) {
             userId,
             subtotal: serverSubtotal,
             shippingCost: serverShipping,
-            discount: serverPromoDiscount + serverGiftCardDiscount,
+            discount: add(serverPromoDiscount, serverGiftCardDiscount),
             tax: totalTax,
             taxTps,
             taxTvq,
@@ -289,7 +361,7 @@ export async function POST(request: NextRequest) {
                 quantity: Number(item.quantity) || 1,
                 unitPrice: Number(item.price) || 0,
                 discount: Number(item.discount) || 0,
-                total: Number(item.price) * Number(item.quantity) - (Number(item.discount) || 0),
+                total: subtract(multiply(Number(item.price), Number(item.quantity)), Number(item.discount) || 0),
               })),
             } : undefined,
           },
@@ -366,7 +438,7 @@ export async function POST(request: NextRequest) {
             const isExpired = giftCard.expires_at && new Date() > giftCard.expires_at;
             if (!isExpired) {
               const amountToDeduct = Math.min(serverGiftCardDiscount, giftCard.balance);
-              const newBalance = Math.round((giftCard.balance - amountToDeduct) * 100) / 100;
+              const newBalance = subtract(giftCard.balance, amountToDeduct);
 
               await tx.giftCard.update({
                 where: { id: giftCard.id },
@@ -466,7 +538,7 @@ export async function POST(request: NextRequest) {
         || captureData.purchase_units?.[0]?.amount?.value
         || 0
       );
-      const serverCalculatedTotal = Math.round((subtotalAfterAllDiscounts + totalTax + serverShipping) * 100) / 100;
+      const serverCalculatedTotal = add(subtotalAfterAllDiscounts, totalTax, serverShipping);
       const amountDifference = Math.abs(paypalCapturedAmount - serverCalculatedTotal);
       if (amountDifference > 0.02) {
         logger.warn('[PayPal capture] Amount mismatch between server calculation and PayPal captured amount', {
@@ -520,7 +592,7 @@ export async function POST(request: NextRequest) {
             const rate = Number(ambassador.commissionRate);
             // F-010 FIX: commissionRate is stored as an integer percentage (e.g. 10 = 10%).
             // Divide by 100 first to get the decimal multiplier, then round to 2 decimal places.
-            const commissionAmount = Math.round(Number(order.total) * (rate / 100) * 100) / 100;
+            const commissionAmount = percentage(Number(order.total), rate);
 
             await prisma.ambassadorCommission.upsert({
               where: {

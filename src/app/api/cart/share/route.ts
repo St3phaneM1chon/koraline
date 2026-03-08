@@ -16,15 +16,26 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { SignJWT, jwtVerify } from 'jose';
 import { logger } from '@/lib/logger';
+import { stripHtml } from '@/lib/sanitize';
 
 // ---------------------------------------------------------------------------
 // Config
 // ---------------------------------------------------------------------------
 
-const SHARE_SECRET = new TextEncoder().encode(
-  process.env.NEXTAUTH_SECRET || 'cart-share-fallback-secret-key-min-32chars!'
-);
 const SHARE_TOKEN_EXPIRY = '7d'; // 7 days
+
+// Lazy-initialized to avoid crashing during Next.js build/SSG when env vars
+// are not available (see KB-PP-BUILD-002).
+let _shareSecret: Uint8Array | null = null;
+function getShareSecret(): Uint8Array {
+  if (!_shareSecret) {
+    if (!process.env.NEXTAUTH_SECRET) {
+      throw new Error('NEXTAUTH_SECRET environment variable is required for cart sharing');
+    }
+    _shareSecret = new TextEncoder().encode(process.env.NEXTAUTH_SECRET);
+  }
+  return _shareSecret;
+}
 
 // ---------------------------------------------------------------------------
 // Rate limiting (10 creates per minute per IP)
@@ -116,11 +127,12 @@ export async function POST(request: NextRequest) {
     const { items } = parsed.data;
 
     // Encode cart items into a JWT token
+    // XSS FIX: Strip HTML tags from name field before storing in JWT
     const payload: SharedCartPayload = {
       items: items.map((item) => ({
         productId: item.productId,
         formatId: item.formatId ?? null,
-        name: item.name,
+        name: stripHtml(item.name),
         price: item.price,
         quantity: item.quantity,
         image: item.image ?? null,
@@ -131,7 +143,7 @@ export async function POST(request: NextRequest) {
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .setExpirationTime(SHARE_TOKEN_EXPIRY)
-      .sign(SHARE_SECRET);
+      .sign(getShareSecret());
 
     // Build shareable URL
     const baseUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_URL || '';
@@ -167,7 +179,7 @@ export async function GET(request: NextRequest) {
     // Verify and decode the JWT
     let payload: SharedCartPayload;
     try {
-      const { payload: decoded } = await jwtVerify(token, SHARE_SECRET);
+      const { payload: decoded } = await jwtVerify(token, getShareSecret());
       payload = (decoded as { cart: SharedCartPayload }).cart;
     } catch {
       return NextResponse.json(

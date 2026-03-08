@@ -17,6 +17,7 @@ import { getPayPalAccessToken, PAYPAL_API_URL } from '@/lib/paypal';
 import { validateCsrf } from '@/lib/csrf-middleware';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
 import { logger } from '@/lib/logger';
+import { add, multiply, subtract, applyRate, divide, percentage } from '@/lib/decimal-calculator';
 
 const createOrderItemSchema = z.object({
   productId: z.string().min(1),
@@ -140,7 +141,7 @@ export async function POST(request: NextRequest) {
       }
 
       const quantity = Math.max(1, Math.floor(item.quantity));
-      serverSubtotal += verifiedPrice * quantity;
+      serverSubtotal = add(serverSubtotal, multiply(verifiedPrice, quantity));
 
       verifiedItems.push({
         productId: product.id,
@@ -153,7 +154,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    serverSubtotal = Math.round(serverSubtotal * 100) / 100;
+    // serverSubtotal is already rounded to 2dp by add()/multiply()
 
     // SECURITY: Validate promo code server-side
     // BE-PAY-06: Enforce single promo code per order (prevent stacking)
@@ -173,7 +174,7 @@ export async function POST(request: NextRequest) {
         const withinUsageLimit = !promo.usageLimit || promo.usageCount < promo.usageLimit;
         if (notExpired && withinUsageLimit) {
           if (promo.type === 'PERCENTAGE') {
-            serverPromoDiscount = Math.round(serverSubtotal * (Number(promo.value) / 100) * 100) / 100;
+            serverPromoDiscount = percentage(serverSubtotal, Number(promo.value));
           } else {
             serverPromoDiscount = Math.min(Number(promo.value), serverSubtotal);
           }
@@ -184,7 +185,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const discountedSubtotal = Math.max(0, serverSubtotal - serverPromoDiscount);
+    const discountedSubtotal = Math.max(0, subtract(serverSubtotal, serverPromoDiscount));
 
     // BE-PAY-04: Validate gift card server-side
     let serverGiftCardDiscount = 0;
@@ -206,7 +207,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const subtotalAfterAllDiscounts = Math.max(0, discountedSubtotal - serverGiftCardDiscount);
+    const subtotalAfterAllDiscounts = Math.max(0, subtract(discountedSubtotal, serverGiftCardDiscount));
 
     // SECURITY: Calculate taxes server-side - all Canadian provinces/territories
     // BE-PAY-11, BE-PAY-20: Fixed to handle PST for BC/MB/SK, not just QC+HST
@@ -230,15 +231,19 @@ export async function POST(request: NextRequest) {
     const rates = CANADIAN_TAX_RATES[province.toUpperCase()] || CANADIAN_TAX_RATES['QC'];
     let taxTotal = 0;
     if (rates.hst) {
-      taxTotal = Math.round(subtotalAfterAllDiscounts * rates.hst * 100) / 100;
+      taxTotal = applyRate(subtotalAfterAllDiscounts, rates.hst);
     } else if (rates.qst) {
-      taxTotal = Math.round(subtotalAfterAllDiscounts * rates.gst * 100) / 100
-        + Math.round(subtotalAfterAllDiscounts * rates.qst * 100) / 100;
+      taxTotal = add(
+        applyRate(subtotalAfterAllDiscounts, rates.gst),
+        applyRate(subtotalAfterAllDiscounts, rates.qst)
+      );
     } else if (rates.pst || rates.rst) {
-      taxTotal = Math.round(subtotalAfterAllDiscounts * rates.gst * 100) / 100
-        + Math.round(subtotalAfterAllDiscounts * (rates.pst || rates.rst || 0) * 100) / 100;
+      taxTotal = add(
+        applyRate(subtotalAfterAllDiscounts, rates.gst),
+        applyRate(subtotalAfterAllDiscounts, rates.pst || rates.rst || 0)
+      );
     } else {
-      taxTotal = Math.round(subtotalAfterAllDiscounts * rates.gst * 100) / 100;
+      taxTotal = applyRate(subtotalAfterAllDiscounts, rates.gst);
     }
 
     // SECURITY: Calculate shipping server-side
@@ -254,7 +259,7 @@ export async function POST(request: NextRequest) {
       serverShipping = 24.99;
     }
 
-    const serverTotal = Math.round((subtotalAfterAllDiscounts + taxTotal + serverShipping) * 100) / 100;
+    const serverTotal = add(subtotalAfterAllDiscounts, taxTotal, serverShipping);
 
     // BE-PAY-10: Reserve inventory atomically (prevents overselling)
     let reservationIds: string[] = [];
@@ -334,7 +339,7 @@ export async function POST(request: NextRequest) {
         intent: 'CAPTURE',
         purchase_units: [{
           reference_id: `order_${Date.now()}`,
-          custom_id: JSON.stringify({ researchConsentAccepted: !!researchConsentAccepted, researchConsentTimestamp: researchConsentTimestamp || '' }),
+          custom_id: JSON.stringify({ userId: session.user.id, researchConsentAccepted: !!researchConsentAccepted, researchConsentTimestamp: researchConsentTimestamp || '' }),
           description: 'Commande BioCycle Peptides',
           amount: {
             currency_code: currency.toUpperCase(),
@@ -356,10 +361,10 @@ export async function POST(request: NextRequest) {
           },
           items: verifiedItems.map((item) => {
             // Apply proportional discount (promo + gift card) to each item
-            const totalDiscount = serverPromoDiscount + serverGiftCardDiscount;
-            const discountRatio = totalDiscount > 0 ? totalDiscount / serverSubtotal : 0;
-            const itemDiscount = Math.round(item.price * discountRatio * 100) / 100;
-            const discountedPrice = Math.round((item.price - itemDiscount) * 100) / 100;
+            const totalDiscount = add(serverPromoDiscount, serverGiftCardDiscount);
+            const discountRatio = totalDiscount > 0 ? divide(totalDiscount, serverSubtotal) : 0;
+            const itemDiscount = multiply(item.price, discountRatio);
+            const discountedPrice = subtract(item.price, itemDiscount);
             return {
               name: item.name,
               description: item.format || '',

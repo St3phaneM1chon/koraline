@@ -24,6 +24,7 @@ import { calculateTaxAmount } from '@/lib/tax-rates';
 import { STRIPE_API_VERSION } from '@/lib/stripe';
 import { validateCsrf } from '@/lib/csrf-middleware';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
+import { add, toCents } from '@/lib/decimal-calculator';
 
 const chargeSavedCardSchema = z.object({
   cardId: z.string().min(1, 'Card ID is required'),
@@ -140,7 +141,7 @@ export async function POST(request: NextRequest) {
     const subtotal = Number(product.price);
     const province = (reqProvince || 'QC').toUpperCase();
     const taxAmount = calculateTaxAmount(subtotal, province);
-    const total = Math.round((subtotal + taxAmount) * 100); // In cents
+    const total = toCents(add(subtotal, taxAmount)); // In cents
 
     // Get or create Stripe customer
     const stripeCustomerId = await getOrCreateStripeCustomer(

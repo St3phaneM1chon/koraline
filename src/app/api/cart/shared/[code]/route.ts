@@ -19,9 +19,18 @@ import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 
 // Must match the secret used in /api/cart/share
-const SHARE_SECRET = new TextEncoder().encode(
-  process.env.NEXTAUTH_SECRET || 'cart-share-fallback-secret-key-min-32chars!'
-);
+// Lazy-initialized to avoid crashing during Next.js build/SSG when env vars
+// are not available (see KB-PP-BUILD-002).
+let _shareSecret: Uint8Array | null = null;
+function getShareSecret(): Uint8Array {
+  if (!_shareSecret) {
+    if (!process.env.NEXTAUTH_SECRET) {
+      throw new Error('NEXTAUTH_SECRET environment variable is required for cart sharing');
+    }
+    _shareSecret = new TextEncoder().encode(process.env.NEXTAUTH_SECRET);
+  }
+  return _shareSecret;
+}
 
 interface SharedCartItem {
   productId: string;
@@ -50,7 +59,7 @@ export async function GET(
     // The "code" is the JWT token - decode it
     let payload: SharedCartPayload;
     try {
-      const { payload: decoded } = await jwtVerify(code, SHARE_SECRET);
+      const { payload: decoded } = await jwtVerify(code, getShareSecret());
       payload = (decoded as { cart: SharedCartPayload }).cart;
     } catch {
       return NextResponse.json(
