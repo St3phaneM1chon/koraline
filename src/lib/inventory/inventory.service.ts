@@ -234,24 +234,28 @@ export async function purchaseStock(
   supplierInvoiceId?: string,
   createdBy?: string
 ): Promise<void> {
+  // Capture old stock values before transaction for audit logging
+  const oldQuantities: Map<string, number> = new Map();
   for (const item of items) {
-    // Capture old stock before transaction for audit logging
-    let oldQty = 0;
+    const key = item.formatId || item.productId;
     if (item.formatId) {
       const fmt = await prisma.productFormat.findUnique({
         where: { id: item.formatId },
         select: { stockQuantity: true },
       });
-      oldQty = fmt?.stockQuantity || 0;
+      oldQuantities.set(key, fmt?.stockQuantity || 0);
     } else {
       const prod = await prisma.product.findUnique({
         where: { id: item.productId },
         select: { stockQuantity: true },
       });
-      oldQty = prod?.stockQuantity || 0;
+      oldQuantities.set(key, prod?.stockQuantity || 0);
     }
+  }
 
-    await prisma.$transaction(async (tx) => {
+  // Wrap ALL items in a single transaction for atomicity
+  await prisma.$transaction(async (tx) => {
+    for (const item of items) {
       // Get current stock quantity and WAC
       let currentQty = 0;
       let currentWAC = 0;
@@ -263,7 +267,6 @@ export async function purchaseStock(
         });
         currentQty = format?.stockQuantity || 0;
       } else {
-        // E-07 FIX: Get current stock for base products
         const product = await tx.product.findUnique({
           where: { id: item.productId },
           select: { stockQuantity: true },
@@ -296,7 +299,6 @@ export async function purchaseStock(
           data: { stockQuantity: { increment: item.quantity } },
         });
       } else {
-        // E-07 FIX: Increment stock for base products
         await tx.product.update({
           where: { id: item.productId },
           data: { stockQuantity: { increment: item.quantity } },
@@ -316,9 +318,13 @@ export async function purchaseStock(
           createdBy,
         },
       });
-    });
+    }
+  });
 
-    // Fire-and-forget audit log for stock purchase
+  // Fire-and-forget audit logs after successful transaction
+  for (const item of items) {
+    const key = item.formatId || item.productId;
+    const oldQty = oldQuantities.get(key) || 0;
     logStockChange({
       productId: item.productId,
       formatId: item.formatId || null,
