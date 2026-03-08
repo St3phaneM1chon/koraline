@@ -65,7 +65,7 @@ export const GET = withUserGuard(async (_request: NextRequest, { session }) => {
         details: returnRequest.details,
         status: returnRequest.status,
         resolution: returnRequest.resolution,
-        adminNotes: returnRequest.adminNotes,
+        // SECURITY: adminNotes are internal — do not expose to customers
         createdAt: returnRequest.createdAt.toISOString(),
         updatedAt: returnRequest.updatedAt.toISOString(),
       };

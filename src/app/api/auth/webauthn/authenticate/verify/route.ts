@@ -141,6 +141,10 @@ export async function POST(request: NextRequest) {
         picture: user.image,
         role: user.role,
         mfaEnabled: user.mfaEnabled,
+        // SECURITY FIX: WebAuthn IS a strong second factor, so mark MFA as verified
+        mfaVerified: true,
+        // Maintain consistency with NextAuth session callback fields
+        needsTerms: !user.termsAcceptedAt,
         sub: user.id,
         iat: Math.floor(Date.now() / 1000),
         exp: Math.floor(Date.now() / 1000) + 3600, // 1 hour

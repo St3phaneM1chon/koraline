@@ -52,20 +52,20 @@ export async function POST(request: NextRequest) {
         include: { authenticators: true },
       });
 
-      if (!user || user.authenticators.length === 0) {
-        return NextResponse.json(
-          { error: 'No passkey found for this account' },
-          { status: 404 }
-        );
+      // SECURITY FIX: Do not reveal whether the account exists or has passkeys.
+      // If user doesn't exist or has no passkeys, generate options without
+      // allowCredentials (discoverable credential flow) so the response is
+      // indistinguishable from a valid request.
+      if (user && user.authenticators.length > 0) {
+        allowCredentials = user.authenticators.map((auth) => ({
+          id: Buffer.from(auth.credentialID, 'base64url'),
+          type: 'public-key' as const,
+          transports: auth.transports
+            ? (auth.transports.split(',') as AuthenticatorTransport[])
+            : undefined,
+        }));
       }
-
-      allowCredentials = user.authenticators.map((auth) => ({
-        id: Buffer.from(auth.credentialID, 'base64url'),
-        type: 'public-key' as const,
-        transports: auth.transports
-          ? (auth.transports.split(',') as AuthenticatorTransport[])
-          : undefined,
-      }));
+      // else: allowCredentials remains undefined → browser shows all available passkeys
     }
 
     const options = await generateAuthenticationOptions({

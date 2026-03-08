@@ -105,6 +105,20 @@ export const PUT = withUserGuard(async (request: NextRequest, { session }) => {
     // Store in password history
     await addToPasswordHistory(user.id, hashedPassword);
 
+    // SECURITY: Invalidate all other sessions after password change.
+    // A stolen session cookie should not remain valid after password change.
+    try {
+      await db.session.deleteMany({
+        where: { userId: user.id },
+      });
+    } catch (sessionErr) {
+      // Non-blocking: log but don't fail the password change
+      logger.warn('Failed to invalidate sessions after password change', {
+        userId: user.id,
+        error: sessionErr instanceof Error ? sessionErr.message : String(sessionErr),
+      });
+    }
+
     return NextResponse.json({ success: true });
   } catch (error) {
     logger.error('Error updating password', { error: error instanceof Error ? error.message : String(error) });

@@ -8,6 +8,7 @@ import { rpID, origin } from '@/lib/webauthn';
 import { cookies } from 'next/headers';
 import { logger } from '@/lib/logger';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
+import { stripHtml, stripControlChars } from '@/lib/sanitize';
 import { z } from 'zod';
 
 // CSRF EXCEPTION (audited 2026-02-24): WebAuthn routes do not require separate CSRF
@@ -108,7 +109,7 @@ export async function POST(request: NextRequest) {
         credentialDeviceType,
         credentialBackedUp,
         transports: credential.response.transports?.join(',') || null,
-        deviceName: deviceName || null,
+        deviceName: deviceName ? stripControlChars(stripHtml(deviceName)) : null,
       },
     });
 

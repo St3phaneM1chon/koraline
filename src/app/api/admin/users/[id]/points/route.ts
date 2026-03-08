@@ -104,4 +104,4 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
     logger.error('Admin points adjustment error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
   }
-});
+}, { requiredPermission: 'users.edit' });

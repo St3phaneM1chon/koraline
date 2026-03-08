@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
+import { stripHtml, stripControlChars } from '@/lib/sanitize';
 
 /**
  * POST /api/admin/users/[id]/email
@@ -31,6 +32,10 @@ export const POST = withAdminGuard(async (request: NextRequest, { params }) => {
     if (!body) {
       return NextResponse.json({ error: 'body is required' }, { status: 400 });
     }
+
+    // SECURITY: Sanitize subject and body to prevent HTML injection in emails
+    subject = stripControlChars(stripHtml(subject));
+    body = stripControlChars(stripHtml(body));
 
     // Look up the user
     const user = await prisma.user.findUnique({

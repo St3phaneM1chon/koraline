@@ -10,14 +10,22 @@ import crypto from 'crypto';
  * POST /api/admin/users/[id]/reset-password
  * Admin-initiated password reset: generates a reset token and sends an email.
  */
-export const POST = withAdminGuard(async (_request: NextRequest, { params }) => {
+export const POST = withAdminGuard(async (_request: NextRequest, { params, session }) => {
   try {
     const id = params!.id;
 
     const user = await prisma.user.findUnique({
       where: { id },
-      select: { id: true, email: true, name: true },
+      select: { id: true, email: true, name: true, role: true },
     });
+
+    // SECURITY: Prevent EMPLOYEE from resetting OWNER passwords (privilege escalation)
+    if (user && user.role === 'OWNER' && session.user.role !== 'OWNER') {
+      return NextResponse.json(
+        { error: 'Only an OWNER can reset another OWNER\'s password' },
+        { status: 403 }
+      );
+    }
 
     if (!user || !user.email) {
       return NextResponse.json({ error: 'User not found or has no email' }, { status: 404 });

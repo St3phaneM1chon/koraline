@@ -119,6 +119,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // SECURITY: Invalidate all existing sessions after password reset.
+    // A stolen session cookie should not remain valid after password change.
+    try {
+      await prisma.session.deleteMany({
+        where: { userId: user.id },
+      });
+    } catch (sessionErr) {
+      // Non-blocking: log but don't fail the password reset
+      logger.warn('Failed to invalidate sessions after password reset', {
+        userId: user.id,
+        error: sessionErr instanceof Error ? sessionErr.message : String(sessionErr),
+      });
+    }
+
     // Store the new password in history
     await addToPasswordHistory(user.id, hashedPassword);
 
