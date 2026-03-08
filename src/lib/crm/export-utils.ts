@@ -29,10 +29,16 @@ export function toCSV(
 }
 
 function escapeCsvField(field: string): string {
-  if (field.includes(',') || field.includes('"') || field.includes('\n')) {
-    return `"${field.replace(/"/g, '""')}"`;
+  // Prevent CSV formula injection: prefix dangerous chars with a single quote
+  // Characters =, +, -, @, \t, \r can trigger formula execution in Excel/Sheets
+  let safe = field;
+  if (/^[=+\-@\t\r]/.test(safe)) {
+    safe = `'${safe}`;
   }
-  return field;
+  if (safe.includes(',') || safe.includes('"') || safe.includes('\n') || safe.includes("'")) {
+    return `"${safe.replace(/"/g, '""')}"`;
+  }
+  return safe;
 }
 
 /**

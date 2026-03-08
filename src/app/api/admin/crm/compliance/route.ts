@@ -7,6 +7,7 @@ export const dynamic = 'force-dynamic';
  */
 
 import { Prisma } from '@prisma/client';
+import { z } from 'zod';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { apiSuccess, apiError } from '@/lib/api-response';
 import { prisma } from '@/lib/db';
@@ -81,34 +82,93 @@ export const GET = withAdminGuard(async (request) => {
   return apiSuccess(stats, { request });
 });
 
-export const POST = withAdminGuard(async (request) => {
-  const body = await request.json();
-  const { action } = body;
+const importDnclSchema = z.object({
+  action: z.literal('import-dncl'),
+  phoneNumbers: z.array(z.string().max(30)).min(1).max(10000),
+  source: z.string().max(200).optional(),
+});
 
-  switch (action) {
+const addDncSchema = z.object({
+  action: z.literal('add-dnc'),
+  phone: z.string().min(1).max(30),
+  reason: z.string().max(500).optional(),
+});
+
+const recordConsentSchema = z.object({
+  action: z.literal('record-consent'),
+  phone: z.string().max(30).optional(),
+  email: z.string().email().max(320).optional(),
+  channel: z.string().max(50).optional(),
+  consentType: z.string().max(100).optional(),
+  source: z.string().max(200).optional(),
+});
+
+const revokeConsentSchema = z.object({
+  action: z.literal('revoke-consent'),
+  phone: z.string().max(30).optional(),
+  email: z.string().email().max(320).optional(),
+  channel: z.string().max(50).optional(),
+});
+
+const createCallingRuleSchema = z.object({
+  action: z.literal('create-calling-rule'),
+  name: z.string().max(255).optional(),
+  timezone: z.string().max(100).optional(),
+  startHour: z.number().int().min(0).max(23).optional(),
+  endHour: z.number().int().min(0).max(23).optional(),
+  endMinute: z.number().int().min(0).max(59).optional(),
+  weekendAllowed: z.boolean().optional(),
+  holidayAllowed: z.boolean().optional(),
+  maxAttemptsPerDay: z.number().int().min(1).max(100).optional(),
+  maxAttemptsTotal: z.number().int().min(1).max(1000).optional(),
+  retryIntervalMin: z.number().int().min(1).max(10080).optional(),
+});
+
+const complianceActionSchema = z.discriminatedUnion('action', [
+  importDnclSchema,
+  addDncSchema,
+  recordConsentSchema,
+  revokeConsentSchema,
+  createCallingRuleSchema,
+]);
+
+export const POST = withAdminGuard(async (request) => {
+  let rawBody: unknown;
+  try {
+    rawBody = await request.json();
+  } catch {
+    return apiError('Invalid JSON body', 'VALIDATION_ERROR', { status: 400 });
+  }
+
+  const parsed = complianceActionSchema.safeParse(rawBody);
+  if (!parsed.success) {
+    return apiError(
+      parsed.error.errors[0]?.message || 'Invalid compliance data',
+      'VALIDATION_ERROR',
+      { status: 400 }
+    );
+  }
+
+  const data = parsed.data;
+
+  switch (data.action) {
     case 'import-dncl': {
-      const { phoneNumbers, source } = body;
-      if (!phoneNumbers || !Array.isArray(phoneNumbers)) {
-        return apiError('phoneNumbers array required', 'VALIDATION_ERROR', { status: 400 });
-      }
-      const result = await importDnclList(phoneNumbers, source);
+      const result = await importDnclList(data.phoneNumbers, data.source);
       return apiSuccess(result, { request });
     }
 
     case 'add-dnc': {
-      const { phone, reason } = body;
-      if (!phone) return apiError('phone required', 'VALIDATION_ERROR', { status: 400 });
-      await addToInternalDnc(phone, reason);
-      return apiSuccess({ phone, status: 'added' }, { request });
+      await addToInternalDnc(data.phone, data.reason);
+      return apiSuccess({ phone: data.phone, status: 'added' }, { request });
     }
 
     case 'record-consent': {
-      const id = await recordConsent(body);
+      const id = await recordConsent(data);
       return apiSuccess({ id }, { request, status: 201 });
     }
 
     case 'revoke-consent': {
-      const { phone, email, channel } = body;
+      const { phone, email, channel } = data;
       const count = await revokeConsent({ phone, email }, channel);
       return apiSuccess({ revoked: count }, { request });
     }
@@ -116,16 +176,16 @@ export const POST = withAdminGuard(async (request) => {
     case 'create-calling-rule': {
       const rule = await prisma.callingRule.create({
         data: {
-          name: body.name || 'Default',
-          timezone: body.timezone || 'America/Toronto',
-          startHour: body.startHour ?? 9,
-          endHour: body.endHour ?? 21,
-          endMinute: body.endMinute ?? 30,
-          weekendAllowed: body.weekendAllowed ?? false,
-          holidayAllowed: body.holidayAllowed ?? false,
-          maxAttemptsPerDay: body.maxAttemptsPerDay ?? 3,
-          maxAttemptsTotal: body.maxAttemptsTotal ?? 10,
-          retryIntervalMin: body.retryIntervalMin ?? 60,
+          name: data.name || 'Default',
+          timezone: data.timezone || 'America/Toronto',
+          startHour: data.startHour ?? 9,
+          endHour: data.endHour ?? 21,
+          endMinute: data.endMinute ?? 30,
+          weekendAllowed: data.weekendAllowed ?? false,
+          holidayAllowed: data.holidayAllowed ?? false,
+          maxAttemptsPerDay: data.maxAttemptsPerDay ?? 3,
+          maxAttemptsTotal: data.maxAttemptsTotal ?? 10,
+          retryIntervalMin: data.retryIntervalMin ?? 60,
         },
       });
       return apiSuccess(rule, { request, status: 201 });

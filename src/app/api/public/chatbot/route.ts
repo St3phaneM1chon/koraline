@@ -14,6 +14,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
+import { stripHtml } from '@/lib/sanitize';
 import {
   processUserMessage,
   getDefaultChatbotConfig,
@@ -81,7 +82,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { message, conversationId, name, email } = parsed.data;
+    const rawData = parsed.data;
+    const message = stripHtml(rawData.message).trim();
+    const conversationId = rawData.conversationId;
+    const name = rawData.name ? stripHtml(rawData.name).trim() : undefined;
+    const email = rawData.email;
     const config = getDefaultChatbotConfig();
 
     // -----------------------------------------------------------------------

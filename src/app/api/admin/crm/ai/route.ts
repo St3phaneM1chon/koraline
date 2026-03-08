@@ -12,6 +12,7 @@ export const dynamic = 'force-dynamic';
  */
 
 import { NextRequest } from 'next/server';
+import { z } from 'zod';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { apiSuccess, apiError } from '@/lib/api-response';
 import {
@@ -25,64 +26,94 @@ import {
 // POST: Dispatch AI action
 // ---------------------------------------------------------------------------
 
-export const POST = withAdminGuard(async (request: NextRequest) => {
-  const body = await request.json();
-  const { action } = body;
+const scoreLeadSchema = z.object({
+  action: z.literal('score_lead'),
+  leadId: z.string().min(1, 'leadId required'),
+});
 
-  if (!action) {
-    return apiError('Missing action field', 'VALIDATION_ERROR', {
-      status: 400,
-      request,
-    });
+const scoreDealSchema = z.object({
+  action: z.literal('score_deal'),
+  dealId: z.string().min(1, 'dealId required'),
+});
+
+const emailSuggestionSchema = z.object({
+  action: z.literal('email_suggestion'),
+  leadId: z.string().optional(),
+  dealId: z.string().optional(),
+  purpose: z.string().max(500).optional(),
+  language: z.string().max(10).optional(),
+}).refine(
+  (d) => d.leadId || d.dealId,
+  'Either leadId or dealId is required for email_suggestion'
+);
+
+const callSummarySchema = z.object({
+  action: z.literal('call_summary'),
+  transcriptionText: z.string().min(1, 'transcriptionText required').max(100000),
+});
+
+const aiActionSchema = z.discriminatedUnion('action', [
+  scoreLeadSchema,
+  scoreDealSchema,
+  // emailSuggestionSchema uses refine so can't be in discriminatedUnion
+  callSummarySchema,
+]);
+
+export const POST = withAdminGuard(async (request: NextRequest) => {
+  let rawBody: unknown;
+  try {
+    rawBody = await request.json();
+  } catch {
+    return apiError('Invalid JSON body', 'VALIDATION_ERROR', { status: 400, request });
+  }
+
+  // Try discriminated union first, then email_suggestion separately (has refine)
+  const bodyObj = rawBody as Record<string, unknown>;
+  const action = bodyObj?.action;
+
+  if (!action || typeof action !== 'string') {
+    return apiError('Missing action field', 'VALIDATION_ERROR', { status: 400, request });
   }
 
   switch (action) {
     case 'score_lead': {
-      if (!body.leadId) {
-        return apiError('Missing leadId for score_lead action', 'VALIDATION_ERROR', {
-          status: 400,
-          request,
-        });
+      const parsed = scoreLeadSchema.safeParse(rawBody);
+      if (!parsed.success) {
+        return apiError(parsed.error.errors[0]?.message || 'Invalid data', 'VALIDATION_ERROR', { status: 400, request });
       }
-      const result = await aiLeadScore(body.leadId);
+      const result = await aiLeadScore(parsed.data.leadId);
       return apiSuccess(result, { request });
     }
 
     case 'score_deal': {
-      if (!body.dealId) {
-        return apiError('Missing dealId for score_deal action', 'VALIDATION_ERROR', {
-          status: 400,
-          request,
-        });
+      const parsed = scoreDealSchema.safeParse(rawBody);
+      if (!parsed.success) {
+        return apiError(parsed.error.errors[0]?.message || 'Invalid data', 'VALIDATION_ERROR', { status: 400, request });
       }
-      const result = await aiDealScore(body.dealId);
+      const result = await aiDealScore(parsed.data.dealId);
       return apiSuccess(result, { request });
     }
 
     case 'email_suggestion': {
-      if (!body.leadId && !body.dealId) {
-        return apiError('Missing leadId or dealId for email_suggestion action', 'VALIDATION_ERROR', {
-          status: 400,
-          request,
-        });
+      const parsed = emailSuggestionSchema.safeParse(rawBody);
+      if (!parsed.success) {
+        return apiError(parsed.error.errors[0]?.message || 'Invalid data', 'VALIDATION_ERROR', { status: 400, request });
       }
       const result = await generateEmailSuggestion({
-        leadId: body.leadId,
-        dealId: body.dealId,
-        purpose: body.purpose,
-        language: body.language,
+        leadId: parsed.data.leadId,
+        dealId: parsed.data.dealId,
+        purpose: parsed.data.purpose,
+        language: parsed.data.language,
       });
       return apiSuccess(result, { request });
     }
 
     case 'call_summary': {
-      if (!body.transcriptionText) {
-        return apiError('Missing transcriptionText for call_summary action', 'VALIDATION_ERROR', {
-          status: 400,
-          request,
-        });
+      const parsed = callSummarySchema.safeParse(rawBody);
+      if (!parsed.success) {
+        return apiError(parsed.error.errors[0]?.message || 'Invalid data', 'VALIDATION_ERROR', { status: 400, request });
       }
-      const result = await generateCallSummary(body.transcriptionText);
+      const result = await generateCallSummary(parsed.data.transcriptionText);
       return apiSuccess(result, { request });
     }
 
