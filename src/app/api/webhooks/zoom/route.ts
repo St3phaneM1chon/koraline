@@ -15,20 +15,28 @@ export async function POST(request: NextRequest) {
     const rawBody = await request.text();
     const body = JSON.parse(rawBody);
 
-    // Validate signature (skip for URL validation challenge)
+    const secret = process.env.ZOOM_WEBHOOK_SECRET_TOKEN || '';
+    if (!secret) {
+      logger.error('[Webhook] ZOOM_WEBHOOK_SECRET_TOKEN not configured — rejecting request');
+      return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });
+    }
+
+    // URL validation challenge uses HMAC on plainToken (no signature header)
+    // All other events MUST have valid signature
     if (body.event !== 'endpoint.url_validation') {
       const timestamp = request.headers.get('x-zm-request-timestamp') || '';
       const signature = request.headers.get('x-zm-signature') || '';
-      const secret = process.env.ZOOM_WEBHOOK_SECRET_TOKEN || '';
-
-      if (!secret) {
-        logger.warn('[Webhook] Zoom webhook secret not configured');
-        return NextResponse.json({ error: 'Webhook not configured' }, { status: 500 });
-      }
 
       if (!validateZoomSignature(rawBody, timestamp, signature, secret)) {
         logger.warn('[Webhook] Zoom signature validation failed');
         return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
+      }
+    } else {
+      // For url_validation, verify the payload has a valid plainToken
+      const plainToken = (body.payload as Record<string, unknown>)?.plainToken;
+      if (!plainToken || typeof plainToken !== 'string' || plainToken.length > 256) {
+        logger.warn('[Webhook] Zoom url_validation: invalid plainToken');
+        return NextResponse.json({ error: 'Invalid plainToken' }, { status: 400 });
       }
     }
 

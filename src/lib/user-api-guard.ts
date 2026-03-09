@@ -63,12 +63,23 @@ const RATE_LIMIT_WINDOW_MS = 60 * 1000;
 // ---------------------------------------------------------------------------
 
 function getClientIp(request: NextRequest): string {
-  const raw =
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    request.headers.get('x-real-ip') ||
-    '127.0.0.1';
-  // Validate IP format to prevent log injection / rate-limit bypass (aligned with admin-api-guard)
-  return /^[\d.:a-fA-F]{3,45}$/.test(raw) ? raw : '0.0.0.0';
+  // Azure App Service sets x-azure-clientip which cannot be spoofed by the client
+  const azureIp = request.headers.get('x-azure-clientip');
+  if (azureIp && /^[\d.:a-fA-F]{3,45}$/.test(azureIp)) return azureIp;
+
+  // Fallback: use X-Forwarded-For (can be spoofed if not behind trusted proxy)
+  const xff = request.headers.get('x-forwarded-for');
+  if (xff) {
+    // Use the RIGHTMOST non-private IP (the one added by the trusted reverse proxy)
+    // This prevents spoofing via client-set X-Forwarded-For header
+    const ips = xff.split(',').map(ip => ip.trim()).filter(ip => /^[\d.:a-fA-F]{3,45}$/.test(ip));
+    const rightmost = ips[ips.length - 1];
+    if (rightmost) return rightmost;
+  }
+
+  const realIp = request.headers.get('x-real-ip');
+  if (realIp && /^[\d.:a-fA-F]{3,45}$/.test(realIp)) return realIp;
+  return '127.0.0.1';
 }
 
 function jsonError(message: string, status: number, headers?: Record<string, string>): NextResponse {

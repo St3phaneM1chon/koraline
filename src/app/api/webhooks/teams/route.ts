@@ -38,6 +38,14 @@ export async function POST(request: NextRequest) {
     const validationToken = searchParams.get('validationToken');
 
     if (validationToken) {
+      // Sanitize: Teams validationTokens are alphanumeric with hyphens/underscores
+      // Reject anything that looks like an injection attempt
+      if (!/^[\w\-.:]{1,512}$/.test(validationToken)) {
+        logger.warn('[Webhook] Teams: suspicious validationToken rejected', {
+          tokenLength: validationToken.length,
+        });
+        return NextResponse.json({ error: 'Invalid validation token' }, { status: 400 });
+      }
       // Must return the token as plain text with content-type text/plain
       const result = await handleTeamsWebhook({}, validationToken);
       return new NextResponse(result.body as string, {
@@ -46,14 +54,11 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Verify bearer token for all non-validation requests
+    // Verify bearer token for all non-validation requests — REQUIRED in all environments
     const webhookSecret = process.env.TEAMS_WEBHOOK_SECRET;
     if (!webhookSecret) {
-      if (process.env.NODE_ENV === 'production') {
-        logger.error('[Webhook] TEAMS_WEBHOOK_SECRET not configured in production');
-        return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });
-      }
-      logger.warn('[Webhook] TEAMS_WEBHOOK_SECRET not set — skipping verification (dev mode)');
+      logger.error('[Webhook] TEAMS_WEBHOOK_SECRET not configured — rejecting request');
+      return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });
     } else {
       const authHeader = request.headers.get('authorization') || '';
       const token = authHeader.startsWith('Bearer ')

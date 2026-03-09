@@ -139,10 +139,17 @@ export async function middleware(request: NextRequest) {
         requestId,
         // FAILLE-064 FIX: Increase UA truncation from 100 to 256 for better anomaly detection
         userAgent: request.headers.get('user-agent')?.substring(0, 256),
-        // FAILLE-063 FIX: Validate IP format before logging to prevent log injection
+        // FAILLE-063 FIX: Validate IP format, prefer Azure header, use rightmost XFF
         ip: (() => {
-          const raw = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || request.headers.get('x-real-ip');
-          return raw && /^[\d.:a-fA-F]{3,45}$/.test(raw) ? raw : undefined;
+          const azureIp = request.headers.get('x-azure-clientip');
+          if (azureIp && /^[\d.:a-fA-F]{3,45}$/.test(azureIp)) return azureIp;
+          const xff = request.headers.get('x-forwarded-for');
+          if (xff) {
+            const ips = xff.split(',').map((i: string) => i.trim()).filter((i: string) => /^[\d.:a-fA-F]{3,45}$/.test(i));
+            return ips[ips.length - 1] || undefined;
+          }
+          const realIp = request.headers.get('x-real-ip');
+          return realIp && /^[\d.:a-fA-F]{3,45}$/.test(realIp) ? realIp : undefined;
         })(),
         timestamp: new Date().toISOString(),
       };

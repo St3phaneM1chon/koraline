@@ -115,10 +115,19 @@ function hashKey(key: string): string {
 }
 
 function getClientIp(request: NextRequest): string {
-  const raw =
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    request.headers.get('x-real-ip');
-  if (raw && /^[\d.:a-fA-F]{3,45}$/.test(raw)) return raw;
+  // Prefer Azure-set header (cannot be spoofed), then rightmost XFF
+  const azureIp = request.headers.get('x-azure-clientip');
+  if (azureIp && /^[\d.:a-fA-F]{3,45}$/.test(azureIp)) return azureIp;
+
+  const xff = request.headers.get('x-forwarded-for');
+  if (xff) {
+    const ips = xff.split(',').map(ip => ip.trim()).filter(ip => /^[\d.:a-fA-F]{3,45}$/.test(ip));
+    const rightmost = ips[ips.length - 1];
+    if (rightmost) return rightmost;
+  }
+
+  const realIp = request.headers.get('x-real-ip');
+  if (realIp && /^[\d.:a-fA-F]{3,45}$/.test(realIp)) return realIp;
   return '127.0.0.1';
 }
 

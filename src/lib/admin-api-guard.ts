@@ -72,12 +72,21 @@ const ADMIN_ROLES = new Set<string>([UserRole.EMPLOYEE, UserRole.OWNER]);
 // ---------------------------------------------------------------------------
 
 // FAILLE-055 FIX: Validate IP format to prevent spoofed/malicious values
+// Hardened: prefer Azure header, use rightmost XFF to prevent spoofing
 function getClientIp(request: NextRequest): string {
-  const raw =
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    request.headers.get('x-real-ip');
-  // Accept only valid IPv4/IPv6 patterns (3-45 chars, hex digits, dots, colons)
-  if (raw && /^[\d.:a-fA-F]{3,45}$/.test(raw)) return raw;
+  // Azure App Service sets x-azure-clientip which cannot be spoofed by the client
+  const azureIp = request.headers.get('x-azure-clientip');
+  if (azureIp && /^[\d.:a-fA-F]{3,45}$/.test(azureIp)) return azureIp;
+
+  const xff = request.headers.get('x-forwarded-for');
+  if (xff) {
+    const ips = xff.split(',').map(ip => ip.trim()).filter(ip => /^[\d.:a-fA-F]{3,45}$/.test(ip));
+    const rightmost = ips[ips.length - 1];
+    if (rightmost) return rightmost;
+  }
+
+  const realIp = request.headers.get('x-real-ip');
+  if (realIp && /^[\d.:a-fA-F]{3,45}$/.test(realIp)) return realIp;
   return '127.0.0.1';
 }
 

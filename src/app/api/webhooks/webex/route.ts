@@ -26,11 +26,8 @@ export async function POST(request: NextRequest) {
     const webhookSecret = connection?.webhookSecret || process.env.WEBEX_WEBHOOK_SECRET;
 
     if (!webhookSecret) {
-      if (process.env.NODE_ENV === 'production') {
-        logger.error('[Webhook] Webex webhook secret not configured in production');
-        return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });
-      }
-      logger.warn('[Webhook] Webex webhook secret not set — skipping verification (dev mode)');
+      logger.error('[Webhook] Webex webhook secret not configured — rejecting request');
+      return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });
     } else {
       if (!signature || !validateWebexSignature(rawBody, signature, webhookSecret)) {
         logger.warn('[Webhook] Webex: invalid or missing x-spark-signature');

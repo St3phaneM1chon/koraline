@@ -62,8 +62,11 @@ export async function GET(request: NextRequest) {
   const token = request.nextUrl.searchParams.get('hub.verify_token');
   const challenge = request.nextUrl.searchParams.get('hub.challenge');
 
-  const verifyToken =
-    process.env.META_WEBHOOK_VERIFY_TOKEN || 'biocycle_meta_verify';
+  const verifyToken = process.env.META_WEBHOOK_VERIFY_TOKEN;
+  if (!verifyToken) {
+    logger.error('[Meta Webhook] META_WEBHOOK_VERIFY_TOKEN not configured');
+    return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });
+  }
 
   if (mode === 'subscribe' && verifyTokenSafe(token, verifyToken)) {
     logger.info('[Meta Webhook] Verification successful');
@@ -92,14 +95,11 @@ export async function POST(request: NextRequest) {
   try {
     const rawBody = await request.text();
 
-    // Verify Meta webhook signature (HMAC-SHA256)
+    // Verify Meta webhook signature (HMAC-SHA256) — REQUIRED in all environments
     const appSecret = process.env.META_APP_SECRET;
     if (!appSecret) {
-      if (process.env.NODE_ENV === 'production') {
-        logger.error('[Meta Webhook] META_APP_SECRET not configured in production');
-        return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });
-      }
-      logger.warn('[Meta Webhook] META_APP_SECRET not set — skipping signature verification (dev mode)');
+      logger.error('[Meta Webhook] META_APP_SECRET not configured — rejecting request');
+      return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });
     } else {
       const signature = request.headers.get('x-hub-signature-256');
       if (!verifyMetaSignature(rawBody, signature, appSecret)) {

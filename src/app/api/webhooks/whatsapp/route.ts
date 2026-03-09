@@ -72,11 +72,9 @@ export async function POST(request: NextRequest) {
           { status: 401 },
         );
       }
-    } else if (process.env.NODE_ENV === 'production') {
-      logger.error('[WhatsApp Webhook] TWILIO_AUTH_TOKEN not configured in production');
-      return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });
     } else {
-      logger.warn('[WhatsApp Webhook] TWILIO_AUTH_TOKEN not set — skipping verification (dev mode)');
+      logger.error('[WhatsApp Webhook] TWILIO_AUTH_TOKEN not configured — rejecting request');
+      return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });
     }
 
     // Ignore non-message events (e.g., status callbacks)

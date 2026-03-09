@@ -276,11 +276,20 @@ function parseDetails(details: string | null): AuditLogEntry['details'] {
 // ---------------------------------------------------------------------------
 
 // FAILLE-055 FIX: Validate IP format to prevent spoofed/malicious values in audit logs
+// Hardened: prefer Azure header, use rightmost XFF to prevent spoofing
 export function getClientIpFromRequest(request: Request): string {
   const headers = request.headers;
-  const raw =
-    headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    headers.get('x-real-ip');
-  if (raw && /^[\d.:a-fA-F]{3,45}$/.test(raw)) return raw;
+  const azureIp = headers.get('x-azure-clientip');
+  if (azureIp && /^[\d.:a-fA-F]{3,45}$/.test(azureIp)) return azureIp;
+
+  const xff = headers.get('x-forwarded-for');
+  if (xff) {
+    const ips = xff.split(',').map(ip => ip.trim()).filter(ip => /^[\d.:a-fA-F]{3,45}$/.test(ip));
+    const rightmost = ips[ips.length - 1];
+    if (rightmost) return rightmost;
+  }
+
+  const realIp = headers.get('x-real-ip');
+  if (realIp && /^[\d.:a-fA-F]{3,45}$/.test(realIp)) return realIp;
   return '127.0.0.1';
 }

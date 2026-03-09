@@ -52,14 +52,11 @@ function verifyWebhookSecret(provided: string, expected: string): boolean {
 
 export async function POST(request: NextRequest) {
   try {
-    // Verify webhook secret
+    // Verify webhook secret — REQUIRED in all environments (no skip in dev)
     const webhookSecret = process.env.EMAIL_WEBHOOK_SECRET;
     if (!webhookSecret) {
-      if (process.env.NODE_ENV === 'production') {
-        logger.error('[EmailToLead] EMAIL_WEBHOOK_SECRET not configured in production');
-        return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });
-      }
-      logger.warn('[EmailToLead] EMAIL_WEBHOOK_SECRET not set — skipping verification (dev mode)');
+      logger.error('[EmailToLead] EMAIL_WEBHOOK_SECRET not configured — rejecting request');
+      return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });
     } else {
       const providedSecret = request.headers.get('x-webhook-secret') || '';
       if (!providedSecret || !verifyWebhookSecret(providedSecret, webhookSecret)) {
