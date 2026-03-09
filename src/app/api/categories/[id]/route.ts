@@ -134,6 +134,29 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       return apiError('Catégorie non trouvée', ErrorCode.NOT_FOUND, { request });
     }
 
+    // CATALOGUE-001 FIX: Prevent circular category references
+    if (updateData.parentId !== undefined) {
+      if (updateData.parentId === id) {
+        return apiError('Une catégorie ne peut pas être son propre parent', ErrorCode.VALIDATION_ERROR, { request });
+      }
+      if (updateData.parentId !== null) {
+        // Walk up the parent chain to detect cycles (max depth 10 to prevent infinite loop)
+        let currentParentId: string | null = updateData.parentId as string;
+        let depth = 0;
+        while (currentParentId && depth < 10) {
+          if (currentParentId === id) {
+            return apiError('Référence circulaire détectée dans la hiérarchie des catégories', ErrorCode.VALIDATION_ERROR, { request });
+          }
+          const parent: { parentId: string | null } | null = await prisma.category.findUnique({
+            where: { id: currentParentId },
+            select: { parentId: true },
+          });
+          currentParentId = parent?.parentId ?? null;
+          depth++;
+        }
+      }
+    }
+
     // Si le slug change, vérifier l'unicité
     if (updateData.slug && updateData.slug !== existingCategory.slug) {
       const slugExists = await prisma.category.findUnique({

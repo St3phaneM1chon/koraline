@@ -14,6 +14,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/db';
 import { withAdminGuard } from '@/lib/admin-api-guard';
+import { logAdminAction, getClientIpFromRequest } from '@/lib/admin-audit';
 import { logger } from '@/lib/logger';
 
 const bulkPriceSchema = z.object({
@@ -23,7 +24,7 @@ const bulkPriceSchema = z.object({
   dryRun: z.boolean().optional(),
 });
 
-export const POST = withAdminGuard(async (request: NextRequest) => {
+export const POST = withAdminGuard(async (request: NextRequest, { session }) => {
   try {
     const body = await request.json();
     const parsed = bulkPriceSchema.safeParse(body);
@@ -121,6 +122,32 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
 
       return formatResult;
     });
+
+    // CATALOGUE-002 FIX: Audit log for bulk price changes (critical operation)
+    const priceChangeSummary = {
+      direction,
+      percentage,
+      multiplier,
+      categoryFilter: categoryFilter || 'all',
+      productsAffected: productIds.length,
+      formatsUpdated: result.count,
+      sampleChanges: products.slice(0, 5).map(p => ({
+        id: p.id,
+        name: p.name,
+        oldPrice: Number(p.price),
+        newPrice: Math.round(Number(p.price) * multiplier * 100) / 100,
+      })),
+    };
+
+    logAdminAction({
+      adminUserId: session.user.id,
+      action: 'BULK_PRICE_UPDATE',
+      targetType: 'Product',
+      targetId: `bulk-${productIds.length}-products`,
+      newValue: priceChangeSummary,
+      ipAddress: getClientIpFromRequest(request),
+      userAgent: request.headers.get('user-agent') || undefined,
+    }).catch(() => {});
 
     logger.info('Bulk price update', {
       direction,
