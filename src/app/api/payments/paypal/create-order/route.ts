@@ -17,7 +17,8 @@ import { getPayPalAccessToken, PAYPAL_API_URL } from '@/lib/paypal';
 import { validateCsrf } from '@/lib/csrf-middleware';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
 import { logger } from '@/lib/logger';
-import { add, multiply, subtract, applyRate, divide, percentage } from '@/lib/decimal-calculator';
+import { add, multiply, subtract, divide, percentage } from '@/lib/decimal-calculator';
+import { calculateTaxAmount } from '@/lib/tax-rates';
 
 const createOrderItemSchema = z.object({
   productId: z.string().min(1),
@@ -213,38 +214,8 @@ export async function POST(request: NextRequest) {
     // BE-PAY-11, BE-PAY-20: Fixed to handle PST for BC/MB/SK, not just QC+HST
     const province = shippingInfo?.province || 'QC';
     const country = shippingInfo?.country || 'CA';
-    const CANADIAN_TAX_RATES: Record<string, { gst: number; pst?: number; hst?: number; qst?: number; rst?: number }> = {
-      'AB': { gst: 0.05 },
-      'BC': { gst: 0.05, pst: 0.07 },
-      'MB': { gst: 0.05, rst: 0.07 },
-      'NB': { gst: 0, hst: 0.15 },
-      'NL': { gst: 0, hst: 0.15 },
-      'NS': { gst: 0, hst: 0.14 },
-      'NT': { gst: 0.05 },
-      'NU': { gst: 0.05 },
-      'ON': { gst: 0, hst: 0.13 },
-      'PE': { gst: 0, hst: 0.15 },
-      'QC': { gst: 0.05, qst: 0.09975 },
-      'SK': { gst: 0.05, pst: 0.06 },
-      'YT': { gst: 0.05 },
-    };
-    const rates = CANADIAN_TAX_RATES[province.toUpperCase()] || CANADIAN_TAX_RATES['QC'];
-    let taxTotal = 0;
-    if (rates.hst) {
-      taxTotal = applyRate(subtotalAfterAllDiscounts, rates.hst);
-    } else if (rates.qst) {
-      taxTotal = add(
-        applyRate(subtotalAfterAllDiscounts, rates.gst),
-        applyRate(subtotalAfterAllDiscounts, rates.qst)
-      );
-    } else if (rates.pst || rates.rst) {
-      taxTotal = add(
-        applyRate(subtotalAfterAllDiscounts, rates.gst),
-        applyRate(subtotalAfterAllDiscounts, rates.pst || rates.rst || 0)
-      );
-    } else {
-      taxTotal = applyRate(subtotalAfterAllDiscounts, rates.gst);
-    }
+    // COMMERCE-015 FIX: Use shared tax calculation instead of inline duplicated rates
+    const taxTotal = calculateTaxAmount(subtotalAfterAllDiscounts, province.toUpperCase(), country);
 
     // SECURITY: Calculate shipping server-side
     const productTypes = verifiedItems.map(i => i.productType);

@@ -125,8 +125,9 @@ export async function POST(request: NextRequest) {
       where: { referrerId: referrer.id },
     });
 
-    // FLAW-066 FIX: Lower max referrals from 50 to 20 for anti-fraud
-    if (referralCount >= 20) {
+    // COMMERCE-014 FIX: Use same env-configurable limit as validate route
+    const MAX_REFERRALS_PER_USER = parseInt(process.env.MAX_REFERRALS_PER_USER || '50', 10);
+    if (referralCount >= MAX_REFERRALS_PER_USER) {
       return NextResponse.json(
         { error: 'This referral code has reached its maximum usage limit' },
         { status: 400 }

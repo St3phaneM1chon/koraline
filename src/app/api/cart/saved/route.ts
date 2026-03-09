@@ -20,6 +20,8 @@ import { z } from 'zod';
 import { auth } from '@/lib/auth-config';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
+import { validateCsrf } from '@/lib/csrf-middleware';
+import { rateLimitMiddleware } from '@/lib/rate-limiter';
 
 // ---------------------------------------------------------------------------
 // Validation
@@ -122,6 +124,21 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    // COMMERCE-019 FIX: Rate limiting + CSRF on state-changing endpoint
+    const ip = request.headers.get('x-azure-clientip')
+      || (() => { const xff = request.headers.get('x-forwarded-for'); if (!xff) return null; const ips = xff.split(',').map(i => i.trim()).filter(i => /^[\d.:a-fA-F]{3,45}$/.test(i)); return ips[ips.length - 1] || null; })()
+      || request.headers.get('x-real-ip') || '127.0.0.1';
+    const rl = await rateLimitMiddleware(ip, '/api/cart/saved');
+    if (!rl.success) {
+      const res = NextResponse.json({ error: rl.error!.message }, { status: 429 });
+      Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));
+      return res;
+    }
+    const csrfValid = await validateCsrf(request);
+    if (!csrfValid) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+    }
+
     const session = await auth();
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -196,6 +213,21 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
+    // COMMERCE-019 FIX: Rate limiting + CSRF on state-changing endpoint
+    const ip = request.headers.get('x-azure-clientip')
+      || (() => { const xff = request.headers.get('x-forwarded-for'); if (!xff) return null; const ips = xff.split(',').map(i => i.trim()).filter(i => /^[\d.:a-fA-F]{3,45}$/.test(i)); return ips[ips.length - 1] || null; })()
+      || request.headers.get('x-real-ip') || '127.0.0.1';
+    const rl = await rateLimitMiddleware(ip, '/api/cart/saved');
+    if (!rl.success) {
+      const res = NextResponse.json({ error: rl.error!.message }, { status: 429 });
+      Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));
+      return res;
+    }
+    const csrfValid = await validateCsrf(request);
+    if (!csrfValid) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+    }
+
     const session = await auth();
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

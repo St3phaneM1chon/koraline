@@ -302,20 +302,21 @@ export async function POST(request: NextRequest) {
         error: errorMsg,
       });
       await failWebhookEvent(event.id, errorMsg);
-      return NextResponse.json(
-        { error: 'Webhook handler failed' },
-        { status: 500 }
-      );
+      // COMMERCE-018 FIX: Return 200 for processing errors after signature verification.
+      // Returning 500 causes Stripe to retry, which can lead to duplicate processing
+      // or infinite retry loops for permanent data errors. The error is logged and
+      // stored in failWebhookEvent for admin review / dead-letter processing.
+      return NextResponse.json({ received: true, error: 'Handler failed — logged for review' });
     }
   } catch (error) {
     logger.error('Webhook error', {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
     });
-    return NextResponse.json(
-      { error: 'Webhook handler failed' },
-      { status: 500 }
-    );
+    // COMMERCE-018: Signature verification failures still return 400 (handled above).
+    // This catch handles truly unexpected errors — return 200 to prevent Stripe retries
+    // since the event was likely already recorded.
+    return NextResponse.json({ received: true, error: 'Unexpected error — logged for review' });
   }
 }
 

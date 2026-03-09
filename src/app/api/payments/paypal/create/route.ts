@@ -12,10 +12,12 @@ import { getPayPalAccessToken, PAYPAL_API_URL } from '@/lib/paypal';
 import { validateCsrf } from '@/lib/csrf-middleware';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
 import { logger } from '@/lib/logger';
-import { add, applyRate } from '@/lib/decimal-calculator';
+import { add } from '@/lib/decimal-calculator';
+import { calculateTaxAmount } from '@/lib/tax-rates';
 
 const paypalCreateSchema = z.object({
   productId: z.string().min(1, 'Product ID requis'),
+  formatId: z.string().optional(), // COMMERCE-023: Accept formatId for stock validation
   companyId: z.string().optional(),
   province: z.string().max(2).optional(),
 });
@@ -69,7 +71,7 @@ export async function POST(request: NextRequest) {
     if (!parsed.success) {
       return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
     }
-    const { productId, companyId, province: reqProvince } = parsed.data;
+    const { productId, formatId, companyId, province: reqProvince } = parsed.data;
 
     // Récupérer le produit
     const product = await prisma.product.findUnique({
@@ -80,26 +82,29 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Produit non trouvé' }, { status: 404 });
     }
 
-    // BUG 3: Province-aware tax calculation (not hardcoded to QC)
-    const subtotal = Number(product.price);
-    const province = (reqProvince || 'QC').toUpperCase();
-    const TAX_RATES: Record<string, { gst: number; pst?: number; hst?: number; qst?: number; rst?: number }> = {
-      'AB': { gst: 0.05 }, 'BC': { gst: 0.05, pst: 0.07 }, 'MB': { gst: 0.05, rst: 0.07 },
-      'NB': { gst: 0, hst: 0.15 }, 'NL': { gst: 0, hst: 0.15 }, 'NS': { gst: 0, hst: 0.14 },
-      'NT': { gst: 0.05 }, 'NU': { gst: 0.05 }, 'ON': { gst: 0, hst: 0.13 },
-      'PE': { gst: 0, hst: 0.15 }, 'QC': { gst: 0.05, qst: 0.09975 },
-      'SK': { gst: 0.05, pst: 0.06 }, 'YT': { gst: 0.05 },
-    };
-    const rates = TAX_RATES[province] || TAX_RATES['QC'];
-    let taxAmount = 0;
-    if (rates.hst) {
-      taxAmount = applyRate(subtotal, rates.hst);
-    } else {
-      taxAmount = add(
-        applyRate(subtotal, rates.gst),
-        applyRate(subtotal, rates.qst || rates.pst || rates.rst || 0)
-      );
+    // COMMERCE-023 FIX: Validate stock at format level before creating PayPal order
+    let unitPrice = Number(product.price);
+    if (formatId) {
+      const format = await prisma.productFormat.findUnique({
+        where: { id: formatId },
+        select: { price: true, productId: true, stockQuantity: true, trackInventory: true },
+      });
+      if (!format) {
+        return NextResponse.json({ error: 'Format not found' }, { status: 404 });
+      }
+      if (format.productId !== productId) {
+        return NextResponse.json({ error: 'Format does not belong to product' }, { status: 400 });
+      }
+      if (format.trackInventory && format.stockQuantity < 1) {
+        return NextResponse.json({ error: 'Product is out of stock' }, { status: 400 });
+      }
+      unitPrice = Number(format.price);
     }
+
+    // COMMERCE-015 FIX: Use shared tax calculation instead of inline duplicated rates
+    const subtotal = unitPrice;
+    const province = (reqProvince || 'QC').toUpperCase();
+    const taxAmount = calculateTaxAmount(subtotal, province);
     const total = add(subtotal, taxAmount).toFixed(2);
     const taxTotal = taxAmount.toFixed(2);
 

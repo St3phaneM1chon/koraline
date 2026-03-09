@@ -17,17 +17,23 @@ import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
+import { rateLimitMiddleware } from '@/lib/rate-limiter';
 
-// Must match the secret used in /api/cart/share
+// COMMERCE-010 FIX: Must match the secret used in /api/cart/share (CART_SHARE_SECRET)
 // Lazy-initialized to avoid crashing during Next.js build/SSG when env vars
 // are not available (see KB-PP-BUILD-002).
 let _shareSecret: Uint8Array | null = null;
 function getShareSecret(): Uint8Array {
   if (!_shareSecret) {
-    if (!process.env.NEXTAUTH_SECRET) {
-      throw new Error('NEXTAUTH_SECRET environment variable is required for cart sharing');
+    const dedicatedSecret = process.env.CART_SHARE_SECRET;
+    if (dedicatedSecret) {
+      _shareSecret = new TextEncoder().encode(dedicatedSecret);
+    } else {
+      if (!process.env.NEXTAUTH_SECRET) {
+        throw new Error('CART_SHARE_SECRET or NEXTAUTH_SECRET environment variable is required for cart sharing');
+      }
+      _shareSecret = new TextEncoder().encode(`cart-share:${process.env.NEXTAUTH_SECRET}`);
     }
-    _shareSecret = new TextEncoder().encode(process.env.NEXTAUTH_SECRET);
   }
   return _shareSecret;
 }
@@ -50,6 +56,17 @@ export async function GET(
   { params }: { params: Promise<{ code: string }> }
 ) {
   try {
+    // COMMERCE-022 FIX: Rate limiting on public shared cart endpoint
+    const ip = _request.headers.get('x-azure-clientip')
+      || (() => { const xff = _request.headers.get('x-forwarded-for'); if (!xff) return null; const ips = xff.split(',').map(i => i.trim()).filter(i => /^[\d.:a-fA-F]{3,45}$/.test(i)); return ips[ips.length - 1] || null; })()
+      || _request.headers.get('x-real-ip') || '127.0.0.1';
+    const rl = await rateLimitMiddleware(ip, '/api/cart/shared');
+    if (!rl.success) {
+      const res = NextResponse.json({ error: rl.error!.message }, { status: 429 });
+      Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));
+      return res;
+    }
+
     const { code } = await params;
 
     if (!code) {
