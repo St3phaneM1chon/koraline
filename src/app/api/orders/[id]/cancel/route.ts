@@ -14,6 +14,7 @@ import { auth } from '@/lib/auth-config';
 import { prisma } from '@/lib/db';
 import { canCancel } from '@/lib/order-status';
 import { sendOrderLifecycleEmail } from '@/lib/email';
+import { validateCsrf } from '@/lib/csrf-middleware';
 import { logger } from '@/lib/logger';
 
 const cancelOrderSchema = z.object({
@@ -25,6 +26,12 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // SECURITY: CSRF protection for state-changing customer endpoint
+    const csrfValid = await validateCsrf(request);
+    if (!csrfValid) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+    }
+
     const session = await auth();
 
     if (!session?.user?.email) {

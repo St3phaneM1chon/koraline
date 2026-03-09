@@ -59,6 +59,11 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Early PayPal configuration check
+    if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+      return NextResponse.json({ error: 'PayPal n\'est pas configuré' }, { status: 503 });
+    }
+
     const body = await request.json();
     const parsed = paypalCreateSchema.safeParse(body);
     if (!parsed.success) {

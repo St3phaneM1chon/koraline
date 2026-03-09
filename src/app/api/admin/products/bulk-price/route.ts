@@ -20,6 +20,7 @@ const bulkPriceSchema = z.object({
   percentage: z.number().min(0.1).max(100),
   direction: z.enum(['increase', 'decrease']),
   categoryFilter: z.string().optional(),
+  dryRun: z.boolean().optional(),
 });
 
 export const POST = withAdminGuard(async (request: NextRequest) => {
@@ -34,7 +35,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
       );
     }
 
-    const { percentage, direction, categoryFilter } = parsed.data;
+    const { percentage, direction, categoryFilter, dryRun } = parsed.data;
     const multiplier = direction === 'increase'
       ? 1 + (percentage / 100)
       : 1 - (percentage / 100);
@@ -46,16 +47,49 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
       productWhere.category = { slug: categoryFilter };
     }
 
-    // Get all product IDs matching the filter
+    // Get all products matching the filter with current prices
     const products = await prisma.product.findMany({
       where: productWhere,
-      select: { id: true },
+      select: { id: true, name: true, price: true },
     });
 
     const productIds = products.map(p => p.id);
 
     if (productIds.length === 0) {
       return NextResponse.json({ updated: 0, message: 'No products found matching filter' });
+    }
+
+    // Get all active formats for preview
+    const formats = await prisma.productFormat.findMany({
+      where: { productId: { in: productIds }, isActive: true },
+      select: { id: true, name: true, price: true, productId: true },
+    });
+
+    // Dry run: return preview without modifying anything
+    if (dryRun) {
+      const preview = products.map(p => ({
+        id: p.id,
+        name: p.name,
+        currentPrice: Number(p.price),
+        newPrice: Math.round(Number(p.price) * multiplier * 100) / 100,
+        formats: formats
+          .filter(f => f.productId === p.id)
+          .map(f => ({
+            id: f.id,
+            name: f.name,
+            currentPrice: Number(f.price),
+            newPrice: Math.round(Number(f.price) * multiplier * 100) / 100,
+          })),
+      }));
+
+      return NextResponse.json({
+        dryRun: true,
+        direction,
+        percentage,
+        productsAffected: products.length,
+        formatsAffected: formats.length,
+        preview,
+      });
     }
 
     // Use a transaction to ensure format + product price updates are atomic

@@ -129,6 +129,25 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       }
     }
 
+    // Strip internal/sensitive fields from public response
+    const session = await auth();
+    const isAdmin = session?.user?.role === UserRole.OWNER || session?.user?.role === UserRole.EMPLOYEE;
+    if (!isAdmin) {
+      const {
+        stockQuantity: _sq, reorderPoint: _rp, lowStockThreshold: _lst,
+        supplierUrl: _su, priceStrategy: _ps, costPrice: _cp,
+        adminNotes: _an, internalSku: _is,
+        ...publicProduct
+      } = translated as Record<string, unknown>;
+      // Also strip costPrice from formats
+      if (Array.isArray(publicProduct.formats)) {
+        publicProduct.formats = (publicProduct.formats as Record<string, unknown>[]).map(
+          ({ costPrice: _fc, ...rest }) => rest
+        );
+      }
+      return withETag({ product: publicProduct }, request);
+    }
+
     // Item 3: ETag support for caching
     return withETag({ product: translated }, request);
   } catch (error) {
