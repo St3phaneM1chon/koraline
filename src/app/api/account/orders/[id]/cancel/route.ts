@@ -225,19 +225,12 @@ export const POST = withUserGuard(async (request: NextRequest, { session, params
             },
           });
         } else {
-          // Restore stock for base product (if it has stock tracking)
-          // Note: Base products might not have direct stock, usually formats do
-          // This is a fallback in case base product has stock field
-          const product = await tx.product.findUnique({
-            where: { id: item.productId },
-            select: { id: true },
+          // COMMERCE-020 FIX: Restore stock for base products with inventory tracking
+          await tx.product.updateMany({
+            where: { id: item.productId, trackInventory: true },
+            data: { stockQuantity: { increment: item.quantity } },
           });
-
-          if (product) {
-            // ProductFormat might need update if product has variants
-            // For now, we just log this case
-            logger.info(`Restored stock for product ${item.productId} (no format)`);
-          }
+          logger.info(`[cancelOrder] Restored ${item.quantity}x stock for product ${item.productId} (no format)`);
         }
       }
 
@@ -260,6 +253,22 @@ export const POST = withUserGuard(async (request: NextRequest, { session, params
         });
         logger.info('[cancelOrder] E-20: reversed promo code usage', {
           promoCode: order.promoCode,
+          orderId,
+        });
+      }
+
+      // COMMERCE-009 FIX: Restore gift card balance if used on this order
+      if (order.giftCardCode && order.giftCardDiscount && Number(order.giftCardDiscount) > 0) {
+        await tx.giftCard.updateMany({
+          where: { code: order.giftCardCode },
+          data: {
+            balance: { increment: Number(order.giftCardDiscount) },
+            isActive: true,
+          },
+        });
+        logger.info('[cancelOrder] Restored gift card balance', {
+          giftCardCode: order.giftCardCode,
+          amount: Number(order.giftCardDiscount),
           orderId,
         });
       }
