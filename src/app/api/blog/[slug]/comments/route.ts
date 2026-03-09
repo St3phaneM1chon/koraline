@@ -17,6 +17,7 @@ import { auth } from '@/lib/auth-config';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
+import { validateCsrf } from '@/lib/csrf-middleware';
 import { stripHtml } from '@/lib/sanitize';
 
 // ---------------------------------------------------------------------------
@@ -179,6 +180,12 @@ export async function POST(
     const rl = await rateLimitMiddleware(ip, '/api/blog/comments');
     if (!rl.success) {
       return NextResponse.json({ error: rl.error!.message }, { status: 429 });
+    }
+
+    // SECURITY: CSRF validation for comment submission
+    const csrfValid = await validateCsrf(request);
+    if (!csrfValid) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
     }
 
     const session = await auth();

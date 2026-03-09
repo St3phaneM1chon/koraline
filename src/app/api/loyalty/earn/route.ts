@@ -49,13 +49,10 @@ export async function POST(request: NextRequest) {
       return res;
     }
 
+    // SECURITY FIX: Remove CSRF bypass — CSRF must be enforced on all mutation endpoints
     const csrfValid = await validateCsrf(request);
     if (!csrfValid) {
-      // Allow server-side calls (with valid session) but log for monitoring
-      const preSession = await auth();
-      if (!preSession?.user) {
-        return NextResponse.json({ error: 'CSRF validation failed' }, { status: 403 });
-      }
+      return NextResponse.json({ error: 'CSRF validation failed' }, { status: 403 });
     }
 
     const session = await auth();
