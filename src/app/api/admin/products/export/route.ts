@@ -19,8 +19,10 @@ import { logger } from '@/lib/logger';
 // Escape a value for CSV: wrap in quotes if it contains commas, quotes, or newlines
 function csvEscape(value: string | number | boolean | null | undefined): string {
   if (value === null || value === undefined) return '';
-  const str = String(value);
-  if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
+  let str = String(value);
+  // CSV formula injection protection
+  if (/^[=+\-@\t\r]/.test(str)) { str = `'${str}`; }
+  if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r') || str.includes("'")) {
     return `"${str.replace(/"/g, '""')}"`;
   }
   return str;

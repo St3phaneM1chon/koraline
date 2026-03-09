@@ -70,9 +70,10 @@ async function checkExportRateLimit(userId: string): Promise<boolean> {
 
 function escapeCsvValue(value: unknown): string {
   if (value === null || value === undefined) return '';
-  const str = String(value);
-  // Escape if value contains comma, double-quote, or newline
-  if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+  let str = String(value);
+  // CSV formula injection protection
+  if (/^[=+\-@\t\r]/.test(str)) { str = `'${str}`; }
+  if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes("'")) {
     return `"${str.replace(/"/g, '""')}"`;
   }
   return str;
