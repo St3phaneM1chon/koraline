@@ -60,9 +60,9 @@ jobs:
           # Copy static assets into standalone
           cp -r public .next/standalone/public
           cp -r .next/static .next/standalone/.next/static
-          # Copy Prisma schema for DB sync
+          # Copy Prisma schema for DB sync (split schema directory)
           mkdir -p .next/standalone/prisma
-          cp prisma/schema.prisma .next/standalone/prisma/
+          cp -r prisma/schema .next/standalone/prisma/schema
           # Copy package.json for prisma CLI
           cp package.json .next/standalone/
           # Cleanup: remove unnecessary files from standalone to reduce package size
