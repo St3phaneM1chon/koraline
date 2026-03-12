@@ -448,3 +448,37 @@ export {
   getStorageEstimate,
   clearCaches,
 } from './pwa.service';
+
+// T2-8: International VAT Configuration
+export {
+  INTERNATIONAL_TAX_RATES,
+  EU_COUNTRY_CODES,
+  REVERSE_CHARGE_RULES,
+  getInternationalTaxRate,
+  isEUCountry,
+  isReverseChargeApplicable,
+  validateVATNumberFormat,
+  getCountriesByRegion,
+  getEUCountries,
+  getSupportedCountries,
+} from './international-tax-config';
+export type {
+  InternationalTaxRate,
+  TaxRegion,
+  ReverseChargeRule,
+  DigitalServicesRule,
+} from './international-tax-config';
+
+// T2-8: Unified Tax Calculator (domestic + international)
+export {
+  calculateUnifiedTax,
+  calculateTaxForCheckout,
+  getEffectiveTaxRate,
+  formatTaxResultForInvoice,
+} from './unified-tax-calculator';
+export type {
+  UnifiedTaxResult,
+  UnifiedTaxInput,
+  UnifiedTaxLineItem,
+  TaxType,
+} from './unified-tax-calculator';

@@ -12,6 +12,7 @@ import { prisma } from '@/lib/db';
 import { auth } from '@/lib/auth-config';
 import { apiSuccess, apiError } from '@/lib/api-response';
 import { ErrorCode } from '@/lib/error-codes';
+import { logger } from '@/lib/logger';
 import { validateCsrf } from '@/lib/csrf-middleware';
 
 interface RouteContext {
@@ -155,7 +156,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
 
     return apiSuccess(data, { request });
   } catch (error) {
-    console.error('Error fetching forum post:', error);
+    logger.error('Error fetching forum post', { error: error instanceof Error ? error.message : String(error) });
     return apiError(
       'Failed to fetch forum post',
       ErrorCode.INTERNAL_ERROR,
@@ -222,7 +223,7 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
       { request }
     );
   } catch (error) {
-    console.error('Error deleting forum post:', error);
+    logger.error('Error deleting forum post', { error: error instanceof Error ? error.message : String(error) });
     return apiError(
       'Failed to delete forum post',
       ErrorCode.INTERNAL_ERROR,

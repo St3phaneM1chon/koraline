@@ -3,6 +3,8 @@
  * GST 5% + QST 9.975% (QC), HST by province, auto-apply by customer address
  */
 
+import { calculateUnifiedTax } from '@/lib/accounting/unified-tax-calculator';
+
 export interface TaxResult {
   subtotal: number;
   gst: number;
@@ -125,24 +127,41 @@ export function getTotalTaxRate(province: string): number {
   return rates.gst + rates.pst + rates.qst;
 }
 
-// I-TAX-2: International VAT support (stub — extend as needed)
+// I-TAX-2: International VAT support
+// T2-8: Now delegates to the unified tax calculator for real VAT rates.
+// Kept for backward compatibility — new code should use calculateUnifiedTax() directly.
 export function calculateInternationalTax(
   subtotal: number,
   country: string,
-  _region?: string
+  _region?: string,
+  buyerVatId?: string
 ): TaxResult {
-  // For non-Canadian orders, no tax is charged (export)
-  // Exception: US orders may require state tax (future implementation)
   if (country === 'CA') {
     return calculateTax(subtotal, _region || 'QC');
   }
+
+  // Delegate to unified calculator for international orders
+  const result = calculateUnifiedTax({
+    subtotal,
+    countryCode: country,
+    regionCode: _region,
+    buyerVatId,
+  });
+
   return {
     subtotal,
-    gst: 0, pst: 0, hst: 0, qst: 0,
-    totalTax: 0,
-    total: subtotal,
+    gst: 0,
+    pst: 0,
+    hst: 0,
+    qst: 0,
+    totalTax: result.totalTax,
+    total: result.total,
     province: country,
-    breakdown: [],
+    breakdown: result.lineItems.map((li: { name: string; rate: number; amount: number }) => ({
+      name: li.name,
+      rate: li.rate * 100, // Unified returns decimal, this engine uses percentage
+      amount: li.amount,
+    })),
   };
 }
 

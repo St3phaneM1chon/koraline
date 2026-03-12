@@ -5,27 +5,30 @@ export const dynamic = 'force-dynamic';
  * POST: Create a new post (authenticated users only)
  *
  * GET is public. POST requires authentication.
+ *
+ * GET response shape (matching frontend expectations):
+ *   { posts: [...], total: N, totalPages: N, page: N }
+ *
+ * POST response shape:
+ *   { id, title, content, ... } (the created post)
  */
 
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/db';
 import { auth } from '@/lib/auth-config';
-import {
-  apiSuccess,
-  apiError,
-  apiPaginated,
-  validateContentType,
-} from '@/lib/api-response';
+import { apiError, apiSuccess, validateContentType } from '@/lib/api-response';
 import { ErrorCode } from '@/lib/error-codes';
 import { stripHtml, stripControlChars } from '@/lib/sanitize';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
 import { validateCsrf } from '@/lib/csrf-middleware';
+import { logger } from '@/lib/logger';
 import type { Prisma } from '@prisma/client';
 
 const createPostSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters').max(200, 'Title must be at most 200 characters'),
   content: z.string().min(10, 'Content must be at least 10 characters').max(10000, 'Content must be at most 10,000 characters'),
+  // Frontend sends either a category ID (cuid) or a slug string
   categoryId: z.string().min(1, 'Category is required'),
 });
 
@@ -39,7 +42,8 @@ export async function GET(request: NextRequest) {
     );
     const categorySlug = searchParams.get('category');
     const search = searchParams.get('search');
-    const sort = searchParams.get('sort') || 'latest'; // latest | popular | mostViewed
+    // Frontend sends: newest | popular | replies
+    const sort = searchParams.get('sort') || 'newest';
 
     // Build where clause
     const where: Prisma.ForumPostWhereInput = {
@@ -60,13 +64,21 @@ export async function GET(request: NextRequest) {
       ];
     }
 
-    // Build orderBy
+    // Build orderBy — frontend sends: newest | popular | replies
     let orderBy: Prisma.ForumPostOrderByWithRelationInput[];
     switch (sort) {
       case 'popular':
         orderBy = [
           { isPinned: 'desc' },
           { upvotes: 'desc' },
+          { createdAt: 'desc' },
+        ];
+        break;
+      case 'replies':
+        // Sort by most replied — Prisma supports _count ordering
+        orderBy = [
+          { isPinned: 'desc' },
+          { replies: { _count: 'desc' } },
           { createdAt: 'desc' },
         ];
         break;
@@ -77,6 +89,7 @@ export async function GET(request: NextRequest) {
           { createdAt: 'desc' },
         ];
         break;
+      case 'newest':
       case 'latest':
       default:
         orderBy = [{ isPinned: 'desc' }, { createdAt: 'desc' }];
@@ -126,36 +139,41 @@ export async function GET(request: NextRequest) {
       prisma.forumPost.count({ where }),
     ]);
 
-    const data = posts.map((post) => ({
+    // Map to the Post interface the frontend expects:
+    //   id, userId, userName, userAvatar, userBadge, title, content,
+    //   category (name string), categorySlug, tags, upvotes, downvotes,
+    //   replyCount, views, isPinned, createdAt, lastReply
+    const mappedPosts = posts.map((post) => ({
       id: post.id,
+      userId: post.authorId,
+      userName: post.author.name || 'Anonymous',
+      userAvatar: post.author.image,
+      userBadge: null,
       title: post.title,
-      // Return a preview of the content (first 200 chars)
-      contentPreview:
+      content:
         post.content.length > 200
           ? post.content.substring(0, 200) + '...'
           : post.content,
-      authorId: post.authorId,
-      authorName: post.author.name || 'Anonymous',
-      authorAvatar: post.author.image,
-      category: post.category ? {
-        id: post.category.id,
-        name: post.category.name,
-        slug: post.category.slug,
-        icon: post.category.icon,
-      } : null,
+      category: post.category?.name || 'General',
+      categorySlug: post.category?.slug || 'general',
+      tags: [] as string[],
       upvotes: post.upvotes,
       downvotes: post.downvotes,
-      viewCount: post.viewCount,
       replyCount: post._count.replies,
+      views: post.viewCount,
       isPinned: post.isPinned,
       isLocked: post.isLocked,
       createdAt: post.createdAt.toISOString(),
-      updatedAt: post.updatedAt.toISOString(),
+      lastReply: null,
     }));
 
-    return apiPaginated(data, page, limit, total, { request });
+    const totalPages = Math.ceil(total / limit);
+
+    // Return { posts, total, totalPages, page } at top level
+    // (frontend reads data.posts, data.total, data.totalPages from res.json())
+    return NextResponse.json({ posts: mappedPosts, total, totalPages, page });
   } catch (error) {
-    console.error('Error fetching forum posts:', error);
+    logger.error('Error fetching forum posts', { error: error instanceof Error ? error.message : String(error) });
     return apiError(
       'Failed to fetch forum posts',
       ErrorCode.INTERNAL_ERROR,
@@ -204,11 +222,18 @@ export async function POST(request: NextRequest) {
     }
     const { title, content, categoryId } = parsed.data;
 
-    // Verify category exists
-    const category = await prisma.forumCategory.findUnique({
+    // Resolve category: the frontend may send a slug (e.g. "general") or a cuid
+    // Try by ID first, then by slug
+    let category = await prisma.forumCategory.findUnique({
       where: { id: categoryId },
-      select: { id: true },
+      select: { id: true, name: true, slug: true, icon: true },
     });
+    if (!category) {
+      category = await prisma.forumCategory.findUnique({
+        where: { slug: categoryId },
+        select: { id: true, name: true, slug: true, icon: true },
+      });
+    }
     if (!category) {
       return apiError('Category not found', ErrorCode.NOT_FOUND, { request });
     }
@@ -223,7 +248,7 @@ export async function POST(request: NextRequest) {
         title: cleanTitle,
         content: cleanContent,
         authorId: session.user.id,
-        categoryId,
+        categoryId: category.id,
       },
       select: {
         id: true,
@@ -249,30 +274,27 @@ export async function POST(request: NextRequest) {
     return apiSuccess(
       {
         id: post.id,
+        userId: post.authorId,
+        userName: post.author.name || 'Anonymous',
+        userAvatar: post.author.image,
         title: post.title,
         content: post.content,
-        authorId: post.authorId,
-        authorName: post.author.name || 'Anonymous',
-        authorAvatar: post.author.image,
-        category: post.category ? {
-          id: post.category.id,
-          name: post.category.name,
-          slug: post.category.slug,
-          icon: post.category.icon,
-        } : null,
+        category: post.category?.name || 'General',
+        categorySlug: post.category?.slug || 'general',
+        tags: [],
         upvotes: post.upvotes,
         downvotes: post.downvotes,
-        viewCount: post.viewCount,
+        views: post.viewCount,
         replyCount: 0,
         isPinned: post.isPinned,
         isLocked: post.isLocked,
         createdAt: post.createdAt.toISOString(),
-        updatedAt: post.updatedAt.toISOString(),
+        lastReply: null,
       },
       { status: 201, request }
     );
   } catch (error) {
-    console.error('Error creating forum post:', error);
+    logger.error('Error creating forum post', { error: error instanceof Error ? error.message : String(error) });
     return apiError(
       'Failed to create forum post',
       ErrorCode.INTERNAL_ERROR,

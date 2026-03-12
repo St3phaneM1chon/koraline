@@ -19,6 +19,7 @@ import {
   validateContentType,
 } from '@/lib/api-response';
 import { ErrorCode } from '@/lib/error-codes';
+import { logger } from '@/lib/logger';
 import { stripHtml, stripControlChars } from '@/lib/sanitize';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
 import { validateCsrf } from '@/lib/csrf-middleware';
@@ -101,7 +102,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
 
     return apiPaginated(data, page, limit, total, { request });
   } catch (error) {
-    console.error('Error fetching replies:', error);
+    logger.error('Error fetching replies', { error: error instanceof Error ? error.message : String(error) });
     return apiError(
       'Failed to fetch replies',
       ErrorCode.INTERNAL_ERROR,
@@ -238,7 +239,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
       { status: 201, request }
     );
   } catch (error) {
-    console.error('Error creating reply:', error);
+    logger.error('Error creating reply', { error: error instanceof Error ? error.message : String(error) });
     return apiError(
       'Failed to create reply',
       ErrorCode.INTERNAL_ERROR,

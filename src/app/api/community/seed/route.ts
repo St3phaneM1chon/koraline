@@ -14,6 +14,7 @@ import { prisma } from '@/lib/db';
 import { auth } from '@/lib/auth-config';
 import { apiSuccess, apiError } from '@/lib/api-response';
 import { ErrorCode } from '@/lib/error-codes';
+import { logger } from '@/lib/logger';
 
 const DEFAULT_CATEGORIES = [
   {
@@ -106,7 +107,7 @@ export async function POST(request: NextRequest) {
       { status: 201, request }
     );
   } catch (error) {
-    console.error('Error seeding forum categories:', error);
+    logger.error('Error seeding forum categories', { error: error instanceof Error ? error.message : String(error) });
     return apiError(
       'Failed to seed forum categories',
       ErrorCode.INTERNAL_ERROR,

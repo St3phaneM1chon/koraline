@@ -14,6 +14,7 @@ import { prisma } from '@/lib/db';
 import { auth } from '@/lib/auth-config';
 import { apiSuccess, apiError, validateContentType } from '@/lib/api-response';
 import { ErrorCode } from '@/lib/error-codes';
+import { logger } from '@/lib/logger';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
 import { validateCsrf } from '@/lib/csrf-middleware';
 
@@ -180,7 +181,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
       { request }
     );
   } catch (error) {
-    console.error('Error voting on forum post:', error);
+    logger.error('Error voting on forum post', { error: error instanceof Error ? error.message : String(error) });
     return apiError(
       'Failed to vote on post',
       ErrorCode.INTERNAL_ERROR,
