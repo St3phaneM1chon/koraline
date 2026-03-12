@@ -26,6 +26,10 @@ on:
         default: false
         type: boolean
 
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
 env:
   AZURE_WEBAPP_NAME: 'biocyclepeptides'
   AZURE_RESOURCE_GROUP: 'biocycle-peptides-prod'
@@ -334,7 +338,7 @@ jobs:
         if: ${{ env.DB_URL != '' && github.event.inputs.skip_schema_sync != 'true' }}
         continue-on-error: true
         run: |
-          npm install --no-save prisma@5.22.0
+          npm install --no-save prisma@5.22.0 @prisma/client@5.22.0
           echo "Pushing Prisma schema to production database..."
           if npx prisma db push 2>&1; then
             echo "Schema sync: SUCCESS"

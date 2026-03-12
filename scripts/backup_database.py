@@ -42,8 +42,16 @@ log = logging.getLogger(__name__)
 # CONFIGURATION
 # =============================================================================
 
-PROJECT_ROOT = Path("/Volumes/AI_Project/peptide-plus")
-BACKUP_DIR = PROJECT_ROOT / "backups"
+# Use script location to find project root (works in CI and locally)
+_SCRIPT_DIR = Path(__file__).resolve().parent
+_LOCAL_ROOT = Path("/Volumes/AI_Project/peptide-plus")
+PROJECT_ROOT = _LOCAL_ROOT if _LOCAL_ROOT.exists() else _SCRIPT_DIR.parent
+
+# In CI, use /tmp for backups since local dirs don't exist
+if not _LOCAL_ROOT.exists():
+    BACKUP_DIR = Path("/tmp/peptide-backups")
+else:
+    BACKUP_DIR = PROJECT_ROOT / "backups"
 MANIFEST_FILE = BACKUP_DIR / "backup_manifest.json"
 
 # Local Docker DB
