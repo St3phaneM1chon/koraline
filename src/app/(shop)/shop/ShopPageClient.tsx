@@ -112,6 +112,8 @@ export default function ShopPage() {
 
   // BUG-008 FIX: Server-side pagination instead of loading all products at once
   useEffect(() => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
     async function fetchProducts() {
       try {
         setLoading(true);
@@ -126,7 +128,7 @@ export default function ShopPage() {
         if (priceRange[1] < 5000) params.set('maxPrice', String(priceRange[1]));
         params.set('facets', 'true');
 
-        const res = await fetch(`/api/products?${params.toString()}`);
+        const res = await fetch(`/api/products?${params.toString()}`, { signal: controller.signal });
         if (!res.ok) throw new Error('Failed to fetch products');
         const data = await res.json();
         const list = Array.isArray(data) ? data : data.products || data.data?.products || data.data || [];
@@ -140,13 +142,16 @@ export default function ShopPage() {
           setTotalProducts(list.length);
         }
       } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') return;
         console.error('Error fetching products:', err);
         setError(t('shop.loadError'));
       } finally {
+        clearTimeout(timeoutId);
         setLoading(false);
       }
     }
     fetchProducts();
+    return () => { controller.abort(); clearTimeout(timeoutId); };
   }, [locale, currentPage, selectedCategory, showInStockOnly, priceRange]);
 
   // Build hierarchical categories from loaded products

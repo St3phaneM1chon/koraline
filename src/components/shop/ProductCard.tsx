@@ -377,7 +377,7 @@ export default memo(function ProductCard({
                 setQuantity(Math.max(1, quantity - 1));
               }}
               aria-label={t('shop.aria.decreaseQuantity')}
-              className="w-8 h-8 flex items-center justify-center text-neutral-600 hover:bg-neutral-100"
+              className="w-11 h-11 flex items-center justify-center text-neutral-600 hover:bg-neutral-100"
             >
               −
             </button>
@@ -390,7 +390,7 @@ export default memo(function ProductCard({
                 setQuantity(Math.min(quantity + 1, maxQty));
               }}
               aria-label={t('shop.aria.increaseQuantity')}
-              className="w-8 h-8 flex items-center justify-center text-neutral-600 hover:bg-neutral-100"
+              className="w-11 h-11 flex items-center justify-center text-neutral-600 hover:bg-neutral-100"
             >
               +
             </button>

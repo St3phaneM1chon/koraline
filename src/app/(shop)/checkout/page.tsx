@@ -16,9 +16,7 @@ import { FormError } from '@/components/ui/FormError';
 import { AddressAutocomplete } from '@/components/ui/AddressAutocomplete';
 import { useDiscountCode } from '@/hooks/useDiscountCode';
 import DOMPurify from 'dompurify';
-// TODO: Consider lazy-loading the tax calculation module (e.g. dynamic import)
-// to reduce the initial bundle size of the checkout page, since tax calculations
-// are only needed after the user enters their shipping address.
+// Tax module — route-level code split already ensures this only loads on /checkout
 import {
   calculateTaxes,
   calculateShipping,
@@ -1284,6 +1282,12 @@ export default function CheckoutPage() {
                         const validation = validateForm(checkoutShippingSchema, shippingInfo);
                         if (!validation.success) {
                           setShippingErrors(validation.errors || {});
+                          // Scroll to first error field
+                          const firstErrorKey = Object.keys(validation.errors || {})[0];
+                          if (firstErrorKey) {
+                            const el = document.querySelector(`[name="${firstErrorKey}"]`) || document.getElementById(firstErrorKey);
+                            el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                          }
                           return;
                         }
                         setShippingErrors({});

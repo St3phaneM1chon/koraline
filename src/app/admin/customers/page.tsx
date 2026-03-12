@@ -58,8 +58,9 @@ export default function CustomersPage() {
           counts[u.rfmSegment] = (counts[u.rfmSegment] || 0) + 1;
         });
         setRfmSummary(counts);
-      } catch {
-        // silently fail - this is supplementary data
+      } catch (err) {
+        console.error('[CustomersPage] Failed to load VIP/RFM data:', err);
+        toast.error(t('admin.customers.rfmLoadError'));
       }
     })();
   }, []);

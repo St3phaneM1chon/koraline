@@ -662,7 +662,10 @@ export default function AbonnementsPage() {
             <span className="text-sm text-slate-700">{t('admin.subscriptions.freeShipping')}</span>
             <button
               onClick={() => setCfgFreeShipping(!cfgFreeShipping)}
-              className={`w-11 h-6 rounded-full transition-colors relative ${cfgFreeShipping ? 'bg-green-500' : 'bg-slate-300'}`}
+              role="switch"
+              aria-checked={cfgFreeShipping}
+              aria-label={t('admin.subscriptions.freeShipping')}
+              className={`w-11 h-6 rounded-full transition-colors relative focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 ${cfgFreeShipping ? 'bg-green-500' : 'bg-slate-300'}`}
             >
               <span className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${cfgFreeShipping ? 'end-1' : 'start-1'}`} />
             </button>

@@ -261,7 +261,7 @@ export default function BannieresPage() {
         : (t('admin.banners.slideActivated')));
       fetchSlides();
     } catch {
-      toast.error('Network error');
+      toast.error(t('common.networkError'));
     }
   };
 
@@ -511,14 +511,16 @@ export default function BannieresPage() {
                   <button
                     onClick={() => moveSlide(slide, 'up')}
                     disabled={idx === 0}
-                    className="p-1 text-slate-400 hover:text-slate-700 disabled:opacity-30"
+                    className="p-1 text-slate-400 hover:text-slate-700 disabled:opacity-30 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded"
+                    aria-label={t('admin.banners.moveUp')}
                   >
                     <ChevronUp className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => moveSlide(slide, 'down')}
                     disabled={idx === slides.length - 1}
-                    className="p-1 text-slate-400 hover:text-slate-700 disabled:opacity-30"
+                    className="p-1 text-slate-400 hover:text-slate-700 disabled:opacity-30 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded"
+                    aria-label={t('admin.banners.moveDown')}
                   >
                     <ChevronDown className="w-4 h-4" />
                   </button>
@@ -564,7 +566,10 @@ export default function BannieresPage() {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => toggleActive(slide)}
-                    className={`w-10 h-5 rounded-full transition-colors relative ${
+                    role="switch"
+                    aria-checked={slide.isActive}
+                    aria-label={t('admin.banners.toggleActive')}
+                    className={`w-10 h-5 rounded-full transition-colors relative focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 ${
                       slide.isActive ? 'bg-green-500' : 'bg-slate-300'
                     }`}
                   >
@@ -671,6 +676,7 @@ export default function BannieresPage() {
                     value={form.slug}
                     onChange={(e) => { setForm({ ...form, slug: e.target.value }); }}
                     placeholder="research-peptides"
+                    autoFocus
                     className={formErrors.slug ? 'border-red-300 focus:ring-red-500' : ''}
                   />
                   {/* F82 FIX: Show spinner while checking slug uniqueness */}

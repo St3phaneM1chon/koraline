@@ -142,10 +142,10 @@ const severityColors: Record<string, { bg: string; text: string; border: string 
 };
 
 const severityBadge: Record<string, string> = {
-  CRITICAL: 'bg-red-100 text-red-800',
-  HIGH: 'bg-orange-100 text-orange-800',
-  MEDIUM: 'bg-yellow-100 text-yellow-800',
-  LOW: 'bg-indigo-100 text-indigo-800',
+  CRITICAL: 'bg-red-100 text-red-900 font-semibold',
+  HIGH: 'bg-orange-100 text-orange-900 font-medium',
+  MEDIUM: 'bg-yellow-100 text-yellow-900 font-medium',
+  LOW: 'bg-indigo-100 text-indigo-900',
 };
 
 const categoryLabels: Record<string, { en: string; fr: string }> = {
@@ -210,6 +210,9 @@ export default function AuditDashboardPage() {
         setAuditLogTotal(data.total || 0);
         setAuditLogTotalPages(data.totalPages || 0);
         setAuditLogPage(data.page || 1);
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        toast.error(errData.error || (isFr ? 'Erreur de chargement des journaux' : 'Failed to load audit logs'));
       }
     } catch (err) {
       console.error('Failed to fetch audit logs:', err);
