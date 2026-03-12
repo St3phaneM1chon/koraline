@@ -159,7 +159,7 @@ export default function OutlookTopBar({ onMobileMenuToggle, extraIcons }: { onMo
         {/* Logo — Suite Kor@line signature */}
         <Link href="/admin/dashboard" className="flex items-center">
           <Image
-            src="/images/koraline-signature.png"
+            src="/images/suite-koraline.png"
             alt="Suite Kor@line"
             width={120}
             height={41}
