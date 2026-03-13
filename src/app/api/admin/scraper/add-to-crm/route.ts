@@ -14,6 +14,7 @@ import { withAdminGuard } from '@/lib/admin-api-guard';
 import { apiSuccess, apiError } from '@/lib/api-response';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
+import { dedupKey } from '@/lib/crm/google-maps-scraper';
 
 const placeSchema = z.object({
   name: z.string(),
@@ -172,10 +173,3 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     return apiError('Failed to add to CRM', 'INTERNAL_ERROR', { status: 500, details: message, request });
   }
 }, { rateLimit: 10 });
-
-function dedupKey(name: string, address: string | null, phone: string | null): string {
-  const n = name.toLowerCase().trim();
-  const a = (address || '').toLowerCase().trim().slice(0, 50);
-  const p = (phone || '').replace(/\D/g, '').slice(-10);
-  return `${n}|${a}|${p}`;
-}

@@ -10,7 +10,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Map,
   useMap,
-  useMapsLibrary,
   MapCameraChangedEvent,
 } from '@vis.gl/react-google-maps';
 import ProspectMarker from './ProspectMarker';
@@ -19,7 +18,7 @@ import MarkerCluster from './MarkerCluster';
 import DrawingTools, { type DrawnShape } from './DrawingTools';
 import StreetViewPanel from './StreetViewPanel';
 import HeatmapLayer from './HeatmapLayer';
-import type { ScrapedPlace, ProspectCrmStatus } from './types';
+import type { ScrapedPlace } from './types';
 import { getPlaceId } from './types';
 
 interface InteractiveMapProps {

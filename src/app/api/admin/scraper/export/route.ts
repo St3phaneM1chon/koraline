@@ -36,13 +36,21 @@ const placeSchema = z.object({
 
 const exportSchema = z.object({
   results: z.array(placeSchema).min(1, 'Results are required for export'),
+  locale: z.string().max(5).optional(),
 });
 
-const CSV_HEADERS = [
-  'Nom', 'Adresse', 'Ville', 'Province', 'Code Postal', 'Pays',
-  'T\u00e9l\u00e9phone', 'Email', 'Site Web', 'Note Google', 'Avis Google',
-  'Cat\u00e9gorie', 'Latitude', 'Longitude', 'Lien Google Maps',
-];
+const HEADERS_I18N: Record<string, string[]> = {
+  fr: ['Nom', 'Adresse', 'Ville', 'Province', 'Code Postal', 'Pays', 'T\u00e9l\u00e9phone', 'Email', 'Site Web', 'Note Google', 'Avis Google', 'Cat\u00e9gorie', 'Latitude', 'Longitude', 'Lien Google Maps'],
+  en: ['Name', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'Phone', 'Email', 'Website', 'Google Rating', 'Google Reviews', 'Category', 'Latitude', 'Longitude', 'Google Maps Link'],
+  es: ['Nombre', 'Direcci\u00f3n', 'Ciudad', 'Provincia', 'C\u00f3digo Postal', 'Pa\u00eds', 'Tel\u00e9fono', 'Email', 'Sitio Web', 'Nota Google', 'Rese\u00f1as Google', 'Categor\u00eda', 'Latitud', 'Longitud', 'Enlace Google Maps'],
+  de: ['Name', 'Adresse', 'Stadt', 'Provinz', 'Postleitzahl', 'Land', 'Telefon', 'Email', 'Webseite', 'Google-Bewertung', 'Google-Bewertungen', 'Kategorie', 'Breitengrad', 'L\u00e4ngengrad', 'Google Maps Link'],
+  pt: ['Nome', 'Endere\u00e7o', 'Cidade', 'Prov\u00edncia', 'CEP', 'Pa\u00eds', 'Telefone', 'Email', 'Site', 'Nota Google', 'Avalia\u00e7\u00f5es Google', 'Categoria', 'Latitude', 'Longitude', 'Link Google Maps'],
+};
+
+function getHeaders(locale?: string): string[] {
+  if (locale && HEADERS_I18N[locale]) return HEADERS_I18N[locale];
+  return HEADERS_I18N.fr;
+}
 
 export const POST = withAdminGuard(async (request: NextRequest) => {
   let body: unknown;
@@ -59,6 +67,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
 
   try {
     const results = parsed.data.results;
+    const csvHeaders = getHeaders(parsed.data.locale);
 
     const rows = results.map((place) => [
       place.name,
@@ -78,7 +87,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
       place.googleMapsUrl || '',
     ]);
 
-    const csv = generateCSV(CSV_HEADERS, rows);
+    const csv = generateCSV(csvHeaders, rows);
     const today = new Date().toISOString().slice(0, 10);
 
     return new Response(csv, {

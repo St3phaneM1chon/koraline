@@ -8,6 +8,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useMapsLibrary } from '@vis.gl/react-google-maps';
 import { X, AlertTriangle } from 'lucide-react';
+import { useTranslations } from '@/hooks/useTranslations';
 
 interface StreetViewPanelProps {
   position: { lat: number; lng: number };
@@ -20,6 +21,7 @@ export default function StreetViewPanel({ position, placeName, onClose }: Street
   const panoramaRef = useRef<google.maps.StreetViewPanorama | null>(null);
   const streetViewLib = useMapsLibrary('streetView');
   const [unavailable, setUnavailable] = useState(false);
+  const { t } = useTranslations();
 
   useEffect(() => {
     if (!containerRef.current || typeof google === 'undefined') return;
@@ -68,7 +70,7 @@ export default function StreetViewPanel({ position, placeName, onClose }: Street
       <div className="flex items-center justify-between px-4 py-2.5 border-b border-zinc-200 dark:border-zinc-700/50 bg-gray-100/80 dark:bg-zinc-800/80">
         <div className="min-w-0">
           <h3 className="text-sm font-semibold text-zinc-900 dark:text-white truncate">{placeName}</h3>
-          <p className="text-xs text-zinc-500">Street View</p>
+          <p className="text-xs text-zinc-500">{t('admin.scraper.streetView')}</p>
         </div>
         <button
           onClick={onClose}
@@ -82,13 +84,13 @@ export default function StreetViewPanel({ position, placeName, onClose }: Street
       {unavailable && (
         <div className="absolute inset-0 top-12 flex flex-col items-center justify-center bg-white/90 dark:bg-zinc-900/90 z-10 p-6 text-center">
           <AlertTriangle className="h-8 w-8 text-amber-400 mb-3" />
-          <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200 mb-1">Street View unavailable</p>
-          <p className="text-xs text-zinc-500 mb-4">No coverage at this location</p>
+          <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200 mb-1">{t('admin.scraper.streetViewUnavailable')}</p>
+          <p className="text-xs text-zinc-500 mb-4">{t('admin.scraper.noCoverage')}</p>
           <button
             onClick={onClose}
             className="px-4 py-1.5 rounded-lg bg-gray-200 dark:bg-zinc-700 text-xs text-zinc-700 dark:text-zinc-300 hover:bg-gray-200 dark:hover:bg-zinc-600 transition-colors"
           >
-            Close
+            {t('admin.scraper.close')}
           </button>
         </div>
       )}

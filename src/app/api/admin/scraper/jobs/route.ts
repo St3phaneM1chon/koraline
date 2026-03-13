@@ -156,15 +156,23 @@ async function runScrapeJob(
     // Check abort before starting
     if (signal.aborted) return;
 
+    // Helper to update progress (debounced — skip if delta < 3%)
+    let lastProgress = 0;
+    const updateProgress = async (progress: number, extra?: Record<string, unknown>) => {
+      const p = Math.round(progress);
+      if (p - lastProgress < 3 && p < 100) return;
+      lastProgress = p;
+      await prisma.scrapeJob.update({
+        where: { id: jobId },
+        data: { progress: p, ...extra },
+      });
+    };
+
     await prisma.scrapeJob.update({
       where: { id: jobId },
       data: { status: 'running', startedAt: new Date(), progress: 5 },
     });
-
-    await prisma.scrapeJob.update({
-      where: { id: jobId },
-      data: { progress: 10 },
-    });
+    lastProgress = 5;
 
     if (signal.aborted) {
       await prisma.scrapeJob.update({
@@ -174,7 +182,8 @@ async function runScrapeJob(
       return;
     }
 
-    // Phase 1: Scrape
+    // Phase 1: Scrape (5% → 70%)
+    await updateProgress(10);
     let results: Awaited<ReturnType<typeof import('@/lib/scraper/google-maps-playwright').scrapeGoogleMaps>>;
 
     if (params.engine === 'places_api') {
@@ -206,15 +215,13 @@ async function runScrapeJob(
       return;
     }
 
-    await prisma.scrapeJob.update({
-      where: { id: jobId },
-      data: { totalFound: results.length, progress: 70 },
-    });
+    await updateProgress(70, { totalFound: results.length });
 
-    // Phase 2: Import to CRM if prospect list specified
+    // Phase 2: Import to CRM if prospect list specified (70% → 95%)
     let imported = 0;
     let dupes = 0;
     if (params.prospectListId) {
+      await updateProgress(75);
       const { scrapePlacesToProspects } = await import('@/lib/crm/google-maps-scraper');
       const result = await scrapePlacesToProspects(params.prospectListId, {
         query: params.query,
@@ -225,6 +232,7 @@ async function runScrapeJob(
       }, results);
       imported = result.added;
       dupes = result.duplicates;
+      await updateProgress(95);
     }
 
     await prisma.scrapeJob.update({

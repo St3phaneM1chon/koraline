@@ -8636,7 +8636,7 @@
       "close": "Close",
       "crmImportSuccess": "imported to CRM",
       "viewInCrm": "View in CRM",
-      "confirmCrmImport": "Import these prospects to CRM?",
+      "confirmCrmImport": "Import {count} prospect(s) to CRM?",
       "duplicateOwnership": "Duplicate ownership",
       "ownershipFirstOwner": "First owner keeps",
       "ownershipLastOwner": "Last importer takes",

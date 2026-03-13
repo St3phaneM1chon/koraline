@@ -16,30 +16,14 @@
 import { logger } from '@/lib/logger';
 import { isSafeUrl } from './url-validator';
 import { getRandomBrowserConfig } from './ua-rotator';
+import type { ScrapedPlace } from '@/components/admin/scraper/types';
+
+// Re-export for backwards compatibility (consumed by search/route.ts, jobs/route.ts)
+export type { ScrapedPlace };
 
 // ---------------------------------------------------------------------------
 // Public types
 // ---------------------------------------------------------------------------
-
-export interface ScrapedPlace {
-  name: string;
-  address: string | null;
-  city: string | null;
-  province: string | null;
-  postalCode: string | null;
-  country: string | null;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  googleRating: number | null;
-  googleReviewCount: number | null;
-  category: string | null;
-  latitude: number | null;
-  longitude: number | null;
-  openingHours: string[] | null;
-  googleMapsUrl: string | null;
-  googlePlaceId: string | null;
-}
 
 export interface StandaloneSearchOptions {
   query: string;

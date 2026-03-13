@@ -40,7 +40,7 @@ const InteractiveMap = dynamic(
 );
 
 export default function ScraperPage() {
-  const { t } = useTranslations();
+  const { t, locale } = useTranslations();
 
   // Search state
   const [results, setResults] = useState<ScrapedPlace[]>([]);
@@ -136,7 +136,7 @@ export default function ScraperPage() {
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ results }),
+        body: JSON.stringify({ results, locale }),
       });
       if (!res.ok) throw new Error('Export failed');
       const blob = await res.blob();
@@ -151,7 +151,7 @@ export default function ScraperPage() {
     } finally {
       if (isExcel) setExportingExcel(false); else setExporting(false);
     }
-  }, [results]);
+  }, [results, locale]);
 
   // Selection handlers
   const toggleSelect = useCallback((id: string) => {
@@ -176,6 +176,8 @@ export default function ScraperPage() {
   // CRM handlers
   const addPlacesToCrm = useCallback(async (places: ScrapedPlace[]) => {
     if (places.length === 0) return;
+    const msg = t('admin.scraper.confirmCrmImport').replace('{count}', String(places.length));
+    if (!window.confirm(msg)) return;
     setCrmLoading(true);
     setCrmSuccess(null);
     setCrmListId(null);

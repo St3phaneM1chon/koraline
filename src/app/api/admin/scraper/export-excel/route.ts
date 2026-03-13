@@ -36,25 +36,39 @@ const placeSchema = z.object({
 
 const exportSchema = z.object({
   results: z.array(placeSchema).min(1, 'Results are required for export'),
+  locale: z.string().max(5).optional(),
 });
 
-const COLUMNS = [
-  { header: 'Nom', key: 'name', width: 30 },
-  { header: 'Adresse', key: 'address', width: 40 },
-  { header: 'Ville', key: 'city', width: 20 },
-  { header: 'Province', key: 'province', width: 10 },
-  { header: 'Code Postal', key: 'postalCode', width: 12 },
-  { header: 'Pays', key: 'country', width: 10 },
-  { header: 'T\u00e9l\u00e9phone', key: 'phone', width: 18 },
-  { header: 'Email', key: 'email', width: 30 },
-  { header: 'Site Web', key: 'website', width: 35 },
-  { header: 'Note Google', key: 'googleRating', width: 12 },
-  { header: 'Avis Google', key: 'googleReviewCount', width: 12 },
-  { header: 'Cat\u00e9gorie', key: 'category', width: 25 },
-  { header: 'Latitude', key: 'latitude', width: 14 },
-  { header: 'Longitude', key: 'longitude', width: 14 },
-  { header: 'Lien Google Maps', key: 'googleMapsUrl', width: 50 },
+const COLUMN_DEFS = [
+  { key: 'name', width: 30 },
+  { key: 'address', width: 40 },
+  { key: 'city', width: 20 },
+  { key: 'province', width: 10 },
+  { key: 'postalCode', width: 12 },
+  { key: 'country', width: 10 },
+  { key: 'phone', width: 18 },
+  { key: 'email', width: 30 },
+  { key: 'website', width: 35 },
+  { key: 'googleRating', width: 12 },
+  { key: 'googleReviewCount', width: 12 },
+  { key: 'category', width: 25 },
+  { key: 'latitude', width: 14 },
+  { key: 'longitude', width: 14 },
+  { key: 'googleMapsUrl', width: 50 },
 ];
+
+const HEADERS_I18N: Record<string, string[]> = {
+  fr: ['Nom', 'Adresse', 'Ville', 'Province', 'Code Postal', 'Pays', 'T\u00e9l\u00e9phone', 'Email', 'Site Web', 'Note Google', 'Avis Google', 'Cat\u00e9gorie', 'Latitude', 'Longitude', 'Lien Google Maps'],
+  en: ['Name', 'Address', 'City', 'Province', 'Postal Code', 'Country', 'Phone', 'Email', 'Website', 'Google Rating', 'Google Reviews', 'Category', 'Latitude', 'Longitude', 'Google Maps Link'],
+  es: ['Nombre', 'Direcci\u00f3n', 'Ciudad', 'Provincia', 'C\u00f3digo Postal', 'Pa\u00eds', 'Tel\u00e9fono', 'Email', 'Sitio Web', 'Nota Google', 'Rese\u00f1as Google', 'Categor\u00eda', 'Latitud', 'Longitud', 'Enlace Google Maps'],
+  de: ['Name', 'Adresse', 'Stadt', 'Provinz', 'Postleitzahl', 'Land', 'Telefon', 'Email', 'Webseite', 'Google-Bewertung', 'Google-Bewertungen', 'Kategorie', 'Breitengrad', 'L\u00e4ngengrad', 'Google Maps Link'],
+  pt: ['Nome', 'Endere\u00e7o', 'Cidade', 'Prov\u00edncia', 'CEP', 'Pa\u00eds', 'Telefone', 'Email', 'Site', 'Nota Google', 'Avalia\u00e7\u00f5es Google', 'Categoria', 'Latitude', 'Longitude', 'Link Google Maps'],
+};
+
+function getColumns(locale?: string) {
+  const headers = (locale && HEADERS_I18N[locale]) ? HEADERS_I18N[locale] : HEADERS_I18N.fr;
+  return COLUMN_DEFS.map((def, i) => ({ ...def, header: headers[i] }));
+}
 
 export const POST = withAdminGuard(async (request: NextRequest) => {
   let body: unknown;
@@ -80,7 +94,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
       views: [{ state: 'frozen', ySplit: 1 }],
     });
 
-    sheet.columns = COLUMNS;
+    sheet.columns = getColumns(parsed.data.locale);
 
     const headerRow = sheet.getRow(1);
     headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' } };

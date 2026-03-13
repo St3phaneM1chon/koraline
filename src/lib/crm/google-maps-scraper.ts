@@ -265,7 +265,7 @@ function mergeNum(
 // Dedup key helper
 // ---------------------------------------------------------------------------
 
-function dedupKey(name: string, address: string | null, phone: string | null): string {
+export function dedupKey(name: string, address: string | null, phone: string | null): string {
   const n = name.toLowerCase().trim();
   const a = (address || '').toLowerCase().trim().slice(0, 50);
   const p = (phone || '').replace(/\D/g, '').slice(-10);
