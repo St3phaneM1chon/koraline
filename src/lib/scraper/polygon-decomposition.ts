@@ -74,7 +74,7 @@ function getPolygonBounds(path: GeoPoint[]): GeoBounds {
 }
 
 /** Ray-casting point-in-polygon test */
-function pointInPolygon(point: GeoPoint, polygon: GeoPoint[]): boolean {
+export function pointInPolygon(point: GeoPoint, polygon: GeoPoint[]): boolean {
   let inside = false;
   for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
     const xi = polygon[i].lng, yi = polygon[i].lat;

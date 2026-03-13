@@ -8633,7 +8633,17 @@
       "dupes": "dupes",
       "streetViewUnavailable": "Street View unavailable",
       "noCoverage": "No coverage at this location",
-      "close": "Close"
+      "close": "Close",
+      "crmImportSuccess": "imported to CRM",
+      "viewInCrm": "View in CRM",
+      "confirmCrmImport": "Import these prospects to CRM?",
+      "duplicateOwnership": "Duplicate ownership",
+      "ownershipFirstOwner": "First owner keeps",
+      "ownershipLastOwner": "Last importer takes",
+      "ownershipShared": "Shared between lists",
+      "existingList": "Add to existing list",
+      "newList": "Create new list",
+      "selectList": "Select a list..."
     },
     "crmLists": {
       "title": "Prospect Lists",

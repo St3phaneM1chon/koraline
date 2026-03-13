@@ -8633,7 +8633,17 @@
       "dupes": "doublons",
       "streetViewUnavailable": "Street View non disponible",
       "noCoverage": "Pas de couverture a cet endroit",
-      "close": "Fermer"
+      "close": "Fermer",
+      "crmImportSuccess": "importés dans le CRM",
+      "viewInCrm": "Voir dans le CRM",
+      "confirmCrmImport": "Importer ces prospects dans le CRM ?",
+      "duplicateOwnership": "Gestion des doublons",
+      "ownershipFirstOwner": "Le premier propriétaire garde",
+      "ownershipLastOwner": "Le dernier importeur récupère",
+      "ownershipShared": "Partagé entre les listes",
+      "existingList": "Ajouter à une liste existante",
+      "newList": "Créer une nouvelle liste",
+      "selectList": "Sélectionner une liste..."
     },
     "crmLists": {
       "title": "Gestion des Listes",

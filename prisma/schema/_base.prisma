@@ -770,3 +770,9 @@ enum LeadAssignmentMethod {
   TERRITORY
 }
 
+enum DuplicateOwnershipMode {
+  FIRST_OWNER  // Prospect stays with the first importer
+  LAST_OWNER   // Prospect is transferred to the latest importer
+  SHARED       // Prospect appears in both lists (badge "shared")
+}
+

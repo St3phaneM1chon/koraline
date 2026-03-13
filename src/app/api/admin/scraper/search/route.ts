@@ -15,7 +15,7 @@ import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { apiSuccess, apiError } from '@/lib/api-response';
-import { decomposeRegion, type RegionShape } from '@/lib/scraper/polygon-decomposition';
+import { decomposeRegion, haversineDistance, pointInPolygon, type RegionShape, type GeoPoint } from '@/lib/scraper/polygon-decomposition';
 import type { ScrapedPlace } from '@/lib/scraper/google-maps-playwright';
 
 const searchSchema = z.object({
@@ -134,7 +134,30 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
       if (allResults.length >= data.maxResults) break;
     }
 
-    return apiSuccess(allResults.slice(0, data.maxResults), { request });
+    // Post-filter: remove results outside the original region bounds
+    let filtered = allResults;
+    if (data.region) {
+      const region = data.region;
+      filtered = allResults.filter((place) => {
+        if (place.latitude == null || place.longitude == null) return true; // keep places without coords
+        const point: GeoPoint = { lat: place.latitude, lng: place.longitude };
+
+        if (region.type === 'circle' && region.center && region.radius) {
+          return haversineDistance(point, region.center) <= region.radius;
+        }
+        if (region.type === 'rectangle' && region.bounds) {
+          const b = region.bounds;
+          return point.lat >= b.south && point.lat <= b.north &&
+                 point.lng >= b.west && point.lng <= b.east;
+        }
+        if (region.type === 'polygon' && region.path && region.path.length >= 3) {
+          return pointInPolygon(point, region.path);
+        }
+        return true;
+      });
+    }
+
+    return apiSuccess(filtered.slice(0, data.maxResults), { request });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Search failed';
     return apiError('Google Maps scrape failed', 'EXTERNAL_SERVICE_ERROR', { status: 502, details: message, request });

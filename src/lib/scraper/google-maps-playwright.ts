@@ -15,6 +15,7 @@ import { chromium, Browser, Page } from 'playwright';
 import { logger } from '@/lib/logger';
 import { getProxyManager } from './proxy-manager';
 import { getRandomBrowserConfig, randomDelay } from './ua-rotator';
+import { isSafeUrl } from './url-validator';
 
 // ---------------------------------------------------------------------------
 // Public types
@@ -37,6 +38,7 @@ export interface ScrapedPlace {
   longitude: number | null;
   openingHours: string[] | null;
   googleMapsUrl: string | null;
+  googlePlaceId: string | null;
 }
 
 export interface PlaywrightSearchOptions {
@@ -61,6 +63,9 @@ const GENERIC_PREFIXES = new Set([
 ]);
 
 async function extractEmailFromWebsite(websiteUrl: string): Promise<string | null> {
+  // SSRF protection: block private IPs, file://, etc.
+  if (!isSafeUrl(websiteUrl)) return null;
+
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
@@ -140,6 +145,17 @@ function parseFormattedAddress(address: string | null): {
 // ---------------------------------------------------------------------------
 // Coordinates extraction from URL
 // ---------------------------------------------------------------------------
+
+function extractPlaceIdFromUrl(url: string): string | null {
+  // Try to extract place_id from URL patterns like /place/NAME/data=...!1s0x...
+  // Google Maps URLs contain: !1sChIJ... which is the place_id
+  const chijMatch = url.match(/!1s(ChIJ[A-Za-z0-9_-]+)/);
+  if (chijMatch) return chijMatch[1];
+  // Also try: place_id: in query params
+  const paramMatch = url.match(/place_id[:=]([A-Za-z0-9_-]+)/);
+  if (paramMatch) return paramMatch[1];
+  return null;
+}
 
 function extractCoordsFromUrl(url: string): { lat: number | null; lng: number | null } {
   // Try !3d and !4d format first (more precise place coords)
@@ -498,5 +514,6 @@ async function scrapePlaceFromPage(
     longitude: coords.lng,
     openingHours,
     googleMapsUrl: url,
+    googlePlaceId: extractPlaceIdFromUrl(url),
   };
 }

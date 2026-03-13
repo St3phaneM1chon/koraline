@@ -128,6 +128,7 @@ export async function scrapePlacesToProspects(
           province: place.province,
           postalCode: place.postalCode,
           country: place.country,
+          googlePlaceId: place.googlePlaceId ?? null,
           googleRating: place.googleRating,
           googleReviewCount: place.googleReviewCount,
           googleCategory: place.category,

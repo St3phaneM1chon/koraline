@@ -1000,8 +1000,9 @@ model ProspectList {
   integratedCount  Int                 @default(0)
 
   // Attribution
-  assignmentMethod LeadAssignmentMethod @default(MANUAL)
-  assignmentConfig Json?
+  assignmentMethod        LeadAssignmentMethod   @default(MANUAL)
+  assignmentConfig        Json?
+  duplicateOwnershipMode  DuplicateOwnershipMode @default(FIRST_OWNER)
 
   // Relations
   createdById      String

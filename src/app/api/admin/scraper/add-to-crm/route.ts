@@ -13,7 +13,7 @@ import { z } from 'zod';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { apiSuccess, apiError } from '@/lib/api-response';
 import { prisma } from '@/lib/db';
-import { auth } from '@/lib/auth-config';
+import { logger } from '@/lib/logger';
 
 const placeSchema = z.object({
   name: z.string(),
@@ -32,6 +32,7 @@ const placeSchema = z.object({
   longitude: z.number().nullable().optional(),
   openingHours: z.array(z.string()).nullable().optional(),
   googleMapsUrl: z.string().nullable().optional(),
+  googlePlaceId: z.string().nullable().optional(),
 });
 
 const addToCrmSchema = z.object({
@@ -53,6 +54,8 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     return apiError('Invalid input', 'VALIDATION_ERROR', { status: 400, details: parsed.error.flatten(), request });
   }
 
+  // userId from withAdminGuard context (already authenticated)
+  const { auth } = await import('@/lib/auth-config');
   const session = await auth();
   const userId = session?.user?.id;
   if (!userId) {
@@ -77,20 +80,19 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
       listId = list.id;
     }
 
-    // Bulk create prospects with dedup by name+address+phone
+    // Fetch existing dedup keys via SELECT for efficiency (no full record load)
     const existingProspects = await prisma.prospect.findMany({
       where: { listId },
-      select: { contactName: true, address: true, phone: true, id: true },
+      select: { contactName: true, address: true, phone: true },
     });
 
     const existingKeys = new Set(
       existingProspects.map(p => dedupKey(p.contactName, p.address, p.phone))
     );
 
-    let added = 0;
+    // Separate new vs dupes
     let dupes = 0;
-    const createdIds: string[] = [];
-
+    const newPlaces = [];
     for (const place of places) {
       const key = dedupKey(place.name, place.address ?? null, place.phone ?? null);
       if (existingKeys.has(key)) {
@@ -98,57 +100,63 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
         continue;
       }
       existingKeys.add(key);
+      newPlaces.push(place);
+    }
 
-      const prospect = await prisma.prospect.create({
-        data: {
-          listId,
-          contactName: place.name,
-          companyName: place.name,
-          email: place.email ?? null,
-          phone: place.phone ?? null,
-          website: place.website ?? null,
-          address: place.address ?? null,
-          city: place.city ?? null,
-          province: place.province ?? null,
-          postalCode: place.postalCode ?? null,
-          country: place.country ?? null,
-          googleRating: place.googleRating ?? null,
-          googleReviewCount: place.googleReviewCount ?? null,
-          googleCategory: place.category ?? null,
-          latitude: place.latitude ?? null,
-          longitude: place.longitude ?? null,
-          openingHours: place.openingHours ? { days: place.openingHours } : undefined,
-          enrichmentSource: place.email ? 'website_crawl' : null,
-          enrichedAt: place.email ? new Date() : null,
-          status: 'NEW',
-        },
-      });
-      createdIds.push(prospect.id);
-      added++;
+    // Bulk create with createMany for performance (N+1 → 1 query)
+    let added = 0;
+    if (newPlaces.length > 0) {
+      const createData = newPlaces.map(place => ({
+        listId: listId!,
+        contactName: place.name,
+        companyName: place.name,
+        email: place.email ?? null,
+        phone: place.phone ?? null,
+        website: place.website ?? null,
+        address: place.address ?? null,
+        city: place.city ?? null,
+        province: place.province ?? null,
+        postalCode: place.postalCode ?? null,
+        country: place.country ?? null,
+        googlePlaceId: place.googlePlaceId ?? null,
+        googleRating: place.googleRating ?? null,
+        googleReviewCount: place.googleReviewCount ?? null,
+        googleCategory: place.category ?? null,
+        latitude: place.latitude ?? null,
+        longitude: place.longitude ?? null,
+        openingHours: place.openingHours ? { days: place.openingHours } : undefined,
+        enrichmentSource: place.email ? 'website_crawl' : null,
+        enrichedAt: place.email ? new Date() : null,
+        status: 'NEW' as const,
+      }));
+
+      const result = await prisma.prospect.createMany({ data: createData });
+      added = result.count;
     }
 
     // Update list counters
-    await prisma.prospectList.update({
-      where: { id: listId },
-      data: {
-        totalCount: { increment: added },
-      },
-    });
+    if (added > 0) {
+      await prisma.prospectList.update({
+        where: { id: listId },
+        data: { totalCount: { increment: added } },
+      });
+    }
 
     // Auto-dedup intra-list then score (non-blocking, fire-and-forget)
     if (added > 0) {
+      const capturedListId = listId!;
       (async () => {
         try {
           const { autoDeduplicateList } = await import('@/lib/crm/prospect-dedup');
-          await autoDeduplicateList(listId);
+          await autoDeduplicateList(capturedListId);
         } catch (e) {
-          console.error('Auto-dedup failed:', e);
+          logger.error('Auto-dedup failed', { error: e instanceof Error ? e.message : String(e), listId: capturedListId });
         }
         try {
           const { scoreProspectList } = await import('@/lib/crm/lead-scoring');
-          await scoreProspectList(listId);
+          await scoreProspectList(capturedListId);
         } catch (e) {
-          console.error('Lead scoring failed:', e);
+          logger.error('Lead scoring failed', { error: e instanceof Error ? e.message : String(e), listId: capturedListId });
         }
       })();
     }
@@ -158,7 +166,6 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
       added,
       duplicates: dupes,
       total: places.length,
-      prospectIds: createdIds,
     }, { status: 201, request });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'CRM import failed';

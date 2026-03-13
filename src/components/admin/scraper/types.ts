@@ -19,6 +19,7 @@ export interface ScrapedPlace {
   longitude: number | null;
   openingHours: string[] | null;
   googleMapsUrl?: string | null;
+  googlePlaceId?: string | null;
 }
 
 /** Stable unique ID for a scraped place (avoids duplicate React keys for same-name businesses). */

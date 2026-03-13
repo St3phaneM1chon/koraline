@@ -14,6 +14,8 @@
  */
 
 import { logger } from '@/lib/logger';
+import { isSafeUrl } from './url-validator';
+import { getRandomBrowserConfig } from './ua-rotator';
 
 // ---------------------------------------------------------------------------
 // Public types
@@ -35,6 +37,8 @@ export interface ScrapedPlace {
   latitude: number | null;
   longitude: number | null;
   openingHours: string[] | null;
+  googleMapsUrl: string | null;
+  googlePlaceId: string | null;
 }
 
 export interface StandaloneSearchOptions {
@@ -203,10 +207,13 @@ const EMAIL_REGEX = /[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/g;
 const GENERIC_PREFIXES = new Set(['noreply', 'no-reply', 'donotreply', 'mailer-daemon', 'postmaster']);
 
 async function extractEmailFromWebsite(websiteUrl: string): Promise<string | null> {
+  // SSRF protection: block private IPs, file://, etc.
+  if (!isSafeUrl(websiteUrl)) return null;
+
   try {
     const res = await fetch(websiteUrl, {
       signal: AbortSignal.timeout(8000),
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; LeadEngine/1.0)' },
+      headers: { 'User-Agent': getRandomBrowserConfig().userAgent },
       redirect: 'follow',
     });
     if (!res.ok) return null;
@@ -219,13 +226,44 @@ async function extractEmailFromWebsite(websiteUrl: string): Promise<string | nul
       if (!GENERIC_PREFIXES.has(email.split('@')[0])) return email;
     }
 
-    // Regex extraction
+    // Regex extraction from homepage
     const emails = html.match(EMAIL_REGEX) || [];
     for (const email of emails) {
       const lower = email.toLowerCase();
       const prefix = lower.split('@')[0];
       if (!GENERIC_PREFIXES.has(prefix) && !/\.(png|jpg|gif|svg|css|js)$/i.test(lower)) {
         return lower;
+      }
+    }
+
+    // Try additional pages for email (contact, about)
+    const subPaths = ['/contact', '/about', '/a-propos', '/nous-joindre', '/contactez-nous'];
+    for (const subPath of subPaths) {
+      try {
+        const subUrl = new URL(subPath, websiteUrl).href;
+        if (!isSafeUrl(subUrl)) continue;
+        const subRes = await fetch(subUrl, {
+          signal: AbortSignal.timeout(5000),
+          headers: { 'User-Agent': getRandomBrowserConfig().userAgent },
+          redirect: 'follow',
+        });
+        if (!subRes.ok) continue;
+        const subHtml = await subRes.text();
+        const subMailto = subHtml.match(/mailto:([a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})/i);
+        if (subMailto) {
+          const e = subMailto[1].toLowerCase();
+          if (!GENERIC_PREFIXES.has(e.split('@')[0])) return e;
+        }
+        const subEmails = subHtml.match(EMAIL_REGEX) || [];
+        for (const e of subEmails) {
+          const lower = e.toLowerCase();
+          const prefix = lower.split('@')[0];
+          if (!GENERIC_PREFIXES.has(prefix) && !/\.(png|jpg|gif|svg|css|js)$/i.test(lower)) {
+            return lower;
+          }
+        }
+      } catch {
+        // Skip sub-page
       }
     }
   } catch {
@@ -397,6 +435,8 @@ export async function searchGoogleMaps(options: StandaloneSearchOptions): Promis
       latitude: details.geometry?.location.lat || null,
       longitude: details.geometry?.location.lng || null,
       openingHours: details.opening_hours?.weekday_text || null,
+      googleMapsUrl: `https://www.google.com/maps/place/?q=place_id:${details.place_id}`,
+      googlePlaceId: details.place_id || null,
     });
   }
 
