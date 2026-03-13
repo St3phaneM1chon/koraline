@@ -331,7 +331,7 @@ export default function InventoryPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
           <p className="text-gray-600">{t('account.inventory.loading')}</p>
         </div>
       </div>
@@ -349,9 +349,9 @@ export default function InventoryPage() {
         {/* Header */}
         <div className="mb-8">
           <nav className="text-sm text-gray-500 mb-2">
-            <Link href="/" className="hover:text-orange-600">{t('account.inventory.breadcrumbHome')}</Link>
+            <Link href="/" className="hover:text-primary-600">{t('account.inventory.breadcrumbHome')}</Link>
             <span className="mx-2">/</span>
-            <Link href="/dashboard/customer" className="hover:text-orange-600">{t('account.inventory.breadcrumbDashboard')}</Link>
+            <Link href="/dashboard/customer" className="hover:text-primary-600">{t('account.inventory.breadcrumbDashboard')}</Link>
             <span className="mx-2">/</span>
             <span className="text-gray-900">{t('account.inventory.breadcrumbInventory')}</span>
           </nav>
@@ -426,7 +426,7 @@ export default function InventoryPage() {
                   aria-label={t('account.inventory.searchPlaceholder') || 'Search inventory'}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full ps-10 pe-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full ps-10 pe-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 />
                 <span className="absolute start-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
               </div>
@@ -436,7 +436,7 @@ export default function InventoryPage() {
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
             >
               {categories.map(cat => (
                 <option key={cat} value={cat}>
@@ -449,7 +449,7 @@ export default function InventoryPage() {
             <select
               value={stockFilter}
               onChange={(e) => setStockFilter(e.target.value as StockFilter)} // Safe: select options constrained to StockFilter values
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
             >
               <option value="all">{t('account.inventory.allStatuses')}</option>
               <option value="full">{t('account.inventory.stockFull')}</option>
@@ -462,7 +462,7 @@ export default function InventoryPage() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortBy)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
             >
               <option value="recent">{t('account.inventory.sortRecent')}</option>
               <option value="name">{t('account.inventory.sortName')}</option>
@@ -474,13 +474,13 @@ export default function InventoryPage() {
             <div className="flex border border-gray-300 rounded-lg overflow-hidden">
               <button
                 onClick={() => setViewMode('cards')}
-                className={`px-4 py-2 ${viewMode === 'cards' ? 'bg-orange-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
+                className={`px-4 py-2 ${viewMode === 'cards' ? 'bg-primary-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
               >
                 ▦
               </button>
               <button
                 onClick={() => setViewMode('table')}
-                className={`px-4 py-2 ${viewMode === 'table' ? 'bg-orange-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
+                className={`px-4 py-2 ${viewMode === 'table' ? 'bg-primary-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
               >
                 ≡
               </button>
@@ -506,7 +506,7 @@ export default function InventoryPage() {
             </p>
             <Link
               href="/shop"
-              className="inline-block bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+              className="inline-block bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
             >
               {t('account.inventory.discoverProducts')}
             </Link>
@@ -566,7 +566,7 @@ export default function InventoryPage() {
                         </div>
                       </td>
                       <td className="py-3 px-4 text-center font-semibold">{product.totalQuantity}</td>
-                      <td className="py-3 px-4 text-center text-orange-600 font-semibold">
+                      <td className="py-3 px-4 text-center text-primary-600 font-semibold">
                         {fmtPrice(product.totalSpent)}
                       </td>
                       <td className="py-3 px-4 text-center text-sm text-gray-500">
@@ -578,7 +578,7 @@ export default function InventoryPage() {
                       <td className="py-3 px-4 text-center">
                         <button
                           onClick={() => setSelectedProduct(product)}
-                          className="text-orange-600 hover:text-orange-700 text-sm font-medium"
+                          className="text-primary-600 hover:text-primary-700 text-sm font-medium"
                         >
                           {t('account.inventory.details')}
                         </button>
@@ -728,7 +728,7 @@ function ProductCard({
         </div>
         <div>
           <p className="text-xs text-gray-500">{t('account.inventory.totalSpent')}</p>
-          <p className="text-xl font-bold text-orange-600">{fmtPrice(product.totalSpent)}</p>
+          <p className="text-xl font-bold text-primary-600">{fmtPrice(product.totalSpent)}</p>
         </div>
       </div>
 
@@ -745,13 +745,13 @@ function ProductCard({
       <div className="p-4 border-t border-gray-100 flex gap-2">
         <button
           onClick={onViewDetails}
-          className="flex-1 py-2 text-sm font-medium text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
+          className="flex-1 py-2 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
         >
           {t('account.inventory.viewDetails')}
         </button>
         <Link
           href={`/shop?search=${encodeURIComponent(product.productName)}`}
-          className="flex-1 py-2 text-sm font-medium text-center bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors"
+          className="flex-1 py-2 text-sm font-medium text-center bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors"
         >
           {t('account.inventory.order')}
         </Link>
@@ -818,7 +818,7 @@ function ProductDetailModal({
             onClick={() => setActiveTab('overview')}
             className={`flex-1 py-3 text-sm font-medium border-b-2 transition-colors ${
               activeTab === 'overview' 
-                ? 'border-orange-500 text-orange-600' 
+                ? 'border-primary-500 text-primary-600' 
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -828,7 +828,7 @@ function ProductDetailModal({
             onClick={() => setActiveTab('history')}
             className={`flex-1 py-3 text-sm font-medium border-b-2 transition-colors ${
               activeTab === 'history'
-                ? 'border-orange-500 text-orange-600'
+                ? 'border-primary-500 text-primary-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -847,7 +847,7 @@ function ProductDetailModal({
                   <p className="text-xs text-gray-500">{t('account.inventory.statTotalUnits')}</p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4 text-center">
-                  <p className="text-2xl font-bold text-orange-600">{fmtPrice(product.totalSpent)}</p>
+                  <p className="text-2xl font-bold text-primary-600">{fmtPrice(product.totalSpent)}</p>
                   <p className="text-xs text-gray-500">{t('account.inventory.totalSpent')}</p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4 text-center">
@@ -872,7 +872,7 @@ function ProductDetailModal({
                       </div>
                       <div className="text-end">
                         <p className="font-semibold text-gray-900">{f.totalQuantity} {t('account.inventory.units')}</p>
-                        <p className="text-sm text-orange-600">{fmtPrice(f.totalSpent)}</p>
+                        <p className="text-sm text-primary-600">{fmtPrice(f.totalSpent)}</p>
                       </div>
                     </div>
                   ))}
@@ -889,7 +889,7 @@ function ProductDetailModal({
                       onClick={() => onUpdateStock(product.productId, status)}
                       className={`flex-1 py-3 rounded-lg border-2 transition-all ${
                         product.stockStatus === status 
-                          ? 'border-orange-500 bg-orange-50' 
+                          ? 'border-primary-500 bg-primary-50' 
                           : 'border-gray-200 hover:border-gray-300'
                       }`}
                     >
@@ -907,7 +907,7 @@ function ProductDetailModal({
                   onChange={(e) => setNotes(e.target.value)}
                   onBlur={saveNotes}
                   placeholder={t('account.inventory.notesPlaceholder')}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
                   rows={3}
                 />
               </div>
@@ -934,7 +934,7 @@ function ProductDetailModal({
                         </div>
                         <div className="text-end">
                           <p className="font-semibold text-gray-900">×{order.quantity}</p>
-                          <p className="text-sm text-orange-600">{fmtPrice(order.quantity * order.price)}</p>
+                          <p className="text-sm text-primary-600">{fmtPrice(order.quantity * order.price)}</p>
                         </div>
                       </div>
                     ))}
@@ -955,7 +955,7 @@ function ProductDetailModal({
           </button>
           <Link
             href={`/shop?search=${encodeURIComponent(product.productName)}`}
-            className="flex-1 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium text-center transition-colors"
+            className="flex-1 py-3 bg-primary-500 hover:bg-primary-600 text-white rounded-lg font-medium text-center transition-colors"
           >
             {t('account.inventory.reorder')}
           </Link>

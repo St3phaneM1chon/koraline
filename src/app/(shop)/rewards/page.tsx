@@ -94,7 +94,7 @@ export default function RewardsPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500" role="status" aria-label={t('common.loading') || 'Loading'}></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500" role="status" aria-label={t('common.loading') || 'Loading'}></div>
       </div>
     );
   }
@@ -175,9 +175,9 @@ export default function RewardsPage() {
               role="tab"
               aria-selected={activeTab === tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
                 activeTab === tab.id
-                  ? 'bg-orange-500 text-white'
+                  ? 'bg-primary-500 text-white'
                   : 'bg-white text-neutral-600 hover:bg-neutral-100'
               }`}
             >
@@ -203,7 +203,7 @@ export default function RewardsPage() {
                 ].map((item, i) => (
                   <div
                     key={i}
-                    className={`p-4 rounded-lg ${item.highlight ? 'bg-orange-50 border-2 border-orange-200' : 'bg-neutral-50'}`}
+                    className={`p-4 rounded-lg ${item.highlight ? 'bg-primary-50 border-2 border-primary-200' : 'bg-neutral-50'}`}
                   >
                     <span className="text-3xl" aria-hidden="true">{item.icon}</span>
                     <h3 className="font-semibold mt-2">{item.title}</h3>
@@ -220,7 +220,7 @@ export default function RewardsPage() {
                 {LOYALTY_TIERS.map((tierItem) => (
                   <div
                     key={tierItem.id}
-                    className={`p-4 rounded-lg border-2 ${tier.id === tierItem.id ? 'border-orange-500 bg-orange-50' : 'border-neutral-200'}`}
+                    className={`p-4 rounded-lg border-2 ${tier.id === tierItem.id ? 'border-primary-500 bg-primary-50' : 'border-neutral-200'}`}
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-2xl">{tierItem.icon}</span>
@@ -240,7 +240,7 @@ export default function RewardsPage() {
                       ))}
                     </ul>
                     {tier.id === tierItem.id && (
-                      <div className="mt-3 px-2 py-1 bg-orange-500 text-white text-xs font-medium rounded-full text-center">
+                      <div className="mt-3 px-2 py-1 bg-primary-500 text-white text-xs font-medium rounded-full text-center">
                         {t('rewards.currentTier') || 'Current Tier'}
                       </div>
                     )}
@@ -252,15 +252,15 @@ export default function RewardsPage() {
             {/* Quick Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-white rounded-xl shadow-sm border border-neutral-200 p-6 text-center">
-                <p className="text-3xl font-bold text-orange-500">{lifetimePoints.toLocaleString()}</p>
+                <p className="text-3xl font-bold text-primary-500">{lifetimePoints.toLocaleString()}</p>
                 <p className="text-neutral-500">{t('rewards.lifetimePoints') || 'Lifetime Points'}</p>
               </div>
               <div className="bg-white rounded-xl shadow-sm border border-neutral-200 p-6 text-center">
-                <p className="text-3xl font-bold text-orange-500">{tier.multiplier}x</p>
+                <p className="text-3xl font-bold text-primary-500">{tier.multiplier}x</p>
                 <p className="text-neutral-500">{t('rewards.pointsMultiplier') || 'Points Multiplier'}</p>
               </div>
               <div className="bg-white rounded-xl shadow-sm border border-neutral-200 p-6 text-center">
-                <p className="text-3xl font-bold text-orange-500">{referralCount}</p>
+                <p className="text-3xl font-bold text-primary-500">{referralCount}</p>
                 <p className="text-neutral-500">{t('rewards.friendsReferred') || 'Friends Referred'}</p>
               </div>
             </div>
@@ -278,7 +278,7 @@ export default function RewardsPage() {
                   <div
                     key={reward.id}
                     className={`p-4 rounded-lg border-2 transition-all ${
-                      canRedeem ? 'border-orange-200 hover:border-orange-400' : 'border-neutral-200 opacity-60'
+                      canRedeem ? 'border-primary-200 hover:border-primary-400' : 'border-neutral-200 opacity-60'
                     }`}
                   >
                     <div className="text-center mb-3">
@@ -290,7 +290,7 @@ export default function RewardsPage() {
                       </span>
                     </div>
                     <h3 className="font-bold text-center">{reward.name}</h3>
-                    <p className="text-orange-500 font-bold text-center text-lg mt-1">
+                    <p className="text-primary-500 font-bold text-center text-lg mt-1">
                       {reward.points.toLocaleString()} pts
                     </p>
                     <button
@@ -298,7 +298,7 @@ export default function RewardsPage() {
                       disabled={!canRedeem || redeemingId === reward.id}
                       className={`w-full mt-3 py-2 rounded-lg font-medium transition-colors ${
                         canRedeem
-                          ? 'bg-orange-500 text-white hover:bg-orange-600'
+                          ? 'bg-primary-500 text-white hover:bg-primary-600'
                           : 'bg-neutral-200 text-neutral-500 cursor-not-allowed'
                       }`}
                     >
@@ -335,7 +335,7 @@ export default function RewardsPage() {
                 </p>
                 <Link
                   href="/shop"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600"
                 >
                   {t('rewards.startShopping') || 'Start Shopping'}
                 </Link>
@@ -347,7 +347,7 @@ export default function RewardsPage() {
                     <div className="flex items-center gap-3">
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                         tx.type === 'earn' ? 'bg-green-100' :
-                        tx.type === 'redeem' ? 'bg-orange-100' :
+                        tx.type === 'redeem' ? 'bg-primary-100' :
                         tx.type === 'bonus' ? 'bg-blue-100' : 'bg-red-100'
                       }`}>
                         {tx.type === 'earn' && '➕'}
@@ -366,7 +366,7 @@ export default function RewardsPage() {
                         </p>
                       </div>
                     </div>
-                    <span className={`font-bold ${tx.points > 0 ? 'text-green-600' : 'text-orange-600'}`}>
+                    <span className={`font-bold ${tx.points > 0 ? 'text-green-600' : 'text-primary-600'}`}>
                       {tx.points > 0 ? '+' : ''}{tx.points.toLocaleString()}
                     </span>
                   </div>
@@ -379,7 +379,7 @@ export default function RewardsPage() {
         {/* Referral Tab */}
         {activeTab === 'referral' && (
           <div className="space-y-6">
-            <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-8 text-white text-center">
+            <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl p-8 text-white text-center">
               <span className="text-6xl mb-4 block" aria-hidden="true">👥</span>
               <h2 className="text-2xl font-bold mb-2">{t('rewards.referTitle') || 'Give $10, Get $10'}</h2>
               <p className="text-white/80 mb-6 max-w-md mx-auto">
@@ -399,7 +399,7 @@ export default function RewardsPage() {
                     />
                     <button
                       onClick={copyReferralCode}
-                      className="px-4 py-2 bg-white text-orange-600 rounded-lg font-medium hover:bg-white/90"
+                      className="px-4 py-2 bg-white text-primary-600 rounded-lg font-medium hover:bg-white/90"
                     >
                       {copiedCode ? `✓ ${t('common.copied') || 'Copied!'}` : t('common.copy') || 'Copy'}
                     </button>
@@ -431,7 +431,7 @@ export default function RewardsPage() {
               ) : (
                 <Link
                   href="/auth/signin"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-orange-600 rounded-lg font-medium hover:bg-white/90"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary-600 rounded-lg font-medium hover:bg-white/90"
                 >
                   {t('rewards.signInToRefer') || 'Sign In to Get Your Link'}
                 </Link>
@@ -441,16 +441,16 @@ export default function RewardsPage() {
             {/* Referral Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-white rounded-xl shadow-sm border border-neutral-200 p-6 text-center">
-                <p className="text-3xl font-bold text-orange-500">{referralCount}</p>
+                <p className="text-3xl font-bold text-primary-500">{referralCount}</p>
                 <p className="text-neutral-500">{t('rewards.friendsReferred') || 'Friends Referred'}</p>
               </div>
               <div className="bg-white rounded-xl shadow-sm border border-neutral-200 p-6 text-center">
                 {/* FIX F-024: Use API-loaded referralBonus */}
-                <p className="text-3xl font-bold text-orange-500">{(referralCount * loyaltyConfig.referralBonus).toLocaleString()}</p>
+                <p className="text-3xl font-bold text-primary-500">{(referralCount * loyaltyConfig.referralBonus).toLocaleString()}</p>
                 <p className="text-neutral-500">{t('rewards.pointsEarned') || 'Points Earned'}</p>
               </div>
               <div className="bg-white rounded-xl shadow-sm border border-neutral-200 p-6 text-center">
-                <p className="text-3xl font-bold text-orange-500">${referralCount * 10}</p>
+                <p className="text-3xl font-bold text-primary-500">${referralCount * 10}</p>
                 <p className="text-neutral-500">{t('rewards.givenToFriends') || 'Given to Friends'}</p>
               </div>
             </div>
@@ -465,10 +465,10 @@ export default function RewardsPage() {
                   { step: 3, icon: '🎉', title: t('rewards.step3Title') || 'You Earn Points', desc: t('rewards.step3Desc') || 'You receive 1,000 bonus points once their order is delivered' },
                 ].map((item) => (
                   <div key={item.step} className="text-center">
-                    <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-3">
                       <span className="text-2xl">{item.icon}</span>
                     </div>
-                    <div className="text-xs text-orange-500 font-medium mb-1">{t('common.step') || 'Step'} {item.step}</div>
+                    <div className="text-xs text-primary-500 font-medium mb-1">{t('common.step') || 'Step'} {item.step}</div>
                     <h4 className="font-bold mb-1">{item.title}</h4>
                     <p className="text-sm text-neutral-500">{item.desc}</p>
                   </div>

@@ -54,8 +54,8 @@ export default function MfaVerifyClient() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
         <div className="flex flex-col items-center mb-6">
-          <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
-            <Shield className="w-8 h-8 text-orange-600" />
+          <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mb-4">
+            <Shield className="w-8 h-8 text-primary-600" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900">
             {t('auth.mfaChallenge.title')}
@@ -79,7 +79,7 @@ export default function MfaVerifyClient() {
               required
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-center text-2xl tracking-widest"
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-center text-2xl tracking-widest"
               placeholder="000000"
               maxLength={8}
               pattern="[A-Za-z0-9]{6,8}"
@@ -100,7 +100,7 @@ export default function MfaVerifyClient() {
           <button
             type="submit"
             disabled={isLoading || code.length < 6}
-            className="w-full py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50"
+            className="w-full py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50"
           >
             {isLoading ? t('auth.mfaChallenge.verifying') : t('auth.mfaChallenge.verifyButton')}
           </button>

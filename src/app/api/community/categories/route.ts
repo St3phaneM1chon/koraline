@@ -23,7 +23,7 @@ function getCategoryColor(slug: string): string {
     general: 'bg-blue-100 text-blue-700',
     research: 'bg-purple-100 text-purple-700',
     howto: 'bg-green-100 text-green-700',
-    results: 'bg-orange-100 text-orange-700',
+    results: 'bg-primary-100 text-primary-700',
     support: 'bg-red-100 text-red-700',
   };
   return colorMap[slug] || 'bg-neutral-100 text-neutral-700';

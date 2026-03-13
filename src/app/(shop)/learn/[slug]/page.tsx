@@ -556,14 +556,14 @@ export default function ArticlePage() {
       {/* Header */}
       <section className="bg-gradient-to-br from-neutral-900 via-neutral-800 to-black text-white py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link href="/learn" className="inline-flex items-center gap-2 text-orange-400 hover:text-orange-300 mb-6">
+          <Link href="/learn" className="inline-flex items-center gap-2 text-primary-400 hover:text-primary-300 mb-6">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             {t('learn.backToLearning')}
           </Link>
 
-          <span className="inline-block px-3 py-1 bg-orange-500/20 text-orange-400 text-sm font-medium rounded-full mb-4">
+          <span className="inline-block px-3 py-1 bg-primary-500/20 text-primary-400 text-sm font-medium rounded-full mb-4">
             {article.category}
           </span>
 
@@ -644,28 +644,28 @@ export default function ArticlePage() {
               href="/learn/what-are-peptides"
               className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow"
             >
-              <span className="text-xs text-orange-600 font-medium">{t('learn.education')}</span>
+              <span className="text-xs text-primary-600 font-medium">{t('learn.education')}</span>
               <h4 className="font-semibold text-gray-900 mt-2">{t('learn.articles.whatArePeptides')}</h4>
             </Link>
             <Link
               href="/learn/peptide-storage-guide"
               className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow"
             >
-              <span className="text-xs text-orange-600 font-medium">{t('learn.howTo')}</span>
+              <span className="text-xs text-primary-600 font-medium">{t('learn.howTo')}</span>
               <h4 className="font-semibold text-gray-900 mt-2">{t('learn.articles.peptideStorageGuide')}</h4>
             </Link>
           </div>
         </div>
 
         {/* CTA */}
-        <div className="mt-12 bg-orange-50 rounded-xl p-8 text-center">
+        <div className="mt-12 bg-primary-50 rounded-xl p-8 text-center">
           <h3 className="text-xl font-bold text-gray-900 mb-2">{t('learn.readyToStart')}</h3>
           <p className="text-gray-600 mb-6">
             {t('learn.browseCollection')}
           </p>
           <Link
             href="/shop"
-            className="inline-flex items-center px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors"
+            className="inline-flex items-center px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors"
           >
             {t('learn.shopPeptides')}
           </Link>

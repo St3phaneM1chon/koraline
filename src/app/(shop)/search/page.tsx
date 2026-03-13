@@ -280,7 +280,7 @@ function SearchPageInner() {
       <Breadcrumbs items={breadcrumbItems} />
 
       {/* Header */}
-      <div className="bg-black text-white py-10">
+      <div className="bg-navy-900 text-white py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-2xl md:text-3xl font-bold">
             {query ? (
@@ -323,12 +323,12 @@ function SearchPageInner() {
                 defaultValue={query}
                 placeholder={t('shop.search')}
                 aria-label={t('shop.aria.searchProducts')}
-                className="w-full ps-10 pe-4 py-3 rounded-s-lg text-neutral-900 placeholder:text-neutral-400 outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full ps-10 pe-4 py-3 rounded-s-lg text-neutral-900 placeholder:text-neutral-400 outline-none focus:ring-2 focus:ring-primary-500"
               />
             </div>
             <button
               type="submit"
-              className="px-6 py-3 bg-orange-500 text-white font-semibold rounded-e-lg hover:bg-orange-600 transition-colors"
+              className="px-6 py-3 bg-primary-500 text-white font-semibold rounded-e-lg hover:bg-primary-600 transition-colors"
             >
               {t('search.search') || 'Search'}
             </button>
@@ -356,7 +356,7 @@ function SearchPageInner() {
             </svg>
             {t('shop.filters')}
             {hasActiveFilters && (
-              <span className="ms-1 w-5 h-5 flex items-center justify-center bg-orange-500 text-white text-xs rounded-full">
+              <span className="ms-1 w-5 h-5 flex items-center justify-center bg-primary-500 text-white text-xs rounded-full">
                 {selectedCategories.length +
                   (showInStockOnly ? 1 : 0) +
                   (purityFilter !== null ? 1 : 0) +
@@ -410,9 +410,9 @@ function SearchPageInner() {
                             type="checkbox"
                             checked={selectedCategories.includes(cat.slug)}
                             onChange={() => toggleCategory(cat.slug)}
-                            className="w-4 h-4 rounded text-orange-500 focus:ring-orange-500 border-neutral-300"
+                            className="w-4 h-4 rounded text-primary-500 focus:ring-primary-500 border-neutral-300"
                           />
-                          <span className="text-sm text-neutral-700 group-hover:text-orange-600 transition-colors flex-1">
+                          <span className="text-sm text-neutral-700 group-hover:text-primary-600 transition-colors flex-1">
                             {cat.name}
                           </span>
                           <span className="text-xs text-neutral-400">
@@ -459,7 +459,7 @@ function SearchPageInner() {
                     onChange={(e) =>
                       setPriceRange([priceRange[0], Number(e.target.value)])
                     }
-                    className="w-full accent-orange-500"
+                    className="w-full accent-primary-500"
                     aria-label={t('shop.aria.priceRangeSlider')}
                   />
                   <p className="text-sm text-neutral-500">
@@ -475,7 +475,7 @@ function SearchPageInner() {
                     type="checkbox"
                     checked={showInStockOnly}
                     onChange={(e) => setShowInStockOnly(e.target.checked)}
-                    className="w-4 h-4 rounded text-orange-500 focus:ring-orange-500 border-neutral-300"
+                    className="w-4 h-4 rounded text-primary-500 focus:ring-primary-500 border-neutral-300"
                   />
                   <span className="text-sm font-medium">
                     {t('shop.inStock')} only
@@ -501,7 +501,7 @@ function SearchPageInner() {
                             purityFilter === opt.value ? null : opt.value
                           )
                         }
-                        className="w-4 h-4 text-orange-500 focus:ring-orange-500 border-neutral-300"
+                        className="w-4 h-4 text-primary-500 focus:ring-primary-500 border-neutral-300"
                       />
                       <span className="text-sm text-neutral-700">
                         {opt.label}
@@ -515,7 +515,7 @@ function SearchPageInner() {
               {hasActiveFilters && (
                 <button
                   onClick={resetFilters}
-                  className="text-sm text-orange-600 hover:underline"
+                  className="text-sm text-primary-600 hover:underline"
                 >
                   {t('search.resetFilters') || 'Reset filters'}
                 </button>
@@ -545,7 +545,7 @@ function SearchPageInner() {
                   id="sort-select"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as SortOption)}
-                  className="px-3 py-2 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="px-3 py-2 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 >
                   <option value="relevance">{t('search.relevance') || 'Relevance'}</option>
                   <option value="newest">{t('shop.newest')}</option>
@@ -563,12 +563,12 @@ function SearchPageInner() {
                   return (
                     <span
                       key={slug}
-                      className="inline-flex items-center gap-1 px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm"
+                      className="inline-flex items-center gap-1 px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm"
                     >
                       {cat?.name || slug}
                       <button
                         onClick={() => toggleCategory(slug)}
-                        className="hover:text-orange-900"
+                        className="hover:text-primary-900"
                         aria-label={`Remove ${cat?.name || slug} filter`}
                       >
                         x
@@ -635,7 +635,7 @@ function SearchPageInner() {
                 <p className="text-red-500 text-lg mb-4">{error}</p>
                 <button
                   onClick={() => window.location.reload()}
-                  className="text-orange-600 hover:underline"
+                  className="text-primary-600 hover:underline"
                 >
                   {t('common.retry') || 'Retry'}
                 </button>
@@ -708,7 +708,7 @@ function SearchPageInner() {
                 {hasActiveFilters && (
                   <button
                     onClick={resetFilters}
-                    className="text-orange-600 hover:underline font-medium"
+                    className="text-primary-600 hover:underline font-medium"
                   >
                     {t('search.clearAllFilters') || 'Clear all filters'}
                   </button>
@@ -717,7 +717,7 @@ function SearchPageInner() {
                 <div className="mt-6">
                   <Link
                     href="/shop"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-colors"
                   >
                     {t('shop.shopAll')}
                     <svg
@@ -753,7 +753,7 @@ export default function SearchPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-white flex items-center justify-center">
-          <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
         </div>
       }
     >

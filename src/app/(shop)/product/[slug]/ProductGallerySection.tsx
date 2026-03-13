@@ -65,7 +65,7 @@ export default function ProductGallerySection({
               aria-label={`View image ${index + 1} of ${images.length}${img.alt ? `: ${img.alt}` : ''}`}
               aria-current={selectedImage === img.url ? 'true' : undefined}
               className={`w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-colors cursor-pointer ${
-                selectedImage === img.url ? 'border-orange-500' : 'border-neutral-200 hover:border-orange-400'
+                selectedImage === img.url ? 'border-primary-500' : 'border-neutral-200 hover:border-primary-400'
               }`}
             >
               <Image

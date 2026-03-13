@@ -39,7 +39,7 @@ export default function SecurityPage() {
       <section className="bg-gradient-to-br from-neutral-900 via-neutral-800 to-black text-white py-20 px-6 text-center">
         <div className="max-w-3xl mx-auto">
           <span className="text-5xl block mb-6">{'\uD83D\uDD12'}</span>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold font-heading mb-6">
             {t('security.title')}
           </h1>
           <p className="text-lg text-gray-300 leading-relaxed max-w-2xl mx-auto">
@@ -120,7 +120,7 @@ export default function SecurityPage() {
           </p>
           <Link
             href="/contact?subject=security"
-            className="inline-block px-8 py-3 bg-orange-600 text-white rounded-lg font-semibold hover:bg-orange-700 transition-colors"
+            className="inline-block px-8 py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors"
           >
             {t('security.reportVulnerability')}
           </Link>

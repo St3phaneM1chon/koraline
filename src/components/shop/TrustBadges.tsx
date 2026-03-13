@@ -92,23 +92,23 @@ export default function TrustBadges({ variant = 'horizontal', showAll = true }: 
 export function TrustBadgesHero() {
   const { t } = useI18n();
   return (
-    <div className="bg-neutral-900 text-white py-4 border-t border-neutral-800">
+    <div className="bg-secondary-50 text-neutral-800 py-4 border-t border-secondary-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-center justify-start gap-6 md:gap-10 text-sm font-medium">
           <div className="flex items-center gap-2">
-            <span className="text-orange-400">✓</span>
+            <span className="text-primary-400">✓</span>
             <span>{t('trust.purity')}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-orange-400">✓</span>
+            <span className="text-primary-400">✓</span>
             <span>{t('trust.labTested')}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-orange-400">✓</span>
+            <span className="text-primary-400">✓</span>
             <span>{t('trust.freeShipping')}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-orange-400">✓</span>
+            <span className="text-primary-400">✓</span>
             <span>{t('trust.support')}</span>
           </div>
         </div>

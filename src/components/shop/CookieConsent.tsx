@@ -84,7 +84,7 @@ export default function CookieConsent() {
                 <p id="cookie-consent-description" className="text-sm text-gray-600">
                   {t('cookies.message') || 'We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking "Accept", you consent to our use of cookies.'}
                   {' '}
-                  <Link href="/mentions-legales/cookies" className="text-orange-600 hover:underline">
+                  <Link href="/mentions-legales/cookies" className="text-primary-600 hover:underline">
                     {t('cookies.learnMore') || 'Learn more'}
                   </Link>
                 </p>
@@ -102,7 +102,7 @@ export default function CookieConsent() {
             <button
               ref={acceptButtonRef}
               onClick={handleAccept}
-              className="px-6 py-2 bg-orange-500 text-white text-sm font-semibold rounded-lg hover:bg-orange-600 transition-colors"
+              className="px-6 py-2 bg-primary-500 text-white text-sm font-semibold rounded-lg hover:bg-primary-600 transition-colors"
             >
               {t('cookies.accept') || 'Accept'}
             </button>

@@ -274,7 +274,7 @@ export default function InvoicesPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto"></div>
           <p className="text-gray-500 mt-4">{t('account.invoices.loading') || 'Loading invoices...'}</p>
         </div>
       </div>
@@ -290,9 +290,9 @@ export default function InvoicesPage() {
         <section className="bg-gradient-to-br from-neutral-900 via-neutral-800 to-black text-white py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="text-sm text-neutral-400 mb-4">
-              <Link href="/" className="hover:text-orange-400">{t('nav.home') || 'Home'}</Link>
+              <Link href="/" className="hover:text-primary-400">{t('nav.home') || 'Home'}</Link>
               <span className="mx-2">/</span>
-              <Link href="/account/settings" className="hover:text-orange-400">{t('nav.myAccount') || 'My Account'}</Link>
+              <Link href="/account/settings" className="hover:text-primary-400">{t('nav.myAccount') || 'My Account'}</Link>
               <span className="mx-2">/</span>
               <span className="text-white">{t('account.invoices.title') || 'Invoices'}</span>
             </nav>
@@ -313,7 +313,7 @@ export default function InvoicesPage() {
                   type="date"
                   value={dateFrom}
                   onChange={(e) => setDateFrom(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm"
                 />
               </div>
               <div className="flex-1 w-full">
@@ -324,13 +324,13 @@ export default function InvoicesPage() {
                   type="date"
                   value={dateTo}
                   onChange={(e) => setDateTo(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm"
                 />
               </div>
               <div className="flex gap-2 w-full sm:w-auto">
                 <button
                   onClick={handleDateFilter}
-                  className="flex-1 sm:flex-none px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium transition-colors"
+                  className="flex-1 sm:flex-none px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg text-sm font-medium transition-colors"
                 >
                   {t('account.invoices.filter') || 'Filter'}
                 </button>
@@ -356,7 +356,7 @@ export default function InvoicesPage() {
           {/* Loading overlay */}
           {loading && invoices.length > 0 && (
             <div className="flex justify-center py-4 mb-4">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-500"></div>
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-500"></div>
             </div>
           )}
 
@@ -379,14 +379,14 @@ export default function InvoicesPage() {
               {(dateFrom || dateTo) ? (
                 <button
                   onClick={handleClearDateFilter}
-                  className="inline-block bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                  className="inline-block bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
                 >
                   {t('account.invoices.clearFilter') || 'Clear Filters'}
                 </button>
               ) : (
                 <Link
                   href="/shop"
-                  className="inline-block bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                  className="inline-block bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
                 >
                   {t('account.invoices.shopNow') || 'Browse Products'}
                 </Link>
@@ -540,7 +540,7 @@ export default function InvoicesPage() {
                 <button
                   onClick={() => handleDownloadPdf(viewingInvoice.id, viewingInvoice.invoiceNumber)}
                   disabled={downloadingPdf === viewingInvoice.id}
-                  className="px-3 py-1.5 text-sm bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors flex items-center gap-1.5 disabled:opacity-50"
+                  className="px-3 py-1.5 text-sm bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors flex items-center gap-1.5 disabled:opacity-50"
                 >
                   {downloadingPdf === viewingInvoice.id ? (
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -568,7 +568,7 @@ export default function InvoicesPage() {
                 {/* Company header + Invoice info */}
                 <div className="flex flex-col sm:flex-row justify-between items-start mb-8 gap-4">
                   <div>
-                    <h1 className="text-2xl font-bold text-orange-500">BioCycle Peptides Inc.</h1>
+                    <h1 className="text-2xl font-bold text-primary-500">BioCycle Peptides Inc.</h1>
                     <p className="text-gray-500 text-sm mt-1">1234 Boulevard des Sciences</p>
                     <p className="text-gray-500 text-sm">Montreal, QC H3C 1K3, Canada</p>
                     <p className="text-gray-500 text-sm">(514) 555-0199 | support@biocyclepeptides.com</p>
@@ -591,7 +591,7 @@ export default function InvoicesPage() {
                 {/* Shipping address */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
                   <div>
-                    <h3 className="text-sm font-semibold text-orange-500 uppercase tracking-wider mb-2">
+                    <h3 className="text-sm font-semibold text-primary-500 uppercase tracking-wider mb-2">
                       {t('account.invoices.shipTo') || 'Ship To'}
                     </h3>
                     <p className="text-sm font-medium text-gray-900">{viewingInvoice.shippingAddress.name}</p>
@@ -608,7 +608,7 @@ export default function InvoicesPage() {
                     )}
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-orange-500 uppercase tracking-wider mb-2">
+                    <h3 className="text-sm font-semibold text-primary-500 uppercase tracking-wider mb-2">
                       {t('account.invoices.paymentInfo') || 'Payment Information'}
                     </h3>
                     <p className="text-sm text-gray-600">
@@ -739,7 +739,7 @@ export default function InvoicesPage() {
                     <div className="border-t border-gray-200 pt-3 mt-3">
                       <div className="flex justify-between items-center">
                         <span className="font-bold text-gray-900">{t('account.invoices.total') || 'TOTAL'}:</span>
-                        <span className="font-bold text-orange-600 text-lg">
+                        <span className="font-bold text-primary-600 text-lg">
                           {formatMoney(viewingInvoice.total, viewingInvoice.currency.symbol)} {viewingInvoice.currency.code}
                         </span>
                       </div>

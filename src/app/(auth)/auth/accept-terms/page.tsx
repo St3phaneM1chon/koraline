@@ -25,7 +25,7 @@ function AcceptTermsContent() {
   if (status === 'loading') {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500" />
       </div>
     );
   }
@@ -78,14 +78,14 @@ function AcceptTermsContent() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-lg bg-white rounded-2xl shadow-lg overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-6 text-white text-center">
+        <div className="bg-gradient-to-r from-primary-500 to-primary-600 p-6 text-white text-center">
           <div className="inline-flex items-center justify-center w-14 h-14 bg-white/20 rounded-full mb-3">
             <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
           <h1 className="text-xl font-bold">{t('auth.acceptTermsTitle')}</h1>
-          <p className="text-orange-100 text-sm mt-1">
+          <p className="text-primary-100 text-sm mt-1">
             {t('auth.acceptTermsDescription')}
           </p>
         </div>
@@ -107,7 +107,7 @@ function AcceptTermsContent() {
                 setAccepted(e.target.checked);
                 if (error) setError('');
               }}
-              className="mt-1 h-4 w-4 rounded border-gray-300 text-orange-500 focus:ring-orange-500 cursor-pointer"
+              className="mt-1 h-4 w-4 rounded border-gray-300 text-primary-500 focus:ring-primary-500 cursor-pointer"
             />
             <label htmlFor="accept-terms" className="text-sm text-gray-700 cursor-pointer leading-relaxed">
               {t('auth.acceptTermsCheckbox')
@@ -124,11 +124,11 @@ function AcceptTermsContent() {
                   return (
                     <>
                       {parts[0]}
-                      <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-orange-500 underline hover:text-orange-600">
+                      <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-primary-500 underline hover:text-primary-600">
                         {hasTermsFirst ? t('auth.termsOfService') : t('auth.privacyPolicy')}
                       </a>
                       {parts[1]}
-                      <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-orange-500 underline hover:text-orange-600">
+                      <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-primary-500 underline hover:text-primary-600">
                         {hasTermsFirst ? t('auth.privacyPolicy') : t('auth.termsOfService')}
                       </a>
                       {parts[2]}
@@ -148,7 +148,7 @@ function AcceptTermsContent() {
           <button
             type="submit"
             disabled={isSubmitting || !accepted}
-            className="w-full py-3 px-4 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3 px-4 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <span className="flex items-center justify-center gap-2">
@@ -180,7 +180,7 @@ export default function AcceptTermsPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto" />
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto" />
         </div>
       }
     >

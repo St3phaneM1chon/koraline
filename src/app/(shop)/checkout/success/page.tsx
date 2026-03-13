@@ -105,19 +105,19 @@ function CheckoutSuccessContent() {
 
           {/* A-043: Loyalty points earned on this order */}
           {pointsEarned !== null && pointsEarned > 0 && (
-            <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4 mb-6 text-start">
+            <div className="bg-gradient-to-r from-amber-50 to-primary-50 border border-amber-200 rounded-lg p-4 mb-6 text-start">
               <div className="flex items-center gap-3">
                 <span className="text-2xl" aria-hidden="true">🎉</span>
                 <div>
                   <p className="font-semibold text-amber-900">
-                    {t('checkout.pointsEarned') || 'You earned'} <span className="text-orange-600">{pointsEarned} {t('customerRewards.points') || 'points'}</span> {t('checkout.withThisOrder') || 'with this order'}!
+                    {t('checkout.pointsEarned') || 'You earned'} <span className="text-primary-600">{pointsEarned} {t('customerRewards.points') || 'points'}</span> {t('checkout.withThisOrder') || 'with this order'}!
                   </p>
                   {currentTier && (
                     <p className="text-sm text-amber-700">
                       {t('customerRewards.currentLevel') || 'Current level'}: {currentTier}
                     </p>
                   )}
-                  <Link href="/account/rewards" className="text-sm text-orange-600 hover:underline font-medium">
+                  <Link href="/account/rewards" className="text-sm text-primary-600 hover:underline font-medium">
                     {t('checkout.viewRewards') || 'View your rewards'} →
                   </Link>
                 </div>
@@ -131,23 +131,23 @@ function CheckoutSuccessContent() {
           </p>
 
           {/* What's Next */}
-          <div className="bg-orange-50 rounded-lg p-6 mb-8 text-start">
-            <h3 className="font-semibold text-orange-900 mb-3">{t('checkout.whatNext')}</h3>
-            <ul className="space-y-2 text-sm text-orange-800">
+          <div className="bg-primary-50 rounded-lg p-6 mb-8 text-start">
+            <h3 className="font-semibold text-primary-900 mb-3">{t('checkout.whatNext')}</h3>
+            <ul className="space-y-2 text-sm text-primary-800">
               <li className="flex items-start gap-2">
-                <svg className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <span>{t('checkout.step1Email')}</span>
               </li>
               <li className="flex items-start gap-2">
-                <svg className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
                 <span>{t('checkout.step2Processing')}</span>
               </li>
               <li className="flex items-start gap-2">
-                <svg className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
                 <span>{t('checkout.step3Tracking')}</span>
@@ -157,7 +157,7 @@ function CheckoutSuccessContent() {
 
           {/* Disclaimer */}
           <div className="bg-gray-100 rounded-lg p-4 mb-8 text-xs text-gray-500">
-            <strong className="text-orange-600">{t('common.researchOnly')}:</strong> {t('common.researchDisclaimer')}
+            <strong className="text-primary-600">{t('common.researchOnly')}:</strong> {t('common.researchDisclaimer')}
           </div>
 
           {/* Actions */}
@@ -172,7 +172,7 @@ function CheckoutSuccessContent() {
             )}
             <Link
               href="/"
-              className="px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors"
+              className="px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors"
             >
               {t('checkout.backToHome')}
             </Link>
@@ -182,7 +182,7 @@ function CheckoutSuccessContent() {
         {/* Support */}
         <p className="text-center text-sm text-gray-500 mt-8">
           {t('checkout.questionsContact')}{' '}
-          <a href="mailto:support@biocyclepeptides.com" className="text-orange-600 hover:underline">
+          <a href="mailto:support@biocyclepeptides.com" className="text-primary-600 hover:underline">
             support@biocyclepeptides.com
           </a>
         </p>

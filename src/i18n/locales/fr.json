@@ -3337,7 +3337,142 @@
       "contactNotFound": "Contact introuvable",
       "backToCrm": "Retour au CRM",
       "noTasks": "Aucune tâche",
-      "viewFullJourney": "Voir le parcours complet"
+      "viewFullJourney": "Voir le parcours complet",
+      "reps": {
+        "title": "Représentants commerciaux",
+        "subtitle": "Gérer et suivre la performance des représentants",
+        "searchPlaceholder": "Rechercher des représentants...",
+        "noReps": "Aucun représentant trouvé",
+        "memberSince": "Membre depuis",
+        "leadsAssigned": "Prospects",
+        "dealsAssigned": "Affaires",
+        "activitiesCount": "Activités",
+        "daysTracked": "Jours suivis",
+        "tabs": {
+          "overview": "Vue d'ensemble",
+          "communications": "Communications",
+          "deals": "Affaires",
+          "followups": "Suivis",
+          "revenue": "Revenus",
+          "quotas": "Objectifs",
+          "commissions": "Commissions",
+          "statistics": "Statistiques",
+          "notes": "Notes"
+        },
+        "kpi": {
+          "callsTotal": "Total appels",
+          "revenue": "Revenus",
+          "dealsWon": "Affaires gagnées",
+          "dealsLost": "Affaires perdues",
+          "activeLeads": "Prospects actifs",
+          "pipelineValue": "Valeur pipeline",
+          "followupsDue": "Suivis en attente",
+          "commissionEarned": "Commission gagnée"
+        },
+        "followup": {
+          "schedule": "Planifier un suivi",
+          "complete": "Compléter",
+          "reschedule": "Reporter",
+          "overdue": "En retard",
+          "pending": "En attente",
+          "completed": "Complété",
+          "skipped": "Ignoré",
+          "addFollowUp": "Ajouter un suivi",
+          "intervalMonths": "Intervalle (mois)",
+          "scheduledDate": "Date prévue",
+          "outcome": "Résultat",
+          "nextAction": "Prochaine action",
+          "types": {
+            "RETENTION": "Rétention",
+            "UPSELL": "Vente incitative",
+            "RENEWAL": "Renouvellement",
+            "CHECK_IN": "Vérification",
+            "ANNIVERSARY": "Anniversaire"
+          }
+        },
+        "commission": {
+          "salesType": "Commission sur ventes",
+          "activityType": "Commission sur activités",
+          "hybridType": "Commission hybride",
+          "minVolume": "Volume min.",
+          "minPrequal": "Score pré-qual min.",
+          "eligible": "Éligible",
+          "notEligible": "Non éligible",
+          "calculate": "Calculer la période",
+          "approve": "Approuver",
+          "reject": "Rejeter",
+          "paid": "Payé",
+          "pending": "En attente",
+          "totalPayout": "Paiement total",
+          "salesPayout": "Commission ventes",
+          "activityPayout": "Commission activités",
+          "payoutHistory": "Historique des paiements",
+          "bonusTiers": "Paliers de bonus",
+          "revenueThreshold": "Seuil de revenus",
+          "commissionRate": "Taux de commission",
+          "ratePerCall": "Taux/appel",
+          "ratePerAppointment": "Taux/rendez-vous",
+          "maxPayout": "Paiement max.",
+          "volumeThreshold": "Volume atteint",
+          "prequalThreshold": "Pré-qual atteint",
+          "periodLabel": "Période"
+        },
+        "stats": {
+          "callToAppointment": "Appel → Rendez-vous",
+          "callToSale": "Appel → Vente",
+          "avgPerSale": "Moy. $/Vente",
+          "perQuarter": "Par trimestre",
+          "perSemester": "Par semestre",
+          "perYear": "Par année",
+          "sinceHire": "Depuis l'embauche",
+          "pipelineVelocity": "Vélocité pipeline",
+          "retentionRate": "Taux de rétention",
+          "winRate": "Taux de gain",
+          "avgTimeToClose": "Temps moyen de clôture",
+          "recurringRevenue": "Revenus récurrents (MRR)",
+          "totalCalls": "Total appels",
+          "totalTalkTime": "Temps de parole total",
+          "avgHandleTime": "Temps moyen de traitement"
+        },
+        "deals": {
+          "title": "Titre",
+          "value": "Valeur",
+          "stage": "Étape",
+          "expectedClose": "Clôture prévue",
+          "status": "Statut",
+          "open": "Ouvert",
+          "won": "Gagné",
+          "lost": "Perdu",
+          "all": "Tous"
+        },
+        "notes": {
+          "addNote": "Ajouter une note",
+          "notePlaceholder": "Écrire une note...",
+          "noNotes": "Aucune note pour le moment"
+        },
+        "period": {
+          "week": "Semaine",
+          "month": "Mois",
+          "quarter": "Trimestre",
+          "year": "Année",
+          "all": "Tout"
+        },
+        "revenue": {
+          "totalRevenue": "Revenu total",
+          "avgDealSize": "Taille moy. affaire",
+          "dealsWonCount": "Affaires gagnées"
+        },
+        "quotas": {
+          "target": "Objectif",
+          "actual": "Réel",
+          "progress": "Progression",
+          "noQuotas": "Aucun objectif défini",
+          "calls": "Appels",
+          "revenue": "Revenus",
+          "deals": "Affaires",
+          "conversions": "Conversions"
+        }
+      }
     },
     "contentList": {
       "emptyDescription": "Aucun élément à afficher",
@@ -6415,7 +6550,8 @@
       "crmDealJourney": "Parcours du deal",
       "crmSnapshots": "Instantanés",
       "crmDashboardBuilder": "Constructeur de tableaux de bord",
-      "modules": "Modules"
+      "modules": "Modules",
+      "crmReps360": "Rep 360°"
     },
     "newsletter": {
       "title": "Newsletter",
@@ -10556,7 +10692,21 @@
       "slide4Cta": "Commander maintenant"
     },
     "featuredVideos": "Vidéos en vedette",
-    "heroVideo": "Vidéo à la une"
+    "heroVideo": "Vidéo à la une",
+    "scienceTitle": "La Science de la Longévité",
+    "scienceDesc": "Peptides de recherche premium, conçus pour l'excellence scientifique et soutenus par des normes de qualité rigoureuses.",
+    "pillarPurity": "Pureté",
+    "pillarPurityDesc": "Pureté 99%+ vérifiée par des laboratoires tiers indépendants. Chaque lot est testé.",
+    "pillarInnovation": "Innovation",
+    "pillarInnovationDesc": "Méthodes de synthèse de pointe assurant une biodisponibilité et une stabilité maximales.",
+    "pillarNature": "Nature",
+    "pillarNatureDesc": "Cycles bio-inspirés reflétant les processus peptidiques naturels pour des résultats de recherche optimaux.",
+    "featuredPeptides": "Peptides Vedettes",
+    "featuredPeptidesDesc": "Nos meilleurs peptides de recherche, sélectionnés pour leur qualité et leur demande.",
+    "missionTitle": "Notre Mission",
+    "missionText": "Chez BioCycle Peptides, nous nous efforçons d'établir la norme en matière de qualité, de sécurité et de valeur dans le développement et la fabrication de produits peptidiques de qualité pharmaceutique qui améliorent significativement les résultats de recherche de nos clients.",
+    "ctaTitleNew": "La Source Premier au Canada pour les Peptides de Recherche",
+    "ctaTextNew": "Fièrement établis au Canada. Testés en laboratoire, pureté 99%+, expédition domestique rapide."
   },
   "invoice": {
     "title": "Facture",

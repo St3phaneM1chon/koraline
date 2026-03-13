@@ -11,6 +11,7 @@ import { useI18n } from '@/i18n/client';
 import { locales, localeNames, localeFlags } from '@/i18n/config';
 import CartDrawer from './CartDrawer';
 import SearchModal from './SearchModal';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 
 
 // Build languages array from config (all 22 languages)
@@ -112,13 +113,13 @@ export default function Header() {
 
   return (
     <>
-      <header className="bg-black text-white sticky top-0 z-50 shadow-sm">
+      <header className="bg-navy-900 text-white sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             
             {/* Logo - Compact */}
             <Link href="/" className="flex items-center gap-2 shrink-0">
-              <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">BC</span>
               </div>
               <span className="font-bold text-lg hidden sm:block">BioCycle</span>
@@ -141,8 +142,8 @@ export default function Header() {
                   aria-label={t('nav.aria.resourcesMenu')}
                   className={`flex items-center gap-1 px-3 py-2 text-sm font-semibold rounded-lg transition-all whitespace-nowrap ${
                     openDropdown === 'resources'
-                      ? 'text-orange-400 bg-white/10'
-                      : 'text-gray-100 hover:text-orange-400 hover:bg-white/10'
+                      ? 'text-primary-400 bg-white/10'
+                      : 'text-gray-100 hover:text-primary-400 hover:bg-white/10'
                   }`}
                 >
                   {t('nav.resources') || 'Resources'}
@@ -179,7 +180,10 @@ export default function Header() {
 
             {/* Right Actions - Compact */}
             <div className="flex items-center gap-1">
-              
+
+              {/* Theme Toggle */}
+              <ThemeToggle />
+
               {/* Search */}
               <IconButton onClick={() => setIsSearchOpen(true)} label={t('common.search')}>
                 <SearchIcon />
@@ -201,7 +205,7 @@ export default function Header() {
                         key={curr.code}
                         onClick={() => { setCurrency(curr); setOpenDropdown(null); }}
                         className={`w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-100 ${
-                          currency.code === curr.code ? 'bg-orange-50 text-orange-600' : ''
+                          currency.code === curr.code ? 'bg-primary-50 text-primary-600' : ''
                         }`}
                       >
                         <span>{curr.symbol}</span>
@@ -221,8 +225,8 @@ export default function Header() {
                   aria-label={t('nav.aria.languageSelector')}
                   className={`flex items-center gap-1.5 px-2.5 py-1.5 text-sm font-semibold rounded-lg transition-all ${
                     openDropdown === 'lang'
-                      ? 'text-orange-400 bg-white/10'
-                      : 'text-gray-200 hover:text-orange-400 hover:bg-white/10'
+                      ? 'text-primary-400 bg-white/10'
+                      : 'text-gray-200 hover:text-primary-400 hover:bg-white/10'
                   }`}
                 >
                   <span className="text-base">{currentLanguage.flag}</span>
@@ -240,13 +244,13 @@ export default function Header() {
                           aria-selected={locale === lang.code}
                           aria-label={t('nav.aria.selectLanguage', { language: lang.name })}
                           className={`w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-100 transition-colors ${
-                            locale === lang.code ? 'bg-orange-50 text-orange-600 font-medium' : ''
+                            locale === lang.code ? 'bg-primary-50 text-primary-600 font-medium' : ''
                           }`}
                         >
                           <span className="text-base">{lang.flag}</span>
                           <span className="truncate">{lang.name}</span>
                           {locale === lang.code && (
-                            <svg className="w-4 h-4 ms-auto text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                            <svg className="w-4 h-4 ms-auto text-primary-500" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
                           )}
@@ -271,9 +275,9 @@ export default function Header() {
                       }`}
                     >
                       {session.user.image ? (
-                        <Image src={session.user.image} alt={session.user.name || 'User profile'} width={28} height={28} className="w-7 h-7 rounded-full border-2 border-orange-500" />
+                        <Image src={session.user.image} alt={session.user.name || 'User profile'} width={28} height={28} className="w-7 h-7 rounded-full border-2 border-primary-500" />
                       ) : (
-                        <div className="w-7 h-7 bg-orange-500 rounded-full flex items-center justify-center">
+                        <div className="w-7 h-7 bg-primary-500 rounded-full flex items-center justify-center">
                           <span className="text-white text-xs font-bold">
                             {(session.user.name || session.user.email || 'U')[0].toUpperCase()}
                           </span>
@@ -341,7 +345,7 @@ export default function Header() {
               >
                 <CartIcon />
                 {itemCount > 0 && (
-                  <span className="absolute -top-0.5 -end-0.5 w-4 h-4 bg-orange-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center" aria-hidden="true">
+                  <span className="absolute -top-0.5 -end-0.5 w-4 h-4 bg-primary-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center" aria-hidden="true">
                     {itemCount > 9 ? '9+' : itemCount}
                   </span>
                 )}
@@ -352,7 +356,7 @@ export default function Header() {
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 aria-label={isMobileMenuOpen ? t('nav.aria.closeMenu') : t('nav.aria.openMenu')}
                 aria-expanded={isMobileMenuOpen}
-                className="lg:hidden p-2 text-gray-200 hover:text-orange-400 hover:bg-white/10 rounded-lg transition-all"
+                className="lg:hidden p-2 text-gray-200 hover:text-primary-400 hover:bg-white/10 rounded-lg transition-all"
               >
                 {isMobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
               </button>
@@ -399,7 +403,7 @@ export default function Header() {
                         onClick={() => { setCurrency(curr); setIsMobileMenuOpen(false); }}
                         className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
                           currency.code === curr.code
-                            ? 'bg-orange-500 text-white'
+                            ? 'bg-primary-500 text-white'
                             : 'bg-white/10 text-gray-300 hover:bg-white/20'
                         }`}
                       >
@@ -419,14 +423,14 @@ export default function Header() {
                         onClick={() => handleLanguageChange(lang.code)}
                         className={`w-full flex items-center gap-2 px-3 py-1.5 text-sm rounded-lg transition-colors ${
                           locale === lang.code
-                            ? 'bg-orange-500/20 text-orange-400 font-medium'
+                            ? 'bg-primary-500/20 text-primary-400 font-medium'
                             : 'text-gray-300 hover:bg-white/5'
                         }`}
                       >
                         <span className="text-base">{lang.flag}</span>
                         <span className="truncate">{lang.name}</span>
                         {locale === lang.code && (
-                          <svg className="w-4 h-4 ms-auto text-orange-400" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className="w-4 h-4 ms-auto text-primary-400" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
                         )}
@@ -440,7 +444,7 @@ export default function Header() {
                   {status === 'authenticated' && session?.user ? (
                     <>
                       <div className="flex items-center gap-3 px-3 py-2 bg-white/5 rounded-lg mb-2">
-                        <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center shrink-0">
                           <span className="text-white text-sm font-bold">
                             {(session.user.name || 'U')[0].toUpperCase()}
                           </span>
@@ -506,8 +510,8 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
       aria-current={isActive ? 'page' : undefined}
       className={`px-3 py-2 text-sm font-semibold rounded-lg transition-all whitespace-nowrap ${
         isActive
-          ? 'text-orange-400 bg-white/10 underline underline-offset-4'
-          : 'text-gray-100 hover:text-orange-400 hover:bg-white/10'
+          ? 'text-primary-400 bg-white/10 underline underline-offset-4'
+          : 'text-gray-100 hover:text-primary-400 hover:bg-white/10'
       }`}
     >
       {children}
@@ -537,7 +541,7 @@ function MobileNavLink({
       className={`block w-full text-start px-3 py-2 hover:bg-white/5 rounded text-sm ${
         indent ? 'ps-6 text-gray-400' : ''
       } ${
-        isActive ? 'text-orange-400 font-semibold bg-white/10' : ''
+        isActive ? 'text-primary-400 font-semibold bg-white/10' : ''
       }`}
     >
       {children}
@@ -569,7 +573,7 @@ function DropdownItem({
       href={href}
       role="menuitem"
       className={`w-full flex items-center gap-2 px-4 py-2.5 text-sm text-start hover:bg-gray-100 transition-colors cursor-pointer ${
-        highlight ? 'text-orange-600 font-medium' : ''
+        highlight ? 'text-primary-600 font-medium' : ''
       }`}
     >
       {icon && <span>{icon}</span>}
@@ -594,7 +598,7 @@ function IconButton({
   return (
     <button
       onClick={onClick}
-      className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-200 hover:text-orange-400 hover:bg-white/10 rounded-lg transition-all"
+      className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-200 hover:text-primary-400 hover:bg-white/10 rounded-lg transition-all"
       aria-label={label}
     >
       {children}

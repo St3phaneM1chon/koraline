@@ -170,7 +170,7 @@ function EstimateStatusBadge({ status }: { status: string }) {
     VIEWED: { label: 'En attente', bg: 'bg-blue-100', text: 'text-blue-700', icon: <Clock className="w-4 h-4" /> },
     ACCEPTED: { label: 'Accepté', bg: 'bg-green-100', text: 'text-green-700', icon: <CheckCircle className="w-4 h-4" /> },
     DECLINED: { label: 'Refusé', bg: 'bg-red-100', text: 'text-red-700', icon: <XCircle className="w-4 h-4" /> },
-    EXPIRED: { label: 'Expiré', bg: 'bg-orange-100', text: 'text-orange-700', icon: <AlertTriangle className="w-4 h-4" /> },
+    EXPIRED: { label: 'Expiré', bg: 'bg-primary-100', text: 'text-primary-700', icon: <AlertTriangle className="w-4 h-4" /> },
     CONVERTED: { label: 'Converti en facture', bg: 'bg-green-100', text: 'text-green-700', icon: <CheckCircle className="w-4 h-4" /> },
   };
 
@@ -316,7 +316,7 @@ export default function EstimateClientPortalPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full text-center">
-          <AlertTriangle className="w-12 h-12 text-orange-500 mx-auto mb-4" />
+          <AlertTriangle className="w-12 h-12 text-primary-500 mx-auto mb-4" />
           <h1 className="text-xl font-bold text-gray-900 mb-2">Devis introuvable</h1>
           <p className="text-gray-600">{error || 'Ce lien n\'est plus valide.'}</p>
         </div>
@@ -438,7 +438,7 @@ export default function EstimateClientPortalPage() {
                   <span className="text-gray-900">${estimate.subtotal.toFixed(2)}</span>
                 </div>
                 {estimate.discountAmount > 0 && (
-                  <div className="flex justify-between py-1.5 text-sm text-orange-600">
+                  <div className="flex justify-between py-1.5 text-sm text-primary-600">
                     <span>Remise ({estimate.discountPercent}%)</span>
                     <span>-${estimate.discountAmount.toFixed(2)}</span>
                   </div>
@@ -624,11 +624,11 @@ export default function EstimateClientPortalPage() {
 
           {/* Expired */}
           {estimate.status === 'EXPIRED' && (
-            <div className="px-8 py-6 border-t bg-orange-50">
+            <div className="px-8 py-6 border-t bg-primary-50">
               <div className="text-center">
-                <AlertTriangle className="w-12 h-12 text-orange-500 mx-auto mb-3" />
-                <h3 className="text-lg font-bold text-orange-900 mb-1">Devis expiré</h3>
-                <p className="text-sm text-orange-700">
+                <AlertTriangle className="w-12 h-12 text-primary-500 mx-auto mb-3" />
+                <h3 className="text-lg font-bold text-primary-900 mb-1">Devis expiré</h3>
+                <p className="text-sm text-primary-700">
                   Ce devis a expiré le {formatDate(estimate.validUntil)}.
                   Veuillez contacter BioCycle Peptides pour un nouveau devis.
                 </p>

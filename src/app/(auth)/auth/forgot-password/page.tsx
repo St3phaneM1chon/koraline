@@ -64,7 +64,7 @@ export default function ForgotPasswordPage() {
           </p>
           <Link
             href="/auth/signin"
-            className="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors"
+            className="inline-block px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors"
           >
             {t('auth.backToSignIn')}
           </Link>
@@ -79,7 +79,7 @@ export default function ForgotPasswordPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 justify-center">
-            <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center">
               <span className="text-white font-bold text-xl">BC</span>
             </div>
             <span className="font-bold text-2xl text-gray-900">BioCycle Peptides</span>
@@ -111,7 +111,7 @@ export default function ForgotPasswordPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder={t('auth.emailPlaceholder')}
               />
             </div>
@@ -119,7 +119,7 @@ export default function ForgotPasswordPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50"
+              className="w-full py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50"
             >
               {isLoading ? (
                 <span className="flex items-center justify-center">
@@ -136,7 +136,7 @@ export default function ForgotPasswordPage() {
           </form>
 
           <div className="mt-6 text-center">
-            <Link href="/auth/signin" className="text-sm text-orange-600 hover:underline">
+            <Link href="/auth/signin" className="text-sm text-primary-600 hover:underline">
               {t('auth.backToSignIn')}
             </Link>
           </div>
@@ -149,7 +149,7 @@ export default function ForgotPasswordPage() {
           </h3>
           <p className="text-sm text-gray-600">
             {t('faq.contactUs')}{' '}
-            <a href="mailto:support@biocyclepeptides.com" className="text-orange-600 hover:underline">
+            <a href="mailto:support@biocyclepeptides.com" className="text-primary-600 hover:underline">
               support@biocyclepeptides.com
             </a>
           </p>
@@ -157,7 +157,7 @@ export default function ForgotPasswordPage() {
 
         {/* Retour boutique */}
         <div className="mt-4 text-center">
-          <Link href="/" className="text-sm text-gray-500 hover:text-orange-600">
+          <Link href="/" className="text-sm text-gray-500 hover:text-primary-600">
             {t('auth.backToShop')}
           </Link>
         </div>

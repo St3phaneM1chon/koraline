@@ -118,7 +118,7 @@ export default function CategoryPageClient({ category, products }: CategoryPageC
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="bg-black text-white py-12">
+      <div className="bg-navy-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumbs */}
           <nav className="flex items-center gap-2 text-sm text-neutral-400 mb-4">
@@ -153,12 +153,12 @@ export default function CategoryPageClient({ category, products }: CategoryPageC
                 <Link
                   key={child.id}
                   href={`/category/${child.slug}`}
-                  className="group flex flex-col items-center gap-2 p-4 rounded-xl border border-neutral-200 hover:border-orange-300 hover:shadow-md transition-all text-center"
+                  className="group flex flex-col items-center gap-2 p-4 rounded-xl border border-neutral-200 hover:border-primary-300 hover:shadow-md transition-all text-center"
                 >
                   <span className="text-3xl mb-1">
                     {subCategoryIcons[child.slug] || '🧬'}
                   </span>
-                  <span className="font-semibold text-sm text-neutral-900 group-hover:text-orange-600 transition-colors">
+                  <span className="font-semibold text-sm text-neutral-900 group-hover:text-primary-600 transition-colors">
                     {child.name}
                   </span>
                   <span className="text-xs text-neutral-400">
@@ -178,7 +178,7 @@ export default function CategoryPageClient({ category, products }: CategoryPageC
           <select
             value={sortBy}
             onChange={(e) => handleSortChange(e.target.value as SortOption)}
-            className="px-4 py-2 border border-neutral-300 rounded-lg bg-white text-sm focus:ring-2 focus:ring-orange-500 focus:outline-none"
+            className="px-4 py-2 border border-neutral-300 rounded-lg bg-white text-sm focus:ring-2 focus:ring-primary-500 focus:outline-none"
           >
             <option value="featured">{t('shop.popular') || 'Featured'}</option>
             <option value="price-asc">{t('shop.priceAsc') || 'Price: Low to High'}</option>
@@ -208,7 +208,7 @@ export default function CategoryPageClient({ category, products }: CategoryPageC
         ) : (
           <div className="text-center py-16">
             <p className="text-neutral-500 mb-4">{t('shop.noProductsFound')}</p>
-            <Link href="/shop" className="text-orange-600 font-medium hover:underline">
+            <Link href="/shop" className="text-primary-600 font-medium hover:underline">
               {t('shop.viewAll')}
             </Link>
           </div>

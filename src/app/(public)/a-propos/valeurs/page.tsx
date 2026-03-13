@@ -23,7 +23,7 @@ export default function ValeursPage() {
           <Link href="/a-propos" className="text-white/80 hover:text-white text-sm transition-colors">
             &larr; {t('about.backToAbout')}
           </Link>
-          <h1 className="text-4xl md:text-5xl font-bold mt-6 mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold font-heading mt-6 mb-6">
             {t('about.values.title')}
           </h1>
           <p className="text-xl leading-relaxed text-violet-100">

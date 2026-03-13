@@ -293,7 +293,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           </span>
         )}
 
-        <h1 style={{ fontSize: '42px', fontWeight: 700, marginBottom: '16px', maxWidth: '800px', margin: '0 auto 16px' }}>
+        <h1 className="font-heading" style={{ fontSize: '42px', fontWeight: 700, marginBottom: '16px', maxWidth: '800px', margin: '0 auto 16px' }}>
           {title}
         </h1>
 

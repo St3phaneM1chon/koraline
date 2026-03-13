@@ -227,7 +227,7 @@ export default function RewardsPage() {
   if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
       </div>
     );
   }
@@ -240,9 +240,9 @@ export default function RewardsPage() {
         {/* Header */}
         <div className="mb-8">
           <nav className="text-sm text-gray-500 mb-2">
-            <Link href="/" className="hover:text-orange-600">{t('nav.home')}</Link>
+            <Link href="/" className="hover:text-primary-600">{t('nav.home')}</Link>
             <span className="mx-2">/</span>
-            <Link href="/account" className="hover:text-orange-600">{t('account.dashboard')}</Link>
+            <Link href="/account" className="hover:text-primary-600">{t('account.dashboard')}</Link>
             <span className="mx-2">/</span>
             <span className="text-gray-900">{t('customerRewards.title')}</span>
           </nav>
@@ -307,7 +307,7 @@ export default function RewardsPage() {
                       key={reward.id}
                       className={`border rounded-xl p-4 transition-all ${
                         points >= reward.pointsCost
-                          ? 'border-orange-200 bg-orange-50 hover:border-orange-400'
+                          ? 'border-primary-200 bg-primary-50 hover:border-primary-400'
                           : 'border-gray-200 bg-gray-50 opacity-60'
                       }`}
                     >
@@ -329,14 +329,14 @@ export default function RewardsPage() {
                         </span>
                       </div>
                       <div className="flex items-center justify-between mt-4">
-                        <span className="text-orange-600 font-bold">{reward.pointsCost} points</span>
+                        <span className="text-primary-600 font-bold">{reward.pointsCost} points</span>
                         {/* A-041: Redeem button with loading state */}
                         <button
                           onClick={() => redeemReward(reward)}
                           disabled={points < reward.pointsCost || redeeming === reward.id}
                           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                             points >= reward.pointsCost && redeeming !== reward.id
-                              ? 'bg-orange-500 hover:bg-orange-600 text-white'
+                              ? 'bg-primary-500 hover:bg-primary-600 text-white'
                               : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                           }`}
                         >
@@ -369,7 +369,7 @@ export default function RewardsPage() {
                       onClick={() => setTxFilter(filterType)}
                       className={`px-3 py-1 text-xs rounded-full font-medium transition-colors ${
                         txFilter === filterType
-                          ? 'bg-orange-500 text-white'
+                          ? 'bg-primary-500 text-white'
                           : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                       }`}
                     >
@@ -394,7 +394,7 @@ export default function RewardsPage() {
                         <span className={`w-10 h-10 rounded-full flex items-center justify-center text-lg ${
                           txn.type === 'earned' ? 'bg-green-100' :
                           txn.type === 'bonus' ? 'bg-purple-100' :
-                          txn.type === 'redeemed' ? 'bg-orange-100' :
+                          txn.type === 'redeemed' ? 'bg-primary-100' :
                           'bg-gray-100'
                         }`}>
                           {txn.type === 'earned' && '💰'}
@@ -413,7 +413,7 @@ export default function RewardsPage() {
                           </p>
                         </div>
                       </div>
-                      <span className={`font-bold ${txn.points > 0 ? 'text-green-600' : 'text-orange-600'}`}>
+                      <span className={`font-bold ${txn.points > 0 ? 'text-green-600' : 'text-primary-600'}`}>
                         {txn.points > 0 ? '+' : ''}{txn.points}
                       </span>
                     </div>
@@ -487,7 +487,7 @@ export default function RewardsPage() {
                     key={level.name}
                     className={`p-3 rounded-lg border ${
                       level.name === currentLevel.name
-                        ? 'border-orange-300 bg-orange-50'
+                        ? 'border-primary-300 bg-primary-50'
                         : lifetimePoints >= level.minPoints
                         ? 'border-green-200 bg-green-50'
                         : 'border-gray-200 bg-gray-50'

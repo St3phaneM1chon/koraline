@@ -115,7 +115,7 @@ export default function ProductQA({ productId: _productId, productName }: Produc
         
         <button
           onClick={() => setShowAskQuestion(true)}
-          className="px-6 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors"
+          className="px-6 py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors"
         >
           {t('qa.askQuestion') || 'Ask a Question'}
         </button>
@@ -132,7 +132,7 @@ export default function ProductQA({ productId: _productId, productName }: Produc
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder={t('qa.searchQuestions') || 'Search questions...'}
           aria-label={t('qa.searchQuestions') || 'Search questions'}
-          className="w-full ps-12 pe-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+          className="w-full ps-12 pe-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
         />
       </div>
 
@@ -145,7 +145,7 @@ export default function ProductQA({ productId: _productId, productName }: Produc
             <p className="text-neutral-500 mb-4">{t('qa.beFirst') || 'Be the first to ask a question about this product!'}</p>
             <button
               onClick={() => setShowAskQuestion(true)}
-              className="px-6 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600"
+              className="px-6 py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600"
             >
               {t('qa.askQuestion') || 'Ask a Question'}
             </button>
@@ -161,7 +161,7 @@ export default function ProductQA({ productId: _productId, productName }: Produc
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="text-orange-500 font-bold text-lg">Q:</span>
+                      <span className="text-primary-500 font-bold text-lg">Q:</span>
                       <span className="text-xs text-neutral-500">
                         {question.userName} • {new Date(question.createdAt).toLocaleDateString('en-CA', { 
                           year: 'numeric', month: 'short', day: 'numeric' 
@@ -197,11 +197,11 @@ export default function ProductQA({ productId: _productId, productName }: Produc
                             <span className="text-green-600 font-bold text-lg">A:</span>
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-2">
-                                <span className={`text-sm font-medium ${answer.isOfficial ? 'text-orange-600' : 'text-neutral-600'}`}>
+                                <span className={`text-sm font-medium ${answer.isOfficial ? 'text-primary-600' : 'text-neutral-600'}`}>
                                   {answer.userName}
                                 </span>
                                 {answer.isOfficial && (
-                                  <span className="px-2 py-0.5 bg-orange-100 text-orange-700 text-xs font-medium rounded-full">
+                                  <span className="px-2 py-0.5 bg-primary-100 text-primary-700 text-xs font-medium rounded-full">
                                     Official
                                   </span>
                                 )}
@@ -241,13 +241,13 @@ export default function ProductQA({ productId: _productId, productName }: Produc
                           onChange={(e) => setNewAnswer({ ...newAnswer, content: e.target.value })}
                           placeholder={t('qa.writeAnswer') || 'Write your answer...'}
                           rows={3}
-                          className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
+                          className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
                         />
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => handleSubmitAnswer(question.id)}
                             disabled={isSubmitting || !newAnswer.content.trim()}
-                            className="px-4 py-2 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 disabled:opacity-50"
+                            className="px-4 py-2 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 disabled:opacity-50"
                           >
                             {isSubmitting ? 'Submitting...' : t('qa.submitAnswer') || 'Submit Answer'}
                           </button>
@@ -262,12 +262,12 @@ export default function ProductQA({ productId: _productId, productName }: Produc
                     ) : session ? (
                       <button
                         onClick={() => setNewAnswer({ questionId: question.id, content: '' })}
-                        className="text-orange-600 hover:text-orange-700 font-medium"
+                        className="text-primary-600 hover:text-primary-700 font-medium"
                       >
                         + {t('qa.addAnswer') || 'Add an Answer'}
                       </button>
                     ) : (
-                      <Link href="/auth/signin" className="text-orange-600 hover:text-orange-700 font-medium">
+                      <Link href="/auth/signin" className="text-primary-600 hover:text-primary-700 font-medium">
                         {t('qa.signInToAnswer') || 'Sign in to answer'}
                       </Link>
                     )}
@@ -299,7 +299,7 @@ export default function ProductQA({ productId: _productId, productName }: Produc
                 <p className="text-neutral-600 mb-4">{t('qa.signInRequired') || 'Please sign in to ask a question'}</p>
                 <Link
                   href="/auth/signin"
-                  className="inline-block px-6 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600"
+                  className="inline-block px-6 py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600"
                 >
                   {t('qa.signIn') || 'Sign In'}
                 </Link>
@@ -313,7 +313,7 @@ export default function ProductQA({ productId: _productId, productName }: Produc
                     onChange={(e) => setNewQuestion(e.target.value)}
                     placeholder={t('qa.questionPlaceholder') || 'What would you like to know about this product?'}
                     rows={4}
-                    className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
+                    className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
                     required
                   />
                 </div>
@@ -331,7 +331,7 @@ export default function ProductQA({ productId: _productId, productName }: Produc
                 <button
                   type="submit"
                   disabled={isSubmitting || !newQuestion.trim()}
-                  className="w-full py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? (
                     <>

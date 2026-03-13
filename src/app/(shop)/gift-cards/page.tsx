@@ -104,7 +104,7 @@ export default function GiftCardsPage() {
             <h1 className="text-3xl font-bold mb-2">{t('shop.giftCard.created')}</h1>
             <p className="text-gray-600 mb-8">{t('shop.giftCard.readyToUse')}</p>
 
-            <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-8 text-white mb-8">
+            <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl p-8 text-white mb-8">
               <div className="text-sm font-medium mb-2 opacity-90">{t('shop.giftCard.giftCardLabel')}</div>
               <div className="text-4xl font-bold mb-6 font-mono tracking-wider">
                 {purchasedCard.code}
@@ -146,7 +146,7 @@ export default function GiftCardsPage() {
                 setRecipientEmail('');
                 setMessage('');
               }}
-              className="text-orange-600 hover:underline"
+              className="text-primary-600 hover:underline"
             >
               {t('shop.giftCard.purchaseAnother')}
             </button>
@@ -190,7 +190,7 @@ export default function GiftCardsPage() {
                     onClick={() => handleAmountChange(amount)}
                     className={`px-4 py-3 rounded-lg border-2 font-semibold transition-colors ${
                       selectedAmount === amount && !customAmount
-                        ? 'border-orange-500 bg-orange-50 text-orange-700'
+                        ? 'border-primary-500 bg-primary-50 text-primary-700'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
@@ -212,7 +212,7 @@ export default function GiftCardsPage() {
                     value={customAmount}
                     onChange={(e) => handleCustomAmountChange(e.target.value)}
                     placeholder={t('shop.giftCard.placeholderAmount')}
-                    className="w-full ps-8 pe-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full ps-8 pe-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                   />
                 </div>
               </div>
@@ -232,7 +232,7 @@ export default function GiftCardsPage() {
                     value={recipientName}
                     onChange={(e) => setRecipientName(e.target.value)}
                     placeholder={t('shop.giftCard.placeholderRecipientName')}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                   />
                 </div>
 
@@ -243,7 +243,7 @@ export default function GiftCardsPage() {
                     value={recipientEmail}
                     onChange={(e) => setRecipientEmail(e.target.value)}
                     placeholder={t('shop.giftCard.placeholderRecipientEmail')}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                   />
                 </div>
 
@@ -255,7 +255,7 @@ export default function GiftCardsPage() {
                     placeholder={t('shop.giftCard.placeholderMessage')}
                     rows={4}
                     maxLength={500}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
                   />
                   <p className="text-xs text-gray-500 mt-1">{message.length}/500 {t('shop.giftCard.characters')}</p>
                 </div>
@@ -265,7 +265,7 @@ export default function GiftCardsPage() {
             <button
               onClick={handlePurchase}
               disabled={isProcessing || finalAmount < 25 || finalAmount > 1000}
-              className="w-full px-6 py-4 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full px-6 py-4 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isProcessing ? (
                 <>
@@ -288,7 +288,7 @@ export default function GiftCardsPage() {
             <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
               <h3 className="text-lg font-bold mb-4">{t('shop.giftCard.preview')}</h3>
 
-              <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-8 text-white">
+              <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl p-8 text-white">
                 <div className="text-sm font-medium mb-2 opacity-90">{t('shop.giftCard.peptidePlusLabel')}</div>
                 <div className="text-sm font-medium mb-6 opacity-90">{t('shop.giftCard.giftCardLabel')}</div>
 

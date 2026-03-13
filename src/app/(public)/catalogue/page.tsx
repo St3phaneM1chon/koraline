@@ -160,7 +160,7 @@ export default async function CataloguePage({ searchParams }: CataloguePageProps
       {/* Header */}
       <section className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold font-heading text-gray-900 mb-2">
             Catalogue des Produits
           </h1>
           <p className="text-gray-600">
@@ -185,7 +185,7 @@ export default async function CataloguePage({ searchParams }: CataloguePageProps
                     name="search"
                     defaultValue={params.search}
                     placeholder="Rechercher..."
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   />
                 </form>
               </div>
@@ -199,7 +199,7 @@ export default async function CataloguePage({ searchParams }: CataloguePageProps
                       href="/catalogue"
                       className={`block px-3 py-2 rounded-lg text-sm ${
                         !params.category
-                          ? 'bg-orange-50 text-orange-700 font-medium'
+                          ? 'bg-primary-50 text-primary-700 font-medium'
                           : 'text-gray-600 hover:bg-gray-50'
                       }`}
                     >
@@ -216,7 +216,7 @@ export default async function CataloguePage({ searchParams }: CataloguePageProps
                           href={`/catalogue?category=${parent.slug}`}
                           className={`block px-3 py-2 rounded-lg text-sm font-medium ${
                             isParentSelected
-                              ? 'bg-orange-50 text-orange-700'
+                              ? 'bg-primary-50 text-primary-700'
                               : 'text-gray-800 hover:bg-gray-50'
                           }`}
                         >
@@ -235,7 +235,7 @@ export default async function CataloguePage({ searchParams }: CataloguePageProps
                                   href={`/catalogue?category=${child.slug}`}
                                   className={`block px-3 py-1.5 rounded-lg text-sm ${
                                     selectedSlug === child.slug
-                                      ? 'bg-orange-50 text-orange-700 font-medium'
+                                      ? 'bg-primary-50 text-primary-700 font-medium'
                                       : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'
                                   }`}
                                 >
@@ -263,7 +263,7 @@ export default async function CataloguePage({ searchParams }: CataloguePageProps
                       href={`/catalogue${params.category ? `?category=${params.category}` : ''}`}
                       className={`block px-3 py-2 rounded-lg text-sm ${
                         !params.type
-                          ? 'bg-orange-50 text-orange-700 font-medium'
+                          ? 'bg-primary-50 text-primary-700 font-medium'
                           : 'text-gray-600 hover:bg-gray-50'
                       }`}
                     >
@@ -276,7 +276,7 @@ export default async function CataloguePage({ searchParams }: CataloguePageProps
                         href={`/catalogue?type=${type}${params.category ? `&category=${params.category}` : ''}`}
                         className={`block px-3 py-2 rounded-lg text-sm ${
                           params.type === type
-                            ? 'bg-orange-50 text-orange-700 font-medium'
+                            ? 'bg-primary-50 text-primary-700 font-medium'
                             : 'text-gray-600 hover:bg-gray-50'
                         }`}
                       >
@@ -326,7 +326,7 @@ export default async function CataloguePage({ searchParams }: CataloguePageProps
                 <p className="text-gray-600 mb-4">
                   Essayez de modifier vos critères de recherche
                 </p>
-                <Link href="/catalogue" className="inline-block px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
+                <Link href="/catalogue" className="inline-block px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600">
                   Voir tous les produits
                 </Link>
               </div>

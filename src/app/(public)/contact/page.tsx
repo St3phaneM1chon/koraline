@@ -100,7 +100,7 @@ export default function ContactPage() {
           textAlign: 'center',
         }}
       >
-        <h1 style={{ fontSize: '36px', fontWeight: 700, marginBottom: '16px' }}>
+        <h1 className="font-heading" style={{ fontSize: '36px', fontWeight: 700, marginBottom: '16px' }}>
           {t('contact.title')}
         </h1>
         <p style={{ fontSize: '18px', color: '#d1d5db' }}>

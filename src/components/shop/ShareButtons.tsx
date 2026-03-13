@@ -149,7 +149,7 @@ export default function ShareButtons({ url, title, description }: ShareButtonsPr
       <div className="flex items-center gap-2">
         <button
           onClick={handleNativeShare}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-neutral-300 bg-white text-neutral-600 hover:border-orange-400 hover:text-orange-600 transition-colors text-sm"
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-neutral-300 bg-white text-neutral-600 hover:border-primary-400 hover:text-primary-600 transition-colors text-sm"
           aria-label={t('shop.aria.shareProduct')}
         >
           <Share2 className="w-4 h-4" />
@@ -192,7 +192,7 @@ export default function ShareButtons({ url, title, description }: ShareButtonsPr
         className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
           copied
             ? 'bg-green-500 text-white'
-            : 'bg-neutral-100 text-neutral-600 hover:bg-orange-500 hover:text-white'
+            : 'bg-neutral-100 text-neutral-600 hover:bg-primary-500 hover:text-white'
         }`}
       >
         {copied ? <Check className="w-4 h-4" /> : <Link2 className="w-4 h-4" />}

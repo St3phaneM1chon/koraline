@@ -162,8 +162,8 @@ export default function PriceDropButton({
           disabled={isLoading}
           className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border transition-all ${
             isWatching
-              ? 'bg-orange-50 border-orange-200 text-orange-600 hover:bg-orange-100'
-              : 'bg-white border-neutral-300 text-neutral-600 hover:border-orange-300 hover:text-orange-500'
+              ? 'bg-primary-50 border-primary-200 text-primary-600 hover:bg-primary-100'
+              : 'bg-white border-neutral-300 text-neutral-600 hover:border-primary-300 hover:text-primary-500'
           } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}
           title={isWatching ? 'Stop watching price' : 'Watch for price drops'}
         >
@@ -211,7 +211,7 @@ export default function PriceDropButton({
                     value={targetPrice}
                     onChange={(e) => setTargetPrice(e.target.value)}
                     placeholder={fmtPrice(currentPrice * 0.9)}
-                    className="w-full ps-7 pe-3 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    className="w-full ps-7 pe-3 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   />
                 </div>
                 <p className="text-xs text-neutral-400 mt-1">
@@ -228,7 +228,7 @@ export default function PriceDropButton({
                 <button
                   onClick={handleSetWatch}
                   disabled={isLoading}
-                  className="flex-1 px-3 py-2 text-sm bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50"
+                  className="flex-1 px-3 py-2 text-sm bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50"
                 >
                   {isLoading ? 'Setting...' : 'Set Alert'}
                 </button>
@@ -248,8 +248,8 @@ export default function PriceDropButton({
         disabled={isLoading}
         className={`w-9 h-9 rounded-full flex items-center justify-center transition-all shadow-sm ${
           isWatching
-            ? 'bg-orange-500 text-white hover:bg-orange-600'
-            : 'bg-white/90 text-neutral-500 hover:bg-white hover:text-orange-500'
+            ? 'bg-primary-500 text-white hover:bg-primary-600'
+            : 'bg-white/90 text-neutral-500 hover:bg-white hover:text-primary-500'
         } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}
         title={isWatching ? 'Stop watching price' : 'Watch for price drops'}
       >
@@ -290,7 +290,7 @@ export default function PriceDropButton({
                   value={targetPrice}
                   onChange={(e) => setTargetPrice(e.target.value)}
                   placeholder={fmtPrice(currentPrice * 0.9)}
-                  className="w-full ps-7 pe-3 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  className="w-full ps-7 pe-3 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 />
               </div>
               <p className="text-xs text-neutral-400 mt-1">
@@ -307,7 +307,7 @@ export default function PriceDropButton({
               <button
                 onClick={handleSetWatch}
                 disabled={isLoading}
-                className="flex-1 px-3 py-2 text-sm bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50"
+                className="flex-1 px-3 py-2 text-sm bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50"
               >
                 {isLoading ? 'Setting...' : 'Set Alert'}
               </button>

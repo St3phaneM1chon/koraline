@@ -104,7 +104,7 @@ export default function ProductVideo({ videoUrl }: ProductVideoProps) {
 
           {/* Play button overlay */}
           <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition-colors">
-            <div className="w-20 h-20 bg-orange-500 rounded-full flex items-center justify-center group-hover:bg-orange-600 transition-all transform group-hover:scale-110 shadow-2xl">
+            <div className="w-20 h-20 bg-primary-500 rounded-full flex items-center justify-center group-hover:bg-primary-600 transition-all transform group-hover:scale-110 shadow-2xl">
               <svg
                 className="w-10 h-10 text-white ms-1"
                 fill="currentColor"

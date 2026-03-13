@@ -66,7 +66,7 @@ const AVAILABILITY_COLORS: Record<string, { labelKey: string; color: string }> =
   DISCONTINUED: { labelKey: 'shop.discontinued', color: 'text-gray-500' },
   COMING_SOON: { labelKey: 'shop.comingSoon', color: 'text-blue-600' },
   PRE_ORDER: { labelKey: 'shop.preOrder', color: 'text-purple-600' },
-  LIMITED: { labelKey: 'shop.limitedStock', color: 'text-orange-600' },
+  LIMITED: { labelKey: 'shop.limitedStock', color: 'text-primary-600' },
 };
 
 export default function FormatDropdown({
@@ -131,9 +131,9 @@ export default function FormatDropdown({
                 disabled={!available}
                 className={`relative flex flex-col items-center gap-2 p-4 rounded-xl border-2 text-center transition-all ${
                   isSelected
-                    ? 'border-orange-500 bg-orange-50 shadow-sm'
+                    ? 'border-primary-500 bg-primary-50 shadow-sm'
                     : available
-                    ? 'border-neutral-200 hover:border-orange-300 bg-white hover:bg-neutral-50'
+                    ? 'border-neutral-200 hover:border-primary-300 bg-white hover:bg-neutral-50'
                     : 'border-neutral-200 bg-neutral-100 opacity-60 cursor-not-allowed'
                 }`}
               >
@@ -160,7 +160,7 @@ export default function FormatDropdown({
                 {/* Price */}
                 {showPrices && (
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-orange-600">{formatPrice(format.price)}</span>
+                    <span className="font-bold text-primary-600">{formatPrice(format.price)}</span>
                     {format.comparePrice && (
                       <span className="text-xs text-neutral-400 line-through">
                         {formatPrice(format.comparePrice)}
@@ -178,7 +178,7 @@ export default function FormatDropdown({
 
                 {/* Selected indicator */}
                 {isSelected && (
-                  <div className="absolute top-2 end-2 w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
+                  <div className="absolute top-2 end-2 w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center">
                     <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
@@ -200,7 +200,7 @@ export default function FormatDropdown({
       {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full mt-1 flex items-center justify-between gap-2 px-3 py-2.5 border border-neutral-300 rounded-lg bg-white hover:border-orange-400 transition-colors"
+        className="w-full mt-1 flex items-center justify-between gap-2 px-3 py-2.5 border border-neutral-300 rounded-lg bg-white hover:border-primary-400 transition-colors"
       >
         <div className="flex items-center gap-3">
           {/* Selected Format Image/Icon */}
@@ -224,7 +224,7 @@ export default function FormatDropdown({
           <div className="text-start min-w-0">
             <p className="text-sm font-medium text-neutral-900 truncate">{selectedFormat.name}</p>
             {showPrices && (
-              <p className="text-sm text-orange-600 font-bold">{formatPrice(selectedFormat.price)}</p>
+              <p className="text-sm text-primary-600 font-bold">{formatPrice(selectedFormat.price)}</p>
             )}
           </div>
         </div>
@@ -260,7 +260,7 @@ export default function FormatDropdown({
                 disabled={!available}
                 className={`w-full flex items-center gap-3 px-3 py-3 text-start transition-colors border-b border-neutral-100 last:border-0 ${
                   isSelected
-                    ? 'bg-orange-50'
+                    ? 'bg-primary-50'
                     : available
                     ? 'hover:bg-neutral-50'
                     : 'opacity-50 cursor-not-allowed bg-neutral-50'
@@ -289,7 +289,7 @@ export default function FormatDropdown({
                   <div className="flex items-center gap-2 mt-0.5">
                     {showPrices && (
                       <>
-                        <span className="text-sm text-orange-600 font-bold">{formatPrice(format.price)}</span>
+                        <span className="text-sm text-primary-600 font-bold">{formatPrice(format.price)}</span>
                         {format.comparePrice && (
                           <span className="text-xs text-neutral-400 line-through">
                             {formatPrice(format.comparePrice)}
@@ -306,7 +306,7 @@ export default function FormatDropdown({
                 {/* Right Side - Stock Status or Check */}
                 <div className="flex-shrink-0">
                   {isSelected ? (
-                    <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
+                    <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center">
                       <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
@@ -316,7 +316,7 @@ export default function FormatDropdown({
                       {availInfo.label}
                     </span>
                   ) : format.stockQuantity <= 10 ? (
-                    <span className="text-xs text-orange-600 font-medium">
+                    <span className="text-xs text-primary-600 font-medium">
                       {t('shop.stockLeft').replace('{count}', String(format.stockQuantity))}
                     </span>
                   ) : null}

@@ -46,7 +46,7 @@ export default function ReviewImageGallery({ images }: ReviewImageGalleryProps) 
           <button
             key={index}
             onClick={() => openLightbox(index)}
-            className="relative w-20 h-20 rounded-lg overflow-hidden border border-neutral-200 hover:border-orange-400 transition-colors cursor-pointer group"
+            className="relative w-20 h-20 rounded-lg overflow-hidden border border-neutral-200 hover:border-primary-400 transition-colors cursor-pointer group"
           >
             {/* A-049: Lazy loading with Next.js optimization (removed unoptimized) */}
             <Image

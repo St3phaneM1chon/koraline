@@ -168,7 +168,7 @@ export default function ProfilePage() {
   if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
       </div>
     );
   }
@@ -190,7 +190,7 @@ export default function ProfilePage() {
         {/* Header */}
         <div className="mb-8">
           <nav className="text-sm text-gray-500 mb-2">
-            <Link href="/" className="hover:text-orange-600">{t('nav.home')}</Link>
+            <Link href="/" className="hover:text-primary-600">{t('nav.home')}</Link>
             <span className="mx-2">/</span>
             <span className="text-gray-900">{t('account.myProfile')}</span>
           </nav>
@@ -219,8 +219,8 @@ export default function ProfilePage() {
                     {profile?.image ? (
                       <Image src={profile.image} alt={profile.name || ''} className="w-full h-full object-cover" width={128} height={128} />
                     ) : (
-                      <div className="w-full h-full bg-orange-100 flex items-center justify-center">
-                        <span className="text-2xl font-bold text-orange-600">
+                      <div className="w-full h-full bg-primary-100 flex items-center justify-center">
+                        <span className="text-2xl font-bold text-primary-600">
                           {(profile?.name || session.user?.name || 'U')[0].toUpperCase()}
                         </span>
                       </div>
@@ -260,7 +260,7 @@ export default function ProfilePage() {
           {/* Stats */}
           <div className="grid grid-cols-2 divide-x divide-gray-200 bg-gray-50">
             <div className="p-4 text-center">
-              <p className="text-2xl font-bold text-orange-600">{profile?.loyaltyPoints || 0}</p>
+              <p className="text-2xl font-bold text-primary-600">{profile?.loyaltyPoints || 0}</p>
               <p className="text-sm text-gray-500">{t('account.loyaltyPoints')}</p>
             </div>
             <div className="p-4 text-center">
@@ -277,7 +277,7 @@ export default function ProfilePage() {
             {!editMode && (
               <button
                 onClick={() => setEditMode(true)}
-                className="text-orange-600 hover:text-orange-700 font-medium text-sm"
+                className="text-primary-600 hover:text-primary-700 font-medium text-sm"
               >
                 {t('account.edit')}
               </button>
@@ -295,7 +295,7 @@ export default function ProfilePage() {
                     type="text"
                     value={formData.name}
                     onChange={(e) => { setFormData({ ...formData, name: e.target.value }); clearFieldError('name'); }}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${formErrors.name ? 'border-red-500' : 'border-gray-300'}`}
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 ${formErrors.name ? 'border-red-500' : 'border-gray-300'}`}
                   />
                   <FormError error={formErrors.name} />
                 </>
@@ -323,7 +323,7 @@ export default function ProfilePage() {
                     value={formData.phone}
                     onChange={(e) => { setFormData({ ...formData, phone: e.target.value }); clearFieldError('phone'); }}
                     placeholder="+1 (514) 123-4567"
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${formErrors.phone ? 'border-red-500' : 'border-gray-300'}`}
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 ${formErrors.phone ? 'border-red-500' : 'border-gray-300'}`}
                   />
                   <FormError error={formErrors.phone} />
                 </>
@@ -341,7 +341,7 @@ export default function ProfilePage() {
                   type="date"
                   value={formData.birthDate}
                   onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 />
               ) : (
                 <p className="text-gray-900">
@@ -362,7 +362,7 @@ export default function ProfilePage() {
                   <select
                     value={formData.locale}
                     onChange={(e) => { setFormData({ ...formData, locale: e.target.value }); clearFieldError('locale'); }}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${formErrors.locale ? 'border-red-500' : 'border-gray-300'}`}
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 ${formErrors.locale ? 'border-red-500' : 'border-gray-300'}`}
                   >
                     <option value="fr">{t('account.languageFrench')}</option>
                     <option value="en">{t('account.languageEnglish')}</option>
@@ -379,7 +379,7 @@ export default function ProfilePage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="flex-1 bg-orange-500 hover:bg-orange-600 disabled:bg-orange-300 text-white py-3 rounded-lg font-medium transition-colors"
+                  className="flex-1 bg-primary-500 hover:bg-primary-600 disabled:bg-primary-300 text-white py-3 rounded-lg font-medium transition-colors"
                 >
                   {saving ? t('account.saving') : t('account.save')}
                 </button>

@@ -10,35 +10,70 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Transformative Teal — primary brand color
+        // BioGreen — primary brand color (from logo)
         primary: {
-          50: '#F0FDFA',
-          100: '#CCFBF1',
-          200: '#99F6E4',
-          300: '#5EEAD4',
-          400: '#2DD4BF',
-          500: '#14B8A6',
-          600: '#0D9488',
-          700: '#0F766E',
-          800: '#115E59',
-          900: '#134E4A',
-          950: '#042F2E',
+          50: '#F0FFF4',
+          100: '#C6F6D5',
+          200: '#9AE6B4',
+          300: '#68D391',
+          400: '#48BB78',
+          500: '#38A169',
+          600: '#2F855A',
+          700: '#276749',
+          800: '#22543D',
+          900: '#1C4532',
+          950: '#0F2918',
         },
-        // Indigo — secondary / accent
+        // BioCyan — secondary / molecular accent
         secondary: {
-          50: '#EEF2FF',
-          100: '#E0E7FF',
-          200: '#C7D2FE',
-          300: '#A5B4FC',
-          400: '#818CF8',
-          500: '#6366F1',
-          600: '#4F46E5',
-          700: '#4338CA',
-          800: '#3730A3',
-          900: '#312E81',
-          950: '#1E1B4B',
+          50: '#E6FFFA',
+          100: '#B2F5EA',
+          200: '#81E6D9',
+          300: '#4FD1C5',
+          400: '#38B2AC',
+          500: '#319795',
+          600: '#2C7A7B',
+          700: '#285E61',
+          800: '#234E52',
+          900: '#1D4044',
+          950: '#0F2B2D',
         },
-        // Orange brule — alerts / warnings
+        // BioBlue — trust / info accent
+        accent: {
+          50: '#EBF8FF',
+          100: '#BEE3F8',
+          200: '#90CDF4',
+          300: '#63B3ED',
+          400: '#4299E1',
+          500: '#3182CE',
+          600: '#2B6CB0',
+          700: '#2C5282',
+          800: '#2A4365',
+          900: '#1A365D',
+          950: '#0F1F3D',
+        },
+        // Navy — deep dark sections (replaces black)
+        navy: {
+          700: '#1E3A5F',
+          800: '#1A365D',
+          900: '#0F2440',
+          950: '#0A1628',
+        },
+        // Warm Gray — neutral tones
+        neutral: {
+          50: '#FAFAF9',
+          100: '#F5F5F4',
+          200: '#E7E5E4',
+          300: '#D6D3D1',
+          400: '#A8A29E',
+          500: '#78716C',
+          600: '#57534E',
+          700: '#44403C',
+          800: '#292524',
+          900: '#1C1917',
+          950: '#0C0A09',
+        },
+        // Orange kept ONLY for star ratings (amber-400 equivalent)
         orange: {
           50: '#FEF3EB',
           100: '#FDE0C8',
@@ -55,8 +90,9 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        heading: ['var(--font-dm-serif)', 'Georgia', 'serif'],
       },
-      // #66: Shimmer animation defined as Tailwind utility
+      // Keyframes & animations
       keyframes: {
         shimmer: {
           '0%': { transform: 'translateX(-100%)' },
@@ -78,6 +114,24 @@ const config: Config = {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-6px)' },
         },
+        'molecule-float': {
+          '0%, 100%': { transform: 'translateY(0) rotate(0deg)', opacity: '0.06' },
+          '25%': { transform: 'translateY(-12px) rotate(3deg)', opacity: '0.1' },
+          '50%': { transform: 'translateY(-6px) rotate(-2deg)', opacity: '0.08' },
+          '75%': { transform: 'translateY(-18px) rotate(1deg)', opacity: '0.05' },
+        },
+        'glow-pulse': {
+          '0%, 100%': { boxShadow: '0 0 8px rgba(56, 161, 105, 0.3)' },
+          '50%': { boxShadow: '0 0 20px rgba(56, 161, 105, 0.6)' },
+        },
+        'fade-scale-in': {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        'slide-up-stagger': {
+          '0%': { opacity: '0', transform: 'translateY(24px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
       },
       animation: {
         shimmer: 'shimmer 3s infinite',
@@ -85,6 +139,10 @@ const config: Config = {
         'slide-in-left': 'slide-in-left 200ms ease-out',
         'fade-in': 'fade-in 150ms ease-out',
         'bounce-gentle': 'bounce-gentle 2s ease-in-out infinite',
+        'molecule-float': 'molecule-float 8s ease-in-out infinite',
+        'glow-pulse': 'glow-pulse 3s ease-in-out infinite',
+        'fade-scale-in': 'fade-scale-in 0.4s ease-out both',
+        'slide-up-stagger': 'slide-up-stagger 0.5s ease-out both',
       },
     },
   },

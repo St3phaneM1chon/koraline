@@ -16,15 +16,15 @@ export default function MissionPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="bg-gradient-to-br from-orange-600 to-orange-700 text-white py-20 px-6 text-center">
+      <section className="bg-gradient-to-br from-primary-600 to-primary-700 text-white py-20 px-6 text-center">
         <div className="max-w-3xl mx-auto">
           <Link href="/a-propos" className="text-white/80 hover:text-white text-sm transition-colors">
             &larr; {t('about.backToAbout')}
           </Link>
-          <h1 className="text-4xl md:text-5xl font-bold mt-6 mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold font-heading mt-6 mb-6">
             {t('about.mission.title')}
           </h1>
-          <p className="text-xl leading-relaxed text-orange-100">
+          <p className="text-xl leading-relaxed text-primary-100">
             {t('about.mission.subtitle')}
           </p>
         </div>
@@ -51,7 +51,7 @@ export default function MissionPage() {
           <div className="flex flex-col gap-5">
             {objectives.map((obj) => (
               <div key={obj.number} className="flex gap-5 p-6 bg-gray-50 rounded-xl">
-                <div className="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold shrink-0">
+                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold shrink-0">
                   {obj.number}
                 </div>
                 <div>

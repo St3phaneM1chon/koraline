@@ -236,7 +236,7 @@ export default function SettingsPage() {
   if (status === 'loading') {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
       </div>
     );
   }
@@ -254,7 +254,7 @@ export default function SettingsPage() {
       {/* Header */}
       <section className="bg-gradient-to-br from-neutral-900 via-neutral-800 to-black text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link href="/account" className="inline-flex items-center gap-2 text-orange-400 hover:text-orange-300 mb-4">
+          <Link href="/account" className="inline-flex items-center gap-2 text-primary-400 hover:text-primary-300 mb-4">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
@@ -273,7 +273,7 @@ export default function SettingsPage() {
               onClick={() => { setActiveTab('profile'); setMessage(null); }}
               className={`flex-1 py-4 px-4 text-sm font-medium transition-colors ${
                 activeTab === 'profile'
-                  ? 'text-orange-600 border-b-2 border-orange-500 -mb-px'
+                  ? 'text-primary-600 border-b-2 border-primary-500 -mb-px'
                   : 'text-neutral-500 hover:text-neutral-700'
               }`}
             >
@@ -288,7 +288,7 @@ export default function SettingsPage() {
               onClick={() => { setActiveTab('password'); setMessage(null); }}
               className={`flex-1 py-4 px-4 text-sm font-medium transition-colors ${
                 activeTab === 'password'
-                  ? 'text-orange-600 border-b-2 border-orange-500 -mb-px'
+                  ? 'text-primary-600 border-b-2 border-primary-500 -mb-px'
                   : 'text-neutral-500 hover:text-neutral-700'
               }`}
             >
@@ -303,7 +303,7 @@ export default function SettingsPage() {
               onClick={() => { setActiveTab('address'); setMessage(null); }}
               className={`flex-1 py-4 px-4 text-sm font-medium transition-colors ${
                 activeTab === 'address'
-                  ? 'text-orange-600 border-b-2 border-orange-500 -mb-px'
+                  ? 'text-primary-600 border-b-2 border-primary-500 -mb-px'
                   : 'text-neutral-500 hover:text-neutral-700'
               }`}
             >
@@ -319,7 +319,7 @@ export default function SettingsPage() {
               onClick={() => { setActiveTab('security'); setMessage(null); }}
               className={`flex-1 py-4 px-4 text-sm font-medium transition-colors ${
                 activeTab === 'security'
-                  ? 'text-orange-600 border-b-2 border-orange-500 -mb-px'
+                  ? 'text-primary-600 border-b-2 border-primary-500 -mb-px'
                   : 'text-neutral-500 hover:text-neutral-700'
               } ${mfaRequired && !session?.user?.mfaEnabled ? 'animate-pulse bg-red-50' : ''}`}
             >
@@ -367,7 +367,7 @@ export default function SettingsPage() {
                     type="text"
                     value={profileData.name}
                     onChange={(e) => { setProfileData({ ...profileData, name: e.target.value }); clearProfileError('name'); }}
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent ${profileErrors.name ? 'border-red-500' : 'border-neutral-300'}`}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${profileErrors.name ? 'border-red-500' : 'border-neutral-300'}`}
                     placeholder={t('account.settingsForm.placeholderName')}
                   />
                   <FormError error={profileErrors.name} />
@@ -396,7 +396,7 @@ export default function SettingsPage() {
                     type="tel"
                     value={profileData.phone}
                     onChange={(e) => { setProfileData({ ...profileData, phone: e.target.value }); clearProfileError('phone'); }}
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent ${profileErrors.phone ? 'border-red-500' : 'border-neutral-300'}`}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${profileErrors.phone ? 'border-red-500' : 'border-neutral-300'}`}
                     placeholder="+1 (555) 123-4567"
                   />
                   <FormError error={profileErrors.phone} />
@@ -405,7 +405,7 @@ export default function SettingsPage() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
                     <>
@@ -443,7 +443,7 @@ export default function SettingsPage() {
                         type="password"
                         value={passwordData.currentPassword}
                         onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
-                        className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         placeholder="••••••••"
                         required
                       />
@@ -457,7 +457,7 @@ export default function SettingsPage() {
                         type="password"
                         value={passwordData.newPassword}
                         onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                        className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         placeholder="••••••••"
                         required
                         minLength={12}
@@ -475,7 +475,7 @@ export default function SettingsPage() {
                         type="password"
                         value={passwordData.confirmPassword}
                         onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
-                        className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         placeholder="••••••••"
                         required
                       />
@@ -484,7 +484,7 @@ export default function SettingsPage() {
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="w-full py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      className="w-full py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                       {isLoading ? (
                         <>
@@ -510,7 +510,7 @@ export default function SettingsPage() {
                     type="text"
                     value={addressData.address}
                     onChange={(e) => setAddressData({ ...addressData, address: e.target.value })}
-                    className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="123 Main Street, Apt 4"
                   />
                 </div>
@@ -524,7 +524,7 @@ export default function SettingsPage() {
                       type="text"
                       value={addressData.city}
                       onChange={(e) => setAddressData({ ...addressData, city: e.target.value })}
-                      className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       placeholder={t('account.settingsForm.placeholderCity')}
                     />
                   </div>
@@ -536,7 +536,7 @@ export default function SettingsPage() {
                       type="text"
                       value={addressData.province}
                       onChange={(e) => setAddressData({ ...addressData, province: e.target.value })}
-                      className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       placeholder={t('account.settingsForm.placeholderProvince')}
                     />
                   </div>
@@ -551,7 +551,7 @@ export default function SettingsPage() {
                       type="text"
                       value={addressData.postalCode}
                       onChange={(e) => setAddressData({ ...addressData, postalCode: e.target.value })}
-                      className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       placeholder={t('account.settingsForm.placeholderPostalCode')}
                     />
                   </div>
@@ -562,7 +562,7 @@ export default function SettingsPage() {
                     <select
                       value={addressData.country}
                       onChange={(e) => setAddressData({ ...addressData, country: e.target.value })}
-                      className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     >
                       <option value="Canada">Canada</option>
                       <option value="United States">United States</option>
@@ -573,7 +573,7 @@ export default function SettingsPage() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
                     <>
@@ -652,7 +652,7 @@ export default function SettingsPage() {
                           }
                         }}
                         disabled={mfaSetupLoading}
-                        className="w-full py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                        className="w-full py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                       >
                         {mfaSetupLoading ? (
                           <>
@@ -685,7 +685,7 @@ export default function SettingsPage() {
                             type="text"
                             value={mfaVerifyCode}
                             onChange={(e) => setMfaVerifyCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                            className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-center text-2xl tracking-widest"
+                            className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-center text-2xl tracking-widest"
                             placeholder="000000"
                             maxLength={6}
                           />

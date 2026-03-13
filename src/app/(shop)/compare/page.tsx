@@ -193,7 +193,7 @@ function ComparePageContent() {
           <p className="text-neutral-600 mb-8">{t('compare.noProductsDesc')}</p>
           <Link
             href="/shop"
-            className="inline-block bg-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors"
+            className="inline-block bg-primary-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-600 transition-colors"
           >
             {t('compare.browseProducts')}
           </Link>
@@ -226,7 +226,7 @@ function ComparePageContent() {
           <p className="text-red-600 font-medium">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="mt-4 text-orange-500 hover:text-orange-600 font-medium"
+            className="mt-4 text-primary-500 hover:text-primary-600 font-medium"
           >
             {t('common.tryAgain')}
           </button>
@@ -302,7 +302,7 @@ function ComparePageContent() {
                 <td key={product.slug} className="py-3 px-4 text-center">
                   <Link
                     href={`/product/${product.slug}`}
-                    className="font-semibold text-neutral-900 hover:text-orange-600"
+                    className="font-semibold text-neutral-900 hover:text-primary-600"
                   >
                     {product.name}
                   </Link>
@@ -319,7 +319,7 @@ function ComparePageContent() {
               {products.map((product) => (
                 <td key={product.slug} className="py-3 px-4 text-center">
                   <div className="flex flex-col items-center gap-1">
-                    <span className="text-orange-600 font-bold text-lg">
+                    <span className="text-primary-600 font-bold text-lg">
                       {formatPrice(product.price)}
                     </span>
                     {product.compareAtPrice && product.compareAtPrice > product.price && (
@@ -349,7 +349,7 @@ function ComparePageContent() {
                 <td key={product.slug} className="py-3 px-4 text-center">
                   <Link
                     href={`/shop?category=${product.category.slug}`}
-                    className="text-neutral-600 hover:text-orange-600"
+                    className="text-neutral-600 hover:text-primary-600"
                   >
                     {product.category.name}
                   </Link>
@@ -466,7 +466,7 @@ function ComparePageContent() {
                         href={product.certificateUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs text-orange-600 hover:underline flex items-center gap-1"
+                        className="text-xs text-primary-600 hover:underline flex items-center gap-1"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -479,7 +479,7 @@ function ComparePageContent() {
                         href={product.dataSheetUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs text-orange-600 hover:underline flex items-center gap-1"
+                        className="text-xs text-primary-600 hover:underline flex items-center gap-1"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -507,7 +507,7 @@ function ComparePageContent() {
                       disabled={!hasStock}
                       className={`w-full py-2 px-4 rounded-lg font-semibold transition-colors ${
                         hasStock
-                          ? 'bg-orange-500 text-white hover:bg-orange-600'
+                          ? 'bg-primary-500 text-white hover:bg-primary-600'
                           : 'bg-neutral-300 text-neutral-500 cursor-not-allowed'
                       }`}
                     >
@@ -557,7 +557,7 @@ function ComparePageContent() {
               <div className="space-y-2 text-sm mb-4">
                 <div className="flex justify-between">
                   <span className="text-neutral-600">{t('compare.price')}:</span>
-                  <span className="font-bold text-orange-600">{formatPrice(product.price)}</span>
+                  <span className="font-bold text-primary-600">{formatPrice(product.price)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-neutral-600">{t('compare.category')}:</span>
@@ -585,7 +585,7 @@ function ComparePageContent() {
                 disabled={!hasStock}
                 className={`w-full py-3 px-4 rounded-lg font-semibold transition-colors ${
                   hasStock
-                    ? 'bg-orange-500 text-white hover:bg-orange-600'
+                    ? 'bg-primary-500 text-white hover:bg-primary-600'
                     : 'bg-neutral-300 text-neutral-500 cursor-not-allowed'
                 }`}
               >

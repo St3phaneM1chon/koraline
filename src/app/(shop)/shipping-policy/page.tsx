@@ -26,7 +26,7 @@ export default function ShippingPolicyPage() {
           {/* Processing Time */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-              <span className="text-orange-500">📦</span>
+              <span className="text-primary-500">📦</span>
               {t('legal.shipping.processing.title')}
             </h2>
             <div className="prose prose-gray max-w-none">
@@ -42,7 +42,7 @@ export default function ShippingPolicyPage() {
           {/* Shipping Options */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-              <span className="text-orange-500">🚚</span>
+              <span className="text-primary-500">🚚</span>
               {t('legal.shipping.options.title')}
             </h2>
 
@@ -155,7 +155,7 @@ export default function ShippingPolicyPage() {
           {/* Packaging */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-              <span className="text-orange-500">📋</span>
+              <span className="text-primary-500">📋</span>
               {t('legal.shipping.packaging.title')}
             </h2>
             <div className="prose prose-gray max-w-none">
@@ -171,7 +171,7 @@ export default function ShippingPolicyPage() {
           {/* Tracking */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-              <span className="text-orange-500">📍</span>
+              <span className="text-primary-500">📍</span>
               {t('legal.shipping.tracking.title')}
             </h2>
             <div className="prose prose-gray max-w-none">
@@ -182,7 +182,7 @@ export default function ShippingPolicyPage() {
                 <li>{t('legal.shipping.tracking.item3')}</li>
               </ul>
               <p className="mt-4">
-                <Link href="/track-order" className="text-orange-600 hover:underline font-medium">
+                <Link href="/track-order" className="text-primary-600 hover:underline font-medium">
                   {t('legal.shipping.tracking.trackOrderLink')}
                 </Link>
               </p>
@@ -192,7 +192,7 @@ export default function ShippingPolicyPage() {
           {/* Customs */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-              <span className="text-orange-500">🛃</span>
+              <span className="text-primary-500">🛃</span>
               {t('legal.shipping.customs.title')}
             </h2>
             <div className="prose prose-gray max-w-none">
@@ -209,7 +209,7 @@ export default function ShippingPolicyPage() {
           {/* Lost/Damaged */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-              <span className="text-orange-500">⚠️</span>
+              <span className="text-primary-500">⚠️</span>
               {t('legal.shipping.lostDamaged.title')}
             </h2>
             <div className="prose prose-gray max-w-none">
@@ -223,7 +223,7 @@ export default function ShippingPolicyPage() {
           </section>
 
           {/* Contact */}
-          <section className="bg-orange-50 rounded-xl p-6">
+          <section className="bg-primary-50 rounded-xl p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-2">{t('legal.shipping.contact.title')}</h2>
             <p className="text-gray-600 mb-4">
               {t('legal.shipping.contact.description')}
@@ -231,7 +231,7 @@ export default function ShippingPolicyPage() {
             <div className="flex flex-wrap gap-4">
               <Link
                 href="/contact"
-                className="inline-flex items-center px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors"
+                className="inline-flex items-center px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors"
               >
                 {t('legal.shipping.contact.contactSupport')}
               </Link>

@@ -51,7 +51,7 @@ const getFallbackCategories = (t: (key: string) => string): Category[] => [
   { id: 'general', name: t('community.general') || 'General', slug: 'general', icon: '\u{1F5E3}\u{FE0F}', color: 'bg-blue-100 text-blue-700' },
   { id: 'research', name: t('community.research') || 'Research', slug: 'research', icon: '\u{1F52C}', color: 'bg-purple-100 text-purple-700' },
   { id: 'howto', name: t('community.howto') || 'How-To', slug: 'howto', icon: '\u{1F4D6}', color: 'bg-green-100 text-green-700' },
-  { id: 'results', name: t('community.results') || 'Results & Experiences', slug: 'results', icon: '\u{1F4CA}', color: 'bg-orange-100 text-orange-700' },
+  { id: 'results', name: t('community.results') || 'Results & Experiences', slug: 'results', icon: '\u{1F4CA}', color: 'bg-primary-100 text-primary-700' },
   { id: 'support', name: t('community.support') || 'Support', slug: 'support', icon: '\u{1F198}', color: 'bg-red-100 text-red-700' },
 ];
 
@@ -731,7 +731,7 @@ export default function CommunityPage() {
                                   <span className="text-sm font-medium">{post.userName}</span>
                                   {post.userBadge && (
                                     <span className={`text-xs px-2 py-0.5 rounded-full ${
-                                      post.userBadge === 'Official' ? 'bg-orange-100 text-orange-700' :
+                                      post.userBadge === 'Official' ? 'bg-primary-100 text-primary-700' :
                                       post.userBadge === 'Platinum Member' ? 'bg-purple-100 text-purple-700' :
                                       post.userBadge === 'Gold Member' ? 'bg-yellow-100 text-yellow-700' :
                                       'bg-neutral-100 text-neutral-700'

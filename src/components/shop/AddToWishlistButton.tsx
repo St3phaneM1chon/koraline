@@ -214,7 +214,7 @@ export default function AddToWishlistButton({
                 <button
                   key={collection.id}
                   onClick={() => addToWishlist(collection.id)}
-                  className="w-full px-4 py-3 text-start hover:bg-orange-50 transition-colors flex items-center justify-between"
+                  className="w-full px-4 py-3 text-start hover:bg-primary-50 transition-colors flex items-center justify-between"
                 >
                   <div>
                     <div className="font-medium text-sm text-gray-900">
@@ -239,7 +239,7 @@ export default function AddToWishlistButton({
                   setShowDropdown(false);
                   router.push('/account/wishlist');
                 }}
-                className="w-full px-3 py-2 text-sm text-orange-600 hover:bg-orange-50 rounded transition-colors"
+                className="w-full px-3 py-2 text-sm text-primary-600 hover:bg-primary-50 rounded transition-colors"
               >
                 {t('account.wishlistModals.manageWishlists')}
               </button>
@@ -258,7 +258,7 @@ export default function AddToWishlistButton({
         className={`px-6 py-3 rounded-lg font-semibold transition-all flex items-center gap-2 ${
           isInAnyWishlist
             ? 'bg-red-50 border-2 border-red-300 text-red-600 hover:bg-red-100'
-            : 'bg-white border-2 border-gray-200 text-gray-700 hover:border-orange-300 hover:text-orange-600'
+            : 'bg-white border-2 border-gray-200 text-gray-700 hover:border-primary-300 hover:text-primary-600'
         }`}
       >
         {isAdding ? (
@@ -296,7 +296,7 @@ export default function AddToWishlistButton({
               <button
                 key={collection.id}
                 onClick={() => addToWishlist(collection.id)}
-                className="w-full px-4 py-3 text-start hover:bg-orange-50 transition-colors"
+                className="w-full px-4 py-3 text-start hover:bg-primary-50 transition-colors"
               >
                 <div className="font-medium text-sm text-gray-900">
                   {collection.name}
@@ -314,7 +314,7 @@ export default function AddToWishlistButton({
                 setShowDropdown(false);
                 router.push('/account/wishlist');
               }}
-              className="w-full px-3 py-2 text-sm text-orange-600 hover:bg-orange-50 rounded transition-colors"
+              className="w-full px-3 py-2 text-sm text-primary-600 hover:bg-primary-50 rounded transition-colors"
             >
               Manage wishlists
             </button>

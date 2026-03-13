@@ -50,7 +50,7 @@ export default function QuantityTiers({
   , sortedTiers[0]);
 
   return (
-    <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-lg border border-orange-200 p-4">
+    <div className="bg-gradient-to-br from-primary-50 to-amber-50 rounded-lg border border-primary-200 p-4">
       <h3 className="font-semibold text-neutral-800 mb-3 flex items-center gap-2">
         <span className="text-lg">💰</span>
         {t('shop.bulkPricing') || 'Bulk Pricing'}
@@ -61,7 +61,7 @@ export default function QuantityTiers({
         {sortedTiers[0]?.minQty > 1 && (
           <div className={`bg-white rounded-lg p-3 border transition-all ${
             currentQuantity === 1
-              ? 'border-orange-500 ring-2 ring-orange-200 shadow-sm'
+              ? 'border-primary-500 ring-2 ring-primary-200 shadow-sm'
               : 'border-neutral-200'
           }`}>
             <div className="flex items-center justify-between">
@@ -92,7 +92,7 @@ export default function QuantityTiers({
               key={tier.id}
               className={`bg-white rounded-lg p-3 border transition-all ${
                 isActive
-                  ? 'border-orange-500 ring-2 ring-orange-200 shadow-sm'
+                  ? 'border-primary-500 ring-2 ring-primary-200 shadow-sm'
                   : 'border-neutral-200'
               }`}
             >
@@ -114,7 +114,7 @@ export default function QuantityTiers({
                   </p>
                 </div>
                 <div className="text-end">
-                  <p className="font-bold text-orange-600">
+                  <p className="font-bold text-primary-600">
                     {formatPrice(discountedPrice)}
                   </p>
                   <p className="text-xs text-neutral-400 line-through">
@@ -127,7 +127,7 @@ export default function QuantityTiers({
         })}
       </div>
 
-      <div className="mt-3 pt-3 border-t border-orange-200">
+      <div className="mt-3 pt-3 border-t border-primary-200">
         <p className="text-xs text-neutral-600 text-center">
           💡 {t('shop.bulkPricingNote') || 'Buy more to save more! Discounts apply automatically.'}
         </p>

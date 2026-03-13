@@ -93,7 +93,7 @@ export default function AccountConsentsPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-          <FileCheck className="h-6 w-6 text-orange-600" />
+          <FileCheck className="h-6 w-6 text-primary-600" />
           {t('account.consents.title')}
         </h1>
         <p className="text-gray-500 mt-1">
@@ -104,7 +104,7 @@ export default function AccountConsentsPage() {
       {/* Consent List */}
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-8 w-8 animate-spin text-orange-600" />
+          <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
         </div>
       ) : consents.length === 0 ? (
         <div className="text-center py-20 bg-gray-50 rounded-xl">
@@ -133,7 +133,7 @@ export default function AccountConsentsPage() {
                       <Video className="h-4 w-4 text-gray-400 shrink-0" />
                       <Link
                         href={`/videos/${consent.video.slug}`}
-                        className="text-sm font-medium text-orange-600 hover:underline truncate"
+                        className="text-sm font-medium text-primary-600 hover:underline truncate"
                       >
                         {consent.video.title}
                       </Link>

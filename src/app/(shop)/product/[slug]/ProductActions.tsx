@@ -50,7 +50,7 @@ export default function ProductActions({
           addedToCart
             ? 'bg-green-600 text-white'
             : selectedFormatInStock
-            ? 'bg-orange-500 text-white hover:bg-orange-600'
+            ? 'bg-primary-500 text-white hover:bg-primary-600'
             : 'bg-neutral-300 text-neutral-500 cursor-not-allowed'
         }`}
       >

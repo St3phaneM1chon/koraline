@@ -67,7 +67,7 @@ export default function CareersPage() {
         }}
       >
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <h1 style={{ fontSize: '42px', fontWeight: 700, marginBottom: '24px' }}>
+          <h1 className="font-heading" style={{ fontSize: '42px', fontWeight: 700, marginBottom: '24px' }}>
             Rejoignez notre équipe
           </h1>
           <p style={{ fontSize: '18px', opacity: 0.9, lineHeight: 1.7 }}>

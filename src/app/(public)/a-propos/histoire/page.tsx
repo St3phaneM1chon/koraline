@@ -11,9 +11,9 @@ export default function HistoirePage() {
       year: '2023',
       titleKey: 'about.history.year2023Title',
       descKey: 'about.history.year2023Desc',
-      color: 'bg-orange-600',
-      ring: 'ring-orange-600',
-      badge: 'bg-orange-600',
+      color: 'bg-primary-600',
+      ring: 'ring-primary-600',
+      badge: 'bg-primary-600',
     },
     {
       year: '2024',
@@ -49,7 +49,7 @@ export default function HistoirePage() {
           <Link href="/a-propos" className="text-white/80 hover:text-white text-sm transition-colors">
             &larr; {t('about.backToAbout')}
           </Link>
-          <h1 className="text-4xl md:text-5xl font-bold mt-6 mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold font-heading mt-6 mb-6">
             {t('about.history.title')}
           </h1>
           <p className="text-xl leading-relaxed text-gray-300">

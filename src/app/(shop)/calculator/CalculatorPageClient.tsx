@@ -15,7 +15,7 @@ export default function CalculatorPageClient() {
   return (
     <div className="min-h-screen bg-neutral-950">
       {/* Breadcrumb */}
-      <div className="bg-neutral-900 border-b border-neutral-800">
+      <div className="bg-navy-900 border-b border-neutral-800">
         <div className="max-w-6xl mx-auto px-4 py-3">
           <nav className="flex items-center gap-2 text-sm text-neutral-400">
             <Link href="/" className="hover:text-white">{t('nav.home') || 'Home'}</Link>
@@ -43,8 +43,8 @@ export default function CalculatorPageClient() {
 
         {/* Info Section */}
         <div className="max-w-4xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-6">
-            <div className="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center mb-4">
+          <div className="bg-navy-900 border border-neutral-800 rounded-xl p-6">
+            <div className="w-12 h-12 bg-primary-500/20 rounded-lg flex items-center justify-center mb-4">
               <span className="text-2xl">💉</span>
             </div>
             <h3 className="text-white font-semibold mb-2">
@@ -55,7 +55,7 @@ export default function CalculatorPageClient() {
             </p>
           </div>
 
-          <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-6">
+          <div className="bg-navy-900 border border-neutral-800 rounded-xl p-6">
             <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center mb-4">
               <span className="text-2xl">💧</span>
             </div>
@@ -67,7 +67,7 @@ export default function CalculatorPageClient() {
             </p>
           </div>
 
-          <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-6">
+          <div className="bg-navy-900 border border-neutral-800 rounded-xl p-6">
             <div className="w-12 h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center mb-4">
               <span className="text-2xl">🎯</span>
             </div>
@@ -92,7 +92,7 @@ export default function CalculatorPageClient() {
         <div className="text-center mt-10">
           <Link
             href="/shop"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-semibold"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors font-semibold"
           >
             {t('shop.shopNow') || 'Shop Now'}
           </Link>

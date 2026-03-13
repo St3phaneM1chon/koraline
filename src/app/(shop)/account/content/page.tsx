@@ -73,7 +73,7 @@ export default function AccountContentPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-          <Video className="h-6 w-6 text-orange-600" />
+          <Video className="h-6 w-6 text-primary-600" />
           {t('account.content.title') !== 'account.content.title' ? t('account.content.title') : 'My Content Library'}
         </h1>
         <p className="text-gray-500 mt-1">
@@ -97,7 +97,7 @@ export default function AccountContentPage() {
             className="w-full ps-10 pe-4 py-2.5 border rounded-lg text-sm"
           />
         </div>
-        <button onClick={handleSearch} className="px-4 py-2.5 bg-orange-600 text-white rounded-lg hover:bg-orange-700 text-sm" aria-label={t('common.search') || 'Search'}>
+        <button onClick={handleSearch} className="px-4 py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 text-sm" aria-label={t('common.search') || 'Search'}>
           <Search className="h-4 w-4" aria-hidden="true" />
         </button>
         {search && (
@@ -120,7 +120,7 @@ export default function AccountContentPage() {
       {/* Videos Grid */}
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-8 w-8 animate-spin text-orange-600" />
+          <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
         </div>
       ) : videos.length === 0 ? (
         <div className="text-center py-20 bg-gray-50 rounded-xl">
@@ -149,14 +149,14 @@ export default function AccountContentPage() {
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
-                    <Play className="h-10 w-10 text-orange-400" />
+                  <div className="w-full h-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
+                    <Play className="h-10 w-10 text-primary-400" />
                   </div>
                 )}
                 {/* Play overlay */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
-                    <Play className="h-5 w-5 text-orange-600 ms-0.5" />
+                    <Play className="h-5 w-5 text-primary-600 ms-0.5" />
                   </div>
                 </div>
                 {/* Duration */}
@@ -167,14 +167,14 @@ export default function AccountContentPage() {
                   </div>
                 )}
                 {/* Type badge */}
-                <div className="absolute top-2 start-2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full">
+                <div className="absolute top-2 start-2 bg-primary-500 text-white text-xs px-2 py-0.5 rounded-full">
                   {t(`contentType.${video.contentType}`)}
                 </div>
               </div>
 
               {/* Info */}
               <div className="p-4">
-                <h3 className="font-semibold text-gray-900 group-hover:text-orange-600 transition-colors line-clamp-2">
+                <h3 className="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2">
                   {video.title}
                 </h3>
                 {video.description && (

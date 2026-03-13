@@ -239,7 +239,7 @@ export default function AddressesPage() {
   if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
       </div>
     );
   }
@@ -264,9 +264,9 @@ export default function AddressesPage() {
         {/* Header */}
         <div className="mb-8">
           <nav className="text-sm text-gray-500 mb-2">
-            <Link href="/" className="hover:text-orange-600">{t('nav.home')}</Link>
+            <Link href="/" className="hover:text-primary-600">{t('nav.home')}</Link>
             <span className="mx-2">/</span>
-            <Link href="/account" className="hover:text-orange-600">{t('nav.myAccount')}</Link>
+            <Link href="/account" className="hover:text-primary-600">{t('nav.myAccount')}</Link>
             <span className="mx-2">/</span>
             <span className="text-gray-900">{t('customerAddresses.addresses')}</span>
           </nav>
@@ -277,7 +277,7 @@ export default function AddressesPage() {
             </div>
             <button
               onClick={() => setShowForm(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg font-medium transition-colors"
             >
               {t('customerAddresses.newAddress')}
             </button>
@@ -299,7 +299,7 @@ export default function AddressesPage() {
                     setFormData({ ...formData, type: 'shipping' });
                     setShowForm(true);
                   }}
-                  className="text-orange-600 hover:text-orange-700 font-medium"
+                  className="text-primary-600 hover:text-primary-700 font-medium"
                 >
                   {t('customerAddresses.addAddress')}
                 </button>
@@ -332,7 +332,7 @@ export default function AddressesPage() {
                     setFormData({ ...formData, type: 'billing' });
                     setShowForm(true);
                   }}
-                  className="text-orange-600 hover:text-orange-700 font-medium"
+                  className="text-primary-600 hover:text-primary-700 font-medium"
                 >
                   {t('customerAddresses.addAddress')}
                 </button>
@@ -375,7 +375,7 @@ export default function AddressesPage() {
                         value="shipping"
                         checked={formData.type === 'shipping'}
                         onChange={() => setFormData({ ...formData, type: 'shipping' })}
-                        className="me-2 text-orange-500 focus:ring-orange-500"
+                        className="me-2 text-primary-500 focus:ring-primary-500"
                       />
                       {t('customerAddresses.shipping')}
                     </label>
@@ -386,7 +386,7 @@ export default function AddressesPage() {
                         value="billing"
                         checked={formData.type === 'billing'}
                         onChange={() => setFormData({ ...formData, type: 'billing' })}
-                        className="me-2 text-orange-500 focus:ring-orange-500"
+                        className="me-2 text-primary-500 focus:ring-primary-500"
                       />
                       {t('customerAddresses.billing')}
                     </label>
@@ -401,7 +401,7 @@ export default function AddressesPage() {
                       type="text"
                       value={formData.firstName}
                       onChange={e => { setFormData({ ...formData, firstName: e.target.value }); clearFieldError('firstName'); }}
-                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${formErrors.firstName ? 'border-red-500' : 'border-gray-300'}`}
+                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${formErrors.firstName ? 'border-red-500' : 'border-gray-300'}`}
                       required
                     />
                     <FormError error={formErrors.firstName} />
@@ -412,7 +412,7 @@ export default function AddressesPage() {
                       type="text"
                       value={formData.lastName}
                       onChange={e => { setFormData({ ...formData, lastName: e.target.value }); clearFieldError('lastName'); }}
-                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${formErrors.lastName ? 'border-red-500' : 'border-gray-300'}`}
+                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${formErrors.lastName ? 'border-red-500' : 'border-gray-300'}`}
                       required
                     />
                     <FormError error={formErrors.lastName} />
@@ -426,7 +426,7 @@ export default function AddressesPage() {
                     type="text"
                     value={formData.company || ''}
                     onChange={e => setFormData({ ...formData, company: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                   />
                 </div>
 
@@ -454,7 +454,7 @@ export default function AddressesPage() {
                       clearFieldError('address1');
                     }}
                     placeholder={t('customerAddresses.addressPlaceholder')}
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${formErrors.address1 ? 'border-red-500' : 'border-gray-300'}`}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${formErrors.address1 ? 'border-red-500' : 'border-gray-300'}`}
                     required
                     aria-invalid={!!formErrors.address1}
                   />
@@ -468,7 +468,7 @@ export default function AddressesPage() {
                     value={formData.address2 || ''}
                     onChange={e => setFormData({ ...formData, address2: e.target.value })}
                     placeholder={t('customerAddresses.address2Placeholder')}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                   />
                 </div>
 
@@ -480,7 +480,7 @@ export default function AddressesPage() {
                       type="text"
                       value={formData.city}
                       onChange={e => { setFormData({ ...formData, city: e.target.value }); clearFieldError('city'); }}
-                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${formErrors.city ? 'border-red-500' : 'border-gray-300'}`}
+                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${formErrors.city ? 'border-red-500' : 'border-gray-300'}`}
                       required
                     />
                     <FormError error={formErrors.city} />
@@ -490,7 +490,7 @@ export default function AddressesPage() {
                     <select
                       value={formData.province}
                       onChange={e => { setFormData({ ...formData, province: e.target.value }); clearFieldError('province'); }}
-                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${formErrors.province ? 'border-red-500' : 'border-gray-300'}`}
+                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${formErrors.province ? 'border-red-500' : 'border-gray-300'}`}
                       required
                     >
                       {PROVINCE_CODES.map(code => (
@@ -509,7 +509,7 @@ export default function AddressesPage() {
                       value={formData.postalCode}
                       onChange={e => { setFormData({ ...formData, postalCode: e.target.value.toUpperCase() }); clearFieldError('postalCode'); }}
                       placeholder={formData.country === 'US' ? '12345' : 'A1A 1A1'}
-                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${formErrors.postalCode ? 'border-red-500' : 'border-gray-300'}`}
+                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${formErrors.postalCode ? 'border-red-500' : 'border-gray-300'}`}
                       required
                     />
                     <FormError error={formErrors.postalCode} />
@@ -519,7 +519,7 @@ export default function AddressesPage() {
                     <select
                       value={formData.country}
                       onChange={e => { setFormData({ ...formData, country: e.target.value, postalCode: '' }); clearFieldError('country'); clearFieldError('postalCode'); }}
-                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${formErrors.country ? 'border-red-500' : 'border-gray-300'}`}
+                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${formErrors.country ? 'border-red-500' : 'border-gray-300'}`}
                     >
                       <option value="CA">{t('customerAddresses.countryCanada')}</option>
                       <option value="US">{t('customerAddresses.countryUSA')}</option>
@@ -535,7 +535,7 @@ export default function AddressesPage() {
                     value={formData.phone || ''}
                     onChange={e => { setFormData({ ...formData, phone: e.target.value }); clearFieldError('phone'); }}
                     placeholder="(514) 123-4567"
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${formErrors.phone ? 'border-red-500' : 'border-gray-300'}`}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${formErrors.phone ? 'border-red-500' : 'border-gray-300'}`}
                   />
                   <FormError error={formErrors.phone} />
                 </div>
@@ -546,7 +546,7 @@ export default function AddressesPage() {
                     type="checkbox"
                     checked={formData.isDefault}
                     onChange={e => setFormData({ ...formData, isDefault: e.target.checked })}
-                    className="rounded text-orange-500 focus:ring-orange-500"
+                    className="rounded text-primary-500 focus:ring-primary-500"
                   />
                   <span className="text-sm text-gray-700">{t('customerAddresses.setAsDefault')}</span>
                 </label>
@@ -562,7 +562,7 @@ export default function AddressesPage() {
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium transition-colors"
+                    className="flex-1 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg text-sm font-medium transition-colors"
                   >
                     {editingAddress ? t('customerAddresses.save') : t('customerAddresses.add')}
                   </button>
@@ -591,9 +591,9 @@ function AddressCard({
   const provinceName = PROVINCE_KEYS[address.province] ? t(PROVINCE_KEYS[address.province]) : address.province;
 
   return (
-    <div className={`bg-white rounded-xl border p-4 ${address.isDefault ? 'border-orange-300 ring-1 ring-orange-200' : 'border-gray-200'}`}>
+    <div className={`bg-white rounded-xl border p-4 ${address.isDefault ? 'border-primary-300 ring-1 ring-primary-200' : 'border-gray-200'}`}>
       {address.isDefault && (
-        <span className="inline-block px-2 py-0.5 bg-orange-100 text-orange-700 text-xs font-medium rounded mb-2">
+        <span className="inline-block px-2 py-0.5 bg-primary-100 text-primary-700 text-xs font-medium rounded mb-2">
           {t('customerAddresses.default')}
         </span>
       )}
@@ -628,7 +628,7 @@ function AddressCard({
         {!address.isDefault && (
           <button
             onClick={onSetDefault}
-            className="flex-1 py-1.5 text-sm text-orange-600 hover:text-orange-700 hover:bg-orange-50 rounded transition-colors"
+            className="flex-1 py-1.5 text-sm text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded transition-colors"
           >
             {t('customerAddresses.makeDefault')}
           </button>

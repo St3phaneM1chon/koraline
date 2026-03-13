@@ -43,7 +43,7 @@ export default function ReferencesPage() {
       {/* Hero */}
       <section className="bg-gradient-to-br from-neutral-900 via-neutral-800 to-black text-white py-20 px-6 text-center">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold font-heading mb-6">
             {t('references.title')}
           </h1>
           <p className="text-lg text-gray-300 leading-relaxed">
@@ -57,7 +57,7 @@ export default function ReferencesPage() {
         <div className="max-w-6xl mx-auto">
           {loading ? (
             <div className="text-center py-16">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
               <p className="text-gray-500">{t('references.loading')}</p>
             </div>
           ) : industries.length === 0 ? (
@@ -126,7 +126,7 @@ export default function ReferencesPage() {
         </p>
         <Link
           href="/contact"
-          className="inline-block px-8 py-3 bg-orange-600 text-white rounded-lg font-semibold hover:bg-orange-700 transition-colors"
+          className="inline-block px-8 py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors"
         >
           {t('references.contactUs')}
         </Link>

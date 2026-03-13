@@ -51,8 +51,8 @@ export default function CompareButton({
         aria-label={isAdded ? t('compare.removeFromCompare') : t('compare.addToCompare')}
         className={`p-2 rounded-lg transition-all ${
           isAdded
-            ? 'bg-orange-500 text-white hover:bg-orange-600'
-            : 'bg-white/90 text-neutral-700 hover:bg-white hover:text-orange-500 border border-neutral-200'
+            ? 'bg-primary-500 text-white hover:bg-primary-600'
+            : 'bg-white/90 text-neutral-700 hover:bg-white hover:text-primary-500 border border-neutral-200'
         } ${className}`}
         title={isAdded ? t('compare.removeFromCompare') : t('compare.addToCompare')}
       >
@@ -74,8 +74,8 @@ export default function CompareButton({
       onClick={handleToggle}
       className={`flex items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm transition-all ${
         isAdded
-          ? 'bg-orange-50 text-orange-600 border border-orange-200 hover:bg-orange-100'
-          : 'bg-white text-neutral-700 border border-neutral-300 hover:border-orange-400 hover:text-orange-600'
+          ? 'bg-primary-50 text-primary-600 border border-primary-200 hover:bg-primary-100'
+          : 'bg-white text-neutral-700 border border-neutral-300 hover:border-primary-400 hover:text-primary-600'
       } ${className}`}
     >
       {isAdded ? (

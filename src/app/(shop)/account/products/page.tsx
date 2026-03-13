@@ -128,7 +128,7 @@ export default function ProductHistoryPage() {
   if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
       </div>
     );
   }
@@ -143,9 +143,9 @@ export default function ProductHistoryPage() {
         {/* Header */}
         <div className="mb-8">
           <nav className="text-sm text-gray-500 mb-2">
-            <Link href="/" className="hover:text-orange-600">{t('account.home')}</Link>
+            <Link href="/" className="hover:text-primary-600">{t('account.home')}</Link>
             <span className="mx-2">/</span>
-            <Link href="/account" className="hover:text-orange-600">{t('account.myAccount')}</Link>
+            <Link href="/account" className="hover:text-primary-600">{t('account.myAccount')}</Link>
             <span className="mx-2">/</span>
             <span className="text-gray-900">{t('account.myProducts')}</span>
           </nav>
@@ -169,7 +169,7 @@ export default function ProductHistoryPage() {
             </p>
             <Link
               href="/shop"
-              className="inline-block bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+              className="inline-block bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
             >
               {t('account.discoverProducts')}
             </Link>
@@ -219,7 +219,7 @@ export default function ProductHistoryPage() {
                             <div className="flex-1 min-w-0">
                               <Link
                                 href={`/shop/${product.slug}`}
-                                className="font-semibold text-gray-900 hover:text-orange-600 line-clamp-1"
+                                className="font-semibold text-gray-900 hover:text-primary-600 line-clamp-1"
                               >
                                 {product.productName}
                               </Link>
@@ -276,7 +276,7 @@ export default function ProductHistoryPage() {
                               disabled={!isAvailable || isAdding}
                               className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
                                 isAvailable
-                                  ? 'bg-orange-500 text-white hover:bg-orange-600'
+                                  ? 'bg-primary-500 text-white hover:bg-primary-600'
                                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                               }`}
                             >

@@ -235,7 +235,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
             aria-label={t('reviews.starRatingLabel', { star: String(star) })}
             role={interactive ? 'radio' : undefined}
             aria-checked={interactive ? star === rating : undefined}
-            className={interactive ? 'cursor-pointer hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-orange-500 rounded' : 'cursor-default'}
+            className={interactive ? 'cursor-pointer hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary-500 rounded' : 'cursor-default'}
           >
             <svg
               className={`${sizes[size]} ${star <= rating ? 'text-yellow-400' : 'text-gray-300'}`}
@@ -263,13 +263,13 @@ export default function ProductReviews({ productId, productName }: ProductReview
       )}
 
       {/* Rewards Info Banner */}
-      <div className="mb-6 p-4 bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 rounded-lg flex items-center gap-3">
+      <div className="mb-6 p-4 bg-gradient-to-r from-primary-50 to-amber-50 border border-primary-200 rounded-lg flex items-center gap-3">
         <span className="text-2xl">💰</span>
         <div>
-          <p className="font-medium text-orange-800">
+          <p className="font-medium text-primary-800">
             {t('reviews.rewardsTitle') || 'Get Rewarded for Your Reviews!'}
           </p>
-          <p className="text-sm text-orange-600">
+          <p className="text-sm text-primary-600">
             {t('reviews.rewardsInfo') || 'Earn 50 loyalty points for each review, or 100 points when you include photos'}
           </p>
         </div>
@@ -288,7 +288,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
 
         <button
           onClick={() => setShowWriteReview(true)}
-          className="px-6 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors"
+          className="px-6 py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors"
         >
           {t('reviews.writeReview') || 'Write a Review'}
         </button>
@@ -309,7 +309,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
                   key={rating}
                   onClick={() => setFilterRating(filterRating === rating ? null : rating)}
                   className={`w-full flex items-center gap-2 p-2 rounded-lg transition-colors ${
-                    filterRating === rating ? 'bg-orange-100' : 'hover:bg-neutral-100'
+                    filterRating === rating ? 'bg-primary-100' : 'hover:bg-neutral-100'
                   }`}
                 >
                   <span className="text-sm w-3">{rating}</span>
@@ -342,7 +342,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
                       setFilterRating(null);
                       setFilterWithPhotos(false);
                     }}
-                    className="ms-2 text-orange-500 hover:underline"
+                    className="ms-2 text-primary-500 hover:underline"
                   >
                     Clear filters
                   </button>
@@ -355,7 +355,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
                   onClick={() => setFilterWithPhotos(!filterWithPhotos)}
                   className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium transition-colors ${
                     filterWithPhotos
-                      ? 'bg-orange-500 text-white'
+                      ? 'bg-primary-500 text-white'
                       : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
                   }`}
                 >
@@ -383,7 +383,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
           <div className="space-y-6">
             {isLoadingReviews ? (
               <div className="text-center py-8">
-                <div className="inline-block w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+                <div className="inline-block w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
                 <p className="text-neutral-500 mt-2">Loading reviews...</p>
               </div>
             ) : sortedReviews.length === 0 ? (
@@ -399,8 +399,8 @@ export default function ProductReviews({ productId, productName }: ProductReview
                       {review.userAvatar ? (
                         <Image src={review.userAvatar} alt={review.userName || 'Reviewer'} width={40} height={40} className="w-10 h-10 rounded-full" loading="lazy" />
                       ) : (
-                        <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
-                          <span className="text-orange-600 font-bold">{review.userName.charAt(0)}</span>
+                        <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
+                          <span className="text-primary-600 font-bold">{review.userName.charAt(0)}</span>
                         </div>
                       )}
                       <div>
@@ -435,8 +435,8 @@ export default function ProductReviews({ productId, productName }: ProductReview
 
                 {/* Response from store */}
                 {review.response && (
-                  <div className="mt-4 ms-6 p-4 bg-orange-50 rounded-lg border-s-4 border-orange-500">
-                    <p className="text-sm font-medium text-orange-800">Response from BioCycle Peptides+</p>
+                  <div className="mt-4 ms-6 p-4 bg-primary-50 rounded-lg border-s-4 border-primary-500">
+                    <p className="text-sm font-medium text-primary-800">Response from BioCycle Peptides+</p>
                     <p className="text-sm text-neutral-600 mt-1">{review.response.content}</p>
                   </div>
                 )}
@@ -447,7 +447,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
                     disabled={votingReviewId === review.id}
                     className={`text-sm flex items-center gap-1 transition-colors ${
                       votedReviews.has(review.id)
-                        ? 'text-orange-600 font-medium hover:text-orange-700'
+                        ? 'text-primary-600 font-medium hover:text-primary-700'
                         : 'text-neutral-500 hover:text-neutral-700'
                     } disabled:opacity-50`}
                   >
@@ -503,7 +503,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
                 <p className="text-neutral-600 mb-4">{t('reviews.signInRequired') || 'Please sign in to write a review'}</p>
                 <Link
                   href="/auth/signin"
-                  className="inline-block px-6 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600"
+                  className="inline-block px-6 py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600"
                 >
                   {t('reviews.signIn') || 'Sign In'}
                 </Link>
@@ -527,7 +527,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
                     value={newReview.title}
                     onChange={(e) => setNewReview(prev => ({ ...prev, title: e.target.value }))}
                     placeholder={t('shop.reviews.placeholderTitle')}
-                    className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                     required
                   />
                 </div>
@@ -539,7 +539,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
                     onChange={(e) => setNewReview(prev => ({ ...prev, content: e.target.value }))}
                     placeholder={t('shop.reviews.placeholderBody')}
                     rows={5}
-                    className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
+                    className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
                     required
                     minLength={20}
                   />
@@ -556,13 +556,13 @@ export default function ProductReviews({ productId, productName }: ProductReview
                   />
                 </div>
 
-                <div className="bg-orange-50 rounded-lg p-4 flex items-center gap-3">
+                <div className="bg-primary-50 rounded-lg p-4 flex items-center gap-3">
                   <span className="text-2xl">🎁</span>
                   <div>
-                    <p className="font-medium text-orange-800">
+                    <p className="font-medium text-primary-800">
                       {t('reviews.earnPoints') || 'Earn Loyalty Points!'}
                     </p>
-                    <p className="text-sm text-orange-600">
+                    <p className="text-sm text-primary-600">
                       {t('reviews.earnPointsDesc') || 'Earn 50 points for a review, 100 points with photos!'}
                     </p>
                   </div>
@@ -571,7 +571,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? (
                     <>

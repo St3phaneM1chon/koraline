@@ -186,7 +186,7 @@ export default function SubscriptionsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-orange-500 to-orange-600 text-white py-16">
+      <section className="bg-gradient-to-br from-primary-500 to-primary-600 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="text-6xl mb-4 block">🔄</span>
           <h1 className="text-3xl md:text-4xl font-bold mb-4">
@@ -219,7 +219,7 @@ export default function SubscriptionsPage() {
             onClick={() => setActiveTab('browse')}
             className={`px-6 py-3 rounded-lg font-medium transition-colors ${
               activeTab === 'browse'
-                ? 'bg-orange-500 text-white'
+                ? 'bg-primary-500 text-white'
                 : 'bg-white text-neutral-600 hover:bg-neutral-100 border border-neutral-200'
             }`}
           >
@@ -229,7 +229,7 @@ export default function SubscriptionsPage() {
             onClick={() => setActiveTab('manage')}
             className={`px-6 py-3 rounded-lg font-medium transition-colors ${
               activeTab === 'manage'
-                ? 'bg-orange-500 text-white'
+                ? 'bg-primary-500 text-white'
                 : 'bg-white text-neutral-600 hover:bg-neutral-100 border border-neutral-200'
             }`}
           >
@@ -255,8 +255,8 @@ export default function SubscriptionsPage() {
                     onClick={() => setSelectedProduct(product)}
                     className={`bg-white rounded-xl p-4 border-2 cursor-pointer transition-all ${
                       selectedProduct?.id === product.id
-                        ? 'border-orange-500 shadow-lg'
-                        : 'border-neutral-200 hover:border-orange-300'
+                        ? 'border-primary-500 shadow-lg'
+                        : 'border-neutral-200 hover:border-primary-300'
                     }`}
                   >
                     <div className="flex gap-4">
@@ -268,7 +268,7 @@ export default function SubscriptionsPage() {
                           <div>
                             <h3 className="font-bold">{product.name}</h3>
                             {product.popular && (
-                              <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full">
+                              <span className="text-xs bg-primary-100 text-primary-700 px-2 py-0.5 rounded-full">
                                 {t('common.popular') || 'Popular'}
                               </span>
                             )}
@@ -315,7 +315,7 @@ export default function SubscriptionsPage() {
                             key={freq.id}
                             className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${
                               selectedFrequency.id === freq.id
-                                ? 'border-orange-500 bg-orange-50'
+                                ? 'border-primary-500 bg-primary-50'
                                 : 'border-neutral-200 hover:border-neutral-300'
                             }`}
                           >
@@ -325,7 +325,7 @@ export default function SubscriptionsPage() {
                                 name="frequency"
                                 checked={selectedFrequency.id === freq.id}
                                 onChange={() => setSelectedFrequency(freq)}
-                                className="text-orange-500"
+                                className="text-primary-500"
                               />
                               <span>{freq.label}</span>
                             </div>
@@ -369,7 +369,7 @@ export default function SubscriptionsPage() {
                       </div>
                       <div className="flex justify-between font-bold text-lg">
                         <span>{t('subscriptions.youPay') || 'You Pay'}</span>
-                        <span className="text-orange-600">
+                        <span className="text-primary-600">
                           {formatPrice(calculatePrice(selectedProduct.basePrice * quantity, selectedFrequency.discount))}
                         </span>
                       </div>
@@ -380,7 +380,7 @@ export default function SubscriptionsPage() {
                       <button
                         onClick={handleCreateSubscription}
                         disabled={isCreating}
-                        className="w-full py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                        className="w-full py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                       >
                         {isCreating ? (
                           <>
@@ -397,7 +397,7 @@ export default function SubscriptionsPage() {
                     ) : (
                       <Link
                         href="/auth/signin"
-                        className="block w-full py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors text-center"
+                        className="block w-full py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors text-center"
                       >
                         {t('subscriptions.signInToSubscribe') || 'Sign In to Subscribe'}
                       </Link>
@@ -430,14 +430,14 @@ export default function SubscriptionsPage() {
                 <p className="text-neutral-500 mb-6">{t('subscriptions.signInToManage') || 'Please sign in to view and manage your subscriptions.'}</p>
                 <Link
                   href="/auth/signin"
-                  className="inline-block px-6 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600"
+                  className="inline-block px-6 py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600"
                 >
                   {t('subscriptions.signIn') || 'Sign In'}
                 </Link>
               </div>
             ) : loadingSubs ? (
               <div className="flex items-center justify-center py-16">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
               </div>
             ) : activeSubscriptions.length === 0 ? (
               <div className="bg-white rounded-xl p-12 text-center">
@@ -446,7 +446,7 @@ export default function SubscriptionsPage() {
                 <p className="text-neutral-500 mb-6">{t('subscriptions.noSubscriptionsDesc') || 'Start saving with automatic deliveries of your favorite products.'}</p>
                 <button
                   onClick={() => setActiveTab('browse')}
-                  className="inline-block px-6 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600"
+                  className="inline-block px-6 py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600"
                 >
                   {t('subscriptions.browseProducts') || 'Browse Products'}
                 </button>

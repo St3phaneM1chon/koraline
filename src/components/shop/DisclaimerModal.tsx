@@ -91,7 +91,7 @@ export default function DisclaimerModal() {
       >
         {/* Logo */}
         <div className="flex items-center justify-center gap-2 mb-6">
-          <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold">BC</span>
           </div>
           <span className="font-bold text-xl">BioCycle Peptides</span>
@@ -121,7 +121,7 @@ export default function DisclaimerModal() {
         <div className="space-y-3">
           <button
             onClick={handleAccept}
-            className="w-full py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors"
+            className="w-full py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors"
           >
             {content.accept}
           </button>

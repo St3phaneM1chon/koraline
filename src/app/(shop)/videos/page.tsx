@@ -220,7 +220,7 @@ export default function VideosPage() {
       <section className="bg-gradient-to-br from-neutral-900 via-neutral-800 to-black text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-4">
-            <Film className="w-9 h-9 text-orange-400" />
+            <Film className="w-9 h-9 text-primary-400" />
             <h1 className="text-3xl md:text-4xl font-bold">
               {t('videos.title') || 'Video Library'}
             </h1>
@@ -240,7 +240,7 @@ export default function VideosPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t('videos.searchPlaceholder') || 'Search videos...'}
                 aria-label={t('videos.searchPlaceholder') || 'Search videos'}
-                className="w-full ps-12 pe-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full ps-12 pe-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
             </div>
 
@@ -248,7 +248,7 @@ export default function VideosPage() {
             <select
               value={sortOrder}
               onChange={(e) => handleSortChange(e.target.value)}
-              className="px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500 appearance-none cursor-pointer"
+              className="px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 appearance-none cursor-pointer"
             >
               <option value="newest" className="text-black">{t('videos.sortNewest') || 'Newest'}</option>
               <option value="popular" className="text-black">{t('videos.sortPopular') || 'Most Popular'}</option>
@@ -276,7 +276,7 @@ export default function VideosPage() {
             onClick={() => handleCategoryChange('all')}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
               activeCategoryId === 'all'
-                ? 'bg-orange-500 text-white'
+                ? 'bg-primary-500 text-white'
                 : 'bg-white text-neutral-600 hover:bg-neutral-100 border border-neutral-200'
             }`}
           >
@@ -290,7 +290,7 @@ export default function VideosPage() {
               onClick={() => handleCategoryChange(cat.id)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
                 activeCategoryId === cat.id
-                  ? 'bg-orange-500 text-white'
+                  ? 'bg-primary-500 text-white'
                   : 'bg-white text-neutral-600 hover:bg-neutral-100 border border-neutral-200'
               }`}
             >
@@ -307,7 +307,7 @@ export default function VideosPage() {
         {/* ====== Loading Spinner ====== */}
         {isLoading && (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
+            <Loader2 className="w-8 h-8 text-primary-500 animate-spin" />
             <span className="ms-3 text-neutral-500">{t('common.loading') || 'Loading...'}</span>
           </div>
         )}
@@ -320,7 +320,7 @@ export default function VideosPage() {
             <p className="text-neutral-500 mb-4">{error}</p>
             <button
               onClick={() => fetchVideos(currentPage, searchQuery, activeCategoryId, sortOrder)}
-              className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+              className="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
             >
               {t('common.retry') || 'Retry'}
             </button>
@@ -334,7 +334,7 @@ export default function VideosPage() {
             {showFeatured && (
               <section className="mb-12">
                 <div className="flex items-center gap-2 mb-4">
-                  <Star className="w-5 h-5 text-orange-500" />
+                  <Star className="w-5 h-5 text-primary-500" />
                   <h2 className="text-xl font-bold">{t('videos.featured') || 'Featured Videos'}</h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -359,7 +359,7 @@ export default function VideosPage() {
                           </div>
                         )}
                         <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center">
+                          <div className="w-16 h-16 bg-primary-500 rounded-full flex items-center justify-center">
                             <Play className="w-8 h-8 text-white ms-1" fill="currentColor" />
                           </div>
                         </div>
@@ -369,13 +369,13 @@ export default function VideosPage() {
                             {video.duration}
                           </span>
                         )}
-                        <span className="absolute top-2 start-2 px-2 py-1 bg-orange-500 text-white text-xs font-medium rounded flex items-center gap-1">
+                        <span className="absolute top-2 start-2 px-2 py-1 bg-primary-500 text-white text-xs font-medium rounded flex items-center gap-1">
                           <Star className="w-3 h-3" />
                           {t('videos.featuredBadge') || 'Featured'}
                         </span>
                       </div>
                       <div className="p-4">
-                        <h3 className="font-semibold line-clamp-2 group-hover:text-orange-600 transition-colors">
+                        <h3 className="font-semibold line-clamp-2 group-hover:text-primary-600 transition-colors">
                           {video.title}
                         </h3>
                         <div className="flex items-center gap-3 mt-2 text-sm text-neutral-500">
@@ -421,7 +421,7 @@ export default function VideosPage() {
                         </div>
                       )}
                       <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center">
+                        <div className="w-16 h-16 bg-primary-500 rounded-full flex items-center justify-center">
                           <Play className="w-8 h-8 text-white ms-1" fill="currentColor" />
                         </div>
                       </div>
@@ -432,7 +432,7 @@ export default function VideosPage() {
                         </span>
                       )}
                       {video.isFeatured && (
-                        <span className="absolute top-2 start-2 px-2 py-1 bg-orange-500 text-white text-xs font-medium rounded">
+                        <span className="absolute top-2 start-2 px-2 py-1 bg-primary-500 text-white text-xs font-medium rounded">
                           <Star className="w-3 h-3 inline-block me-1" />
                           {t('videos.featuredBadge') || 'Featured'}
                         </span>
@@ -450,7 +450,7 @@ export default function VideosPage() {
                           {contentTypeLabel(video.contentType, t)}
                         </span>
                       </div>
-                      <h3 className="font-semibold line-clamp-2 group-hover:text-orange-600 transition-colors">
+                      <h3 className="font-semibold line-clamp-2 group-hover:text-primary-600 transition-colors">
                         {video.title}
                       </h3>
                       {video.description && (
@@ -496,7 +496,7 @@ export default function VideosPage() {
                       setActiveCategoryId('all');
                       setCurrentPage(1);
                     }}
-                    className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+                    className="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
                   >
                     {t('videos.clearFilters') || 'Clear Filters'}
                   </button>
@@ -541,28 +541,28 @@ export default function VideosPage() {
               href="/learn"
               className="flex items-center gap-3 p-4 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors"
             >
-              <BookOpen className="w-6 h-6 text-orange-500" />
+              <BookOpen className="w-6 h-6 text-primary-500" />
               <span className="font-medium">{t('videos.learningCenter') || 'Learning Center'}</span>
             </Link>
             <Link
               href="/faq"
               className="flex items-center gap-3 p-4 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors"
             >
-              <HelpCircle className="w-6 h-6 text-orange-500" />
+              <HelpCircle className="w-6 h-6 text-primary-500" />
               <span className="font-medium">{t('videos.faq') || 'FAQ'}</span>
             </Link>
             <Link
               href="/#calculator"
               className="flex items-center gap-3 p-4 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors"
             >
-              <Calculator className="w-6 h-6 text-orange-500" />
+              <Calculator className="w-6 h-6 text-primary-500" />
               <span className="font-medium">{t('videos.calculator') || 'Calculator'}</span>
             </Link>
             <Link
               href="/lab-results"
               className="flex items-center gap-3 p-4 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors"
             >
-              <FlaskConical className="w-6 h-6 text-orange-500" />
+              <FlaskConical className="w-6 h-6 text-primary-500" />
               <span className="font-medium">{t('videos.labResults') || 'Lab Results'}</span>
             </Link>
           </div>

@@ -237,7 +237,7 @@ export default function QuickViewModal({ slug, isOpen, onClose }: QuickViewModal
         {/* Content */}
         {isLoading ? (
           <div className="flex items-center justify-center py-24">
-            <div className="w-12 h-12 border-4 border-orange-600 border-t-transparent rounded-full animate-spin" />
+            <div className="w-12 h-12 border-4 border-primary-600 border-t-transparent rounded-full animate-spin" />
           </div>
         ) : product ? (
           <div className="flex flex-col md:flex-row max-h-[90vh] overflow-y-auto">
@@ -275,7 +275,7 @@ export default function QuickViewModal({ slug, isOpen, onClose }: QuickViewModal
 
               {/* Price */}
               <div className="flex items-center gap-3 mb-4">
-                <span className="text-3xl font-bold text-orange-600">
+                <span className="text-3xl font-bold text-primary-600">
                   {formatPrice(selectedFormat?.price || product.price)}
                 </span>
                 {selectedFormat?.comparePrice && selectedFormat.comparePrice > selectedFormat.price && (
@@ -325,8 +325,8 @@ export default function QuickViewModal({ slug, isOpen, onClose }: QuickViewModal
                           onClick={() => setSelectedFormat(format)}
                           className={`flex items-center gap-3 p-3 border-2 rounded-lg transition-all ${
                             selectedFormat?.id === format.id
-                              ? 'border-orange-500 bg-orange-50'
-                              : 'border-neutral-200 hover:border-orange-300'
+                              ? 'border-primary-500 bg-primary-50'
+                              : 'border-neutral-200 hover:border-primary-300'
                           }`}
                         >
                           <span className="text-2xl">
@@ -334,10 +334,10 @@ export default function QuickViewModal({ slug, isOpen, onClose }: QuickViewModal
                           </span>
                           <div className="flex-1 text-start">
                             <p className="font-medium text-neutral-900">{getFormatName(format)}</p>
-                            <p className="text-sm text-orange-600 font-bold">{formatPrice(format.price)}</p>
+                            <p className="text-sm text-primary-600 font-bold">{formatPrice(format.price)}</p>
                           </div>
                           {selectedFormat?.id === format.id && (
-                            <svg className="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                            <svg className="w-5 h-5 text-primary-500" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
                           )}
@@ -381,7 +381,7 @@ export default function QuickViewModal({ slug, isOpen, onClose }: QuickViewModal
                     isAdding
                       ? 'bg-green-600'
                       : selectedFormat?.inStock
-                      ? 'bg-orange-500 hover:bg-orange-600'
+                      ? 'bg-primary-500 hover:bg-primary-600'
                       : 'bg-neutral-300 cursor-not-allowed'
                   }`}
                 >
@@ -391,7 +391,7 @@ export default function QuickViewModal({ slug, isOpen, onClose }: QuickViewModal
                 <Link
                   href={`/product/${product.slug}`}
                   onClick={onClose}
-                  className="block w-full py-3 px-6 text-center border-2 border-orange-500 text-orange-500 rounded-lg font-semibold hover:bg-orange-50 transition-all"
+                  className="block w-full py-3 px-6 text-center border-2 border-primary-500 text-primary-500 rounded-lg font-semibold hover:bg-primary-50 transition-all"
                 >
                   {t('shop.viewFullDetails')}
                 </Link>

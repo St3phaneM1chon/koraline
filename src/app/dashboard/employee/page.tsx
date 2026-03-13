@@ -278,7 +278,7 @@ function StatCard({
     blue: 'bg-blue-100',
     green: 'bg-green-100',
     purple: 'bg-purple-100',
-    orange: 'bg-orange-100',
+    orange: 'bg-primary-100',
     emerald: 'bg-emerald-100',
   };
 

@@ -58,7 +58,7 @@ export default function AccountPage() {
   if (status === 'loading' || isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
       </div>
     );
   }
@@ -87,10 +87,10 @@ export default function AccountPage() {
                 alt="Profile"
                 width={64}
                 height={64}
-                className="w-16 h-16 rounded-full border-4 border-orange-500"
+                className="w-16 h-16 rounded-full border-4 border-primary-500"
               />
             ) : (
-              <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center">
+              <div className="w-16 h-16 bg-primary-500 rounded-full flex items-center justify-center">
                 <span className="text-white text-2xl font-bold">
                   {session.user?.name?.charAt(0) || session.user?.email?.charAt(0) || 'U'}
                 </span>
@@ -153,8 +153,8 @@ export default function AccountPage() {
 
           <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-200">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
+                <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                 </svg>
               </div>
@@ -236,7 +236,7 @@ export default function AccountPage() {
           />
           <Link
             href="/shop"
-            className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-5 shadow-sm hover:shadow-md transition-all group text-white"
+            className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl p-5 shadow-sm hover:shadow-md transition-all group text-white"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -258,15 +258,15 @@ export default function AccountPage() {
           <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-200">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold">{t('account.recentOrder')}</h2>
-              <Link href="/account/orders" className="text-orange-600 hover:text-orange-700 text-sm font-medium">
+              <Link href="/account/orders" className="text-primary-600 hover:text-primary-700 text-sm font-medium">
                 {t('account.viewAll')} →
               </Link>
             </div>
 
             <div className="flex items-center justify-between p-4 bg-neutral-50 rounded-lg">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                  <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
+                  <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                   </svg>
                 </div>
@@ -302,7 +302,7 @@ export default function AccountPage() {
             <p className="text-neutral-500 mb-6">{t('account.noOrdersDesc')}</p>
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -336,7 +336,7 @@ function QuickActionCard({
       className={`rounded-xl p-5 shadow-sm border transition-all group ${
         highlight
           ? 'bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 hover:border-blue-400 hover:shadow-md'
-          : 'bg-white border-neutral-200 hover:border-orange-500 hover:shadow-md'
+          : 'bg-white border-neutral-200 hover:border-primary-500 hover:shadow-md'
       }`}
     >
       <div className="flex items-center justify-between">
@@ -347,7 +347,7 @@ function QuickActionCard({
             <p className={`text-sm ${highlight ? 'text-blue-600' : 'text-neutral-500'}`}>{description}</p>
           </div>
         </div>
-        <svg className={`w-5 h-5 transition-colors ${highlight ? 'text-blue-400 group-hover:text-blue-600' : 'text-neutral-400 group-hover:text-orange-500'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className={`w-5 h-5 transition-colors ${highlight ? 'text-blue-400 group-hover:text-blue-600' : 'text-neutral-400 group-hover:text-primary-500'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
       </div>

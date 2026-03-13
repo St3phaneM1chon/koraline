@@ -35,7 +35,7 @@ export default function ChangePasswordPage() {
   if (status === 'loading') {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
       </div>
     );
   }
@@ -98,7 +98,7 @@ export default function ChangePasswordPage() {
     const errors = validatePassword(password);
     const strength = 5 - errors.length;
     if (strength <= 1) return { level: 1, label: t('auth.passwordVeryWeak'), color: 'bg-red-500' };
-    if (strength === 2) return { level: 2, label: t('auth.passwordWeak'), color: 'bg-orange-500' };
+    if (strength === 2) return { level: 2, label: t('auth.passwordWeak'), color: 'bg-primary-500' };
     if (strength === 3) return { level: 3, label: t('auth.passwordMedium'), color: 'bg-yellow-500' };
     if (strength === 4) return { level: 4, label: t('auth.passwordStrong'), color: 'bg-lime-500' };
     return { level: 5, label: t('auth.passwordVeryStrong'), color: 'bg-green-500' };
@@ -112,9 +112,9 @@ export default function ChangePasswordPage() {
         {/* Header */}
         <div className="mb-8">
           <nav className="text-sm text-gray-500 mb-2">
-            <Link href="/" className="hover:text-orange-600">{t('auth.home')}</Link>
+            <Link href="/" className="hover:text-primary-600">{t('auth.home')}</Link>
             <span className="mx-2">/</span>
-            <Link href="/account/profile" className="hover:text-orange-600">{t('auth.myProfile')}</Link>
+            <Link href="/account/profile" className="hover:text-primary-600">{t('auth.myProfile')}</Link>
             <span className="mx-2">/</span>
             <span className="text-gray-900">{t('auth.changePassword')}</span>
           </nav>
@@ -151,7 +151,7 @@ export default function ChangePasswordPage() {
                   value={formData.currentPassword}
                   onChange={(e) => setFormData({ ...formData, currentPassword: e.target.value })}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 pe-12"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 pe-12"
                 />
                 <button
                   type="button"
@@ -174,7 +174,7 @@ export default function ChangePasswordPage() {
                   value={formData.newPassword}
                   onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 pe-12"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 pe-12"
                 />
                 <button
                   type="button"
@@ -237,7 +237,7 @@ export default function ChangePasswordPage() {
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                   required
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 pe-12 ${
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 pe-12 ${
                     formData.confirmPassword && formData.confirmPassword !== formData.newPassword
                       ? 'border-red-300 bg-red-50'
                       : formData.confirmPassword && formData.confirmPassword === formData.newPassword
@@ -263,7 +263,7 @@ export default function ChangePasswordPage() {
               <button
                 type="submit"
                 disabled={loading || !formData.currentPassword || !formData.newPassword || formData.newPassword !== formData.confirmPassword}
-                className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-3 rounded-lg font-medium transition-colors"
+                className="w-full bg-primary-500 hover:bg-primary-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-3 rounded-lg font-medium transition-colors"
               >
                 {loading ? t('auth.changingPassword') : t('auth.changePasswordBtn')}
               </button>
@@ -273,7 +273,7 @@ export default function ChangePasswordPage() {
 
         {/* Back Link */}
         <div className="text-center mt-6">
-          <Link href="/account/profile" className="text-orange-600 hover:text-orange-700 font-medium">
+          <Link href="/account/profile" className="text-primary-600 hover:text-primary-700 font-medium">
             ← {t('auth.backToProfile')}
           </Link>
         </div>

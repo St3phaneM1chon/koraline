@@ -84,7 +84,7 @@ export default function FormatSelector({
               disabled={!format.inStock}
               className={`relative flex items-center gap-3 p-3 rounded-xl border-2 text-start transition-all ${
                 isSelected
-                  ? 'border-orange-500 bg-orange-50'
+                  ? 'border-primary-500 bg-primary-50'
                   : format.inStock
                   ? 'border-neutral-200 hover:border-neutral-300 bg-white'
                   : 'border-neutral-200 bg-neutral-100 opacity-60 cursor-not-allowed'
@@ -92,7 +92,7 @@ export default function FormatSelector({
             >
               {/* Format Icon/Image */}
               <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-2xl ${
-                isSelected ? 'bg-orange-100' : 'bg-neutral-100'
+                isSelected ? 'bg-primary-100' : 'bg-neutral-100'
               }`}>
                 {formatIcon}
               </div>
@@ -100,12 +100,12 @@ export default function FormatSelector({
               {/* Format Info */}
               <div className="flex-1 min-w-0">
                 <p className={`font-medium text-sm truncate ${
-                  isSelected ? 'text-orange-700' : 'text-neutral-900'
+                  isSelected ? 'text-primary-700' : 'text-neutral-900'
                 }`}>
                   {format.name}
                 </p>
                 <p className={`text-sm font-bold ${
-                  isSelected ? 'text-orange-600' : 'text-neutral-700'
+                  isSelected ? 'text-primary-600' : 'text-neutral-700'
                 }`}>
                   {formatPrice(format.price)}
                 </p>
@@ -118,7 +118,7 @@ export default function FormatSelector({
 
               {/* Selected Indicator */}
               {isSelected && (
-                <div className="absolute top-2 end-2 w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
+                <div className="absolute top-2 end-2 w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center">
                   <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>

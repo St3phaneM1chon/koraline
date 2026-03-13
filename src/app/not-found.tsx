@@ -24,7 +24,7 @@ export default async function NotFound() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="text-center max-w-md">
         <div className="mb-6">
-          <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-4xl">🔍</span>
           </div>
           <h1 className="text-6xl font-bold text-gray-900 mb-2">404</h1>
@@ -36,7 +36,7 @@ export default async function NotFound() {
         <div className="space-y-3">
           <Link
             href="/"
-            className="block w-full px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors"
+            className="block w-full px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors"
           >
             {t('errors.goToHomepage')}
           </Link>

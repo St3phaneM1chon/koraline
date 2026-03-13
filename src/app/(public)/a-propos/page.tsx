@@ -16,7 +16,7 @@ export default function AboutPage() {
         textAlign: 'center'
       }}>
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <h1 style={{ fontSize: '42px', fontWeight: 700, marginBottom: '24px' }}>
+          <h1 className="font-heading" style={{ fontSize: '42px', fontWeight: 700, marginBottom: '24px' }}>
             À propos de BioCycle Peptides
           </h1>
           <p style={{ fontSize: '18px', lineHeight: 1.7, color: '#d1d5db' }}>

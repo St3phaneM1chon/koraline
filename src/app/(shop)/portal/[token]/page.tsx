@@ -177,7 +177,7 @@ function EstimateStatusBadge({ status, t }: { status: string; t: (key: string) =
     VIEWED: { bg: 'bg-blue-100', text: 'text-blue-700', icon: <Clock className="w-3.5 h-3.5" /> },
     ACCEPTED: { bg: 'bg-green-100', text: 'text-green-700', icon: <CheckCircle className="w-3.5 h-3.5" /> },
     DECLINED: { bg: 'bg-red-100', text: 'text-red-700', icon: <XCircle className="w-3.5 h-3.5" /> },
-    EXPIRED: { bg: 'bg-orange-100', text: 'text-orange-700', icon: <AlertTriangle className="w-3.5 h-3.5" /> },
+    EXPIRED: { bg: 'bg-primary-100', text: 'text-primary-700', icon: <AlertTriangle className="w-3.5 h-3.5" /> },
     CONVERTED: { bg: 'bg-green-100', text: 'text-green-700', icon: <CheckCircle className="w-3.5 h-3.5" /> },
   };
 
@@ -382,7 +382,7 @@ export default function ClientPortalPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full text-center">
-          <AlertTriangle className="w-12 h-12 text-orange-500 mx-auto mb-4" />
+          <AlertTriangle className="w-12 h-12 text-primary-500 mx-auto mb-4" />
           <h1 className="text-xl font-bold text-gray-900 mb-2">{t('portal.accessDenied')}</h1>
           <p className="text-gray-600">{error || t('portal.invalidLink')}</p>
         </div>
@@ -708,7 +708,7 @@ export default function ClientPortalPage() {
                                       <span>{formatCurrency(est.subtotal, est.currency)}</span>
                                     </div>
                                     {est.discountAmount > 0 && (
-                                      <div className="flex justify-between text-orange-600">
+                                      <div className="flex justify-between text-primary-600">
                                         <span>{t('portal.discount')} ({est.discountPercent}%)</span>
                                         <span>-{formatCurrency(est.discountAmount, est.currency)}</span>
                                       </div>
@@ -944,7 +944,7 @@ export default function ClientPortalPage() {
                                   const typeColors: Record<string, string> = {
                                     INVOICE: 'text-blue-700 bg-blue-50',
                                     PAYMENT: 'text-green-700 bg-green-50',
-                                    CREDIT_NOTE: 'text-orange-700 bg-orange-50',
+                                    CREDIT_NOTE: 'text-primary-700 bg-primary-50',
                                   };
                                   const typeLabels: Record<string, string> = {
                                     INVOICE: t('portal.typeInvoice'),

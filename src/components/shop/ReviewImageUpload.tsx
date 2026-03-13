@@ -110,8 +110,8 @@ export default function ReviewImageUpload({ onImagesChange, maxImages = 3 }: Rev
         onClick={handleClick}
         className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-all ${
           isDragging
-            ? 'border-orange-500 bg-orange-50'
-            : 'border-neutral-300 hover:border-orange-400 hover:bg-neutral-50'
+            ? 'border-primary-500 bg-primary-50'
+            : 'border-neutral-300 hover:border-primary-400 hover:bg-neutral-50'
         }`}
       >
         <input
@@ -145,7 +145,7 @@ export default function ReviewImageUpload({ onImagesChange, maxImages = 3 }: Rev
         </p>
 
         {selectedFiles.length > 0 && (
-          <p className="text-xs text-orange-600 font-medium mt-2">
+          <p className="text-xs text-primary-600 font-medium mt-2">
             {selectedFiles.length} of {maxImages} images selected
           </p>
         )}

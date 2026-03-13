@@ -79,7 +79,7 @@ export default function FAQPage({ initialByCategory }: FaqPageClientProps) {
         {/* Loading State */}
         {loading && (
           <div className="flex flex-col items-center justify-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mb-4"></div>
             <p className="text-gray-500">{t('faq.loading') || 'Loading FAQs...'}</p>
           </div>
         )}
@@ -92,7 +92,7 @@ export default function FAQPage({ initialByCategory }: FaqPageClientProps) {
             </p>
             <Link
               href="/contact"
-              className="inline-flex items-center px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors"
+              className="inline-flex items-center px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors"
             >
               {t('faq.contactButton') || 'Contact Support'}
             </Link>
@@ -111,9 +111,9 @@ export default function FAQPage({ initialByCategory }: FaqPageClientProps) {
                     <button
                       key={index}
                       onClick={() => setActiveCategory(index)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-start transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-start transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
                         activeCategory === index
-                          ? 'bg-orange-50 text-orange-600 font-medium'
+                          ? 'bg-primary-50 text-primary-600 font-medium'
                           : 'text-gray-600 hover:bg-gray-50'
                       }`}
                     >
@@ -144,7 +144,7 @@ export default function FAQPage({ initialByCategory }: FaqPageClientProps) {
                       <div key={qIndex} className="border-b border-gray-100 last:border-0">
                         <button
                           onClick={() => toggleQuestion(key)}
-                          className="w-full flex items-start justify-between gap-4 p-6 text-start hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-inset"
+                          className="w-full flex items-start justify-between gap-4 p-6 text-start hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-inset"
                           aria-expanded={isOpen}
                           aria-controls={`faq-answer-${key}`}
                         >
@@ -176,7 +176,7 @@ export default function FAQPage({ initialByCategory }: FaqPageClientProps) {
               </div>
 
               {/* Contact CTA */}
-              <div className="mt-8 bg-orange-50 rounded-xl p-6 text-center">
+              <div className="mt-8 bg-primary-50 rounded-xl p-6 text-center">
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   {t('faq.stillHaveQuestions') || "Still have questions?"}
                 </h3>
@@ -185,7 +185,7 @@ export default function FAQPage({ initialByCategory }: FaqPageClientProps) {
                 </p>
                 <Link
                   href="/contact"
-                  className="inline-flex items-center px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors"
+                  className="inline-flex items-center px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors"
                 >
                   {t('faq.contactButton') || 'Contact Support'}
                 </Link>
@@ -204,7 +204,7 @@ export default function FAQPage({ initialByCategory }: FaqPageClientProps) {
           </p>
           <Link
             href="/#calculator"
-            className="inline-flex items-center gap-2 px-6 py-3 border-2 border-orange-500 text-orange-600 font-semibold rounded-lg hover:bg-orange-50 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary-500 text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors"
           >
             <span>{'\uD83E\uDDEE'}</span>
             {t('faq.calculatorButton') || 'Peptide Calculator'}

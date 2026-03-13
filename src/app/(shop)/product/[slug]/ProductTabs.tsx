@@ -83,7 +83,7 @@ export default function ProductTabs({ product, chemistryData }: ProductTabsProps
           onClick={() => handleTabChange('description')}
           className={`pb-3 font-medium text-base md:text-lg whitespace-nowrap ${
             activeTab === 'description'
-              ? 'text-orange-600 border-b-2 border-orange-600'
+              ? 'text-primary-600 border-b-2 border-primary-600'
               : 'text-neutral-500 hover:text-black'
           }`}
         >
@@ -97,7 +97,7 @@ export default function ProductTabs({ product, chemistryData }: ProductTabsProps
           onClick={() => handleTabChange('specs')}
           className={`pb-3 font-medium text-base md:text-lg whitespace-nowrap ${
             activeTab === 'specs'
-              ? 'text-orange-600 border-b-2 border-orange-600'
+              ? 'text-primary-600 border-b-2 border-primary-600'
               : 'text-neutral-500 hover:text-black'
           }`}
         >
@@ -112,7 +112,7 @@ export default function ProductTabs({ product, chemistryData }: ProductTabsProps
             onClick={() => handleTabChange('research')}
             className={`pb-3 font-medium text-base md:text-lg whitespace-nowrap ${
               activeTab === 'research'
-                ? 'text-orange-600 border-b-2 border-orange-600'
+                ? 'text-primary-600 border-b-2 border-primary-600'
                 : 'text-neutral-500 hover:text-black'
             }`}
           >
@@ -128,7 +128,7 @@ export default function ProductTabs({ product, chemistryData }: ProductTabsProps
             onClick={() => handleTabChange('reconstitution')}
             className={`pb-3 font-medium text-base md:text-lg whitespace-nowrap ${
               activeTab === 'reconstitution'
-                ? 'text-orange-600 border-b-2 border-orange-600'
+                ? 'text-primary-600 border-b-2 border-primary-600'
                 : 'text-neutral-500 hover:text-black'
             }`}
           >
@@ -144,7 +144,7 @@ export default function ProductTabs({ product, chemistryData }: ProductTabsProps
             onClick={() => handleTabChange('video')}
             className={`pb-3 font-medium text-base md:text-lg whitespace-nowrap ${
               activeTab === 'video'
-                ? 'text-orange-600 border-b-2 border-orange-600'
+                ? 'text-primary-600 border-b-2 border-primary-600'
                 : 'text-neutral-500 hover:text-black'
             }`}
           >
@@ -305,7 +305,7 @@ export default function ProductTabs({ product, chemistryData }: ProductTabsProps
       {activeTab === 'research' && chemistryData?.researchSummary && (
         <div role="tabpanel" id="tabpanel-research" aria-labelledby="tab-research" className="bg-neutral-50 rounded-lg p-6 animate-tab-fade">
           <div className="flex items-center gap-3 mb-4">
-            <span className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-xl">🔬</span>
+            <span className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-xl">🔬</span>
             <h3 className="font-bold text-xl">{t('shop.researchOverview') || 'Research Overview'}</h3>
           </div>
 
@@ -328,7 +328,7 @@ export default function ProductTabs({ product, chemistryData }: ProductTabsProps
               <ul className="space-y-2">
                 {chemistryData.references.map((ref, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm">
-                    <span className="text-orange-500 mt-1">📄</span>
+                    <span className="text-primary-500 mt-1">📄</span>
                     <span className="text-neutral-600">
                       {ref.title}
                       {ref.pubmedId && (
@@ -383,27 +383,27 @@ export default function ProductTabs({ product, chemistryData }: ProductTabsProps
             <h4 className="font-semibold text-neutral-800 mb-3">{t('shop.reconstitutionSteps') || 'Step-by-Step Instructions'}</h4>
             <ol className="space-y-3 text-sm text-neutral-600">
               <li className="flex items-start gap-3">
-                <span className="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
+                <span className="w-6 h-6 bg-primary-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
                 <span>{t('shop.reconstitutionStep1') || 'Allow the vial to reach room temperature before reconstitution.'}</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
+                <span className="w-6 h-6 bg-primary-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
                 <span>{t('shop.reconstitutionStep2') || 'Wipe the rubber stopper with an alcohol swab and let it dry.'}</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
+                <span className="w-6 h-6 bg-primary-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
                 <span>{(t('shop.reconstitutionStep3') || 'Draw {volume} of {solvent} into a sterile syringe.').replace('{volume}', chemistryData.reconstitution.volume).replace('{solvent}', chemistryData.reconstitution.solvent)}</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">4</span>
+                <span className="w-6 h-6 bg-primary-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">4</span>
                 <span>{t('shop.reconstitutionStep4') || 'Insert needle through stopper and slowly release water along the inside wall of the vial.'}</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">5</span>
+                <span className="w-6 h-6 bg-primary-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">5</span>
                 <span>{t('shop.reconstitutionStep5') || 'Do NOT shake. Gently swirl or let sit until fully dissolved.'}</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">6</span>
+                <span className="w-6 h-6 bg-primary-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">6</span>
                 <span>{t('shop.reconstitutionStep6') || 'Store reconstituted peptide in refrigerator (2-8°C).'}</span>
               </li>
             </ol>
@@ -419,13 +419,13 @@ export default function ProductTabs({ product, chemistryData }: ProductTabsProps
           )}
 
           {/* Calculator Link */}
-          <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 text-center">
-            <p className="text-sm text-orange-700 mb-3">
+          <div className="bg-primary-50 border border-primary-200 rounded-lg p-4 text-center">
+            <p className="text-sm text-primary-700 mb-3">
               {t('shop.needHelpCalculating') || 'Need help calculating your reconstitution? Use our peptide calculator.'}
             </p>
             <Link
               href="/#calculator"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm font-medium"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors text-sm font-medium"
             >
               🧮 {t('shop.openPeptideCalculator') || 'Open Peptide Calculator'}
             </Link>
@@ -437,7 +437,7 @@ export default function ProductTabs({ product, chemistryData }: ProductTabsProps
       {activeTab === 'video' && product.videoUrl && (
         <div role="tabpanel" id="tabpanel-video" aria-labelledby="tab-video" className="bg-neutral-50 rounded-lg p-6 animate-tab-fade">
           <div className="flex items-center gap-3 mb-4">
-            <span className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-xl">🎥</span>
+            <span className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-xl">🎥</span>
             <h3 className="font-bold text-xl">{t('shop.productVideo') || 'Product Video'}</h3>
           </div>
 

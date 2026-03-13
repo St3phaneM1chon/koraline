@@ -79,7 +79,7 @@ export default function NewsPage() {
           textAlign: 'center',
         }}
       >
-        <h1 style={{ fontSize: '42px', fontWeight: 700, marginBottom: '16px' }}>Actualites</h1>
+        <h1 className="font-heading" style={{ fontSize: '42px', fontWeight: 700, marginBottom: '16px' }}>Actualites</h1>
         <p style={{ fontSize: '18px', opacity: 0.9 }}>
           Communiques de presse, annonces et nouveautes
         </p>

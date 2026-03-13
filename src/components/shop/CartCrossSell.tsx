@@ -118,7 +118,7 @@ export default function CartCrossSell({ cartProductIds }: CartCrossSellProps) {
   }
 
   return (
-    <div className="bg-orange-50/60 border-t border-orange-100 rounded-b-lg px-4 py-3">
+    <div className="bg-primary-50/60 border-t border-primary-100 rounded-b-lg px-4 py-3">
       <h3 className="font-semibold text-sm text-neutral-700 mb-2">
         {t('cart.customersAlsoBought') || 'Customers Also Bought'}
       </h3>
@@ -128,12 +128,12 @@ export default function CartCrossSell({ cartProductIds }: CartCrossSellProps) {
         <div className="space-y-2">
           {[1, 2].map((i) => (
             <div key={i} className="flex items-center gap-3 animate-pulse">
-              <div className="w-14 h-14 bg-orange-100 rounded-lg flex-shrink-0" />
+              <div className="w-14 h-14 bg-primary-100 rounded-lg flex-shrink-0" />
               <div className="flex-1 min-w-0">
-                <div className="h-3 bg-orange-100 rounded w-3/4 mb-1.5" />
-                <div className="h-3 bg-orange-100 rounded w-1/3" />
+                <div className="h-3 bg-primary-100 rounded w-3/4 mb-1.5" />
+                <div className="h-3 bg-primary-100 rounded w-1/3" />
               </div>
-              <div className="h-7 w-20 bg-orange-100 rounded-lg flex-shrink-0" />
+              <div className="h-7 w-20 bg-primary-100 rounded-lg flex-shrink-0" />
             </div>
           ))}
         </div>
@@ -142,7 +142,7 @@ export default function CartCrossSell({ cartProductIds }: CartCrossSellProps) {
           {recommendations.map((product) => (
             <div
               key={product.id}
-              className="flex items-center gap-3 bg-white/70 rounded-lg p-2 border border-orange-100/50"
+              className="flex items-center gap-3 bg-white/70 rounded-lg p-2 border border-primary-100/50"
             >
               {/* Product Image - compact, same or smaller than cart items */}
               <Link href={`/product/${product.slug}`} className="flex-shrink-0">
@@ -160,12 +160,12 @@ export default function CartCrossSell({ cartProductIds }: CartCrossSellProps) {
               {/* Product Info - compact */}
               <div className="flex-1 min-w-0">
                 <Link href={`/product/${product.slug}`}>
-                  <p className="text-xs font-medium text-neutral-900 truncate hover:text-orange-600 transition-colors">
+                  <p className="text-xs font-medium text-neutral-900 truncate hover:text-primary-600 transition-colors">
                     {product.name}
                   </p>
                 </Link>
                 <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className="text-xs font-bold text-orange-600">
+                  <span className="text-xs font-bold text-primary-600">
                     {formatPrice(product.price)}
                   </span>
                   {product.comparePrice && product.comparePrice > product.price && (
@@ -183,7 +183,7 @@ export default function CartCrossSell({ cartProductIds }: CartCrossSellProps) {
                 className={`flex-shrink-0 px-3 py-1.5 rounded-lg font-medium text-xs transition-all whitespace-nowrap ${
                   addingProductId === product.id
                     ? 'bg-green-600 text-white'
-                    : 'bg-orange-500 text-white hover:bg-orange-600 active:scale-95'
+                    : 'bg-primary-500 text-white hover:bg-primary-600 active:scale-95'
                 }`}
               >
                 {addingProductId === product.id ? (

@@ -39,10 +39,10 @@ export default function TextToSpeechButton() {
           group relative w-12 h-12 rounded-full shadow-lg transition-all duration-300
           flex items-center justify-center
           ${status === 'speaking'
-            ? 'bg-orange-500 text-white shadow-orange-500/30'
+            ? 'bg-primary-500 text-white shadow-primary-500/30'
             : status === 'paused'
-              ? 'bg-orange-400 text-white shadow-orange-400/20'
-              : 'bg-white text-gray-700 hover:bg-orange-50 hover:text-orange-600 shadow-gray-200/50 hover:shadow-orange-200/50'
+              ? 'bg-primary-400 text-white shadow-primary-400/20'
+              : 'bg-white text-gray-700 hover:bg-primary-50 hover:text-primary-600 shadow-gray-200/50 hover:shadow-primary-200/50'
           }
         `}
       >

@@ -52,7 +52,7 @@ export default function FlashSaleBanner({
   if (status === 'dismissed') return null;
 
   return (
-    <div className="relative bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white overflow-hidden">
+    <div className="relative bg-gradient-to-r from-primary-500 via-red-500 to-pink-500 text-white overflow-hidden">
       {/* Animated background pattern */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent animate-shimmer"></div>
@@ -89,7 +89,7 @@ export default function FlashSaleBanner({
           <div className="flex-shrink-0">
             <Link
               href={link}
-              className="inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-white text-orange-600 rounded-lg font-bold text-base md:text-lg hover:bg-orange-50 transition-all transform hover:scale-105 shadow-xl"
+              className="inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-white text-primary-600 rounded-lg font-bold text-base md:text-lg hover:bg-primary-50 transition-all transform hover:scale-105 shadow-xl"
             >
               <span>{t('flashSale.shopNow') || 'Shop Now'}</span>
               <svg

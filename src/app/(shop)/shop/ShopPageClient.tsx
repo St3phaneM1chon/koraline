@@ -332,7 +332,7 @@ export default function ShopPage() {
       />
 
       {/* Header */}
-      <div className="bg-black text-white py-12">
+      <div className="bg-navy-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl md:text-4xl font-bold">{t('shop.allProducts')}</h1>
           <p className="text-neutral-400 mt-2">
@@ -370,7 +370,7 @@ export default function ShopPage() {
                         onClick={() => { setSelectedCategory(cat.slug); updateUrlParams({ category: cat.slug }); }}
                         className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors text-start ${
                           selectedCategory === cat.slug
-                            ? 'bg-orange-50 text-orange-600 font-medium'
+                            ? 'bg-primary-50 text-primary-600 font-medium'
                             : 'text-neutral-600 hover:bg-neutral-50'
                         }`}
                       >
@@ -386,7 +386,7 @@ export default function ShopPage() {
                                 onClick={() => { setSelectedCategory(child.slug); updateUrlParams({ category: child.slug }); }}
                                 className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg transition-colors text-start text-sm ${
                                   selectedCategory === child.slug
-                                    ? 'bg-orange-50 text-orange-600 font-medium'
+                                    ? 'bg-primary-50 text-primary-600 font-medium'
                                     : 'text-neutral-500 hover:bg-neutral-50'
                                 }`}
                               >
@@ -432,7 +432,7 @@ export default function ShopPage() {
                     value={priceRange[1]}
                     onChange={(e) => { const v = Number(e.target.value); setPriceRange([priceRange[0], v]); updateUrlParams({ maxPrice: String(v) }); }}
                     aria-label={t('shop.maxPrice') || 'Maximum price range'}
-                    className="w-full accent-orange-500"
+                    className="w-full accent-primary-500"
                   />
                   <p className="text-sm text-neutral-500">
                     {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
@@ -447,7 +447,7 @@ export default function ShopPage() {
                     type="checkbox"
                     checked={showInStockOnly}
                     onChange={(e) => { setShowInStockOnly(e.target.checked); updateUrlParams({ inStock: e.target.checked ? 'true' : null }); }}
-                    className="w-4 h-4 rounded text-orange-500 focus:ring-orange-500"
+                    className="w-4 h-4 rounded text-primary-500 focus:ring-primary-500"
                   />
                   <span className="text-sm">{t('shop.inStock')}</span>
                 </label>
@@ -462,7 +462,7 @@ export default function ShopPage() {
                   setSortBy('popular');
                   router.replace(pathname, { scroll: false });
                 }}
-                className="text-sm text-orange-600 hover:underline"
+                className="text-sm text-primary-600 hover:underline"
               >
                 {t('shop.resetFilters')}
               </button>
@@ -482,7 +482,7 @@ export default function ShopPage() {
                 <select
                   value={sortBy}
                   onChange={(e) => { const v = e.target.value as SortOption; setSortBy(v); updateUrlParams({ sort: v }); }}
-                  className="px-3 py-2 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="px-3 py-2 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                 >
                   <option value="popular">{t('shop.popular')}</option>
                   <option value="newest">{t('shop.newest')}</option>
@@ -497,9 +497,9 @@ export default function ShopPage() {
             {(selectedCategory !== 'all' || showInStockOnly || priceRange[0] > 0 || priceRange[1] < maxPrice) && (
               <div className="flex flex-wrap gap-2 mb-4">
                 {selectedCategory !== 'all' && (
-                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm">
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm">
                     {categories.find(c => c.slug === selectedCategory)?.name}
-                    <button onClick={() => { setSelectedCategory('all'); updateUrlParams({ category: null }); }} className="hover:text-orange-900">×</button>
+                    <button onClick={() => { setSelectedCategory('all'); updateUrlParams({ category: null }); }} className="hover:text-primary-900">×</button>
                   </span>
                 )}
                 {showInStockOnly && (
@@ -532,7 +532,7 @@ export default function ShopPage() {
                 <p className="text-red-500 text-lg mb-4">{error}</p>
                 <button
                   onClick={() => window.location.reload()}
-                  className="text-orange-600 hover:underline"
+                  className="text-primary-600 hover:underline"
                 >
                   {t('shop.retry')}
                 </button>
@@ -560,7 +560,7 @@ export default function ShopPage() {
                     setCurrentPage(1);
                     router.replace(pathname, { scroll: false });
                   }}
-                  className="text-orange-600 hover:underline"
+                  className="text-primary-600 hover:underline"
                 >
                   {t('shop.clearAllFilters')}
                 </button>

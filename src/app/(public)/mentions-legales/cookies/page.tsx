@@ -30,7 +30,7 @@ export default function CookiesPage() {
   return (
     <div style={{ backgroundColor: 'white', minHeight: '100vh' }}>
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '64px 24px' }}>
-        <h1 style={{ fontSize: '36px', fontWeight: 700, marginBottom: '16px', color: '#1f2937' }}>
+        <h1 className="font-heading" style={{ fontSize: '36px', fontWeight: 700, marginBottom: '16px', color: '#1f2937' }}>
           {t('legal.cookies.title')}
         </h1>
         <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '48px' }}>

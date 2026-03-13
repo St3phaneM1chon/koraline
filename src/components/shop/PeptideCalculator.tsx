@@ -58,8 +58,8 @@ export default function PeptideCalculator({ className = '', onClose, isModal = f
   }) => {
     const colors = {
       orange: {
-        button: 'bg-orange-500 hover:bg-orange-400',
-        text: 'text-orange-400',
+        button: 'bg-primary-500 hover:bg-primary-400',
+        text: 'text-primary-400',
         track: '#CC5500',
       },
       white: {
@@ -234,9 +234,9 @@ export default function PeptideCalculator({ className = '', onClose, isModal = f
                       {/* ===== GROUPE 1 - HEADER (Badge + Titre + Sous-titre) ===== */}
                       <div className="text-center" style={{ marginBottom: '56px' }}>
                         {/* Ligne 1: Badge numéroté */}
-                        <span className="inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full bg-orange-500 text-neutral-900 font-bold text-sm md:text-base shadow-lg mb-1">1</span>
+                        <span className="inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full bg-primary-500 text-neutral-900 font-bold text-sm md:text-base shadow-lg mb-1">1</span>
                         {/* Ligne 2: Titre coloré */}
-                        <p className="text-xs md:text-sm text-orange-400 font-semibold drop-shadow-lg">{t('calculator.step1Title')}</p>
+                        <p className="text-xs md:text-sm text-primary-400 font-semibold drop-shadow-lg">{t('calculator.step1Title')}</p>
                         {/* Ligne 3: Sous-titre blanc */}
                         <p className="text-xs md:text-sm text-white font-bold drop-shadow-lg">{t('calculator.inVial')}</p>
                       </div>
@@ -244,7 +244,7 @@ export default function PeptideCalculator({ className = '', onClose, isModal = f
                       {/* ===== GROUPE 2 - VALUES (Valeur affichée) ===== */}
                       <div className="flex items-center justify-center" style={{ marginLeft: '10px', marginBottom: '8px' }}>
                         <span className="text-2xl md:text-4xl font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{peptideAmount}</span>
-                        <span className="text-sm md:text-lg text-orange-400 ms-1 font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">mg</span>
+                        <span className="text-sm md:text-lg text-primary-400 ms-1 font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">mg</span>
                       </div>
                       
                       {/* ===== GROUPE 3 - CONTROLS (Boutons +/-, Slider, Toggle) ===== */}

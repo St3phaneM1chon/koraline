@@ -29,14 +29,14 @@ export default function HelpPage() {
       {/* Hero */}
       <section className="bg-gradient-to-br from-neutral-900 via-neutral-800 to-black text-white py-20 px-6 text-center">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold font-heading mb-6">
             {t('help.title')}
           </h1>
           <div className="max-w-lg mx-auto mt-6">
             <input
               type="search"
               placeholder={t('help.searchPlaceholder')}
-              className="w-full px-6 py-4 rounded-lg border-none text-base text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+              className="w-full px-6 py-4 rounded-lg border-none text-base text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary-500 focus:outline-none"
             />
           </div>
         </div>
@@ -54,7 +54,7 @@ export default function HelpPage() {
               >
                 <span className="text-3xl shrink-0">{cat.icon}</span>
                 <div>
-                  <h2 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-orange-600 transition-colors">
+                  <h2 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-primary-600 transition-colors">
                     {t(cat.titleKey)}
                   </h2>
                   <p className="text-sm text-gray-500">{t(cat.descKey)}</p>
@@ -85,7 +85,7 @@ export default function HelpPage() {
           </div>
           <Link
             href="/faq"
-            className="block text-center mt-6 text-orange-600 font-medium hover:text-orange-700 transition-colors"
+            className="block text-center mt-6 text-primary-600 font-medium hover:text-primary-700 transition-colors"
           >
             {t('help.viewAllFaq')} &rarr;
           </Link>
@@ -103,7 +103,7 @@ export default function HelpPage() {
               <span className="text-4xl block mb-4">{'\uD83D\uDCAC'}</span>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('help.chatTitle')}</h3>
               <p className="text-sm text-gray-500 mb-4">{t('help.chatDesc')}</p>
-              <button className="w-full px-4 py-3 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 transition-colors">
+              <button className="w-full px-4 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors">
                 {t('help.openChat')}
               </button>
             </div>

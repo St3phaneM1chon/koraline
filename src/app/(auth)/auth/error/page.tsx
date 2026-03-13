@@ -46,7 +46,7 @@ function AuthErrorContent() {
         <div className="space-y-3">
           <Link
             href="/auth/signin"
-            className="block w-full py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors text-center"
+            className="block w-full py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors text-center"
           >
             {t('auth.tryAgain')}
           </Link>
@@ -67,7 +67,7 @@ export default function AuthErrorPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
         </div>
       }
     >

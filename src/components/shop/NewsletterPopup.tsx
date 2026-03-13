@@ -112,14 +112,14 @@ export default function NewsletterPopup() {
         {!isSubmitted ? (
           <>
             {/* Header with gradient */}
-            <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-8 text-white text-center">
+            <div className="bg-gradient-to-r from-primary-500 to-primary-600 p-8 text-white text-center">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-4">
                 <span className="text-3xl">💊</span>
               </div>
               <h2 className="text-2xl md:text-3xl font-bold mb-2">
                 {t('newsletter.title')}
               </h2>
-              <p className="text-orange-100">
+              <p className="text-primary-100">
                 {t('newsletter.subtitle')}
               </p>
             </div>
@@ -143,7 +143,7 @@ export default function NewsletterPopup() {
                     }}
                     placeholder={t('newsletter.placeholder')}
                     required
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors ${emailError ? 'border-red-500' : 'border-gray-300'}`}
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors ${emailError ? 'border-red-500' : 'border-gray-300'}`}
                   />
                   {emailError && (
                     <p className="text-xs text-red-500 mt-1">{emailError}</p>
@@ -157,11 +157,11 @@ export default function NewsletterPopup() {
                     id="newsletter-consent"
                     checked={marketingConsent}
                     onChange={(e) => setMarketingConsent(e.target.checked)}
-                    className="mt-1 h-4 w-4 rounded border-gray-300 text-orange-500 focus:ring-orange-500 cursor-pointer"
+                    className="mt-1 h-4 w-4 rounded border-gray-300 text-primary-500 focus:ring-primary-500 cursor-pointer"
                   />
                   <label htmlFor="newsletter-consent" className="text-xs text-gray-600 cursor-pointer leading-relaxed">
                     {t('newsletter.consentCheckbox')}{' '}
-                    <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-orange-500 underline hover:text-orange-600">
+                    <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-primary-500 underline hover:text-primary-600">
                       {t('newsletter.privacyPolicyLink')}
                     </a>
                   </label>
@@ -170,7 +170,7 @@ export default function NewsletterPopup() {
                 <button
                   type="submit"
                   disabled={isLoading || !marketingConsent}
-                  className="w-full py-3 px-4 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-3 px-4 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? (
                     <span className="flex items-center justify-center gap-2">
@@ -238,16 +238,16 @@ export default function NewsletterPopup() {
             </p>
             
             {/* Discount Code Display */}
-            <div className="bg-orange-50 border-2 border-dashed border-orange-300 rounded-lg p-4 mb-6">
-              <p className="text-sm text-orange-600 mb-1">
+            <div className="bg-primary-50 border-2 border-dashed border-primary-300 rounded-lg p-4 mb-6">
+              <p className="text-sm text-primary-600 mb-1">
                 {t('newsletter.yourCode')}
               </p>
-              <p className="text-2xl font-bold text-orange-600 font-mono">WELCOME10</p>
+              <p className="text-2xl font-bold text-primary-600 font-mono">WELCOME10</p>
             </div>
             
             <button
               onClick={handleClose}
-              className="px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors"
+              className="px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors"
             >
               {t('newsletter.startShopping')}
             </button>

@@ -159,7 +159,7 @@ export default function RecentlyViewed({ excludeSlug }: RecentlyViewedProps) {
 
               {/* Content */}
               <div className="p-3">
-                <h3 className="font-medium text-sm text-black group-hover:text-orange-600 transition-colors line-clamp-2">
+                <h3 className="font-medium text-sm text-black group-hover:text-primary-600 transition-colors line-clamp-2">
                   {product.name}
                 </h3>
                 {product.purity && (
@@ -167,7 +167,7 @@ export default function RecentlyViewed({ excludeSlug }: RecentlyViewedProps) {
                     {t('shop.purity')} {product.purity}%
                   </p>
                 )}
-                <p className="text-orange-600 font-bold mt-1">
+                <p className="text-primary-600 font-bold mt-1">
                   {formatPrice(product.price)}
                 </p>
               </div>

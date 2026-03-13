@@ -15,7 +15,7 @@ function LoadingFallback() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
       <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto"></div>
         <p className="mt-4 text-gray-600">{t('auth.loading')}</p>
       </div>
     </div>
@@ -144,7 +144,7 @@ function ResetPasswordContent() {
           </p>
           <Link
             href="/auth/forgot-password"
-            className="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors"
+            className="inline-block px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors"
           >
             {t('auth.sendResetLink')}
           </Link>
@@ -159,7 +159,7 @@ function ResetPasswordContent() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 justify-center">
-            <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center">
               <span className="text-white font-bold text-xl">BC</span>
             </div>
             <span className="font-bold text-2xl text-gray-900">BioCycle Peptides</span>
@@ -191,7 +191,7 @@ function ResetPasswordContent() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder="••••••••"
               />
               {/* Password strength indicator */}
@@ -211,7 +211,7 @@ function ResetPasswordContent() {
                   t('auth.passwordStrong'),
                   t('auth.passwordVeryStrong'),
                 ];
-                const colors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-lime-500', 'bg-green-500'];
+                const colors = ['bg-red-500', 'bg-primary-500', 'bg-yellow-500', 'bg-lime-500', 'bg-green-500'];
                 const label = labels[Math.max(0, strength - 1)] || labels[0];
                 const color = colors[Math.max(0, strength - 1)] || colors[0];
                 return (
@@ -260,7 +260,7 @@ function ResetPasswordContent() {
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder="••••••••"
               />
               {confirmPassword && password !== confirmPassword && (
@@ -274,7 +274,7 @@ function ResetPasswordContent() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 mt-6"
+              className="w-full py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50 mt-6"
             >
               {isLoading ? (
                 <span className="flex items-center justify-center">
@@ -293,7 +293,7 @@ function ResetPasswordContent() {
 
         {/* Retour */}
         <div className="mt-4 text-center">
-          <Link href="/auth/signin" className="text-sm text-gray-500 hover:text-orange-600">
+          <Link href="/auth/signin" className="text-sm text-gray-500 hover:text-primary-600">
             {t('auth.backToSignIn')}
           </Link>
         </div>

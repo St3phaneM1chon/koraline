@@ -47,13 +47,13 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-black text-white py-12">
+    <footer className="bg-navy-900 text-white py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
           {/* Logo & Info */}
           <div className="col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">BC</span>
               </div>
               <span className="font-bold text-xl">BioCycle Peptides</span>
@@ -62,7 +62,7 @@ export default function Footer() {
               {t('footer.description') || 'Canada\'s trusted source for high-purity research peptides. 99%+ purity guaranteed with third-party lab testing.'}
             </p>
             <p className="text-neutral-500 text-sm mb-2">
-              📧 <a href="mailto:info@biocyclepeptides.com" className="text-orange-400 hover:underline">info@biocyclepeptides.com</a>
+              📧 <a href="mailto:info@biocyclepeptides.com" className="text-primary-400 hover:underline">info@biocyclepeptides.com</a>
             </p>
             <p className="text-neutral-500 text-sm">
               📍 Montreal, Quebec, Canada
@@ -128,7 +128,7 @@ export default function Footer() {
             <h3 className="font-bold mb-4">{t('footer.community') || 'Community'}</h3>
             <ul className="space-y-2 text-neutral-400 text-sm">
               <li>
-                <Link href="/rewards" className="hover:text-orange-400 transition-colors flex items-center gap-1">
+                <Link href="/rewards" className="hover:text-primary-400 transition-colors flex items-center gap-1">
                   🎁 {t('nav.rewards') || 'Rewards Program'}
                 </Link>
               </li>
@@ -196,12 +196,12 @@ export default function Footer() {
                     placeholder={t('footer.placeholder.email')}
                     aria-label={t('footer.placeholder.email') || 'Email address for newsletter'}
                     required
-                    className="flex-1 px-4 py-2 bg-neutral-900 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:border-orange-500"
+                    className="flex-1 px-4 py-2 bg-neutral-900 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:border-primary-500"
                   />
                   <button
                     type="submit"
                     disabled={newsletterStatus === 'loading'}
-                    className="px-6 py-2 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50"
+                    className="px-6 py-2 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50"
                   >
                     {newsletterStatus === 'loading' ? '...' : (t('footer.subscribe') || 'Subscribe')}
                   </button>
@@ -217,7 +217,7 @@ export default function Footer() {
         {/* Disclaimer */}
         <div className="mt-8 pt-8 border-t border-neutral-800">
           <p className="text-xs text-neutral-500 leading-relaxed mb-4">
-            <strong className="text-orange-400">DISCLAIMER:</strong> {t('disclaimer.text') || 'All products are intended for laboratory and research use only. Not for human consumption. Products have not been evaluated by Health Canada or the FDA. Purchasers must be 18+ years of age. By using this website, you agree that these products are being purchased for research purposes only.'}
+            <strong className="text-primary-400">DISCLAIMER:</strong> {t('disclaimer.text') || 'All products are intended for laboratory and research use only. Not for human consumption. Products have not been evaluated by Health Canada or the FDA. Purchasers must be 18+ years of age. By using this website, you agree that these products are being purchased for research purposes only.'}
           </p>
 
           {/* Company Legal Identification */}

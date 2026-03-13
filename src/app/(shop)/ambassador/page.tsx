@@ -169,7 +169,7 @@ export default function AmbassadorPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero */}
-      <section className="bg-gradient-to-br from-orange-500 via-orange-600 to-red-500 text-white py-16">
+      <section className="bg-gradient-to-br from-primary-500 via-primary-600 to-red-500 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="text-6xl mb-4 block" aria-hidden="true">🤝</span>
           <h1 className="text-3xl md:text-5xl font-bold mb-4">
@@ -197,21 +197,21 @@ export default function AmbassadorPage() {
           {!session ? (
             <Link
               href="/auth/signin?callbackUrl=/ambassador"
-              className="inline-block px-8 py-4 bg-white text-orange-600 rounded-xl font-bold text-lg hover:bg-orange-50 transition-colors"
+              className="inline-block px-8 py-4 bg-white text-primary-600 rounded-xl font-bold text-lg hover:bg-primary-50 transition-colors"
             >
               {t('ambassador.signInToApply') || 'Sign In to Apply'}
             </Link>
           ) : isAmbassador ? (
             <button
               onClick={() => setActiveTab('dashboard')}
-              className="inline-block px-8 py-4 bg-white text-orange-600 rounded-xl font-bold text-lg hover:bg-orange-50 transition-colors"
+              className="inline-block px-8 py-4 bg-white text-primary-600 rounded-xl font-bold text-lg hover:bg-primary-50 transition-colors"
             >
               {t('ambassador.viewDashboard') || 'View Dashboard'}
             </button>
           ) : (
             <button
               onClick={() => setActiveTab('apply')}
-              className="inline-block px-8 py-4 bg-white text-orange-600 rounded-xl font-bold text-lg hover:bg-orange-50 transition-colors"
+              className="inline-block px-8 py-4 bg-white text-primary-600 rounded-xl font-bold text-lg hover:bg-primary-50 transition-colors"
             >
               {t('ambassador.applyNow') || 'Apply Now'}
             </button>
@@ -230,9 +230,9 @@ export default function AmbassadorPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                className={`px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                className={`px-6 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
                   activeTab === tab.id
-                    ? 'bg-orange-500 text-white'
+                    ? 'bg-primary-500 text-white'
                     : 'bg-white text-neutral-600 hover:bg-neutral-100 border border-neutral-200'
                 }`}
               >
@@ -256,10 +256,10 @@ export default function AmbassadorPage() {
                   { step: 4, icon: '💵', title: t('ambassador.earn') || 'Earn', desc: t('ambassador.earnDesc') || 'Get paid monthly for every sale' },
                 ].map((item) => (
                   <div key={item.step} className="bg-white rounded-xl p-6 text-center shadow-sm border border-neutral-200">
-                    <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                       <span className="text-2xl" aria-hidden="true">{item.icon}</span>
                     </div>
-                    <div className="text-xs text-orange-500 font-bold mb-1">{t('common.step') || 'STEP'} {item.step}</div>
+                    <div className="text-xs text-primary-500 font-bold mb-1">{t('common.step') || 'STEP'} {item.step}</div>
                     <h3 className="font-bold mb-1">{item.title}</h3>
                     <p className="text-sm text-neutral-500">{item.desc}</p>
                   </div>
@@ -281,7 +281,7 @@ export default function AmbassadorPage() {
                     <div className="text-center mb-4">
                       <span className="text-4xl">{tier.icon}</span>
                       <h3 className="font-bold mt-2">{tier.name}</h3>
-                      <p className="text-3xl font-bold text-orange-500 mt-1">{tier.commission}%</p>
+                      <p className="text-3xl font-bold text-primary-500 mt-1">{tier.commission}%</p>
                       <p className="text-xs text-neutral-500">{t('ambassador.commission') || 'commission'}</p>
                     </div>
                     <p className="text-sm text-neutral-500 text-center mb-3">
@@ -317,8 +317,8 @@ export default function AmbassadorPage() {
                   {testimonials.map((testimonial, i) => (
                     <div key={i} className="bg-white rounded-xl p-6 shadow-sm border border-neutral-200">
                       <div className="flex items-center gap-3 mb-4">
-                        <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                          <span className="text-orange-600 font-bold text-lg">{testimonial.name.charAt(0)}</span>
+                        <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
+                          <span className="text-primary-600 font-bold text-lg">{testimonial.name.charAt(0)}</span>
                         </div>
                         <div>
                           <p className="font-bold">{testimonial.name}</p>
@@ -388,7 +388,7 @@ export default function AmbassadorPage() {
                   <span className="text-4xl">{getCurrentTier().icon}</span>
                   <div>
                     <h3 className="font-bold text-lg">{getCurrentTier().name} {t('ambassador.ambassadorLabel') || 'Ambassador'}</h3>
-                    <p className="text-orange-500 font-bold">{getCurrentTier().commission}% {t('ambassador.commission') || 'Commission'}</p>
+                    <p className="text-primary-500 font-bold">{getCurrentTier().commission}% {t('ambassador.commission') || 'Commission'}</p>
                   </div>
                 </div>
                 {getNextTier() && (
@@ -401,7 +401,7 @@ export default function AmbassadorPage() {
               {getNextTier() && (
                 <div className="h-3 bg-neutral-100 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-orange-500 rounded-full"
+                    className="h-full bg-primary-500 rounded-full"
                     style={{ width: `${(ambassadorStats.referrals / getNextTier().minReferrals) * 100}%` }}
                   />
                 </div>
@@ -419,7 +419,7 @@ export default function AmbassadorPage() {
                   aria-label={t('ambassador.yourReferralLink') || 'Your referral link'}
                   className="flex-1 px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-lg"
                 />
-                <button className="px-6 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600" aria-label={t('common.copy') || 'Copy referral link'}>
+                <button className="px-6 py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600" aria-label={t('common.copy') || 'Copy referral link'}>
                   {t('common.copy') || 'Copy'}
                 </button>
               </div>
@@ -439,7 +439,7 @@ export default function AmbassadorPage() {
                 </p>
                 <button
                   onClick={() => setActiveTab('overview')}
-                  className="px-6 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600"
+                  className="px-6 py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600"
                 >
                   {t('ambassador.backToOverview') || 'Back to Overview'}
                 </button>
@@ -456,7 +456,7 @@ export default function AmbassadorPage() {
                       value={applicationData.website}
                       onChange={(e) => setApplicationData(prev => ({ ...prev, website: e.target.value }))}
                       placeholder="https://yourwebsite.com"
-                      className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                   </div>
 
@@ -467,7 +467,7 @@ export default function AmbassadorPage() {
                       value={applicationData.socialMedia}
                       onChange={(e) => setApplicationData(prev => ({ ...prev, socialMedia: e.target.value }))}
                       placeholder="@yourusername on Instagram, Twitter, etc."
-                      className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                   </div>
 
@@ -476,7 +476,7 @@ export default function AmbassadorPage() {
                     <select
                       value={applicationData.followers}
                       onChange={(e) => setApplicationData(prev => ({ ...prev, followers: e.target.value }))}
-                      className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                       required
                     >
                       <option value="">Select...</option>
@@ -495,7 +495,7 @@ export default function AmbassadorPage() {
                       onChange={(e) => setApplicationData(prev => ({ ...prev, whyJoin: e.target.value }))}
                       placeholder={t('ambassador.placeholderAbout')}
                       rows={4}
-                      className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
+                      className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
                       required
                     />
                   </div>
@@ -507,13 +507,13 @@ export default function AmbassadorPage() {
                       onChange={(e) => setApplicationData(prev => ({ ...prev, promotionPlan: e.target.value }))}
                       placeholder={t('ambassador.placeholderContentTypes')}
                       rows={3}
-                      className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
+                      className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
                       required
                     />
                   </div>
 
-                  <div className="bg-orange-50 rounded-lg p-4">
-                    <p className="text-sm text-orange-800">
+                  <div className="bg-primary-50 rounded-lg p-4">
+                    <p className="text-sm text-primary-800">
                       <strong>{t('common.note') || 'Note'}:</strong> {t('ambassador.termsNote') || 'By applying, you agree to our Ambassador Terms and Conditions. We review all applications manually and will respond within 48 hours.'}
                     </p>
                   </div>
@@ -521,7 +521,7 @@ export default function AmbassadorPage() {
                   <button
                     type="submit"
                     disabled={isApplying}
-                    className="w-full py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     {isApplying ? (
                       <>

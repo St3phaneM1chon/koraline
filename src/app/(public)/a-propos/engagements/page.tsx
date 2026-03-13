@@ -12,8 +12,8 @@ export default function EngagementsPage() {
       titleKey: 'about.engagements.qualityTitle',
       itemPrefix: 'about.engagements.qualityItems',
       count: 5,
-      color: 'text-orange-600',
-      bg: 'bg-orange-50',
+      color: 'text-primary-600',
+      bg: 'bg-primary-50',
     },
     {
       icon: '\u26A1',
@@ -57,7 +57,7 @@ export default function EngagementsPage() {
           <Link href="/a-propos" className="text-white/80 hover:text-white text-sm transition-colors">
             &larr; {t('about.backToAbout')}
           </Link>
-          <h1 className="text-4xl md:text-5xl font-bold mt-6 mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold font-heading mt-6 mb-6">
             {t('about.engagements.title')}
           </h1>
           <p className="text-xl leading-relaxed text-emerald-100">
@@ -99,7 +99,7 @@ export default function EngagementsPage() {
           </p>
           <Link
             href="/contact"
-            className="inline-block px-8 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-semibold transition-colors"
+            className="inline-block px-8 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold transition-colors"
           >
             {t('about.engagements.ctaButton')} &rarr;
           </Link>

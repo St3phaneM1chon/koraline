@@ -104,7 +104,7 @@ export default function SitemapPage() {
           textAlign: 'center',
         }}
       >
-        <h1 style={{ fontSize: '36px', fontWeight: 700, marginBottom: '16px' }}>
+        <h1 className="font-heading" style={{ fontSize: '36px', fontWeight: 700, marginBottom: '16px' }}>
           Plan du site
         </h1>
         <p style={{ fontSize: '18px', opacity: 0.9 }}>

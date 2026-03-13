@@ -207,7 +207,7 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
               {/* FIX: BUG-092 - Standardize spinner color to brand orange */}
-              <div className="w-8 h-8 border-2 border-orange-600 border-t-transparent rounded-full animate-spin" />
+              <div className="w-8 h-8 border-2 border-primary-600 border-t-transparent rounded-full animate-spin" />
             </div>
           ) : results.length > 0 ? (
             <>
@@ -243,7 +243,7 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
                     router.push(`/search?q=${encodeURIComponent(query)}`);
                     onClose();
                   }}
-                  className="w-full flex items-center justify-center gap-2 py-2 text-sm font-medium text-orange-600 hover:text-orange-700 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
                 >
                   {t('search.viewAllResults').replace('{count}', String(results.length))}
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -260,7 +260,7 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
                   router.push(`/search?q=${encodeURIComponent(query)}`);
                   onClose();
                 }}
-                className="text-sm text-orange-600 hover:text-orange-700 font-medium transition-colors"
+                className="text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors"
               >
                 {t('search.tryAdvancedSearch')}
               </button>

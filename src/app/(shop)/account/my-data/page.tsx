@@ -109,7 +109,7 @@ function DataSection({
           <span className="text-xl" aria-hidden="true">{icon}</span>
           <span className="font-medium text-neutral-900">{title}</span>
           {badge !== undefined && (
-            <span className="px-2 py-0.5 bg-orange-100 text-orange-700 rounded-full text-xs font-medium">
+            <span className="px-2 py-0.5 bg-primary-100 text-primary-700 rounded-full text-xs font-medium">
               {badge}
             </span>
           )}
@@ -188,7 +188,7 @@ export default function MyDataPage() {
   if (status === 'loading' || loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500" />
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500" />
       </div>
     );
   }
@@ -204,11 +204,11 @@ export default function MyDataPage() {
       {/* Header */}
       <div className="mb-8">
         <nav className="text-sm text-neutral-500 mb-2" aria-label="breadcrumb">
-          <Link href="/" className="hover:text-orange-600">
+          <Link href="/" className="hover:text-primary-600">
             {t('nav.home')}
           </Link>
           <span className="mx-2">/</span>
-          <Link href="/account" className="hover:text-orange-600">
+          <Link href="/account" className="hover:text-primary-600">
             {t('account.myAccount')}
           </Link>
           <span className="mx-2">/</span>
@@ -226,7 +226,7 @@ export default function MyDataPage() {
           <button
             onClick={handleExport}
             disabled={exporting}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-500 hover:bg-orange-600 disabled:bg-orange-300 text-white rounded-lg font-medium transition-colors text-sm whitespace-nowrap"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-500 hover:bg-primary-600 disabled:bg-primary-300 text-white rounded-lg font-medium transition-colors text-sm whitespace-nowrap"
           >
             {exporting ? (
               <>
@@ -343,7 +343,7 @@ export default function MyDataPage() {
                       {addr.label || addr.recipientName}
                     </span>
                     {addr.isDefault && (
-                      <span className="px-2 py-0.5 bg-orange-100 text-orange-700 rounded-full text-xs">
+                      <span className="px-2 py-0.5 bg-primary-100 text-primary-700 rounded-full text-xs">
                         Default
                       </span>
                     )}
@@ -428,7 +428,7 @@ export default function MyDataPage() {
             <dl className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="p-3 bg-neutral-50 rounded-lg text-center">
                 <dt className="text-xs text-neutral-500 mb-1">{t('account.loyaltyPoints')}</dt>
-                <dd className="text-xl font-bold text-orange-600">{data.loyalty.points}</dd>
+                <dd className="text-xl font-bold text-primary-600">{data.loyalty.points}</dd>
               </div>
               <div className="p-3 bg-neutral-50 rounded-lg text-center">
                 <dt className="text-xs text-neutral-500 mb-1">{t('account.myData.loyalty')}</dt>

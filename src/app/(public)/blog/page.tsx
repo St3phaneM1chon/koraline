@@ -169,7 +169,7 @@ export default async function BlogPage() {
             textAlign: 'center',
           }}
         >
-          <h1 style={{ fontSize: '42px', fontWeight: 700, marginBottom: '16px' }}>Blog</h1>
+          <h1 className="font-heading" style={{ fontSize: '42px', fontWeight: 700, marginBottom: '16px' }}>Blog</h1>
           <p style={{ fontSize: '18px', opacity: 0.9 }}>
             {t('blog.subtitle') || 'Research insights, protocols, and scientific discoveries in peptide research'}
           </p>
@@ -236,7 +236,7 @@ export default async function BlogPage() {
           textAlign: 'center',
         }}
       >
-        <h1 style={{ fontSize: '42px', fontWeight: 700, marginBottom: '16px' }}>Blog</h1>
+        <h1 className="font-heading" style={{ fontSize: '42px', fontWeight: 700, marginBottom: '16px' }}>Blog</h1>
         <p style={{ fontSize: '18px', opacity: 0.9 }}>
           {t('blog.heroSubtitle')}
         </p>

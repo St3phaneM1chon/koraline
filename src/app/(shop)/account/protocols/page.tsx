@@ -217,7 +217,7 @@ export default function ProtocolsPage() {
   if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
       </div>
     );
   }
@@ -230,9 +230,9 @@ export default function ProtocolsPage() {
         {/* Header */}
         <div className="mb-8">
           <nav className="text-sm text-gray-500 mb-2">
-            <Link href="/" className="hover:text-orange-600">{t('account.home')}</Link>
+            <Link href="/" className="hover:text-primary-600">{t('account.home')}</Link>
             <span className="mx-2">/</span>
-            <Link href="/account" className="hover:text-orange-600">{t('account.myAccount')}</Link>
+            <Link href="/account" className="hover:text-primary-600">{t('account.myAccount')}</Link>
             <span className="mx-2">/</span>
             <span className="text-gray-900">{t('protocols.title')}</span>
           </nav>
@@ -243,7 +243,7 @@ export default function ProtocolsPage() {
             </div>
             <button
               onClick={() => setShowNewProtocol(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg font-medium transition-colors"
             >
               {t('protocols.newProtocol')}
             </button>
@@ -265,7 +265,7 @@ export default function ProtocolsPage() {
               onClick={() => setActiveTab('my-protocols')}
               className={`flex-1 py-4 text-sm font-medium transition-colors ${
                 activeTab === 'my-protocols'
-                  ? 'bg-orange-50 text-orange-600 border-b-2 border-orange-500'
+                  ? 'bg-primary-50 text-primary-600 border-b-2 border-primary-500'
                   : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
               }`}
             >
@@ -275,7 +275,7 @@ export default function ProtocolsPage() {
               onClick={() => setActiveTab('templates')}
               className={`flex-1 py-4 text-sm font-medium transition-colors ${
                 activeTab === 'templates'
-                  ? 'bg-orange-50 text-orange-600 border-b-2 border-orange-500'
+                  ? 'bg-primary-50 text-primary-600 border-b-2 border-primary-500'
                   : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
               }`}
             >
@@ -298,7 +298,7 @@ export default function ProtocolsPage() {
                     </p>
                     <button
                       onClick={() => setActiveTab('templates')}
-                      className="inline-block bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                      className="inline-block bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
                     >
                       {t('protocols.viewSuggested')}
                     </button>
@@ -423,7 +423,7 @@ function StatCard({ icon, label, value, color }: { icon: string; label: string; 
     green: 'bg-green-100 text-green-800',
     blue: 'bg-blue-100 text-blue-800',
     purple: 'bg-purple-100 text-purple-800',
-    orange: 'bg-orange-100 text-orange-800',
+    orange: 'bg-primary-100 text-primary-800',
   };
   return (
     <div className="bg-white rounded-xl p-4 border border-gray-200">
@@ -496,7 +496,7 @@ function ProtocolCard({
 
         <div className="flex flex-wrap gap-1 mb-3">
           {protocol.peptides.slice(0, 3).map(p => (
-            <span key={p} className="px-2 py-0.5 bg-orange-50 text-orange-700 rounded text-xs">
+            <span key={p} className="px-2 py-0.5 bg-primary-50 text-primary-700 rounded text-xs">
               {p}
             </span>
           ))}
@@ -541,7 +541,7 @@ function ProtocolCard({
         {protocol.status === 'completed' && (
           <button
             onClick={() => onStatusChange('active')}
-            className="flex-1 py-2 text-xs font-medium text-orange-600 hover:bg-orange-50 rounded transition-colors"
+            className="flex-1 py-2 text-xs font-medium text-primary-600 hover:bg-primary-50 rounded transition-colors"
           >
             {t('protocols.restart')}
           </button>
@@ -563,7 +563,7 @@ function TemplateCard({ template, onStart }: { template: ProtocolTemplate; onSta
         
         <div className="flex flex-wrap gap-2 mb-4">
           {template.peptides.map(p => (
-            <span key={p} className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-medium">
+            <span key={p} className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm font-medium">
               {p}
             </span>
           ))}
@@ -592,7 +592,7 @@ function TemplateCard({ template, onStart }: { template: ProtocolTemplate; onSta
           </button>
           <button
             onClick={onStart}
-            className="flex-1 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-medium transition-colors"
+            className="flex-1 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg text-sm font-medium transition-colors"
           >
             {t('protocols.startProtocol')}
           </button>
@@ -674,7 +674,7 @@ function ProtocolDetailModal({
           </div>
           <div className="flex flex-wrap gap-2 mt-4">
             {protocol.peptides.map(p => (
-              <span key={p} className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm">
+              <span key={p} className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm">
                 {p}
               </span>
             ))}
@@ -686,7 +686,7 @@ function ProtocolDetailModal({
           <button
             onClick={() => setActiveTab('journal')}
             className={`flex-1 py-3 text-sm font-medium ${
-              activeTab === 'journal' ? 'text-orange-600 border-b-2 border-orange-500' : 'text-gray-500'
+              activeTab === 'journal' ? 'text-primary-600 border-b-2 border-primary-500' : 'text-gray-500'
             }`}
           >
             {t('protocols.journal')} ({protocol.entries.length})
@@ -694,7 +694,7 @@ function ProtocolDetailModal({
           <button
             onClick={() => setActiveTab('stats')}
             className={`flex-1 py-3 text-sm font-medium ${
-              activeTab === 'stats' ? 'text-orange-600 border-b-2 border-orange-500' : 'text-gray-500'
+              activeTab === 'stats' ? 'text-primary-600 border-b-2 border-primary-500' : 'text-gray-500'
             }`}
           >
             {t('protocols.statistics')}
@@ -702,7 +702,7 @@ function ProtocolDetailModal({
           <button
             onClick={() => setActiveTab('add')}
             className={`flex-1 py-3 text-sm font-medium ${
-              activeTab === 'add' ? 'text-orange-600 border-b-2 border-orange-500' : 'text-gray-500'
+              activeTab === 'add' ? 'text-primary-600 border-b-2 border-primary-500' : 'text-gray-500'
             }`}
           >
             {t('protocols.newEntry')}
@@ -719,7 +719,7 @@ function ProtocolDetailModal({
                   <p className="text-gray-500 mb-4">{t('protocols.noEntries')}</p>
                   <button
                     onClick={() => setActiveTab('add')}
-                    className="text-orange-600 hover:text-orange-700 font-medium"
+                    className="text-primary-600 hover:text-primary-700 font-medium"
                   >
                     {t('protocols.addEntry')}
                   </button>
@@ -832,7 +832,7 @@ function ProtocolDetailModal({
                     type="date"
                     value={newEntry.date}
                     onChange={e => setNewEntry({ ...newEntry, date: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                     required
                   />
                 </div>
@@ -842,7 +842,7 @@ function ProtocolDetailModal({
                     type="time"
                     value={newEntry.time}
                     onChange={e => setNewEntry({ ...newEntry, time: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                     required
                   />
                 </div>
@@ -853,7 +853,7 @@ function ProtocolDetailModal({
                 <select
                   value={newEntry.peptide}
                   onChange={e => setNewEntry({ ...newEntry, peptide: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                   required
                 >
                   {protocol.peptides.map(p => (
@@ -871,7 +871,7 @@ function ProtocolDetailModal({
                     step="0.01"
                     value={newEntry.dosage || ''}
                     onChange={e => setNewEntry({ ...newEntry, dosage: parseFloat(e.target.value) || 0 })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                     required
                   />
                 </div>
@@ -880,7 +880,7 @@ function ProtocolDetailModal({
                   <select
                     value={newEntry.unit}
                     onChange={e => setNewEntry({ ...newEntry, unit: e.target.value as 'mcg' | 'mg' | 'IU' })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                   >
                     <option value="mcg">{t('protocols.unitMcg')}</option>
                     <option value="mg">{t('protocols.unitMg')}</option>
@@ -899,7 +899,7 @@ function ProtocolDetailModal({
                   max="5"
                   value={newEntry.effectiveness}
                   onChange={e => setNewEntry({ ...newEntry, effectiveness: parseInt(e.target.value) })}
-                  className="w-full accent-orange-500"
+                  className="w-full accent-primary-500"
                 />
                 <div className="flex justify-between text-xs text-gray-500">
                   <span>{t('protocols.noEffect')}</span>
@@ -938,14 +938,14 @@ function ProtocolDetailModal({
                   value={newEntry.notes}
                   onChange={e => setNewEntry({ ...newEntry, notes: e.target.value })}
                   placeholder={t('protocols.notesPlaceholder')}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 resize-none"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 resize-none"
                   rows={3}
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium transition-colors"
+                className="w-full py-3 bg-primary-500 hover:bg-primary-600 text-white rounded-lg font-medium transition-colors"
               >
                 {t('protocols.saveEntry')}
               </button>
@@ -1026,7 +1026,7 @@ function NewProtocolModal({
               value={name}
               onChange={e => setName(e.target.value)}
               placeholder={t('protocols.protocolNamePlaceholder')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
               required
             />
           </div>
@@ -1038,7 +1038,7 @@ function NewProtocolModal({
               value={goal}
               onChange={e => setGoal(e.target.value)}
               placeholder={t('protocols.objectivePlaceholder')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
             />
           </div>
 
@@ -1048,7 +1048,7 @@ function NewProtocolModal({
               value={description}
               onChange={e => setDescription(e.target.value)}
               placeholder={t('protocols.descriptionPlaceholder')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 resize-none"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 resize-none"
               rows={3}
             />
           </div>
@@ -1061,7 +1061,7 @@ function NewProtocolModal({
                 value={newPeptide}
                 onChange={e => setNewPeptide(e.target.value)}
                 placeholder={t('protocols.peptideNamePlaceholder')}
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                 onKeyPress={e => e.key === 'Enter' && (e.preventDefault(), addPeptide())}
               />
               <button
@@ -1076,13 +1076,13 @@ function NewProtocolModal({
               {peptides.map(p => (
                 <span
                   key={p}
-                  className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm flex items-center gap-2"
+                  className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm flex items-center gap-2"
                 >
                   {p}
                   <button
                     type="button"
                     onClick={() => setPeptides(peptides.filter(x => x !== p))}
-                    className="text-orange-500 hover:text-orange-700"
+                    className="text-primary-500 hover:text-primary-700"
                   >
                     ×
                   </button>
@@ -1102,7 +1102,7 @@ function NewProtocolModal({
             <button
               type="submit"
               disabled={!name || peptides.length === 0}
-              className="flex-1 py-2 bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 text-white rounded-lg text-sm font-medium transition-colors"
+              className="flex-1 py-2 bg-primary-500 hover:bg-primary-600 disabled:bg-gray-300 text-white rounded-lg text-sm font-medium transition-colors"
             >
               {t('protocols.createProtocol')}
             </button>

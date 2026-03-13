@@ -225,7 +225,7 @@ export default function UpsellInterstitialModal({
 
         {/* Header */}
         <div className="px-6 pt-6 pb-4 text-center border-b border-neutral-100">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-semibold mb-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-semibold mb-3">
             <Sparkles className="w-3.5 h-3.5" />
             {t('upsell.title')}
           </div>
@@ -234,7 +234,7 @@ export default function UpsellInterstitialModal({
 
         {loading ? (
           <div className="py-12 flex flex-col items-center gap-3">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500" />
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500" />
             <p className="text-sm text-neutral-500">{t('upsell.loading')}</p>
           </div>
         ) : upsellData?.enabled ? (
@@ -246,7 +246,7 @@ export default function UpsellInterstitialModal({
                   onClick={() => setActiveTab('quantity')}
                   className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors ${
                     activeTab === 'quantity'
-                      ? 'text-orange-600 border-b-2 border-orange-500'
+                      ? 'text-primary-600 border-b-2 border-primary-500'
                       : 'text-neutral-500 hover:text-neutral-700'
                   }`}
                 >
@@ -257,7 +257,7 @@ export default function UpsellInterstitialModal({
                   onClick={() => setActiveTab('subscription')}
                   className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors ${
                     activeTab === 'subscription'
-                      ? 'text-orange-600 border-b-2 border-orange-500'
+                      ? 'text-primary-600 border-b-2 border-primary-500'
                       : 'text-neutral-500 hover:text-neutral-700'
                   }`}
                 >
@@ -294,13 +294,13 @@ export default function UpsellInterstitialModal({
                           onClick={() => setSelectedQuantity(qty)}
                           className={`w-full flex items-center gap-3 p-3 rounded-xl border-2 transition-all ${
                             isSelected
-                              ? 'border-orange-500 bg-orange-50'
-                              : 'border-neutral-200 hover:border-orange-300'
+                              ? 'border-primary-500 bg-primary-50'
+                              : 'border-neutral-200 hover:border-primary-300'
                           }`}
                         >
                           <div
                             className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                              isSelected ? 'border-orange-500 bg-orange-500' : 'border-neutral-300'
+                              isSelected ? 'border-primary-500 bg-primary-500' : 'border-neutral-300'
                             }`}
                           >
                             {isSelected && <Check className="w-3 h-3 text-white" />}
@@ -319,7 +319,7 @@ export default function UpsellInterstitialModal({
                                 </span>
                               )}
                             </div>
-                            <p className="text-xs text-orange-600 font-medium">
+                            <p className="text-xs text-primary-600 font-medium">
                               {t('upsell.quantity.savePercent').replace('{percent}', String(tier.discount))}
                             </p>
                           </div>
@@ -363,7 +363,7 @@ export default function UpsellInterstitialModal({
                   {/* Accept button */}
                   <button
                     onClick={() => onAcceptQuantity(item, selectedQuantity)}
-                    className="w-full py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+                    className="w-full py-3.5 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
                   >
                     {t('upsell.quantity.accept')
                       .replace('{qty}', String(selectedQuantity))
@@ -397,13 +397,13 @@ export default function UpsellInterstitialModal({
                           onClick={() => setSelectedFrequency(opt.frequency)}
                           className={`w-full flex items-center gap-3 p-3 rounded-xl border-2 transition-all ${
                             isSelected
-                              ? 'border-orange-500 bg-orange-50'
-                              : 'border-neutral-200 hover:border-orange-300'
+                              ? 'border-primary-500 bg-primary-50'
+                              : 'border-neutral-200 hover:border-primary-300'
                           }`}
                         >
                           <div
                             className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                              isSelected ? 'border-orange-500 bg-orange-500' : 'border-neutral-300'
+                              isSelected ? 'border-primary-500 bg-primary-500' : 'border-neutral-300'
                             }`}
                           >
                             {isSelected && <Check className="w-3 h-3 text-white" />}
@@ -412,7 +412,7 @@ export default function UpsellInterstitialModal({
                             <span className="font-medium text-neutral-900">
                               {t(FREQUENCY_LABELS[opt.frequency] || opt.frequency)}
                             </span>
-                            <p className="text-xs text-orange-600 font-medium">
+                            <p className="text-xs text-primary-600 font-medium">
                               {t('upsell.subscription.savings').replace('{percent}', String(opt.discountPercent))}
                             </p>
                           </div>
@@ -432,7 +432,7 @@ export default function UpsellInterstitialModal({
                   {/* Accept button */}
                   <button
                     onClick={() => onAcceptSubscription(item, selectedFrequency, subDiscountPercent)}
-                    className="w-full py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+                    className="w-full py-3.5 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
                   >
                     {t('upsell.subscription.accept').replace('{percent}', String(subDiscountPercent))}
                     <ChevronRight className="w-4 h-4" />

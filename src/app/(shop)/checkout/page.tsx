@@ -374,7 +374,7 @@ export default function CheckoutPage() {
           <p className="text-gray-500 mb-8">{t('checkout.emptyCartMessage')}</p>
           <Link
             href="/"
-            className="inline-flex items-center px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600"
+            className="inline-flex items-center px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600"
           >
             {t('cart.continueShopping')}
           </Link>
@@ -491,14 +491,14 @@ export default function CheckoutPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">P+</span>
             </div>
             <span className="font-bold text-xl">Peptide Plus+</span>
           </Link>
           <button
             onClick={() => window.history.back()}
-            className="text-orange-600 hover:underline"
+            className="text-primary-600 hover:underline"
           >
             {t('cart.continueShopping')}
           </button>
@@ -515,7 +515,7 @@ export default function CheckoutPage() {
                   active={currentStep === 'auth'} 
                   completed={currentStep !== 'auth'} 
                 />
-                <div className={`w-12 h-0.5 ${currentStep !== 'auth' ? 'bg-orange-500' : 'bg-gray-300'}`} />
+                <div className={`w-12 h-0.5 ${currentStep !== 'auth' ? 'bg-primary-500' : 'bg-gray-300'}`} />
               </>
             )}
             {guestCheckout && (
@@ -526,7 +526,7 @@ export default function CheckoutPage() {
                   active={currentStep === 'info'} 
                   completed={currentStep !== 'info' && currentStep !== 'auth'} 
                 />
-                <div className={`w-12 h-0.5 ${currentStep !== 'info' && currentStep !== 'auth' ? 'bg-orange-500' : 'bg-gray-300'}`} />
+                <div className={`w-12 h-0.5 ${currentStep !== 'info' && currentStep !== 'auth' ? 'bg-primary-500' : 'bg-gray-300'}`} />
               </>
             )}
             <StepIndicator 
@@ -535,7 +535,7 @@ export default function CheckoutPage() {
               active={currentStep === 'shipping'} 
               completed={currentStep === 'payment'} 
             />
-            <div className={`w-12 h-0.5 ${currentStep === 'payment' ? 'bg-orange-500' : 'bg-gray-300'}`} />
+            <div className={`w-12 h-0.5 ${currentStep === 'payment' ? 'bg-primary-500' : 'bg-gray-300'}`} />
             <StepIndicator 
               number={guestCheckout ? 3 : (session ? 2 : 3)} 
               label={t('checkout.payment')} 
@@ -688,7 +688,7 @@ export default function CheckoutPage() {
                   {/* Guest Checkout */}
                   <button
                     onClick={handleGuestCheckout}
-                    className="w-full px-6 py-3 border-2 border-orange-500 text-orange-600 font-semibold rounded-lg hover:bg-orange-50 transition-colors"
+                    className="w-full px-6 py-3 border-2 border-primary-500 text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors"
                   >
                     {t('checkout.continueAsGuest')}
                   </button>
@@ -744,7 +744,7 @@ export default function CheckoutPage() {
                           autoComplete="email"
                           value={contactInfo.email}
                           onChange={(e) => setContactInfo({ ...contactInfo, email: e.target.value })}
-                          className={`w-full px-4 py-3 pe-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                          className={`w-full px-4 py-3 pe-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 ${
                             contactInfo.email && !isValidEmail(contactInfo.email) ? 'border-red-300' : contactInfo.email && isValidEmail(contactInfo.email) ? 'border-green-400' : 'border-gray-200'
                           }`}
                           placeholder={t('auth.emailPlaceholder')}
@@ -778,7 +778,7 @@ export default function CheckoutPage() {
                         autoComplete="tel"
                         value={contactInfo.phone}
                         onChange={(e) => setContactInfo({ ...contactInfo, phone: e.target.value })}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                         placeholder="(514) 555-0123"
                       />
                     </div>
@@ -787,7 +787,7 @@ export default function CheckoutPage() {
                         type="checkbox"
                         checked={contactInfo.newsletter}
                         onChange={(e) => setContactInfo({ ...contactInfo, newsletter: e.target.checked })}
-                        className="w-4 h-4 text-orange-500 rounded"
+                        className="w-4 h-4 text-primary-500 rounded"
                       />
                       <span className="text-sm text-gray-600">{t('checkout.newsletter')}</span>
                     </label>
@@ -796,14 +796,14 @@ export default function CheckoutPage() {
                   <div className="mt-8 flex justify-between">
                     <button
                       onClick={() => setCurrentStep('auth')}
-                      className="text-orange-600 hover:underline"
+                      className="text-primary-600 hover:underline"
                     >
                       {t('checkout.backToSignIn')}
                     </button>
                     <button
                       onClick={() => setCurrentStep('shipping')}
                       disabled={!contactInfo.email || !isValidEmail(contactInfo.email)}
-                      className="px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {t('checkout.continueToShipping')}
                     </button>
@@ -852,7 +852,7 @@ export default function CheckoutPage() {
                           value={shippingInfo.firstName}
                           onChange={(e) => { setShippingInfo({ ...shippingInfo, firstName: e.target.value }); clearShippingError('firstName'); }}
                           onBlur={(e) => validateShippingField('firstName', e.target.value)}
-                          className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${shippingErrors.firstName ? 'border-red-500' : 'border-gray-200'}`}
+                          className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 ${shippingErrors.firstName ? 'border-red-500' : 'border-gray-200'}`}
                           required
                           aria-required="true"
                           aria-invalid={!!shippingErrors.firstName}
@@ -871,7 +871,7 @@ export default function CheckoutPage() {
                           value={shippingInfo.lastName}
                           onChange={(e) => { setShippingInfo({ ...shippingInfo, lastName: e.target.value }); clearShippingError('lastName'); }}
                           onBlur={(e) => validateShippingField('lastName', e.target.value)}
-                          className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${shippingErrors.lastName ? 'border-red-500' : 'border-gray-200'}`}
+                          className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 ${shippingErrors.lastName ? 'border-red-500' : 'border-gray-200'}`}
                           required
                           aria-required="true"
                           aria-invalid={!!shippingErrors.lastName}
@@ -906,7 +906,7 @@ export default function CheckoutPage() {
                           clearShippingError('address');
                         }}
                         placeholder={t('checkout.address')}
-                        className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${shippingErrors.address ? 'border-red-500' : 'border-gray-200'}`}
+                        className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 ${shippingErrors.address ? 'border-red-500' : 'border-gray-200'}`}
                         required
                         aria-invalid={!!shippingErrors.address}
                         aria-describedby={shippingErrors.address ? 'error-address' : undefined}
@@ -922,7 +922,7 @@ export default function CheckoutPage() {
                         autoComplete="shipping address-line2"
                         value={shippingInfo.apartment}
                         onChange={(e) => setShippingInfo({ ...shippingInfo, apartment: e.target.value })}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                         placeholder={t('checkout.apartment')}
                       />
                     </div>
@@ -938,7 +938,7 @@ export default function CheckoutPage() {
                           value={shippingInfo.city}
                           onChange={(e) => { setShippingInfo({ ...shippingInfo, city: e.target.value }); clearShippingError('city'); }}
                           onBlur={(e) => validateShippingField('city', e.target.value)}
-                          className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${shippingErrors.city ? 'border-red-500' : 'border-gray-200'}`}
+                          className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 ${shippingErrors.city ? 'border-red-500' : 'border-gray-200'}`}
                           required
                           aria-required="true"
                           aria-invalid={!!shippingErrors.city}
@@ -957,7 +957,7 @@ export default function CheckoutPage() {
                         id="shipping-country"
                         value={shippingInfo.country}
                         onChange={(e) => handleCountryChange(e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                         aria-required="true"
                       >
                         {Object.entries(
@@ -994,7 +994,7 @@ export default function CheckoutPage() {
                             value={shippingInfo.postalCode}
                             onChange={(e) => { setShippingInfo({ ...shippingInfo, postalCode: e.target.value.toUpperCase() }); clearShippingError('postalCode'); }}
                             onBlur={(e) => validateShippingField('postalCode', e.target.value)}
-                            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${shippingErrors.postalCode ? 'border-red-500' : 'border-gray-200'}`}
+                            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 ${shippingErrors.postalCode ? 'border-red-500' : 'border-gray-200'}`}
                             placeholder={addressFormat.postalCodePlaceholder || ''}
                             required={addressFormat.postalCodeRequired}
                           />
@@ -1022,7 +1022,7 @@ export default function CheckoutPage() {
                           <select
                             value={shippingInfo.province}
                             onChange={(e) => { setShippingInfo({ ...shippingInfo, province: e.target.value }); clearShippingError('province'); }}
-                            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${shippingErrors.province ? 'border-red-500' : 'border-gray-200'}`}
+                            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 ${shippingErrors.province ? 'border-red-500' : 'border-gray-200'}`}
                             required={addressFormat.regionRequired}
                           >
                             <option value="">{t('checkout.selectRegion')}</option>
@@ -1043,7 +1043,7 @@ export default function CheckoutPage() {
                             type="text"
                             value={shippingInfo.province}
                             onChange={(e) => setShippingInfo({ ...shippingInfo, province: e.target.value })}
-                            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                             placeholder={addressFormat.regionLabel}
                             required={addressFormat.regionRequired}
                           />
@@ -1068,7 +1068,7 @@ export default function CheckoutPage() {
                           type="text"
                           value={shippingInfo.apartment}
                           onChange={(e) => setShippingInfo({ ...shippingInfo, apartment: e.target.value })}
-                          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                           placeholder={t('checkout.coloniaPlaceholder')}
                           required
                         />
@@ -1085,7 +1085,7 @@ export default function CheckoutPage() {
                         </label>
                         <input
                           type="text"
-                          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                           placeholder={t('checkout.districtPlaceholder')}
                           required
                         />
@@ -1117,7 +1117,7 @@ export default function CheckoutPage() {
                       <label className="flex items-center gap-2 mt-4">
                         <input
                           type="checkbox"
-                          className="w-4 h-4 text-orange-500 rounded"
+                          className="w-4 h-4 text-primary-500 rounded"
                           defaultChecked
                         />
                         <span className="text-sm text-gray-600">
@@ -1135,7 +1135,7 @@ export default function CheckoutPage() {
                         type="checkbox"
                         checked={billingSameAsShipping}
                         onChange={(e) => setBillingSameAsShipping(e.target.checked)}
-                        className="w-5 h-5 text-orange-500 rounded"
+                        className="w-5 h-5 text-primary-500 rounded"
                       />
                       <span className="text-sm font-medium text-gray-700">
                         {t('checkout.billingAddressSameAsShipping')}
@@ -1155,7 +1155,7 @@ export default function CheckoutPage() {
                               value={billingInfo.firstName}
                               onChange={(e) => { setBillingInfo({ ...billingInfo, firstName: e.target.value }); clearBillingError('firstName'); }}
                               onBlur={(e) => validateBillingField('firstName', e.target.value)}
-                              className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${billingErrors.firstName ? 'border-red-500' : 'border-gray-200'}`}
+                              className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 ${billingErrors.firstName ? 'border-red-500' : 'border-gray-200'}`}
                               required
                             />
                             <FormError error={billingErrors.firstName} />
@@ -1170,7 +1170,7 @@ export default function CheckoutPage() {
                               value={billingInfo.lastName}
                               onChange={(e) => { setBillingInfo({ ...billingInfo, lastName: e.target.value }); clearBillingError('lastName'); }}
                               onBlur={(e) => validateBillingField('lastName', e.target.value)}
-                              className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${billingErrors.lastName ? 'border-red-500' : 'border-gray-200'}`}
+                              className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 ${billingErrors.lastName ? 'border-red-500' : 'border-gray-200'}`}
                               required
                             />
                             <FormError error={billingErrors.lastName} />
@@ -1186,7 +1186,7 @@ export default function CheckoutPage() {
                             value={billingInfo.address}
                             onChange={(e) => { setBillingInfo({ ...billingInfo, address: e.target.value }); clearBillingError('address'); }}
                             onBlur={(e) => validateBillingField('address', e.target.value)}
-                            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${billingErrors.address ? 'border-red-500' : 'border-gray-200'}`}
+                            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 ${billingErrors.address ? 'border-red-500' : 'border-gray-200'}`}
                             required
                           />
                           <FormError error={billingErrors.address} />
@@ -1200,7 +1200,7 @@ export default function CheckoutPage() {
                             autoComplete="billing address-line2"
                             value={billingInfo.apartment}
                             onChange={(e) => setBillingInfo({ ...billingInfo, apartment: e.target.value })}
-                            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                           />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
@@ -1214,7 +1214,7 @@ export default function CheckoutPage() {
                               value={billingInfo.city}
                               onChange={(e) => { setBillingInfo({ ...billingInfo, city: e.target.value }); clearBillingError('city'); }}
                               onBlur={(e) => validateBillingField('city', e.target.value)}
-                              className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${billingErrors.city ? 'border-red-500' : 'border-gray-200'}`}
+                              className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 ${billingErrors.city ? 'border-red-500' : 'border-gray-200'}`}
                               required
                             />
                             <FormError error={billingErrors.city} />
@@ -1226,7 +1226,7 @@ export default function CheckoutPage() {
                             <select
                               value={billingInfo.province}
                               onChange={(e) => setBillingInfo({ ...billingInfo, province: e.target.value })}
-                              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                             >
                               {provinces.map((p) => (
                                 <option key={p.code} value={p.code}>{p.name}</option>
@@ -1245,7 +1245,7 @@ export default function CheckoutPage() {
                               value={billingInfo.postalCode}
                               onChange={(e) => { setBillingInfo({ ...billingInfo, postalCode: e.target.value.toUpperCase() }); clearBillingError('postalCode'); }}
                               onBlur={(e) => validateBillingField('postalCode', e.target.value)}
-                              className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${billingErrors.postalCode ? 'border-red-500' : 'border-gray-200'}`}
+                              className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 ${billingErrors.postalCode ? 'border-red-500' : 'border-gray-200'}`}
                               placeholder="H2X 1Y4"
                               required
                             />
@@ -1258,7 +1258,7 @@ export default function CheckoutPage() {
                             <select
                               value={billingInfo.country}
                               onChange={(e) => setBillingInfo({ ...billingInfo, country: e.target.value })}
-                              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                             >
                               {countries.map((c) => (
                                 <option key={c.code} value={c.code}>{c.name}</option>
@@ -1273,7 +1273,7 @@ export default function CheckoutPage() {
                   <div className="mt-8 flex justify-between">
                     <button
                       onClick={() => setCurrentStep(guestCheckout ? 'info' : 'auth')}
-                      className="text-orange-600 hover:underline"
+                      className="text-primary-600 hover:underline"
                     >
                       {guestCheckout ? t('checkout.backToInfo') : t('checkout.backToSignIn')}
                     </button>
@@ -1302,7 +1302,7 @@ export default function CheckoutPage() {
                         (addressFormat.regionRequired && !shippingInfo.province) ||
                         (addressFormat.additionalFields?.colonia && !shippingInfo.apartment)
                       }
-                      className="px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {t('checkout.continueToPayment')}
                     </button>
@@ -1332,7 +1332,7 @@ export default function CheckoutPage() {
                       </div>
                       <button
                         onClick={() => setCurrentStep('shipping')}
-                        className="text-sm text-orange-600 hover:underline"
+                        className="text-sm text-primary-600 hover:underline"
                       >
                         {t('common.edit')}
                       </button>
@@ -1350,7 +1350,7 @@ export default function CheckoutPage() {
                         onClick={() => setSelectedPaymentMethod('credit_card')}
                         className={`w-full flex items-center gap-4 px-4 py-4 rounded-lg border-2 transition-colors text-start ${
                           selectedPaymentMethod === 'credit_card'
-                            ? 'border-orange-500 bg-orange-50'
+                            ? 'border-primary-500 bg-primary-50'
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
@@ -1375,7 +1375,7 @@ export default function CheckoutPage() {
                           <p className="text-xs text-gray-500">{t('checkout.creditCardDescription')}</p>
                         </div>
                         {selectedPaymentMethod === 'credit_card' && (
-                          <svg className="w-5 h-5 text-orange-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className="w-5 h-5 text-primary-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
                         )}
@@ -1386,7 +1386,7 @@ export default function CheckoutPage() {
                         onClick={() => setSelectedPaymentMethod('interac')}
                         className={`w-full flex items-center gap-4 px-4 py-4 rounded-lg border-2 transition-colors text-start ${
                           selectedPaymentMethod === 'interac'
-                            ? 'border-orange-500 bg-orange-50'
+                            ? 'border-primary-500 bg-primary-50'
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
@@ -1398,7 +1398,7 @@ export default function CheckoutPage() {
                           <p className="text-xs text-gray-500">{t('checkout.interacDescription')}</p>
                         </div>
                         {selectedPaymentMethod === 'interac' && (
-                          <svg className="w-5 h-5 text-orange-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className="w-5 h-5 text-primary-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
                         )}
@@ -1409,7 +1409,7 @@ export default function CheckoutPage() {
                         onClick={() => setSelectedPaymentMethod('paypal')}
                         className={`w-full flex items-center gap-4 px-4 py-4 rounded-lg border-2 transition-colors text-start ${
                           selectedPaymentMethod === 'paypal'
-                            ? 'border-orange-500 bg-orange-50'
+                            ? 'border-primary-500 bg-primary-50'
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
@@ -1421,7 +1421,7 @@ export default function CheckoutPage() {
                           <p className="text-xs text-gray-500">{t('checkout.paypalDescription')}</p>
                         </div>
                         {selectedPaymentMethod === 'paypal' && (
-                          <svg className="w-5 h-5 text-orange-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className="w-5 h-5 text-primary-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
                         )}
@@ -1432,7 +1432,7 @@ export default function CheckoutPage() {
                         onClick={() => setSelectedPaymentMethod('apple_pay')}
                         className={`w-full flex items-center gap-4 px-4 py-4 rounded-lg border-2 transition-colors text-start ${
                           selectedPaymentMethod === 'apple_pay'
-                            ? 'border-orange-500 bg-orange-50'
+                            ? 'border-primary-500 bg-primary-50'
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
@@ -1444,7 +1444,7 @@ export default function CheckoutPage() {
                           <p className="text-xs text-gray-500">{t('checkout.applePayDescription')}</p>
                         </div>
                         {selectedPaymentMethod === 'apple_pay' && (
-                          <svg className="w-5 h-5 text-orange-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className="w-5 h-5 text-primary-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
                         )}
@@ -1455,7 +1455,7 @@ export default function CheckoutPage() {
                         onClick={() => setSelectedPaymentMethod('google_pay')}
                         className={`w-full flex items-center gap-4 px-4 py-4 rounded-lg border-2 transition-colors text-start ${
                           selectedPaymentMethod === 'google_pay'
-                            ? 'border-orange-500 bg-orange-50'
+                            ? 'border-primary-500 bg-primary-50'
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
@@ -1470,7 +1470,7 @@ export default function CheckoutPage() {
                           <p className="text-xs text-gray-500">{t('checkout.googlePayDescription')}</p>
                         </div>
                         {selectedPaymentMethod === 'google_pay' && (
-                          <svg className="w-5 h-5 text-orange-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className="w-5 h-5 text-primary-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
                         )}
@@ -1496,14 +1496,14 @@ export default function CheckoutPage() {
                           setResearchConsent(e.target.checked);
                           if (e.target.checked) setResearchConsentError(false);
                         }}
-                        className="mt-1 h-5 w-5 rounded border-gray-300 text-orange-500 focus:ring-orange-500 flex-shrink-0"
+                        className="mt-1 h-5 w-5 rounded border-gray-300 text-primary-500 focus:ring-primary-500 flex-shrink-0"
                       />
                       <span className="text-sm text-gray-700 leading-relaxed">
                         {(() => {
                           const raw = t('checkout.researchConsentLabel');
                           // FIX: Add rel="noopener noreferrer" to target="_blank" links
-                          const termsLink = `<a href="/mentions-legales/conditions" target="_blank" rel="noopener noreferrer" class="text-orange-600 underline hover:text-orange-700 font-medium">${t('checkout.researchConsentTerms')}</a>`;
-                          const privacyLink = `<a href="/mentions-legales/confidentialite" target="_blank" rel="noopener noreferrer" class="text-orange-600 underline hover:text-orange-700 font-medium">${t('checkout.researchConsentPrivacy')}</a>`;
+                          const termsLink = `<a href="/mentions-legales/conditions" target="_blank" rel="noopener noreferrer" class="text-primary-600 underline hover:text-primary-700 font-medium">${t('checkout.researchConsentTerms')}</a>`;
+                          const privacyLink = `<a href="/mentions-legales/confidentialite" target="_blank" rel="noopener noreferrer" class="text-primary-600 underline hover:text-primary-700 font-medium">${t('checkout.researchConsentPrivacy')}</a>`;
                           const html = raw.replace('{termsLink}', termsLink).replace('{privacyLink}', privacyLink);
                           return <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html, { ALLOWED_TAGS: ['a', 'span'], ALLOWED_ATTR: ['href', 'target', 'rel', 'class'] }) }} />;
                         })()}
@@ -1519,14 +1519,14 @@ export default function CheckoutPage() {
                   <div className="mt-8 flex justify-between">
                     <button
                       onClick={() => setCurrentStep('shipping')}
-                      className="text-orange-600 hover:underline"
+                      className="text-primary-600 hover:underline"
                     >
                       {t('checkout.backToShipping')}
                     </button>
                     <button
                       onClick={handleSubmitOrder}
                       disabled={isProcessing || !researchConsent}
-                      className="px-8 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                      className="px-8 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                     >
                       {isProcessing ? (
                         <>
@@ -1625,18 +1625,18 @@ export default function CheckoutPage() {
               {/* Gift Card */}
               <div className="mb-6">
                 {giftCardApplied ? (
-                  <div className="flex items-center justify-between p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                  <div className="flex items-center justify-between p-3 bg-primary-50 border border-primary-200 rounded-lg">
                     <div className="flex items-center gap-2">
-                      <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      <span className="text-orange-700 font-medium">{giftCardApplied}</span>
-                      <span className="text-orange-600 text-sm">(-{formatPrice(giftCardDiscount)})</span>
+                      <span className="text-primary-700 font-medium">{giftCardApplied}</span>
+                      <span className="text-primary-600 text-sm">(-{formatPrice(giftCardDiscount)})</span>
                     </div>
                     <button
                       onClick={removeGiftCard}
                       aria-label={t('checkout.aria.removeGiftCard')}
-                      className="text-orange-700 hover:text-orange-900"
+                      className="text-primary-700 hover:text-primary-900"
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1700,7 +1700,7 @@ export default function CheckoutPage() {
 
                 {/* Gift Card Discount */}
                 {giftCardDiscount > 0 && (
-                  <div className="flex justify-between text-orange-600">
+                  <div className="flex justify-between text-primary-600">
                     <span className="flex items-center gap-1">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -1798,8 +1798,8 @@ function StepIndicator({ number, label, active, completed }: {
   return (
     <div className="flex items-center gap-2" aria-label={`Step ${number}: ${label} - ${stepStatus}`} aria-current={active ? 'step' : undefined}>
       <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-        completed ? 'bg-orange-500 text-white' :
-        active ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-500'
+        completed ? 'bg-primary-500 text-white' :
+        active ? 'bg-primary-500 text-white' : 'bg-gray-200 text-gray-500'
       }`} aria-hidden="true">
         {completed ? (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

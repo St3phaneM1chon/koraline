@@ -9,7 +9,7 @@ export default function EquipePage() {
   const departments = [
     { icon: '\uD83D\uDD2C', titleKey: 'about.team.scientificTitle', descKey: 'about.team.scientificDesc', borderColor: 'border-emerald-500' },
     { icon: '\uD83D\uDCE6', titleKey: 'about.team.logisticsTitle', descKey: 'about.team.logisticsDesc', borderColor: 'border-blue-500' },
-    { icon: '\uD83D\uDCAC', titleKey: 'about.team.supportTitle', descKey: 'about.team.supportDesc', borderColor: 'border-orange-500' },
+    { icon: '\uD83D\uDCAC', titleKey: 'about.team.supportTitle', descKey: 'about.team.supportDesc', borderColor: 'border-primary-500' },
     { icon: '\uD83D\uDCBB', titleKey: 'about.team.techTitle', descKey: 'about.team.techDesc', borderColor: 'border-violet-500' },
   ];
 
@@ -29,7 +29,7 @@ export default function EquipePage() {
           <Link href="/a-propos" className="text-white/80 hover:text-white text-sm transition-colors">
             &larr; {t('about.backToAbout')}
           </Link>
-          <h1 className="text-4xl md:text-5xl font-bold mt-6 mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold font-heading mt-6 mb-6">
             {t('about.team.title')}
           </h1>
           <p className="text-xl leading-relaxed text-blue-100">
@@ -93,7 +93,7 @@ export default function EquipePage() {
           </p>
           <a
             href="mailto:careers@biocyclepeptides.com"
-            className="inline-block px-8 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-semibold transition-colors"
+            className="inline-block px-8 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold transition-colors"
           >
             careers@biocyclepeptides.com
           </a>

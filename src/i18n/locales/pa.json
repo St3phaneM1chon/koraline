@@ -3337,7 +3337,142 @@
       "webForms": "Web-to-Lead Forms",
       "revenueForecast": "Revenue Forecast",
       "leadInfo": "Lead Info",
-      "executionsByWorkflow": "Executions by Workflow"
+      "executionsByWorkflow": "Executions by Workflow",
+      "reps": {
+        "title": "Sales Representatives",
+        "subtitle": "Manage and track sales rep performance",
+        "searchPlaceholder": "Search representatives...",
+        "noReps": "No representatives found",
+        "memberSince": "Member since",
+        "leadsAssigned": "Leads",
+        "dealsAssigned": "Deals",
+        "activitiesCount": "Activities",
+        "daysTracked": "Days Tracked",
+        "tabs": {
+          "overview": "Overview",
+          "communications": "Communications",
+          "deals": "Deals",
+          "followups": "Follow-ups",
+          "revenue": "Revenue",
+          "quotas": "Quotas",
+          "commissions": "Commissions",
+          "statistics": "Statistics",
+          "notes": "Notes"
+        },
+        "kpi": {
+          "callsTotal": "Total Calls",
+          "revenue": "Revenue",
+          "dealsWon": "Deals Won",
+          "dealsLost": "Deals Lost",
+          "activeLeads": "Active Leads",
+          "pipelineValue": "Pipeline Value",
+          "followupsDue": "Follow-ups Due",
+          "commissionEarned": "Commission Earned"
+        },
+        "followup": {
+          "schedule": "Schedule Follow-up",
+          "complete": "Complete",
+          "reschedule": "Reschedule",
+          "overdue": "Overdue",
+          "pending": "Pending",
+          "completed": "Completed",
+          "skipped": "Skipped",
+          "addFollowUp": "Add Follow-up",
+          "intervalMonths": "Interval (months)",
+          "scheduledDate": "Scheduled Date",
+          "outcome": "Outcome",
+          "nextAction": "Next Action",
+          "types": {
+            "RETENTION": "Retention",
+            "UPSELL": "Upsell",
+            "RENEWAL": "Renewal",
+            "CHECK_IN": "Check-in",
+            "ANNIVERSARY": "Anniversary"
+          }
+        },
+        "commission": {
+          "salesType": "Sales Commission",
+          "activityType": "Activity Commission",
+          "hybridType": "Hybrid Commission",
+          "minVolume": "Min. Volume",
+          "minPrequal": "Min. Pre-qual Score",
+          "eligible": "Eligible",
+          "notEligible": "Not Eligible",
+          "calculate": "Calculate Period",
+          "approve": "Approve",
+          "reject": "Reject",
+          "paid": "Paid",
+          "pending": "Pending",
+          "totalPayout": "Total Payout",
+          "salesPayout": "Sales Payout",
+          "activityPayout": "Activity Payout",
+          "payoutHistory": "Payout History",
+          "bonusTiers": "Bonus Tiers",
+          "revenueThreshold": "Revenue Threshold",
+          "commissionRate": "Commission Rate",
+          "ratePerCall": "Rate/Call",
+          "ratePerAppointment": "Rate/Appointment",
+          "maxPayout": "Max Payout",
+          "volumeThreshold": "Volume Met",
+          "prequalThreshold": "Pre-qual Met",
+          "periodLabel": "Period"
+        },
+        "stats": {
+          "callToAppointment": "Call → Appointment",
+          "callToSale": "Call → Sale",
+          "avgPerSale": "Avg. $/Sale",
+          "perQuarter": "Per Quarter",
+          "perSemester": "Per Semester",
+          "perYear": "Per Year",
+          "sinceHire": "Since Hire",
+          "pipelineVelocity": "Pipeline Velocity",
+          "retentionRate": "Retention Rate",
+          "winRate": "Win Rate",
+          "avgTimeToClose": "Avg. Time to Close",
+          "recurringRevenue": "Recurring Revenue (MRR)",
+          "totalCalls": "Total Calls",
+          "totalTalkTime": "Total Talk Time",
+          "avgHandleTime": "Avg. Handle Time"
+        },
+        "deals": {
+          "title": "Title",
+          "value": "Value",
+          "stage": "Stage",
+          "expectedClose": "Expected Close",
+          "status": "Status",
+          "open": "Open",
+          "won": "Won",
+          "lost": "Lost",
+          "all": "All"
+        },
+        "notes": {
+          "addNote": "Add Note",
+          "notePlaceholder": "Write a note...",
+          "noNotes": "No notes yet"
+        },
+        "period": {
+          "week": "Week",
+          "month": "Month",
+          "quarter": "Quarter",
+          "year": "Year",
+          "all": "All Time"
+        },
+        "revenue": {
+          "totalRevenue": "Total Revenue",
+          "avgDealSize": "Avg. Deal Size",
+          "dealsWonCount": "Deals Won"
+        },
+        "quotas": {
+          "target": "Target",
+          "actual": "Actual",
+          "progress": "Progress",
+          "noQuotas": "No quotas defined",
+          "calls": "Calls",
+          "revenue": "Revenue",
+          "deals": "Deals",
+          "conversions": "Conversions"
+        }
+      }
     },
     "contentList": {
       "emptyDescription": "No items to display",
@@ -6415,7 +6550,8 @@
       "crmDealJourney": "Deal Journey",
       "crmSnapshots": "Snapshots",
       "crmDashboardBuilder": "Dashboard Builder",
-      "modules": "Modules"
+      "modules": "Modules",
+      "crmReps360": "Rep 360°"
     },
     "newsletter": {
       "activeSubscribers": "ਸਰਗਰਮ ਸਬਸਕ੍ਰਾਈਬਰ",
@@ -10556,7 +10692,21 @@
     "testimonial3Source": "Verified Buyer",
     "testimonialsTitle": "ਸਾਡੇ ਗਾਹਕ ਕੀ ਕਹਿੰਦੇ ਹਨ",
     "featuredVideos": "ਫੀਚਰਡ ਵੀਡੀਓਜ਼",
-    "heroVideo": "ਵਿਸ਼ੇਸ਼ ਵੀਡੀਓ"
+    "heroVideo": "ਵਿਸ਼ੇਸ਼ ਵੀਡੀਓ",
+    "scienceTitle": "The Science of Longevity",
+    "scienceDesc": "Premium research peptides engineered for scientific excellence, backed by rigorous quality standards.",
+    "pillarPurity": "Purity",
+    "pillarPurityDesc": "99%+ purity verified by independent third-party laboratories. Every batch tested.",
+    "pillarInnovation": "Innovation",
+    "pillarInnovationDesc": "Cutting-edge synthesis methods ensuring maximum bioavailability and stability.",
+    "pillarNature": "Nature",
+    "pillarNatureDesc": "Bio-inspired cycles reflecting natural peptide processes for optimal research outcomes.",
+    "featuredPeptides": "Featured Peptides",
+    "featuredPeptidesDesc": "Our top research peptides, selected for quality and demand.",
+    "missionTitle": "Our Mission",
+    "missionText": "At BioCycle Peptides, we strive to set the standard for quality, safety and value in the development and manufacture of pharmaceutical quality peptide products that extend and significantly improve the research outcomes of our customers.",
+    "ctaTitleNew": "Canada's Premier Source for Research Peptides",
+    "ctaTextNew": "Proudly operating out of Canada. Lab-tested, 99%+ purity, fast domestic shipping."
   },
   "invoice": {
     "allStatuses": "ਸਾਰੇ ਸਥਿਤੀਆਂ",

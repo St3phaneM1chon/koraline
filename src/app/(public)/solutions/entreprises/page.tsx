@@ -68,7 +68,7 @@ export default function EnterpriseSolutionsPage() {
             <span style={{ fontSize: '14px', fontWeight: 600, opacity: 0.8, display: 'block', marginBottom: '16px' }}>
               SOLUTIONS ENTREPRISES
             </span>
-            <h1 style={{ fontSize: '42px', fontWeight: 700, marginBottom: '24px' }}>
+            <h1 className="font-heading" style={{ fontSize: '42px', fontWeight: 700, marginBottom: '24px' }}>
               Développez les compétences de vos équipes
             </h1>
             <p style={{ fontSize: '18px', opacity: 0.9, lineHeight: 1.7, marginBottom: '32px' }}>

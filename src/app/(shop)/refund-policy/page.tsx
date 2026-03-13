@@ -26,7 +26,7 @@ export default function RefundPolicyPage() {
           {/* Overview */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-              <span className="text-orange-500">📋</span>
+              <span className="text-primary-500">📋</span>
               {t('legal.refund.policyOverviewTitle')}
             </h2>
             <div className="bg-blue-50 border border-blue-100 rounded-lg p-4">
@@ -39,7 +39,7 @@ export default function RefundPolicyPage() {
           {/* Satisfaction Guarantee */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-              <span className="text-orange-500">✅</span>
+              <span className="text-primary-500">✅</span>
               {t('legal.refund.qualityGuaranteeTitle')}
             </h2>
             <div className="prose prose-gray max-w-none">
@@ -61,7 +61,7 @@ export default function RefundPolicyPage() {
           {/* Eligible Returns */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-              <span className="text-orange-500">↩️</span>
+              <span className="text-primary-500">↩️</span>
               {t('legal.refund.eligibleReturnTitle')}
             </h2>
             <div className="space-y-4">
@@ -92,14 +92,14 @@ export default function RefundPolicyPage() {
           {/* How to Request */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-              <span className="text-orange-500">📝</span>
+              <span className="text-primary-500">📝</span>
               {t('legal.refund.howToRequestTitle')}
             </h2>
             <div className="prose prose-gray max-w-none">
               <ol className="space-y-4">
                 <li>
                   <strong>{t('legal.refund.step1Title')}</strong>
-                  <p>{t('legal.refund.step1Text')} <a href="mailto:support@biocyclepeptides.com" className="text-orange-600">support@biocyclepeptides.com</a> {t('legal.refund.step1With')}</p>
+                  <p>{t('legal.refund.step1Text')} <a href="mailto:support@biocyclepeptides.com" className="text-primary-600">support@biocyclepeptides.com</a> {t('legal.refund.step1With')}</p>
                   <ul>
                     <li>{t('legal.refund.step1Item1')}</li>
                     <li>{t('legal.refund.step1Item2')}</li>
@@ -125,7 +125,7 @@ export default function RefundPolicyPage() {
           {/* Refund Timeline */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-              <span className="text-orange-500">⏱️</span>
+              <span className="text-primary-500">⏱️</span>
               {t('legal.refund.refundTimelineTitle')}
             </h2>
             <div className="bg-gray-50 rounded-lg overflow-hidden">
@@ -160,7 +160,7 @@ export default function RefundPolicyPage() {
           {/* Damaged/Defective */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-              <span className="text-orange-500">⚠️</span>
+              <span className="text-primary-500">⚠️</span>
               {t('legal.refund.damagedDefectiveTitle')}
             </h2>
             <div className="prose prose-gray max-w-none">
@@ -182,7 +182,7 @@ export default function RefundPolicyPage() {
           {/* Cancellations */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-              <span className="text-orange-500">🚫</span>
+              <span className="text-primary-500">🚫</span>
               {t('legal.refund.orderCancellationsTitle')}
             </h2>
             <div className="prose prose-gray max-w-none">
@@ -197,7 +197,7 @@ export default function RefundPolicyPage() {
           {/* Exchanges */}
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-              <span className="text-orange-500">🔄</span>
+              <span className="text-primary-500">🔄</span>
               {t('legal.refund.exchangesTitle')}
             </h2>
             <div className="prose prose-gray max-w-none">
@@ -213,7 +213,7 @@ export default function RefundPolicyPage() {
           </section>
 
           {/* Contact */}
-          <section className="bg-orange-50 rounded-xl p-6">
+          <section className="bg-primary-50 rounded-xl p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-2">{t('legal.refund.needHelp')}</h2>
             <p className="text-gray-600 mb-4">
               {t('legal.refund.needHelpText')}
@@ -221,7 +221,7 @@ export default function RefundPolicyPage() {
             <div className="flex flex-wrap gap-4">
               <Link
                 href="/contact"
-                className="inline-flex items-center px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors"
+                className="inline-flex items-center px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors"
               >
                 {t('legal.refund.contactSupport')}
               </Link>

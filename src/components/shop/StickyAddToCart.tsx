@@ -74,7 +74,7 @@ export default function StickyAddToCart({
 
           {/* Price */}
           <div className="text-end">
-            <p className="text-lg font-bold text-orange-600">
+            <p className="text-lg font-bold text-primary-600">
               {formattedPrice}
             </p>
           </div>
@@ -89,7 +89,7 @@ export default function StickyAddToCart({
                 ? 'bg-green-600 text-white'
                 : isOutOfStock
                 ? 'bg-neutral-300 text-neutral-500 cursor-not-allowed'
-                : 'bg-orange-500 text-white active:bg-orange-600'
+                : 'bg-primary-500 text-white active:bg-primary-600'
             }`}
           >
             {addedToCart ? `✓ ${t('shop.added')}` : isOutOfStock ? t('shop.outOfStock') : t('shop.addToCart')}

@@ -91,7 +91,7 @@ export default async function CustomerDashboard() {
             </div>
             <Link
               href="/shop"
-              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+              className="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg font-medium transition-colors"
             >
               Voir les produits
             </Link>
@@ -144,7 +144,7 @@ export default async function CustomerDashboard() {
               <h2 className="text-xl font-semibold text-gray-900">
                 Commandes récentes
               </h2>
-              <Link href="/account/orders" className="text-orange-600 hover:underline text-sm">
+              <Link href="/account/orders" className="text-primary-600 hover:underline text-sm">
                 Voir tout
               </Link>
             </div>
@@ -156,7 +156,7 @@ export default async function CustomerDashboard() {
                 </div>
                 <h3 className="text-lg font-medium text-gray-900 mb-2">Aucune commande</h3>
                 <p className="text-gray-600 mb-4">Commencez vos recherches avec nos peptides de haute qualité</p>
-                <Link href="/shop" className="inline-block bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                <Link href="/shop" className="inline-block bg-primary-500 hover:bg-primary-600 text-white px-6 py-2 rounded-lg font-medium transition-colors">
                   Découvrir les produits
                 </Link>
               </div>
@@ -198,7 +198,7 @@ export default async function CustomerDashboard() {
                 </p>
                 <div className="bg-gray-100 rounded-lg p-3 text-center">
                   <p className="text-xs text-gray-500 mb-1">Votre code</p>
-                  <p className="font-mono font-bold text-orange-600 text-lg">{user.referralCode}</p>
+                  <p className="font-mono font-bold text-primary-600 text-lg">{user.referralCode}</p>
                 </div>
               </div>
             )}
@@ -237,7 +237,7 @@ function StatCard({ title, value, icon, color }: {
   const colors = {
     blue: 'bg-blue-100 text-blue-600',
     green: 'bg-green-100 text-green-600',
-    orange: 'bg-orange-100 text-orange-600',
+    orange: 'bg-primary-100 text-primary-600',
     purple: 'bg-purple-100 text-purple-600',
   };
 
@@ -260,9 +260,9 @@ function QuickLink({ href, icon, title }: { href: string; icon: string; title: s
   return (
     <Link
       href={href}
-      className="bg-white rounded-xl p-4 border border-gray-200 hover:border-orange-300 hover:shadow-sm transition-all flex items-center"
+      className="bg-white rounded-xl p-4 border border-gray-200 hover:border-primary-300 hover:shadow-sm transition-all flex items-center"
     >
-      <div className="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center text-orange-600 me-3">
+      <div className="w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center text-primary-600 me-3">
         <span className="text-xl">{icon}</span>
       </div>
       <span className="font-medium text-gray-900">{title}</span>
@@ -322,12 +322,12 @@ function OrderCard({ order }: { order: OrderWithRelations }) {
           {order.items.length} article{order.items.length > 1 ? 's' : ''}
         </p>
         <div className="flex items-center gap-4">
-          <p className="font-semibold text-orange-600">
+          <p className="font-semibold text-primary-600">
             ${Number(order.total).toFixed(2)} {order.currency?.code || 'CAD'}
           </p>
           <Link
             href={`/account/orders/${order.id}`}
-            className="text-sm text-orange-600 hover:underline"
+            className="text-sm text-primary-600 hover:underline"
           >
             Détails →
           </Link>

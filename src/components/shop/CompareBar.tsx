@@ -64,12 +64,12 @@ export default function CompareBar() {
   const compareUrl = getCompareUrl();
 
   return (
-    <div className="fixed bottom-0 inset-x-0 z-40 bg-white border-t-2 border-orange-500 shadow-2xl animate-slide-up">
+    <div className="fixed bottom-0 inset-x-0 z-40 bg-white border-t-2 border-primary-500 shadow-2xl animate-slide-up">
       <div className="max-w-7xl mx-auto px-4 py-3">
         <div className="flex items-center justify-between gap-4">
           {/* Left: Title & Product Count */}
           <div className="flex items-center gap-3" aria-live="polite" role="status">
-            <div className="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm" aria-label={t('compare.productsInComparison', { count: count.toString() })}>
+            <div className="bg-primary-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm" aria-label={t('compare.productsInComparison', { count: count.toString() })}>
               {count}
             </div>
             <div>
@@ -129,7 +129,7 @@ export default function CompareBar() {
             {compareUrl && count >= 2 && (
               <Link
                 href={compareUrl}
-                className="bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-orange-600 transition-colors text-sm whitespace-nowrap"
+                className="bg-primary-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-primary-600 transition-colors text-sm whitespace-nowrap"
               >
                 {t('compare.compareNow')}
               </Link>

@@ -60,7 +60,7 @@ export default function PressPage() {
           textAlign: 'center',
         }}
       >
-        <h1 style={{ fontSize: '42px', fontWeight: 700, marginBottom: '24px' }}>
+        <h1 className="font-heading" style={{ fontSize: '42px', fontWeight: 700, marginBottom: '24px' }}>
           Espace Presse
         </h1>
         <p style={{ fontSize: '18px', opacity: 0.9, lineHeight: 1.7 }}>

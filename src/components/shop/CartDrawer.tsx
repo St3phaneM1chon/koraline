@@ -269,7 +269,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               <p className="text-neutral-500 mb-4">{t('cart.emptyTitle')}</p>
               <button
                 onClick={onClose}
-                className="text-orange-600 font-medium hover:underline"
+                className="text-primary-600 font-medium hover:underline"
               >
                 {t('cart.continueShopping')}
               </button>
@@ -301,7 +301,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                     {item.formatName && (
                       <p className="text-sm text-neutral-500">{item.formatName}</p>
                     )}
-                    <p className="font-bold text-orange-600 mt-1">
+                    <p className="font-bold text-primary-600 mt-1">
                       {formatPrice(item.price)}
                     </p>
 
@@ -368,7 +368,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 <>
                   <button
                     onClick={() => setPromoExpanded(!promoExpanded)}
-                    className="flex items-center gap-1 text-sm text-orange-600 font-medium hover:underline"
+                    className="flex items-center gap-1 text-sm text-primary-600 font-medium hover:underline"
                   >
                     <svg
                       className={`w-3.5 h-3.5 transition-transform duration-200 ${promoExpanded ? 'rotate-90' : ''}`}
@@ -389,12 +389,12 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                         onKeyDown={(e) => { if (e.key === 'Enter') promoActions.apply(); }}
                         placeholder={t('cart.promoPlaceholder')}
                         aria-label={t('cart.promoPlaceholder') || 'Promo code'}
-                        className="flex-1 px-3 py-2 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+                        className="flex-1 px-3 py-2 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent"
                       />
                       <button
                         onClick={promoActions.apply}
                         disabled={promoState.loading || !promoState.code.trim()}
-                        className="px-4 py-2 text-sm font-medium bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-4 py-2 text-sm font-medium bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {promoState.loading ? (
                           <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -430,7 +430,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                       </p>
                       <div className="w-full bg-neutral-200 rounded-full h-1.5">
                         <div
-                          className="bg-orange-500 h-1.5 rounded-full transition-all duration-500"
+                          className="bg-primary-500 h-1.5 rounded-full transition-all duration-500"
                           style={{ width: `${progress}%` }}
                           role="progressbar"
                           aria-valuenow={Math.round(progress)}
@@ -484,7 +484,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             <Link
               href={session ? '/checkout' : '/auth/signin?callbackUrl=/checkout'}
               onClick={onClose}
-              className="block w-full py-3 bg-orange-500 text-white font-semibold text-center rounded-lg hover:bg-orange-600 transition-colors"
+              className="block w-full py-3 bg-primary-500 text-white font-semibold text-center rounded-lg hover:bg-primary-600 transition-colors"
             >
               {t('cart.proceedToCheckout')}
             </Link>
@@ -550,7 +550,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             {/* Continue Shopping */}
             <button
               onClick={onClose}
-              className="block w-full py-2 text-orange-600 font-medium text-center text-sm hover:underline transition-colors"
+              className="block w-full py-2 text-primary-600 font-medium text-center text-sm hover:underline transition-colors"
             >
               {t('cart.continueShopping')}
             </button>

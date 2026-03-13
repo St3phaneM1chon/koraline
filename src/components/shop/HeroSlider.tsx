@@ -172,7 +172,7 @@ export default function HeroSlider({ initialSlides }: HeroSliderProps) {
 
   const ctaClasses: Record<string, string> = {
     primary:
-      'bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-500/25 hover:scale-105',
+      'bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-500/25 hover:scale-105',
     secondary:
       'bg-white hover:bg-gray-100 text-black shadow-lg hover:scale-105',
     outline:
@@ -246,10 +246,10 @@ export default function HeroSlider({ initialSlides }: HeroSliderProps) {
           {badgeText && (
             <div
               key={`badge-${current}`}
-              className="inline-flex items-center gap-2 bg-orange-500/20 border border-orange-500/30 rounded-full px-4 py-1.5 mb-6 animate-fadeInUp"
+              className="inline-flex items-center gap-2 bg-primary-500/20 border border-primary-500/30 rounded-full px-4 py-1.5 mb-6 animate-fadeInUp"
             >
-              <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse" />
-              <span className="text-orange-400 text-sm font-medium">
+              <span className="w-2 h-2 bg-primary-500 rounded-full animate-pulse" />
+              <span className="text-primary-400 text-sm font-medium">
                 {badgeText}
               </span>
             </div>
@@ -327,7 +327,7 @@ export default function HeroSlider({ initialSlides }: HeroSliderProps) {
                 key={i}
                 className="bg-white/10 backdrop-blur-md border border-white/10 px-4 py-3 rounded-xl"
               >
-                <p className="text-2xl md:text-3xl font-bold text-orange-400">
+                <p className="text-2xl md:text-3xl font-bold text-primary-400">
                   {stat.value}
                 </p>
                 <p className="text-xs text-gray-300">{stat.label}</p>
@@ -347,7 +347,7 @@ export default function HeroSlider({ initialSlides }: HeroSliderProps) {
                   onClick={() => goTo(i)}
                   className={`h-2 rounded-full transition-all duration-300 ${
                     i === current
-                      ? 'w-8 bg-orange-500'
+                      ? 'w-8 bg-primary-500'
                       : 'w-2 bg-white/40 hover:bg-white/60'
                   }`}
                   aria-label={`Slide ${i + 1}`}

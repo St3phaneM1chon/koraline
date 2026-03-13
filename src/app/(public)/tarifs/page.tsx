@@ -86,7 +86,7 @@ export default function PricingPage() {
           textAlign: 'center',
         }}
       >
-        <h1 style={{ fontSize: '42px', fontWeight: 700, marginBottom: '16px' }}>
+        <h1 className="font-heading" style={{ fontSize: '42px', fontWeight: 700, marginBottom: '16px' }}>
           {t('pricing.title')}
         </h1>
         <p style={{ fontSize: '18px', opacity: 0.9 }}>

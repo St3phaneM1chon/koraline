@@ -171,7 +171,7 @@ export default function ReturnsPage() {
   if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
       </div>
     );
   }
@@ -200,7 +200,7 @@ export default function ReturnsPage() {
           {eligibleOrders.length > 0 && !showForm && (
             <button
               onClick={() => setShowForm(true)}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center gap-2"
+              className="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center gap-2"
             >
               <span>📦</span>
               {t('account.returnsPage.requestReturn')}
@@ -235,7 +235,7 @@ export default function ReturnsPage() {
                     setSelectedItemId('');
                   }}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 >
                   <option value="">{t('account.returnsPage.chooseOrder')}</option>
                   {eligibleOrders.map((order) => (
@@ -256,7 +256,7 @@ export default function ReturnsPage() {
                     value={selectedItemId}
                     onChange={(e) => setSelectedItemId(e.target.value)}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                   >
                     <option value="">{t('account.returnsPage.chooseItem')}</option>
                     {selectedOrder.items.map((item) => (
@@ -277,7 +277,7 @@ export default function ReturnsPage() {
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 >
                   <option value="">{t('account.returnsPage.selectReason')}</option>
                   {returnReasons.map((r) => (
@@ -298,7 +298,7 @@ export default function ReturnsPage() {
                   onChange={(e) => setDetails(e.target.value)}
                   rows={4}
                   placeholder={t('account.returnsSettings.placeholderAdditionalInfo')}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 />
               </div>
 
@@ -325,7 +325,7 @@ export default function ReturnsPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-6 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="px-6 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   {submitting ? (
                     <>
@@ -354,7 +354,7 @@ export default function ReturnsPage() {
             {eligibleOrders.length > 0 ? (
               <button
                 onClick={() => setShowForm(true)}
-                className="inline-block bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                className="inline-block bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
               >
                 {t('account.returnsPage.requestAReturn')}
               </button>
@@ -382,7 +382,7 @@ export default function ReturnsPage() {
                         <p className="text-sm text-gray-500">Order</p>
                         <Link
                           href={`/account/orders`}
-                          className="font-medium text-orange-600 hover:text-orange-700"
+                          className="font-medium text-primary-600 hover:text-primary-700"
                         >
                           {request.orderNumber}
                         </Link>
@@ -403,7 +403,7 @@ export default function ReturnsPage() {
                 {/* Request Details */}
                 <div className="px-6 py-4">
                   <div className="flex items-start gap-4 mb-4">
-                    <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <span className="text-xl">🧪</span>
                     </div>
                     <div className="flex-1">
@@ -544,7 +544,7 @@ function TimelineStep({
             completed
               ? 'bg-green-500 text-white'
               : current
-              ? 'bg-orange-500 text-white animate-pulse'
+              ? 'bg-primary-500 text-white animate-pulse'
               : 'bg-gray-200 text-gray-400'
           }`}
         >

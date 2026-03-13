@@ -6,7 +6,7 @@
  */
 
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, DM_Serif_Display } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
 import { cookies, headers } from 'next/headers';
@@ -37,6 +37,13 @@ const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
+});
+
+const dmSerif = DM_Serif_Display({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-dm-serif',
 });
 
 // Namespaces that must be available immediately for the app shell (nav, footer,
@@ -105,7 +112,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   viewportFit: 'cover',
-  themeColor: '#0D9488',
+  themeColor: '#38A169',
 };
 
 export const metadata: Metadata = {
@@ -238,9 +245,9 @@ export default async function RootLayout({
         <link rel="alternate" hrefLang="x-default" href="https://biocyclepeptides.com" />
         {/* Service worker registered via ServiceWorkerRegistration client component in body */}
         {/* Anti-FOUC: apply dark class before first paint to avoid white flash */}
-        <script dangerouslySetInnerHTML={{ __html: `try{if(localStorage.getItem('admin-theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}` }} />
+        <script dangerouslySetInnerHTML={{ __html: `try{var p=location.pathname;var k=p.startsWith('/admin')?'admin-theme':'site-theme';if(localStorage.getItem(k)==='dark')document.documentElement.classList.add('dark')}catch(e){}` }} />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} ${dmSerif.variable}`}>
         <GoogleAnalytics />
         <MetaPixel />
         <WebVitals />

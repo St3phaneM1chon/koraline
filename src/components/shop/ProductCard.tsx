@@ -218,7 +218,7 @@ export default memo(function ProductCard({
       <div className="p-4 overflow-visible flex flex-col flex-grow">
         {/* Product Name - adapts with selected format */}
         <Link href={`/product/${slug}`}>
-          <h3 className="font-bold text-lg text-neutral-900 hover:text-orange-600 transition-colors line-clamp-2">
+          <h3 className="font-bold text-lg text-neutral-900 hover:text-primary-600 transition-colors line-clamp-2">
             {hasSelectedFormat && selectedFormat 
               ? `${productName} ${getFormatName(selectedFormat)}` 
               : productName}
@@ -232,7 +232,7 @@ export default memo(function ProductCard({
               {[1, 2, 3, 4, 5].map((star) => (
                 <svg
                   key={star}
-                  className={`w-3.5 h-3.5 ${star <= Math.round(averageRating) ? 'text-orange-400' : 'text-neutral-300'}`}
+                  className={`w-3.5 h-3.5 ${star <= Math.round(averageRating) ? 'text-amber-400' : 'text-neutral-300'}`}
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   aria-hidden="true"
@@ -251,7 +251,7 @@ export default memo(function ProductCard({
 
         {/* Price - adapts with selected format (show discount always) */}
         <div className="flex items-center gap-2 mt-1">
-          <span className="text-orange-600 font-bold text-lg">{formatPrice(displayPrice)}</span>
+          <span className="text-primary-600 font-bold text-lg">{formatPrice(displayPrice)}</span>
           {displayComparePrice && displayComparePrice > displayPrice && (
             <span className="text-sm text-neutral-400 line-through">{formatPrice(displayComparePrice)}</span>
           )}
@@ -293,7 +293,7 @@ export default memo(function ProductCard({
                 aria-label={`Select format for ${productName}`}
                 aria-expanded={isDropdownOpen}
                 aria-haspopup="listbox"
-                className="w-full mt-1 flex items-center justify-between gap-2 px-3 py-2 border border-neutral-300 rounded-lg bg-white hover:border-orange-400 transition-colors"
+                className="w-full mt-1 flex items-center justify-between gap-2 px-3 py-2 border border-neutral-300 rounded-lg bg-white hover:border-primary-400 transition-colors"
               >
                 <div className="flex items-center gap-2">
                   <span className="text-lg">
@@ -328,7 +328,7 @@ export default memo(function ProductCard({
                       disabled={!format.inStock}
                       className={`w-full flex items-center gap-3 px-3 py-2.5 text-start transition-colors ${
                         selectedFormat?.id === format.id
-                          ? 'bg-orange-50'
+                          ? 'bg-primary-50'
                           : format.inStock
                           ? 'hover:bg-neutral-50'
                           : 'opacity-50 cursor-not-allowed'
@@ -346,12 +346,12 @@ export default memo(function ProductCard({
                       {/* Format Info */}
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-neutral-900 truncate">{getFormatName(format)}</p>
-                        <p className="text-sm text-orange-600 font-bold">{formatPrice(format.price)}</p>
+                        <p className="text-sm text-primary-600 font-bold">{formatPrice(format.price)}</p>
                       </div>
 
                       {/* Selected Check */}
                       {selectedFormat?.id === format.id && (
-                        <svg className="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-5 h-5 text-primary-500" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
                       )}
@@ -405,7 +405,7 @@ export default memo(function ProductCard({
               isAdding
                 ? 'bg-green-600 text-white scale-105'
                 : inStock
-                ? 'bg-orange-500 text-white hover:bg-orange-600 active:scale-95'
+                ? 'bg-primary-500 text-white hover:bg-primary-600 active:scale-95'
                 : 'bg-neutral-300 text-neutral-500 cursor-not-allowed'
             }`}
           >

@@ -58,7 +58,7 @@ export default function DemoPage() {
         >
           {/* Left - Info */}
           <div>
-            <h1 style={{ fontSize: '36px', fontWeight: 700, marginBottom: '24px', color: 'var(--gray-500)' }}>
+            <h1 className="font-heading" style={{ fontSize: '36px', fontWeight: 700, marginBottom: '24px', color: 'var(--gray-500)' }}>
               Demander une démonstration
             </h1>
             <p style={{ fontSize: '16px', color: 'var(--gray-400)', lineHeight: 1.7, marginBottom: '40px' }}>

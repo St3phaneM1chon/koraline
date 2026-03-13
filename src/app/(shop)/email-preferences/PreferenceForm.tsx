@@ -44,11 +44,11 @@ function ToggleSwitch({
       type="button"
       onClick={onToggle}
       disabled={disabled}
-      className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 ${
+      className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
         disabled
           ? 'bg-green-400 cursor-not-allowed opacity-75'
           : enabled
-            ? 'bg-orange-500'
+            ? 'bg-primary-500'
             : 'bg-neutral-200'
       }`}
       role="switch"
@@ -201,9 +201,9 @@ export default function PreferenceForm({
       <section className="bg-gradient-to-br from-neutral-900 via-neutral-800 to-black text-white py-8">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
               <svg
-                className="w-6 h-6 text-orange-600"
+                className="w-6 h-6 text-primary-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -227,7 +227,7 @@ export default function PreferenceForm({
           </div>
           <p className="mt-4 text-sm text-neutral-400">
             {t('emailPreferences.managingFor')}{' '}
-            <span className="text-orange-400 font-medium">{email}</span>
+            <span className="text-primary-400 font-medium">{email}</span>
           </p>
         </div>
       </section>
@@ -456,7 +456,7 @@ export default function PreferenceForm({
             type="button"
             onClick={handleSave}
             disabled={isSaving}
-            className="w-full py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isSaving ? (
               <>
@@ -501,7 +501,7 @@ export default function PreferenceForm({
         <div className="mt-8 text-center">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 font-medium transition-colors"
+            className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-medium transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path

@@ -39,7 +39,7 @@ export default function Error({
         <div className="space-y-3">
           <button
             onClick={reset}
-            className="w-full px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors"
+            className="w-full px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors"
           >
             {t('common.tryAgain')}
           </button>

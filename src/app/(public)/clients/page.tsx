@@ -51,7 +51,7 @@ export default function ClientsPage() {
         }}
       >
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <h1 style={{ fontSize: '42px', fontWeight: 700, marginBottom: '24px' }}>
+          <h1 className="font-heading" style={{ fontSize: '42px', fontWeight: 700, marginBottom: '24px' }}>
             Ils nous font confiance
           </h1>
           <p style={{ fontSize: '18px', opacity: 0.9, lineHeight: 1.7 }}>

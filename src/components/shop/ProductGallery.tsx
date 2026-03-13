@@ -128,7 +128,7 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
               aria-current={index === selectedIndex ? 'true' : undefined}
               className={`relative w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${
                 index === selectedIndex
-                  ? 'border-orange-500 ring-2 ring-orange-200'
+                  ? 'border-primary-500 ring-2 ring-primary-200'
                   : 'border-neutral-200 hover:border-neutral-300'
               }`}
             >

@@ -304,7 +304,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
 
             {/* Price - adapts with selected format and quantity discounts */}
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-3xl font-bold text-orange-600">
+              <span className="text-3xl font-bold text-primary-600">
                 {formatPrice(effectivePrice)}
               </span>
               {effectivePrice < selectedFormat.price && (
@@ -321,10 +321,10 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
 
             {/* Flash Sale Countdown Timer */}
             {product.promotion?.endsAt && (
-              <div className="mb-6 p-4 bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-300 rounded-lg">
+              <div className="mb-6 p-4 bg-gradient-to-r from-primary-50 to-red-50 border-2 border-primary-300 rounded-lg">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-xl">⚡</span>
-                  <h3 className="font-bold text-orange-800">
+                  <h3 className="font-bold text-primary-800">
                     {product.promotion.name} {t('promotion.endsIn') || 'Ends In'}
                   </h3>
                 </div>
@@ -457,13 +457,13 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
                     />
                   </div>
                   <div className="p-3">
-                    <h3 className="font-medium text-sm text-black group-hover:text-orange-600 transition-colors">
+                    <h3 className="font-medium text-sm text-black group-hover:text-primary-600 transition-colors">
                       {getRelatedProductName(related)}
                     </h3>
                     {related.purity && (
                       <p className="text-xs text-neutral-500">{t('shop.purity')} {related.purity}%</p>
                     )}
-                    <p className="text-orange-600 font-bold mt-1">{formatPrice(related.price)}</p>
+                    <p className="text-primary-600 font-bold mt-1">{formatPrice(related.price)}</p>
                   </div>
                 </Link>
               ))}

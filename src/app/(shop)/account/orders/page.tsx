@@ -605,7 +605,7 @@ export default function OrdersPage() {
   if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
       </div>
     );
   }
@@ -620,9 +620,9 @@ export default function OrdersPage() {
         {/* Header */}
         <div className="mb-8">
           <nav className="text-sm text-gray-500 mb-2">
-            <Link href="/" className="hover:text-orange-600">{t('account.orders.breadcrumbHome')}</Link>
+            <Link href="/" className="hover:text-primary-600">{t('account.orders.breadcrumbHome')}</Link>
             <span className="mx-2">/</span>
-            <Link href="/account" className="hover:text-orange-600">{t('account.orders.breadcrumbAccount')}</Link>
+            <Link href="/account" className="hover:text-primary-600">{t('account.orders.breadcrumbAccount')}</Link>
             <span className="mx-2">/</span>
             <span className="text-gray-900">{t('account.orders.breadcrumbOrders')}</span>
           </nav>
@@ -643,7 +643,7 @@ export default function OrdersPage() {
                       aria-label={t('account.orders.searchPlaceholder') || 'Search orders'}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full ps-10 pe-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      className="w-full ps-10 pe-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                     />
                     <span className="absolute start-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
                   </div>
@@ -653,7 +653,7 @@ export default function OrdersPage() {
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                 >
                   <option value="all">{t('orderFilters.allStatuses')}</option>
                   <option value="PENDING">{t('orderFilters.filterPending')}</option>
@@ -668,7 +668,7 @@ export default function OrdersPage() {
                 <select
                   value={dateFilter}
                   onChange={(e) => setDateFilter(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                 >
                   <option value="all">{t('account.orders.allDates')}</option>
                   <option value="7">{t('account.orders.last7Days')}</option>
@@ -699,7 +699,7 @@ export default function OrdersPage() {
                         type="date"
                         value={exportDateFrom}
                         onChange={(e) => setExportDateFrom(e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                       />
                     </div>
                     <div className="flex-1">
@@ -710,7 +710,7 @@ export default function OrdersPage() {
                         type="date"
                         value={exportDateTo}
                         onChange={(e) => setExportDateTo(e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                       />
                     </div>
                     <div className="flex gap-2">
@@ -726,7 +726,7 @@ export default function OrdersPage() {
                       <button
                         onClick={handleExport}
                         disabled={exporting}
-                        className="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        className="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                       >
                         {exporting ? (
                           <>
@@ -760,7 +760,7 @@ export default function OrdersPage() {
             </p>
             <Link
               href="/shop"
-              className="inline-block bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+              className="inline-block bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
             >
               {t('account.orders.discoverProducts')}
             </Link>
@@ -780,7 +780,7 @@ export default function OrdersPage() {
                 setStatusFilter('all');
                 setDateFilter('all');
               }}
-              className="text-orange-600 hover:text-orange-700 font-medium"
+              className="text-primary-600 hover:text-primary-700 font-medium"
             >
               {t('account.orders.resetFilters')}
             </button>
@@ -812,7 +812,7 @@ export default function OrdersPage() {
                       </div>
                       <div>
                         <p className="text-sm text-gray-500">{t('account.orders.totalLabel')}</p>
-                        <p className="font-semibold text-orange-600">
+                        <p className="font-semibold text-primary-600">
                           {fmtPrice(order.total, order.currency?.code || 'CAD')}
                         </p>
                       </div>
@@ -907,7 +907,7 @@ export default function OrdersPage() {
                       {generatingPdf ? '⏳' : '⬇️'} {t('account.orders.downloadPdf')}
                     </button>
                     {order.status === 'DELIVERED' && (
-                      <button className="text-sm text-orange-600 hover:text-orange-700 font-medium">
+                      <button className="text-sm text-primary-600 hover:text-primary-700 font-medium">
                         {t('account.orders.leaveReview')}
                       </button>
                     )}
@@ -915,11 +915,11 @@ export default function OrdersPage() {
                       <button
                         onClick={() => handleReorder(order.id)}
                         disabled={reorderingId === order.id}
-                        className="text-sm text-orange-600 hover:text-orange-700 font-medium flex items-center gap-1 disabled:opacity-50"
+                        className="text-sm text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1 disabled:opacity-50"
                       >
                         {reorderingId === order.id ? (
                           <>
-                            <span className="animate-spin inline-block w-3 h-3 border-2 border-orange-600 border-t-transparent rounded-full"></span>
+                            <span className="animate-spin inline-block w-3 h-3 border-2 border-primary-600 border-t-transparent rounded-full"></span>
                             {t('account.orders.reordering') || 'Reordering...'}
                           </>
                         ) : (
@@ -1117,7 +1117,7 @@ function EditAddressModal({
                   value={addressForm.firstName}
                   onChange={(e) => handleChange('firstName', e.target.value)}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 />
               </div>
               <div>
@@ -1129,7 +1129,7 @@ function EditAddressModal({
                   value={addressForm.lastName}
                   onChange={(e) => handleChange('lastName', e.target.value)}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 />
               </div>
             </div>
@@ -1144,7 +1144,7 @@ function EditAddressModal({
                 value={addressForm.address1}
                 onChange={(e) => handleChange('address1', e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
               />
             </div>
 
@@ -1157,7 +1157,7 @@ function EditAddressModal({
                 type="text"
                 value={addressForm.address2}
                 onChange={(e) => handleChange('address2', e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
               />
             </div>
 
@@ -1172,7 +1172,7 @@ function EditAddressModal({
                   value={addressForm.city}
                   onChange={(e) => handleChange('city', e.target.value)}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 />
               </div>
               <div>
@@ -1183,7 +1183,7 @@ function EditAddressModal({
                   value={addressForm.province}
                   onChange={(e) => handleChange('province', e.target.value)}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 >
                   <option value="">Select</option>
                   <option value="AB">Alberta</option>
@@ -1212,7 +1212,7 @@ function EditAddressModal({
                   required
                   pattern="[A-Z][0-9][A-Z] ?[0-9][A-Z][0-9]"
                   placeholder={t('account.ordersSettings.placeholderPostalCode')}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 />
               </div>
             </div>
@@ -1227,7 +1227,7 @@ function EditAddressModal({
                   value={addressForm.country}
                   onChange={(e) => handleChange('country', e.target.value)}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 >
                   <option value="CA">Canada</option>
                   <option value="US">United States</option>
@@ -1241,7 +1241,7 @@ function EditAddressModal({
                   type="tel"
                   value={addressForm.phone}
                   onChange={(e) => handleChange('phone', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 />
               </div>
             </div>
@@ -1262,7 +1262,7 @@ function EditAddressModal({
             type="button"
             onClick={onSave}
             disabled={saving}
-            className="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
             {saving ? (
               <>
@@ -1322,7 +1322,7 @@ function InvoiceModal({
             </button>
             <button
               onClick={onDownload}
-              className="px-3 py-1.5 text-sm bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors flex items-center gap-1"
+              className="px-3 py-1.5 text-sm bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors flex items-center gap-1"
             >
               ⬇️ PDF
             </button>
@@ -1336,7 +1336,7 @@ function InvoiceModal({
             {/* Invoice Header */}
             <div className="flex justify-between items-start mb-8">
               <div>
-                <h1 className="text-2xl font-bold text-orange-500">BioCycle Peptides</h1>
+                <h1 className="text-2xl font-bold text-primary-500">BioCycle Peptides</h1>
                 <p className="text-gray-500 text-sm">{t('account.orders.pdfSubtitle')}</p>
                 <p className="text-gray-500 text-sm mt-2">support@biocyclepeptides.com</p>
                 <p className="text-gray-500 text-sm">biocyclepeptides.com</p>
@@ -1495,7 +1495,7 @@ function InvoiceModal({
                 <div className="border-t border-gray-200 pt-2 mt-2">
                   <div className="flex justify-between font-bold">
                     <span className="text-gray-900">{t('account.orders.pdfTotalLabel')}:</span>
-                    <span className="text-orange-600 text-lg">{formatMoney(order.total)}</span>
+                    <span className="text-primary-600 text-lg">{formatMoney(order.total)}</span>
                   </div>
                 </div>
               </div>

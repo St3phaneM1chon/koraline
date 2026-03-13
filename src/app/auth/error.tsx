@@ -28,7 +28,7 @@ export default function AuthError({
         <div className="flex gap-3 justify-center">
           <button
             onClick={reset}
-            className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+            className="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
           >
             {t('auth.error.tryAgain')}
           </button>

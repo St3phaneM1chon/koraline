@@ -116,7 +116,7 @@ export default function ConsentFormPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Loader2 className="h-8 w-8 animate-spin text-orange-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
       </div>
     );
   }
@@ -158,7 +158,7 @@ export default function ConsentFormPage() {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-          <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-6 text-white">
+          <div className="bg-gradient-to-r from-primary-500 to-primary-600 p-6 text-white">
             <div className="flex items-center gap-3 mb-2">
               <FileCheck className="h-6 w-6" />
               <h1 className="text-xl font-bold">
@@ -166,13 +166,13 @@ export default function ConsentFormPage() {
               </h1>
             </div>
             {consent.template && (
-              <p className="text-orange-100 text-sm">{consent.template.name}</p>
+              <p className="text-primary-100 text-sm">{consent.template.name}</p>
             )}
           </div>
 
           <div className="p-6 space-y-6">
             {/* Welcome message */}
-            <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+            <div className="bg-primary-50 border border-primary-200 rounded-lg p-4">
               <p className="text-sm text-gray-700">
                 {t('consent.hello') !== 'consent.hello' ? t('consent.hello') : 'Hello'}{' '}
                 <strong>{consent.clientName || 'Client'}</strong>,
@@ -225,7 +225,7 @@ export default function ConsentFormPage() {
                           type="checkbox"
                           checked={responses[q.id] === true}
                           onChange={e => setResponses(r => ({ ...r, [q.id]: e.target.checked }))}
-                          className="mt-0.5 h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                          className="mt-0.5 h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                         />
                       ) : null}
                       <span>
@@ -278,7 +278,7 @@ export default function ConsentFormPage() {
               <button
                 onClick={handleSubmit}
                 disabled={submitting}
-                className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium disabled:opacity-50"
+                className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium disabled:opacity-50"
               >
                 {submitting ? (
                   <Loader2 className="h-5 w-5 animate-spin" />

@@ -111,7 +111,7 @@ export default function LearnPage() {
         {/* Featured Articles */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
-            <span className="text-orange-500">⭐</span>
+            <span className="text-primary-500">⭐</span>
             {t('learn.featured') || 'Featured Articles'}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -121,18 +121,18 @@ export default function LearnPage() {
                 href={`/learn/${article.slug}`}
                 className="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300"
               >
-                <div className="aspect-video bg-gradient-to-br from-orange-400 to-orange-600 relative">
+                <div className="aspect-video bg-gradient-to-br from-primary-400 to-primary-600 relative">
                   <div className="absolute inset-0 flex items-center justify-center text-white text-6xl opacity-50">
                     📚
                   </div>
                   <div className="absolute top-3 start-3">
-                    <span className="px-3 py-1 bg-white/90 text-orange-600 text-xs font-semibold rounded-full">
+                    <span className="px-3 py-1 bg-white/90 text-primary-600 text-xs font-semibold rounded-full">
                       {article.category}
                     </span>
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="font-bold text-lg text-gray-900 mb-2 group-hover:text-orange-600 transition-colors">
+                  <h3 className="font-bold text-lg text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
                     {article.title}
                   </h3>
                   <p className="text-gray-600 text-sm mb-4 line-clamp-2">
@@ -157,7 +157,7 @@ export default function LearnPage() {
                   {categories.map((cat) => (
                     <button
                       key={cat.name}
-                      className="w-full flex items-center justify-between px-4 py-2 text-start text-gray-600 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition-colors"
+                      className="w-full flex items-center justify-between px-4 py-2 text-start text-gray-600 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors"
                     >
                       <span>{cat.name}</span>
                       <span className="text-xs bg-gray-100 px-2 py-0.5 rounded-full">{cat.count}</span>
@@ -170,25 +170,25 @@ export default function LearnPage() {
               <div className="bg-white rounded-xl shadow-sm p-6">
                 <h3 className="font-semibold text-gray-900 mb-4">Quick Links</h3>
                 <nav className="space-y-2">
-                  <Link href="/faq" className="flex items-center gap-2 text-gray-600 hover:text-orange-600">
+                  <Link href="/faq" className="flex items-center gap-2 text-gray-600 hover:text-primary-600">
                     <span>❓</span> FAQ
                   </Link>
-                  <Link href="/#calculator" className="flex items-center gap-2 text-gray-600 hover:text-orange-600">
+                  <Link href="/#calculator" className="flex items-center gap-2 text-gray-600 hover:text-primary-600">
                     <span>🧮</span> Peptide Calculator
                   </Link>
-                  <Link href="/lab-results" className="flex items-center gap-2 text-gray-600 hover:text-orange-600">
+                  <Link href="/lab-results" className="flex items-center gap-2 text-gray-600 hover:text-primary-600">
                     <span>🔬</span> Lab Results
                   </Link>
                 </nav>
               </div>
 
               {/* Newsletter CTA */}
-              <div className="bg-orange-50 rounded-xl p-6">
+              <div className="bg-primary-50 rounded-xl p-6">
                 <h3 className="font-semibold text-gray-900 mb-2">Stay Updated</h3>
                 <p className="text-sm text-gray-600 mb-4">
                   Get the latest research insights and exclusive offers.
                 </p>
-                <button className="w-full py-2 px-4 bg-orange-500 text-white text-sm font-semibold rounded-lg hover:bg-orange-600 transition-colors">
+                <button className="w-full py-2 px-4 bg-primary-500 text-white text-sm font-semibold rounded-lg hover:bg-primary-600 transition-colors">
                   Subscribe
                 </button>
               </div>
@@ -210,12 +210,12 @@ export default function LearnPage() {
                   </div>
                   <div className="flex-1 py-4 pe-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="px-2 py-0.5 bg-orange-100 text-orange-600 text-xs font-medium rounded">
+                      <span className="px-2 py-0.5 bg-primary-100 text-primary-600 text-xs font-medium rounded">
                         {article.category}
                       </span>
                       <span className="text-xs text-gray-400">{article.readTime}</span>
                     </div>
-                    <h3 className="font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors">
+                    <h3 className="font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
                       {article.title}
                     </h3>
                     <p className="text-gray-600 text-sm line-clamp-2">
@@ -229,17 +229,17 @@ export default function LearnPage() {
         </div>
 
         {/* Free Guide CTA */}
-        <section className="mt-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 md:p-12 text-white">
+        <section className="mt-16 bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl p-8 md:p-12 text-white">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-4">
               📘 The Complete Guide to Peptide Research
             </h2>
-            <p className="text-orange-100 mb-6">
+            <p className="text-primary-100 mb-6">
               Download our free comprehensive guide covering peptide fundamentals, storage, reconstitution, 
               and research protocols. Perfect for researchers of all experience levels.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-8 py-3 bg-white text-orange-600 font-semibold rounded-lg hover:bg-orange-50 transition-colors">
+              <button className="px-8 py-3 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors">
                 Download Free Guide (PDF)
               </button>
               <Link

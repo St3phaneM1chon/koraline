@@ -130,7 +130,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                 </Link>
               </nav>
 
-              <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
+              <h1 className="text-4xl font-bold font-heading mb-4">{product.name}</h1>
               
               <p className="text-xl text-gray-300 mb-6">
                 {product.shortDescription}

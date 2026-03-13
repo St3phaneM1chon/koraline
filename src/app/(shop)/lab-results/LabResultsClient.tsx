@@ -134,7 +134,7 @@ export default function LabResultsClient({ coaData }: LabResultsClientProps) {
                             href={coa.pdfUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-orange-600 hover:text-orange-700 text-sm font-medium"
+                            className="inline-flex items-center gap-1 text-primary-600 hover:text-primary-700 text-sm font-medium"
                             aria-label={`${t('labResults.downloadCoa') || 'Download COA'} - ${coa.productName}`}
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -162,29 +162,29 @@ export default function LabResultsClient({ coaData }: LabResultsClientProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-orange-600 font-bold">1</span>
+              <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-primary-600 font-bold">1</span>
               </div>
               <h3 className="font-semibold mb-2">{t('labResults.step1Title') || 'Réception'}</h3>
               <p className="text-sm text-gray-600">{t('labResults.step1Desc') || 'Chaque lot est enregistré et échantillonné à réception'}</p>
             </div>
             <div className="text-center">
-              <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-orange-600 font-bold">2</span>
+              <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-primary-600 font-bold">2</span>
               </div>
               <h3 className="font-semibold mb-2">{t('labResults.step2Title') || 'Analyse HPLC'}</h3>
               <p className="text-sm text-gray-600">{t('labResults.step2Desc') || 'Chromatographie pour vérifier la pureté et l\'identité'}</p>
             </div>
             <div className="text-center">
-              <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-orange-600 font-bold">3</span>
+              <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-primary-600 font-bold">3</span>
               </div>
               <h3 className="font-semibold mb-2">{t('labResults.step3Title') || 'Spectrométrie MS'}</h3>
               <p className="text-sm text-gray-600">{t('labResults.step3Desc') || 'Confirmation de la masse moléculaire exacte'}</p>
             </div>
             <div className="text-center">
-              <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-orange-600 font-bold">4</span>
+              <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-primary-600 font-bold">4</span>
               </div>
               <h3 className="font-semibold mb-2">{t('labResults.step4Title') || 'Certification'}</h3>
               <p className="text-sm text-gray-600">{t('labResults.step4Desc') || 'COA généré et produit mis en stock'}</p>
@@ -194,7 +194,7 @@ export default function LabResultsClient({ coaData }: LabResultsClientProps) {
       </section>
 
       {/* CTA */}
-      <section className="py-12 bg-neutral-900 text-white">
+      <section className="py-12 bg-navy-900 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl font-bold mb-4">{t('labResults.ctaTitle') || 'Questions sur nos tests?'}</h2>
           <p className="text-neutral-400 mb-6">
@@ -202,7 +202,7 @@ export default function LabResultsClient({ coaData }: LabResultsClientProps) {
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors"
+            className="inline-flex items-center px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors"
           >
             {t('labResults.contactUs') || 'Nous contacter'}
           </Link>

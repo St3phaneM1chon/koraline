@@ -138,7 +138,7 @@ export default function MegaMenu({ isOpen, onClose }: MegaMenuProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-orange-500"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary-500"></div>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -149,14 +149,14 @@ export default function MegaMenu({ isOpen, onClose }: MegaMenuProps) {
                 <Link
                   href="/shop"
                   onClick={onClose}
-                  className="group flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-orange-50 transition-colors mb-2"
+                  className="group flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary-50 transition-colors mb-2"
                 >
-                  <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-gradient-to-br from-orange-400 to-orange-600 text-white group-hover:scale-110 transition-transform">
+                  <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-gradient-to-br from-primary-400 to-primary-600 text-white group-hover:scale-110 transition-transform">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
                   </div>
-                  <div className="font-semibold text-gray-900 group-hover:text-orange-600">
+                  <div className="font-semibold text-gray-900 group-hover:text-primary-600">
                     {t('nav.allProducts') || 'All Products'}
                   </div>
                 </Link>
@@ -168,11 +168,11 @@ export default function MegaMenu({ isOpen, onClose }: MegaMenuProps) {
                     <Link
                       href={`/category/${parent.slug}`}
                       onClick={onClose}
-                      className="group flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-orange-50 transition-colors"
+                      className="group flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-primary-50 transition-colors"
                     >
                       <span className="text-lg">{categoryIcons[parent.slug] || '📂'}</span>
                       <div className="flex-1">
-                        <div className="font-bold text-gray-900 group-hover:text-orange-600 text-sm uppercase tracking-wide">
+                        <div className="font-bold text-gray-900 group-hover:text-primary-600 text-sm uppercase tracking-wide">
                           {parent.name}
                         </div>
                         {parent._count && parent._count.products > 0 && (
@@ -181,7 +181,7 @@ export default function MegaMenu({ isOpen, onClose }: MegaMenuProps) {
                           </div>
                         )}
                       </div>
-                      <svg className="w-4 h-4 text-gray-400 group-hover:text-orange-500 transform group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 text-gray-400 group-hover:text-primary-500 transform group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </Link>
@@ -194,10 +194,10 @@ export default function MegaMenu({ isOpen, onClose }: MegaMenuProps) {
                             key={child.id}
                             href={`/category/${child.slug}`}
                             onClick={onClose}
-                            className="group flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-orange-50 transition-colors"
+                            className="group flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-primary-50 transition-colors"
                           >
                             <span className="text-sm">{subCategoryIcons[child.slug] || '•'}</span>
-                            <span className="text-sm text-gray-700 group-hover:text-orange-600 transition-colors flex-1">
+                            <span className="text-sm text-gray-700 group-hover:text-primary-600 transition-colors flex-1">
                               {child.name}
                             </span>
                             {child._count && child._count.products > 0 && (
@@ -229,7 +229,7 @@ export default function MegaMenu({ isOpen, onClose }: MegaMenuProps) {
                         key={product.id}
                         href={`/product/${product.slug}`}
                         onClick={onClose}
-                        className="group flex gap-4 p-4 rounded-lg border border-gray-200 hover:border-orange-300 hover:shadow-md transition-all bg-white"
+                        className="group flex gap-4 p-4 rounded-lg border border-gray-200 hover:border-primary-300 hover:shadow-md transition-all bg-white"
                       >
                         <div className="relative w-24 h-24 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
                           <Image
@@ -246,11 +246,11 @@ export default function MegaMenu({ isOpen, onClose }: MegaMenuProps) {
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-gray-900 group-hover:text-orange-600 transition-colors line-clamp-2 mb-1">
+                          <h4 className="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2 mb-1">
                             {product.name}
                           </h4>
                           <div className="flex items-center gap-2 mt-2">
-                            <span className="text-lg font-bold text-orange-600">
+                            <span className="text-lg font-bold text-primary-600">
                               {formatPrice(displayPrice)}
                             </span>
                             {product.compareAtPrice && product.compareAtPrice > displayPrice && (
@@ -274,20 +274,20 @@ export default function MegaMenu({ isOpen, onClose }: MegaMenuProps) {
               </h3>
 
               {/* Promo Banner */}
-              <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-6 text-white mb-4 hover:shadow-lg transition-shadow">
+              <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl p-6 text-white mb-4 hover:shadow-lg transition-shadow">
                 <div className="text-sm font-semibold uppercase tracking-wide mb-2">
                   {t('shop.newArrival') || 'New Arrival'}
                 </div>
                 <h4 className="text-xl font-bold mb-3">
                   {t('shop.premiumPeptides') || 'Premium Peptides'}
                 </h4>
-                <p className="text-sm text-orange-100 mb-4">
+                <p className="text-sm text-primary-100 mb-4">
                   {t('shop.highestPurity') || 'Highest purity, lab-tested quality'}
                 </p>
                 <Link
                   href="/shop?sort=newest"
                   onClick={onClose}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-white text-orange-600 rounded-lg font-semibold text-sm hover:bg-orange-50 transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-white text-primary-600 rounded-lg font-semibold text-sm hover:bg-primary-50 transition-colors"
                 >
                   {t('shop.shopNow') || 'Shop Now'}
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -301,7 +301,7 @@ export default function MegaMenu({ isOpen, onClose }: MegaMenuProps) {
                 <Link
                   href="/lab-results"
                   onClick={onClose}
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
                 >
                   <span>🔬</span>
                   {t('nav.labResults') || 'Lab Results'}
@@ -309,7 +309,7 @@ export default function MegaMenu({ isOpen, onClose }: MegaMenuProps) {
                 <Link
                   href="/calculator"
                   onClick={onClose}
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
                 >
                   <span>🧮</span>
                   {t('nav.calculator') || 'Calculator'}
@@ -317,7 +317,7 @@ export default function MegaMenu({ isOpen, onClose }: MegaMenuProps) {
                 <Link
                   href="/learn"
                   onClick={onClose}
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
                 >
                   <span>📚</span>
                   {t('nav.articles') || 'Articles'}
@@ -325,7 +325,7 @@ export default function MegaMenu({ isOpen, onClose }: MegaMenuProps) {
                 <Link
                   href="/rewards"
                   onClick={onClose}
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
                 >
                   <span>🎁</span>
                   {t('nav.rewards') || 'Rewards'}

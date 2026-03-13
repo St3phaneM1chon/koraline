@@ -68,7 +68,7 @@ export default function TrackOrderPage() {
                 onChange={(e) => setOrderNumber(e.target.value)}
                 placeholder={t('shop.trackOrder.placeholderOrderNumber')}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
               />
             </div>
             
@@ -83,7 +83,7 @@ export default function TrackOrderPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={t('shop.trackOrder.placeholderEmail')}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
               />
               <p className="mt-1 text-sm text-gray-500">
                 {t('track.emailHint') || 'Use the email address associated with your order.'}
@@ -93,7 +93,7 @@ export default function TrackOrderPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 px-4 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3 px-4 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -140,7 +140,7 @@ export default function TrackOrderPage() {
                     </div>
                     <div>
                       <p className="text-gray-500">{t('track.estimatedDelivery') || 'Est. Delivery'}</p>
-                      <p className="font-medium text-orange-600">{trackingResult.estimatedDelivery}</p>
+                      <p className="font-medium text-primary-600">{trackingResult.estimatedDelivery}</p>
                     </div>
                   </div>
                 </div>
@@ -179,7 +179,7 @@ export default function TrackOrderPage() {
                     href={`https://www.canadapost-postescanada.ca/track-reperage/en#/details/${trackingResult.trackingNumber}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-orange-600 hover:underline focus:outline-none focus:ring-2 focus:ring-orange-500 rounded"
+                    className="inline-flex items-center gap-2 text-primary-600 hover:underline focus:outline-none focus:ring-2 focus:ring-primary-500 rounded"
                     aria-label={`${t('track.trackOnCarrier') || 'Track on'} ${trackingResult.carrier} (${t('common.opensInNewTab') || 'opens in new tab'})`}
                   >
                     {t('track.trackOnCarrier') || 'Track on'} {trackingResult.carrier}
@@ -200,7 +200,7 @@ export default function TrackOrderPage() {
                 <p className="text-gray-600 mb-4">
                   {t('track.orderNotFoundDesc') || "We couldn't find an order with those details. Please check your order number and email."}
                 </p>
-                <Link href="/contact" className="text-orange-600 hover:underline">
+                <Link href="/contact" className="text-primary-600 hover:underline">
                   {t('track.contactSupport') || 'Contact support for help'}
                 </Link>
               </div>
@@ -214,7 +214,7 @@ export default function TrackOrderPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Link
               href="/faq"
-              className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 transition-colors"
+              className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors"
             >
               <span className="text-2xl">❓</span>
               <div>
@@ -224,7 +224,7 @@ export default function TrackOrderPage() {
             </Link>
             <Link
               href="/contact"
-              className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 transition-colors"
+              className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors"
             >
               <span className="text-2xl">💬</span>
               <div>
