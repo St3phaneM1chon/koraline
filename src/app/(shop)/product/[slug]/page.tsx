@@ -1,11 +1,11 @@
-// ISR: revalidate every 5 minutes (uses getStaticLocale to avoid cookies/headers)
-export const revalidate = 300;
+// Force dynamic rendering — ISR conflicts with layout cookies()/headers() in Next.js 15
+export const dynamic = 'force-dynamic';
 
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import ProductPageClient from './ProductPageClient';
 import { prisma } from '@/lib/db';
-import { getStaticLocale, createServerTranslator } from '@/i18n/server';
+import { getServerLocale, createServerTranslator } from '@/i18n/server';
 import { withTranslation, getTranslatedFields, DB_SOURCE_LOCALE } from '@/lib/translation';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { productSchema, breadcrumbSchema } from '@/lib/structured-data';
@@ -94,7 +94,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   // Apply translations for metadata
-  const locale = getStaticLocale();
+  const locale = await getServerLocale();
   let name = product.name;
   let subtitle = product.subtitle || '';
   let description = product.shortDescription || product.description?.substring(0, 160) || '';
@@ -234,7 +234,7 @@ export default async function ProductPage({ params }: PageProps) {
   }
 
   // Apply translations to product and its category
-  const locale = getStaticLocale();
+  const locale = await getServerLocale();
 
   // Parallelize all independent async operations:
   // - translations (product + category)
