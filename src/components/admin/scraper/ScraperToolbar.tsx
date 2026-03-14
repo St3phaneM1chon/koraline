@@ -5,7 +5,6 @@
  */
 
 import {
-  Search,
   Pencil,
   Eye,
   Layers,

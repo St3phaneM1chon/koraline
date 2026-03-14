@@ -43,6 +43,7 @@ export const GET = withAdminGuard(async (_request, { params }) => {
         role: true,
         phone: true,
         locale: true,
+        password: true,
         createdAt: true,
         updatedAt: true,
         sessions: {
@@ -126,7 +127,7 @@ export const GET = withAdminGuard(async (_request, { params }) => {
         role: user.role,
         phone: user.phone,
         locale: user.locale,
-        hasPassword: !!user.password,
+        hasPassword: !!(user as Record<string, unknown>).password,
         isActive: true,
         lastLogin,
         createdAt: user.createdAt.toISOString(),

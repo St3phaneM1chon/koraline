@@ -34,7 +34,7 @@ const approvePayoutSchema = z.object({
 // GET: List commission payouts for agent (paginated)
 // ---------------------------------------------------------------------------
 
-export const GET = withAdminGuard(async (request: NextRequest, { session, params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
+export const GET = withAdminGuard(async (request: NextRequest, { params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
   try {
     const { id } = await params;
     const url = new URL(request.url);
@@ -66,7 +66,7 @@ export const GET = withAdminGuard(async (request: NextRequest, { session, params
 // POST: Calculate commission for a period
 // ---------------------------------------------------------------------------
 
-export const POST = withAdminGuard(async (request: NextRequest, { session, params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
+export const POST = withAdminGuard(async (request: NextRequest, { params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
   try {
     const { id } = await params;
     const body = await request.json();
@@ -233,7 +233,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
     });
     return apiError('Failed to calculate commission', ErrorCode.INTERNAL_ERROR, { request });
   }
-}, { requiredPermission: 'crm.reports.edit' });
+}, { requiredPermission: 'crm.reports.view' });
 
 // ---------------------------------------------------------------------------
 // PATCH: Approve/reject a payout
@@ -297,4 +297,4 @@ export const PATCH = withAdminGuard(async (request: NextRequest, { session, para
     });
     return apiError('Failed to update commission payout', ErrorCode.INTERNAL_ERROR, { request });
   }
-}, { requiredPermission: 'crm.reports.edit' });
+}, { requiredPermission: 'crm.reports.view' });

@@ -11,7 +11,6 @@ import {
   TrendingUp,
   Bell,
   Coins,
-  Loader2,
   BarChart3,
 } from 'lucide-react';
 

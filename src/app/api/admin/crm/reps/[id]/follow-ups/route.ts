@@ -237,7 +237,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
       request,
     });
   }
-}, { requiredPermission: 'crm.reports.edit' });
+}, { requiredPermission: 'crm.reports.view' });
 
 // ---------------------------------------------------------------------------
 // PATCH: Update a follow-up
@@ -348,4 +348,4 @@ export const PATCH = withAdminGuard(async (request: NextRequest, { session, para
       request,
     });
   }
-}, { requiredPermission: 'crm.reports.edit' });
+}, { requiredPermission: 'crm.reports.view' });

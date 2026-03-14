@@ -7,10 +7,9 @@ export const dynamic = 'force-dynamic';
  */
 
 import { NextRequest } from 'next/server';
-import { z } from 'zod';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { prisma } from '@/lib/db';
-import { apiSuccess, apiError, apiPaginated } from '@/lib/api-response';
+import { apiSuccess, apiError } from '@/lib/api-response';
 import { ErrorCode } from '@/lib/error-codes';
 import { logger } from '@/lib/logger';
 
@@ -48,7 +47,7 @@ function daysBetween(a: Date, b: Date): number {
 // GET: Compute detailed performance statistics for the agent
 // ---------------------------------------------------------------------------
 
-export const GET = withAdminGuard(async (request: NextRequest, { session, params }: { session: any; params: Promise<{ id: string }> }) => {
+export const GET = withAdminGuard(async (request: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
   try {
     const { id } = await params;
     const url = new URL(request.url);

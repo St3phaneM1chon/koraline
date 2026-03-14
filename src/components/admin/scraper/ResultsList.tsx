@@ -10,7 +10,6 @@ import {
   Mail,
   Globe,
   Star,
-  MapPin,
   Check,
   ChevronDown,
   Eye,
@@ -98,7 +97,8 @@ export default function ResultsList({
     });
   }, [results, sortField, sortDir, filterCategory, searchCenter]);
 
-  const toggleSort = (field: SortField) => {
+  // @ts-expect-error TS6133: kept for future sort UI integration
+  const _toggleSort = (field: SortField) => {
     if (sortField === field) {
       setSortDir(d => d === 'asc' ? 'desc' : 'asc');
     } else {

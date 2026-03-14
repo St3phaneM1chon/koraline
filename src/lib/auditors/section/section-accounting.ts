@@ -1,6 +1,5 @@
 import { BaseSectionAuditor, type SectionConfig } from './base-section-auditor';
 import type { AuditCheckResult } from '@/lib/audit-engine';
-import * as path from 'path';
 
 export default class SectionAccountingAuditor extends BaseSectionAuditor {
   auditTypeCode = 'SECTION-ACCOUNTING';

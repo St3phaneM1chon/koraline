@@ -55,7 +55,7 @@ export async function generateProposal(
   if (!deal) throw new Error('Deal not found');
 
   const productList = deal.products
-    .map((p: { product: { name: string; price: number | string }; quantity: number }) => `- ${p.product.name}: $${Number(p.product.price).toFixed(2)} x ${p.quantity}`)
+    .map((p: { product: { name: string; price: unknown }; quantity: number }) => `- ${p.product.name}: $${Number(p.product.price).toFixed(2)} x ${p.quantity}`)
     .join('\n') || 'No products specified';
 
   const openai = getOpenAI();

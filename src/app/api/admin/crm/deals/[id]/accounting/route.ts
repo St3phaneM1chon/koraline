@@ -39,6 +39,13 @@ export const GET = withAdminGuard(async (
   }
 
   // Use aggregate queries instead of loading all orders into memory
+  // Get order IDs for this contact to filter journal entries (no relation on JournalEntry model)
+  const contactOrderIds = await prisma.order.findMany({
+    where: { userId: deal.contactId },
+    select: { id: true },
+  });
+  const orderIdList = contactOrderIds.map(o => o.id);
+
   const [totalAgg, paidAgg, orderCount, entries] = await Promise.all([
     prisma.order.aggregate({
       where: { userId: deal.contactId },
@@ -50,7 +57,7 @@ export const GET = withAdminGuard(async (
     }),
     prisma.order.count({ where: { userId: deal.contactId } }),
     prisma.journalEntry.findMany({
-      where: { order: { userId: deal.contactId } },
+      where: { orderId: { in: orderIdList } },
       take: 20,
       orderBy: { date: 'desc' },
       select: { id: true, entryNumber: true, description: true, date: true, type: true },

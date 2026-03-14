@@ -58,8 +58,8 @@ export default function InteractiveMap({
 }: InteractiveMapProps) {
   const map = useMap();
   const [activeMarker, setActiveMarker] = useState<string | null>(null);
-  const [mapCenter, setMapCenter] = useState(DEFAULT_CENTER);
-  const [mapZoom, setMapZoom] = useState(DEFAULT_ZOOM);
+  const [_mapCenter, setMapCenter] = useState(DEFAULT_CENTER);
+  const [_mapZoom, setMapZoom] = useState(DEFAULT_ZOOM);
 
   // Auto-fit map to results when they change
   useEffect(() => {

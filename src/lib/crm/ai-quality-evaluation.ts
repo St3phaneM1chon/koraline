@@ -110,7 +110,7 @@ async function getDefaultQAForm(): Promise<{ id: string; criteria: { name: strin
 
   if (!form) return null;
 
-  const criteria = Array.isArray(form.criteria) ? form.criteria : [];
+  const criteria = Array.isArray(form.criteria) ? (form.criteria as unknown as { name: string; maxScore: number; weight?: number }[]) : [];
   return { id: form.id, criteria };
 }
 

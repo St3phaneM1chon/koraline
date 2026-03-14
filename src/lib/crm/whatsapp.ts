@@ -13,7 +13,7 @@ import { logger } from '@/lib/logger';
 
 let _twilioClient: ReturnType<typeof require> | null = null;
 
-function getTwilioClient(): { messages: { create: (params: Record<string, unknown>) => Promise<{ sid: string }> } } | null {
+function getTwilioClient(): { messages: { create: (params: Record<string, unknown>) => Promise<{ sid: string; status: string }> } } | null {
   if (_twilioClient) return _twilioClient;
 
   const accountSid = process.env.TWILIO_ACCOUNT_SID;

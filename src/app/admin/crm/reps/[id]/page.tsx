@@ -6,7 +6,7 @@ import { useI18n } from '@/i18n/client';
 import { toast } from 'sonner';
 import {
   LayoutDashboard, Phone, Briefcase, Calendar, DollarSign,
-  Target, Award, BarChart3, StickyNote, ArrowLeft, Mail, MessageSquare, Video,
+  Target, Award, BarChart3, ArrowLeft,
   Loader2, ChevronDown,
 } from 'lucide-react';
 
@@ -154,7 +154,7 @@ export default function RepDashboardPage({ params }: { params: Promise<{ id: str
       </div>
 
       {/* Profile Header */}
-      {rep && <RepProfileHeader agentId={id} period={period} />}
+      {rep && <RepProfileHeader agentId={id} />}
 
       {/* Tabs Navigation */}
       <div className="mb-6 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">

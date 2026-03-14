@@ -241,7 +241,7 @@ export async function buildCustomerMemory(leadId: string): Promise<CustomerMemor
         sentimentTrend.push({
           date: activity.createdAt.toISOString().split('T')[0],
           score: meta.sentimentScore,
-          channel: meta.channel || activity.type,
+          channel: (meta.channel as string) || activity.type,
         });
       }
 
@@ -251,7 +251,7 @@ export async function buildCustomerMemory(leadId: string): Promise<CustomerMemor
         }
       }
 
-      const channel = meta?.channel || activity.type;
+      const channel = (meta?.channel as string) || activity.type;
       channelCounts[channel] = (channelCounts[channel] || 0) + 1;
     }
 
@@ -312,11 +312,12 @@ export async function buildCustomerMemory(leadId: string): Promise<CustomerMemor
     const totalInteractions = lead.activities.length + lead.inboxConversations.length + orders.length + tickets.length;
 
     // Communication style detection
-    const communicationStyle = detectCommunicationStyle(lead.activities);
+    const communicationStyle = detectCommunicationStyle(lead.activities as { type: string; description: string | null; metadata: Record<string, unknown> | null }[]);
 
     // Existing preferences from customFields
     const existingCustom = lead.customFields as Record<string, unknown> | null;
-    const preferences = existingCustom?.experienceMemory?.preferences || {};
+    const experienceMemoryData = (existingCustom?.experienceMemory as Record<string, unknown>) || {};
+    const preferences = (experienceMemoryData.preferences as Record<string, string>) || {};
 
     // Health score
     const healthScore = calculateHealthScoreInternal(
@@ -519,10 +520,10 @@ export async function recordInteractionMemory(
     });
 
     const existingCustom = (lead?.customFields as Record<string, unknown>) || {};
-    const memoryData = existingCustom.experienceMemory || {};
+    const memoryData = (existingCustom.experienceMemory as Record<string, unknown>) || {};
 
     // Merge new topics
-    const existingTopics: string[] = Array.isArray(memoryData.topics) ? memoryData.topics : [];
+    const existingTopics: string[] = Array.isArray(memoryData.topics) ? (memoryData.topics as string[]) : [];
     const mergedTopics = Array.from(
       new Set([...existingTopics, ...interaction.topics]),
     ).slice(0, 30);
@@ -541,7 +542,7 @@ export async function recordInteractionMemory(
               outcome: interaction.outcome,
             },
             topics: mergedTopics,
-            totalInteractions: (memoryData.totalInteractions || 0) + 1,
+            totalInteractions: ((memoryData.totalInteractions as number) || 0) + 1,
           },
         } as unknown as Prisma.InputJsonValue,
         lastContactedAt: new Date(),
@@ -616,8 +617,8 @@ export async function getCustomerJourney(leadId: string): Promise<JourneyEvent[]
         title: activity.title,
         description: activity.description?.slice(0, 200) || '',
         sentiment: typeof meta?.sentimentScore === 'number' ? meta.sentimentScore : null,
-        channel: meta?.channel || activity.type,
-        outcome: meta?.outcome || null,
+        channel: (meta?.channel as string) || activity.type,
+        outcome: (meta?.outcome as string) || null,
       });
     }
 

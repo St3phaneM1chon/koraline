@@ -19,7 +19,9 @@ interface StreetViewPanelProps {
 export default function StreetViewPanel({ position, placeName, onClose }: StreetViewPanelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const panoramaRef = useRef<google.maps.StreetViewPanorama | null>(null);
-  const streetViewLib = useMapsLibrary('streetView');
+  // Load street view library (side effect - return value unused)
+  // @ts-expect-error TS6133: intentional side-effect load
+  const _streetViewLib = useMapsLibrary('streetView');
   const [unavailable, setUnavailable] = useState(false);
   const { t } = useTranslations();
 
@@ -44,7 +46,7 @@ export default function StreetViewPanel({ position, placeName, onClose }: Street
     const svService = new google.maps.StreetViewService();
     svService.getPanorama(
       { location: position, radius: 100 },
-      (data, status) => {
+      (_data, status) => {
         if (status !== google.maps.StreetViewStatus.OK) {
           // Try with larger radius
           svService.getPanorama(

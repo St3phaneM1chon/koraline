@@ -182,7 +182,7 @@ export async function POST(request: NextRequest) {
               errorCount++;
               logger.error(
                 `Failed to send stock alert to ${alert.email}`,
-                { error: emailResult.error instanceof Error ? emailResult.error.message : String(emailResult.error) }
+                { error: String(emailResult.error) }
               );
             }
           } catch (error) {

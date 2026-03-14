@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useI18n } from '@/i18n/client';
 import { toast } from 'sonner';
-import { Users, Search, Phone, Briefcase, Target, DollarSign, TrendingUp } from 'lucide-react';
+import { Users, Search, Phone, Target, DollarSign, TrendingUp } from 'lucide-react';
 
 interface Rep {
   id: string;

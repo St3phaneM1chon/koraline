@@ -21,7 +21,7 @@ interface ProductCarouselProps {
       price: number;
       comparePrice?: number;
       inStock: boolean;
-      stockQuantity?: number;
+      stockQuantity: number;
       image?: string;
     }>;
   }>;

@@ -16,7 +16,6 @@ import {
   AlertCircle,
   CheckCircle2,
 } from 'lucide-react';
-import { haversineDistance } from '@/lib/scraper/polygon-decomposition';
 import MapProvider from '@/components/admin/scraper/MapProvider';
 import SearchPanel, { type SearchParams } from '@/components/admin/scraper/SearchPanel';
 import ResultsList from '@/components/admin/scraper/ResultsList';

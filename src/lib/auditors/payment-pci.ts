@@ -14,7 +14,6 @@
 
 import BaseAuditor from './base-auditor';
 import type { AuditCheckResult } from '@/lib/audit-engine';
-import * as path from 'path';
 
 export default class PaymentPciAuditor extends BaseAuditor {
   auditTypeCode = 'PAYMENT-PCI';

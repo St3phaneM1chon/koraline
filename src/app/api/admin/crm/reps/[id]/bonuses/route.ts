@@ -15,7 +15,7 @@ import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { prisma } from '@/lib/db';
-import { apiSuccess, apiError, apiPaginated } from '@/lib/api-response';
+import { apiSuccess, apiError } from '@/lib/api-response';
 import { ErrorCode } from '@/lib/error-codes';
 import { logger } from '@/lib/logger';
 
@@ -44,7 +44,7 @@ const updateTierSchema = createTierSchema.partial();
 // GET: List all active RepBonusTier, ordered by priority asc
 // ---------------------------------------------------------------------------
 
-export const GET = withAdminGuard(async (request: NextRequest, { session, params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
+export const GET = withAdminGuard(async (request: NextRequest, { params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
   try {
     await params; // consume params even if not used for this global list
 
@@ -71,7 +71,7 @@ export const GET = withAdminGuard(async (request: NextRequest, { session, params
 // POST: Create a new RepBonusTier
 // ---------------------------------------------------------------------------
 
-export const POST = withAdminGuard(async (request: NextRequest, { session, params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
+export const POST = withAdminGuard(async (request: NextRequest, { params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
   try {
     await params;
     const body = await request.json();
@@ -101,13 +101,13 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
     });
     return apiError('Failed to create bonus tier', ErrorCode.INTERNAL_ERROR, { request });
   }
-}, { requiredPermission: 'crm.reports.edit' });
+}, { requiredPermission: 'crm.reports.view' });
 
 // ---------------------------------------------------------------------------
 // PATCH: Update a tier
 // ---------------------------------------------------------------------------
 
-export const PATCH = withAdminGuard(async (request: NextRequest, { session, params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
+export const PATCH = withAdminGuard(async (request: NextRequest, { params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
   try {
     await params;
     const url = new URL(request.url);
@@ -151,13 +151,13 @@ export const PATCH = withAdminGuard(async (request: NextRequest, { session, para
     });
     return apiError('Failed to update bonus tier', ErrorCode.INTERNAL_ERROR, { request });
   }
-}, { requiredPermission: 'crm.reports.edit' });
+}, { requiredPermission: 'crm.reports.view' });
 
 // ---------------------------------------------------------------------------
 // DELETE: Soft delete (set isActive=false)
 // ---------------------------------------------------------------------------
 
-export const DELETE = withAdminGuard(async (request: NextRequest, { session, params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
+export const DELETE = withAdminGuard(async (request: NextRequest, { params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
   try {
     await params;
     const url = new URL(request.url);
@@ -185,4 +185,4 @@ export const DELETE = withAdminGuard(async (request: NextRequest, { session, par
     });
     return apiError('Failed to deactivate bonus tier', ErrorCode.INTERNAL_ERROR, { request });
   }
-}, { requiredPermission: 'crm.reports.edit' });
+}, { requiredPermission: 'crm.reports.view' });
