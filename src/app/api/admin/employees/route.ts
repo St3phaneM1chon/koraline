@@ -46,7 +46,6 @@ export const GET = withAdminGuard(async (request: NextRequest, _ctx) => {
           image: true,
           role: true,
           phone: true,
-          password: true,
           createdAt: true,
           updatedAt: true,
           sessions: {

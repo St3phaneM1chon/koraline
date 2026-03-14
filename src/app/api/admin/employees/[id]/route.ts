@@ -43,7 +43,6 @@ export const GET = withAdminGuard(async (_request, { params }) => {
         role: true,
         phone: true,
         locale: true,
-        password: true,
         createdAt: true,
         updatedAt: true,
         sessions: {
