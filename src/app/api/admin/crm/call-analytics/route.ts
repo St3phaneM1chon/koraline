@@ -79,71 +79,77 @@ export const GET = withAdminGuard(async (request: NextRequest) => {
     }),
   ]);
 
+  // ── Single-pass computation of all KPIs, hourly + daily ──
   const totalCalls = allCalls.length;
-  const answeredCalls = allCalls.filter((c) => c.status === 'COMPLETED');
-  const inboundCalls = allCalls.filter((c) => c.direction === 'INBOUND');
-  const inboundAnswered = inboundCalls.filter((c) => c.status === 'COMPLETED');
-
-  // ── AHT (Average Handle Time) ─────────────────────
-  // Total talk time / number of completed calls (seconds)
-  const totalTalkTime = answeredCalls.reduce((sum, c) => sum + (c.duration || 0), 0);
-  const aht = answeredCalls.length > 0 ? Math.round(totalTalkTime / answeredCalls.length) : 0;
-
-  // ── ASA (Average Speed of Answer) ──────────────────
-  // Average time from call start to agent answer (seconds)
+  const SL_THRESHOLD = 20; // seconds
+  let answeredCount = 0;
+  let inboundCount = 0;
+  let totalTalkTime = 0;
   let totalWaitTime = 0;
   let waitCount = 0;
+  let answeredWithinThreshold = 0;
 
-  for (const call of answeredCalls) {
-    if (call.startedAt && call.answeredAt) {
-      const wait = (new Date(call.answeredAt).getTime() - new Date(call.startedAt).getTime()) / 1000;
-      if (wait >= 0 && wait < 600) { // Sanity: max 10 min wait
-        totalWaitTime += wait;
-        waitCount++;
+  const callerMap = new Map<string, number>();
+  const hourlyDistribution = Array.from({ length: 24 }, (_, h) => ({
+    hour: h, total: 0, answered: 0, abandoned: 0,
+  }));
+  const dailyMap = new Map<string, { date: string; total: number; answered: number; abandoned: number; aht: number; talkTime: number }>();
+
+  for (const call of allCalls) {
+    const isCompleted = call.status === 'COMPLETED';
+    const isMissed = call.status === 'MISSED';
+    const isInbound = call.direction === 'INBOUND';
+    const hour = new Date(call.startedAt).getHours();
+    const dateKey = new Date(call.startedAt).toISOString().split('T')[0];
+
+    // AHT + ASA + Service Level
+    if (isCompleted) {
+      answeredCount++;
+      totalTalkTime += call.duration || 0;
+      if (call.startedAt && call.answeredAt) {
+        const wait = (new Date(call.answeredAt).getTime() - new Date(call.startedAt).getTime()) / 1000;
+        if (wait >= 0 && wait < 600) {
+          totalWaitTime += wait;
+          waitCount++;
+        }
+        if (isInbound && wait <= SL_THRESHOLD) {
+          answeredWithinThreshold++;
+        }
       }
     }
-  }
 
-  const asa = waitCount > 0 ? Math.round(totalWaitTime / waitCount) : 0;
+    if (isInbound) inboundCount++;
 
-  // ── FCR (First Call Resolution) ────────────────────
-  // Percentage of unique callers who only called once and were resolved
-  const callerMap = new Map<string, number>();
-  for (const call of allCalls) {
+    // FCR
     if (call.callerNumber) {
       callerMap.set(call.callerNumber, (callerMap.get(call.callerNumber) || 0) + 1);
     }
+
+    // Hourly distribution
+    hourlyDistribution[hour].total++;
+    if (isCompleted) hourlyDistribution[hour].answered++;
+    if (isMissed) hourlyDistribution[hour].abandoned++;
+
+    // Daily trend
+    if (!dailyMap.has(dateKey)) {
+      dailyMap.set(dateKey, { date: dateKey, total: 0, answered: 0, abandoned: 0, aht: 0, talkTime: 0 });
+    }
+    const day = dailyMap.get(dateKey)!;
+    day.total++;
+    if (isCompleted) { day.answered++; day.talkTime += call.duration || 0; }
+    if (isMissed) day.abandoned++;
   }
+
+  const aht = answeredCount > 0 ? Math.round(totalTalkTime / answeredCount) : 0;
+  const asa = waitCount > 0 ? Math.round(totalWaitTime / waitCount) : 0;
 
   const uniqueCallers = callerMap.size;
-  const singleCallCallers = Array.from(callerMap.values()).filter((count) => count === 1).length;
+  const singleCallCallers = Array.from(callerMap.values()).filter(c => c === 1).length;
   const fcr = uniqueCallers > 0 ? Math.round((singleCallCallers / uniqueCallers) * 100) : 0;
 
-  // ── Abandon Rate ───────────────────────────────────
-  const abandonRate = totalCalls > 0
-    ? Math.round((abandonedCalls / totalCalls) * 1000) / 10
-    : 0;
+  const abandonRate = totalCalls > 0 ? Math.round((abandonedCalls / totalCalls) * 1000) / 10 : 0;
+  const serviceLevel = inboundCount > 0 ? Math.round((answeredWithinThreshold / inboundCount) * 100) : 0;
 
-  // ── Service Level ──────────────────────────────────
-  // % of inbound calls answered within 20 seconds (industry standard)
-  const SL_THRESHOLD = 20; // seconds
-  let answeredWithinThreshold = 0;
-
-  for (const call of inboundAnswered) {
-    if (call.startedAt && call.answeredAt) {
-      const wait = (new Date(call.answeredAt).getTime() - new Date(call.startedAt).getTime()) / 1000;
-      if (wait <= SL_THRESHOLD) {
-        answeredWithinThreshold++;
-      }
-    }
-  }
-
-  const serviceLevel = inboundCalls.length > 0
-    ? Math.round((answeredWithinThreshold / inboundCalls.length) * 100)
-    : 0;
-
-  // ── Occupancy Rate ─────────────────────────────────
-  // Agent talk time / total available time (estimated)
   const rangeHours = Math.max(1, (to.getTime() - from.getTime()) / (1000 * 60 * 60));
   const agentHoursAvailable = agentPresence * rangeHours;
   const agentHoursTalking = totalTalkTime / 3600;
@@ -151,48 +157,9 @@ export const GET = withAdminGuard(async (request: NextRequest) => {
     ? Math.min(100, Math.round((agentHoursTalking / agentHoursAvailable) * 100))
     : 0;
 
-  // ── Hourly distribution (for charts) ───────────────
-  const hourlyDistribution: Array<{
-    hour: number;
-    total: number;
-    answered: number;
-    abandoned: number;
-  }> = Array.from({ length: 24 }, (_, h) => ({
-    hour: h,
-    total: 0,
-    answered: 0,
-    abandoned: 0,
-  }));
-
-  for (const call of allCalls) {
-    const hour = new Date(call.startedAt).getHours();
-    hourlyDistribution[hour].total++;
-    if (call.status === 'COMPLETED') hourlyDistribution[hour].answered++;
-    if (call.status === 'MISSED') hourlyDistribution[hour].abandoned++;
-  }
-
-  // ── Daily trend (for charts) ───────────────────────
-  const dailyMap = new Map<string, { date: string; total: number; answered: number; abandoned: number; aht: number; talkTime: number }>();
-  for (const call of allCalls) {
-    const dateKey = new Date(call.startedAt).toISOString().split('T')[0];
-    if (!dailyMap.has(dateKey)) {
-      dailyMap.set(dateKey, { date: dateKey, total: 0, answered: 0, abandoned: 0, aht: 0, talkTime: 0 });
-    }
-    const day = dailyMap.get(dateKey)!;
-    day.total++;
-    if (call.status === 'COMPLETED') {
-      day.answered++;
-      day.talkTime += call.duration || 0;
-    }
-    if (call.status === 'MISSED') day.abandoned++;
-  }
-
   const dailyTrend = Array.from(dailyMap.values())
     .sort((a, b) => a.date.localeCompare(b.date))
-    .map((d) => ({
-      ...d,
-      aht: d.answered > 0 ? Math.round(d.talkTime / d.answered) : 0,
-    }));
+    .map(d => ({ ...d, aht: d.answered > 0 ? Math.round(d.talkTime / d.answered) : 0 }));
 
   return apiSuccess({
     dateRange: { from: from.toISOString(), to: to.toISOString() },
@@ -204,7 +171,7 @@ export const GET = withAdminGuard(async (request: NextRequest) => {
       serviceLevel,       // percentage
       occupancyRate,      // percentage
       totalCalls,
-      answeredCalls: answeredCalls.length,
+      answeredCalls: answeredCount,
       abandonedCalls,
       avgTalkTime: aht,
     },

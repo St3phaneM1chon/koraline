@@ -38,16 +38,29 @@ export const GET = withAdminGuard(async (
     }, { request });
   }
 
-  // Get orders for this contact
-  const orders = await prisma.order.findMany({
-    where: { userId: deal.contactId },
-    select: { id: true, total: true, status: true },
-    take: 100,
-  });
+  // Use aggregate queries instead of loading all orders into memory
+  const [totalAgg, paidAgg, orderCount, entries] = await Promise.all([
+    prisma.order.aggregate({
+      where: { userId: deal.contactId },
+      _sum: { total: true },
+    }),
+    prisma.order.aggregate({
+      where: { userId: deal.contactId, status: { in: ['DELIVERED', 'COMPLETED'] } },
+      _sum: { total: true },
+    }),
+    prisma.order.count({ where: { userId: deal.contactId } }),
+    prisma.journalEntry.findMany({
+      where: { order: { userId: deal.contactId } },
+      take: 20,
+      orderBy: { date: 'desc' },
+      select: { id: true, entryNumber: true, description: true, date: true, type: true },
+    }),
+  ]);
 
-  const orderIds = orders.map((o: { id: string }) => o.id);
+  const totalInvoiced = Number(totalAgg._sum.total) || 0;
+  const totalPaid = Number(paidAgg._sum.total) || 0;
 
-  if (orderIds.length === 0) {
+  if (orderCount === 0) {
     return apiSuccess({
       dealId: deal.id,
       dealName: deal.title,
@@ -59,20 +72,6 @@ export const GET = withAdminGuard(async (
     }, { request });
   }
 
-  // Get journal entries for these orders
-  const entries = await prisma.journalEntry.findMany({
-    where: { orderId: { in: orderIds } },
-    take: 20,
-    orderBy: { date: 'desc' },
-    select: { id: true, entryNumber: true, description: true, date: true, type: true },
-  });
-
-  // Calculate totals from orders (no Invoice model exists)
-  const totalInvoiced = orders.reduce((s: number, o: { total: unknown }) => s + Number(o.total), 0);
-  const totalPaid = orders
-    .filter((o: { status: string }) => o.status === 'DELIVERED' || o.status === 'COMPLETED')
-    .reduce((s: number, o: { total: unknown }) => s + Number(o.total), 0);
-
   return apiSuccess({
     dealId: deal.id,
     dealName: deal.title,
@@ -81,6 +80,6 @@ export const GET = withAdminGuard(async (
     totalPaid,
     outstandingBalance: totalInvoiced - totalPaid,
     recentEntries: entries,
-    orderCount: orderIds.length,
+    orderCount,
   }, { request });
 }, { requiredPermission: 'crm.contacts.view' });

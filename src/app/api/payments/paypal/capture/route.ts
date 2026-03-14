@@ -193,29 +193,37 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // SECURITY: Verify cart item prices from database and recalculate subtotal
+      // SECURITY: Verify cart item prices from database and recalculate subtotal (batch queries)
       let serverSubtotal = 0;
       if (cartItems && cartItems.length > 0) {
+        const cartProductIds = [...new Set(cartItems.map((i: { productId?: string }) => i.productId).filter(Boolean) as string[])];
+        const cartFormatIds = cartItems.map((i: { formatId?: string }) => i.formatId).filter(Boolean) as string[];
+
+        const [cartProducts, cartFormats] = await Promise.all([
+          cartProductIds.length > 0
+            ? prisma.product.findMany({ where: { id: { in: cartProductIds } }, select: { id: true, price: true } })
+            : Promise.resolve([]),
+          cartFormatIds.length > 0
+            ? prisma.productFormat.findMany({ where: { id: { in: cartFormatIds } }, select: { id: true, price: true, productId: true } })
+            : Promise.resolve([]),
+        ]);
+
+        const productPriceMap = new Map(cartProducts.map(p => [p.id, Number(p.price)]));
+        const formatPriceMap = new Map(cartFormats.map(f => [f.id, { price: Number(f.price), productId: f.productId }]));
+
         for (const item of cartItems) {
           if (item.formatId) {
-            const format = await prisma.productFormat.findUnique({
-              where: { id: item.formatId },
-              select: { price: true, productId: true },
-            });
+            const format = formatPriceMap.get(item.formatId);
             if (format) {
-              // Verify format belongs to the product
               if (item.productId && format.productId !== item.productId) {
                 return NextResponse.json({ error: 'Le format ne correspond pas au produit' }, { status: 400 });
               }
-              item.price = Number(format.price);
+              item.price = format.price;
             }
           } else if (item.productId) {
-            const product = await prisma.product.findUnique({
-              where: { id: item.productId },
-              select: { price: true },
-            });
-            if (product) {
-              item.price = Number(product.price);
+            const productPrice = productPriceMap.get(item.productId);
+            if (productPrice !== undefined) {
+              item.price = productPrice;
             }
           }
           serverSubtotal = add(serverSubtotal, multiply(Number(item.price), Number(item.quantity)));

@@ -104,20 +104,39 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'PayPal n\'est pas configuré' }, { status: 503 });
     }
 
-    // SECURITY: Validate ALL prices from the database
+    // SECURITY: Validate ALL prices from the database (batch queries to avoid N+1)
     const verifiedItems: { productId: string; formatId: string | null; name: string; format: string; quantity: number; price: number; productType: string }[] = [];
     let serverSubtotal = 0;
 
+    // Validate input first
     for (const item of items) {
       if (!item.productId || !item.quantity || item.quantity < 1) {
         return NextResponse.json({ error: 'Données article invalides' }, { status: 400 });
       }
+    }
 
-      const product = await prisma.product.findUnique({
-        where: { id: item.productId },
+    // Batch fetch all products and formats in 2 queries instead of N+N
+    const productIds = [...new Set(items.map((i: { productId: string }) => i.productId))];
+    const formatIds = items.map((i: { formatId?: string }) => i.formatId).filter(Boolean) as string[];
+
+    const [products, formats] = await Promise.all([
+      prisma.product.findMany({
+        where: { id: { in: productIds } },
         select: { id: true, name: true, price: true, isActive: true, productType: true },
-      });
+      }),
+      formatIds.length > 0
+        ? prisma.productFormat.findMany({
+            where: { id: { in: formatIds } },
+            select: { id: true, name: true, price: true, productId: true },
+          })
+        : Promise.resolve([]),
+    ]);
 
+    const productMap = new Map(products.map(p => [p.id, p]));
+    const formatMap = new Map(formats.map(f => [f.id, f]));
+
+    for (const item of items) {
+      const product = productMap.get(item.productId);
       if (!product || !product.isActive) {
         return NextResponse.json({ error: `Produit introuvable: ${item.productId}` }, { status: 400 });
       }
@@ -126,10 +145,7 @@ export async function POST(request: NextRequest) {
       let formatName = '';
 
       if (item.formatId) {
-        const format = await prisma.productFormat.findUnique({
-          where: { id: item.formatId },
-          select: { name: true, price: true, productId: true },
-        });
+        const format = formatMap.get(item.formatId);
         if (!format) {
           return NextResponse.json({ error: `Format introuvable: ${item.formatId}` }, { status: 400 });
         }

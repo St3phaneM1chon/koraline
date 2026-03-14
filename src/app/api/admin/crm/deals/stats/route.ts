@@ -155,99 +155,91 @@ async function getAtRiskCustomers() {
 }
 
 async function getCLVDistribution() {
-  const customers = await prisma.user.findMany({
-    where: { orders: { some: {} } },
-    select: {
-      id: true,
-      orders: { select: { total: true } },
-    },
-  });
+  // Push aggregation to database instead of loading all customers+orders into memory
+  const buckets = await prisma.$queryRaw<{ range: string; count: bigint }[]>`
+    SELECT
+      CASE
+        WHEN clv < 100 THEN '$0-100'
+        WHEN clv < 500 THEN '$100-500'
+        WHEN clv < 1000 THEN '$500-1K'
+        WHEN clv < 5000 THEN '$1K-5K'
+        WHEN clv < 10000 THEN '$5K-10K'
+        ELSE '$10K+'
+      END AS range,
+      COUNT(*) AS count
+    FROM (
+      SELECT "userId", COALESCE(SUM(total), 0) AS clv
+      FROM "Order"
+      WHERE "userId" IS NOT NULL
+      GROUP BY "userId"
+    ) user_clv
+    GROUP BY range
+  `;
 
-  const ranges = [
-    { range: '$0-100', min: 0, max: 100, count: 0 },
-    { range: '$100-500', min: 100, max: 500, count: 0 },
-    { range: '$500-1K', min: 500, max: 1000, count: 0 },
-    { range: '$1K-5K', min: 1000, max: 5000, count: 0 },
-    { range: '$5K-10K', min: 5000, max: 10000, count: 0 },
-    { range: '$10K+', min: 10000, max: Infinity, count: 0 },
-  ];
+  const rangeOrder = ['$0-100', '$100-500', '$500-1K', '$1K-5K', '$5K-10K', '$10K+'];
+  const countMap = new Map(buckets.map(b => [b.range, Number(b.count)]));
+  const distribution = rangeOrder.map(range => ({ range, count: countMap.get(range) || 0 }));
 
-  for (const c of customers) {
-    const total = c.orders.reduce((sum, o) => sum + Number(o.total), 0);
-    for (const r of ranges) {
-      if (total >= r.min && total < r.max) {
-        r.count++;
-        break;
-      }
-    }
-  }
-
-  return { distribution: ranges.map(r => ({ range: r.range, count: r.count })) };
+  return { distribution };
 }
 
 async function getCLVTop() {
-  const customers = await prisma.user.findMany({
-    where: { orders: { some: {} } },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      createdAt: true,
-      orders: { select: { total: true, createdAt: true }, orderBy: { createdAt: 'asc' } },
-    },
-  });
+  // Push aggregation to database — only fetch top 20 instead of ALL customers
+  const topCustomers = await prisma.$queryRaw<{
+    contactId: string; name: string | null; email: string;
+    totalRevenue: number; orderCount: bigint; avgOrderValue: number;
+    lifespanMonths: number; monthlyRevenue: number; estimatedCLV: number;
+  }[]>`
+    SELECT
+      u.id AS "contactId",
+      u.name,
+      u.email,
+      ROUND(COALESCE(SUM(o.total), 0)::numeric, 2) AS "totalRevenue",
+      COUNT(o.id) AS "orderCount",
+      ROUND((COALESCE(SUM(o.total), 0) / GREATEST(COUNT(o.id), 1))::numeric, 2) AS "avgOrderValue",
+      GREATEST(1, ROUND(EXTRACT(EPOCH FROM (NOW() - u."createdAt")) / (86400 * 30))) AS "lifespanMonths",
+      ROUND((COALESCE(SUM(o.total), 0) / GREATEST(1, ROUND(EXTRACT(EPOCH FROM (NOW() - u."createdAt")) / (86400 * 30))))::numeric, 2) AS "monthlyRevenue",
+      ROUND(((COALESCE(SUM(o.total), 0) / GREATEST(1, ROUND(EXTRACT(EPOCH FROM (NOW() - u."createdAt")) / (86400 * 30)))) * 24)::numeric, 2) AS "estimatedCLV"
+    FROM "User" u
+    JOIN "Order" o ON u.id = o."userId"
+    GROUP BY u.id, u.name, u.email, u."createdAt"
+    ORDER BY "estimatedCLV" DESC
+    LIMIT 20
+  `;
 
-  const now = Date.now();
-  const topCustomers = customers
-    .map(c => {
-      const totalRevenue = c.orders.reduce((sum, o) => sum + Number(o.total), 0);
-      const orderCount = c.orders.length;
-      const avgOrderValue = orderCount > 0 ? totalRevenue / orderCount : 0;
-      const lifespanMonths = Math.max(1, Math.round((now - c.createdAt.getTime()) / (1000 * 60 * 60 * 24 * 30)));
-      const monthlyRevenue = totalRevenue / lifespanMonths;
-      const estimatedCLV = monthlyRevenue * 24; // 2 year projection
-      const churnProbability = orderCount <= 1 ? 0.6 : orderCount <= 3 ? 0.3 : 0.1;
-
-      return {
-        contactId: c.id,
-        name: c.name || 'Unknown',
-        email: c.email,
-        totalRevenue: Math.round(totalRevenue * 100) / 100,
-        orderCount,
-        avgOrderValue: Math.round(avgOrderValue * 100) / 100,
-        lifespanMonths,
-        monthlyRevenue: Math.round(monthlyRevenue * 100) / 100,
-        estimatedCLV: Math.round(estimatedCLV * 100) / 100,
-        churnProbability,
-      };
-    })
-    .sort((a, b) => b.estimatedCLV - a.estimatedCLV)
-    .slice(0, 20);
-
-  return { topCustomers };
+  return {
+    topCustomers: topCustomers.map(c => ({
+      ...c,
+      totalRevenue: Number(c.totalRevenue),
+      orderCount: Number(c.orderCount),
+      avgOrderValue: Number(c.avgOrderValue),
+      lifespanMonths: Number(c.lifespanMonths),
+      monthlyRevenue: Number(c.monthlyRevenue),
+      estimatedCLV: Number(c.estimatedCLV),
+      name: c.name || 'Unknown',
+      churnProbability: Number(c.orderCount) <= 1 ? 0.6 : Number(c.orderCount) <= 3 ? 0.3 : 0.1,
+    })),
+  };
 }
 
 async function getCLVAverage() {
-  const customers = await prisma.user.findMany({
-    where: { orders: { some: {} } },
-    select: {
-      id: true,
-      createdAt: true,
-      orders: { select: { total: true } },
-    },
-  });
-
-  const now = Date.now();
-  let totalCLV = 0;
-  for (const c of customers) {
-    const rev = c.orders.reduce((s, o) => s + Number(o.total), 0);
-    const months = Math.max(1, Math.round((now - c.createdAt.getTime()) / (1000 * 60 * 60 * 24 * 30)));
-    totalCLV += (rev / months) * 24;
-  }
+  // Push aggregation to database instead of loading all customers into memory
+  const result = await prisma.$queryRaw<{ averageCLV: number; customerCount: bigint }[]>`
+    SELECT
+      ROUND(AVG(estimated_clv)::numeric, 2) AS "averageCLV",
+      COUNT(*) AS "customerCount"
+    FROM (
+      SELECT
+        (COALESCE(SUM(o.total), 0) / GREATEST(1, ROUND(EXTRACT(EPOCH FROM (NOW() - u."createdAt")) / (86400 * 30)))) * 24 AS estimated_clv
+      FROM "User" u
+      JOIN "Order" o ON u.id = o."userId"
+      GROUP BY u.id, u."createdAt"
+    ) clv_data
+  `;
 
   return {
-    averageCLV: customers.length > 0 ? Math.round((totalCLV / customers.length) * 100) / 100 : 0,
-    customerCount: customers.length,
+    averageCLV: Number(result[0]?.averageCLV) || 0,
+    customerCount: Number(result[0]?.customerCount) || 0,
   };
 }
 
