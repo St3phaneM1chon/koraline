@@ -63,84 +63,96 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     return apiError('Invalid input', 'VALIDATION_ERROR', { status: 400, details: parsed.error.flatten(), request });
   }
 
-  const data = parsed.data;
+  try {
+    const data = parsed.data;
 
-  // Get current user ID for createdById
-  const { auth } = await import('@/lib/auth-config');
-  const session = await auth();
-  const userId = session?.user?.id;
+    // Get current user ID for createdById
+    const { auth } = await import('@/lib/auth-config');
+    const session = await auth();
+    const userId = session?.user?.id;
 
-  // Check concurrent job limit (max 3 running)
-  const runningCount = await prisma.scrapeJob.count({ where: { status: 'running' } });
-  if (runningCount >= 3) {
-    return apiError(
-      'Too many concurrent scrape jobs. Max 3 allowed.',
-      'RATE_LIMIT',
-      { status: 429, details: { running: runningCount, max: 3 }, request },
-    );
-  }
-
-  // Verify prospect list exists if provided
-  if (data.prospectListId) {
-    const list = await prisma.prospectList.findUnique({ where: { id: data.prospectListId } });
-    if (!list) {
-      return apiError('Prospect list not found', 'NOT_FOUND', { status: 404, request });
+    // Check concurrent job limit (max 3 running)
+    const runningCount = await prisma.scrapeJob.count({ where: { status: 'running' } });
+    if (runningCount >= 3) {
+      return apiError(
+        'Too many concurrent scrape jobs. Max 3 allowed.',
+        'RATE_LIMIT',
+        { status: 429, details: { running: runningCount, max: 3 }, request },
+      );
     }
+
+    // Verify prospect list exists if provided
+    if (data.prospectListId) {
+      const list = await prisma.prospectList.findUnique({ where: { id: data.prospectListId } });
+      if (!list) {
+        return apiError('Prospect list not found', 'NOT_FOUND', { status: 404, request });
+      }
+    }
+
+    const job = await prisma.scrapeJob.create({
+      data: {
+        query: data.query,
+        engine: data.engine,
+        region: data.region as object ?? undefined,
+        prospectListId: data.prospectListId ?? undefined,
+        createdById: userId ?? undefined,
+        status: 'pending',
+      },
+    });
+
+    // Register AbortController for real cancellation
+    const controller = new AbortController();
+    activeJobControllers.set(job.id, controller);
+
+    // Start the scrape in background (non-blocking)
+    runScrapeJob(job.id, data, controller.signal).catch((err) => {
+      logger.error('Background scrape job failed', { jobId: job.id, error: err instanceof Error ? err.message : String(err) });
+    }).finally(() => {
+      activeJobControllers.delete(job.id);
+    });
+
+    return apiSuccess(job, { status: 201, request });
+  } catch (error) {
+    console.error('[Scraper Jobs POST] Error creating scrape job:', error);
+    logger.error('Scraper Jobs POST error', { error: error instanceof Error ? error.message : String(error) });
+    return apiError('Failed to create scrape job', 'INTERNAL_ERROR', { status: 500, request });
   }
-
-  const job = await prisma.scrapeJob.create({
-    data: {
-      query: data.query,
-      engine: data.engine,
-      region: data.region as object ?? undefined,
-      prospectListId: data.prospectListId ?? undefined,
-      createdById: userId ?? undefined,
-      status: 'pending',
-    },
-  });
-
-  // Register AbortController for real cancellation
-  const controller = new AbortController();
-  activeJobControllers.set(job.id, controller);
-
-  // Start the scrape in background (non-blocking)
-  runScrapeJob(job.id, data, controller.signal).catch((err) => {
-    logger.error('Background scrape job failed', { jobId: job.id, error: err instanceof Error ? err.message : String(err) });
-  }).finally(() => {
-    activeJobControllers.delete(job.id);
-  });
-
-  return apiSuccess(job, { status: 201, request });
 }, { rateLimit: 10 });
 
 export const GET = withAdminGuard(async (request: NextRequest) => {
-  const url = new URL(request.url);
-  const page = Math.max(1, parseInt(url.searchParams.get('page') || '1', 10));
-  const pageSize = Math.min(50, Math.max(1, parseInt(url.searchParams.get('pageSize') || '20', 10)));
-  const status = url.searchParams.get('status');
+  try {
+    const url = new URL(request.url);
+    const page = Math.max(1, parseInt(url.searchParams.get('page') || '1', 10));
+    const pageSize = Math.min(50, Math.max(1, parseInt(url.searchParams.get('pageSize') || '20', 10)));
+    const status = url.searchParams.get('status');
 
-  // Auto-recover stale jobs: mark "running" jobs older than 30 min as "failed"
-  const staleThreshold = new Date(Date.now() - 30 * 60 * 1000);
-  await prisma.scrapeJob.updateMany({
-    where: { status: 'running', startedAt: { lt: staleThreshold } },
-    data: { status: 'failed', errorLog: 'Timed out (stale job recovery)', completedAt: new Date() },
-  });
+    // Auto-recover stale jobs: mark "running" jobs older than 30 min as "failed"
+    const staleThreshold = new Date(Date.now() - 30 * 60 * 1000);
+    await prisma.scrapeJob.updateMany({
+      where: { status: 'running', startedAt: { lt: staleThreshold } },
+      data: { status: 'failed', errorLog: 'Timed out (stale job recovery)', completedAt: new Date() },
+    });
 
-  const where = status ? { status } : {};
-  const [jobs, total] = await Promise.all([
-    prisma.scrapeJob.findMany({
-      where,
-      orderBy: { createdAt: 'desc' },
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-      include: {
-        prospectList: { select: { id: true, name: true } },
-      },
-    }),
-    prisma.scrapeJob.count({ where }),
-  ]);
+    const where = status ? { status } : {};
+    const [jobs, total] = await Promise.all([
+      prisma.scrapeJob.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        include: {
+          prospectList: { select: { id: true, name: true } },
+        },
+      }),
+      prisma.scrapeJob.count({ where }),
+    ]);
 
-  return apiPaginated(jobs, page, pageSize, total, { request });
+    return apiPaginated(jobs, page, pageSize, total, { request });
+  } catch (error) {
+    console.error('[Scraper Jobs GET] Error listing scrape jobs:', error);
+    logger.error('Scraper Jobs GET error', { error: error instanceof Error ? error.message : String(error) });
+    return apiError('Failed to list scrape jobs', 'INTERNAL_ERROR', { status: 500, request });
+  }
 }, { rateLimit: 30 });
 
 // ---------------------------------------------------------------------------

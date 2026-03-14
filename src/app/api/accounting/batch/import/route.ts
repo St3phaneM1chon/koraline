@@ -78,6 +78,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
     try {
       records = parseCSV(csvContent);
     } catch (parseError) {
+      logger.warn('CSV parse error during batch import', { error: parseError instanceof Error ? parseError.message : String(parseError) });
       return apiError(
         `Erreur de parsing CSV: ${parseError instanceof Error ? parseError.message : String(parseError)}`,
         'VALIDATION_ERROR',

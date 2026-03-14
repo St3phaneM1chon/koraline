@@ -222,6 +222,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
     try {
       await assertPeriodOpen(new Date(data.date));
     } catch (periodError) {
+      logger.warn('Period check failed for expense creation', { error: periodError instanceof Error ? periodError.message : String(periodError) });
       return NextResponse.json(
         { error: periodError instanceof Error ? periodError.message : 'Période comptable verrouillée' },
         { status: 400 }

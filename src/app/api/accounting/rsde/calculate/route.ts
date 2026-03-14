@@ -20,6 +20,7 @@ export const POST = withAdminGuard(async (request) => {
     const result = await calculateCredits(parsed.data.projectId);
     return NextResponse.json(result);
   } catch (error) {
+    console.error('Error calculating RS&DE credits:', error);
     return NextResponse.json({ error: 'Erreur lors du calcul des crédits RS&DE' }, { status: 500 });
   }
 });

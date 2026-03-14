@@ -180,6 +180,7 @@ export const POST = withAdminGuard(async (request) => {
     try {
       await assertPeriodOpen(parsedInvoiceDate);
     } catch (periodError) {
+      logger.warn('Period check failed for supplier invoice', { error: periodError instanceof Error ? periodError.message : String(periodError) });
       return NextResponse.json(
         { error: periodError instanceof Error ? periodError.message : 'Période comptable verrouillée' },
         { status: 400 }

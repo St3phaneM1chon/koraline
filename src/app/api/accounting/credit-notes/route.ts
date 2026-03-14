@@ -203,6 +203,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
     try {
       await assertPeriodOpen(new Date());
     } catch (periodError) {
+      logger.warn('Period check failed for credit note creation', { error: periodError instanceof Error ? periodError.message : String(periodError) });
       return NextResponse.json(
         { error: periodError instanceof Error ? periodError.message : 'Periode comptable fermee' },
         { status: 400 }

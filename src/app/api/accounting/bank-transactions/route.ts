@@ -149,6 +149,7 @@ export const POST = withAdminGuard(async (request) => {
       try {
         await assertPeriodOpen(new Date(t.date));
       } catch (periodError) {
+        logger.warn('Period check failed for bank transaction import', { date: t.date, error: periodError instanceof Error ? periodError.message : String(periodError) });
         return NextResponse.json(
           { error: periodError instanceof Error ? periodError.message : `Période comptable verrouillée pour la date ${t.date}` },
           { status: 400 }

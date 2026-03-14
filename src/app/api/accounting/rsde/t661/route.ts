@@ -20,6 +20,7 @@ export const POST = withAdminGuard(async (request) => {
     const formData = await prepareT661(parsed.data.projectId);
     return NextResponse.json(formData);
   } catch (error) {
+    console.error('Error preparing T661 form:', error);
     return NextResponse.json({ error: 'Erreur lors de la préparation du formulaire T661' }, { status: 500 });
   }
 });

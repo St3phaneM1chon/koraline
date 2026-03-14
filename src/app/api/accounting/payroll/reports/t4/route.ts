@@ -43,6 +43,7 @@ export const GET = withAdminGuard(async (request) => {
         }
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
+        logger.warn('Error generating T4/RL1 report for employee', { employeeId, reportType, error: msg });
         return NextResponse.json({ error: msg }, { status: 400 });
       }
     }

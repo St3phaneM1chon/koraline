@@ -27,6 +27,7 @@ export const GET = withAdminGuard(async (request) => {
     const result = await listProjects({ fiscalYear, status, page, limit });
     return NextResponse.json(result);
   } catch (error) {
+    console.error('Error fetching RS&DE projects:', error);
     return NextResponse.json({ error: 'Erreur lors de la récupération des projets RS&DE' }, { status: 500 });
   }
 });
@@ -44,6 +45,7 @@ export const POST = withAdminGuard(async (request) => {
     const project = await createProject(result.data);
     return NextResponse.json(project, { status: 201 });
   } catch (error) {
+    console.error('Error creating RS&DE project:', error);
     return NextResponse.json({ error: 'Erreur lors de la création du projet RS&DE' }, { status: 500 });
   }
 });
