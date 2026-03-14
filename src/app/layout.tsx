@@ -52,6 +52,7 @@ const montserrat = Montserrat({
 const ESSENTIAL_NAMESPACES = [
   'common', 'nav', 'footer', 'navigation', 'auth', 'cart', 'search',
   'cookies', 'consent', 'currency', 'pwa', 'toast', 'errors', 'validation',
+  'trust', 'home', 'shop', 'disclaimer', 'faq', 'account',
 ] as const;
 
 /**
