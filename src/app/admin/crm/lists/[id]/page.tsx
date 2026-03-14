@@ -1456,8 +1456,8 @@ export default function ProspectListDetailPage() {
               onKeyDown={(e) => { if (e.key === 'Enter') saveEdit(); if (e.key === 'Escape') setEditingCell(null); }}
               className="w-full rounded border border-indigo-400 px-2 py-1 text-sm focus:outline-none"
             />
-            <button onClick={saveEdit} className="text-green-600"><Check className="h-3.5 w-3.5" /></button>
-            <button onClick={() => setEditingCell(null)} className="text-gray-400"><X className="h-3.5 w-3.5" /></button>
+            <button onClick={saveEdit} className="text-green-600" aria-label="Save"><Check className="h-3.5 w-3.5" /></button>
+            <button onClick={() => setEditingCell(null)} className="text-gray-400" aria-label="Cancel"><X className="h-3.5 w-3.5" /></button>
           </div>
         </td>
       );

@@ -9,6 +9,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { CheckoutForm } from '@/components/payment/CheckoutForm';
 import { ShippingAddressForm } from '@/components/checkout/ShippingAddressForm';
+import { useI18n } from '@/i18n/client';
 
 interface CheckoutPageClientProps {
   product: {
@@ -58,6 +59,7 @@ export function CheckoutPageClient({
   savedAddresses,
   isPhysical,
 }: CheckoutPageClientProps) {
+  const { t } = useI18n();
   const [shippingAddress, setShippingAddress] = useState<{
     recipientName: string;
     addressLine1: string;
@@ -94,12 +96,12 @@ export function CheckoutPageClient({
               marginBottom: '8px',
             }}
           >
-            Finaliser la commande
+            {t('checkout.finalizeOrder')}
           </h1>
           <p style={{ fontSize: '14px', color: 'var(--gray-400)' }}>
             {isDigital
-              ? '📱 Produit numérique - Accès immédiat après paiement'
-              : '📦 Produit physique - Livraison requise'}
+              ? t('checkout.digitalProductAccess')
+              : t('checkout.physicalProductShipping')}
           </p>
         </div>
 

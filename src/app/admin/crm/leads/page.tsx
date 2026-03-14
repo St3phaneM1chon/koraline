@@ -503,7 +503,7 @@ function CreateLeadModal({ onClose, onCreated }: { onClose: () => void; onCreate
       <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4">
         <div className="flex items-center justify-between p-4 border-b">
           <h2 className="text-lg font-semibold">{t('admin.crm.newLead')}</h2>
-          <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded"><X className="h-5 w-5" /></button>
+          <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded" aria-label="Close"><X className="h-5 w-5" /></button>
         </div>
         <div className="p-4 space-y-3">
           <div>

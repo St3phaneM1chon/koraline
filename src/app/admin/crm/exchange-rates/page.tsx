@@ -182,7 +182,7 @@ export default function ExchangeRatesPage() {
           <div className="bg-white rounded-xl shadow-xl w-full max-w-sm mx-4 p-6 space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold">{t('admin.crm.addRate')}</h2>
-              <button onClick={() => setShowAdd(false)} className="p-1 hover:bg-gray-100 rounded"><X className="h-5 w-5" /></button>
+              <button onClick={() => setShowAdd(false)} className="p-1 hover:bg-gray-100 rounded" aria-label="Close"><X className="h-5 w-5" /></button>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>

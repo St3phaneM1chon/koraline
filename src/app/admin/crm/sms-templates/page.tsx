@@ -286,7 +286,7 @@ export default function SmsTemplatesPage() {
               <h2 className="text-lg font-semibold">
                 {editingId ? (t('admin.crm.editTemplate')) : (t('admin.crm.newTemplate'))}
               </h2>
-              <button onClick={() => { setShowCreate(false); setEditingId(null); }} className="p-1 hover:bg-gray-100 rounded"><X className="h-5 w-5" /></button>
+              <button onClick={() => { setShowCreate(false); setEditingId(null); }} className="p-1 hover:bg-gray-100 rounded" aria-label="Close"><X className="h-5 w-5" /></button>
             </div>
 
             <div className="px-6 py-5 space-y-4">

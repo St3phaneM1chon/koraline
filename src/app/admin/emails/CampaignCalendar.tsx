@@ -154,9 +154,9 @@ export default function CampaignCalendar({ onCampaignClick }: CampaignCalendarPr
     <div className="bg-white rounded-xl border border-slate-200">
       <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <button onClick={prevMonth} className="p-1.5 rounded-lg hover:bg-slate-100"><ChevronLeft className="w-5 h-5" /></button>
+          <button onClick={prevMonth} className="p-1.5 rounded-lg hover:bg-slate-100" aria-label="Previous month"><ChevronLeft className="w-5 h-5" /></button>
           <h3 className="text-lg font-semibold text-slate-800 capitalize min-w-[200px] text-center">{monthName}</h3>
-          <button onClick={nextMonth} className="p-1.5 rounded-lg hover:bg-slate-100"><ChevronRight className="w-5 h-5" /></button>
+          <button onClick={nextMonth} className="p-1.5 rounded-lg hover:bg-slate-100" aria-label="Next month"><ChevronRight className="w-5 h-5" /></button>
         </div>
         <div className="flex items-center gap-3">
           {loading && <Loader2 className="w-4 h-4 animate-spin text-slate-400" />}

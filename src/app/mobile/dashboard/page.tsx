@@ -44,7 +44,7 @@ export default function MobileDashboard() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold text-gray-900">Tableau de Bord</h2>
-        <button onClick={load} className="p-2 rounded-lg hover:bg-gray-100"><RefreshCw className="w-4 h-4 text-gray-500" /></button>
+        <button onClick={load} className="p-2 rounded-lg hover:bg-gray-100" aria-label="Refresh"><RefreshCw className="w-4 h-4 text-gray-500" /></button>
       </div>
 
       {/* KPI Cards */}

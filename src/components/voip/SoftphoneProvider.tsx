@@ -11,6 +11,7 @@
 
 import React, { createContext, useContext, useEffect, useRef, useCallback, useState, type ReactNode } from 'react';
 import { useVoip, type UseVoipReturn } from '@/hooks/useVoip';
+import { useI18n } from '@/i18n/client';
 
 export interface HealthInfo {
   database: string;
@@ -38,6 +39,7 @@ const RETRY_DELAY_MS = 5000;
 
 export function SoftphoneProvider({ children }: { children: ReactNode }) {
   const voip = useVoip();
+  const { t } = useI18n();
   const [autoRegisterAttempted, setAutoRegisterAttempted] = useState(false);
   const [healthError, setHealthError] = useState<string | null>(null);
   const [healthInfo, setHealthInfo] = useState<HealthInfo | null>(null);
@@ -85,13 +87,13 @@ export function SoftphoneProvider({ children }: { children: ReactNode }) {
       if (!health.canAutoRegister) {
         // Identify specific failure reasons
         const reasons: string[] = [];
-        if (health.database === 'error') reasons.push('Base de données inaccessible');
-        if (!health.sipExtension?.configured) reasons.push('Aucune extension SIP assignée à cet utilisateur');
-        if (!health.pbx?.provider) reasons.push('Aucune connexion VoIP configurée');
+        if (health.database === 'error') reasons.push(t('voip.dbUnavailable'));
+        if (!health.sipExtension?.configured) reasons.push(t('voip.noSipExtension'));
+        if (!health.pbx?.provider) reasons.push(t('voip.noVoipConnection'));
 
         const msg = reasons.length > 0
           ? reasons.join('; ')
-          : 'Impossible d\'initialiser la ligne téléphonique';
+          : t('voip.initFailed');
 
         setHealthError(msg);
         await sendFailureAlert(msg, health.checks);
@@ -103,11 +105,11 @@ export function SoftphoneProvider({ children }: { children: ReactNode }) {
       // 2. Register the softphone line
       await voip.register();
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Échec de connexion au serveur VoIP';
+      const msg = err instanceof Error ? err.message : t('voip.connectionFailed');
       setHealthError(msg);
       await sendFailureAlert(msg);
     }
-  }, [voip, sendFailureAlert]);
+  }, [voip, sendFailureAlert, t]);
 
   /** Auto-register on mount */
   useEffect(() => {
@@ -148,12 +150,12 @@ export function SoftphoneProvider({ children }: { children: ReactNode }) {
 
     // All retries exhausted, still in error — send alert
     if (voip.status === 'error' && attemptCountRef.current >= MAX_AUTO_RETRIES) {
-      const msg = voip.error || 'Échec de l\'enregistrement SIP après plusieurs tentatives';
+      const msg = voip.error || t('voip.registrationFailed');
       sendFailureAlert(msg);
     }
 
     return undefined;
-  }, [voip.status, voip.error, autoRegisterAttempted, attemptAutoRegister, sendFailureAlert]);
+  }, [voip.status, voip.error, autoRegisterAttempted, attemptAutoRegister, sendFailureAlert, t]);
 
   /** Manual retry */
   const retryRegister = useCallback(() => {

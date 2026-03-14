@@ -52,7 +52,7 @@ export default function MobileExpenses() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold text-gray-900">Dépenses</h2>
-        <button onClick={() => setShowAdd(true)} className="bg-purple-600 text-white p-2.5 rounded-full shadow-lg"><Plus className="w-5 h-5" /></button>
+        <button onClick={() => setShowAdd(true)} className="bg-purple-600 text-white p-2.5 rounded-full shadow-lg" aria-label="Add expense"><Plus className="w-5 h-5" /></button>
       </div>
 
       {/* Quick Add Modal */}
@@ -61,7 +61,7 @@ export default function MobileExpenses() {
           <div className="bg-white rounded-t-2xl w-full max-h-[90vh] overflow-y-auto p-5 animate-slide-up">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold">Nouvelle Dépense</h3>
-              <button onClick={() => setShowAdd(false)}><X className="w-5 h-5 text-gray-400" /></button>
+              <button onClick={() => setShowAdd(false)} aria-label="Close"><X className="w-5 h-5 text-gray-400" /></button>
             </div>
 
             {/* Amount */}

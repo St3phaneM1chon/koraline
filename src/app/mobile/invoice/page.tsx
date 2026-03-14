@@ -70,7 +70,7 @@ export default function MobileInvoice() {
           <div key={i} className="flex gap-2 items-start">
             <input type="text" value={line.description} onChange={e => updateLine(i, 'description', e.target.value)} placeholder="Description" className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm" />
             <input type="number" value={line.amount} onChange={e => updateLine(i, 'amount', e.target.value)} placeholder="$" className="w-24 border border-gray-200 rounded-lg px-3 py-2 text-sm" inputMode="decimal" />
-            {lines.length > 1 && <button onClick={() => removeLine(i)} className="p-2 text-gray-400 hover:text-red-500"><Trash2 className="w-4 h-4" /></button>}
+            {lines.length > 1 && <button onClick={() => removeLine(i)} className="p-2 text-gray-400 hover:text-red-500" aria-label="Remove line"><Trash2 className="w-4 h-4" /></button>}
           </div>
         ))}
         <button onClick={addLine} className="flex items-center gap-1 text-sm text-purple-600 font-medium"><Plus className="w-4 h-4" /> Ajouter ligne</button>

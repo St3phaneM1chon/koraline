@@ -164,7 +164,7 @@ export default function VideoFilters({ filters, onFiltersChange, categories = []
           {filters.search && (
             <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-primary-50 text-primary-700 rounded-full text-xs">
               Search: &quot;{filters.search}&quot;
-              <button onClick={() => { setSearchInput(''); onFiltersChange({ ...filters, search: '' }); }}>
+              <button onClick={() => { setSearchInput(''); onFiltersChange({ ...filters, search: '' }); }} aria-label="Clear search">
                 <X className="h-3 w-3" />
               </button>
             </span>
@@ -172,7 +172,7 @@ export default function VideoFilters({ filters, onFiltersChange, categories = []
           {filters.categoryId && (
             <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-purple-50 text-purple-700 rounded-full text-xs">
               Category: {categories.find(c => c.id === filters.categoryId)?.name}
-              <button onClick={() => onFiltersChange({ ...filters, categoryId: '' })}>
+              <button onClick={() => onFiltersChange({ ...filters, categoryId: '' })} aria-label="Clear category filter">
                 <X className="h-3 w-3" />
               </button>
             </span>
@@ -180,7 +180,7 @@ export default function VideoFilters({ filters, onFiltersChange, categories = []
           {filters.contentType && (
             <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full text-xs">
               {t(`videoContentType.${filters.contentType}`)}
-              <button onClick={() => onFiltersChange({ ...filters, contentType: '' })}>
+              <button onClick={() => onFiltersChange({ ...filters, contentType: '' })} aria-label="Clear content type filter">
                 <X className="h-3 w-3" />
               </button>
             </span>

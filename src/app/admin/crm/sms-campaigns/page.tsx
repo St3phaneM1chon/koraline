@@ -165,7 +165,7 @@ export default function SmsCampaignsPage() {
           <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-6 space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold">New SMS Campaign</h2>
-              <button onClick={() => setShowCreate(false)} className="p-1 hover:bg-gray-100 rounded"><X className="h-5 w-5" /></button>
+              <button onClick={() => setShowCreate(false)} className="p-1 hover:bg-gray-100 rounded" aria-label="Close"><X className="h-5 w-5" /></button>
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Campaign Name *</label>

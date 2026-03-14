@@ -14248,5 +14248,18 @@
     "errorGeneric": "Une erreur est survenue.",
     "errorNetwork": "Erreur réseau. Veuillez réessayer.",
     "emailPlaceholder": "vous@entreprise.com"
+  },
+  "checkout": {
+    "finalizeOrder": "Finaliser la commande",
+    "digitalProductAccess": "\ud83d\udcf1 Produit num\u00e9rique - Acc\u00e8s imm\u00e9diat apr\u00e8s paiement",
+    "physicalProductShipping": "\ud83d\udce6 Produit physique - Livraison requise"
+  },
+  "voip": {
+    "dbUnavailable": "Base de donn\u00e9es inaccessible",
+    "noSipExtension": "Aucune extension SIP assign\u00e9e \u00e0 cet utilisateur",
+    "noVoipConnection": "Aucune connexion VoIP configur\u00e9e",
+    "initFailed": "Impossible d'initialiser la ligne t\u00e9l\u00e9phonique",
+    "connectionFailed": "\u00c9chec de connexion au serveur VoIP",
+    "registrationFailed": "\u00c9chec de l'enregistrement SIP apr\u00e8s plusieurs tentatives"
   }
 }

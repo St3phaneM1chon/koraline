@@ -14248,5 +14248,18 @@
     "errorGeneric": "An error occurred.",
     "errorNetwork": "Network error. Please try again.",
     "emailPlaceholder": "you@company.com"
+  },
+  "checkout": {
+    "finalizeOrder": "Finalize Order",
+    "digitalProductAccess": "\ud83d\udcf1 Digital product - Immediate access after payment",
+    "physicalProductShipping": "\ud83d\udce6 Physical product - Shipping required"
+  },
+  "voip": {
+    "dbUnavailable": "Database unavailable",
+    "noSipExtension": "No SIP extension assigned to this user",
+    "noVoipConnection": "No VoIP connection configured",
+    "initFailed": "Unable to initialize phone line",
+    "connectionFailed": "Failed to connect to VoIP server",
+    "registrationFailed": "SIP registration failed after multiple attempts"
   }
 }
