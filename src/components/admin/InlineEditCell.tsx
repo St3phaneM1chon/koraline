@@ -93,6 +93,7 @@ export default function InlineEditCell({
           onKeyDown={handleKeyDown}
           onBlur={handleSave}
           disabled={saving}
+          aria-label={`Edit ${value}`}
           className="w-full px-1.5 py-0.5 text-sm border border-indigo-400 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white"
         />
         {suffix && <span className="text-slate-400 text-sm">{suffix}</span>}

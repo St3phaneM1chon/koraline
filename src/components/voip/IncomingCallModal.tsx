@@ -6,7 +6,7 @@
  * Shows caller ID info and client lookup.
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { Phone, PhoneOff, User } from 'lucide-react';
 import { useI18n } from '@/i18n/client';
 import type { VoipCall } from '@/hooks/useVoip';
@@ -26,6 +26,18 @@ interface CallerInfo {
 export default function IncomingCallModal({ call, onAnswer, onReject }: IncomingCallModalProps) {
   const { t } = useI18n();
   const [callerInfo, setCallerInfo] = useState<CallerInfo | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  // Save previous focus and restore on unmount
+  useEffect(() => {
+    previousFocusRef.current = document.activeElement as HTMLElement;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+      previousFocusRef.current?.focus();
+    };
+  }, []);
 
   // Lookup caller in CRM by phone number
   useEffect(() => {
@@ -46,18 +58,35 @@ export default function IncomingCallModal({ call, onAnswer, onReject }: Incoming
     }
   }, [call.remoteNumber]);
 
-  // Handle Escape key to reject call
+  // Focus trap + Escape key
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      onReject();
+      return;
+    }
+    if (e.key === 'Tab' && dialogRef.current) {
+      const focusable = dialogRef.current.querySelectorAll<HTMLElement>('button');
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }, [onReject]);
+
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onReject();
-    };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [onReject]);
+  }, [handleKeyDown]);
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm" role="presentation">
-      <div role="dialog" aria-modal="true" aria-label={t('voip.call.incomingCall')} className="bg-white rounded-2xl shadow-2xl p-6 w-[340px] animate-bounce-gentle">
+      <div ref={dialogRef} role="dialog" aria-modal="true" aria-label={t('voip.call.incomingCall')} className="bg-white rounded-2xl shadow-2xl p-6 w-[340px] animate-bounce-gentle">
         {/* Caller Info */}
         <div className="text-center mb-6">
           <div className="w-16 h-16 rounded-full bg-teal-100 flex items-center justify-center mx-auto mb-3">

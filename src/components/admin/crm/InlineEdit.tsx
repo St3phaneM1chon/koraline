@@ -78,6 +78,7 @@ export function InlineEdit({
               value={draft}
               onChange={e => setDraft(e.target.value)}
               onKeyDown={handleKeyDown}
+              aria-label={label}
               className="flex-1 min-w-0 border rounded px-1.5 py-0.5 text-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
             >
               <option value="">{emptyText}</option>
@@ -93,6 +94,7 @@ export function InlineEdit({
               onChange={e => setDraft(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder={placeholder}
+              aria-label={label}
               className="flex-1 min-w-0 border rounded px-1.5 py-0.5 text-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
             />
           )}

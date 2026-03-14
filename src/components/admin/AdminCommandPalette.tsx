@@ -155,6 +155,7 @@ export default function AdminCommandPalette({
               setActiveIndex(0);
             }}
             placeholder="Search admin pages..."
+            aria-label="Search admin pages"
             className="flex-1 text-sm bg-transparent outline-none placeholder:text-slate-400"
           />
           <kbd className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-medium text-slate-400 bg-slate-100 border border-slate-200 rounded">

@@ -25,15 +25,17 @@ export function FilterBar({ searchValue, onSearchChange, searchPlaceholder: sear
             value={searchValue || ''}
             onChange={e => onSearchChange(e.target.value)}
             placeholder={searchPlaceholder}
+            aria-label={searchPlaceholder}
             className="w-full h-9 ps-9 pe-8 rounded-lg border border-slate-300 text-sm text-slate-900 placeholder-slate-400
               focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow"
           />
           {searchValue && (
             <button
               onClick={() => onSearchChange('')}
+              aria-label={t('common.clearSearch') || 'Clear search'}
               className="absolute end-2 top-1/2 -translate-y-1/2 p-0.5 rounded hover:bg-slate-100"
             >
-              <X className="w-3.5 h-3.5 text-slate-400" />
+              <X className="w-3.5 h-3.5 text-slate-400" aria-hidden="true" />
             </button>
           )}
         </div>
