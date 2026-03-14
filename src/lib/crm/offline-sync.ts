@@ -457,7 +457,7 @@ async function executeMergedAction(
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function getEntityById(model: string, id: string): Promise<any> {
+async function getEntityById(model: string, id: string): Promise<Record<string, unknown> | null> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const prismaModel = (prisma as any)[model];
   if (!prismaModel) return null;

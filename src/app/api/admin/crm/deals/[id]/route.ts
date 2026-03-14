@@ -212,17 +212,19 @@ export const GET = withAdminGuard(async (
       })).map((o) => o.id);
 
       if (orderIds.length > 0) {
-        const entries = await prisma.journalEntry.findMany({
-          where: { orderId: { in: orderIds } },
-          take: 10,
-          orderBy: { date: 'desc' },
-          select: { id: true, entryNumber: true, description: true, date: true, type: true },
-        });
-
-        const invoices = await prisma.customerInvoice.findMany({
-          where: { customerId: deal.contactId },
-          select: { total: true, status: true },
-        });
+        // N+1 fix: fetch journal entries and invoices in parallel instead of sequentially
+        const [entries, invoices] = await Promise.all([
+          prisma.journalEntry.findMany({
+            where: { orderId: { in: orderIds } },
+            take: 10,
+            orderBy: { date: 'desc' },
+            select: { id: true, entryNumber: true, description: true, date: true, type: true },
+          }),
+          prisma.customerInvoice.findMany({
+            where: { customerId: deal.contactId },
+            select: { total: true, status: true },
+          }),
+        ]);
 
         const totalInvoiced = invoices.reduce((s, inv) => s + Number(inv.total), 0);
         const totalPaid = invoices

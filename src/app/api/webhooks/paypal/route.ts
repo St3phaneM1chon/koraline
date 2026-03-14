@@ -22,6 +22,18 @@ import { sanitizeWebhookPayload } from '@/lib/sanitize';
 import { clawbackAmbassadorCommission } from '@/lib/ambassador-commission';
 import { applyRate } from '@/lib/decimal-calculator';
 
+/** PayPal webhook event structure (deeply nested, partially typed for safety) */
+interface PayPalWebhookEvent {
+  event_type: string;
+  resource: {
+    id: string;
+    amount?: { value?: string; currency_code?: string };
+    supplementary_data?: { related_ids?: { order_id?: string } };
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
+}
+
 /**
  * Verify PayPal webhook signature
  */
@@ -194,8 +206,7 @@ export async function POST(request: NextRequest) {
  * - Create accounting entries
  * - Consume inventory reservations
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- PayPal webhook event has deeply nested dynamic structure
-async function handleCaptureCompleted(event: any, webhookRecordId: string) {
+async function handleCaptureCompleted(event: PayPalWebhookEvent, webhookRecordId: string) {
   const capture = event.resource;
   const paypalOrderId = capture.supplementary_data?.related_ids?.order_id || capture.id;
   const amount = parseFloat(capture.amount?.value || '0');
@@ -276,8 +287,7 @@ async function handleCaptureCompleted(event: any, webhookRecordId: string) {
  * - Create refund accounting entries
  * - Restore stock via RETURN inventory transactions
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- PayPal webhook event has deeply nested dynamic structure
-async function handleCaptureRefunded(event: any, webhookRecordId: string) {
+async function handleCaptureRefunded(event: PayPalWebhookEvent, webhookRecordId: string) {
   const capture = event.resource;
   const paypalOrderId = capture.supplementary_data?.related_ids?.order_id || capture.id;
   const refundAmount = parseFloat(capture.amount?.value || '0');
@@ -499,8 +509,7 @@ async function handleCaptureRefunded(event: any, webhookRecordId: string) {
  * Handle PAYMENT.CAPTURE.DENIED
  * - Update order status to failed
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- PayPal webhook event has deeply nested dynamic structure
-async function handleCaptureDenied(event: any, webhookRecordId: string) {
+async function handleCaptureDenied(event: PayPalWebhookEvent, webhookRecordId: string) {
   const capture = event.resource;
   const paypalOrderId = capture.supplementary_data?.related_ids?.order_id || capture.id;
 

@@ -14,9 +14,9 @@ import { logger } from '@/lib/logger';
 // Lazy OpenAI client
 // ---------------------------------------------------------------------------
 
-let _openai: any | null = null;
+let _openai: ReturnType<typeof require> | null = null;
 
-function getOpenAI(): any {
+function getOpenAI(): { chat: { completions: { create: (params: Record<string, unknown>) => Promise<{ choices?: { message?: { content?: string } }[] }> } } } {
   if (_openai) return _openai;
 
   if (!process.env.OPENAI_API_KEY) {

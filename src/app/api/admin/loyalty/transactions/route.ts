@@ -108,28 +108,28 @@ export const GET = withAdminGuard(async (request: NextRequest, _ctx) => {
       expiresAt: tx.expiresAt?.toISOString() || null,
     }));
 
-    // Summary stats
-    const stats = await prisma.loyaltyTransaction.aggregate({
-      where,
-      _sum: { points: true },
-      _count: true,
-    });
-
-    const earnedTotal = await prisma.loyaltyTransaction.aggregate({
-      where: {
-        ...where,
-        points: { gt: 0 },
-      },
-      _sum: { points: true },
-    });
-
-    const redeemedTotal = await prisma.loyaltyTransaction.aggregate({
-      where: {
-        ...where,
-        points: { lt: 0 },
-      },
-      _sum: { points: true },
-    });
+    // Summary stats — parallel fetch instead of 3 sequential awaits
+    const [stats, earnedTotal, redeemedTotal] = await Promise.all([
+      prisma.loyaltyTransaction.aggregate({
+        where,
+        _sum: { points: true },
+        _count: true,
+      }),
+      prisma.loyaltyTransaction.aggregate({
+        where: {
+          ...where,
+          points: { gt: 0 },
+        },
+        _sum: { points: true },
+      }),
+      prisma.loyaltyTransaction.aggregate({
+        where: {
+          ...where,
+          points: { lt: 0 },
+        },
+        _sum: { points: true },
+      }),
+    ]);
 
     return NextResponse.json({
       transactions: formattedTransactions,

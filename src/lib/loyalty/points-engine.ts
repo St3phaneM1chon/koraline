@@ -59,12 +59,16 @@ export interface PointsBalance {
 // F-001 FIX: Import tier thresholds from the SINGLE SOURCE OF TRUTH (constants.ts).
 // Previously, this file had its own LOYALTY_TIERS array with hardcoded thresholds
 // that was missing the DIAMOND tier and could drift out of sync with constants.ts.
+import { PrismaClient } from '@prisma/client';
 import {
   LOYALTY_POINTS_CONFIG,
   LOYALTY_EARNING_CAPS,
   LOYALTY_TIER_THRESHOLDS,
   calculateTierFromPoints,
 } from '@/lib/constants';
+
+/** Prisma client or transaction client for loyalty operations */
+type PrismaLike = PrismaClient | Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'>;
 
 export interface LoyaltyTier {
   id: string;
@@ -229,8 +233,7 @@ export interface EarningCapCheck {
  * @returns EarningCapCheck with allowance details
  */
 export async function checkEarningCaps(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  db: any,
+  db: PrismaLike,
   userId: string,
   pointsToEarn: number,
   transactionType: string,
@@ -341,8 +344,7 @@ export interface ExpirationResult {
  * @returns ExpirationResult with processing details
  */
 export async function processInactivityExpiration(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  db: any,
+  db: PrismaLike,
   expirationMonths: number = LOYALTY_EARNING_CAPS.expirationMonths,
 ): Promise<ExpirationResult> {
   const cutoffDate = new Date();
@@ -390,7 +392,7 @@ export async function processInactivityExpiration(
 
       const pointsToExpire = user.loyaltyPoints;
 
-      await db.$transaction(async (tx: any) => {
+      await (db as PrismaClient).$transaction(async (tx: PrismaLike) => {
         // Decrement user balance
         const updatedUser = await tx.user.update({
           where: { id: user.id },

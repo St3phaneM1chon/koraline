@@ -14,6 +14,27 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 
 export type CallState = 'idle' | 'connecting' | 'dialing' | 'ringing' | 'active' | 'held' | 'ending';
 
+/** Minimal Telnyx call object shape for type safety */
+interface TelnyxCallObject {
+  id: string;
+  state: string;
+  direction?: 'inbound' | 'outbound';
+  options?: { callerName?: string; callerNumber?: string; destinationNumber?: string };
+  answer: () => void;
+  hangup: () => void;
+  hold: (params?: { hold: boolean }) => void;
+  dtmf: (digit: string) => void;
+  muteAudio: () => void;
+  unmuteAudio: () => void;
+  [key: string]: unknown;
+}
+
+/** Telnyx notification event */
+interface TelnyxNotification {
+  type: string;
+  call?: TelnyxCallObject;
+}
+
 export interface TelnyxCallInfo {
   callId: string | null;
   state: CallState;
@@ -68,10 +89,8 @@ export function useTelnyxWebRTC(): UseTelnyxWebRTCReturn {
   const [call, setCall] = useState<TelnyxCallInfo>(INITIAL_CALL);
   const [error, setError] = useState<string | null>(null);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const clientRef = useRef<any>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const activeCallRef = useRef<any>(null);
+  const clientRef = useRef<{ disconnect: () => void; connect: () => void; on: (event: string, handler: (...args: unknown[]) => void) => void; newCall: (params: Record<string, unknown>) => TelnyxCallObject; [key: string]: unknown } | null>(null);
+  const activeCallRef = useRef<TelnyxCallObject | null>(null);
   const durationTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Duration timer
@@ -128,8 +147,7 @@ export function useTelnyxWebRTC(): UseTelnyxWebRTCReturn {
         stopDurationTimer();
       });
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      client.on('telnyx.notification', (notification: any) => {
+      client.on('telnyx.notification', (notification: TelnyxNotification) => {
         const telnyxCall = notification.call;
         if (!telnyxCall) return;
 
@@ -160,8 +178,7 @@ export function useTelnyxWebRTC(): UseTelnyxWebRTCReturn {
     }
   }, [stopDurationTimer]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleCallUpdate = useCallback((telnyxCall: any) => {
+  const handleCallUpdate = useCallback((telnyxCall: TelnyxCallObject) => {
     const callState = telnyxCall.state;
     let mapped: CallState = 'idle';
 

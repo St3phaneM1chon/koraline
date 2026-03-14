@@ -14,9 +14,9 @@ import { logger } from '@/lib/logger';
 // Lazy OpenAI client
 // ---------------------------------------------------------------------------
 
-let _openai: any | null = null;
+let _openai: ReturnType<typeof require> | null = null;
 
-function getOpenAI(): any {
+function getOpenAI(): { chat: { completions: { create: (params: Record<string, unknown>) => Promise<{ choices?: { message?: { content?: string } }[] }> } } } {
   if (_openai) return _openai;
 
   if (!process.env.OPENAI_API_KEY) {
@@ -235,7 +235,7 @@ export async function buildCustomerMemory(leadId: string): Promise<CustomerMemor
     const channelCounts: Record<string, number> = {};
 
     for (const activity of lead.activities) {
-      const meta = activity.metadata as Record<string, any> | null;
+      const meta = activity.metadata as Record<string, unknown> | null;
 
       if (typeof meta?.sentimentScore === 'number') {
         sentimentTrend.push({
@@ -315,7 +315,7 @@ export async function buildCustomerMemory(leadId: string): Promise<CustomerMemor
     const communicationStyle = detectCommunicationStyle(lead.activities);
 
     // Existing preferences from customFields
-    const existingCustom = lead.customFields as Record<string, any> | null;
+    const existingCustom = lead.customFields as Record<string, unknown> | null;
     const preferences = existingCustom?.experienceMemory?.preferences || {};
 
     // Health score
@@ -518,7 +518,7 @@ export async function recordInteractionMemory(
       select: { customFields: true },
     });
 
-    const existingCustom = (lead?.customFields as Record<string, any>) || {};
+    const existingCustom = (lead?.customFields as Record<string, unknown>) || {};
     const memoryData = existingCustom.experienceMemory || {};
 
     // Merge new topics
@@ -609,7 +609,7 @@ export async function getCustomerJourney(leadId: string): Promise<JourneyEvent[]
 
     // Add activities
     for (const activity of lead.activities) {
-      const meta = activity.metadata as Record<string, any> | null;
+      const meta = activity.metadata as Record<string, unknown> | null;
       events.push({
         date: activity.createdAt.toISOString(),
         type: 'activity',
@@ -781,8 +781,8 @@ export async function predictCustomerNeeds(leadId: string): Promise<PredictedNee
     }
 
     return parsed
-      .filter((p: any) => p.need && typeof p.confidence === 'number')
-      .map((p: any) => ({
+      .filter((p: Record<string, unknown>) => p.need && typeof p.confidence === 'number')
+      .map((p: Record<string, unknown>) => ({
         need: String(p.need).slice(0, 200),
         confidence: Math.max(0, Math.min(1, Number(p.confidence))),
         reasoning: String(p.reasoning || '').slice(0, 300),
@@ -921,7 +921,7 @@ export async function getCustomerHealthScore(
  * Detect communication style from activity patterns.
  */
 function detectCommunicationStyle(
-  activities: { type: string; description: string | null; metadata: any }[],
+  activities: { type: string; description: string | null; metadata: Record<string, unknown> | null }[],
 ): string {
   if (activities.length === 0) return 'Unknown';
 

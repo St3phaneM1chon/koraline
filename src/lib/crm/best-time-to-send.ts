@@ -4,6 +4,7 @@
  * for emails, SMS, and calls.
  */
 
+import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 
@@ -79,13 +80,13 @@ export async function getBestTimeToSend(
  * Determine the best time for a segment of leads based on shared characteristics.
  */
 export async function getBestTimeForSegment(
-  criteria: any,
+  criteria: { temperature?: string; source?: string; timezone?: string | null } | null,
   channel: string,
 ): Promise<{ hour: number; dayOfWeek: number; confidence?: number }> {
   const activityType = mapChannelToActivityType(channel);
 
   // Build filter based on criteria
-  const leadFilter: any = {};
+  const leadFilter: Record<string, string> = {};
   if (criteria?.temperature) leadFilter.temperature = criteria.temperature;
   if (criteria?.source) leadFilter.source = criteria.source;
 
@@ -160,7 +161,7 @@ export async function getEngagementHeatmap(
     const hour = activity.createdAt.getHours(); // 0-23
 
     // Weight by engagement quality from metadata
-    const metadata = activity.metadata as Record<string, any> | null;
+    const metadata = activity.metadata as Record<string, unknown> | null;
     let weight = 1;
     if (metadata?.opened) weight += 0.5;
     if (metadata?.clicked) weight += 1;
@@ -218,12 +219,12 @@ interface EngagementTime {
 }
 
 function extractEngagementTimes(
-  activities: { createdAt: Date; metadata: any }[],
+  activities: { createdAt: Date; metadata: Prisma.JsonValue }[],
 ): EngagementTime[] {
   const times: EngagementTime[] = [];
 
   for (const activity of activities) {
-    const metadata = activity.metadata as Record<string, any> | null;
+    const metadata = activity.metadata as Record<string, unknown> | null;
 
     // Determine engagement weight
     let weight = 1;

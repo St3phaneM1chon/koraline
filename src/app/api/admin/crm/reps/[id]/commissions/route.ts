@@ -34,7 +34,7 @@ const approvePayoutSchema = z.object({
 // GET: List commission payouts for agent (paginated)
 // ---------------------------------------------------------------------------
 
-export const GET = withAdminGuard(async (request: NextRequest, { session, params }: { session: any; params: Promise<{ id: string }> }) => {
+export const GET = withAdminGuard(async (request: NextRequest, { session, params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
   try {
     const { id } = await params;
     const url = new URL(request.url);
@@ -66,7 +66,7 @@ export const GET = withAdminGuard(async (request: NextRequest, { session, params
 // POST: Calculate commission for a period
 // ---------------------------------------------------------------------------
 
-export const POST = withAdminGuard(async (request: NextRequest, { session, params }: { session: any; params: Promise<{ id: string }> }) => {
+export const POST = withAdminGuard(async (request: NextRequest, { session, params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
   try {
     const { id } = await params;
     const body = await request.json();
@@ -118,35 +118,32 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
     }
 
     // -----------------------------------------------------------------------
-    // 2. Aggregate activities from AgentDailyStats
+    // 2 & 3. Aggregate activities + lead scores in parallel (N+1 fix)
     // -----------------------------------------------------------------------
-    const statsAgg = await prisma.agentDailyStats.aggregate({
-      where: {
-        agentId: id,
-        date: { gte: pStart, lte: pEnd },
-      },
-      _sum: {
-        callsMade: true,
-        conversions: true,
-      },
-    });
+    const [statsAgg, leadScoreAgg] = await Promise.all([
+      prisma.agentDailyStats.aggregate({
+        where: {
+          agentId: id,
+          date: { gte: pStart, lte: pEnd },
+        },
+        _sum: {
+          callsMade: true,
+          conversions: true,
+        },
+      }),
+      prisma.crmLead.aggregate({
+        where: {
+          assignedToId: id,
+          lastContactedAt: { gte: pStart, lte: pEnd },
+        },
+        _avg: {
+          score: true,
+        },
+      }),
+    ]);
 
     const calls = statsAgg._sum.callsMade ?? 0;
     const appointments = statsAgg._sum.conversions ?? 0;
-
-    // -----------------------------------------------------------------------
-    // 3. Calculate average prequal score from CrmLead
-    // -----------------------------------------------------------------------
-    const leadScoreAgg = await prisma.crmLead.aggregate({
-      where: {
-        assignedToId: id,
-        lastContactedAt: { gte: pStart, lte: pEnd },
-      },
-      _avg: {
-        score: true,
-      },
-    });
-
     const avgScore = leadScoreAgg._avg.score ?? 0;
 
     // -----------------------------------------------------------------------
@@ -242,7 +239,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
 // PATCH: Approve/reject a payout
 // ---------------------------------------------------------------------------
 
-export const PATCH = withAdminGuard(async (request: NextRequest, { session, params }: { session: any; params: Promise<{ id: string }> }) => {
+export const PATCH = withAdminGuard(async (request: NextRequest, { session, params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
   try {
     const { id } = await params;
     const url = new URL(request.url);

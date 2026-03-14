@@ -10,6 +10,7 @@ import {
   generateBalanceSheetHTML,
   generateJournalEntryHTML,
 } from '@/lib/accounting';
+import type { TaxReport, JournalEntry } from '@/lib/accounting/types';
 import { logger } from '@/lib/logger';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
 import { validateCsrf } from '@/lib/csrf-middleware';
@@ -269,20 +270,16 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
 
     switch (reportType) {
       case 'tax':
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        html = generateTaxReportHTML(data as any, undefined, pdfLocale);
+        html = generateTaxReportHTML(data as unknown as TaxReport, undefined, pdfLocale);
         break;
       case 'income':
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        html = generateIncomeStatementHTML(data as any, period || 'P\u00e9riode personnalis\u00e9e', undefined, pdfLocale);
+        html = generateIncomeStatementHTML(data as unknown as Parameters<typeof generateIncomeStatementHTML>[0], period || 'P\u00e9riode personnalis\u00e9e', undefined, pdfLocale);
         break;
       case 'balance':
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        html = generateBalanceSheetHTML(data as any, period || new Date().toLocaleDateString('fr-CA'), undefined, pdfLocale);
+        html = generateBalanceSheetHTML(data as unknown as Parameters<typeof generateBalanceSheetHTML>[0], period || new Date().toLocaleDateString('fr-CA'), undefined, pdfLocale);
         break;
       case 'entry':
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        html = generateJournalEntryHTML(data as any, undefined, pdfLocale);
+        html = generateJournalEntryHTML(data as unknown as JournalEntry, undefined, pdfLocale);
         break;
       default:
         return NextResponse.json(

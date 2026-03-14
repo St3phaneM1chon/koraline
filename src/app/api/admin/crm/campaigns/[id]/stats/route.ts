@@ -62,16 +62,14 @@ export const GET = withAdminGuard(async (
       : 0;
 
     // ---------------------------------------------------------------------------
-    // Daily activity timeline (last 30 days)
+    // Fetch ALL activities in a single query (N+1 fix: was 2 sequential queries)
+    // One query serves both the daily timeline (filtered in JS) and channel breakdown.
     // ---------------------------------------------------------------------------
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-    const recentActivities = await prisma.crmCampaignActivity.findMany({
-      where: {
-        campaignId: id,
-        createdAt: { gte: thirtyDaysAgo },
-      },
+    const allActivities = await prisma.crmCampaignActivity.findMany({
+      where: { campaignId: id },
       select: {
         createdAt: true,
         status: true,
@@ -82,7 +80,9 @@ export const GET = withAdminGuard(async (
       orderBy: { createdAt: 'asc' },
     });
 
-    // Group by date (YYYY-MM-DD)
+    // ---------------------------------------------------------------------------
+    // Daily activity timeline (last 30 days) — filtered from allActivities
+    // ---------------------------------------------------------------------------
     const dailyMap = new Map<string, {
       date: string;
       total: number;
@@ -91,16 +91,19 @@ export const GET = withAdminGuard(async (
       pending: number;
     }>();
 
-    for (const act of recentActivities) {
-      const dateKey = act.createdAt.toISOString().slice(0, 10);
-      if (!dailyMap.has(dateKey)) {
-        dailyMap.set(dateKey, { date: dateKey, total: 0, completed: 0, failed: 0, pending: 0 });
+    for (const act of allActivities) {
+      // Only include activities from the last 30 days in the timeline
+      if (act.createdAt >= thirtyDaysAgo) {
+        const dateKey = act.createdAt.toISOString().slice(0, 10);
+        if (!dailyMap.has(dateKey)) {
+          dailyMap.set(dateKey, { date: dateKey, total: 0, completed: 0, failed: 0, pending: 0 });
+        }
+        const entry = dailyMap.get(dateKey)!;
+        entry.total += 1;
+        if (act.status === 'completed') entry.completed += 1;
+        else if (act.status === 'failed') entry.failed += 1;
+        else if (act.status === 'pending') entry.pending += 1;
       }
-      const entry = dailyMap.get(dateKey)!;
-      entry.total += 1;
-      if (act.status === 'completed') entry.completed += 1;
-      else if (act.status === 'failed') entry.failed += 1;
-      else if (act.status === 'pending') entry.pending += 1;
     }
 
     const dailyTimeline = Array.from(dailyMap.values()).sort((a, b) =>
@@ -108,13 +111,8 @@ export const GET = withAdminGuard(async (
     );
 
     // ---------------------------------------------------------------------------
-    // By channel breakdown
+    // By channel breakdown — computed from the same allActivities array
     // ---------------------------------------------------------------------------
-    const allActivities = await prisma.crmCampaignActivity.findMany({
-      where: { campaignId: id },
-      select: { channel: true, status: true, disposition: true, duration: true },
-    });
-
     const channelMap = new Map<string, {
       channel: string;
       total: number;

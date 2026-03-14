@@ -191,39 +191,45 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
       });
 
       // 2. Create items on the child order and adjust parent items
-      for (const { parentItem, splitQuantity } of validatedItems) {
-        // Create item on child order
-        await tx.orderItem.create({
-          data: {
-            orderId: childOrder.id,
-            productId: parentItem.productId,
-            formatId: parentItem.formatId,
-            productName: parentItem.productName,
-            formatName: parentItem.formatName,
-            sku: parentItem.sku,
-            quantity: splitQuantity,
-            unitPrice: parentItem.unitPrice,
-            discount: Number(parentItem.discount) * (splitQuantity / parentItem.quantity),
-            total: Number(parentItem.unitPrice) * splitQuantity,
-          },
-        });
-
-        if (splitQuantity === parentItem.quantity) {
-          // Full transfer: delete from parent
-          await tx.orderItem.delete({ where: { id: parentItem.id } });
-        } else {
-          // Partial transfer: reduce quantity on parent
-          const remainingQty = parentItem.quantity - splitQuantity;
-          await tx.orderItem.update({
-            where: { id: parentItem.id },
+      // N+1 fix: run all child item creates in parallel, then all parent adjustments in parallel
+      await Promise.all(
+        validatedItems.map(({ parentItem, splitQuantity }) =>
+          tx.orderItem.create({
             data: {
-              quantity: remainingQty,
-              total: Number(parentItem.unitPrice) * remainingQty,
-              discount: Number(parentItem.discount) * (remainingQty / parentItem.quantity),
+              orderId: childOrder.id,
+              productId: parentItem.productId,
+              formatId: parentItem.formatId,
+              productName: parentItem.productName,
+              formatName: parentItem.formatName,
+              sku: parentItem.sku,
+              quantity: splitQuantity,
+              unitPrice: parentItem.unitPrice,
+              discount: Number(parentItem.discount) * (splitQuantity / parentItem.quantity),
+              total: Number(parentItem.unitPrice) * splitQuantity,
             },
-          });
-        }
-      }
+          })
+        )
+      );
+
+      await Promise.all(
+        validatedItems.map(({ parentItem, splitQuantity }) => {
+          if (splitQuantity === parentItem.quantity) {
+            // Full transfer: delete from parent
+            return tx.orderItem.delete({ where: { id: parentItem.id } });
+          } else {
+            // Partial transfer: reduce quantity on parent
+            const remainingQty = parentItem.quantity - splitQuantity;
+            return tx.orderItem.update({
+              where: { id: parentItem.id },
+              data: {
+                quantity: remainingQty,
+                total: Number(parentItem.unitPrice) * remainingQty,
+                discount: Number(parentItem.discount) * (remainingQty / parentItem.quantity),
+              },
+            });
+          }
+        })
+      );
 
       // 3. Recalculate parent order totals
       const remainingItems = await tx.orderItem.findMany({

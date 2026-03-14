@@ -107,25 +107,7 @@ export const POST = withAdminGuard(
     });
 
     if (leadIds.length > 0) {
-      // Delete campaign activities
-      const campaignResult = await prisma.crmCampaignActivity.deleteMany({
-        where: { leadId: { in: leadIds } },
-      });
-      deleted.campaignActivities = campaignResult.count;
-
-      // Delete activities
-      const activitiesResult = await prisma.crmActivity.deleteMany({
-        where: { leadId: { in: leadIds } },
-      });
-      deleted.activities = activitiesResult.count;
-
-      // Delete tasks
-      const tasksResult = await prisma.crmTask.deleteMany({
-        where: { leadId: { in: leadIds } },
-      });
-      deleted.activities += tasksResult.count;
-
-      // Delete inbox conversations and messages
+      // Phase 1: Delete child records that depend on conversations (must come first)
       const conversations = await prisma.inboxConversation.findMany({
         where: { leadId: { in: leadIds } },
         select: { id: true },
@@ -144,56 +126,72 @@ export const POST = withAdminGuard(
         deleted.conversations = convsResult.count;
       }
 
-      // Delete leads themselves
+      // Phase 2: Delete all lead-dependent records in parallel (N+1 fix: was 5 sequential awaits)
+      const [campaignResult, activitiesResult, tasksResult, dialerResult] = await Promise.all([
+        prisma.crmCampaignActivity.deleteMany({
+          where: { leadId: { in: leadIds } },
+        }),
+        prisma.crmActivity.deleteMany({
+          where: { leadId: { in: leadIds } },
+        }),
+        prisma.crmTask.deleteMany({
+          where: { leadId: { in: leadIds } },
+        }),
+        prisma.dialerListEntry.deleteMany({
+          where: { crmLeadId: { in: leadIds } },
+        }),
+      ]);
+      deleted.campaignActivities = campaignResult.count;
+      deleted.activities = activitiesResult.count + tasksResult.count;
+      deleted.dialerEntries = dialerResult.count;
+
+      // Phase 3: Delete leads themselves (after all FK children are gone)
       const leadsResult = await prisma.crmLead.deleteMany({
         where: { id: { in: leadIds } },
       });
       deleted.leads = leadsResult.count;
     }
 
-    // Delete consent records by email/phone
+    // Delete contact-info-based records in parallel (N+1 fix: was 3 sequential awaits)
+    const contactDeletePromises: Promise<void>[] = [];
+
     if (contactEmail || contactPhone) {
       const consentWhere = [];
       if (contactEmail) consentWhere.push({ email: contactEmail });
       if (contactPhone) consentWhere.push({ phone: contactPhone });
 
-      const consentResult = await prisma.crmConsentRecord.deleteMany({
-        where: { OR: consentWhere },
-      });
-      deleted.consentRecords = consentResult.count;
-    }
+      contactDeletePromises.push(
+        prisma.crmConsentRecord.deleteMany({
+          where: { OR: consentWhere },
+        }).then((r) => { deleted.consentRecords = r.count; })
+      );
 
-    // Delete call logs by phone number
-    if (contactPhone) {
-      const callResult = await prisma.callLog.deleteMany({
-        where: {
-          OR: [
-            { callerNumber: contactPhone },
-            { calledNumber: contactPhone },
-          ],
-        },
-      });
-      deleted.callLogs = callResult.count;
-    }
-
-    // Delete Prospect records (GDPR Art. 17 — personal data in scraper results)
-    if (contactEmail || contactPhone) {
       const prospectWhere = [];
       if (contactEmail) prospectWhere.push({ email: contactEmail });
       if (contactPhone) prospectWhere.push({ phone: contactPhone });
 
-      const prospectResult = await prisma.prospect.deleteMany({
-        where: { OR: prospectWhere },
-      });
-      deleted.prospects = prospectResult.count;
+      contactDeletePromises.push(
+        prisma.prospect.deleteMany({
+          where: { OR: prospectWhere },
+        }).then((r) => { deleted.prospects = r.count; })
+      );
     }
 
-    // Delete DialerListEntry records linked to deleted leads
-    if (leadIds.length > 0) {
-      const dialerResult = await prisma.dialerListEntry.deleteMany({
-        where: { crmLeadId: { in: leadIds } },
-      });
-      deleted.dialerEntries = dialerResult.count;
+    if (contactPhone) {
+      contactDeletePromises.push(
+        prisma.callLog.deleteMany({
+          where: {
+            OR: [
+              { callerNumber: contactPhone },
+              { calledNumber: contactPhone },
+            ],
+          },
+        }).then((r) => { deleted.callLogs = r.count; })
+      );
+    }
+
+    if (contactDeletePromises.length > 0) {
+      await Promise.all(contactDeletePromises);
     }
 
     const totalDeleted = Object.values(deleted).reduce((sum, n) => sum + n, 0);

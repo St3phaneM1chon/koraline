@@ -11,9 +11,9 @@ import { logger } from '@/lib/logger';
 // Lazy Twilio client
 // ---------------------------------------------------------------------------
 
-let _twilioClient: any | null = null;
+let _twilioClient: ReturnType<typeof require> | null = null;
 
-function getTwilioClient(): any | null {
+function getTwilioClient(): { messages: { create: (params: Record<string, unknown>) => Promise<{ sid: string }> } } | null {
   if (_twilioClient) return _twilioClient;
 
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -148,7 +148,7 @@ export async function sendWhatsAppTemplate(
  * Returns normalized message data.
  */
 export async function processWhatsAppWebhook(
-  payload: any,
+  payload: { From?: string; WaId?: string; Body?: string; MessageSid?: string; SmsSid?: string },
 ): Promise<{ from: string; body: string; messageId: string }> {
   // Twilio sends URL-encoded form data converted to object
   const from = payload.From || payload.WaId || '';

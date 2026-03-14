@@ -26,9 +26,9 @@ import { logger } from '@/lib/logger';
 // Lazy OpenAI client
 // ---------------------------------------------------------------------------
 
-let _openai: any | null = null;
+let _openai: ReturnType<typeof require> | null = null;
 
-function getOpenAI(): any {
+function getOpenAI(): { chat: { completions: { create: (params: Record<string, unknown>) => Promise<{ choices?: { message?: { content?: string } }[] }> } } } {
   if (_openai) return _openai;
 
   if (!process.env.OPENAI_API_KEY) {
@@ -101,7 +101,7 @@ export interface AutoVsHumanComparison {
 // Helpers
 // ---------------------------------------------------------------------------
 
-async function getDefaultQAForm(): Promise<{ id: string; criteria: any[] } | null> {
+async function getDefaultQAForm(): Promise<{ id: string; criteria: { name: string; maxScore: number; weight?: number }[] } | null> {
   const form = await prisma.crmQaForm.findFirst({
     where: { isActive: true },
     orderBy: { createdAt: 'desc' },
@@ -114,10 +114,10 @@ async function getDefaultQAForm(): Promise<{ id: string; criteria: any[] } | nul
   return { id: form.id, criteria };
 }
 
-function buildCriteriaPrompt(criteria: any[]): string {
+function buildCriteriaPrompt(criteria: { name: string; maxScore: number; weight?: number }[]): string {
   return criteria
     .map(
-      (c: any, i: number) =>
+      (c: { name: string; maxScore: number; weight?: number }, i: number) =>
         `${i + 1}. ${c.name} (max score: ${c.maxScore}, weight: ${c.weight ?? 1})`,
     )
     .join('\n');

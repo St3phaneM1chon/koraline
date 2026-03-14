@@ -44,7 +44,7 @@ const updateTierSchema = createTierSchema.partial();
 // GET: List all active RepBonusTier, ordered by priority asc
 // ---------------------------------------------------------------------------
 
-export const GET = withAdminGuard(async (request: NextRequest, { session, params }: { session: any; params: Promise<{ id: string }> }) => {
+export const GET = withAdminGuard(async (request: NextRequest, { session, params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
   try {
     await params; // consume params even if not used for this global list
 
@@ -71,7 +71,7 @@ export const GET = withAdminGuard(async (request: NextRequest, { session, params
 // POST: Create a new RepBonusTier
 // ---------------------------------------------------------------------------
 
-export const POST = withAdminGuard(async (request: NextRequest, { session, params }: { session: any; params: Promise<{ id: string }> }) => {
+export const POST = withAdminGuard(async (request: NextRequest, { session, params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
   try {
     await params;
     const body = await request.json();
@@ -107,7 +107,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
 // PATCH: Update a tier
 // ---------------------------------------------------------------------------
 
-export const PATCH = withAdminGuard(async (request: NextRequest, { session, params }: { session: any; params: Promise<{ id: string }> }) => {
+export const PATCH = withAdminGuard(async (request: NextRequest, { session, params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
   try {
     await params;
     const url = new URL(request.url);
@@ -157,7 +157,7 @@ export const PATCH = withAdminGuard(async (request: NextRequest, { session, para
 // DELETE: Soft delete (set isActive=false)
 // ---------------------------------------------------------------------------
 
-export const DELETE = withAdminGuard(async (request: NextRequest, { session, params }: { session: any; params: Promise<{ id: string }> }) => {
+export const DELETE = withAdminGuard(async (request: NextRequest, { session, params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
   try {
     await params;
     const url = new URL(request.url);

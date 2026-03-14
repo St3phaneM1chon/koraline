@@ -357,16 +357,16 @@ jobs:
 
       # ---- GUARD 6: Extended health check with retries ----
       # Azure container warmup takes ~583s (cert update + Node.js startup)
-      # 12 attempts x 30s = 6 min coverage (container should be up by then
-      # since deploy triggers restart, and WEBSITES_CONTAINER_START_TIME_LIMIT=600)
+      # 18 attempts x 30s = 9 min coverage (container warmup: cert ~3min + Node ~3min + probe ~2min)
+      # KB-PP-BUILD-008: WEBSITES_CONTAINER_START_TIME_LIMIT=600 allows up to 10 min
       - name: Verify deployment
         run: |
           echo "Waiting for Azure container to warm up (cert update + Node.js startup)..."
           echo "This typically takes 5-10 minutes. Checking every 30s..."
-          for i in $(seq 1 12); do
+          for i in $(seq 1 18); do
             sleep 30
             response=$(curl -s -o /tmp/health.json -w "%{http_code}" --max-time 15 https://biocyclepeptides.com/api/health 2>/dev/null)
-            echo "Attempt $i/12: HTTP $response"
+            echo "Attempt $i/18: HTTP $response"
             if [ "$response" = "200" ]; then
               echo ""
               echo "=== DEPLOYMENT VERIFIED ==="
@@ -378,7 +378,7 @@ jobs:
             fi
           done
           echo ""
-          echo "WARNING: Health check did not return 200 after 6 minutes."
+          echo "WARNING: Health check did not return 200 after 9 minutes."
           echo "The container may still be warming up (Azure cert update takes ~3min)."
           echo "Check manually: curl https://biocyclepeptides.com/api/health"
           exit 1

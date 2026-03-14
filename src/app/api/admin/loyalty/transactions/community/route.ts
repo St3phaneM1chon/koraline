@@ -23,21 +23,23 @@ export const GET = withAdminGuard(async (
     const url = new URL(request.url);
     const limit = Math.min(Number(url.searchParams.get('limit') || '20'), 50);
 
-    const transactions = await prisma.loyaltyTransaction.findMany({
-      where: { type: 'EARN_REVIEW' },
-      take: limit,
-      orderBy: { createdAt: 'desc' },
-      select: {
-        id: true, points: true, description: true, createdAt: true,
-        user: { select: { id: true, name: true, email: true } },
-      },
-    });
-
-    const stats = await prisma.loyaltyTransaction.aggregate({
-      where: { type: 'EARN_REVIEW' },
-      _sum: { points: true },
-      _count: true,
-    });
+    // N+1 fix: parallel fetch instead of 2 sequential awaits
+    const [transactions, stats] = await Promise.all([
+      prisma.loyaltyTransaction.findMany({
+        where: { type: 'EARN_REVIEW' },
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true, points: true, description: true, createdAt: true,
+          user: { select: { id: true, name: true, email: true } },
+        },
+      }),
+      prisma.loyaltyTransaction.aggregate({
+        where: { type: 'EARN_REVIEW' },
+        _sum: { points: true },
+        _count: true,
+      }),
+    ]);
 
     return apiSuccess({
       enabled: true,

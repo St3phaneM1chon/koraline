@@ -44,10 +44,8 @@ export interface StorageOptions {
 // Azure Blob Storage Client (lazy-loaded)
 // ---------------------------------------------------------------------------
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let blobServiceClient: any = null;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let containerClient: any = null;
+let blobServiceClient: { getContainerClient: (name: string) => Record<string, unknown> } | null = null;
+let containerClient: Record<string, unknown> | null = null;
 
 async function getAzureClients() {
   if (containerClient) return { blobServiceClient: blobServiceClient!, containerClient };
@@ -163,8 +161,7 @@ export class StorageService {
     }
 
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const azureBlob: any = await import('@azure/storage-blob');
+      const azureBlob = await import('@azure/storage-blob');
       const { BlobSASPermissions, generateBlobSASQueryParameters, StorageSharedKeyCredential } = azureBlob;
 
       const blockBlobClient = azure.containerClient.getBlockBlobClient(blobPath);
@@ -219,8 +216,7 @@ export class StorageService {
   // -------------------------------------------------------------------------
 
   private async uploadToAzure(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    container: any,
+    container: Record<string, unknown>,
     file: Buffer,
     blobPath: string,
     contentType: string,
@@ -250,8 +246,7 @@ export class StorageService {
   }
 
   private async deleteFromAzure(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    container: any,
+    container: Record<string, unknown>,
     url: string
   ): Promise<void> {
     // FIX (F18): Parse URL properly instead of fragile split('/')
@@ -597,8 +592,7 @@ export class StorageService {
    * Get all media URLs that are currently referenced by content entities.
    * Used by findOrphanMedia to exclude active media.
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private async getReferencedUrls(prisma: any): Promise<string[]> {
+  private async getReferencedUrls(prisma: { heroSlide: { findMany: (args: Record<string, unknown>) => Promise<Record<string, unknown>[]> }; product: { findMany: (args: Record<string, unknown>) => Promise<Record<string, unknown>[]> }; category: { findMany: (args: Record<string, unknown>) => Promise<Record<string, unknown>[]> }; user: { findMany: (args: Record<string, unknown>) => Promise<Record<string, unknown>[]> } }): Promise<string[]> {
     try {
       const urls: string[] = [];
 

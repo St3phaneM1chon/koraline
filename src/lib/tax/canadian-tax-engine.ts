@@ -3,7 +3,12 @@
  * GST 5% + QST 9.975% (QC), HST by province, auto-apply by customer address
  */
 
-import { calculateUnifiedTax } from '@/lib/accounting/unified-tax-calculator';
+// Lazy import to break circular dependency: canadian-tax-engine ↔ unified-tax-calculator
+// unified-tax-calculator imports calculateTax from this file, so we can't import it at top level.
+async function lazyCalculateUnifiedTax(params: { subtotal: number; countryCode: string; regionCode?: string; buyerVatId?: string }) {
+  const { calculateUnifiedTax } = await import('@/lib/accounting/unified-tax-calculator');
+  return calculateUnifiedTax(params);
+}
 
 export interface TaxResult {
   subtotal: number;
@@ -130,18 +135,18 @@ export function getTotalTaxRate(province: string): number {
 // I-TAX-2: International VAT support
 // T2-8: Now delegates to the unified tax calculator for real VAT rates.
 // Kept for backward compatibility — new code should use calculateUnifiedTax() directly.
-export function calculateInternationalTax(
+export async function calculateInternationalTax(
   subtotal: number,
   country: string,
   _region?: string,
   buyerVatId?: string
-): TaxResult {
+): Promise<TaxResult> {
   if (country === 'CA') {
     return calculateTax(subtotal, _region || 'QC');
   }
 
   // Delegate to unified calculator for international orders
-  const result = calculateUnifiedTax({
+  const result = await lazyCalculateUnifiedTax({
     subtotal,
     countryCode: country,
     regionCode: _region,

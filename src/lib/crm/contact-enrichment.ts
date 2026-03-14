@@ -11,9 +11,9 @@ import { logger } from '@/lib/logger';
 // Lazy OpenAI client
 // ---------------------------------------------------------------------------
 
-let _openai: any | null = null;
+let _openai: ReturnType<typeof require> | null = null;
 
-function getOpenAI(): any {
+function getOpenAI(): { chat: { completions: { create: (params: Record<string, unknown>) => Promise<{ choices?: { message?: { content?: string } }[] }> } } } {
   if (_openai) return _openai;
 
   if (!process.env.OPENAI_API_KEY) {
@@ -168,7 +168,7 @@ async function fetchPageContent(url: string): Promise<string | null> {
 async function extractStructuredData(
   content: string,
   context: string,
-): Promise<Record<string, any>> {
+): Promise<Record<string, unknown>> {
   try {
     const openai = getOpenAI();
 
@@ -258,7 +258,7 @@ export async function enrichFromWeb(contactId: string): Promise<WebEnrichmentRes
     await prisma.crmLead.update({
       where: { id: contactId },
       data: {
-        companyName: lead.companyName || (data as any).companyName || undefined,
+        companyName: lead.companyName || (data as Record<string, unknown>).companyName as string || undefined,
         customFields: {
           ...existingCustom,
           _webEnrichment: data,

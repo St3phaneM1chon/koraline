@@ -8,6 +8,7 @@ export const dynamic = 'force-dynamic';
  */
 
 import { NextRequest } from 'next/server';
+import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { prisma } from '@/lib/db';
@@ -48,7 +49,7 @@ const updateFollowUpSchema = z.object({
 // GET: List follow-ups for an agent
 // ---------------------------------------------------------------------------
 
-export const GET = withAdminGuard(async (request: NextRequest, { session, params }: { session: any; params: Promise<{ id: string }> }) => {
+export const GET = withAdminGuard(async (request: NextRequest, { session, params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
   const { id } = await params;
   const { searchParams } = new URL(request.url);
 
@@ -72,14 +73,14 @@ export const GET = withAdminGuard(async (request: NextRequest, { session, params
     }
 
     // Build where clause
-    const where: any = { agentId: id };
+    const where: Prisma.RepFollowUpScheduleWhereInput = { agentId: id };
 
     if (status) {
-      where.status = status;
+      where.status = status as Prisma.EnumFollowUpStatusFilter;
     }
 
     if (type) {
-      where.type = type;
+      where.type = type as Prisma.EnumFollowUpTypeFilter;
     }
 
     if (dateFrom || dateTo) {
@@ -122,7 +123,7 @@ export const GET = withAdminGuard(async (request: NextRequest, { session, params
 // POST: Create a follow-up (optionally generate a series)
 // ---------------------------------------------------------------------------
 
-export const POST = withAdminGuard(async (request: NextRequest, { session, params }: { session: any; params: Promise<{ id: string }> }) => {
+export const POST = withAdminGuard(async (request: NextRequest, { session, params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
   const { id } = await params;
   const { searchParams } = new URL(request.url);
   const generateSeries = searchParams.get('generateFollowUpSeries') === 'true';
@@ -175,36 +176,39 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
 
     // Auto-generate subsequent follow-ups in the series
     // e.g., if intervalMonths=3, generate 6, 12, 18, 24 month follow-ups
+    // N+1 fix: use Promise.all instead of sequential creates in a loop
     if (generateSeries) {
       const seriesIntervals = [6, 12, 18, 24].filter((m) => m > intervalMonths);
 
-      for (const interval of seriesIntervals) {
-        const baseDate = new Date(scheduledDate);
-        const monthsDiff = interval - intervalMonths;
-        const seriesDate = new Date(baseDate);
-        seriesDate.setMonth(seriesDate.getMonth() + monthsDiff);
+      const seriesFollowUps = await Promise.all(
+        seriesIntervals.map((interval) => {
+          const baseDate = new Date(scheduledDate);
+          const monthsDiff = interval - intervalMonths;
+          const seriesDate = new Date(baseDate);
+          seriesDate.setMonth(seriesDate.getMonth() + monthsDiff);
 
-        const seriesFollowUp = await prisma.repFollowUpSchedule.create({
-          data: {
-            agentId: id,
-            leadId: leadId || null,
-            dealId: dealId || null,
-            customerId: customerId || null,
-            type,
-            intervalMonths: interval,
-            scheduledDate: seriesDate,
-            notes: notes ? `${notes} (auto-generated ${interval}-month follow-up)` : `Auto-generated ${interval}-month follow-up`,
-            status: 'PENDING',
-          },
-          include: {
-            lead: { select: { id: true, contactName: true } },
-            deal: { select: { id: true, title: true, value: true } },
-            customer: { select: { id: true, name: true, email: true } },
-          },
-        });
+          return prisma.repFollowUpSchedule.create({
+            data: {
+              agentId: id,
+              leadId: leadId || null,
+              dealId: dealId || null,
+              customerId: customerId || null,
+              type,
+              intervalMonths: interval,
+              scheduledDate: seriesDate,
+              notes: notes ? `${notes} (auto-generated ${interval}-month follow-up)` : `Auto-generated ${interval}-month follow-up`,
+              status: 'PENDING',
+            },
+            include: {
+              lead: { select: { id: true, contactName: true } },
+              deal: { select: { id: true, title: true, value: true } },
+              customer: { select: { id: true, name: true, email: true } },
+            },
+          });
+        })
+      );
 
-        createdFollowUps.push(seriesFollowUp);
-      }
+      createdFollowUps.push(...seriesFollowUps);
     }
 
     logger.info('Follow-up(s) created', {
@@ -239,7 +243,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
 // PATCH: Update a follow-up
 // ---------------------------------------------------------------------------
 
-export const PATCH = withAdminGuard(async (request: NextRequest, { session, params }: { session: any; params: Promise<{ id: string }> }) => {
+export const PATCH = withAdminGuard(async (request: NextRequest, { session, params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
   const { id } = await params;
   const { searchParams } = new URL(request.url);
   const followUpId = searchParams.get('followUpId');
@@ -281,7 +285,7 @@ export const PATCH = withAdminGuard(async (request: NextRequest, { session, para
     }
 
     // Build update data
-    const updateData: any = {};
+    const updateData: Prisma.RepFollowUpScheduleUpdateInput = {};
 
     if (parsed.data.status !== undefined) {
       updateData.status = parsed.data.status;

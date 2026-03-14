@@ -6,6 +6,7 @@ export const dynamic = 'force-dynamic';
  */
 
 import { NextRequest } from 'next/server';
+import { Prisma } from '@prisma/client';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { prisma } from '@/lib/db';
 import { apiSuccess, apiError } from '@/lib/api-response';
@@ -152,7 +153,7 @@ async function getCommunications(
   const { page, limit, skip } = parsePagination(searchParams);
   const type = searchParams.get('type'); // CALL, EMAIL, SMS, MEETING, NOTE
 
-  const where: any = {
+  const where: Prisma.CrmActivityWhereInput = {
     performedById: agentId,
   };
 
@@ -161,7 +162,7 @@ async function getCommunications(
   }
 
   if (type) {
-    where.type = type;
+    where.type = type as Prisma.EnumCrmActivityTypeFilter;
   }
 
   const [activities, total] = await Promise.all([
@@ -213,10 +214,10 @@ async function getFollowUps(
   const { page, limit, skip } = parsePagination(searchParams);
   const status = searchParams.get('status'); // PENDING, COMPLETED, OVERDUE, SKIPPED, RESCHEDULED
 
-  const where: any = { agentId };
+  const where: Prisma.RepFollowUpScheduleWhereInput = { agentId };
 
   if (status) {
-    where.status = status;
+    where.status = status as Prisma.EnumFollowUpStatusFilter;
   }
 
   const [followUps, total] = await Promise.all([
@@ -269,7 +270,7 @@ async function getQuotas(
 ) {
   const { page, limit, skip } = parsePagination(searchParams);
 
-  const where: any = { agentId };
+  const where: Prisma.CrmQuotaWhereInput = { agentId };
 
   if (periodStart) {
     where.periodStart = { gte: periodStart };
@@ -315,7 +316,7 @@ async function getQuotas(
 // GET: Section-based dashboard data
 // ---------------------------------------------------------------------------
 
-export const GET = withAdminGuard(async (request: NextRequest, { session, params }: { session: any; params: Promise<{ id: string }> }) => {
+export const GET = withAdminGuard(async (request: NextRequest, { session, params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
   const { id } = await params;
   const { searchParams } = new URL(request.url);
   const section = searchParams.get('section') || 'overview';
@@ -358,7 +359,7 @@ export const GET = withAdminGuard(async (request: NextRequest, { session, params
   const { periodStart, periodEnd } = computePeriodRange(period);
 
   try {
-    let data: any;
+    let data: Record<string, unknown> = {};
 
     switch (section) {
       case 'overview':

@@ -11,9 +11,9 @@ import { logger } from '@/lib/logger';
 // Lazy OpenAI client
 // ---------------------------------------------------------------------------
 
-let _openai: any | null = null;
+let _openai: ReturnType<typeof require> | null = null;
 
-function getOpenAI(): any {
+function getOpenAI(): { chat: { completions: { create: (params: Record<string, unknown>) => Promise<{ choices?: { message?: { content?: string } }[] }> } } } {
   if (_openai) return _openai;
 
   if (!process.env.OPENAI_API_KEY) {
@@ -55,7 +55,7 @@ export async function generateProposal(
   if (!deal) throw new Error('Deal not found');
 
   const productList = deal.products
-    .map((p: any) => `- ${p.product.name}: $${Number(p.product.price).toFixed(2)} x ${p.quantity}`)
+    .map((p: { product: { name: string; price: number | string }; quantity: number }) => `- ${p.product.name}: $${Number(p.product.price).toFixed(2)} x ${p.quantity}`)
     .join('\n') || 'No products specified';
 
   const openai = getOpenAI();
@@ -186,7 +186,7 @@ export async function generateCallScript(
  */
 export async function generateReport(
   reportType: 'pipeline' | 'campaign' | 'agent' | 'calls' | 'weekly',
-  data: Record<string, any>,
+  data: Record<string, unknown>,
 ): Promise<{ title: string; summary: string; body: string; recommendations: string[] }> {
   const openai = getOpenAI();
 

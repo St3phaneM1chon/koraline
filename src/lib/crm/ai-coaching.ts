@@ -11,9 +11,9 @@ import { logger } from '@/lib/logger';
 // Lazy OpenAI client
 // ---------------------------------------------------------------------------
 
-let _openai: any | null = null;
+let _openai: ReturnType<typeof require> | null = null;
 
-function getOpenAI(): any {
+function getOpenAI(): { chat: { completions: { create: (params: Record<string, unknown>) => Promise<{ choices?: { message?: { content?: string } }[] }> } } } {
   if (_openai) return _openai;
 
   if (!process.env.OPENAI_API_KEY) {
@@ -36,7 +36,7 @@ function getOpenAI(): any {
  */
 export async function getRealtimeSuggestions(
   transcript: string,
-  dealContext?: any,
+  dealContext?: { value?: number | string; stage?: string; products?: string },
 ): Promise<string[]> {
   if (!transcript.trim()) {
     return [];
@@ -80,7 +80,7 @@ export async function getRealtimeSuggestions(
 
     const suggestions = JSON.parse(responseText);
     return Array.isArray(suggestions)
-      ? suggestions.filter((s: any) => typeof s === 'string').slice(0, 5)
+      ? suggestions.filter((s: unknown) => typeof s === 'string').slice(0, 5)
       : [];
   } catch (error) {
     logger.error('[Coaching] Real-time suggestions failed', {
@@ -212,7 +212,7 @@ export async function getCoachingHistory(
   });
 
   return activities.map((activity) => {
-    const metadata = activity.metadata as Record<string, any> | null;
+    const metadata = activity.metadata as Record<string, unknown> | null;
     return {
       date: activity.createdAt.toISOString().split('T')[0],
       strengths: Array.isArray(metadata?.strengths) ? metadata.strengths : [],
@@ -259,7 +259,7 @@ export async function getAgentCoachingScore(
   let improvementCount = 0;
 
   for (const activity of activities) {
-    const metadata = activity.metadata as Record<string, any> | null;
+    const metadata = activity.metadata as Record<string, unknown> | null;
     if (!metadata) continue;
 
     // Sentiment scores
