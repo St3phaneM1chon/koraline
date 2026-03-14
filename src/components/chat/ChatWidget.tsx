@@ -394,8 +394,10 @@ export default function ChatWidget() {
 
               <form onSubmit={handleIdentify} className="w-full space-y-3">
                 <div className="relative">
-                  <User className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <label htmlFor="chat-prechat-name" className="sr-only">{t('chat.prechat.namePlaceholder') || 'Your name'}</label>
+                  <User className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" aria-hidden="true" />
                   <input
+                    id="chat-prechat-name"
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -405,8 +407,10 @@ export default function ChatWidget() {
                   />
                 </div>
                 <div className="relative">
-                  <Mail className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <label htmlFor="chat-prechat-email" className="sr-only">{t('chat.prechat.emailPlaceholder') || 'Your email'}</label>
+                  <Mail className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" aria-hidden="true" />
                   <input
+                    id="chat-prechat-email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}

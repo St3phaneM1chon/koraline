@@ -32,19 +32,37 @@ export function ConfirmDialog({
   const { t } = useI18n();
   const cancelRef = useRef<HTMLButtonElement>(null);
 
-  // Focus trap: focus the cancel button when dialog opens
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  // Focus trap: focus the cancel button when dialog opens + Tab wrapping
   useEffect(() => {
     if (isOpen) {
       cancelRef.current?.focus();
     }
   }, [isOpen]);
 
-  // Close on Escape key
+  // Close on Escape + focus trap
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onCancel();
+        return;
+      }
+      if (e.key === 'Tab' && dialogRef.current) {
+        const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
     document.addEventListener('keydown', handleKeyDown);
@@ -78,6 +96,7 @@ export function ConfirmDialog({
       role="presentation"
     >
       <div
+        ref={dialogRef}
         className="bg-white rounded-xl shadow-xl p-6 max-w-md w-full mx-4 animate-fade-in"
         onClick={(e) => e.stopPropagation()}
         role="dialog"

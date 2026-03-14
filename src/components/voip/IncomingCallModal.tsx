@@ -46,9 +46,18 @@ export default function IncomingCallModal({ call, onAnswer, onReject }: Incoming
     }
   }, [call.remoteNumber]);
 
+  // Handle Escape key to reject call
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onReject();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onReject]);
+
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-2xl p-6 w-[340px] animate-bounce-gentle">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm" role="presentation">
+      <div role="dialog" aria-modal="true" aria-label={t('voip.call.incomingCall')} className="bg-white rounded-2xl shadow-2xl p-6 w-[340px] animate-bounce-gentle">
         {/* Caller Info */}
         <div className="text-center mb-6">
           <div className="w-16 h-16 rounded-full bg-teal-100 flex items-center justify-center mx-auto mb-3">
@@ -78,17 +87,18 @@ export default function IncomingCallModal({ call, onAnswer, onReject }: Incoming
           <button
             onClick={onReject}
             className="w-16 h-16 rounded-full bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition-colors shadow-lg"
-            title={t('voip.call.reject')}
+            aria-label={t('voip.call.reject')}
           >
-            <PhoneOff className="w-7 h-7" />
+            <PhoneOff className="w-7 h-7" aria-hidden="true" />
           </button>
 
           <button
             onClick={onAnswer}
             className="w-16 h-16 rounded-full bg-emerald-500 text-white flex items-center justify-center hover:bg-emerald-600 transition-colors shadow-lg animate-pulse"
-            title={t('voip.call.answer')}
+            aria-label={t('voip.call.answer')}
+            autoFocus
           >
-            <Phone className="w-7 h-7" />
+            <Phone className="w-7 h-7" aria-hidden="true" />
           </button>
         </div>
       </div>
