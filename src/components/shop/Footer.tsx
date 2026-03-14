@@ -55,14 +55,14 @@ export default function Footer() {
           <div className="col-span-2">
             <div className="mb-4">
               <Image
-                src="/images/brand/logo-600x200.png"
+                src="/images/brand/signature-600x200.png"
                 alt="BioCycle Peptides"
-                width={180}
-                height={60}
-                className="h-10 w-auto brightness-0 invert"
+                width={600}
+                height={200}
+                className="h-14 w-auto brightness-0 invert"
               />
             </div>
-            <p className="text-neutral-400 text-sm leading-relaxed mb-4">
+            <p className="text-neutral-300 text-sm leading-relaxed mb-4">
               {t('footer.description') || 'Canada\'s trusted source for high-purity research peptides. 99%+ purity guaranteed with third-party lab testing.'}
             </p>
             <p className="text-neutral-500 text-sm mb-2">
@@ -82,8 +82,8 @@ export default function Footer() {
 
           {/* Shop */}
           <nav aria-label={t('footer.aria.shopLinks')}>
-            <h3 className="font-bold mb-4">{t('footer.shop') || 'Shop'}</h3>
-            <ul className="space-y-2 text-neutral-400 text-sm">
+            <h3 className="font-bold mb-4 text-white">{t('footer.shop') || 'Shop'}</h3>
+            <ul className="space-y-2 text-neutral-300 text-sm">
               <li>
                 <Link href="/shop" className="hover:text-white transition-colors">{t('nav.allProducts') || 'All Products'}</Link>
               </li>
@@ -107,8 +107,8 @@ export default function Footer() {
 
           {/* Resources */}
           <nav aria-label={t('footer.aria.resourcesLinks')}>
-            <h3 className="font-bold mb-4">{t('footer.resources') || 'Resources'}</h3>
-            <ul className="space-y-2 text-neutral-400 text-sm">
+            <h3 className="font-bold mb-4 text-white">{t('footer.resources') || 'Resources'}</h3>
+            <ul className="space-y-2 text-neutral-300 text-sm">
               <li>
                 <Link href="/learn" className="hover:text-white transition-colors">{t('nav.learn') || 'Learning Center'}</Link>
               </li>
@@ -129,8 +129,8 @@ export default function Footer() {
 
           {/* Community */}
           <nav aria-label={t('footer.aria.communityLinks')}>
-            <h3 className="font-bold mb-4">{t('footer.community') || 'Community'}</h3>
-            <ul className="space-y-2 text-neutral-400 text-sm">
+            <h3 className="font-bold mb-4 text-white">{t('footer.community') || 'Community'}</h3>
+            <ul className="space-y-2 text-neutral-300 text-sm">
               <li>
                 <Link href="/rewards" className="hover:text-primary-400 transition-colors flex items-center gap-1">
                   🎁 {t('nav.rewards') || 'Rewards Program'}
@@ -150,8 +150,8 @@ export default function Footer() {
 
           {/* Support */}
           <nav aria-label={t('footer.aria.supportLinks')}>
-            <h3 className="font-bold mb-4">{t('footer.customerService') || 'Support'}</h3>
-            <ul className="space-y-2 text-neutral-400 text-sm">
+            <h3 className="font-bold mb-4 text-white">{t('footer.customerService') || 'Support'}</h3>
+            <ul className="space-y-2 text-neutral-300 text-sm">
               <li>
                 <Link href="/contact" className="hover:text-white transition-colors">{t('nav.contact') || 'Contact Us'}</Link>
               </li>
@@ -178,7 +178,7 @@ export default function Footer() {
         <div className="mt-12 pt-8 border-t border-neutral-800">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
-              <h3 className="font-bold text-lg mb-2">{t('footer.newsletter') || 'Stay Updated'}</h3>
+              <h3 className="font-bold text-lg mb-2 text-white">{t('footer.newsletter') || 'Stay Updated'}</h3>
               <p className="text-sm text-neutral-400">
                 {t('footer.newsletterDesc') || 'Subscribe for exclusive offers, new products, and research insights.'}
               </p>
@@ -236,18 +236,15 @@ export default function Footer() {
           {/* Payment Methods */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex items-center gap-3">
-              <img src="/images/suite-koraline.png" alt="Suite Koraline" className="h-6 w-auto" />
-              <p className="text-sm text-neutral-500">
+              <p className="text-sm text-neutral-400">
                 © {new Date().getFullYear()} BioCycle Peptides. {t('footer.copyright') || 'All rights reserved.'}
               </p>
             </div>
-            <div className="flex items-center gap-3 text-neutral-400">
+            <div className="flex items-center gap-3 text-neutral-300">
               <span className="text-xs">{t('footer.securePayments')}:</span>
-              <span title={t('footer.paymentVisa')}>💳</span>
-              <span title={t('footer.paymentMastercard')}>💳</span>
-              <span title={t('footer.paymentPaypal')}>🅿️</span>
-              <span title={t('footer.paymentApplePay')}>🍎</span>
-              <span title={t('footer.paymentGooglePay')}>G</span>
+              <svg className="h-6 w-9" viewBox="0 0 36 24" fill="none"><rect width="36" height="24" rx="3" fill="#1A1F71"/><path d="M15.1 16.5l2.3-9h2.6l-2.3 9h-2.6zm10.3-9l-2.5 6.2-.3-1.5-1-4.8s-.1-.9-1.3-.9h-3.8l-.1.3s1.4.3 3 1.3l2.5 6.4h2.7l4.1-7h-3.3zm-14.2 0l-2.6 6.2-.3-1.5-1-4.8s-.1-.9-1.3-.9H2.2l-.1.3s1.4.3 3 1.3l2.5 6.4h2.7l4.1-7h-3.2z" fill="#fff"/><path d="M9.9 9l-1 4.8-.3 1.5L8 12.5C7 11.3 5.6 10.6 5.6 10.6l2.5 5.9h2.7l4.1-9H12L9.9 9z" fill="#F7B600"/></svg>
+              <svg className="h-6 w-9" viewBox="0 0 36 24" fill="none"><rect width="36" height="24" rx="3" fill="#252525"/><circle cx="14" cy="12" r="7" fill="#EB001B"/><circle cx="22" cy="12" r="7" fill="#F79E1B"/><path d="M18 6.8A7 7 0 0 1 21 12a7 7 0 0 1-3 5.2A7 7 0 0 1 15 12a7 7 0 0 1 3-5.2z" fill="#FF5F00"/></svg>
+              <svg className="h-6 w-9" viewBox="0 0 36 24" fill="none"><rect width="36" height="24" rx="3" fill="#003087"/><text x="18" y="15" textAnchor="middle" fill="#fff" fontSize="8" fontWeight="bold" fontFamily="Arial">PayPal</text></svg>
             </div>
           </div>
         </div>

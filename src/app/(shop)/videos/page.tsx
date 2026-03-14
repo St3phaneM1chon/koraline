@@ -217,7 +217,7 @@ export default function VideosPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* ====== Hero ====== */}
-      <section className="bg-neutral-900 text-white py-12">
+      <section className="bg-[#143C78] text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-4">
             <Film className="w-9 h-9 text-primary-400" />

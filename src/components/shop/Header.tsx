@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 import { useCart } from '@/contexts/CartContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
@@ -34,7 +34,7 @@ export default function Header() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   const pathname = usePathname();
-  const router = useRouter();
+
 
 
   // Close dropdowns on route change
@@ -96,8 +96,8 @@ export default function Header() {
       }).catch(() => {});
     }
 
-    // Refresh to apply new locale (SPA-friendly)
-    router.refresh();
+    // Full reload so the server re-reads the cookie and sends the correct locale
+    window.location.reload();
   };
 
   const handleSignOut = async () => {
@@ -115,16 +115,16 @@ export default function Header() {
     <>
       <header className="bg-white text-gray-900 sticky top-0 z-50 shadow-sm border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between py-4">
             
             {/* Logo */}
             <Link href="/" className="flex items-center shrink-0">
               <Image
-                src="/images/brand/logo-600x200.png"
+                src="/images/brand/signature-600x200.png"
                 alt="BioCycle Peptides"
-                width={150}
-                height={50}
-                className="h-9 w-auto"
+                width={600}
+                height={200}
+                className="h-[200px] w-auto"
                 priority
               />
             </Link>

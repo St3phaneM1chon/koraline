@@ -103,6 +103,9 @@ model CrmLead {
   // FIX A1-P0-002: Reverse relation for CrmConsentRecord FK
   consentRecords      CrmConsentRecord[]   @relation("CrmLeadConsentRecords")
 
+  // Rep 360° follow-up schedules
+  followUps           RepFollowUpSchedule[] @relation("CrmLeadFollowUps")
+
   @@index([status, assignedToId])
   @@index([assignedToId, status]) // A7-P2: Reverse composite for queries filtering by assignedToId first
   @@index([score(sort: Desc)])
@@ -191,6 +194,9 @@ model CrmDeal {
   // FIX A1-P0-002: Reverse relations for newly added FKs
   dealTeamMembers   CrmDealTeam[]          @relation("CrmDealTeamMembers")
   contracts         CrmContract[]          @relation("CrmDealContracts")
+
+  // Rep 360° follow-up schedules
+  followUps         RepFollowUpSchedule[]  @relation("CrmDealFollowUps")
 
   @@index([stageId, assignedToId])
   @@index([assignedToId]) // A7-P2: Standalone index for deals filtered by assignedToId alone
@@ -1122,5 +1128,150 @@ model ScrapeJob {
   @@index([status])
   @@index([createdById])
   @@index([createdAt])
+}
+
+// ============================================================
+// Rep 360° Dashboard — Follow-Up Schedules, Bonus Tiers, Commission Payouts
+// ============================================================
+
+// --- Rep Follow-Up Schedule (3/6/12/18/24 months client retention) ---
+model RepFollowUpSchedule {
+  id             String         @id @default(cuid())
+  agentId        String
+  leadId         String?
+  dealId         String?
+  customerId     String?
+
+  type           FollowUpType   @default(RETENTION)
+  intervalMonths Int
+  scheduledDate  DateTime
+  completedDate  DateTime?
+  status         FollowUpStatus @default(PENDING)
+  notes          String?
+  outcome        String?
+  nextAction     String?
+
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  agent          User           @relation("RepFollowUpAgent", fields: [agentId], references: [id])
+  lead           CrmLead?       @relation("CrmLeadFollowUps", fields: [leadId], references: [id])
+  deal           CrmDeal?       @relation("CrmDealFollowUps", fields: [dealId], references: [id])
+  customer       User?          @relation("RepFollowUpCustomer", fields: [customerId], references: [id])
+
+  @@index([agentId, status])
+  @@index([scheduledDate])
+  @@index([agentId, scheduledDate])
+  @@index([leadId])
+  @@index([dealId])
+  @@index([customerId])
+}
+
+enum FollowUpType {
+  RETENTION
+  UPSELL
+  RENEWAL
+  CHECK_IN
+  ANNIVERSARY
+}
+
+enum FollowUpStatus {
+  PENDING
+  COMPLETED
+  OVERDUE
+  SKIPPED
+  RESCHEDULED
+}
+
+// --- Rep Bonus Tier (hybrid commission: sales + activities) ---
+model RepBonusTier {
+  id                 String                 @id @default(cuid())
+  name               String
+  commissionType     CommissionType
+
+  // Sales thresholds (SALES or HYBRID)
+  revenueThreshold   Decimal?               @db.Decimal(12, 2)
+  commissionRate     Decimal?               @db.Decimal(5, 4)
+
+  // Activity thresholds (ACTIVITY or HYBRID)
+  activityType       ActivityCommissionType?
+  minVolume          Int?
+  minPrequalScore    Int?
+  ratePerCall        Decimal?               @db.Decimal(8, 2)
+  ratePerAppointment Decimal?               @db.Decimal(8, 2)
+
+  // Caps & period
+  maxPayout          Decimal?               @db.Decimal(12, 2)
+  period             String                 @default("monthly")
+  isActive           Boolean                @default(true)
+  priority           Int                    @default(0)
+
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+
+  payouts            CommissionPayout[]
+
+  @@index([isActive, priority])
+}
+
+enum CommissionType {
+  SALES
+  ACTIVITY
+  HYBRID
+}
+
+enum ActivityCommissionType {
+  CALLS
+  APPOINTMENTS
+  BOTH
+}
+
+// --- Commission Payout (calculated payment history) ---
+model CommissionPayout {
+  id                    String       @id @default(cuid())
+  agentId               String
+  tierId                String
+
+  periodStart           DateTime
+  periodEnd             DateTime
+
+  // Calculation detail
+  salesRevenue          Decimal      @db.Decimal(12, 2) @default(0)
+  salesPayout           Decimal      @db.Decimal(12, 2) @default(0)
+
+  callsCount            Int          @default(0)
+  appointmentsCount     Int          @default(0)
+  activityPayout        Decimal      @db.Decimal(12, 2) @default(0)
+
+  totalPayout           Decimal      @db.Decimal(12, 2)
+
+  // Eligibility
+  meetsVolumeThreshold  Boolean      @default(false)
+  meetsPrequalThreshold Boolean      @default(false)
+  avgPrequalScore       Int          @default(0)
+  isEligible            Boolean      @default(false)
+
+  status                PayoutStatus @default(PENDING)
+  approvedById          String?
+  paidAt                DateTime?
+  notes                 String?
+
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+
+  agent                 User         @relation("RepCommissionAgent", fields: [agentId], references: [id])
+  tier                  RepBonusTier @relation(fields: [tierId], references: [id])
+  approvedBy            User?        @relation("RepCommissionApprover", fields: [approvedById], references: [id])
+
+  @@index([agentId, periodStart])
+  @@index([status])
+  @@unique([agentId, tierId, periodStart, periodEnd])
+}
+
+enum PayoutStatus {
+  PENDING
+  APPROVED
+  PAID
+  REJECTED
 }
 

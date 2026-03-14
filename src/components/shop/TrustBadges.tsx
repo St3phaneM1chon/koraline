@@ -92,7 +92,7 @@ export default function TrustBadges({ variant = 'horizontal', showAll = true }: 
 export function TrustBadgesHero() {
   const { t } = useI18n();
   return (
-    <div className="bg-secondary-50 text-neutral-800 py-4 border-t border-secondary-100">
+    <div className="bg-blue-50 text-neutral-800 py-4 border-t border-blue-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-center justify-start gap-6 md:gap-10 text-sm font-medium">
           <div className="flex items-center gap-2">

@@ -228,10 +228,10 @@ export default function HeroSlider({ initialSlides }: HeroSliderProps) {
               />
             </>
           )}
-          {/* Overlay — lighter to let image show through */}
+          {/* Overlay — bleuté pour harmoniser le visuel */}
           <div
             className="absolute inset-0"
-            style={{ backgroundColor: `rgba(0,0,0,${Math.max(s.overlayOpacity, 35) / 100})` }}
+            style={{ backgroundColor: `rgba(20,60,120,${Math.max(s.overlayOpacity, 30) / 100})` }}
           />
         </div>
       ))}

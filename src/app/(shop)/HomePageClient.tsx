@@ -267,28 +267,11 @@ export default function HomePage({ initialHeroSlides, initialTestimonials = [] }
   return (
     <div className="min-h-screen bg-white">
 
-      {/* 1. Signature Banner — 180px tall, proportional */}
-      <section className="bg-white py-8 md:py-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
-          <Image
-            src="/images/brand/signature-2400x800.png"
-            alt="BioCycle Peptides"
-            width={540}
-            height={180}
-            className="h-[140px] sm:h-[160px] md:h-[180px] w-auto"
-            priority
-          />
-          <p className="mt-3 text-sm md:text-base text-neutral-500 font-medium tracking-wide">
-            {t('home.signatureTagline') || 'Premium Research Peptides — Canada'}
-          </p>
-        </div>
-      </section>
-
-      {/* 2. Hero Slider (carousel conserve) */}
+      {/* 1. Hero Slider (carousel) — directement sous la nav, aucun logo/tagline entre les deux */}
       <HeroSlider initialSlides={initialHeroSlides} />
 
       {/* 3. Trust Bar — directement sous le slider, SANS degrade */}
-      <section className="bg-secondary-50 border-y border-secondary-100">
+      <section className="bg-blue-50 border-y border-blue-100">
         <TrustBadgesHero />
       </section>
 
@@ -616,10 +599,10 @@ export default function HomePage({ initialHeroSlides, initialTestimonials = [] }
               className="h-16 md:h-20 w-auto mx-auto brightness-0 invert"
             />
           </div>
-          <h2 className="font-heading text-3xl md:text-4xl mb-4">
+          <h2 className="font-heading text-3xl md:text-4xl mb-4 text-white">
             {t('home.ctaTitleNew') || t('home.ctaTitle')}
           </h2>
-          <p className="text-neutral-300 mb-8 text-lg">
+          <p className="text-white/80 mb-8 text-lg">
             {t('home.ctaTextNew') || t('home.ctaText')}
           </p>
           <Link

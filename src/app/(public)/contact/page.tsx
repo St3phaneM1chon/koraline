@@ -91,19 +91,12 @@ export default function ContactPage() {
 
   return (
     <div style={{ backgroundColor: '#f9fafb', minHeight: '100vh' }}>
-      {/* Hero */}
-      <section
-        style={{
-          background: '#1f2937',
-          color: 'white',
-          padding: '64px 24px',
-          textAlign: 'center',
-        }}
-      >
-        <h1 className="font-heading" style={{ fontSize: '36px', fontWeight: 700, marginBottom: '16px' }}>
+      {/* Page Title — bande bleutée harmonisée */}
+      <section className="bg-[#143C78] text-white py-12 text-center">
+        <h1 className="font-heading text-3xl md:text-4xl font-bold mb-2">
           {t('contact.title')}
         </h1>
-        <p style={{ fontSize: '18px', color: '#d1d5db' }}>
+        <p className="text-base text-blue-200">
           {t('contact.subtitle')}
         </p>
       </section>

@@ -107,6 +107,9 @@ async function loadEssentialMessages(locale: string): Promise<Record<string, unk
   }
 }
 
+// Force dynamic rendering so the locale cookie is read on every request
+export const dynamic = 'force-dynamic';
+
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,

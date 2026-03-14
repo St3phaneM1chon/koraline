@@ -253,6 +253,12 @@ model User {
   crmTicketsAsContact    CrmTicket[]           @relation("CrmTicketContact")
   crmTicketsAssigned     CrmTicket[]           @relation("CrmTicketAssignee")
 
+  // Rep 360° Dashboard relations
+  agentFollowUps         RepFollowUpSchedule[] @relation("RepFollowUpAgent")
+  customerFollowUps      RepFollowUpSchedule[] @relation("RepFollowUpCustomer")
+  agentPayouts           CommissionPayout[]    @relation("RepCommissionAgent")
+  approvedPayouts        CommissionPayout[]    @relation("RepCommissionApprover")
+
   @@index([role])
   @@index([createdAt])
   @@index([loyaltyTier])

@@ -10,7 +10,7 @@ export default function AboutPage() {
     <div style={{ backgroundColor: 'white', minHeight: '100vh' }}>
       {/* Hero Section */}
       <div style={{ 
-        background: '#1f2937',
+        background: '#143C78',
         color: 'white', 
         padding: '80px 24px',
         textAlign: 'center'
