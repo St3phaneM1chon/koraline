@@ -189,7 +189,6 @@ export default function HomePage({ initialHeroSlides, initialTestimonials = [] }
   const [accessoriesRef, accessoriesVisible] = useIntersectionObserver<HTMLElement>();
   const [labRef, labVisible] = useIntersectionObserver<HTMLElement>();
   const [videoRef, videoVisible] = useIntersectionObserver<HTMLElement>();
-  const [aboutRef, aboutVisible] = useIntersectionObserver<HTMLElement>();
   const [testimonialsRef, testimonialsVisible] = useIntersectionObserver<HTMLElement>();
   const [ctaRef, ctaVisible] = useIntersectionObserver<HTMLElement>();
 
@@ -228,9 +227,9 @@ export default function HomePage({ initialHeroSlides, initialTestimonials = [] }
       .map(toCardProps);
   };
 
-  // Peptide products (featured — show 2)
+  // Peptide products (show up to 6)
   const featuredPeptides = useMemo(
-    () => filterByCategory(products, ['anti-aging-longevity', 'weight-loss', 'skin-health', 'sexual-health', 'cognitive-health', 'growth-metabolism', 'muscle-growth', 'recovery-repair', 'peptides'], 2),
+    () => filterByCategory(products, ['anti-aging-longevity', 'weight-loss', 'skin-health', 'sexual-health', 'cognitive-health', 'growth-metabolism', 'muscle-growth', 'recovery-repair', 'peptides'], 6),
     [products]
   );
 
@@ -267,22 +266,31 @@ export default function HomePage({ initialHeroSlides, initialTestimonials = [] }
 
   return (
     <div className="min-h-screen bg-white">
-      {/* 1. Hero Slider */}
+
+      {/* 1. Signature Banner — 180px tall, proportional */}
+      <section className="bg-white py-8 md:py-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+          <Image
+            src="/images/brand/signature-2400x800.png"
+            alt="BioCycle Peptides"
+            width={540}
+            height={180}
+            className="h-[140px] sm:h-[160px] md:h-[180px] w-auto"
+            priority
+          />
+          <p className="mt-3 text-sm md:text-base text-neutral-500 font-medium tracking-wide">
+            {t('home.signatureTagline') || 'Premium Research Peptides — Canada'}
+          </p>
+        </div>
+      </section>
+
+      {/* 2. Hero Slider (carousel conserve) */}
       <HeroSlider initialSlides={initialHeroSlides} />
 
-      {/* 2. Trust Bar (light cyan background) */}
+      {/* 3. Trust Bar — directement sous le slider, SANS degrade */}
       <section className="bg-secondary-50 border-y border-secondary-100">
         <TrustBadgesHero />
       </section>
-
-      {/* Divider: secondary-50 → green-50 */}
-      <SectionDivider fromColor="#E6FFFA" toColor="#F0FFF4" variant="wave" />
-
-      {/* 3. Science Story — "La Science de la Longévité" */}
-      <ScienceStorySection />
-
-      {/* Divider: white → white */}
-      <SectionDivider fromColor="#FFFFFF" toColor="#FFFFFF" variant="curve" />
 
       {/* Fetch Error */}
       {fetchError && !loading && (
@@ -298,7 +306,7 @@ export default function HomePage({ initialHeroSlides, initialTestimonials = [] }
         </div>
       )}
 
-      {/* 4. Featured Peptides (2-col hero cards) */}
+      {/* 4. Featured Peptides (up to 6, 3-col grid if 3+) */}
       {(loading || featuredPeptides.length > 0) && (
         <section ref={peptidesRef} className="py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -320,12 +328,18 @@ export default function HomePage({ initialHeroSlides, initialTestimonials = [] }
               </Link>
             </div>
 
-            <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 transition-all duration-700 delay-200 ${peptidesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-700 delay-200 ${peptidesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
               {loading ? (
-                Array.from({ length: 2 }).map((_, i) => <ProductSkeleton key={i} />)
+                Array.from({ length: 3 }).map((_, i) => <ProductSkeleton key={i} />)
+              ) : featuredPeptides.length <= 2 ? (
+                <div className="col-span-full grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {featuredPeptides.map((product) => (
+                    <ProductCardFeatured key={product.id} {...product} />
+                  ))}
+                </div>
               ) : (
                 featuredPeptides.map((product) => (
-                  <ProductCardFeatured key={product.id} {...product} />
+                  <ProductCard key={product.id} {...product} />
                 ))
               )}
             </div>
@@ -333,219 +347,9 @@ export default function HomePage({ initialHeroSlides, initialTestimonials = [] }
         </section>
       )}
 
-      {/* Divider: white → neutral-50 */}
       <SectionDivider fromColor="#FFFFFF" toColor="#FAFAF9" variant="wave" />
 
-      {/* 5. Research Articles (magazine layout: 1 large + 3 small) */}
-      {(articlesLoading || articles.length > 0) && (
-        <section ref={articlesRef} className="py-16 bg-neutral-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className={`flex justify-between items-center mb-10 transition-all duration-700 ${articlesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-              <div>
-                <h2 className="font-heading text-3xl md:text-4xl text-neutral-900">{t('home.researchResultsSection')}</h2>
-                <p className="text-neutral-500 mt-2">{t('home.researchResultsDesc')}</p>
-              </div>
-              <Link
-                href="/blog"
-                className="text-primary-600 hover:text-primary-700 font-semibold flex items-center gap-1"
-              >
-                {t('shop.viewAll')}
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            </div>
-
-            {articlesLoading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {Array.from({ length: 4 }).map((_, i) => <ArticleSkeleton key={i} />)}
-              </div>
-            ) : articles.length === 1 ? (
-              /* Single article — full width */
-              <Link
-                href={`/blog/${articles[0].slug}`}
-                className="group block bg-white rounded-2xl overflow-hidden shadow-sm border border-neutral-200 hover:shadow-lg transition-shadow"
-              >
-                <div className="h-64 bg-neutral-100 flex items-center justify-center overflow-hidden">
-                  {articles[0].imageUrl ? (
-                    <Image src={articles[0].imageUrl} alt={articles[0].title} width={800} height={256} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                  ) : (
-                    <span className="text-6xl">🔬</span>
-                  )}
-                </div>
-                <div className="p-8">
-                  <h3 className="font-heading text-2xl text-neutral-900 mb-3 group-hover:text-primary-600 transition-colors">{articles[0].title}</h3>
-                  {articles[0].excerpt && <p className="text-neutral-500 line-clamp-3 mb-4">{articles[0].excerpt}</p>}
-                  <span className="text-primary-600 font-medium">{t('home.readMore')} →</span>
-                </div>
-              </Link>
-            ) : (
-              /* Magazine layout: 1 large left + 3 small right */
-              <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 transition-all duration-700 delay-200 ${articlesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                {/* Large featured article */}
-                <Link
-                  href={`/blog/${articles[0].slug}`}
-                  className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-neutral-200 hover:shadow-lg transition-shadow"
-                >
-                  <div className="h-64 bg-neutral-100 flex items-center justify-center overflow-hidden">
-                    {articles[0].imageUrl ? (
-                      <Image src={articles[0].imageUrl} alt={articles[0].title} width={600} height={256} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                    ) : (
-                      <span className="text-6xl">🔬</span>
-                    )}
-                  </div>
-                  <div className="p-6">
-                    <h3 className="font-heading text-xl text-neutral-900 mb-2 group-hover:text-primary-600 transition-colors">{articles[0].title}</h3>
-                    {articles[0].excerpt && <p className="text-sm text-neutral-500 line-clamp-3 mb-3">{articles[0].excerpt}</p>}
-                    <span className="text-sm text-primary-600 font-medium">{t('home.readMore')} →</span>
-                  </div>
-                </Link>
-
-                {/* 3 smaller articles */}
-                <div className="flex flex-col gap-4">
-                  {articles.slice(1, 4).map((article) => (
-                    <Link
-                      key={article.id}
-                      href={`/blog/${article.slug}`}
-                      className="group flex gap-4 bg-white rounded-xl overflow-hidden shadow-sm border border-neutral-200 hover:shadow-md transition-shadow"
-                    >
-                      <div className="w-28 h-28 shrink-0 bg-neutral-100 flex items-center justify-center overflow-hidden">
-                        {article.imageUrl ? (
-                          <Image src={article.imageUrl} alt={article.title} width={112} height={112} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                        ) : (
-                          <span className="text-3xl">🔬</span>
-                        )}
-                      </div>
-                      <div className="py-3 pr-4 flex flex-col justify-center">
-                        <h3 className="font-semibold text-neutral-900 line-clamp-2 group-hover:text-primary-600 transition-colors text-sm">{article.title}</h3>
-                        {article.excerpt && <p className="text-xs text-neutral-500 line-clamp-2 mt-1">{article.excerpt}</p>}
-                        <span className="text-xs text-primary-600 font-medium mt-2">{t('home.readMore')} →</span>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
-      )}
-
-      {/* Divider: neutral-50 → white */}
-      <SectionDivider fromColor="#FAFAF9" toColor="#FFFFFF" variant="curve" />
-
-      {/* 6. Accessories Carousel */}
-      {(loading || accessoryProducts.length > 0) && (
-        <section ref={accessoriesRef} className="py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className={`flex justify-between items-center mb-8 transition-all duration-700 ${accessoriesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-              <div>
-                <h2 className="font-heading text-3xl text-neutral-900">{t('home.accessoriesSection')}</h2>
-                <p className="text-neutral-500 mt-1">{t('home.accessoriesDesc')}</p>
-              </div>
-              <Link
-                href="/category/lab-accessories"
-                className="text-primary-600 hover:text-primary-700 font-semibold flex items-center gap-1"
-              >
-                {t('shop.viewAll')}
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            </div>
-
-            <div className={`transition-all duration-700 delay-200 ${accessoriesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              {loading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {Array.from({ length: 4 }).map((_, i) => <ProductSkeleton key={i} />)}
-                </div>
-              ) : (
-                <ProductCarousel products={accessoryProducts} />
-              )}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Divider: white → neutral-50 */}
-      <SectionDivider fromColor="#FFFFFF" toColor="#FAFAF9" variant="wave" />
-
-      {/* 7. Lab Equipment (compact list) */}
-      {(loading || labEquipmentProducts.length > 0) && (
-        <section ref={labRef} className="py-16 bg-neutral-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className={`flex justify-between items-center mb-8 transition-all duration-700 ${labVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-              <div>
-                <h2 className="font-heading text-3xl text-neutral-900">{t('home.labEquipmentSection')}</h2>
-                <p className="text-neutral-500 mt-1">{t('home.labEquipmentDesc')}</p>
-              </div>
-              <Link
-                href="/category/lab-equipment"
-                className="text-primary-600 hover:text-primary-700 font-semibold flex items-center gap-1"
-              >
-                {t('shop.viewAll')}
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            </div>
-
-            <div className={`transition-all duration-700 delay-200 ${labVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              {loading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {Array.from({ length: 4 }).map((_, i) => <ProductSkeleton key={i} />)}
-                </div>
-              ) : (
-                <ProductListCompact products={labEquipmentProducts} />
-              )}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Divider: neutral-50 → white */}
-      <SectionDivider fromColor="#FAFAF9" toColor="#FFFFFF" variant="curve" />
-
-      {/* 8. Video Highlight (single featured video) */}
-      <section ref={videoRef} className={`transition-all duration-700 ${videoVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-        <VideoPlacementWidget
-          placement="HOMEPAGE_HERO"
-          title={t('home.heroVideo')}
-          limit={1}
-          className="py-12"
-        />
-      </section>
-
-      {/* Divider: white → gradient */}
-      <SectionDivider fromColor="#FFFFFF" toColor="#F0FFF4" variant="wave" />
-
-      {/* 9. About / Mission (gradient green→cyan) */}
-      <section ref={aboutRef} className="relative py-20 bg-primary-50 overflow-hidden">
-        <MoleculeBackground opacity={0.04} count={6} />
-        <div className={`relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center transition-all duration-700 ${aboutVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <h2 className="font-heading text-3xl md:text-4xl text-neutral-900 mb-6">
-            {t('home.missionTitle') || t('home.aboutTitle')}
-          </h2>
-          <p className="text-lg text-neutral-600 leading-relaxed">
-            {t('home.missionText') || t('home.aboutText')}
-          </p>
-        </div>
-      </section>
-
-      {/* Divider */}
-      <SectionDivider fromColor="#E6FFFA" toColor="#FAFAF9" variant="curve" />
-
-      {/* Featured Videos */}
-      <VideoPlacementWidget
-        placement="HOMEPAGE_FEATURED"
-        title={t('home.featuredVideos')}
-        limit={4}
-        className="py-16"
-      />
-
-      {/* Divider: white → neutral-50 */}
-      <SectionDivider fromColor="#FFFFFF" toColor="#FAFAF9" variant="wave" />
-
-      {/* 10. Testimonials (no border, amber stars) */}
+      {/* 5. Testimonials (monte juste apres les produits) */}
       <section ref={testimonialsRef} className="py-16 bg-neutral-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className={`font-heading text-3xl md:text-4xl text-center text-neutral-900 mb-12 transition-all duration-700 ${testimonialsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
@@ -603,31 +407,215 @@ export default function HomePage({ initialHeroSlides, initialTestimonials = [] }
         </div>
       </section>
 
-      {/* Divider: neutral-50 → white */}
+      <SectionDivider fromColor="#FAFAF9" toColor="#F3F9F4" variant="curve" />
+
+      {/* 6. Science Story */}
+      <ScienceStorySection />
+
+      <SectionDivider fromColor="#F3F9F4" toColor="#FAFAF9" variant="wave" />
+
+      {/* 7. Research Articles (magazine layout) */}
+      {(articlesLoading || articles.length > 0) && (
+        <section ref={articlesRef} className="py-16 bg-neutral-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className={`flex justify-between items-center mb-10 transition-all duration-700 ${articlesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+              <div>
+                <h2 className="font-heading text-3xl md:text-4xl text-neutral-900">{t('home.researchResultsSection')}</h2>
+                <p className="text-neutral-500 mt-2">{t('home.researchResultsDesc')}</p>
+              </div>
+              <Link
+                href="/blog"
+                className="text-primary-600 hover:text-primary-700 font-semibold flex items-center gap-1"
+              >
+                {t('shop.viewAll')}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+
+            {articlesLoading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {Array.from({ length: 4 }).map((_, i) => <ArticleSkeleton key={i} />)}
+              </div>
+            ) : articles.length === 1 ? (
+              <Link
+                href={`/blog/${articles[0].slug}`}
+                className="group block bg-white rounded-2xl overflow-hidden shadow-sm border border-neutral-200 hover:shadow-lg transition-shadow"
+              >
+                <div className="h-64 bg-neutral-100 flex items-center justify-center overflow-hidden">
+                  {articles[0].imageUrl ? (
+                    <Image src={articles[0].imageUrl} alt={articles[0].title} width={800} height={256} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                  ) : (
+                    <span className="text-6xl">🔬</span>
+                  )}
+                </div>
+                <div className="p-8">
+                  <h3 className="font-heading text-2xl text-neutral-900 mb-3 group-hover:text-primary-600 transition-colors">{articles[0].title}</h3>
+                  {articles[0].excerpt && <p className="text-neutral-500 line-clamp-3 mb-4">{articles[0].excerpt}</p>}
+                  <span className="text-primary-600 font-medium">{t('home.readMore')} →</span>
+                </div>
+              </Link>
+            ) : (
+              <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 transition-all duration-700 delay-200 ${articlesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                <Link
+                  href={`/blog/${articles[0].slug}`}
+                  className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-neutral-200 hover:shadow-lg transition-shadow"
+                >
+                  <div className="h-64 bg-neutral-100 flex items-center justify-center overflow-hidden">
+                    {articles[0].imageUrl ? (
+                      <Image src={articles[0].imageUrl} alt={articles[0].title} width={600} height={256} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    ) : (
+                      <span className="text-6xl">🔬</span>
+                    )}
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-heading text-xl text-neutral-900 mb-2 group-hover:text-primary-600 transition-colors">{articles[0].title}</h3>
+                    {articles[0].excerpt && <p className="text-sm text-neutral-500 line-clamp-3 mb-3">{articles[0].excerpt}</p>}
+                    <span className="text-sm text-primary-600 font-medium">{t('home.readMore')} →</span>
+                  </div>
+                </Link>
+
+                <div className="flex flex-col gap-4">
+                  {articles.slice(1, 4).map((article) => (
+                    <Link
+                      key={article.id}
+                      href={`/blog/${article.slug}`}
+                      className="group flex gap-4 bg-white rounded-xl overflow-hidden shadow-sm border border-neutral-200 hover:shadow-md transition-shadow"
+                    >
+                      <div className="w-28 h-28 shrink-0 bg-neutral-100 flex items-center justify-center overflow-hidden">
+                        {article.imageUrl ? (
+                          <Image src={article.imageUrl} alt={article.title} width={112} height={112} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                        ) : (
+                          <span className="text-3xl">🔬</span>
+                        )}
+                      </div>
+                      <div className="py-3 pr-4 flex flex-col justify-center">
+                        <h3 className="font-semibold text-neutral-900 line-clamp-2 group-hover:text-primary-600 transition-colors text-sm">{article.title}</h3>
+                        {article.excerpt && <p className="text-xs text-neutral-500 line-clamp-2 mt-1">{article.excerpt}</p>}
+                        <span className="text-xs text-primary-600 font-medium mt-2">{t('home.readMore')} →</span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
       <SectionDivider fromColor="#FAFAF9" toColor="#FFFFFF" variant="curve" />
 
+      {/* 8. Accessories Carousel */}
+      {(loading || accessoryProducts.length > 0) && (
+        <section ref={accessoriesRef} className="py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className={`flex justify-between items-center mb-8 transition-all duration-700 ${accessoriesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+              <div>
+                <h2 className="font-heading text-3xl text-neutral-900">{t('home.accessoriesSection')}</h2>
+                <p className="text-neutral-500 mt-1">{t('home.accessoriesDesc')}</p>
+              </div>
+              <Link
+                href="/category/lab-accessories"
+                className="text-primary-600 hover:text-primary-700 font-semibold flex items-center gap-1"
+              >
+                {t('shop.viewAll')}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+
+            <div className={`transition-all duration-700 delay-200 ${accessoriesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              {loading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {Array.from({ length: 4 }).map((_, i) => <ProductSkeleton key={i} />)}
+                </div>
+              ) : (
+                <ProductCarousel products={accessoryProducts} />
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <SectionDivider fromColor="#FFFFFF" toColor="#FAFAF9" variant="wave" />
+
+      {/* 9. Lab Equipment (compact list) */}
+      {(loading || labEquipmentProducts.length > 0) && (
+        <section ref={labRef} className="py-16 bg-neutral-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className={`flex justify-between items-center mb-8 transition-all duration-700 ${labVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+              <div>
+                <h2 className="font-heading text-3xl text-neutral-900">{t('home.labEquipmentSection')}</h2>
+                <p className="text-neutral-500 mt-1">{t('home.labEquipmentDesc')}</p>
+              </div>
+              <Link
+                href="/category/lab-equipment"
+                className="text-primary-600 hover:text-primary-700 font-semibold flex items-center gap-1"
+              >
+                {t('shop.viewAll')}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+
+            <div className={`transition-all duration-700 delay-200 ${labVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              {loading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {Array.from({ length: 4 }).map((_, i) => <ProductSkeleton key={i} />)}
+                </div>
+              ) : (
+                <ProductListCompact products={labEquipmentProducts} />
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <SectionDivider fromColor="#FAFAF9" toColor="#FFFFFF" variant="curve" />
+
+      {/* 10. Videos (section unique, fusionnee) */}
+      <section ref={videoRef} className={`transition-all duration-700 ${videoVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+        <VideoPlacementWidget
+          placement="HOMEPAGE_FEATURED"
+          title={t('home.featuredVideos')}
+          limit={3}
+          className="py-16"
+        />
+      </section>
+
       {/* 11. Calculator */}
-      <section className="py-16">
+      <section className="py-16 bg-neutral-50">
         <div id="calculator" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="font-heading text-3xl text-center text-neutral-900 mb-8">{t('home.calculatorTitle')}</h2>
           <PeptideCalculator />
         </div>
       </section>
 
-      {/* Trust Badges Section */}
+      {/* 12. Trust Badges */}
       <section className="py-12 bg-neutral-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <TrustBadges variant="horizontal" showAll={true} />
         </div>
       </section>
 
-      {/* Divider: neutral-100 → navy */}
       <SectionDivider fromColor="#F5F5F4" toColor="#0F2440" variant="wave" />
 
-      {/* 12. CTA (gradient navy + molecule decoration) */}
+      {/* 13. CTA (navy + signature inversee) */}
       <section ref={ctaRef} className="relative py-20 bg-navy-800 text-white overflow-hidden">
         <MoleculeBackground opacity={0.08} count={10} />
         <div className={`relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center transition-all duration-700 ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+          <div className="mb-8">
+            <Image
+              src="/images/brand/signature-1200x400.png"
+              alt="BioCycle Peptides"
+              width={320}
+              height={107}
+              className="h-16 md:h-20 w-auto mx-auto brightness-0 invert"
+            />
+          </div>
           <h2 className="font-heading text-3xl md:text-4xl mb-4">
             {t('home.ctaTitleNew') || t('home.ctaTitle')}
           </h2>

@@ -181,7 +181,7 @@ export default function HeroSlider({ initialSlides }: HeroSliderProps) {
 
   return (
     <section
-      className="relative text-white overflow-hidden min-h-[420px] md:min-h-[480px] flex items-center"
+      className="relative text-white overflow-hidden min-h-[280px] md:min-h-[340px] flex items-center"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={onTouchStart}
@@ -228,25 +228,22 @@ export default function HeroSlider({ initialSlides }: HeroSliderProps) {
               />
             </>
           )}
-          {/* Overlay - dark base + optional gradient */}
+          {/* Overlay — lighter to let image show through */}
           <div
             className="absolute inset-0"
-            style={{ backgroundColor: `rgba(0,0,0,${Math.max(s.overlayOpacity, 75) / 100})` }}
+            style={{ backgroundColor: `rgba(0,0,0,${Math.max(s.overlayOpacity, 35) / 100})` }}
           />
-          {s.overlayGradient && (
-            <div className="absolute inset-0 bg-black/40" />
-          )}
         </div>
       ))}
 
-      {/* Content - px-16 to clear navigation arrows */}
-      <div className="relative z-10 max-w-7xl mx-auto px-16 sm:px-20 lg:px-24">
+      {/* Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-14 sm:px-16 lg:px-20">
         <div className="max-w-3xl">
           {/* Badge */}
           {badgeText && (
             <div
               key={`badge-${current}`}
-              className="inline-flex items-center gap-2 bg-primary-500/20 border border-primary-500/30 rounded-full px-4 py-1.5 mb-6 animate-fadeInUp"
+              className="inline-flex items-center gap-2 bg-primary-500/20 border border-primary-500/30 rounded-full px-3 py-1 mb-4 animate-fadeInUp"
             >
               <span className="w-2 h-2 bg-primary-500 rounded-full animate-pulse" />
               <span className="text-primary-400 text-sm font-medium">
@@ -258,8 +255,8 @@ export default function HeroSlider({ initialSlides }: HeroSliderProps) {
           {/* Title */}
           <h1
             key={`title-${current}`}
-            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight text-white animate-fadeInUp drop-shadow-lg"
-            style={{ animationDelay: '0.1s', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}
+            className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 leading-tight text-white animate-fadeInUp drop-shadow-lg"
+            style={{ animationDelay: '0.1s', textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}
           >
             {title}
           </h1>
@@ -268,7 +265,7 @@ export default function HeroSlider({ initialSlides }: HeroSliderProps) {
           {subtitle && (
             <p
               key={`sub-${current}`}
-              className="text-base md:text-lg text-gray-100 mb-6 max-w-2xl animate-fadeInUp drop-shadow-md line-clamp-2"
+              className="text-sm md:text-base text-gray-100 mb-5 max-w-2xl animate-fadeInUp drop-shadow-md line-clamp-2"
               style={{ animationDelay: '0.2s' }}
             >
               {subtitle}
@@ -279,17 +276,17 @@ export default function HeroSlider({ initialSlides }: HeroSliderProps) {
           {(ctaText || cta2Text) && (
             <div
               key={`cta-${current}`}
-              className="flex flex-wrap gap-3 mb-8 animate-fadeInUp"
+              className="flex flex-wrap gap-3 mb-6 animate-fadeInUp"
               style={{ animationDelay: '0.3s' }}
             >
               {ctaText && slide.ctaUrl && (
                 <Link
                   href={slide.ctaUrl}
-                  className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-base transition-all ${ctaClasses[slide.ctaStyle || 'primary']}`}
+                  className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all ${ctaClasses[slide.ctaStyle || 'primary']}`}
                 >
                   {ctaText}
                   <svg
-                    className="w-4 h-4"
+                    className="w-3.5 h-3.5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -306,7 +303,7 @@ export default function HeroSlider({ initialSlides }: HeroSliderProps) {
               {cta2Text && slide.cta2Url && (
                 <Link
                   href={slide.cta2Url}
-                  className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-base transition-all ${ctaClasses[slide.cta2Style || 'outline']}`}
+                  className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all ${ctaClasses[slide.cta2Style || 'outline']}`}
                 >
                   {cta2Text}
                 </Link>
@@ -319,18 +316,18 @@ export default function HeroSlider({ initialSlides }: HeroSliderProps) {
         {stats.length > 0 && (
           <div
             key={`stats-${current}`}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl animate-fadeInUp"
+            className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-3xl animate-fadeInUp"
             style={{ animationDelay: '0.4s' }}
           >
             {stats.map((stat, i) => (
               <div
                 key={i}
-                className="bg-white/10 backdrop-blur-md border border-white/10 px-4 py-3 rounded-xl"
+                className="bg-white/10 backdrop-blur-md border border-white/10 px-3 py-2 rounded-lg"
               >
-                <p className="text-2xl md:text-3xl font-bold text-primary-400">
+                <p className="text-lg md:text-xl font-bold text-primary-400">
                   {stat.value}
                 </p>
-                <p className="text-xs text-gray-300">{stat.label}</p>
+                <p className="text-[11px] text-gray-300">{stat.label}</p>
               </div>
             ))}
           </div>
