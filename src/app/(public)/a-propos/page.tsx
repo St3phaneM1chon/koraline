@@ -1,27 +1,31 @@
+'use client';
+
 import Link from 'next/link';
+import { useI18n } from '@/i18n/client';
 
 /**
  * PAGE À PROPOS - BioCycle Peptides
- * Server Component — no client-side hooks or event handlers needed
+ * i18n-enabled with 22 locales
  */
 
 export default function AboutPage() {
+  const { t } = useI18n();
+
   return (
     <div style={{ backgroundColor: 'white', minHeight: '100vh' }}>
       {/* Hero Section */}
-      <div style={{ 
+      <div style={{
         background: '#143C78',
-        color: 'white', 
+        color: 'white',
         padding: '80px 24px',
         textAlign: 'center'
       }}>
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
           <h1 className="font-heading" style={{ fontSize: '42px', fontWeight: 700, marginBottom: '24px' }}>
-            À propos de BioCycle Peptides
+            {t('about.heroTitle')}
           </h1>
           <p style={{ fontSize: '18px', lineHeight: 1.7, color: '#d1d5db' }}>
-            Votre source canadienne de confiance pour les peptides de recherche de haute pureté. 
-            Qualité, intégrité et excellence scientifique depuis notre fondation.
+            {t('about.heroDescription')}
           </p>
         </div>
       </div>
@@ -29,108 +33,103 @@ export default function AboutPage() {
       {/* Main Content */}
       <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '64px 24px' }}>
         {/* Stats */}
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
           gap: '32px',
           marginBottom: '64px',
           textAlign: 'center'
         }}>
-          <StatCard number="99%+" label="Pureté garantie" />
-          <StatCard number="500+" label="Produits de recherche" />
-          <StatCard number="10K+" label="Chercheurs servis" />
-          <StatCard number="24-48h" label="Expédition rapide" />
+          <StatCard number="99%+" label={t('about.statPurity')} />
+          <StatCard number="500+" label={t('about.statProducts')} />
+          <StatCard number="10K+" label={t('about.statResearchers')} />
+          <StatCard number="24-48h" label={t('about.statShipping')} />
         </div>
 
         {/* Notre histoire */}
         <section style={{ marginBottom: '64px' }}>
           <h2 style={{ fontSize: '28px', fontWeight: 600, marginBottom: '24px', color: '#1f2937' }}>
-            Notre histoire
+            {t('about.historyTitle')}
           </h2>
           <p style={{ fontSize: '16px', lineHeight: 1.8, color: '#4b5563', marginBottom: '16px' }}>
-            BioCycle Peptides est née de la passion pour la recherche scientifique et du constat 
-            qu&apos;il manquait au Canada un fournisseur fiable de peptides de recherche de haute qualité 
-            à des prix accessibles.
+            {t('about.historyP1')}
           </p>
           <p style={{ fontSize: '16px', lineHeight: 1.8, color: '#4b5563', marginBottom: '16px' }}>
-            Fondée à Montréal, notre entreprise s&apos;est donnée pour mission de fournir aux chercheurs 
-            canadiens et internationaux des composés synthétiques de la plus haute pureté, accompagnés 
-            de certificats d&apos;analyse détaillés pour chaque lot.
+            {t('about.historyP2')}
           </p>
           <p style={{ fontSize: '16px', lineHeight: 1.8, color: '#4b5563' }}>
-            Aujourd&apos;hui, nous sommes fiers de servir des milliers de chercheurs à travers le monde, 
-            des universités aux laboratoires privés, en passant par les institutions de recherche.
+            {t('about.historyP3')}
           </p>
         </section>
 
         {/* Notre engagement */}
         <section style={{ marginBottom: '64px' }}>
           <h2 style={{ fontSize: '28px', fontWeight: 600, marginBottom: '24px', color: '#1f2937' }}>
-            Notre engagement qualité
+            {t('about.qualityTitle')}
           </h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
-            <FeatureCard 
+            <FeatureCard
               icon="🔬"
-              title="Tests par laboratoires tiers"
-              description="Chaque lot est analysé par des laboratoires indépendants accrédités. HPLC et spectrométrie de masse pour garantir pureté et identité."
+              title={t('about.labTestsTitle')}
+              description={t('about.labTestsDescription')}
             />
-            <FeatureCard 
+            <FeatureCard
               icon="📋"
-              title="Certificats d'analyse"
-              description="COA détaillé fourni avec chaque produit. Traçabilité complète du lot de fabrication à la livraison."
+              title={t('about.coaTitle')}
+              description={t('about.coaDescription')}
             />
-            <FeatureCard 
+            <FeatureCard
               icon="❄️"
-              title="Chaîne du froid"
-              description="Expédition avec packs réfrigérants. Stockage contrôlé pour préserver l'intégrité des peptides."
+              title={t('about.coldChainTitle')}
+              description={t('about.coldChainDescription')}
             />
-            <FeatureCard 
+            <FeatureCard
               icon="🛡️"
-              title="Conformité réglementaire"
-              description="Respect des normes cGMP. Documentation complète pour la conformité de votre recherche."
+              title={t('about.complianceTitle')}
+              description={t('about.complianceDescription')}
             />
           </div>
         </section>
 
         {/* Navigation vers autres pages */}
-        <section style={{ 
-          padding: '40px', 
-          backgroundColor: '#f9fafb', 
+        <section style={{
+          padding: '40px',
+          backgroundColor: '#f9fafb',
           borderRadius: '16px',
           textAlign: 'center'
         }}>
           <h2 style={{ fontSize: '24px', fontWeight: 600, marginBottom: '24px', color: '#1f2937' }}>
-            En savoir plus
+            {t('about.learnMoreTitle')}
           </h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '16px' }}>
-            <NavLink href="/a-propos/mission">Notre mission</NavLink>
-            <NavLink href="/a-propos/valeurs">Nos valeurs</NavLink>
-            <NavLink href="/a-propos/histoire">Notre histoire</NavLink>
-            <NavLink href="/a-propos/engagements">Nos engagements</NavLink>
+            <NavLink href="/a-propos/mission">{t('about.missionLink')}</NavLink>
+            <NavLink href="/a-propos/valeurs">{t('about.valuesLink')}</NavLink>
+            <NavLink href="/a-propos/histoire">{t('about.historyLink')}</NavLink>
+            <NavLink href="/a-propos/engagements">{t('about.commitmentsLink')}</NavLink>
           </div>
         </section>
 
         {/* CTA */}
         <section style={{ marginTop: '64px', textAlign: 'center' }}>
           <h2 style={{ fontSize: '28px', fontWeight: 600, marginBottom: '16px', color: '#1f2937' }}>
-            Prêt à découvrir nos produits?
+            {t('about.ctaTitle')}
           </h2>
           <p style={{ fontSize: '16px', color: '#6b7280', marginBottom: '24px' }}>
-            Explorez notre catalogue de peptides et suppléments de recherche de haute qualité.
+            {t('about.ctaDescription')}
           </p>
-          <Link 
+          <Link
             href="/shop"
-            style={{ 
+            style={{
               display: 'inline-block',
-              padding: '14px 32px', 
-              backgroundColor: '#CC5500', 
-              color: 'white', 
+              padding: '14px 32px',
+              backgroundColor: '#238838',
+              color: 'white',
               borderRadius: '8px',
               fontWeight: 600,
               textDecoration: 'none'
             }}
           >
-            Voir nos produits →
+            {t('about.ctaButton')} →
           </Link>
         </section>
       </div>
@@ -141,7 +140,7 @@ export default function AboutPage() {
 function StatCard({ number, label }: { number: string; label: string }) {
   return (
     <div style={{ padding: '24px' }}>
-      <div style={{ fontSize: '36px', fontWeight: 700, color: '#CC5500', marginBottom: '8px' }}>
+      <div style={{ fontSize: '36px', fontWeight: 700, color: '#238838', marginBottom: '8px' }}>
         {number}
       </div>
       <div style={{ fontSize: '14px', color: '#6b7280' }}>{label}</div>
@@ -151,9 +150,9 @@ function StatCard({ number, label }: { number: string; label: string }) {
 
 function FeatureCard({ icon, title, description }: { icon: string; title: string; description: string }) {
   return (
-    <div style={{ 
-      padding: '24px', 
-      backgroundColor: '#f9fafb', 
+    <div style={{
+      padding: '24px',
+      backgroundColor: '#f9fafb',
       borderRadius: '12px',
       border: '1px solid #e5e7eb'
     }}>

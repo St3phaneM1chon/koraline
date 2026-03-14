@@ -17,7 +17,13 @@
 
 import { Queue, Worker, Job, type ConnectionOptions } from 'bullmq';
 import { logger } from '@/lib/logger';
-import { moveToDeadLetterQueue } from '@/lib/queue/dlq';
+
+// Lazy import to break circular dependency: queue.ts ↔ queue/dlq.ts
+// dlq.ts imports createQueue/addJob from queue.ts, so we can't import dlq.ts at top level.
+async function lazyMoveToDeadLetterQueue(queueName: string, job: Job, error: Error): Promise<void> {
+  const { moveToDeadLetterQueue } = await import('@/lib/queue/dlq');
+  return moveToDeadLetterQueue(queueName, job, error);
+}
 
 // ---------------------------------------------------------------------------
 // Queue name constants — matching existing cron job route names
@@ -255,7 +261,7 @@ export function createWorker(
         });
 
         // Fire-and-forget: copy job data to DLQ. Errors are logged internally.
-        moveToDeadLetterQueue(name, job, err).catch((dlqErr) => {
+        lazyMoveToDeadLetterQueue(name, job, err).catch((dlqErr) => {
           logger.error('[queue] Failed to move job to DLQ', {
             queue: name,
             jobId: job?.id,
