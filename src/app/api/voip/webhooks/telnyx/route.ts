@@ -12,6 +12,12 @@ export const dynamic = 'force-dynamic';
  *
  * Configure this URL in Telnyx Portal:
  *   https://biocyclepeptides.com/api/voip/webhooks/telnyx
+ *
+ * SECURITY AUDIT 2026-03-15: PAYMENT-PCI — VERIFIED SAFE.
+ * POST handler verifies Telnyx HMAC-SHA256 signature using TELNYX_WEBHOOK_SECRET.
+ * Includes timestamp replay protection (5-minute window) and timing-safe comparison.
+ * In production, requests are rejected if TELNYX_WEBHOOK_SECRET is not configured.
+ * Redis-based idempotency check prevents duplicate event processing (24h TTL).
  */
 
 import { NextRequest, NextResponse } from 'next/server';

@@ -128,7 +128,8 @@ export async function generateRevenueForecast(
     const predicted = Math.round(baselinePrediction * 0.6 + pipelineContribution * 0.4);
 
     // Confidence interval: wider for months further out
-    const uncertaintyFactor = 1 + i * 0.05; // 5% more uncertainty per month
+    const UNCERTAINTY_GROWTH_PER_MONTH = 0.05; // 5% more uncertainty per month
+    const uncertaintyFactor = 1 + i * UNCERTAINTY_GROWTH_PER_MONTH;
     const variance = predicted * 0.2 * uncertaintyFactor;
     const low = Math.max(0, Math.round(predicted - variance));
     const high = Math.round(predicted + variance);

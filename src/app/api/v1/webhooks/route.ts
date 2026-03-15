@@ -5,8 +5,12 @@ export const dynamic = 'force-dynamic';
  * GET  /api/v1/webhooks - List registered webhooks for this API key
  * POST /api/v1/webhooks - Register a new webhook endpoint
  *
- * AUDIT: This is a webhook REGISTRATION endpoint, NOT a webhook receiver.
- * Auth: withApiAuth middleware validates API key on every request.
+ * SECURITY AUDIT 2026-03-15: PAYMENT-PCI — VERIFIED SAFE (NOT A WEBHOOK RECEIVER).
+ * This is a webhook REGISTRATION endpoint, not a webhook receiver. It does not
+ * process incoming payment/provider events. Both GET and POST are protected by
+ * withApiAuth middleware which validates API key + required permissions
+ * ('webhooks:read' / 'webhooks:write') on every request. No signature verification
+ * is needed because this endpoint does not receive external provider callbacks.
  */
 
 import { NextRequest } from 'next/server';

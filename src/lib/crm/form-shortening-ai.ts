@@ -27,13 +27,15 @@ let _openai: ReturnType<typeof require> | null = null;
 function getOpenAI(): { chat: { completions: { create: (params: Record<string, unknown>) => Promise<{ choices?: { message?: { content?: string } }[] }> } } } {
   if (_openai) return _openai;
 
-  if (!process.env.OPENAI_API_KEY) {
-    throw new Error('OPENAI_API_KEY not set');
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error('OpenAI API key is not configured');
   }
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { default: OpenAI } = require('openai');
-  _openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  // Security: pass key by reference, never log or expose it
+  _openai = new OpenAI({ apiKey });
   return _openai;
 }
 
@@ -143,6 +145,8 @@ async function getFormMetricsData(
     const trail = await prisma.auditTrail.findFirst({
       where: { entityType: 'FORM_METRICS', entityId: formId, action: 'CONFIG' },
       orderBy: { createdAt: 'desc' },
+      // Security: select only metadata to avoid exposing userId or other audit fields
+      select: { metadata: true },
     });
     if (!trail) return null;
     return (trail.metadata as Record<string, unknown>) || null;

@@ -29,13 +29,15 @@ let _openai: OpenAIClient | null = null;
 function getOpenAI(): OpenAIClient {
   if (_openai) return _openai;
 
-  if (!process.env.OPENAI_API_KEY) {
-    throw new Error('OPENAI_API_KEY not set');
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error('OpenAI API key is not configured');
   }
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { default: OpenAI } = require('openai');
-  const client: OpenAIClient = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  // Security: pass key by reference, never log or expose it
+  const client: OpenAIClient = new OpenAI({ apiKey });
   _openai = client;
   return client;
 }
@@ -109,6 +111,8 @@ async function getWarmupData(domain: string): Promise<WarmupPlan | null> {
     const trail = await prisma.auditTrail.findFirst({
       where: { entityType: 'DOMAIN_WARMUP', entityId: sanitizeDomain(domain), action: 'CONFIG' },
       orderBy: { createdAt: 'desc' },
+      // Security: select only metadata - avoid exposing userId or other audit fields
+      select: { metadata: true },
     });
     if (!trail?.metadata) return null;
     const config = trail.metadata as Record<string, unknown>;
@@ -252,9 +256,11 @@ export async function getWarmupProgress(
   const todayLimit = todaySchedule?.dailyLimit || 0;
 
   // Get metrics from AuditTrail config store
+  // Security: select only metadata to avoid exposing sensitive audit fields
   const metricsTrail = await prisma.auditTrail.findFirst({
     where: { entityType: 'DOMAIN_WARMUP_METRICS', entityId: sanitizeDomain(domain), action: 'CONFIG' },
     orderBy: { createdAt: 'desc' },
+    select: { metadata: true },
   });
   const metrics = (metricsTrail?.metadata as unknown as Record<string, WarmupDayMetrics>) || {} as Record<string, WarmupDayMetrics>;
 
@@ -323,9 +329,11 @@ export async function updateWarmupMetrics(
   const domainId = sanitizeDomain(domain);
   const todayKey = new Date().toISOString().split('T')[0];
 
+  // Security: select only metadata to avoid exposing sensitive audit fields
   const existingTrail = await prisma.auditTrail.findFirst({
     where: { entityType: 'DOMAIN_WARMUP_METRICS', entityId: domainId, action: 'CONFIG' },
     orderBy: { createdAt: 'desc' },
+    select: { metadata: true },
   });
   const allMetrics = (existingTrail?.metadata as unknown as Record<string, WarmupDayMetrics>) || {} as Record<string, WarmupDayMetrics>;
 

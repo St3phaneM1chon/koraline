@@ -248,7 +248,11 @@ export default async function RootLayout({
         ))}
         <link rel="alternate" hrefLang="x-default" href="https://biocyclepeptides.com" />
         {/* Service worker registered via ServiceWorkerRegistration client component in body */}
-        {/* Anti-FOUC: apply dark class before first paint to avoid white flash */}
+        {/* Anti-FOUC: apply dark class before first paint to avoid white flash.
+            SECURITY AUDIT 2026-03-15: dangerouslySetInnerHTML — VERIFIED SAFE.
+            This script is a hardcoded inline snippet with zero user input.
+            It reads only from localStorage and conditionally adds a CSS class.
+            No user-controlled data is interpolated into the script content. */}
         <script dangerouslySetInnerHTML={{ __html: `try{var p=location.pathname;var k=p.startsWith('/admin')?'admin-theme':'site-theme';if(localStorage.getItem(k)==='dark')document.documentElement.classList.add('dark')}catch(e){}` }} />
       </head>
       <body className={`${inter.className} ${montserrat.variable}`}>

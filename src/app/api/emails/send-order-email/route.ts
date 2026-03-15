@@ -6,6 +6,7 @@ export const dynamic = 'force-dynamic';
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { timingSafeEqual } from 'crypto';
 import { z } from 'zod';
 import { auth } from '@/lib/auth-config';
 import { db } from '@/lib/db';
@@ -63,7 +64,15 @@ export async function POST(request: NextRequest) {
 
     // Autoriser si admin ou si clé API valide
     const isAdmin = session?.user?.role === 'OWNER' || session?.user?.role === 'EMPLOYEE';
-    const isValidApiKey = apiKey === process.env.INTERNAL_API_KEY;
+    // Timing-safe comparison to prevent timing attacks on API key
+    let isValidApiKey = false;
+    if (apiKey && process.env.INTERNAL_API_KEY) {
+      try {
+        const a = Buffer.from(process.env.INTERNAL_API_KEY, 'utf8');
+        const b = Buffer.from(apiKey, 'utf8');
+        isValidApiKey = a.length === b.length && timingSafeEqual(a, b);
+      } catch { /* length mismatch = invalid */ }
+    }
 
     if (!isAdmin && !isValidApiKey) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

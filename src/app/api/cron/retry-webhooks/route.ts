@@ -12,6 +12,11 @@ export const dynamic = 'force-dynamic';
  *
  * Authentication: Requires CRON_SECRET in Authorization header.
  * Recommended schedule: every 5 minutes.
+ *
+ * SECURITY AUDIT 2026-03-15: PAYMENT-PCI — VERIFIED SAFE.
+ * Both GET and POST handlers call verifyCronSecret() which performs
+ * timing-safe comparison of the Authorization Bearer token against
+ * CRON_SECRET env var. Requests without valid CRON_SECRET are rejected 401.
  */
 
 import { NextRequest, NextResponse } from 'next/server';

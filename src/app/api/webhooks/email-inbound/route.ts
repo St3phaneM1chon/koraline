@@ -9,7 +9,12 @@ export const dynamic = 'force-dynamic';
  * This is a SEPARATE webhook from /api/webhooks/inbound-email (which handles
  * the email conversation system). This one focuses on lead creation/enrichment.
  *
- * NO auth guard - this is a webhook endpoint.
+ * SECURITY AUDIT 2026-03-15: PAYMENT-PCI — VERIFIED SAFE.
+ * POST handler requires EMAIL_WEBHOOK_SECRET via x-webhook-secret header.
+ * Verification uses timing-safe comparison (verifyWebhookSecret). Requests
+ * are rejected 503 if EMAIL_WEBHOOK_SECRET is not configured, and rejected 401
+ * if the provided secret does not match. No dev-mode bypass.
+ * Redis-based idempotency check prevents duplicate email processing (24h TTL).
  */
 
 import { NextRequest, NextResponse } from 'next/server';

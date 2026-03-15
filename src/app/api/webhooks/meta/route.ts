@@ -5,7 +5,12 @@ export const dynamic = 'force-dynamic';
  * GET:  Meta webhook verification (hub.verify_token, hub.challenge).
  * POST: Handle incoming Facebook Messenger and Instagram DM messages.
  *
- * NO auth guard - this is a webhook endpoint.
+ * SECURITY AUDIT 2026-03-15: PAYMENT-PCI — VERIFIED SAFE.
+ * GET handler uses timing-safe token verification (verifyTokenSafe) for Meta
+ * subscription verification. POST handler verifies x-hub-signature-256 HMAC-SHA256
+ * signature using META_APP_SECRET (verifyMetaSignature). Requests are rejected 503
+ * if META_APP_SECRET is not configured, and rejected 401 on invalid signature.
+ * Redis-based idempotency check prevents duplicate event processing (24h TTL).
  */
 
 import { NextRequest, NextResponse } from 'next/server';

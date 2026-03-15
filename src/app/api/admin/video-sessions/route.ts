@@ -128,9 +128,15 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
       }
     }
 
+    // Security: strip sensitive platform credentials from response
+    const { password: _meetingPwd, hostJoinUrl: _hostUrl, ...safeSession } = videoSession;
+
+    // Also strip sensitive fields from meeting object
+    const { password: _mPwd, hostJoinUrl: _mHostUrl, ...safeMeeting } = meeting;
+
     return NextResponse.json({
-      session: videoSession,
-      meeting,
+      session: safeSession,
+      meeting: safeMeeting,
       email: emailResult
         ? { sent: emailResult.success, error: emailResult.error }
         : null,
@@ -187,8 +193,11 @@ export const GET = withAdminGuard(async (request: NextRequest) => {
       prisma.videoSession.count({ where }),
     ]);
 
+    // Security: strip sensitive platform credentials from each session
+    const safeSessions = sessions.map(({ password: _pwd, hostJoinUrl: _hUrl, ...rest }) => rest);
+
     return NextResponse.json({
-      sessions,
+      sessions: safeSessions,
       pagination: {
         page,
         limit,

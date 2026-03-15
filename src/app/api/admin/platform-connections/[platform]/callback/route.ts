@@ -43,11 +43,20 @@ export async function GET(request: NextRequest, context: RouteParams) {
     }
 
     // Verify admin session — only EMPLOYEE/OWNER can connect platforms
+    // Note: This uses inline auth() instead of withAdminGuard because OAuth callbacks
+    // must return redirects (not JSON errors) and handle platform error/code params first.
     const session = await auth();
     const userId = session?.user?.id;
     const userRole = (session?.user as any)?.role;
 
     if (!userId || !['OWNER', 'EMPLOYEE'].includes(userRole)) {
+      logger.warn('[OAuth Callback] Unauthorized access attempt', {
+        event: 'oauth_callback_auth_denied',
+        platform,
+        hasSession: !!session,
+        userId: userId || 'none',
+        role: userRole || 'none',
+      });
       return NextResponse.redirect(
         publicRedirect('/admin/media/connections?error=unauthorized')
       );

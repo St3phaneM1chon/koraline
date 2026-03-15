@@ -43,7 +43,7 @@ export const GET = withAdminGuard(async (_request, { params }) => {
         role: true,
         phone: true,
         locale: true,
-        password: true,
+        // Security: never select password hash - use a count/exists check instead
         createdAt: true,
         updatedAt: true,
         sessions: {
@@ -61,6 +61,11 @@ export const GET = withAdminGuard(async (_request, { params }) => {
     if (!['EMPLOYEE', 'OWNER'].includes(user.role)) {
       return NextResponse.json({ error: 'User is not an employee' }, { status: 404 });
     }
+
+    // Security: check if user has a password set without fetching the hash value
+    const [{ hasPassword }] = await prisma.$queryRaw<[{ hasPassword: boolean }]>`
+      SELECT (password IS NOT NULL) AS "hasPassword" FROM "User" WHERE id = ${id}
+    `;
 
     // A7-P2-008: Flatten 3-level include into separate queries
     // (was: userPermissionGroup -> group -> permissions -> permission)
@@ -127,7 +132,7 @@ export const GET = withAdminGuard(async (_request, { params }) => {
         role: user.role,
         phone: user.phone,
         locale: user.locale,
-        hasPassword: !!(user as Record<string, unknown>).password,
+        hasPassword,
         isActive: true,
         lastLogin,
         createdAt: user.createdAt.toISOString(),
@@ -176,8 +181,10 @@ export const PATCH = withAdminGuard(async (request, { session, params }) => {
     }
     const data = parsed.data;
 
+    // Security: select only needed fields, never fetch password/tokens
     const existing = await prisma.user.findUnique({
       where: { id },
+      select: { id: true, email: true, name: true, role: true },
     });
 
     if (!existing) {
@@ -365,8 +372,10 @@ export const DELETE = withAdminGuard(async (_request, { session, params }) => {
       );
     }
 
+    // Security: select only needed fields, never fetch password/tokens
     const existing = await prisma.user.findUnique({
       where: { id },
+      select: { id: true, email: true, name: true, role: true },
     });
 
     if (!existing) {
@@ -389,6 +398,7 @@ export const DELETE = withAdminGuard(async (_request, { session, params }) => {
     const updated = await prisma.user.update({
       where: { id },
       data: { role: 'PUBLIC' },
+      select: { id: true, email: true, name: true, role: true },
     });
 
     // Remove all permission overrides

@@ -77,22 +77,29 @@ export function calculateTax(
   }
 
   const breakdown: TaxBreakdown[] = [];
-  let gst = 0, pst = 0, hst = 0, qst = 0;
+  // Tax component accumulators (initialized below based on province rates)
+  let gst: number;
+  let pst: number;
+  let hst: number;
+  let qst: number;
 
   if (rates.hst > 0) {
     hst = round(subtotal * rates.hst / 100);
+    gst = 0; pst = 0; qst = 0;
     breakdown.push({ name: 'TVH / HST', rate: rates.hst, amount: hst, registrationNumber: tpsNumber });
   } else {
-    if (rates.gst > 0) {
-      gst = round(subtotal * rates.gst / 100);
+    hst = 0;
+    gst = rates.gst > 0 ? round(subtotal * rates.gst / 100) : 0;
+    qst = rates.qst > 0 ? round(subtotal * rates.qst / 100) : 0;
+    pst = rates.pst > 0 ? round(subtotal * rates.pst / 100) : 0;
+
+    if (gst > 0) {
       breakdown.push({ name: 'TPS / GST', rate: rates.gst, amount: gst, registrationNumber: tpsNumber });
     }
-    if (rates.qst > 0) {
-      qst = round(subtotal * rates.qst / 100);
+    if (qst > 0) {
       breakdown.push({ name: 'TVQ / QST', rate: rates.qst, amount: qst, registrationNumber: tvqNumber });
     }
-    if (rates.pst > 0) {
-      pst = round(subtotal * rates.pst / 100);
+    if (pst > 0) {
       breakdown.push({ name: 'TVP / PST', rate: rates.pst, amount: pst });
     }
   }
@@ -381,28 +388,33 @@ export function calculateDigitalGoodsTax(
   const isPstExempt = DIGITAL_GOODS_PST_EXEMPT_PROVINCES.has(prov);
 
   const breakdown: TaxBreakdown[] = [];
-  let gst = 0, pst = 0, hst = 0, qst = 0;
+  // Tax component accumulators (initialized below based on province rates)
+  let gst: number;
+  let pst: number;
+  let hst: number;
+  let qst: number;
 
   if (rates.hst > 0) {
     // HST provinces: HST always applies to digital goods (no exemption)
     hst = round(subtotal * rates.hst / 100);
+    gst = 0; pst = 0; qst = 0;
     breakdown.push({ name: 'TVH / HST', rate: rates.hst, amount: hst });
   } else {
+    hst = 0;
     // GST always applies
-    if (rates.gst > 0) {
-      gst = round(subtotal * rates.gst / 100);
+    gst = rates.gst > 0 ? round(subtotal * rates.gst / 100) : 0;
+    // QST applies to digital goods in Quebec
+    qst = rates.qst > 0 ? round(subtotal * rates.qst / 100) : 0;
+    // PST: may be exempt for digital goods in some provinces
+    pst = (rates.pst > 0 && !isPstExempt) ? round(subtotal * rates.pst / 100) : 0;
+
+    if (gst > 0) {
       breakdown.push({ name: 'TPS / GST', rate: rates.gst, amount: gst });
     }
-
-    // QST applies to digital goods in Quebec
-    if (rates.qst > 0) {
-      qst = round(subtotal * rates.qst / 100);
+    if (qst > 0) {
       breakdown.push({ name: 'TVQ / QST', rate: rates.qst, amount: qst });
     }
-
-    // PST: may be exempt for digital goods in some provinces
     if (rates.pst > 0 && !isPstExempt) {
-      pst = round(subtotal * rates.pst / 100);
       breakdown.push({ name: 'TVP / PST', rate: rates.pst, amount: pst });
     } else if (rates.pst > 0 && isPstExempt) {
       breakdown.push({ name: 'TVP / PST (digital exempt)', rate: 0, amount: 0 });

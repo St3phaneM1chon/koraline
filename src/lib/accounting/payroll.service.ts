@@ -285,8 +285,8 @@ export function calculateFederalTax(
     tax += taxableInBracket * bracket.rate;
   }
 
-  // Subtract non-refundable credit (15% of personal amount)
-  const personalCredit = td1Credit * 0.15;
+  // Subtract non-refundable credit (lowest federal bracket rate of personal amount)
+  const personalCredit = td1Credit * FEDERAL_TAX_BRACKETS_2026[0].rate;
   // Also subtract CPP/QPP and EI credits (calculated elsewhere, but the basic method
   // uses the TD1 credit which includes them)
   tax = Math.max(0, tax - personalCredit);
@@ -339,8 +339,8 @@ function calculateQuebecTax(
     tax += taxableInBracket * bracket.rate;
   }
 
-  // Quebec non-refundable credit: 14% of personal amount (lowest bracket rate)
-  const personalCredit = tdCredit * 0.14;
+  // Quebec non-refundable credit: lowest QC bracket rate of personal amount
+  const personalCredit = tdCredit * QC_TAX_BRACKETS_2026[0].rate;
   tax = Math.max(0, tax - personalCredit);
 
   // Quebec abatement: Quebec residents get a 16.5% reduction on federal tax

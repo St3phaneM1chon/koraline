@@ -10,6 +10,7 @@ export const dynamic = 'force-dynamic';
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { timingSafeEqual } from 'crypto';
 import { z } from 'zod';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { syncAds } from '@/lib/ads/ads-sync';
@@ -20,12 +21,18 @@ const adsSyncSchema = z.object({
   platform: z.string().optional(),
 });
 
-// V-025 FIX: Add CRON_SECRET validation for automated calls
+// V-025 FIX: CRON_SECRET validation for automated calls (timing-safe to prevent timing attacks)
 function validateCronSecret(request: NextRequest): boolean {
   const secret = request.headers.get('x-cron-secret') || request.headers.get('authorization')?.replace('Bearer ', '');
   const expected = process.env.CRON_SECRET;
-  if (!expected) return false;
-  return secret === expected;
+  if (!expected || !secret) return false;
+  try {
+    const a = Buffer.from(expected, 'utf8');
+    const b = Buffer.from(secret, 'utf8');
+    return a.length === b.length && timingSafeEqual(a, b);
+  } catch {
+    return false;
+  }
 }
 
 // Admin-authenticated handler

@@ -46,7 +46,7 @@ export const GET = withAdminGuard(async (request: NextRequest, _ctx) => {
           image: true,
           role: true,
           phone: true,
-          password: true,
+          // Security: never select password hash - use separate hasPassword check
           createdAt: true,
           updatedAt: true,
           sessions: {
@@ -62,9 +62,17 @@ export const GET = withAdminGuard(async (request: NextRequest, _ctx) => {
       prisma.user.count({ where }),
     ]);
 
+    // Security: batch check which users have a password without fetching hashes
+    const userIds = users.map((u) => u.id);
+    const passwordChecks = userIds.length > 0
+      ? await prisma.$queryRaw<Array<{ id: string; hasPassword: boolean }>>`
+          SELECT id, (password IS NOT NULL) AS "hasPassword" FROM "User" WHERE id = ANY(${userIds})
+        `
+      : [];
+    const hasPasswordMap = new Map(passwordChecks.map((r) => [r.id, r.hasPassword]));
+
     // A7-P2-008: Flatten 3-level include into separate queries
     // (was: userPermissionGroup -> group -> permissions -> permission)
-    const userIds = users.map((u) => u.id);
     const userPermGroups = await prisma.userPermissionGroup.findMany({
       where: { userId: { in: userIds } },
       include: {
@@ -152,7 +160,7 @@ export const GET = withAdminGuard(async (request: NextRequest, _ctx) => {
         permissionGroups: userPerms?.groups || [],
         lastLogin,
         isActive,
-        hasPassword: !!(user as Record<string, unknown>).password,
+        hasPassword: hasPasswordMap.get(user.id) ?? false,
         createdAt: user.createdAt.toISOString(),
       };
     });

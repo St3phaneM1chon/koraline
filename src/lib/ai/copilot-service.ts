@@ -914,7 +914,7 @@ From the invoice text, extract:
 Then suggest a **journal entry** using the chart of accounts provided:
 - Debit the appropriate expense/asset account
 - Credit Accounts Payable
-- Include tax accounts if applicable (GST: usually account 2300+, QST: 2310+)
+- Include tax accounts if applicable (TPS/GST uses account codes starting at 2300, TVQ/QST uses account codes starting at 2310)
 
 Available chart of accounts:
 ${chartOfAccounts.map(a => `${a.code} - ${a.name} (${a.type})`).join('\n')}
