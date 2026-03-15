@@ -381,6 +381,26 @@ export default class TaxAccuracyAuditor extends BaseAuditor {
           continue; // Data declaration, not logic
         }
 
+        // Skip files where "exempt" only appears inside comments or JSDoc blocks.
+        // This catches export utility files that mention "tax-exempt" in CSV column
+        // documentation but don't implement tax exemption logic themselves.
+        const exemptLine = content.split('\n').find(line => /exempt/i.test(line));
+        if (exemptLine) {
+          const trimmedExemptLine = exemptLine.trim();
+          if (trimmedExemptLine.startsWith('//') || trimmedExemptLine.startsWith('*') || trimmedExemptLine.startsWith('/*')) {
+            // Check if ALL occurrences of "exempt" are in comments
+            const allExemptInComments = content.split('\n')
+              .filter(line => /exempt/i.test(line))
+              .every(line => {
+                const t = line.trim();
+                return t.startsWith('//') || t.startsWith('*') || t.startsWith('/*');
+              });
+            if (allExemptInComments) {
+              continue; // Exempt only mentioned in comments/JSDoc, not actual code
+            }
+          }
+        }
+
         // Skip UI/admin pages that merely declare a state variable for exemption settings
         // (e.g., `taxExemptProducts: [] as string[]` in useState). These are config UI pages,
         // not tax calculation logic files.

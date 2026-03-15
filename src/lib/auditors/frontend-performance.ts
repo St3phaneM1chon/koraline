@@ -362,6 +362,12 @@ export default class FrontendPerformanceAuditor extends BaseAuditor {
       const content = this.readFile(file);
       if (!content) continue;
 
+      // Client components ('use client') handle async operations via useEffect + useState,
+      // not via async Server Components. Suspense boundaries are irrelevant for them
+      // because they manage their own loading/error states client-side.
+      const isClientComponent = /^['"]use client['"]/m.test(content);
+      if (isClientComponent) continue;
+
       // Detect async components
       const isAsync = /async\s+(?:function\s+)?\w+.*?Page|export\s+default\s+async/.test(content);
       const usesAwait = /await\s/.test(content);

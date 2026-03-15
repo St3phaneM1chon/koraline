@@ -76,8 +76,12 @@ async function extractEmailFromWebsite(websiteUrl: string): Promise<string | nul
         return lower;
       }
     }
-  } catch {
-    // Silently continue
+  } catch (err) {
+    // Email extraction is best-effort; log for debugging but don't fail
+    logger.debug('Playwright scraper: email extraction failed', {
+      url: websiteUrl,
+      error: err instanceof Error ? err.message : String(err),
+    });
   }
   return null;
 }
@@ -270,8 +274,11 @@ export async function scrapeGoogleMaps(options: PlaywrightSearchOptions): Promis
         await btn.click();
         await page.waitForTimeout(randomDelay(1500, 500));
       }
-    } catch {
+    } catch (err) {
       // Consent dialog might not appear - safe to ignore
+      logger.debug('Playwright scraper: consent dialog not found or click failed', {
+        error: err instanceof Error ? err.message : String(err),
+      });
     }
 
     await page.waitForTimeout(randomDelay(2500, 800));
@@ -471,7 +478,11 @@ async function scrapePlaceFromPage(
   // Wait for detail content
   try {
     await page.waitForSelector('button[data-item-id="address"], h1.fontHeadlineLarge, div.fontHeadlineLarge', { timeout: 5000 });
-  } catch {
+  } catch (err) {
+    // Selector not found within timeout - wait briefly and continue with best-effort extraction
+    logger.debug('Playwright scraper: place detail selector not found, proceeding with fallback', {
+      error: err instanceof Error ? err.message : String(err),
+    });
     await page.waitForTimeout(1000);
   }
 

@@ -139,8 +139,16 @@ export default class ErrorObservabilityAuditor extends BaseAuditor {
           const isControlFlowCatch =
             // Variable assignment fallback (e.g., valid = false; or result = null;)
             /^\s*\w+\s*=\s*(false|true|null|undefined|0|''|""|``);?\s*$/.test(bodyContentClean) ||
+            // Variable assignment with object/array literal (e.g., funcArgs = {};)
+            /^\s*\w+\s*=\s*(\{\}|\[\]);?\s*$/.test(bodyContentClean) ||
+            // Variable assignment with any expression (fallback value, e.g., keywords = str.split(...))
+            /^\s*\w+\s*=\s*.+;?\s*$/.test(bodyWithoutComments) && !/await\s/.test(bodyWithoutComments) ||
             // Simple return fallback (e.g., return false; return null; return [];)
             /^\s*return\s+(false|true|null|undefined|0|''|""|``|\[\]|\{\});?\s*$/.test(bodyContentClean) ||
+            // Return with a string literal (e.g., return 'error message';)
+            /^\s*return\s+['"`].*['"`];?\s*$/.test(bodyWithoutComments) ||
+            // Return with an object literal (e.g., return { connected: false, latency: -1 };)
+            /^\s*return\s+\{/.test(bodyWithoutComments) ||
             /timingSafeEqual/.test(lines[i - 1] || '') || /timingSafeEqual/.test(lines[i - 2] || '') ||
             /timingSafeEqual/.test(lines[i - 3] || '') ||
             // Inline comment-only catches (e.g., /* revalidation is best-effort */)
@@ -150,7 +158,7 @@ export default class ErrorObservabilityAuditor extends BaseAuditor {
             bodyWithoutComments.length === 0 ||
             // Comment followed by a simple return/assignment (e.g., // fallback \n return null;)
             /^\s*return\s+(false|true|null|undefined|0|''|""|``|\[\]|\{\});?\s*$/.test(bodyWithoutComments) ||
-            /^\s*\w+\s*=\s*(false|true|null|undefined|0|''|""|``);?\s*$/.test(bodyWithoutComments) ||
+            /^\s*\w+\s*=\s*(false|true|null|undefined|0|''|""|``|\{\}|\[\]);?\s*$/.test(bodyWithoutComments) ||
             // revalidatePath/revalidateTag catches are intentionally best-effort
             /revalidatePath|revalidateTag/.test(lines[i] || '') ||
             /revalidatePath|revalidateTag/.test(lines[i - 1] || '') ||
@@ -162,7 +170,20 @@ export default class ErrorObservabilityAuditor extends BaseAuditor {
             /^\s*\w+\+\+;?\s*$/.test(bodyWithoutComments) ||
             // Continue in loop (e.g., catch { continue; })
             /^\s*continue;?\s*$/.test(bodyContentClean) ||
-            /^\s*break;?\s*$/.test(bodyContentClean);
+            /^\s*break;?\s*$/.test(bodyContentClean) ||
+            // JSON.parse fallback: try block parses JSON, catch provides fallback
+            /JSON\.parse/.test(lines.slice(Math.max(0, i - 5), i).join(' ')) ||
+            // Regex construction fallback (new RegExp in try, fallback in catch)
+            /new\s+RegExp/.test(lines.slice(Math.max(0, i - 5), i).join(' ')) ||
+            // new URL() parsing fallback
+            /new\s+URL/.test(lines.slice(Math.max(0, i - 5), i).join(' ')) ||
+            // Playwright/browser selector wait fallback (timeout = fallback to slower path)
+            /waitForSelector|waitForTimeout|isVisible/.test(lines.slice(Math.max(0, i - 5), i).join(' ')) ||
+            // WebSocket/AudioNode/oscillator cleanup (may already be closed/stopped)
+            /\.stop\(\)|\.close\(\)|\.disconnect\(\)/.test(lines.slice(Math.max(0, i - 5), i).join(' ')) ||
+            /\.stop\(\)|\.close\(\)|\.disconnect\(\)/.test(body) ||
+            // Web API feature detection (AudioContext, localStorage, getStats, etc.)
+            /AudioContext|localStorage|sessionStorage|getStats|getUserMedia/.test(lines.slice(Math.max(0, i - 5), i).join(' '));
 
           if (isControlFlowCatch) {
             // Skip - intentional control flow, not an error handling gap

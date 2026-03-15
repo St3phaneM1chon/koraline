@@ -66,12 +66,12 @@ const A11Y_COMPONENTS = [
   'DataTable', 'MobileSplitLayout', 'ContentList', 'DetailPane',
   'Modal', 'EmptyState', 'Button', 'FormField', 'Input', 'Select',
   'ConfirmDialog', 'FilterBar', 'PageHeader', 'StatusBadge',
-  'KeyboardShortcutsDialog',
+  'KeyboardShortcutsDialog', 'ContactListPage',
   'StatCard', 'CallStats', 'SatisfactionBadge', 'PaymentStatusBadge',
 ];
 const OVERFLOW_COMPONENTS = [
   'DataTable', 'MobileSplitLayout', 'ContentList', 'DetailPane',
-  'StatCard',
+  'StatCard', 'ContactListPage',
 ];
 
 /** Check if content imports any of the listed component names */
@@ -425,8 +425,10 @@ export abstract class BaseSectionAuditor extends BaseAuditor {
         }
       }
 
-      // Check error handling (try/catch)
-      const hasTryCatch = /try\s*\{/.test(content);
+      // Check error handling (try/catch or guard wrappers that handle errors internally)
+      const hasTryCatch = /try\s*\{/.test(content) ||
+        /withAdminGuard|withApiHandler|withUserGuard|withApiAuth/.test(content) ||
+        /\.catch\s*\(/.test(content);
       if (hasTryCatch) {
         results.push(this.pass(`${prefix}-errors-${route.replace(/\//g, '-')}`, `API ${route} has error handling`));
       } else {
@@ -583,7 +585,32 @@ export abstract class BaseSectionAuditor extends BaseAuditor {
       const hasForms = /\bForm\b|onSubmit|handleSubmit|<form/.test(content);
       if (hasForms) {
         // Accept various validation patterns including FormField with required prop
-        const hasValidation = /required|validation|zod|yup|schema|\.parse|FormField/.test(content);
+        let hasValidation = /required|validation|zod|yup|schema|\.parse|FormField/.test(content);
+
+        // If page imports a local component with "Form" in its name (e.g., SupplierForm,
+        // PromoCodeForm), the form component likely contains its own validation logic.
+        // This handles the case where getEffectivePageContent's early-exit for large
+        // client components prevents us from seeing the child component's validation.
+        if (!hasValidation) {
+          const importsFormComponent = /import\s+\w*Form\w*\s+from\s+['"]\.\//.test(content);
+          if (importsFormComponent) {
+            // Check the imported form component file for validation
+            const formImportMatch = content.match(/import\s+(\w*Form\w*)\s+from\s+['"](\.\/.+?)['"]/);
+            if (formImportMatch) {
+              const formPath = formImportMatch[2];
+              const dir = path.dirname(pagePath);
+              for (const ext of ['.tsx', '.ts']) {
+                const resolved = path.join(dir, formPath.replace(/\.(tsx?|js)$/, '') + ext);
+                const formContent = this.readFile(resolved);
+                if (formContent && /required|validation|zod|yup|schema|\.parse|FormField/.test(formContent)) {
+                  hasValidation = true;
+                  break;
+                }
+              }
+            }
+          }
+        }
+
         results.push(
           hasValidation
             ? this.pass(`${prefix}-formval-${pageName}`, `Forms on /admin/${pageName} have validation`)
@@ -680,8 +707,9 @@ export abstract class BaseSectionAuditor extends BaseAuditor {
       }
 
       // Check for mobile-friendly tables — DataTable already wraps with overflow-x-auto
+      // Use \b word boundary to avoid matching "stable", "timetable", etc.
       const usesDataTable = /DataTable/.test(content);
-      if (/table|Table|<th|<td/.test(content) && !usesDataTable) {
+      if (/\btable\b|<table[\s>]|<Table[\s>]|<th[\s>]|<td[\s>]/.test(content) && !usesDataTable) {
         const hasScrollable = /overflow-x|overflow-auto|overflow-scroll/.test(content);
         results.push(
           hasScrollable

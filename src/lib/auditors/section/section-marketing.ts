@@ -70,10 +70,14 @@ export default class SectionMarketingAuditor extends BaseSectionAuditor {
     }
 
     // Newsletter API should have send/schedule capability
+    // Check both the base route AND sub-routes (e.g., /campaigns/route.ts)
     const newsletterRoute = path.join(this.srcDir, 'app', 'api', 'admin', 'newsletter', 'route.ts');
-    const newsletterContent = this.readFile(newsletterRoute);
-    if (newsletterContent) {
-      const hasSend = /send|schedule|dispatch|queue|campaign/.test(newsletterContent);
+    const newsletterCampaignsRoute = path.join(this.srcDir, 'app', 'api', 'admin', 'newsletter', 'campaigns', 'route.ts');
+    const newsletterContent = this.readFile(newsletterRoute) || '';
+    const campaignsContent = this.readFile(newsletterCampaignsRoute) || '';
+    const combinedNewsletter = newsletterContent + campaignsContent;
+    if (newsletterContent || campaignsContent) {
+      const hasSend = /send|schedule|dispatch|queue|campaign/.test(combinedNewsletter);
       results.push(
         hasSend
           ? this.pass(`${prefix}-newsletter-send`, 'Newsletter API has send/schedule capability')

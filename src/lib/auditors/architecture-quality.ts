@@ -279,7 +279,7 @@ export default class ArchitectureQualityAuditor extends BaseAuditor {
       { pattern: /fetch\s*\(\s*['"]https?:/, name: 'Direct external API calls' },
       { pattern: /new\s+Stripe\b/, name: 'SDK instantiation' },
       { pattern: /bcrypt|argon2/, name: 'Cryptographic operations' },
-      { pattern: /sendEmail|sendMail|transporter\.sendMail/, name: 'Email sending' },
+      { pattern: /(?<!['".\w])(?:sendEmail|sendMail|transporter\.sendMail)\s*\(/, name: 'Email sending' },
     ];
 
     const violations: { file: string; patterns: string[]; lines: number[] }[] = [];
