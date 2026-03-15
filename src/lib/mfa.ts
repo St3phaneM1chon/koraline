@@ -94,6 +94,19 @@ export async function hashBackupCode(code: string): Promise<string> {
 const backupCodeAttempts = new Map<string, { count: number; firstAttempt: number }>();
 const BACKUP_CODE_MAX_ATTEMPTS = 5;
 const BACKUP_CODE_WINDOW_MS = 3600_000; // 1 hour
+const BACKUP_CODE_CACHE_MAX = 10_000;
+
+// Evict oldest half when cache exceeds max size (prevents memory leak)
+function enforceBackupCodeCacheSize(): void {
+  if (backupCodeAttempts.size <= BACKUP_CODE_CACHE_MAX) return;
+  let deleted = 0;
+  const toDelete = Math.floor(backupCodeAttempts.size / 2);
+  for (const key of backupCodeAttempts.keys()) {
+    if (deleted >= toDelete) break;
+    backupCodeAttempts.delete(key);
+    deleted++;
+  }
+}
 
 export async function verifyBackupCode(
   code: string,
@@ -113,19 +126,23 @@ export async function verifyBackupCode(
         attempt.count++;
       }
     } else {
+      enforceBackupCodeCacheSize();
       backupCodeAttempts.set(userId, { count: 1, firstAttempt: now });
     }
   }
 
   const { compare } = await import('bcryptjs');
 
-  for (let i = 0; i < hashedCodes.length; i++) {
-    const isValid = await compare(code.toUpperCase(), hashedCodes[i]);
-    if (isValid) {
-      // Reset attempts on success
-      if (userId) backupCodeAttempts.delete(userId);
-      return { valid: true, usedIndex: i };
-    }
+  // Run all comparisons concurrently instead of sequentially
+  // (~100ms total vs ~1000ms for 10 codes)
+  const results = await Promise.all(
+    hashedCodes.map((hash) => compare(code.toUpperCase(), hash))
+  );
+
+  const matchIndex = results.findIndex((r) => r);
+  if (matchIndex !== -1) {
+    if (userId) backupCodeAttempts.delete(userId);
+    return { valid: true, usedIndex: matchIndex };
   }
 
   return { valid: false, usedIndex: -1 };

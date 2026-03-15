@@ -27,6 +27,28 @@ const AUTH_TAG_LENGTH = 16;
 const SALT_LENGTH = 32;
 const KEY_LENGTH = 32;
 
+// Derived key cache: avoids re-running scrypt (~50-100ms) for repeated
+// decrypt calls with the same salt (e.g. MFA secret verification).
+// Keyed by salt hex string. Max 200 entries with LRU eviction.
+const DERIVED_KEY_CACHE_MAX = 200;
+const derivedKeyCache = new Map<string, Buffer>();
+
+async function deriveKey(masterKey: string, salt: Buffer): Promise<Buffer> {
+  const cacheKey = salt.toString('hex');
+  const cached = derivedKeyCache.get(cacheKey);
+  if (cached) return cached;
+
+  const key = (await scryptAsync(masterKey, salt, KEY_LENGTH)) as Buffer;
+
+  if (derivedKeyCache.size >= DERIVED_KEY_CACHE_MAX) {
+    // Evict oldest entry (Map preserves insertion order)
+    const firstKey = derivedKeyCache.keys().next().value;
+    if (firstKey) derivedKeyCache.delete(firstKey);
+  }
+  derivedKeyCache.set(cacheKey, key);
+  return key;
+}
+
 // FIX: AMELIORATION-043 - Encryption key self-test at first use
 // Verifies that ENCRYPTION_KEY can successfully encrypt and decrypt a known plaintext.
 // Runs once per process lifetime; subsequent calls are no-ops.
@@ -81,8 +103,8 @@ export async function encrypt(plaintext: string): Promise<string> {
   const salt = randomBytes(SALT_LENGTH);
   const iv = randomBytes(IV_LENGTH);
 
-  // Dériver la clé avec scrypt
-  const key = (await scryptAsync(encryptionKey, salt, KEY_LENGTH)) as Buffer;
+  // Dériver la clé avec scrypt (cached for repeated salts)
+  const key = await deriveKey(encryptionKey, salt);
 
   // Chiffrer
   const cipher = createCipheriv(ALGORITHM, key, iv);
@@ -129,8 +151,8 @@ export async function decrypt(encryptedData: string): Promise<string> {
   );
   const encrypted = combined.subarray(SALT_LENGTH + IV_LENGTH + AUTH_TAG_LENGTH);
 
-  // Dériver la clé
-  const key = (await scryptAsync(encryptionKey, salt, KEY_LENGTH)) as Buffer;
+  // Dériver la clé (cached — same ciphertext always has same salt)
+  const key = await deriveKey(encryptionKey, salt);
 
   // Déchiffrer (authTagLength required by GCM spec to prevent tag truncation attacks)
   const decipher = createDecipheriv(ALGORITHM, key, iv, { authTagLength: AUTH_TAG_LENGTH });

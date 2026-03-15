@@ -75,6 +75,7 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+  @@index([expires])
 }
 
 model User {
@@ -266,6 +267,8 @@ model User {
   @@index([updatedAt])
   @@index([role, createdAt])
   @@index([loyaltyTier, createdAt])
+  @@index([resetToken])
+  @@index([isBanned])
 }
 
 model Authenticator {
@@ -287,6 +290,7 @@ model Authenticator {
   @@index([userId])
   @@index([providerAccountId])
   @@index([createdAt])
+  @@index([lastUsedAt])
 }
 
 model UserAddress {
@@ -352,5 +356,6 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+  @@index([expires])
 }
 

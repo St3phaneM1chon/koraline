@@ -119,6 +119,19 @@ if (typeof process !== 'undefined' && process.env) {
 // ---------------------------------------------------------------------------
 
 const rateLimitCache = new Map<string, RateLimitEntry>();
+const RATE_LIMIT_CACHE_MAX_SIZE = 50_000;
+
+/** Evict oldest half when cache exceeds max size (prevents memory leak). */
+function enforceRateLimitCacheMaxSize(): void {
+  if (rateLimitCache.size <= RATE_LIMIT_CACHE_MAX_SIZE) return;
+  let deleted = 0;
+  const toDelete = Math.floor(rateLimitCache.size / 2);
+  for (const key of rateLimitCache.keys()) {
+    if (deleted >= toDelete) break;
+    rateLimitCache.delete(key);
+    deleted++;
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Configuration
@@ -306,6 +319,7 @@ function checkRateLimitMemory(
 
   // New entry or expired window
   if (!entry || now - entry.windowStart >= config.windowMs) {
+    enforceRateLimitCacheMaxSize();
     entry = { count: 1, windowStart: now };
     rateLimitCache.set(key, entry);
 
