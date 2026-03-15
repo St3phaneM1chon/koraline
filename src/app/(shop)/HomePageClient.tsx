@@ -194,8 +194,10 @@ export default function HomePage({ initialHeroSlides, initialTestimonials = [] }
 
   useEffect(() => {
     setFetchError(false);
+    const controller = new AbortController();
+
     Promise.all([
-      fetch(`/api/products?locale=${locale}&limit=200`)
+      fetch(`/api/products?locale=${locale}&limit=50`, { signal: controller.signal })
         .then((res) => res.ok ? res.json() : null)
         .then((data) => {
           if (data) {
@@ -203,19 +205,21 @@ export default function HomePage({ initialHeroSlides, initialTestimonials = [] }
             setProducts(list.filter((p: ApiProduct) => p.isActive));
           }
         })
-        .catch(() => { setFetchError(true); })
+        .catch((e) => { if (e.name !== 'AbortError') setFetchError(true); })
         .finally(() => setLoading(false)),
 
-      fetch(`/api/articles?category=Résultats de Recherche&locale=${locale}&limit=4`)
+      fetch(`/api/articles?category=Résultats de Recherche&locale=${locale}&limit=4`, { signal: controller.signal })
         .then((res) => res.ok ? res.json() : null)
         .then((data) => {
           if (data?.articles) {
             setArticles(data.articles);
           }
         })
-        .catch(() => { setFetchError(true); })
+        .catch((e) => { if (e.name !== 'AbortError') setFetchError(true); })
         .finally(() => setArticlesLoading(false)),
     ]);
+
+    return () => controller.abort();
   }, [locale]);
 
   // Generic helper to filter products by category slugs and convert to card props
