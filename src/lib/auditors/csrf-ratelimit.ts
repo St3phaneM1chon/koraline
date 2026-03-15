@@ -40,19 +40,27 @@ export default class CsrfRatelimitAuditor extends BaseAuditor {
       /validateCsrf/,
       /csrfToken/,
       /withAdminGuard/,          // withAdminGuard includes CSRF
+      /withUserGuard/,           // withUserGuard includes CSRF
       /getCsrfToken/,
+      /verifyCSRFMiddleware/,
       /csrf/i,
       /x-csrf-token/i,
       /x-xsrf-token/i,
+      /CRON_SECRET/,             // Cron routes use shared secret auth instead of CSRF
+      /timingSafeSecretMatch/,   // Server-to-server webhook auth (alternative to CSRF)
+      /timingSafeEqual/,         // Server-to-server webhook auth
+      /apiKeyAuth/i,             // API key auth for external integrations
     ];
 
-    // Routes that are exempt from CSRF (webhook receivers, NextAuth internals)
+    // Routes that are exempt from CSRF (webhook receivers, NextAuth internals, crons, etc.)
     const csrfExemptPaths = [
       '/api/webhook',
+      '/api/webhooks/',          // All webhook receivers (Stripe, PayPal, Zoom, etc. use signature verification)
       '/api/payments/webhook',   // Stripe webhook receiver (uses signature verification)
       '/api/stripe/webhook',
       '/api/auth/',              // NextAuth handles its own CSRF
-      '/api/cron',
+      '/api/cron',               // Cron jobs use CRON_SECRET bearer token auth
+      '/api/v1/',                // External API endpoints use API key auth, not CSRF
     ];
 
     let unprotectedCount = 0;

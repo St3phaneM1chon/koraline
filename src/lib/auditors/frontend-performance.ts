@@ -44,10 +44,12 @@ export default class FrontendPerformanceAuditor extends BaseAuditor {
         if (/^\s*\/\//.test(line) || /^\s*\*/.test(line) || /^\s*{\/\*/.test(line)) continue;
 
         // Look for raw <img tags (not <Image from next/image)
-        // Skip data URIs, SVG data, and eslint-disable lines - next/image doesn't handle these
+        // Skip: data URIs, eslint-disable lines, string template HTML (email builders), blob URLs
         const prevLine = i > 0 ? lines[i - 1] : '';
         const hasEslintDisable = /eslint-disable.*no-img-element/.test(prevLine) || /eslint-disable.*no-img-element/.test(line);
-        if (/<img\s/i.test(line) && !/<Image\s/i.test(line) && !/src=\{.*data:/.test(line) && !/src="data:/.test(line) && !hasEslintDisable) {
+        // Skip <img> inside template literal strings (HTML email builders) and return statements producing HTML strings
+        const isInStringTemplate = /`[^`]*<img\s/.test(line) || /return\s+`[^`]*<img/.test(line) || /"[^"]*<img/.test(line);
+        if (/<img\s/i.test(line) && !/<Image\s/i.test(line) && !/src=\{.*data:/.test(line) && !/src="data:/.test(line) && !hasEslintDisable && !isInStringTemplate) {
           offenders.push({
             file,
             line: i + 1,

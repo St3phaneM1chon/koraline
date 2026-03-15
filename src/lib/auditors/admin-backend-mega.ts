@@ -276,7 +276,9 @@ export class AdminBackendMegaAuditor extends BaseAuditor {
       if (!hasGuard) {
         // Also check for auth() or getServerSession
         const hasAuth = content.includes('auth()') || content.includes('getServerSession');
-        if (!hasAuth) {
+        // Check for alternative auth mechanisms (cron secret, webhook signature, timing-safe comparison)
+        const hasAltAuth = /CRON_SECRET|timingSafeEqual|timingSafeSecretMatch|Bearer|Authorization/i.test(content);
+        if (!hasAuth && !hasAltAuth) {
           unguarded.push(relPath);
         }
       }

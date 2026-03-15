@@ -245,6 +245,7 @@ export function FooterCorporate() {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/suite-koraline.png" alt="Suite Koraline" style={{ height: '24px', width: 'auto' }} />
             <p style={{ fontSize: '13px', opacity: 0.7 }}>
               © {currentYear} {process.env.NEXT_PUBLIC_SITE_NAME || 'Formations Pro'}. {t('footer.allRightsReserved')}.

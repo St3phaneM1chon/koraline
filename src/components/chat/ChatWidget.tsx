@@ -507,6 +507,7 @@ export default function ChatWidget() {
                   </button>
                 </div>
                 <div className="flex items-center justify-center gap-1.5 mt-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/images/suite-koraline.png" alt="Suite Koraline" className="h-4 w-auto" />
                 </div>
               </div>

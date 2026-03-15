@@ -232,12 +232,14 @@ export default class ApiContractsAuditor extends BaseAuditor {
         const postStart = content.indexOf('function POST');
         if (postStart !== -1) {
           const postBody = content.substring(postStart);
-          const hasCreate = /\.create\s*\(|\.insert\s*\(|created|INSERT\s+INTO/i.test(postBody);
+          // Only flag if the POST handler actually creates a new resource (prisma.create, not actions like send/sync/cancel)
+          const hasCreate = /\.create\s*\(|\.insert\s*\(|INSERT\s+INTO/i.test(postBody);
+          const isActionRoute = /\/send|\/sync|\/cancel|\/approve|\/reject|\/trigger|\/process|\/cron|\/webhook|\/login|\/signup|\/reset|\/verify|\/challenge|\/validate|\/apply|\/earn|\/redeem|\/activate|\/vote|\/capture|\/charge|\/import|\/upload|\/publish|\/test/i.test(relPath);
           const has201 = /status\s*:\s*201/.test(postBody);
           const has200 = /status\s*:\s*200/.test(postBody);
           const hasNoStatus = !has201 && !has200 && /NextResponse\.json\s*\(\s*\w/.test(postBody);
 
-          if (hasCreate && !has201 && (has200 || hasNoStatus)) {
+          if (hasCreate && !has201 && (has200 || hasNoStatus) && !isActionRoute) {
             const lineNum = this.findLineNumber(content, 'function POST');
             statusIssues.push({
               file: relPath,

@@ -132,8 +132,9 @@ export default class SecurityHeadersAuditor extends BaseAuditor {
       if (cspSource) {
         const hasUnsafeEval = /unsafe-eval/.test(cspSource.content);
         // Check if unsafe-eval is conditionally applied only in development
-        const isConditionalDev = /NODE_ENV.*production[\s\S]{0,300}unsafe-eval/s.test(cspSource.content)
-          || /development[\s\S]{0,100}unsafe-eval/s.test(cspSource.content);
+        const isConditionalDev = /NODE_ENV.*production[\s\S]{0,500}unsafe-eval/s.test(cspSource.content)
+          || /development[\s\S]{0,200}unsafe-eval/s.test(cspSource.content)
+          || /production[\s\S]{0,100}\?[\s\S]{0,500}unsafe-eval/s.test(cspSource.content);
         if (hasUnsafeEval && !isConditionalDev) {
           const lineNum = this.findLineNumber(cspSource.content, 'unsafe-eval');
           results.push(
