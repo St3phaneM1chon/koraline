@@ -46,8 +46,8 @@ export const GET = withAdminGuard(async (request: NextRequest) => {
           if (evt.type === 'final' && evt.text && evt.timestamp >= sinceTs) {
             lines.push(evt.text);
           }
-        } catch {
-          // skip malformed
+        } catch (parseErr) {
+          console.error('[VoIP/Transcription] Malformed SSE event', { error: parseErr instanceof Error ? parseErr.message : String(parseErr) });
         }
       }
       return NextResponse.json({

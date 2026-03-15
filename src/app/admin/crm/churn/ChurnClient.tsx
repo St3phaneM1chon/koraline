@@ -185,6 +185,7 @@ export default function ChurnClient() {
                 <AlertTriangle className="h-4 w-4" /> At-Risk Customers
               </h3>
               <select value={riskFilter} onChange={e => setRiskFilter(e.target.value)}
+                aria-label="Filter by risk level"
                 className="text-sm border rounded-md px-3 py-1.5">
                 <option value="all">All Levels</option>
                 <option value="CRITICAL">Critical</option>

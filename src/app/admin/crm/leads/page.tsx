@@ -322,7 +322,7 @@ export default function LeadsPage() {
             <thead className="bg-gray-50 border-b">
               <tr>
                 <th className="px-4 py-3 text-start">
-                  <input type="checkbox" onChange={selectAll} checked={selected.size === leads.length && leads.length > 0} className="rounded" />
+                  <input type="checkbox" onChange={selectAll} checked={selected.size === leads.length && leads.length > 0} aria-label="Select all leads" className="rounded" />
                 </th>
                 <th className="px-4 py-3 text-start text-xs font-medium text-gray-500 uppercase">{t('admin.crm.name')}</th>
                 <th className="px-4 py-3 text-start text-xs font-medium text-gray-500 uppercase">{t('admin.crm.company')}</th>
@@ -355,7 +355,7 @@ export default function LeadsPage() {
                     onClick={() => router.push(`/admin/crm/leads/${lead.id}`)}
                   >
                     <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
-                      <input type="checkbox" checked={selected.has(lead.id)} onChange={() => toggleSelect(lead.id)} className="rounded" />
+                      <input type="checkbox" checked={selected.has(lead.id)} onChange={() => toggleSelect(lead.id)} aria-label="Select lead" className="rounded" />
                     </td>
                     <td className="px-4 py-3">
                       <div className="text-sm font-medium text-gray-900">{lead.contactName}</div>

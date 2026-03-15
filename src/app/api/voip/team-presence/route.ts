@@ -39,8 +39,8 @@ export async function GET(request: NextRequest) {
         try {
           const payload = JSON.stringify({ event: eventType, data, timestamp: new Date().toISOString() });
           controller.enqueue(encoder.encode(`data: ${payload}\n\n`));
-        } catch {
-          // Stream may have been closed by client
+        } catch (sendErr) {
+          console.error('[VoIP TeamPresence] SSE send failed (stream closed)', { error: sendErr instanceof Error ? sendErr.message : String(sendErr) });
           isStreamClosed = true;
         }
       }
@@ -114,8 +114,8 @@ export async function GET(request: NextRequest) {
           clearInterval(pollInterval);
           try {
             controller.close();
-          } catch {
-            // Already closed
+          } catch (closeErr) {
+            console.error('[VoIP TeamPresence] Controller close failed', { error: closeErr instanceof Error ? closeErr.message : String(closeErr) });
           }
         });
       } catch (initError) {

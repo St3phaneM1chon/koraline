@@ -332,7 +332,11 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
 
       // Recalculate the contact count for the cloned segment
       let queryObj: Record<string, unknown> = {};
-      try { queryObj = JSON.parse(source.query); } catch { /* use empty */ }
+      try {
+        queryObj = JSON.parse(source.query);
+      } catch (parseErr) {
+        console.error('[EmailSegments] Failed to parse segment query JSON', { segmentId: sourceId, error: parseErr instanceof Error ? parseErr.message : String(parseErr) });
+      }
       const count = await countSegment(queryObj, new Date());
 
       const cloned = await prisma.emailSegment.create({

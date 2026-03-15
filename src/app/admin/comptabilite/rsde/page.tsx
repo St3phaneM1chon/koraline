@@ -279,7 +279,7 @@ export default function RSDeAdminPage() {
             <textarea value={form.technologicalUncertainty} onChange={e => setForm({ ...form, technologicalUncertainty: e.target.value })} placeholder="Incertitudes technologiques" className="w-full border rounded-lg px-3 py-2 text-sm" rows={2} />
             <textarea value={form.technologicalAdvancement} onChange={e => setForm({ ...form, technologicalAdvancement: e.target.value })} placeholder="Avancements technologiques visés" className="w-full border rounded-lg px-3 py-2 text-sm" rows={2} />
             <textarea value={form.systematicInvestigation} onChange={e => setForm({ ...form, systematicInvestigation: e.target.value })} placeholder="Investigation systématique" className="w-full border rounded-lg px-3 py-2 text-sm" rows={2} />
-            <label className="flex items-center gap-2"><input type="checkbox" checked={form.isSpcc} onChange={e => setForm({ ...form, isSpcc: e.target.checked })} className="accent-amber-600" /><span className="text-sm">SPCC (Société privée sous contrôle canadien)</span></label>
+            <label className="flex items-center gap-2"><input type="checkbox" checked={form.isSpcc} onChange={e => setForm({ ...form, isSpcc: e.target.checked })} aria-label="SPCC" className="accent-amber-600" /><span className="text-sm">SPCC (Société privée sous contrôle canadien)</span></label>
             <div className="flex gap-2 pt-2">
               <Button onClick={handleCreateProject} className={theme.btnPrimary}>{t('common.create')}</Button>
               <Button onClick={() => setShowModal(false)} variant="outline">{t('common.cancel')}</Button>

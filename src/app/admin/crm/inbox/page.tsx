@@ -143,11 +143,11 @@ export default function InboxPage() {
         <div className="p-3 border-b space-y-2">
           <h2 className="text-lg font-semibold">{t('admin.crm.inbox')}</h2>
           <div className="flex gap-2">
-            <select value={channelFilter} onChange={e => setChannelFilter(e.target.value)} className="text-xs border rounded px-2 py-1 flex-1">
+            <select value={channelFilter} onChange={e => setChannelFilter(e.target.value)} aria-label="Filter by channel" className="text-xs border rounded px-2 py-1 flex-1">
               <option value="">{t('admin.crm.allChannels')}</option>
               {['EMAIL', 'SMS', 'PHONE', 'CHAT', 'WHATSAPP'].map(c => <option key={c} value={c}>{c}</option>)}
             </select>
-            <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="text-xs border rounded px-2 py-1 flex-1">
+            <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} aria-label="Filter by status" className="text-xs border rounded px-2 py-1 flex-1">
               <option value="">{t('admin.crm.allStatuses')}</option>
               {['OPEN', 'PENDING', 'RESOLVED', 'CLOSED'].map(s => <option key={s} value={s}>{s}</option>)}
             </select>

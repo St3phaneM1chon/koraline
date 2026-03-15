@@ -42,7 +42,9 @@ export const GET = withAdminGuard(async (
           select: { id: true, name: true, sku: true, isActive: true },
         });
       }
-    } catch (err) { console.error('[PromoCodes] Invalid productIds JSON', { promoId: promo.id, error: err }); }
+    } catch (err) {
+      console.error('[PromoCodes] Invalid productIds JSON', { promoId: promo.id, error: err });
+    }
   }
 
   // Parse categoryIds
@@ -55,7 +57,9 @@ export const GET = withAdminGuard(async (
           select: { id: true, name: true },
         });
       }
-    } catch (err) { console.error('[PromoCodes] Invalid categoryIds JSON', { promoId: promo.id, error: err }); }
+    } catch (err) {
+      console.error('[PromoCodes] Invalid categoryIds JSON', { promoId: promo.id, error: err });
+    }
   }
 
   const isGlobal = !promo.productIds && !promo.categoryIds;

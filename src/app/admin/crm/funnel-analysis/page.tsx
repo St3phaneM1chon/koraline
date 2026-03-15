@@ -136,6 +136,7 @@ export default function FunnelAnalysisPage() {
         <div className="flex items-center gap-2">
           <Filter className="h-4 w-4 text-gray-400" />
           <select value={selectedPipeline} onChange={e => setSelectedPipeline(e.target.value)}
+            aria-label="Select pipeline"
             className="text-sm border rounded-md px-3 py-2">
             {pipelines.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
           </select>

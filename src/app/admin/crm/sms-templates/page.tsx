@@ -175,7 +175,7 @@ export default function SmsTemplatesPage() {
             className="w-full ps-10 pe-3 py-2 border rounded-md text-sm"
           />
         </div>
-        <select value={activeFilter} onChange={e => setActiveFilter(e.target.value)} className="border rounded-md px-3 py-2 text-sm">
+        <select value={activeFilter} onChange={e => setActiveFilter(e.target.value)} aria-label="Filter by active status" className="border rounded-md px-3 py-2 text-sm">
           <option value="">{t('common.all')}</option>
           <option value="active">{t('common.active')}</option>
           <option value="inactive">{t('common.inactive')}</option>

@@ -28,8 +28,8 @@ export const GET = withAdminGuard(async () => {
     let liveRooms: Array<{ name: string; numParticipants: number }> = [];
     try {
       liveRooms = await listRooms();
-    } catch {
-      // LiveKit may not be configured yet
+    } catch (livekitErr) {
+      console.error('[VideoConference] LiveKit not available', { error: livekitErr instanceof Error ? livekitErr.message : String(livekitErr) });
     }
 
     const liveRoomMap = new Map(

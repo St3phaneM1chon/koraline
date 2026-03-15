@@ -100,8 +100,8 @@ export const GET = withAdminGuard(async (
           cron: r.pattern,
           next: r.next ? new Date(r.next).toISOString() : null,
         }));
-      } catch {
-        // Repeatable jobs may not be available
+      } catch (repeatErr) {
+        console.error('[admin/queues] Could not fetch repeatable jobs', { queue: name, error: repeatErr instanceof Error ? repeatErr.message : String(repeatErr) });
       }
     }
 
@@ -157,8 +157,8 @@ export const POST = withAdminGuard(async (
       if (parsed.success && parsed.data) {
         data = parsed.data;
       }
-    } catch {
-      // No body or invalid JSON — use empty data
+    } catch (bodyErr) {
+      console.error('[admin/queues] POST body parse failed, using empty data', { queue: name, error: bodyErr instanceof Error ? bodyErr.message : String(bodyErr) });
     }
 
     // Add trigger metadata

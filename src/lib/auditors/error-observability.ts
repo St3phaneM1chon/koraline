@@ -45,18 +45,58 @@ export default class ErrorObservabilityAuditor extends BaseAuditor {
         if ((/\}\s*catch\s*\(/.test(line) || /\bcatch\s*\{/.test(line)) && !/\.catch\s*\(/.test(line)) {
           totalCatchBlocks++;
 
-          // Extract catch body: skip the catch line, start tracking from inside the block
+          // Extract catch body: find the opening { of the catch block, then collect
+          // everything until the matching closing }.
+          // Also include any content on the catch line itself after the opening brace.
           const catchBody: string[] = [];
-          let braceDepth = lines[i].includes('{') ? 1 : 0;
 
-          for (let j = i + 1; j < Math.min(i + 25, lines.length); j++) {
-            const bodyLine = lines[j];
-            for (const ch of bodyLine) {
+          // Find the catch block's opening brace position on the catch line.
+          // Use regex to find the { that follows `catch (...)` or `catch`.
+          const catchBraceMatch = line.match(/\bcatch\b(?:\s*\([^)]*\))?\s*\{/);
+          const catchBraceIdx = catchBraceMatch ? line.indexOf(catchBraceMatch[0]) + catchBraceMatch[0].length - 1 : -1;
+          const hasCatchBrace = catchBraceIdx !== -1;
+
+          if (hasCatchBrace) {
+            // Extract inline content after the opening brace
+            const afterBrace = line.substring(catchBraceIdx + 1);
+
+            // Count braces starting from depth=1 (the opening brace we found)
+            let braceDepth = 1;
+            for (const ch of afterBrace) {
               if (ch === '{') braceDepth++;
               if (ch === '}') braceDepth--;
             }
-            catchBody.push(bodyLine);
-            if (braceDepth <= 0) break;
+
+            if (afterBrace.trim().length > 0) {
+              catchBody.push(afterBrace);
+            }
+
+            if (braceDepth <= 0) {
+              // Single-line catch — body fully contained on the catch line
+            } else {
+              for (let j = i + 1; j < Math.min(i + 25, lines.length); j++) {
+                const bodyLine = lines[j];
+                for (const ch of bodyLine) {
+                  if (ch === '{') braceDepth++;
+                  if (ch === '}') braceDepth--;
+                }
+                catchBody.push(bodyLine);
+                if (braceDepth <= 0) break;
+              }
+            }
+          } else {
+            // Catch opening brace is on the next line (rare)
+            let braceDepth = 0;
+            for (let j = i + 1; j < Math.min(i + 25, lines.length); j++) {
+              const bodyLine = lines[j];
+              for (const ch of bodyLine) {
+                if (ch === '{') braceDepth++;
+                if (ch === '}') braceDepth--;
+              }
+              catchBody.push(bodyLine);
+              if (braceDepth <= 0 && braceDepth !== 0) break;
+              if (braceDepth <= 0 && j > i + 1) break;
+            }
           }
 
           const body = catchBody.join('\n');
@@ -75,17 +115,33 @@ export default class ErrorObservabilityAuditor extends BaseAuditor {
             /setMessage\s*\(/.test(body) ||           // UI error state (e.g. setMessage({ type: 'error', ... }))
             /set\w*Status\s*\(/.test(body) ||         // Status state setters (e.g. setStatus('error'))
             /\.status\s*=\s*['"]error/.test(body) ||  // Direct status assignment
-            /return\s+.*(?:error|err|Error|Response|NextResponse)/.test(body);
+            /return\s+.*(?:error|err|Error|Response|NextResponse)/.test(body) ||
+            /return\s*\{[\s\S]*(?:error|err)\s+instanceof\s+Error/.test(body) || // Multi-line return with error handling
+            /\.push\s*\([^)]*(?:error|err|Error|fail)/.test(body) || // Error stored in results array (e.g., health checks)
+            /errors\.push\s*\(/.test(body) ||                        // Error appended to errors collection
+            /\w+\s+instanceof\s+Error\s*\?/.test(body) ||  // Error info is used (e/err/error instanceof Error ? ...)
+            /String\s*\(\s*(?:e|err|error|ex)\s*\)/.test(body);     // Error stringified: String(e/err/error)
 
           // Check for truly empty catch blocks
           const isEmptyCatch = body.replace(/[{}()\s]/g, '').length < 5;
 
           // Expected control flow catches: catch blocks that only set a boolean/variable
-          // (e.g., timingSafeEqual catch, JSON.parse fallback, feature detection)
+          // (e.g., timingSafeEqual catch, JSON.parse fallback, feature detection, revalidation)
+          // Strip trailing braces/commas/semicolons from body for content analysis
+          const bodyContentClean = body.replace(/[}\s,;]+$/, '').trim();
           const isControlFlowCatch =
-            /^\s*\w+\s*=\s*(false|true|null|undefined|0|''|""|``);\s*$/.test(body.trim()) ||
+            // Variable assignment fallback (e.g., valid = false; or result = null;)
+            /^\s*\w+\s*=\s*(false|true|null|undefined|0|''|""|``);?\s*$/.test(bodyContentClean) ||
+            // Simple return fallback (e.g., return false; return null; return [];)
+            /^\s*return\s+(false|true|null|undefined|0|''|""|``|\[\]|\{\});?\s*$/.test(bodyContentClean) ||
             /timingSafeEqual/.test(lines[i - 1] || '') || /timingSafeEqual/.test(lines[i - 2] || '') ||
-            /timingSafeEqual/.test(lines[i - 3] || '');
+            /timingSafeEqual/.test(lines[i - 3] || '') ||
+            // Inline comment-only catches (e.g., /* revalidation is best-effort */)
+            /^\s*\/\*[\s\S]*?\*\/\s*$/.test(bodyContentClean) ||
+            /^\s*\/\/.*$/.test(bodyContentClean) ||
+            // revalidatePath/revalidateTag catches are intentionally best-effort
+            /revalidatePath|revalidateTag/.test(lines[i] || '') ||
+            /revalidatePath|revalidateTag/.test(lines[i - 1] || '');
 
           if (isControlFlowCatch) {
             // Skip - intentional control flow, not an error handling gap

@@ -284,7 +284,7 @@ export default function DealsPage() {
             <thead className="bg-gray-50 border-b">
               <tr>
                 <th className="px-4 py-3 text-start">
-                  <input type="checkbox" onChange={selectAll} checked={selected.size === deals.length && deals.length > 0} className="rounded" />
+                  <input type="checkbox" onChange={selectAll} checked={selected.size === deals.length && deals.length > 0} aria-label="Select all deals" className="rounded" />
                 </th>
                 <th className="px-4 py-3 text-start text-xs font-medium text-gray-500 uppercase">{t('admin.crm.dealTitle')}</th>
                 <th className="px-4 py-3 text-end text-xs font-medium text-gray-500 uppercase">{t('admin.crm.dealValue')}</th>
@@ -312,7 +312,7 @@ export default function DealsPage() {
                   onClick={() => router.push(`/admin/crm/deals/${deal.id}`)}
                 >
                   <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
-                    <input type="checkbox" checked={selected.has(deal.id)} onChange={() => toggleSelect(deal.id)} className="rounded" />
+                    <input type="checkbox" checked={selected.has(deal.id)} onChange={() => toggleSelect(deal.id)} aria-label="Select deal" className="rounded" />
                   </td>
                   <td className="px-4 py-3">
                     <div className="text-sm font-medium text-gray-900">{deal.title}</div>

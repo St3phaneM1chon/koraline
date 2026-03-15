@@ -221,7 +221,15 @@ export default class AccessibilityWcagAuditor extends BaseAuditor {
             /aria-labelledby\s*=/.test(tagContent) ||
             /id\s*=/.test(tagContent);
 
-          if (!hasLabel) {
+          // Check if a <label> element exists in the 1-3 lines before the select (visual association)
+          const prevLinesSelect = lines.slice(Math.max(0, i - 3), i).join(' ');
+          const hasAdjacentLabelSelect = /<label[\s>]/.test(prevLinesSelect);
+
+          // Check if select is inside a wrapping <label> element
+          const hasWrappingLabelSelect = /<label[\s>]/.test(lines.slice(Math.max(0, i - 5), i).join(' ')) &&
+            !/<\/label>/.test(lines.slice(Math.max(0, i - 5), i).join(' '));
+
+          if (!hasLabel && !hasAdjacentLabelSelect && !hasWrappingLabelSelect) {
             issues.push({
               file,
               line: i + 1,

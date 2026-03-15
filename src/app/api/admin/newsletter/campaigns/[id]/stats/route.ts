@@ -42,7 +42,9 @@ export const GET = withAdminGuard(
       if (campaign.stats) {
         try {
           parsedStats = { ...parsedStats, ...JSON.parse(campaign.stats) };
-        } catch (err) { console.error('[Newsletter/Stats] Invalid stats JSON for campaign', { id, error: err }); }
+        } catch (err) {
+          console.error('[Newsletter/Stats] Invalid stats JSON for campaign', { id, error: err });
+        }
       }
 
       const [totalActive, totalUnsubscribed] = await Promise.all([

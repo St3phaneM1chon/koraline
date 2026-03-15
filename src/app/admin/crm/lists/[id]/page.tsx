@@ -623,7 +623,7 @@ export default function ProspectListDetailPage() {
                 placeholder={t('admin.crmLists.placeholderSearch')}
               />
             </div>
-            <select value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }} className="rounded-lg border border-gray-300 px-3 py-2 text-sm">
+            <select value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }} aria-label="Filter by status" className="rounded-lg border border-gray-300 px-3 py-2 text-sm">
               <option value="">{t('admin.crmLists.status')}</option>
               {['NEW', 'VALIDATED', 'DUPLICATE', 'INTEGRATED', 'EXCLUDED'].map((s) => (
                 <option key={s} value={s}>{s}</option>

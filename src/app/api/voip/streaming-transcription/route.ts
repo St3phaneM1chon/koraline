@@ -75,8 +75,8 @@ function pushEvent(callId: string, event: TranscriptionEvent): void {
     for (const listener of listeners) {
       try {
         listener(event);
-      } catch {
-        // Listener may have been disconnected
+      } catch (listenerErr) {
+        console.error('[streaming-transcription] Listener dispatch failed', { callId, error: listenerErr instanceof Error ? listenerErr.message : String(listenerErr) });
       }
     }
   }
@@ -127,8 +127,8 @@ export async function GET(request: NextRequest) {
         try {
           const data = `data: ${JSON.stringify(event)}\n\n`;
           controller.enqueue(encoder.encode(data));
-        } catch {
-          // Stream may have been closed by client
+        } catch (streamErr) {
+          console.error('[streaming-transcription] Stream write failed (client disconnected)', { callId, error: streamErr instanceof Error ? streamErr.message : String(streamErr) });
           removeListener(callId, listener);
         }
       };

@@ -34,7 +34,8 @@ export const GET = withAdminGuard(async (_request: NextRequest) => {
   const suppliers = settings.map((s) => {
     try {
       return { id: s.key.replace('supplier:', ''), ...JSON.parse(s.value) };
-    } catch {
+    } catch (parseErr) {
+      console.error('[Suppliers] Failed to parse supplier JSON', { key: s.key, error: parseErr instanceof Error ? parseErr.message : String(parseErr) });
       return null;
     }
   }).filter(Boolean);

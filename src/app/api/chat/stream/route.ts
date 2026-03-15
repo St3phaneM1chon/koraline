@@ -62,8 +62,9 @@ export async function GET(request: NextRequest) {
       if (subscriber) {
         try {
           subscriber.quit();
-        } catch {
-          // Connection already closed
+        } catch (quitErr) {
+          // Connection already closed — expected during SSE cleanup
+          console.error('[chat:stream] Redis subscriber quit failed', { error: quitErr instanceof Error ? quitErr.message : String(quitErr) });
         }
       }
     };
@@ -74,8 +75,9 @@ export async function GET(request: NextRequest) {
         const heartbeat = setInterval(() => {
           try {
             controller.enqueue(encoder.encode(': heartbeat\n\n'));
-          } catch {
-            // Controller already closed
+          } catch (hbErr) {
+            // Controller already closed — expected during SSE cleanup
+            console.error('[chat:stream] Heartbeat enqueue failed (stream closed)', { error: hbErr instanceof Error ? hbErr.message : String(hbErr) });
           }
         }, 30000);
 
@@ -110,8 +112,9 @@ export async function GET(request: NextRequest) {
           cleanup();
           try {
             controller.close();
-          } catch {
-            // Controller already closed
+          } catch (closeErr) {
+            // Controller already closed — expected during SSE cleanup
+            console.error('[chat:stream] Controller close failed', { error: closeErr instanceof Error ? closeErr.message : String(closeErr) });
           }
         });
       },

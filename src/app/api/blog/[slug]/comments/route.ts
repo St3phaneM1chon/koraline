@@ -102,8 +102,8 @@ async function getComments(blogPostId: string): Promise<BlogComment[]> {
        ORDER BY "createdAt" ASC`
     );
     return comments;
-  } catch {
-    // Table doesn't exist yet - return empty
+  } catch (dbErr) {
+    console.error('[blog/comments] Failed to query comments (table may not exist)', { error: dbErr instanceof Error ? dbErr.message : String(dbErr) });
     return [];
   }
 }

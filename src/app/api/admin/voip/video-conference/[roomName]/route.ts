@@ -39,8 +39,8 @@ export const GET = withAdminGuard(async (
       if (liveRoom) {
         participants = await listParticipants(roomName);
       }
-    } catch {
-      // LiveKit unavailable
+    } catch (livekitErr) {
+      console.error('[VideoConference] LiveKit unavailable', { roomName, error: livekitErr instanceof Error ? livekitErr.message : String(livekitErr) });
     }
 
     return NextResponse.json({
@@ -79,8 +79,8 @@ export const DELETE = withAdminGuard(async (
     // Delete from LiveKit
     try {
       await deleteRoom(roomName);
-    } catch {
-      // May already be gone
+    } catch (deleteErr) {
+      console.error('[VideoConference] LiveKit room delete failed (may already be gone)', { roomName, error: deleteErr instanceof Error ? deleteErr.message : String(deleteErr) });
     }
 
     // Update DB status

@@ -75,7 +75,7 @@ export default function ReceiptCapture() {
           <button onClick={() => fileRef.current?.click()} className="w-full bg-white text-purple-700 py-4 rounded-2xl flex items-center justify-center gap-3 text-lg font-semibold border-2 border-purple-200">
             <Upload className="w-6 h-6" /> Téléverser
           </button>
-          <input ref={fileRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={e => e.target.files?.[0] && handleFile(e.target.files[0])} />
+          <input ref={fileRef} type="file" accept="image/*" capture="environment" aria-label="Upload receipt photo" className="hidden" onChange={e => e.target.files?.[0] && handleFile(e.target.files[0])} />
           <p className="text-center text-sm text-gray-400 mt-4">Prenez une photo de votre reçu pour extraction automatique</p>
         </div>
       ) : (

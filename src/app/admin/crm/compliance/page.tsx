@@ -332,7 +332,7 @@ export default function CompliancePage() {
               </div>
               <div className="flex items-center gap-2">
                 <input type="checkbox" checked={newRule.weekendAllowed}
-                  onChange={e => setNewRule(r => ({ ...r, weekendAllowed: e.target.checked }))} className="rounded" />
+                  onChange={e => setNewRule(r => ({ ...r, weekendAllowed: e.target.checked }))} aria-label="Allow weekend calls" className="rounded" />
                 <label className="text-sm">Allow weekend calls</label>
               </div>
               <button onClick={handleCreateRule} className="px-4 py-2 text-sm bg-indigo-600 text-white rounded-md hover:bg-indigo-700">

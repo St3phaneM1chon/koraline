@@ -38,7 +38,8 @@ async function loadVirtualHoldConfig(): Promise<VirtualHoldConfig> {
   try {
     const parsed = JSON.parse(setting.value);
     return { ...getDefaultConfig(), ...parsed };
-  } catch {
+  } catch (parseErr) {
+    console.error('[VirtualHold] Failed to parse config JSON', { error: parseErr instanceof Error ? parseErr.message : String(parseErr) });
     return getDefaultConfig();
   }
 }

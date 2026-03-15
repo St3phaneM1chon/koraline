@@ -149,8 +149,8 @@ export async function POST(
       if (parsed.success && parsed.data.reason) {
         reason = parsed.data.reason;
       }
-    } catch {
-      // No body or invalid JSON is fine, use default reason
+    } catch (bodyErr) {
+      console.error('[orders/cancel] Body parse failed, using default reason', { error: bodyErr instanceof Error ? bodyErr.message : String(bodyErr) });
     }
 
     // ── PURCHASE-WORKFLOW FIX: If the order was PAID, initiate refund via the

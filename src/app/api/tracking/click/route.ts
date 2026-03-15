@@ -90,8 +90,8 @@ export async function GET(request: NextRequest) {
         if (isValidRedirectUrl(url)) {
           return NextResponse.redirect(url, 302);
         }
-      } catch {
-        // Fall through to error response
+      } catch (decodeErr) {
+        console.error('[click-tracking] URL decode/redirect fallback failed', { error: decodeErr instanceof Error ? decodeErr.message : String(decodeErr) });
       }
     }
     return NextResponse.json({ error: 'Tracking error' }, { status: 500 });

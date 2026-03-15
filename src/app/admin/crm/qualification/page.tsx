@@ -135,7 +135,7 @@ export default function QualificationPage() {
           <input type="text" value={search} onChange={e => { setSearch(e.target.value); setPage(1); }}
             placeholder={t('admin.crm.searchLeads')} className="w-full ps-10 pe-3 py-2 border rounded-md text-sm" />
         </div>
-        <select value={frameworkFilter} onChange={e => setFrameworkFilter(e.target.value)} className="border rounded-md px-3 py-2 text-sm">
+        <select value={frameworkFilter} onChange={e => setFrameworkFilter(e.target.value)} aria-label="Filter by framework" className="border rounded-md px-3 py-2 text-sm">
           <option value="">{t('admin.crm.allFrameworks')}</option>
           <option value="BANT">BANT</option>
           <option value="MEDDIC">MEDDIC</option>

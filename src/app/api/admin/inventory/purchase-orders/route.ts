@@ -45,7 +45,8 @@ export const GET = withAdminGuard(async (request: NextRequest) => {
       const po = JSON.parse(s.value);
       if (status && po.status !== status) return null;
       return { id: s.key.replace('po:', ''), ...po };
-    } catch {
+    } catch (parseErr) {
+      console.error('[PurchaseOrders] Failed to parse PO JSON', { key: s.key, error: parseErr instanceof Error ? parseErr.message : String(parseErr) });
       return null;
     }
   }).filter(Boolean);

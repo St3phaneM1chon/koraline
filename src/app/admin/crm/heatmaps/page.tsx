@@ -159,6 +159,7 @@ export default function HeatmapsPage() {
         <div className="flex items-center gap-2">
           <Filter className="h-4 w-4 text-gray-400" />
           <select value={metricType} onChange={e => setMetricType(e.target.value as 'success_rate' | 'volume')}
+            aria-label="Select metric type"
             className="text-sm border rounded-md px-3 py-2">
             <option value="success_rate">Answer Rate %</option>
             <option value="volume">Call Volume</option>

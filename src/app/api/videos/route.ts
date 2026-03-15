@@ -47,8 +47,9 @@ export async function GET(request: NextRequest) {
           allowedVisibilities.push('CLIENTS_ONLY');
         }
       }
-    } catch {
-      // No session — public only
+    } catch (sessionErr) {
+      // No session — public only (expected for unauthenticated visitors)
+      console.error('[videos] Session check failed', { error: sessionErr instanceof Error ? sessionErr.message : String(sessionErr) });
     }
 
     // Build where clause
