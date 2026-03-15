@@ -832,7 +832,7 @@ model Employee {
   userId             String?   // Optional link to User table (not all employees are system users)
   firstName          String
   lastName           String
-  email              String
+  email              String    @unique
   sin                String?   // Social Insurance Number (encrypted at rest)
   dateOfBirth        DateTime?
   hireDate           DateTime
@@ -862,7 +862,6 @@ model Employee {
   timeEntries    TimeEntry[] @relation("EmployeeTimeEntries")
 
   @@index([userId])
-  @@index([email])
   @@index([status])
   @@index([deletedAt])
 }
@@ -1141,7 +1140,7 @@ model ProjectMilestone {
 model ClientPortalAccess {
   id          String    @id @default(cuid())
   token       String    @unique @default(cuid())
-  email       String
+  email       String    @unique
   clientName  String
   companyName String?
   expiresAt   DateTime?
@@ -1152,7 +1151,6 @@ model ClientPortalAccess {
   updatedAt   DateTime  @updatedAt
 
   @@index([token])
-  @@index([email])
   @@index([isActive])
 }
 

@@ -457,7 +457,7 @@ model EmailSettings {
 model EmailAccount {
   id           String   @id @default(cuid())
   name         String                       // Display name (e.g. "Support", "Marketing")
-  email        String                       // Email address (e.g. support@biocyclepeptides.com)
+  email        String   @unique             // Email address (e.g. support@biocyclepeptides.com)
   displayName  String?                      // Sender display name
   replyTo      String?                      // Reply-to address (if different from email)
   provider     String   @default("resend")  // resend, sendgrid, smtp
@@ -469,7 +469,6 @@ model EmailAccount {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  @@index([email])
   @@index([isDefault])
   @@index([isActive])
 }
