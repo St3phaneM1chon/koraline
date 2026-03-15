@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useI18n } from '@/i18n/client';
 import { toast } from 'sonner';
 import { CheckCircle, XCircle, Clock, Shield, Loader2, FileText } from 'lucide-react';
@@ -87,6 +87,40 @@ function ActionModal({ approval, action, onClose, onComplete }: ActionModalProps
   const { t } = useI18n();
   const [note, setNote] = useState('');
   const [processing, setProcessing] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // Focus trap & Escape key
+  useEffect(() => {
+    const modalEl = modalRef.current;
+    if (!modalEl) return;
+
+    const focusableSelector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    const firstFocusable = modalEl.querySelector<HTMLElement>(focusableSelector);
+    firstFocusable?.focus();
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+      if (e.key === 'Tab') {
+        const focusables = modalEl.querySelectorAll<HTMLElement>(focusableSelector);
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
   const handleSubmit = async () => {
     setProcessing(true);
@@ -118,8 +152,8 @@ function ActionModal({ approval, action, onClose, onComplete }: ActionModalProps
   const isApprove = action === 'approve';
 
   return (
-    <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+    <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="approval-action-title">
+      <div ref={modalRef} className="bg-white rounded-2xl shadow-2xl w-full max-w-md">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-100">
           <div className="flex items-center gap-2">
@@ -128,7 +162,7 @@ function ActionModal({ approval, action, onClose, onComplete }: ActionModalProps
             ) : (
               <XCircle className="h-5 w-5 text-red-600" />
             )}
-            <h2 className="text-lg font-semibold text-gray-900">
+            <h2 id="approval-action-title" className="text-lg font-semibold text-gray-900">
               {isApprove
                 ? (t('admin.crm.approvals.confirmApprove'))
                 : (t('admin.crm.approvals.confirmReject'))}

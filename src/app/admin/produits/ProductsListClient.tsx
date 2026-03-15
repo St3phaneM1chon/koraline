@@ -626,14 +626,14 @@ export default function ProductsListClient({
 
       {/* Header + Stats */}
       <div className="p-4 lg:p-6 pb-0 flex-shrink-0">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
           <div>
             <h1 className="text-xl font-bold text-slate-900">{t('admin.products.title')}</h1>
             <p className="text-sm text-slate-500 mt-0.5">
               {t('admin.products.subtitle', { total: stats.total, active: stats.active, featured: stats.featured })}
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             {/* View Toggle */}
             <div className="flex items-center border border-slate-300 rounded-md overflow-hidden">
               <button
@@ -642,6 +642,8 @@ export default function ProductsListClient({
                   viewMode === 'list' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-500 hover:bg-slate-50'
                 }`}
                 title={t('admin.products.listView')}
+                aria-label={t('admin.products.listView')}
+                aria-pressed={viewMode === 'list'}
               >
                 <List className="h-4 w-4" />
               </button>
@@ -651,6 +653,8 @@ export default function ProductsListClient({
                   viewMode === 'grid' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-500 hover:bg-slate-50'
                 }`}
                 title={t('admin.products.gridView')}
+                aria-label={t('admin.products.gridView')}
+                aria-pressed={viewMode === 'grid'}
               >
                 <LayoutGrid className="h-4 w-4" />
               </button>
@@ -835,7 +839,7 @@ export default function ProductsListClient({
                     )}
 
                     {/* Info Grid */}
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="bg-slate-50 rounded-lg p-3">
                         <p className="text-xs text-slate-500">{t('admin.products.colPrice')}</p>
                         {/* BUG-070 FIX: Show format price range instead of base price */}
@@ -932,7 +936,7 @@ export default function ProductsListClient({
                             <tbody className="divide-y divide-slate-100">
                               {selectedProduct.formats.map((fmt) => (
                                 <tr key={fmt.id}>
-                                  <td className="px-3 py-2 text-sm text-slate-900">{fmt.name}</td>
+                                  <td className="px-3 py-2 text-sm text-slate-900 truncate max-w-[160px]">{fmt.name}</td>
                                   <td className="px-3 py-2 text-sm text-end text-slate-700">{formatCurrency(Number(fmt.price))}</td>
                                   <td className="px-3 py-2 text-sm text-center">
                                     <span className={`font-medium ${
@@ -987,13 +991,14 @@ export default function ProductsListClient({
         /* Grid View */
         <div className="flex-1 min-h-0 overflow-y-auto px-4 lg:px-6 pb-6">
           {/* Search & Filter Tabs for Grid View */}
-          <div className="flex items-center gap-3 mb-4">
-            <div className="relative flex-1 max-w-xs">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-4">
+            <div className="relative w-full sm:flex-1 sm:max-w-xs">
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={t('admin.products.searchPlaceholder')}
+                aria-label={t('admin.products.searchPlaceholder')}
                 className="w-full h-9 ps-3 pe-8 text-sm border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
@@ -1085,11 +1090,11 @@ export default function ProductsListClient({
 
                     {/* Content */}
                     <div className="p-3">
-                      <p className="text-xs text-slate-500 mb-0.5">{product.category.name}</p>
+                      <p className="text-xs text-slate-500 mb-0.5 truncate">{product.category.name}</p>
                       <h3 className="font-semibold text-sm text-slate-900 truncate group-hover:text-indigo-700 transition-colors">
                         {product.name}
                       </h3>
-                      <p className="text-lg font-bold text-indigo-700 mt-1">{priceDisplay}</p>
+                      <p className="text-lg font-bold text-indigo-700 mt-1 truncate">{priceDisplay}</p>
 
                       {/* Bottom row: stock + badges */}
                       <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-100">
@@ -1194,6 +1199,7 @@ export default function ProductsListClient({
               value={scheduleDate}
               onChange={(e) => setScheduleDate(e.target.value)}
               min={new Date().toISOString().slice(0, 16)}
+              aria-label={t('admin.products.scheduleDateLabel')}
               className="w-full h-10 px-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
@@ -1278,6 +1284,7 @@ export default function ProductsListClient({
               step={0.5}
               value={bulkPricePercent}
               onChange={(e) => setBulkPricePercent(parseFloat(e.target.value) || 0)}
+              aria-label={t('admin.products.bulkPricePercentLabel')}
               className="w-full h-10 px-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="e.g. 10"
             />
@@ -1316,8 +1323,8 @@ function MiniStat({
       <div className="w-9 h-9 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600 flex-shrink-0">
         <Icon className="w-4 h-4" />
       </div>
-      <div>
-        <p className="text-xs text-slate-500">{label}</p>
+      <div className="min-w-0">
+        <p className="text-xs text-slate-500 truncate">{label}</p>
         <p className="text-lg font-bold text-slate-900">{value}</p>
       </div>
     </div>

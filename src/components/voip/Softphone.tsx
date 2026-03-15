@@ -1221,7 +1221,7 @@ export default function Softphone() {
                           }`}
                           title={t('voip.softphone.virtualBg.title')}
                         >
-                          <Image className="w-3.5 h-3.5" />
+                          <Image className="w-3.5 h-3.5" aria-hidden="true" />
                         </button>
 
                         {showBgPicker && (

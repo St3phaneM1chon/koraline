@@ -1387,15 +1387,15 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
   // ─── Render ─────────────────────────────────────────────────
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col" role="main" aria-label={t('admin.commandes.title')}>
       {/* Stat cards row */}
       <div className="p-4 lg:p-6 pb-0 flex-shrink-0">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
           <div>
             <h1 className="text-xl font-bold text-slate-900">{t('admin.commandes.title')}</h1>
             <p className="text-sm text-slate-500 mt-0.5">{t('admin.commandes.subtitle')}</p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <Button variant="secondary" icon={Download} size="sm" onClick={handleExportCsv}>
               {t('admin.commandes.exportCsv')}
             </Button>
@@ -1410,7 +1410,7 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
             </Button>
           </div>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-4">
           <StatCard label={t('admin.commandes.statTotal')} value={stats.total} icon={ShoppingBag} />
           <StatCard label={t('admin.commandes.statPending')} value={stats.pending} icon={Clock} />
           <StatCard label={t('admin.commandes.statProcessing')} value={stats.processing} icon={Cog} />
@@ -1422,7 +1422,7 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
       {/* Bulk Action Bar */}
       {showBulkBar && selectedOrderIds.size > 0 && (
         <div className="mx-4 lg:mx-6 mb-2 flex-shrink-0">
-          <div className="flex items-center gap-3 bg-indigo-50 border border-indigo-200 rounded-lg px-4 py-2.5">
+          <div className="flex flex-wrap items-center gap-3 bg-indigo-50 border border-indigo-200 rounded-lg px-4 py-2.5">
             <div className="flex items-center gap-2">
               <CheckSquare className="w-4 h-4 text-indigo-600" />
               <span className="text-sm font-medium text-indigo-800">
@@ -1430,10 +1430,11 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
               </span>
             </div>
 
-            <div className="flex items-center gap-2 ms-auto">
+            <div className="flex items-center gap-2 ms-auto flex-wrap">
               <select
                 value={bulkStatus}
                 onChange={(e) => setBulkStatus(e.target.value)}
+                aria-label={t('admin.commandes.bulkSelectStatus')}
                 className="h-8 px-2 rounded border border-indigo-300 text-xs text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="">{t('admin.commandes.bulkSelectStatus')}</option>
@@ -1636,6 +1637,7 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
                           updateOrderStatus(selectedOrder.id, newStatus);
                         }}
                         disabled={updating}
+                        aria-label={t('admin.commandes.orderStatusLabel')}
                         className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                       >
                         {statusOptionValues.map(s => (
@@ -1817,6 +1819,7 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
                         <select
                           defaultValue={selectedOrder.carrier || ''}
                           onChange={(e) => updateTracking(selectedOrder.id, e.target.value, selectedOrder.trackingNumber || '')}
+                          aria-label={t('admin.commandes.carrierLabel')}
                           className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         >
                           <option value="">{t('admin.commandes.carrierSelect')}</option>
@@ -1854,10 +1857,10 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
                         <tbody className="divide-y divide-slate-100">
                           {selectedOrder.items.map((item) => (
                             <tr key={item.id}>
-                              <td className="px-4 py-3">
-                                <p className="font-medium text-slate-900">{item.productName}</p>
+                              <td className="px-4 py-3 max-w-[250px]">
+                                <p className="font-medium text-slate-900 truncate">{item.productName}</p>
                                 {item.formatName && (
-                                  <p className="text-xs text-slate-500">{item.formatName}</p>
+                                  <p className="text-xs text-slate-500 truncate">{item.formatName}</p>
                                 )}
                               </td>
                               <td className="px-4 py-3 text-center text-sm text-slate-700">{item.quantity}</td>
@@ -2041,7 +2044,7 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
                         <Star className="w-4 h-4" />
                         {t('admin.orders.loyalty.title')}
                       </h3>
-                      <div className="grid grid-cols-3 gap-3 text-sm">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
                         <div className="text-center p-2 bg-purple-100/50 rounded">
                           <div className="text-lg font-bold text-green-700">+{loyaltyBridge.pointsEarned ?? 0}</div>
                           <div className="text-xs text-purple-600">{t('admin.orders.loyalty.pointsEarned')}</div>
@@ -2101,7 +2104,7 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
                             key={email.id}
                             className="flex items-center justify-between text-xs p-2 rounded-md bg-indigo-100/50"
                           >
-                            <span className="text-indigo-800 truncate">{email.subject}</span>
+                            <span className="text-indigo-800 truncate max-w-[200px]">{email.subject}</span>
                             <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${
                               email.status === 'delivered' || email.status === 'sent' ? 'bg-green-100 text-green-700' :
                               email.status === 'bounced' ? 'bg-red-100 text-red-700' :
@@ -2174,8 +2177,8 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
                             href={`/admin/produits/${prod.productId}`}
                             className="flex items-center justify-between text-xs p-2 rounded-md bg-rose-100/50 hover:bg-rose-100 transition-colors"
                           >
-                            <div>
-                              <span className="font-medium text-rose-800">{prod.name}</span>
+                            <div className="min-w-0 flex-1">
+                              <span className="font-medium text-rose-800 truncate inline-block max-w-[180px]">{prod.name}</span>
                               {prod.sku && <span className="text-rose-500 ms-2">({prod.sku})</span>}
                               <span className="text-rose-600 ms-2">×{prod.quantity}</span>
                             </div>
@@ -2337,6 +2340,7 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
             <select
               value={reshipReason}
               onChange={(e) => setReshipReason(e.target.value)}
+              aria-label={t('admin.commandes.reshipReasonLabel')}
               className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             >
               {reshipReasons.map((r) => (

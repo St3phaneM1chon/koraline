@@ -290,7 +290,7 @@ export default function DashboardClient({ stats, recentOrders, recentUsers }: Da
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
         <QuickAction
           href="/admin/commandes"
           icon={<ShoppingCart className="w-5 h-5" />}
@@ -343,8 +343,8 @@ export default function DashboardClient({ stats, recentOrders, recentUsers }: Da
               return (
                 <div key={order.id} className="p-4 hover:bg-slate-50/50 transition-colors">
                   <div className="flex items-center justify-between mb-1.5">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-slate-900 text-sm">
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                      <span className="font-medium text-slate-900 text-sm truncate">
                         {order.orderNumber}
                       </span>
                       <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${orderStatus.classes}`}>
@@ -456,12 +456,12 @@ export default function DashboardClient({ stats, recentOrders, recentUsers }: Da
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div>
-                    <p className="text-slate-500">{t('admin.dashboard.openDeals')}</p>
+                    <p className="text-slate-500 truncate">{t('admin.dashboard.openDeals')}</p>
                     <p className="font-bold text-slate-900">{crossModule.modules.crm.openDeals}</p>
                   </div>
                   <div>
-                    <p className="text-slate-500">{t('admin.dashboard.pipelineValue')}</p>
-                    <p className="font-bold text-green-700">{formatCurrency(crossModule.modules.crm.pipelineValue, locale)}</p>
+                    <p className="text-slate-500 truncate">{t('admin.dashboard.pipelineValue')}</p>
+                    <p className="font-bold text-green-700 truncate">{formatCurrency(crossModule.modules.crm.pipelineValue, locale)}</p>
                   </div>
                 </div>
               </Link>
@@ -477,11 +477,11 @@ export default function DashboardClient({ stats, recentOrders, recentUsers }: Da
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div>
-                    <p className="text-slate-500">{t('admin.dashboard.draftEntries')}</p>
+                    <p className="text-slate-500 truncate">{t('admin.dashboard.draftEntries')}</p>
                     <p className="font-bold text-slate-900">{crossModule.modules.accounting.draftEntries}</p>
                   </div>
                   <div>
-                    <p className="text-slate-500">{t('admin.dashboard.entriesThisMonth')}</p>
+                    <p className="text-slate-500 truncate">{t('admin.dashboard.entriesThisMonth')}</p>
                     <p className="font-bold text-slate-900">{crossModule.modules.accounting.entriesThisMonth}</p>
                   </div>
                 </div>
@@ -534,11 +534,11 @@ export default function DashboardClient({ stats, recentOrders, recentUsers }: Da
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div>
-                    <p className="text-slate-500">{t('admin.dashboard.callsToday')}</p>
+                    <p className="text-slate-500 truncate">{t('admin.dashboard.callsToday')}</p>
                     <p className="font-bold text-slate-900">{crossModule.modules.telephony.callsToday}</p>
                   </div>
                   <div>
-                    <p className="text-slate-500">{t('admin.dashboard.avgDuration')}</p>
+                    <p className="text-slate-500 truncate">{t('admin.dashboard.avgDuration')}</p>
                     <p className="font-bold text-slate-900">
                       {Math.floor(crossModule.modules.telephony.avgDurationSeconds / 60)}m {crossModule.modules.telephony.avgDurationSeconds % 60}s
                     </p>

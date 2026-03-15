@@ -243,7 +243,7 @@ export default function BrandKitPage() {
       {/* Logo Guidelines */}
       <div className="bg-white rounded-xl border border-slate-200 p-6">
         <h2 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-          <Image className="w-5 h-5" /> {t('admin.media.brandKit.logoSection')}
+          <Image className="w-5 h-5" aria-hidden="true" /> {t('admin.media.brandKit.logoSection')}
         </h2>
         <div className="grid grid-cols-2 gap-6">
           <div className="p-8 bg-white border border-slate-200 rounded-xl text-center">

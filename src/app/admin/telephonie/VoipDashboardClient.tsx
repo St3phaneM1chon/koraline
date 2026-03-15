@@ -47,7 +47,7 @@ export default function VoipDashboardClient({ data }: { data: any }) {
   return (
     <div className="space-y-6" role="main" aria-label={t('voip.dashboard.title')}>
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">{t('voip.dashboard.title')}</h1>
           <p className="text-sm text-gray-500 mt-1">{t('voip.dashboard.subtitle')}</p>
@@ -98,17 +98,17 @@ export default function VoipDashboardClient({ data }: { data: any }) {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm" aria-label={t('voip.dashboard.recentCalls')}>
             <thead>
               <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
                 <th className="px-4 py-2 text-start">{t('voip.callLog.direction')}</th>
                 <th className="px-4 py-2 text-start">{t('voip.callLog.caller')}</th>
-                <th className="px-4 py-2 text-start">{t('voip.callLog.called')}</th>
-                <th className="px-4 py-2 text-start">{t('voip.callLog.agent')}</th>
+                <th className="px-4 py-2 text-start hidden sm:table-cell">{t('voip.callLog.called')}</th>
+                <th className="px-4 py-2 text-start hidden md:table-cell">{t('voip.callLog.agent')}</th>
                 <th className="px-4 py-2 text-start">{t('voip.callLog.status')}</th>
-                <th className="px-4 py-2 text-start">{t('voip.callLog.duration')}</th>
-                <th className="px-4 py-2 text-start">{t('voip.callLog.date')}</th>
-                <th className="px-4 py-2 text-start">{t('voip.callLog.satisfaction')}</th>
+                <th className="px-4 py-2 text-start hidden sm:table-cell">{t('voip.callLog.duration')}</th>
+                <th className="px-4 py-2 text-start hidden lg:table-cell">{t('voip.callLog.date')}</th>
+                <th className="px-4 py-2 text-start hidden lg:table-cell">{t('voip.callLog.satisfaction')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -116,24 +116,24 @@ export default function VoipDashboardClient({ data }: { data: any }) {
               {data.recentCalls.map((call: any) => (
                 <tr key={call.id} className="hover:bg-gray-50">
                   <td className="px-4 py-2.5">{directionIcon(call.direction)}</td>
-                  <td className="px-4 py-2.5">
-                    <div className="font-medium text-gray-900">{call.callerName || call.callerNumber}</div>
+                  <td className="px-4 py-2.5 max-w-[180px]">
+                    <div className="font-medium text-gray-900 truncate">{call.callerName || call.callerNumber}</div>
                     {call.client && (
-                      <div className="text-xs text-gray-500">{call.client.name || call.client.email}</div>
+                      <div className="text-xs text-gray-500 truncate">{call.client.name || call.client.email}</div>
                     )}
                   </td>
-                  <td className="px-4 py-2.5 text-gray-600">{call.calledNumber}</td>
-                  <td className="px-4 py-2.5 text-gray-600">
+                  <td className="px-4 py-2.5 text-gray-600 hidden sm:table-cell truncate max-w-[140px]">{call.calledNumber}</td>
+                  <td className="px-4 py-2.5 text-gray-600 hidden md:table-cell truncate max-w-[140px]">
                     {call.agent ? `${call.agent.user?.name || ''} (${call.agent.extension})` : '-'}
                   </td>
                   <td className="px-4 py-2.5">{statusBadge(call.status)}</td>
-                  <td className="px-4 py-2.5 text-gray-600 tabular-nums">
+                  <td className="px-4 py-2.5 text-gray-600 tabular-nums hidden sm:table-cell">
                     {call.duration ? formatDuration(call.duration) : '-'}
                   </td>
-                  <td className="px-4 py-2.5 text-gray-500 text-xs">
+                  <td className="px-4 py-2.5 text-gray-500 text-xs hidden lg:table-cell">
                     {new Date(call.startedAt).toLocaleString(locale, { dateStyle: 'short', timeStyle: 'short' })}
                   </td>
-                  <td className="px-4 py-2.5">
+                  <td className="px-4 py-2.5 hidden lg:table-cell">
                     <SatisfactionBadge score={call.survey?.overallScore || null} />
                   </td>
                 </tr>
