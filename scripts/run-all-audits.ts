@@ -1,6 +1,8 @@
 /**
- * Run all 25 audits directly (bypasses API auth)
- * Usage: npx tsx scripts/run-all-audits.ts [--critical-only] [--code AUTH-SESSION]
+ * Run all 40 audits directly (bypasses API auth)
+ * Usage: npx ts-node --compiler-options '{"module":"CommonJS"}' scripts/run-all-audits.ts
+ *        npx ts-node --compiler-options '{"module":"CommonJS"}' scripts/run-all-audits.ts --critical-only
+ *        npx ts-node --compiler-options '{"module":"CommonJS"}' scripts/run-all-audits.ts AUTH-SESSION
  */
 
 import { PrismaClient } from '@prisma/client';
@@ -9,7 +11,6 @@ import * as fs from 'fs';
 
 const prisma = new PrismaClient();
 
-// We can't use @/ path aliases here, so we import auditors directly
 const AUDITORS_DIR = path.join(__dirname, '..', 'src', 'lib', 'auditors');
 
 interface AuditCheckResult {
@@ -26,17 +27,21 @@ interface AuditCheckResult {
 }
 
 const ALL_CODES = [
-  // CRITICAL
+  // CRITICAL (1-10)
   'AUTH-SESSION', 'AUTHZ-RBAC', 'INPUT-INJECTION', 'CSRF-RATELIMIT', 'SECRETS-ENV',
   'PAYMENT-PCI', 'ACCOUNTING-INTEGRITY', 'TAX-ACCURACY', 'PRIVACY-COMPLIANCE', 'DB-INTEGRITY',
-  // HIGH
+  // HIGH (11-19)
   'RACE-CONDITIONS', 'API-LEAKAGE', 'DB-PERFORMANCE', 'WEBHOOK-IDEMPOTENCY', 'CRON-RELIABILITY',
   'EMAIL-CASL', 'I18N-COMPLETENESS', 'WEBAUTHN-MFA', 'SECURITY-HEADERS',
   'AZURE-LOCAL-SYNC', 'ADMIN-BACKEND-MEGA',
-  // MEDIUM
+  // MEDIUM (20-26)
   'TYPESCRIPT-QUALITY', 'FRONTEND-PERFORMANCE', 'ERROR-OBSERVABILITY', 'ARCHITECTURE-QUALITY', 'ACCESSIBILITY-WCAG',
-  // LOW
   'API-CONTRACTS',
+  // SECTION (27-39)
+  'SECTION-DASHBOARD', 'SECTION-COMMERCE', 'SECTION-CATALOG', 'SECTION-MARKETING',
+  'SECTION-COMMUNITY', 'SECTION-LOYALTY', 'SECTION-MEDIA', 'SECTION-EMAILS',
+  'SECTION-TELEPHONY', 'SECTION-CRM', 'SECTION-ACCOUNTING', 'SECTION-SYSTEM',
+  'SECTION-PURCHASE-WORKFLOW',
 ];
 
 const CODE_TO_FILE: Record<string, string> = {
@@ -67,6 +72,20 @@ const CODE_TO_FILE: Record<string, string> = {
   'API-CONTRACTS': 'api-contracts',
   'AZURE-LOCAL-SYNC': 'azure-local-sync',
   'ADMIN-BACKEND-MEGA': 'admin-backend-mega',
+  // Section auditors
+  'SECTION-DASHBOARD': 'section/section-dashboard',
+  'SECTION-COMMERCE': 'section/section-commerce',
+  'SECTION-CATALOG': 'section/section-catalog',
+  'SECTION-MARKETING': 'section/section-marketing',
+  'SECTION-COMMUNITY': 'section/section-community',
+  'SECTION-LOYALTY': 'section/section-loyalty',
+  'SECTION-MEDIA': 'section/section-media',
+  'SECTION-EMAILS': 'section/section-emails',
+  'SECTION-TELEPHONY': 'section/section-telephony',
+  'SECTION-CRM': 'section/section-crm',
+  'SECTION-ACCOUNTING': 'section/section-accounting',
+  'SECTION-SYSTEM': 'section/section-system',
+  'SECTION-PURCHASE-WORKFLOW': 'section/section-purchase-workflow',
 };
 
 async function runSingleAudit(code: string): Promise<{
@@ -82,14 +101,12 @@ async function runSingleAudit(code: string): Promise<{
 
   const filePath = path.join(AUDITORS_DIR, `${fileName}.ts`);
   if (!fs.existsSync(filePath)) {
-    // Try .js
     const jsPath = path.join(AUDITORS_DIR, `${fileName}.js`);
     if (!fs.existsSync(jsPath)) throw new Error(`Auditor file not found: ${filePath}`);
   }
 
   const startTime = Date.now();
 
-  // Dynamic import of the auditor
   const mod = require(filePath);
   const AuditorClass = mod.default || mod;
   const auditor = new AuditorClass();
@@ -112,7 +129,7 @@ async function runSingleAudit(code: string): Promise<{
         failedChecks: findings.length,
         findingsCount: findings.length,
         durationMs: duration,
-        runBy: 'cli-runner',
+        runBy: 'mega-audit-phase12',
         summary: JSON.stringify({
           totalResults: results.length,
           passed: passed.length,
@@ -128,7 +145,7 @@ async function runSingleAudit(code: string): Promise<{
       },
     });
 
-    // Save findings
+    // Save findings in batches
     for (const finding of findings) {
       await prisma.auditFinding.create({
         data: {
@@ -152,26 +169,30 @@ async function runSingleAudit(code: string): Promise<{
 async function main() {
   const args = process.argv.slice(2);
   const criticalOnly = args.includes('--critical-only');
-  const singleCode = args.find(a => a !== '--critical-only' && !a.startsWith('--'))?.toUpperCase();
+  const sectionOnly = args.includes('--section-only');
+  const singleCode = args.find(a => !a.startsWith('--'))?.toUpperCase();
 
   let codes = ALL_CODES;
   if (singleCode) {
     codes = [singleCode];
   } else if (criticalOnly) {
     codes = ALL_CODES.slice(0, 10);
+  } else if (sectionOnly) {
+    codes = ALL_CODES.filter(c => c.startsWith('SECTION-'));
   }
 
-  console.log(`\n${'═'.repeat(60)}`);
-  console.log(`  BIOCYCLE PEPTIDES - CODE AUDIT RUNNER`);
+  console.log(`\n${'═'.repeat(70)}`);
+  console.log(`  BIOCYCLE PEPTIDES — MEGA AUDIT PHASE 12`);
   console.log(`  Running ${codes.length} audit(s)...`);
-  console.log(`${'═'.repeat(60)}\n`);
+  console.log(`  Started: ${new Date().toISOString()}`);
+  console.log(`${'═'.repeat(70)}\n`);
 
-  const allResults: Array<{ code: string; findings: number; passed: number; failed: number; duration: number }> = [];
+  const allResults: Array<{ code: string; findings: number; passed: number; failed: number; duration: number; results?: AuditCheckResult[] }> = [];
   let totalFindings = 0;
   let totalPassed = 0;
 
   for (const code of codes) {
-    process.stdout.write(`▶ ${code.padEnd(25)} `);
+    process.stdout.write(`▶ ${code.padEnd(32)} `);
     try {
       const result = await runSingleAudit(code);
       totalFindings += result.findings;
@@ -184,11 +205,11 @@ async function main() {
       // Show critical/high findings inline
       if (result.findings > 0) {
         const criticalFindings = result.results.filter(r => !r.passed && (r.severity === 'CRITICAL' || r.severity === 'HIGH'));
-        for (const f of criticalFindings.slice(0, 3)) {
+        for (const f of criticalFindings.slice(0, 5)) {
           console.log(`   └─ [${f.severity}] ${f.title}${f.filePath ? ` → ${f.filePath}` : ''}`);
         }
-        if (criticalFindings.length > 3) {
-          console.log(`   └─ ... and ${criticalFindings.length - 3} more`);
+        if (criticalFindings.length > 5) {
+          console.log(`   └─ ... and ${criticalFindings.length - 5} more CRITICAL/HIGH`);
         }
       }
     } catch (err) {
@@ -198,34 +219,57 @@ async function main() {
   }
 
   // Summary
-  console.log(`\n${'═'.repeat(60)}`);
-  console.log(`  AUDIT SUMMARY`);
-  console.log(`${'─'.repeat(60)}`);
+  console.log(`\n${'═'.repeat(70)}`);
+  console.log(`  MEGA AUDIT SUMMARY — Phase 12`);
+  console.log(`${'─'.repeat(70)}`);
   console.log(`  Audits run:       ${allResults.length}`);
   console.log(`  Total checks:     ${totalPassed + totalFindings}`);
   console.log(`  Passed:           ${totalPassed}`);
   console.log(`  Findings:         ${totalFindings}`);
   console.log(`  Errors:           ${allResults.filter(r => r.findings === -1).length}`);
-  console.log(`${'─'.repeat(60)}`);
+  console.log(`  Finished:         ${new Date().toISOString()}`);
+  console.log(`${'─'.repeat(70)}`);
 
-  // By severity group
-  const bySeverity: Record<string, typeof allResults> = { CRITICAL: [], HIGH: [], MEDIUM: [], LOW: [] };
+  // Top findings by severity
+  const allFindings: AuditCheckResult[] = [];
   for (const r of allResults) {
-    const type = ALL_CODES.indexOf(r.code);
-    if (type < 10) bySeverity.CRITICAL.push(r);
-    else if (type < 21) bySeverity.HIGH.push(r);
-    else if (type < 26) bySeverity.MEDIUM.push(r);
-    else bySeverity.LOW.push(r);
+    if (r.results) {
+      allFindings.push(...r.results.filter(f => !f.passed));
+    }
   }
 
-  for (const [sev, results] of Object.entries(bySeverity)) {
-    if (results.length === 0) continue;
-    const findings = results.reduce((s, r) => s + Math.max(0, r.findings), 0);
-    const passed = results.filter(r => r.findings === 0).length;
-    console.log(`  ${sev.padEnd(10)} ${results.length} audits | ${passed} clean | ${findings} findings`);
+  const criticalCount = allFindings.filter(f => f.severity === 'CRITICAL').length;
+  const highCount = allFindings.filter(f => f.severity === 'HIGH').length;
+  const mediumCount = allFindings.filter(f => f.severity === 'MEDIUM').length;
+  const lowCount = allFindings.filter(f => f.severity === 'LOW').length;
+
+  console.log(`  By severity:  CRITICAL=${criticalCount}  HIGH=${highCount}  MEDIUM=${mediumCount}  LOW=${lowCount}`);
+  console.log(`${'═'.repeat(70)}\n`);
+
+  // Clean audits
+  const clean = allResults.filter(r => r.findings === 0);
+  if (clean.length > 0) {
+    console.log(`✅ CLEAN (${clean.length}):`);
+    clean.forEach(r => console.log(`   ${r.code}`));
   }
 
-  console.log(`${'═'.repeat(60)}\n`);
+  // Audits with findings
+  const withFindings = allResults.filter(r => r.findings > 0);
+  if (withFindings.length > 0) {
+    console.log(`\n⚠️  WITH FINDINGS (${withFindings.length}):`);
+    withFindings
+      .sort((a, b) => b.findings - a.findings)
+      .forEach(r => console.log(`   ${r.code}: ${r.findings} findings (${r.passed} passed)`));
+  }
+
+  // Errors
+  const withErrors = allResults.filter(r => r.findings === -1);
+  if (withErrors.length > 0) {
+    console.log(`\n❌ ERRORS (${withErrors.length}):`);
+    withErrors.forEach(r => console.log(`   ${r.code}`));
+  }
+
+  console.log('');
 }
 
 main()

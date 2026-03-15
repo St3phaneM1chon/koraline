@@ -725,10 +725,54 @@ const auditTypes: AuditTypeSeed[] = [
       { id: 'sec-sys-a11y-01', check: 'Settings forms accessible', description: 'All settings inputs have labels' },
     ],
   },
+  {
+    code: 'SECTION-PURCHASE-WORKFLOW',
+    name: 'Purchase Workflow End-to-End Audit',
+    nameFr: 'Audit Cycle Complet d\'Achat',
+    description: 'End-to-end purchase cycle: browsing, cart, checkout, payment (Stripe+PayPal), emails (customer+owner), order lifecycle (confirmed→shipped→delivered), inventory updates, accounting entries, tax, refunds, subscriptions',
+    descriptionFr: 'Cycle complet d\'achat: navigation, panier, checkout, paiement (Stripe+PayPal), courriels (client+proprietaire), cycle commande (confirmee→expediee→livree), mise a jour inventaire, ecritures comptables, taxes, remboursements, abonnements',
+    severity: 'CRITICAL',
+    category: 'section',
+    sortOrder: 40,
+    checklist: [
+      // DB-First (schema completeness)
+      { id: 'pw-db-01', check: 'Order model has complete lifecycle fields', description: 'Order must have status, payment fields, shipping, totals' },
+      { id: 'pw-db-02', check: 'OrderEvent model tracks state changes', description: 'Every status transition must be logged' },
+      { id: 'pw-db-03', check: 'Cart/CartItem models exist with expiry', description: 'Cart must support guest and authenticated users' },
+      { id: 'pw-db-04', check: 'Payment models track attempts and errors', description: 'PaymentError model captures failed payment details' },
+      { id: 'pw-db-05', check: 'Inventory models support reservations', description: 'InventoryReservation prevents overselling during checkout' },
+      // Payment chain
+      { id: 'pw-pay-01', check: 'Stripe checkout session creation validates server-side prices', description: 'Amounts must come from DB, not client' },
+      { id: 'pw-pay-02', check: 'PayPal order creation validates server-side', description: 'PayPal amounts verified against DB' },
+      { id: 'pw-pay-03', check: 'Webhook handlers are idempotent', description: 'Duplicate webhook events must not create duplicate orders' },
+      { id: 'pw-pay-04', check: 'Payment failure creates PaymentError record', description: 'Failed attempts must be tracked' },
+      // Email chain
+      { id: 'pw-email-01', check: 'Order confirmation email sent to customer', description: 'Email triggered on successful payment' },
+      { id: 'pw-email-02', check: 'New order notification sent to owner', description: 'Owner/admin notified of new orders' },
+      { id: 'pw-email-03', check: 'Shipping confirmation email on dispatch', description: 'Customer notified when order ships' },
+      { id: 'pw-email-04', check: 'Delivery confirmation email', description: 'Customer notified when order delivered' },
+      // Order lifecycle
+      { id: 'pw-order-01', check: 'Order status machine enforces valid transitions', description: 'Cannot go from DELIVERED back to PENDING' },
+      { id: 'pw-order-02', check: 'Admin can update order status', description: 'PATCH /admin/orders/[id] supports status changes' },
+      { id: 'pw-order-03', check: 'Order cancellation handles refund', description: 'Cancelling a paid order triggers refund flow' },
+      // Inventory chain
+      { id: 'pw-inv-01', check: 'Stock decremented on order creation', description: 'stockQuantity reduced when order confirmed' },
+      { id: 'pw-inv-02', check: 'Stock restored on cancellation/refund', description: 'Cancelled orders restore inventory' },
+      { id: 'pw-inv-03', check: 'Inventory reservation during checkout', description: 'Items reserved during payment processing' },
+      // Accounting chain
+      { id: 'pw-acct-01', check: 'Journal entry created on payment', description: 'Double-entry accounting record on successful payment' },
+      { id: 'pw-acct-02', check: 'Revenue recognition correct', description: 'Revenue account credited, AR debited' },
+      { id: 'pw-acct-03', check: 'Tax entries match order taxes', description: 'Tax journal entries match GST/QST on order' },
+      { id: 'pw-acct-04', check: 'Refund creates reversing journal entry', description: 'Refund must reverse original accounting entry' },
+      // Subscription chain
+      { id: 'pw-sub-01', check: 'Subscription creation on recurring product purchase', description: 'Buying a subscription product creates Subscription record' },
+      { id: 'pw-sub-02', check: 'Subscription renewal triggers new order', description: 'Recurring billing creates new orders' },
+    ],
+  },
 ];
 
 async function main() {
-  console.log('Seeding 39 audit types...');
+  console.log('Seeding 40 audit types...');
 
   for (const auditType of auditTypes) {
     await prisma.auditType.upsert({

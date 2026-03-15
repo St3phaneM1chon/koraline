@@ -171,6 +171,7 @@ async function loadAuditor(code: string): Promise<Auditor> {
     'SECTION-CRM': () => import('@/lib/auditors/section/section-crm'),
     'SECTION-ACCOUNTING': () => import('@/lib/auditors/section/section-accounting'),
     'SECTION-SYSTEM': () => import('@/lib/auditors/section/section-system'),
+    'SECTION-PURCHASE-WORKFLOW': () => import('@/lib/auditors/section/section-purchase-workflow'),
   };
 
   const loader = auditorMap[code];
