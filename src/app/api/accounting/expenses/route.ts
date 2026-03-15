@@ -483,7 +483,7 @@ export const DELETE = withAdminGuard(async (request, { session }) => {
         total: Number(existing.total),
         category: existing.category,
       },
-    }).catch(() => { /* non-blocking */ });
+    }).catch((err) => { console.error('[accounting/expenses] non-blocking:', err); });
 
     await prisma.expense.update({
       where: { id },

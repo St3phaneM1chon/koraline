@@ -357,7 +357,7 @@ export const PUT = withAdminGuard(async (request, { session }) => {
         invoiceNumber: existing.invoiceNumber,
         supplierName: existing.supplierName,
       },
-    }).catch(() => { /* non-blocking */ });
+    }).catch((err) => { console.error('[accounting/supplier-invoices] non-blocking:', err); });
 
     return NextResponse.json({ success: true, invoice });
   } catch (error) {

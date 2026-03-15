@@ -130,7 +130,7 @@ export const PATCH = withAdminGuard(async (request: NextRequest, { session, para
       newValue: updateData,
       ipAddress: getClientIpFromRequest(request),
       userAgent: request.headers.get('user-agent') || undefined,
-    }).catch(() => {});
+    }).catch((err) => { console.error('[ambassadors/id] Non-blocking operation failed:', err); });
 
     return NextResponse.json({ ambassador });
   } catch (error) {
@@ -166,7 +166,7 @@ export const DELETE = withAdminGuard(async (request: NextRequest, { session, par
       previousValue: { name: existing.name, status: existing.status },
       ipAddress: getClientIpFromRequest(request),
       userAgent: request.headers.get('user-agent') || undefined,
-    }).catch(() => {});
+    }).catch((err) => { console.error('[ambassadors/id] Non-blocking operation failed:', err); });
 
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -40,7 +40,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { params, sessio
     newValue: { targetStatus: parsed.data.targetStatus },
     ipAddress: getClientIpFromRequest(request),
     userAgent: request.headers.get('user-agent') || undefined,
-  }).catch(() => {});
+  }).catch((err) => { console.error('[admin/videos/id/workflow] Non-blocking operation failed:', err); });
 
   return NextResponse.json({ success: true, newStatus: result.newStatus });
 });

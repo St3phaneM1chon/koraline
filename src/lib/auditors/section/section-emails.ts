@@ -81,9 +81,12 @@ export default class SectionEmailsAuditor extends BaseSectionAuditor {
     const prefix = 'section-emails-api';
 
     // Check newsletter API has unsubscribe endpoint
+    // Check multiple possible locations for the unsubscribe route
     const unsubPath = path.join(this.srcDir, 'app', 'api', 'newsletter', 'unsubscribe', 'route.ts');
     const altUnsubPath = path.join(this.srcDir, 'app', 'api', 'admin', 'newsletter', 'unsubscribe', 'route.ts');
-    if (fs.existsSync(unsubPath) || fs.existsSync(altUnsubPath)) {
+    const topLevelUnsubPath = path.join(this.srcDir, 'app', 'api', 'unsubscribe', 'route.ts');
+    const mailingListUnsubPath = path.join(this.srcDir, 'app', 'api', 'mailing-list', 'unsubscribe', 'route.ts');
+    if (fs.existsSync(unsubPath) || fs.existsSync(altUnsubPath) || fs.existsSync(topLevelUnsubPath) || fs.existsSync(mailingListUnsubPath)) {
       results.push(this.pass(`${prefix}-unsubscribe`, 'Newsletter unsubscribe endpoint exists'));
     } else {
       results.push(this.fail(`${prefix}-unsubscribe`, 'HIGH',

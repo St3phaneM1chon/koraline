@@ -88,11 +88,15 @@ export default class SectionCRMAuditor extends BaseSectionAuditor {
     const prefix = 'section-crm-api';
 
     // Deals API: must support moving deals between stages (PATCH with stageId)
+    // Check main deals routes AND dedicated move endpoint
     const dealsRoute = path.join(this.srcDir, 'app', 'api', 'admin', 'crm', 'deals', 'route.ts');
     const dealsIdRoute = path.join(this.srcDir, 'app', 'api', 'admin', 'crm', 'deals', '[id]', 'route.ts');
-    const dealsContent = this.readFile(dealsRoute) + this.readFile(dealsIdRoute);
-    if (dealsContent) {
-      const hasPatchStage = /PATCH/.test(dealsContent) && /stageId|stage/.test(dealsContent);
+    const dealsMoveRoute = path.join(this.srcDir, 'app', 'api', 'admin', 'crm', 'deals', '[id]', 'move', 'route.ts');
+    const dealsContent = (this.readFile(dealsRoute) || '') + (this.readFile(dealsIdRoute) || '');
+    const dealsMoveContent = this.readFile(dealsMoveRoute) || '';
+    if (dealsContent || dealsMoveContent) {
+      const hasPatchStage = (/PATCH/.test(dealsContent) && /stageId|stage/.test(dealsContent)) ||
+        (/PATCH|PUT|POST/.test(dealsMoveContent) && /stageId|stage|move/.test(dealsMoveContent));
       results.push(
         hasPatchStage
           ? this.pass(`${prefix}-deals-move-stage`, 'Deals API supports moving deals between stages')

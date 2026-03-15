@@ -198,7 +198,7 @@ export const GET = withAdminGuard(async (request, { session: _session }) => {
             logger.error('[EmailSegments] Non-blocking segment count update failed', { error: error instanceof Error ? error.message : String(error) });
           })
         )
-      ).catch(() => {}); // non-blocking
+      ).catch((err) => { console.error('[admin/emails/segments] Non-blocking operation failed:', err); }); // non-blocking
 
       customWithType = customSegments.map((s, i) => ({
         id: s.id,

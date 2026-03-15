@@ -602,7 +602,9 @@ export abstract class BaseSectionAuditor extends BaseAuditor {
       }
 
       // Check for alt text on images
-      const hasImages = /<img|Image /.test(content);
+      // Exclude Lucide icon imports like `Image as ImageIcon` and `ImageIcon` — these are SVG icons, not user-content images
+      const hasImages = /<img\b/.test(content) ||
+        (/\bImage\b/.test(content) && !/Image\s+as\s+\w+Icon/.test(content) && /from\s+['"]next\/image['"]/.test(content));
       if (hasImages) {
         const hasAlt = /alt=/.test(content);
         results.push(
@@ -628,7 +630,9 @@ export abstract class BaseSectionAuditor extends BaseAuditor {
       }
 
       // Check for label association on form fields
-      if (/input|select|textarea|Input|Select|Textarea/.test(content)) {
+      // Use patterns that match actual HTML/JSX form elements, not Prisma select: {} properties
+      const hasFormFields = /<input[\s/>]|<select[\s/>]|<textarea[\s/>]|<Input[\s/>]|<Select[\s/>]|<Textarea[\s/>]/.test(content);
+      if (hasFormFields) {
         // FormField component wraps inputs with labels automatically
         const hasLabels = /label|Label|htmlFor|aria-label|placeholder|FormField/.test(content);
         results.push(

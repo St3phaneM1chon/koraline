@@ -170,7 +170,7 @@ export const PUT = withAdminGuard(async (request, { session, params }) => {
       newValue: { code: upperCode, type, value },
       ipAddress: getClientIpFromRequest(request),
       userAgent: request.headers.get('user-agent') || undefined,
-    }).catch(() => {});
+    }).catch((err) => { console.error('[admin/promo-codes/id] Non-blocking operation failed:', err); });
 
     return NextResponse.json({
       promoCode: {
@@ -282,7 +282,7 @@ export const PATCH = withAdminGuard(async (request, { session, params }) => {
       newValue: updateData,
       ipAddress: getClientIpFromRequest(request),
       userAgent: request.headers.get('user-agent') || undefined,
-    }).catch(() => {});
+    }).catch((err) => { console.error('[admin/promo-codes/id] Non-blocking operation failed:', err); });
 
     return NextResponse.json({
       promoCode: {
@@ -337,7 +337,7 @@ export const DELETE = withAdminGuard(async (request, { session, params }) => {
         newValue: { isActive: false, softDeleted: true },
         ipAddress: getClientIpFromRequest(request),
         userAgent: request.headers.get('user-agent') || undefined,
-      }).catch(() => {});
+      }).catch((err) => { console.error('[admin/promo-codes/id] Non-blocking operation failed:', err); });
 
       return NextResponse.json({
         success: true,
@@ -359,7 +359,7 @@ export const DELETE = withAdminGuard(async (request, { session, params }) => {
       previousValue: { code: existing.code },
       ipAddress: getClientIpFromRequest(request),
       userAgent: request.headers.get('user-agent') || undefined,
-    }).catch(() => {});
+    }).catch((err) => { console.error('[admin/promo-codes/id] Non-blocking operation failed:', err); });
 
     return NextResponse.json({ success: true, deleted: true });
   } catch (error) {

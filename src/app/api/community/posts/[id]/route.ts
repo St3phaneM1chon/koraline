@@ -96,8 +96,8 @@ export async function GET(request: NextRequest, context: RouteContext) {
         where: { id },
         data: { viewCount: { increment: 1 } },
       })
-      .catch(() => {
-        // Silently ignore view count increment failures
+      .catch((err) => {
+        console.error('[community/posts] View count increment failed:', err);
       });
 
     // Check if the current user has voted on this post

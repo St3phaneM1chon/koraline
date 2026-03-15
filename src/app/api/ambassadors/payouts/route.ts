@@ -169,7 +169,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
       newValue: { ambassadorId, amount: Number(payout.amount), commissionsCount: pendingCommissions.length },
       ipAddress: getClientIpFromRequest(request),
       userAgent: request.headers.get('user-agent') || undefined,
-    }).catch(() => {});
+    }).catch((err) => { console.error('[ambassadors/payouts] Non-blocking operation failed:', err); });
 
     return NextResponse.json({
       payout: {

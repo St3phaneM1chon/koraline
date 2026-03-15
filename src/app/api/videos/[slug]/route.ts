@@ -48,7 +48,7 @@ export async function GET(request: Request, context: RouteContext) {
     prisma.video.update({
       where: { slug },
       data: { views: { increment: 1 } },
-    }).catch(() => {});
+    }).catch((err) => { console.error('[videos/slug] Non-blocking operation failed:', err); });
 
     // Apply translation
     const translation = video.translations.find(t => t.locale === locale);

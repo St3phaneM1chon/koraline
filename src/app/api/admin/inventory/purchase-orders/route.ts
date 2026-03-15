@@ -90,7 +90,7 @@ export const POST = withAdminGuard(async (
     targetId: id,
     adminUserId: session.user.id,
     newValue: { totalCost, itemCount: parsed.data.items.length },
-  }).catch(() => {});
+  }).catch((err) => { console.error('[admin/inventory/purchase-orders] Non-blocking operation failed:', err); });
 
   return NextResponse.json({ id, ...po }, { status: 201 });
 });

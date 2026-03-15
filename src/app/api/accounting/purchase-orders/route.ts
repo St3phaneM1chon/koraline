@@ -214,7 +214,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
       userId: session?.user?.id || session?.user?.email || 'system',
       userName: session?.user?.name || undefined,
       metadata: { poNumber, supplierName: data.supplierName, total: totals.total },
-    }).catch(() => { /* non-blocking */ });
+    }).catch((err) => { console.error('[accounting/purchase-orders] non-blocking:', err); });
 
     logger.info('Purchase order created', { poNumber, supplierName: data.supplierName, total: totals.total });
 

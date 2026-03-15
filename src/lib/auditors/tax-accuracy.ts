@@ -381,6 +381,19 @@ export default class TaxAccuracyAuditor extends BaseAuditor {
           continue; // Data declaration, not logic
         }
 
+        // Skip UI/admin pages that merely declare a state variable for exemption settings
+        // (e.g., `taxExemptProducts: [] as string[]` in useState). These are config UI pages,
+        // not tax calculation logic files.
+        if (/useState|'use client'/.test(content)) {
+          const exemptContext = content.substring(
+            Math.max(0, content.search(/exempt/i) - 200),
+            Math.min(content.length, content.search(/exempt/i) + 200)
+          );
+          if (/useState|settings|setSettings/.test(exemptContext)) {
+            continue; // UI state declaration, not tax calculation logic
+          }
+        }
+
         // Check for proper conditional logic
         const hasConditional = /if\s*\(.*exempt/i.test(content) || /\?\s*0\s*:|exempt.*\?\s*null/i.test(content) || /exemptSales|zeroRatedSales/i.test(content);
 

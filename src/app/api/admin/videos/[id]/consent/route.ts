@@ -117,7 +117,7 @@ export const POST = withAdminGuard(async (request, { session, routeContext }) =>
       newValue: { clientId, videoId: id, type },
       ipAddress: getClientIpFromRequest(request),
       userAgent: request.headers.get('user-agent') || undefined,
-    }).catch(() => {});
+    }).catch((err) => { console.error('[admin/videos/id/consent] Non-blocking operation failed:', err); });
 
     return NextResponse.json({
       consent,

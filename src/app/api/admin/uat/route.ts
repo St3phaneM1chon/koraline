@@ -62,7 +62,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
       newValue: { canadaOnly, totalScenarios: scenarios.length },
       ipAddress: getClientIpFromRequest(request),
       userAgent: request.headers.get('user-agent') || undefined,
-    }).catch(() => {});
+    }).catch((err) => { console.error('[admin/uat] Non-blocking operation failed:', err); });
 
     return NextResponse.json({
       runId,

@@ -63,7 +63,7 @@ export const POST = withAdminGuard(async (_request, { session, params }) => {
         approvedBy,
         approvedAt: now.toISOString(),
       },
-    }).catch(() => { /* non-blocking */ });
+    }).catch((err) => { console.error('[accounting/purchase-orders/id/approve] non-blocking:', err); });
 
     logger.info('Purchase order approved', {
       poNumber: po.poNumber,

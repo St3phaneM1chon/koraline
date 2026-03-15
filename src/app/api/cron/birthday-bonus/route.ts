@@ -305,7 +305,7 @@ export async function GET(request: NextRequest) {
                   points: bonusPoints,
                   tier: user.loyaltyTier || 'BRONZE',
                 },
-              }).catch(() => {});
+              }).catch((err) => { console.error('[cron/birthday-bonus] Non-blocking operation failed:', err); });
 
               // Send birthday bonus email (non-blocking, best-effort)
               // Only sent when points are actually awarded to avoid duplicate emails

@@ -171,7 +171,7 @@ export const POST = withAdminGuard(async (_request: NextRequest, { session, para
         emailMessageId: emailResult.messageId,
         sentAt: now.toISOString(),
       },
-    }).catch(() => { /* non-blocking */ });
+    }).catch((err) => { console.error('[accounting/purchase-orders/id/send] non-blocking:', err); });
 
     // Log to EmailLog (non-blocking)
     try {

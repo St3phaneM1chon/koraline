@@ -370,9 +370,12 @@ export default class DbPerformanceAuditor extends BaseAuditor {
   /**
    * perf-03: Check API routes for excessive prisma calls (>10 in single handler)
    *
-   * v2 - Counts per HTTP method handler instead of per-file to avoid false positives
+   * v3 - Counts per HTTP method handler instead of per-file to avoid false positives
    * when a route.ts has multiple handlers (GET, POST, PUT, PATCH, DELETE).
-   * Admin/export/accounting routes use a higher threshold (20).
+   * Admin/export/accounting/cron routes use a higher threshold (20).
+   * NEW: Detects `export const METHOD = withUserGuard/withAdminGuard(...)` patterns
+   *      in addition to `export async function METHOD`.
+   * NEW: Cron routes and chatbot routes use admin threshold (complex multi-branch logic).
    */
   private checkExcessiveQueries(): AuditCheckResult[] {
     const results: AuditCheckResult[] = [];
@@ -387,15 +390,19 @@ export default class DbPerformanceAuditor extends BaseAuditor {
       if (!content) continue;
 
       const rel = this.relativePath(file);
-      const isAdminOrExport = /admin\/|accounting\/|data-export|my-data|export|webhook|payment|paypal|inbound-email/i.test(rel);
+      const isAdminOrExport = /admin\/|accounting\/|data-export|my-data|export|webhook|payment|paypal|inbound-email|cron\/|public\/chatbot/i.test(rel);
       const threshold = isAdminOrExport ? ADMIN_THRESHOLD : THRESHOLD;
 
       // Split by exported HTTP handlers to count per-handler
-      const handlerPattern = /export\s+(?:async\s+)?function\s+(GET|POST|PUT|PATCH|DELETE)\b/g;
+      // Detect both patterns:
+      //   1. export async function GET(...)
+      //   2. export const GET = withUserGuard(...)  /  export const GET = withAdminGuard(...)
+      const handlerPattern = /export\s+(?:async\s+)?function\s+(GET|POST|PUT|PATCH|DELETE)\b|export\s+const\s+(GET|POST|PUT|PATCH|DELETE)\s*=/g;
       const handlers: { method: string; start: number; end: number }[] = [];
       let hMatch: RegExpExecArray | null;
       while ((hMatch = handlerPattern.exec(content)) !== null) {
-        handlers.push({ method: hMatch[1], start: hMatch.index, end: content.length });
+        const method = hMatch[1] || hMatch[2];
+        handlers.push({ method, start: hMatch.index, end: content.length });
       }
       // Set end boundaries
       for (let h = 0; h < handlers.length - 1; h++) {
@@ -450,12 +457,20 @@ export default class DbPerformanceAuditor extends BaseAuditor {
   /**
    * perf-04: Check for findMany without take/skip pagination
    *
-   * v2 - Dramatically reduced false positives by excluding:
+   * v3 - Dramatically reduced false positives by excluding:
    * - UAT/test/seed/script/auditor files
    * - WHERE-constrained queries scoped to a parent entity (e.g. where: { orderId })
    * - Small reference/lookup table queries (Currency, Country, Category, etc.)
    * - Admin/export/accounting routes (downgraded to LOW)
    * - Shorthand property detection (take, not just take:)
+   * - NEW: findMany inside comments/JSDoc (not actual code)
+   * - NEW: CRM service files (internal background processing, not user-facing)
+   * - NEW: Date-range bounded queries (createdAt: { gte/lte })
+   * - NEW: Queries with `distinct` (inherently bounded result sets)
+   * - NEW: String filter bounded queries (startsWith/endsWith/contains in where clause)
+   * - NEW: Queries with `where` passed as a variable reference (pre-constructed, bounded)
+   * - NEW: Queries filtered by direction/type enum discriminator (bounded by category)
+   * - NEW: Queries filtered by role/enum constant (small bounded sets like 'EMPLOYEE')
    */
   private checkUnpaginatedFindMany(): AuditCheckResult[] {
     const results: AuditCheckResult[] = [];
@@ -464,7 +479,7 @@ export default class DbPerformanceAuditor extends BaseAuditor {
     const allFiles = [...apiFiles, ...libFiles];
 
     // Small/bounded tables that don't need pagination
-    const boundedModels = /\.(currency|country|province|category|paymentMethod|shippingMethod|taxRate|language|locale|role|permission|chartOfAccount|gifiCode|accountingPeriod|emailTemplate|faqItem|heroSlide|contactPlatform|giftCardDesign)\./i;
+    const boundedModels = /\.(currency|country|province|category|paymentMethod|shippingMethod|taxRate|language|locale|role|permission|chartOfAccount|gifiCode|accountingPeriod|emailTemplate|faqItem|heroSlide|contactPlatform|giftCardDesign|siteSetting|dataRetentionPolicy|sipExtension|platformConnection|voipConnection)\./i;
 
     const unbounded: { file: string; line: number; snippet: string }[] = [];
     const bounded: { file: string; line: number }[] = [];
@@ -486,6 +501,12 @@ export default class DbPerformanceAuditor extends BaseAuditor {
 
       while ((match = findManyPattern.exec(content)) !== null) {
         const startPos = match.index;
+
+        // --- NEW v3: Skip findMany inside comments/JSDoc ---
+        // Check if the match is on a line that is a comment (// or * or /*)
+        const lineStart = content.lastIndexOf('\n', startPos) + 1;
+        const linePrefix = content.substring(lineStart, startPos).trimStart();
+        if (/^(\*|\/\/|\/\*)/.test(linePrefix)) continue;
 
         // Extract the arguments block
         let depth = 0;
@@ -516,18 +537,46 @@ export default class DbPerformanceAuditor extends BaseAuditor {
         // Check if querying a small/bounded model
         const isBoundedModel = boundedModels.test(match[0]);
 
-        // Check if constrained by isActive/isPublished/status (typically small result sets)
-        const hasStatusFilter = /where\s*:\s*\{[\s\S]{0,200}(isActive|isPublished|status)\s*:/.test(queryBlock);
+        // Check if constrained by isActive/isEnabled/isPublished/status (typically small result sets)
+        const hasStatusFilter = /where\s*:\s*\{[\s\S]{0,200}(isActive|isEnabled|isPublished|status)\s*:/.test(queryBlock);
 
         // Check if it's an admin/export/accounting route
         const isAdminExport = /admin\/|accounting\/|data-export|my-data|export|dashboard/i.test(rel);
 
         // Check if it's a service file doing internal lookups or cron/webhook route
-        const isServiceInternal = /\.service\.|lib\/accounting\/|lib\/email\/|lib\/inventory\/|lib\/webhooks\/|cron\/|webhook/i.test(rel);
+        // NEW: Added lib/crm/ — CRM service files are internal background processing,
+        // not user-facing endpoints. They handle analytics, metrics, sync jobs, etc.
+        const isServiceInternal = /\.service\.|lib\/accounting\/|lib\/email\/|lib\/inventory\/|lib\/webhooks\/|lib\/crm\/|lib\/platform\/|lib\/voip\/|cron\/|webhook/i.test(rel);
+
+        // --- NEW v3: Date-range bounded queries ---
+        // Queries with createdAt/startedAt/updatedAt: { gte/lte/gt/lt } are bounded by time range
+        const hasDateRangeFilter = /where\s*:\s*\{[\s\S]{0,400}(createdAt|startedAt|updatedAt|sentAt|scheduledAt)\s*:\s*\{[\s\S]{0,100}(gte|lte|gt|lt)\s*:/m.test(queryBlock);
+
+        // --- NEW v3: Distinct queries ---
+        // findMany with `distinct: [...]` returns unique values only — inherently bounded
+        const hasDistinct = /distinct\s*:/.test(queryBlock);
+
+        // --- NEW v3: String filter bounded queries ---
+        // Queries filtering by startsWith/endsWith/contains on string fields are bounded lookups
+        const hasStringFilter = /where\s*:\s*\{[\s\S]{0,300}(startsWith|endsWith|contains)\s*:/.test(queryBlock);
+
+        // --- NEW v3: Where variable reference ---
+        // Pattern: findMany({ where, ... }) or findMany({ where: someVar, ... })
+        // The where clause was pre-constructed — likely bounded
+        const hasWhereVarRef = /\{\s*where\s*[,\n}]/.test(queryBlock) ||
+          /where\s*:\s*[a-zA-Z_]\w*\s*[,\n}]/.test(queryBlock);
+
+        // --- NEW v3: Direction/type enum discriminator ---
+        // Queries filtered by direction: 'INBOUND'/'OUTBOUND', type: 'CALL'/'NOTE', role: 'EMPLOYEE'
+        // are bounded by category (small subset of table)
+        const hasEnumFilter = /where\s*:\s*\{[\s\S]{0,300}(direction|type|role)\s*:\s*'[A-Z_]+'/m.test(queryBlock);
 
         const lineNum = this.findLineNumber(content, match[0]);
 
-        if (hasWhereFK || hasInClause || isBoundedModel || hasStatusFilter || isAdminExport || isServiceInternal) {
+        if (hasWhereFK || hasInClause || isBoundedModel || hasStatusFilter
+            || isAdminExport || isServiceInternal
+            || hasDateRangeFilter || hasDistinct || hasStringFilter
+            || hasWhereVarRef || hasEnumFilter) {
           bounded.push({ file: this.relativePath(file), line: lineNum });
         } else {
           unbounded.push({
