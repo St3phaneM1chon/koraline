@@ -870,6 +870,8 @@ model Purchase {
   @@index([productId])
   @@index([status])
   @@index([userId])
+  @@index([userId, createdAt]) // Phase 11: Purchase history queries
+  @@index([status, createdAt]) // Phase 11: Reporting by status + date
   @@index([createdAt])
   @@index([updatedAt])
 }

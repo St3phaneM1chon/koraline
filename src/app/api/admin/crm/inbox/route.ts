@@ -102,46 +102,21 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
 
     const { channel, subject, contactId, leadId, assignedToId } = parsed.data;
 
-    // Validate contactId if provided
-    if (contactId) {
-      const contact = await prisma.user.findUnique({
-        where: { id: contactId },
-        select: { id: true },
-      });
-      if (!contact) {
-        return apiError('Contact not found', ErrorCode.RESOURCE_NOT_FOUND, {
-          status: 404,
-          request,
-        });
-      }
-    }
+    // N+1 fix: Validate all referenced entities in parallel
+    const [contact, lead, assignee] = await Promise.all([
+      contactId ? prisma.user.findUnique({ where: { id: contactId }, select: { id: true } }) : null,
+      leadId ? prisma.crmLead.findUnique({ where: { id: leadId }, select: { id: true } }) : null,
+      assignedToId ? prisma.user.findUnique({ where: { id: assignedToId }, select: { id: true } }) : null,
+    ]);
 
-    // Validate leadId if provided
-    if (leadId) {
-      const lead = await prisma.crmLead.findUnique({
-        where: { id: leadId },
-        select: { id: true },
-      });
-      if (!lead) {
-        return apiError('Lead not found', ErrorCode.RESOURCE_NOT_FOUND, {
-          status: 404,
-          request,
-        });
-      }
+    if (contactId && !contact) {
+      return apiError('Contact not found', ErrorCode.RESOURCE_NOT_FOUND, { status: 404, request });
     }
-
-    // Validate assignedToId if provided
-    if (assignedToId) {
-      const assignee = await prisma.user.findUnique({
-        where: { id: assignedToId },
-        select: { id: true },
-      });
-      if (!assignee) {
-        return apiError('Assigned user not found', ErrorCode.RESOURCE_NOT_FOUND, {
-          status: 404,
-          request,
-        });
-      }
+    if (leadId && !lead) {
+      return apiError('Lead not found', ErrorCode.RESOURCE_NOT_FOUND, { status: 404, request });
+    }
+    if (assignedToId && !assignee) {
+      return apiError('Assigned user not found', ErrorCode.RESOURCE_NOT_FOUND, { status: 404, request });
     }
 
     const conversation = await prisma.inboxConversation.create({

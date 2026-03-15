@@ -199,6 +199,7 @@ model CrmDeal {
   followUps         RepFollowUpSchedule[]  @relation("CrmDealFollowUps")
 
   @@index([stageId, assignedToId])
+  @@index([stageId, createdAt]) // Phase 11: Pipeline CRM queries by stage + date
   @@index([assignedToId]) // A7-P2: Standalone index for deals filtered by assignedToId alone
   @@index([pipelineId])
   @@index([expectedCloseDate])

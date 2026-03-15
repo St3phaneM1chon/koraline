@@ -12,7 +12,7 @@ import { z } from 'zod';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { prisma } from '@/lib/db';
 import { apiSuccess, apiError, apiPaginated } from '@/lib/api-response';
-import { findProspectDuplicates, updateListCounters } from '@/lib/crm/prospect-dedup';
+import { findProspectDuplicatesBatch, updateListCounters } from '@/lib/crm/prospect-dedup';
 
 const addProspectSchema = z.object({
   prospects: z.array(z.object({
@@ -154,13 +154,14 @@ export const POST = withAdminGuard(async (request: NextRequest, context: { param
     }
   }
 
-  // Batch duplicate detection: run findProspectDuplicates for each created prospect
-  // and batch-update duplicates in a single transaction
+  // Batch duplicate detection: pre-fetch all existing prospects once (N+1 fix)
+  // then run matching in-memory for all new prospects
   if (createdProspects.length > 0) {
     const dupUpdates: Array<{ id: string; duplicateOfId: string }> = [];
 
+    const batchResults = await findProspectDuplicatesBatch(createdProspects, listId);
     for (const prospect of createdProspects) {
-      const dups = await findProspectDuplicates(prospect, listId);
+      const dups = batchResults.get(prospect.id) || [];
       if (dups.length > 0 && dups[0].confidence >= 0.85) {
         dupUpdates.push({ id: prospect.id, duplicateOfId: dups[0].matchedId });
       }

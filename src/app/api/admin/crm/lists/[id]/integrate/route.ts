@@ -63,41 +63,68 @@ export const POST = withAdminGuard(async (request: NextRequest, context: { param
   const createdLeadIds: string[] = [];
   const errors: { prospectId: string; reason: string }[] = [];
 
-  for (const prospect of prospects) {
-    try {
-      if (prospect.convertedLeadId) {
-        skipped++;
-        continue;
-      }
-
-      // DNC pre-check
-      if (parsed.data.dncPreCheck !== false && prospect.phone) {
+  // N+1 fix: Batch DNC pre-check — single query for all phone variants
+  const dncBlockedPhones = new Set<string>();
+  if (parsed.data.dncPreCheck !== false) {
+    const allVariants: string[] = [];
+    const variantToPhone = new Map<string, string>();
+    for (const prospect of prospects) {
+      if (prospect.phone) {
         const variants = phoneDncVariants(prospect.phone);
-
-        const dncEntry = variants.length > 0 ? await prisma.dnclEntry.findFirst({
-          where: {
-            phoneNumber: { in: variants },
-            OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
-          },
-        }) : null;
-        if (dncEntry) {
-          await prisma.prospect.update({
-            where: { id: prospect.id },
-            data: { dncChecked: true, dncStatus: 'NATIONAL_DNC' },
-          });
-          dncFiltered++;
-          continue;
+        for (const v of variants) {
+          allVariants.push(v);
+          variantToPhone.set(v, prospect.phone);
         }
       }
+    }
+    if (allVariants.length > 0) {
+      const dncEntries = await prisma.dnclEntry.findMany({
+        where: {
+          phoneNumber: { in: allVariants },
+          OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+        },
+        select: { phoneNumber: true },
+      });
+      for (const entry of dncEntries) {
+        const originalPhone = variantToPhone.get(entry.phoneNumber);
+        if (originalPhone) dncBlockedPhones.add(originalPhone);
+      }
+    }
+  }
 
-      // Calculate multi-factor score
-      const scoreBreakdown = calculateScore(
-        prospect as Parameters<typeof calculateScore>[0],
-      );
+  // Batch prospect updates for DNC-blocked and integrated prospects
+  const dncUpdateIds: string[] = [];
+  const leadsToCreate: Array<{ prospect: typeof prospects[0]; scoreBreakdown: ReturnType<typeof calculateScore>; bant: ReturnType<typeof generateBANT> }> = [];
 
-      // Generate BANT data
-      const bant = generateBANT(prospect as Parameters<typeof generateBANT>[0]);
+  for (const prospect of prospects) {
+    if (prospect.convertedLeadId) {
+      skipped++;
+      continue;
+    }
 
+    // DNC check using pre-fetched data
+    if (prospect.phone && dncBlockedPhones.has(prospect.phone)) {
+      dncUpdateIds.push(prospect.id);
+      dncFiltered++;
+      continue;
+    }
+
+    const scoreBreakdown = calculateScore(prospect as Parameters<typeof calculateScore>[0]);
+    const bant = generateBANT(prospect as Parameters<typeof generateBANT>[0]);
+    leadsToCreate.push({ prospect, scoreBreakdown, bant });
+  }
+
+  // Batch update DNC-blocked prospects in one transaction
+  if (dncUpdateIds.length > 0) {
+    await prisma.prospect.updateMany({
+      where: { id: { in: dncUpdateIds } },
+      data: { dncChecked: true, dncStatus: 'NATIONAL_DNC' },
+    });
+  }
+
+  // Create leads and update prospects (must be sequential for ID linkage)
+  for (const { prospect, scoreBreakdown, bant } of leadsToCreate) {
+    try {
       const lead = await prisma.crmLead.create({
         data: {
           contactName: prospect.contactName,

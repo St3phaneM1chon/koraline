@@ -132,6 +132,76 @@ export async function findProspectDuplicates(
 }
 
 // ---------------------------------------------------------------------------
+// Batch duplicate detection (N+1 fix: pre-fetch all prospects once)
+// ---------------------------------------------------------------------------
+
+export async function findProspectDuplicatesBatch(
+  newProspects: Array<{ id: string; email?: string | null; phone?: string | null; contactName: string; companyName?: string | null; googlePlaceId?: string | null }>,
+  listId: string,
+): Promise<Map<string, ProspectDuplicateMatch[]>> {
+  // Pre-fetch ALL existing prospects in the list in one query
+  const existing = await prisma.prospect.findMany({
+    where: { listId, status: { notIn: ['MERGED', 'EXCLUDED'] } },
+    select: { id: true, email: true, phone: true, contactName: true, companyName: true, googlePlaceId: true },
+  });
+
+  const newIds = new Set(newProspects.map(p => p.id));
+  const results = new Map<string, ProspectDuplicateMatch[]>();
+
+  for (const prospect of newProspects) {
+    const matches: ProspectDuplicateMatch[] = [];
+    const seenIds = new Set<string>();
+
+    for (const candidate of existing) {
+      if (candidate.id === prospect.id || newIds.has(candidate.id)) continue;
+
+      // 1. Google Place ID exact
+      if (prospect.googlePlaceId && candidate.googlePlaceId === prospect.googlePlaceId && !seenIds.has(candidate.id)) {
+        seenIds.add(candidate.id);
+        matches.push({ prospectId: prospect.id, matchedId: candidate.id, matchType: 'google_place_id', confidence: 0.98 });
+        continue;
+      }
+
+      // 2. Email exact
+      if (prospect.email && candidate.email && prospect.email.toLowerCase().trim() === candidate.email.toLowerCase().trim() && !seenIds.has(candidate.id)) {
+        seenIds.add(candidate.id);
+        matches.push({ prospectId: prospect.id, matchedId: candidate.id, matchType: 'email_exact', confidence: 0.95 });
+        continue;
+      }
+
+      // 3. Phone normalized
+      if (prospect.phone && candidate.phone && !seenIds.has(candidate.id)) {
+        if (normalizePhone(prospect.phone) === normalizePhone(candidate.phone)) {
+          seenIds.add(candidate.id);
+          matches.push({ prospectId: prospect.id, matchedId: candidate.id, matchType: 'phone_exact', confidence: 0.9 });
+          continue;
+        }
+      }
+
+      // 4. Fuzzy name + company
+      if (prospect.contactName && candidate.contactName && !seenIds.has(candidate.id)) {
+        const sim = stringSimilarity(normalizeName(prospect.contactName), normalizeName(candidate.contactName));
+        if (sim >= 0.85) {
+          const hasCompanyMatch = prospect.companyName && candidate.companyName &&
+            stringSimilarity(normalizeName(prospect.companyName), normalizeName(candidate.companyName)) >= 0.8;
+          seenIds.add(candidate.id);
+          matches.push({
+            prospectId: prospect.id,
+            matchedId: candidate.id,
+            matchType: hasCompanyMatch ? 'name_company_fuzzy' : 'name_fuzzy',
+            confidence: hasCompanyMatch ? 0.85 : 0.7,
+          });
+        }
+      }
+    }
+
+    results.set(prospect.id, matches.sort((a, b) => b.confidence - a.confidence));
+  }
+
+  return results;
+}
+
+// ---------------------------------------------------------------------------
 // Cross-list duplicate detection (against CrmLead)
 // ---------------------------------------------------------------------------
 

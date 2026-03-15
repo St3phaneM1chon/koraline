@@ -70,6 +70,27 @@ interface Article {
   publishedAt: string | null;
 }
 
+// Map category slug to i18n key
+const SLUG_TO_CATEGORY_KEY: Record<string, string> = {
+  'peptides': 'peptides',
+  'weight-loss': 'weightLoss',
+  'muscle-growth': 'muscleGrowth',
+  'anti-aging': 'antiAging',
+  'recovery': 'recovery',
+  'cognitive': 'cognitive',
+  'sexual-health': 'sexual',
+  'skin-health': 'skin',
+  'blends': 'blends',
+  'supplements': 'supplements',
+  'accessories': 'accessories',
+  'lab-equipment': 'accessories',
+  'subscriptions': 'supplements',
+};
+
+function slugToCategoryKey(slug: string): string | undefined {
+  return SLUG_TO_CATEGORY_KEY[slug];
+}
+
 // Map API product to ProductCard props
 const newThreshold = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 
@@ -88,6 +109,7 @@ function toCardProps(p: ApiProduct) {
     purity: p.purity ? Number(p.purity) : undefined,
     imageUrl: p.imageUrl || p.images?.[0]?.url || undefined,
     category: p.category?.name || '',
+    categoryKey: p.category?.slug ? slugToCategoryKey(p.category.slug) : undefined,
     isNew: new Date(p.createdAt) > newThreshold,
     isBestseller: p.isFeatured,
     inStock: hasStock,
