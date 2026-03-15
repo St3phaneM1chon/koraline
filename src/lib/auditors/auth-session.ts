@@ -279,6 +279,9 @@ export default class AuthSessionAuditor extends BaseAuditor {
       // accept-terms: session-based but called immediately after first login;
       // CSRF protection is handled by the auth session itself
       'accept-terms',
+      // accept-invite: pre-authentication (user sets password via invite token);
+      // no session exists yet, CSRF tokens impractical. Rate-limited instead.
+      'accept-invite',
     ];
 
     let customRoutesWithoutCsrf = 0;

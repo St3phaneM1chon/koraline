@@ -28,6 +28,7 @@ export async function GET() {
     const stats = await getDnclStats();
     return NextResponse.json({ data: stats });
   } catch (error) {
+    console.error('[VoIP/DNCL] GET error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -115,6 +116,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: `Unknown action: ${action}` }, { status: 400 });
     }
   } catch (error) {
+    console.error('[VoIP/DNCL] POST error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

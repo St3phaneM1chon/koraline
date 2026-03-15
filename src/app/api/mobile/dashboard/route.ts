@@ -62,6 +62,7 @@ export const GET = withAdminGuard(async () => {
       })),
     });
   } catch (error) {
+    console.error('[Mobile/Dashboard] GET error:', error);
     return NextResponse.json({ error: 'Erreur dashboard mobile' }, { status: 500 });
   }
 });

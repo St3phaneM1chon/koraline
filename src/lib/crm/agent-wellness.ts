@@ -493,13 +493,15 @@ export async function getTeamWellness(_managerId?: string): Promise<TeamWellness
     moodDist[moodKey] = (moodDist[moodKey] ?? 0) + 1;
   }
 
-  // Assess burnout risk for all agents
+  // Assess burnout risk for all agents (parallel to avoid N+1)
   const burnoutRiskCounts = { low: 0, moderate: 0, high: 0, critical: 0 };
-  for (const agentId of agentIds) {
-    try {
-      const assessment = await detectBurnoutRisk(agentId);
-      burnoutRiskCounts[assessment.riskLevel]++;
-    } catch {
+  const burnoutResults = await Promise.allSettled(
+    agentIds.map(agentId => detectBurnoutRisk(agentId))
+  );
+  for (const result of burnoutResults) {
+    if (result.status === 'fulfilled') {
+      burnoutRiskCounts[result.value.riskLevel]++;
+    } else {
       burnoutRiskCounts.low++; // Default to low if assessment fails
     }
   }
@@ -612,20 +614,32 @@ export async function getWellnessAlerts(): Promise<WellnessAlert[]> {
 
   const alerts: WellnessAlert[] = [];
   const now = new Date().toISOString();
+  const agentIds = agents.map(a => a.id);
 
+  // N+1 FIX: Batch-fetch recent wellness checks for ALL agents in one query
+  // instead of querying per-agent in a loop
+  const recentActivities = await prisma.crmActivity.findMany({
+    where: {
+      performedById: { in: agentIds },
+      type: 'NOTE',
+      metadata: { path: ['source'], equals: WELLNESS_SOURCE },
+      createdAt: { gte: sevenDaysAgo },
+    },
+    orderBy: { createdAt: 'desc' },
+    take: 5000,
+  });
+
+  // Build a map: agentId -> has recent check
+  const agentHasRecentCheck = new Set<string>();
+  for (const activity of recentActivities) {
+    if (activity.performedById) {
+      agentHasRecentCheck.add(activity.performedById);
+    }
+  }
+
+  // Agents without recent check-ins get an info alert
   for (const agent of agents) {
-    // Check for recent wellness submissions
-    const recentCheck = await prisma.crmActivity.findFirst({
-      where: {
-        performedById: agent.id,
-        type: 'NOTE',
-        metadata: { path: ['source'], equals: WELLNESS_SOURCE },
-        createdAt: { gte: sevenDaysAgo },
-      },
-      orderBy: { createdAt: 'desc' },
-    });
-
-    if (!recentCheck) {
+    if (!agentHasRecentCheck.has(agent.id)) {
       alerts.push({
         agentId: agent.id,
         agentName: agent.name ?? 'Unknown',
@@ -634,64 +648,68 @@ export async function getWellnessAlerts(): Promise<WellnessAlert[]> {
         message: `${agent.name ?? 'Agent'} has not submitted a wellness check in over 7 days`,
         detectedAt: now,
       });
-      continue;
+    }
+  }
+
+  // N+1 FIX: Assess burnout risk for agents WITH recent check-ins in parallel
+  const agentsWithCheckins = agents.filter(a => agentHasRecentCheck.has(a.id));
+  const lookbackStart = new Date();
+  lookbackStart.setDate(lookbackStart.getDate() - 7);
+
+  const assessmentResults = await Promise.allSettled(
+    agentsWithCheckins.map(async (agent) => {
+      const [risk, wellness] = await Promise.all([
+        detectBurnoutRisk(agent.id),
+        getAgentWellness(agent.id, { start: lookbackStart, end: new Date() }),
+      ]);
+      return { agent, risk, wellness };
+    })
+  );
+
+  for (const result of assessmentResults) {
+    if (result.status !== 'fulfilled') continue;
+    const { agent, risk, wellness } = result.value;
+
+    if (risk.riskLevel === 'critical') {
+      alerts.push({
+        agentId: agent.id,
+        agentName: agent.name ?? 'Unknown',
+        alertType: 'burnout_risk',
+        severity: 'critical',
+        message: `Critical burnout risk detected (score: ${risk.riskScore}/100). ${risk.factors[0] ?? ''}`,
+        detectedAt: now,
+      });
+    } else if (risk.riskLevel === 'high') {
+      alerts.push({
+        agentId: agent.id,
+        agentName: agent.name ?? 'Unknown',
+        alertType: 'burnout_risk',
+        severity: 'warning',
+        message: `High burnout risk (score: ${risk.riskScore}/100). ${risk.factors[0] ?? ''}`,
+        detectedAt: now,
+      });
     }
 
-    // Assess burnout risk
-    try {
-      const risk = await detectBurnoutRisk(agent.id);
-
-      if (risk.riskLevel === 'critical') {
-        alerts.push({
-          agentId: agent.id,
-          agentName: agent.name ?? 'Unknown',
-          alertType: 'burnout_risk',
-          severity: 'critical',
-          message: `Critical burnout risk detected (score: ${risk.riskScore}/100). ${risk.factors[0] ?? ''}`,
-          detectedAt: now,
-        });
-      } else if (risk.riskLevel === 'high') {
-        alerts.push({
-          agentId: agent.id,
-          agentName: agent.name ?? 'Unknown',
-          alertType: 'burnout_risk',
-          severity: 'warning',
-          message: `High burnout risk (score: ${risk.riskScore}/100). ${risk.factors[0] ?? ''}`,
-          detectedAt: now,
-        });
-      }
-
-      // Check for high stress specifically
-      const lookbackStart = new Date();
-      lookbackStart.setDate(lookbackStart.getDate() - 7);
-      const wellness = await getAgentWellness(agent.id, {
-        start: lookbackStart,
-        end: new Date(),
+    if (wellness.averages.stressLevel >= 4 && risk.riskLevel !== 'critical') {
+      alerts.push({
+        agentId: agent.id,
+        agentName: agent.name ?? 'Unknown',
+        alertType: 'high_stress',
+        severity: 'warning',
+        message: `Consistently high stress level: ${wellness.averages.stressLevel}/5 average over 7 days`,
+        detectedAt: now,
       });
+    }
 
-      if (wellness.averages.stressLevel >= 4 && risk.riskLevel !== 'critical') {
-        alerts.push({
-          agentId: agent.id,
-          agentName: agent.name ?? 'Unknown',
-          alertType: 'high_stress',
-          severity: 'warning',
-          message: `Consistently high stress level: ${wellness.averages.stressLevel}/5 average over 7 days`,
-          detectedAt: now,
-        });
-      }
-
-      if (wellness.trend === 'declining' && risk.riskLevel !== 'critical' && risk.riskLevel !== 'high') {
-        alerts.push({
-          agentId: agent.id,
-          agentName: agent.name ?? 'Unknown',
-          alertType: 'declining_mood',
-          severity: 'info',
-          message: `Declining wellness trend detected. Average mood: ${wellness.averages.mood}/5`,
-          detectedAt: now,
-        });
-      }
-    } catch {
-      // Skip agents where assessment fails
+    if (wellness.trend === 'declining' && risk.riskLevel !== 'critical' && risk.riskLevel !== 'high') {
+      alerts.push({
+        agentId: agent.id,
+        agentName: agent.name ?? 'Unknown',
+        alertType: 'declining_mood',
+        severity: 'info',
+        message: `Declining wellness trend detected. Average mood: ${wellness.averages.mood}/5`,
+        detectedAt: now,
+      });
     }
   }
 

@@ -93,30 +93,28 @@ export async function switchChannel(
     },
   });
 
-  // Copy recent messages as context into the new conversation
+  // Copy recent messages as context into the new conversation (batch create)
   let contextCopied = 0;
   if (contextMessageCount > 0 && source.messages.length > 0) {
     const contextMessages = source.messages.reverse(); // chronological order
 
-    for (const msg of contextMessages) {
-      await prisma.inboxMessage.create({
-        data: {
-          conversationId: newConversation.id,
-          direction: msg.direction,
-          content: msg.content,
-          senderName: msg.senderName,
-          senderEmail: msg.senderEmail,
-          senderPhone: msg.senderPhone,
-          metadata: {
-            copiedFrom: source.id,
-            originalChannel: source.channel,
-            originalCreatedAt: msg.createdAt.toISOString(),
-            isContextCopy: true,
-          },
+    const result = await prisma.inboxMessage.createMany({
+      data: contextMessages.map(msg => ({
+        conversationId: newConversation.id,
+        direction: msg.direction,
+        content: msg.content,
+        senderName: msg.senderName,
+        senderEmail: msg.senderEmail,
+        senderPhone: msg.senderPhone,
+        metadata: {
+          copiedFrom: source.id,
+          originalChannel: source.channel,
+          originalCreatedAt: msg.createdAt.toISOString(),
+          isContextCopy: true,
         },
-      });
-      contextCopied++;
-    }
+      })),
+    });
+    contextCopied = result.count;
   }
 
   // Mark the source conversation as pending (agent switched channel)

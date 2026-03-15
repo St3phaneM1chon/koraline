@@ -178,7 +178,7 @@ export default class InputInjectionAuditor extends BaseAuditor {
         const hasSanitization = /DOMPurify|sanitize|sanitizeHtml|xss|purify|escape/i.test(nearbyCode) ||
           /import.*(?:DOMPurify|sanitize|sanitizeHtml|xss|purify)/i.test(content) ||
           /JSON\.stringify/.test(nearbyCode) ||
-          /\/\/\s*SECURITY AUDIT|\/\*\s*SECURITY AUDIT/.test(nearbyCode);
+          /SECURITY AUDIT/.test(nearbyCode);
         // Admin-only pages rendering admin-authored HTML (CMS content, email previews)
         // are lower risk since admins are trusted content authors
         const isAdminPage = /\/admin\//.test(this.relativePath(file));

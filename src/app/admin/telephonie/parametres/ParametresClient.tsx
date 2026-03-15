@@ -273,6 +273,7 @@ export default function ParametresClient({ settings: initial }: { settings: Reco
                 value={holdMusicUrl}
                 onChange={(e) => updateSetting('voip:hold_music_url', e.target.value)}
                 placeholder="https://example.com/hold-music.mp3"
+                aria-label={t('voip.admin.settings.holdMusicUrl')}
                 className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />
               {holdMusicUrl && (
@@ -299,6 +300,7 @@ export default function ParametresClient({ settings: initial }: { settings: Reco
           <select
             value={ringtone}
             onChange={(e) => updateSetting('voip:ringtone', e.target.value)}
+            aria-label={t('voip.admin.settings.ringtone')}
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
           >
             {RINGTONE_PRESETS.map((r) => (
@@ -340,24 +342,28 @@ export default function ParametresClient({ settings: initial }: { settings: Reco
                   value={e911Address}
                   onChange={(e) => updateSetting('voip:e911_address', e.target.value)}
                   placeholder={t('voip.admin.settings.e911Address')}
+                  aria-label={t('voip.admin.settings.e911Address')}
                   className="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
                 <input
                   value={e911City}
                   onChange={(e) => updateSetting('voip:e911_city', e.target.value)}
                   placeholder="City"
+                  aria-label="City"
                   className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
                 <input
                   value={e911Province}
                   onChange={(e) => updateSetting('voip:e911_province', e.target.value)}
                   placeholder="Province"
+                  aria-label="Province"
                   className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
                 <input
                   value={e911PostalCode}
                   onChange={(e) => updateSetting('voip:e911_postal_code', e.target.value)}
                   placeholder="Postal Code"
+                  aria-label="Postal Code"
                   className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
                 <button
@@ -385,6 +391,7 @@ export default function ParametresClient({ settings: initial }: { settings: Reco
           <select
             value={timezone}
             onChange={(e) => updateSetting('voip:timezone', e.target.value)}
+            aria-label={t('voip.admin.settings.timezone')}
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
           >
             {TIMEZONES.map((tz) => (
@@ -422,12 +429,14 @@ export default function ParametresClient({ settings: initial }: { settings: Reco
                 type="time"
                 value={businessHours[day]?.start || '09:00'}
                 onChange={(e) => updateBusinessHour(day, 'start', e.target.value)}
+                aria-label={`${day} start time`}
                 className="px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />
               <span className="text-gray-400">-</span>
               <input
                 type="time"
                 value={businessHours[day]?.end || '17:00'}
+                aria-label={`${day} end time`}
                 onChange={(e) => updateBusinessHour(day, 'end', e.target.value)}
                 className="px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />

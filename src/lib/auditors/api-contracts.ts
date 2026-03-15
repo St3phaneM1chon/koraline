@@ -273,9 +273,22 @@ export default class ApiContractsAuditor extends BaseAuditor {
 
         // Check for 500 status on validation errors (but NOT inside catch blocks — 500 is correct there)
         if (/status\s*:\s*500/.test(line)) {
-          const context = lines.slice(Math.max(0, i - 5), i + 1).join(' ');
-          const isInCatchBlock = /catch\s*\(|catch\s*\{/.test(context);
-          if (!isInCatchBlock && /valid|parse|missing|required|invalid/i.test(context)) {
+          // Use a wider lookback (15 lines) to detect catch blocks; catch handlers
+          // can include logging, message extraction, and conditional returns that
+          // push the 500 response well beyond 5 lines from the `catch` keyword.
+          const wideContext = lines.slice(Math.max(0, i - 15), i + 1).join(' ');
+          const isInCatchBlock = /catch\s*\(|catch\s*\{/.test(wideContext);
+          // Only check non-comment lines for validation keywords — a `// Validate`
+          // comment above a 500 for a server-side config issue is not a client error.
+          const nearbyCodeLines = lines.slice(Math.max(0, i - 5), i + 1)
+            .filter(l => !/^\s*\/\//.test(l));
+          const codeContext = nearbyCodeLines.join(' ');
+          // Exclude cases where the keyword appears only as part of a function name
+          // (e.g., `isValidTransition`) and the error message indicates a server-side
+          // configuration problem, not a client input validation error.
+          const errorMsgContext = lines.slice(Math.max(0, i - 3), i + 1).join(' ');
+          const isServerConfigError = /not configured|misconfigured|not supported|not implemented|not available/i.test(errorMsgContext);
+          if (!isInCatchBlock && !isServerConfigError && /valid|parse|missing|required|invalid/i.test(codeContext)) {
             statusIssues.push({
               file: relPath,
               line: i + 1,

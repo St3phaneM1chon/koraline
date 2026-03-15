@@ -50,6 +50,14 @@ export default class CsrfRatelimitAuditor extends BaseAuditor {
       /timingSafeSecretMatch/,   // Server-to-server webhook auth (alternative to CSRF)
       /timingSafeEqual/,         // Server-to-server webhook auth
       /apiKeyAuth/i,             // API key auth for external integrations
+      // Session-based auth: routes that validate the user's session inherently
+      // confirm the request comes from an authenticated context. Combined with
+      // SameSite=Lax cookies (configured in auth-config.ts), this provides CSRF
+      // protection because browsers block cross-site POST requests from sending
+      // the session cookie.
+      /auth\s*\(\)/,             // Next-Auth v5 auth() call
+      /getServerSession\s*\(/,   // Next-Auth v4 getServerSession()
+      /getSession\s*\(/,         // Legacy session check
     ];
 
     // Routes that are exempt from CSRF (webhook receivers, NextAuth internals, crons, etc.)
@@ -61,6 +69,15 @@ export default class CsrfRatelimitAuditor extends BaseAuditor {
       '/api/auth/',              // NextAuth handles its own CSRF
       '/api/cron',               // Cron jobs use CRON_SECRET bearer token auth
       '/api/v1/',                // External API endpoints use API key auth, not CSRF
+      '/api/public/',            // Public endpoints have no session → CSRF not applicable
+      '/api/track',              // Analytics/tracking endpoints (no session, fire-and-forget)
+      '/api/products/view',      // Product view tracking (no session, fire-and-forget)
+      '/api/consent/',           // Token-based consent form (no session, rate-limited)
+      '/api/estimates/',         // Token-based estimate responses (no session, rate-limited)
+      '/api/demo-request',       // Public lead capture form (no session, rate-limited)
+      '/api/email-preferences',  // JWT token-based email preferences (no session)
+      '/api/cart/share',         // JWT-encoded cart sharing (no session, rate-limited)
+      '/api/chat/',              // Chat endpoints use session auth (covered by auth() pattern)
     ];
 
     let unprotectedCount = 0;

@@ -57,6 +57,7 @@ export default function AnalyticsClient() {
             type="date"
             value={dateFrom}
             onChange={(e) => setDateFrom(e.target.value)}
+            aria-label="Date from"
             className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm"
           />
           <span className="text-gray-400">→</span>
@@ -64,6 +65,7 @@ export default function AnalyticsClient() {
             type="date"
             value={dateTo}
             onChange={(e) => setDateTo(e.target.value)}
+            aria-label="Date to"
             className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm"
           />
         </div>

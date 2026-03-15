@@ -802,7 +802,7 @@ export default function QAClient() {
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
                       {score.agent.image ? (
-                        <Image src={score.agent.image} alt="" width={40} height={40} className="h-9 w-9 rounded-full" />
+                        <Image src={score.agent.image} alt={score.agent.name || 'Agent avatar'} width={40} height={40} className="h-9 w-9 rounded-full" />
                       ) : (
                         <div className="h-9 w-9 rounded-full bg-gray-200 flex items-center justify-center text-sm font-medium text-gray-600">
                           {(score.agent.name || score.agent.email || '?').charAt(0).toUpperCase()}

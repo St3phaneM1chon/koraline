@@ -46,6 +46,7 @@ export const GET = withAdminGuard(async () => {
       weekTotal,
     });
   } catch (error) {
+    console.error('[Mobile/Time] GET error:', error);
     return NextResponse.json({ error: 'Erreur récupération temps' }, { status: 500 });
   }
 });
@@ -81,6 +82,7 @@ export const POST = withAdminGuard(async (request) => {
       return NextResponse.json(entry);
     }
   } catch (error) {
+    console.error('[Mobile/Time] POST error:', error);
     return NextResponse.json({ error: 'Erreur timer' }, { status: 500 });
   }
 });

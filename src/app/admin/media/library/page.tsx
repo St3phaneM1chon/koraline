@@ -404,6 +404,7 @@ export default function MediaLibraryPage() {
           <input
             className="w-full ps-9 pe-3 py-2 border border-slate-300 rounded-lg text-sm"
             placeholder={t('common.search')}
+            aria-label={t('common.search')}
             value={searchInput}
             onChange={e => setSearchInput(e.target.value)}
           />
@@ -537,7 +538,7 @@ export default function MediaLibraryPage() {
                 {/* FIX: F2 - Use NextImage instead of native <img> */}
                 {/* F99 FIX: Explicit lazy loading for list view thumbnails */}
                 {item.mimeType.startsWith('image/') ? (
-                  <NextImage src={item.url} alt="" width={40} height={40} className="w-10 h-10 rounded object-cover" loading="lazy" />
+                  <NextImage src={item.url} alt={item.alt || item.originalName} width={40} height={40} className="w-10 h-10 rounded object-cover" loading="lazy" />
                 ) : (
                   getFileIcon(item.mimeType)
                 )}

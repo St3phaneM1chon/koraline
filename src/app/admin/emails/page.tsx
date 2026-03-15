@@ -1853,6 +1853,7 @@ export default function EmailsPage() {
               <select
                 value={accountForm.provider}
                 onChange={(e) => setAccountForm({ ...accountForm, provider: e.target.value })}
+                aria-label="Email provider"
                 className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm"
               >
                 <option value="resend">Resend</option>
@@ -1865,6 +1866,7 @@ export default function EmailsPage() {
                 type="color"
                 value={accountForm.color}
                 onChange={(e) => setAccountForm({ ...accountForm, color: e.target.value })}
+                aria-label="Account color"
                 className="w-full h-9 rounded-lg border border-slate-300 cursor-pointer"
               />
             </FormField>
@@ -2134,6 +2136,7 @@ export default function EmailsPage() {
               type="file"
               accept=".csv,text/csv"
               className="hidden"
+              aria-label={t('admin.emailConfig.importTitle')}
               onChange={(e) => {
                 const file = e.target.files?.[0];
                 if (file) setImportFile(file);

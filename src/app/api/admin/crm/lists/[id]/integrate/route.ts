@@ -202,6 +202,7 @@ export const POST = withAdminGuard(async (request: NextRequest, context: { param
           createdLeadIds.push(lead.id);
           integrated++;
         } catch (individualErr) {
+          console.error('[CRM/Integrate] Individual lead create failed:', individualErr);
           errors.push({ prospectId: prospect.id, reason: individualErr instanceof Error ? individualErr.message : 'Unknown error' });
         }
       }

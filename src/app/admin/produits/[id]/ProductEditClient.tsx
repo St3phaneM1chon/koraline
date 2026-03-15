@@ -975,7 +975,7 @@ export default function ProductEditClient({ product, categories, isOwner }: Prop
                       <div className="flex items-center justify-between p-4">
                         <div className="flex items-center gap-3">
                           {format.imageUrl ? (
-                            <Image src={format.imageUrl} alt="" width={48} height={48} className="w-12 h-12 object-cover rounded-lg border" />
+                            <Image src={format.imageUrl} alt={format.name || 'Product format image'} width={48} height={48} className="w-12 h-12 object-cover rounded-lg border" />
                           ) : (
                             <span className="text-2xl">{FORMAT_TYPES.find(ft => ft.value === format.formatType)?.icon || '📦'}</span>
                           )}

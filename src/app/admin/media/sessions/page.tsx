@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useI18n } from '@/i18n/client';
 import { PageHeader } from '@/components/admin/PageHeader';
 import {
@@ -179,6 +179,7 @@ export default function VideoSessionsPage() {
         <select
           value={filterPlatform}
           onChange={(e) => { setFilterPlatform(e.target.value); setPage(1); }}
+          aria-label={t('admin.videoSessions.platform')}
           className="text-sm border border-gray-300 rounded-lg px-3 py-1.5"
         >
           <option value="">{t('admin.videoSessions.platform')}</option>
@@ -189,6 +190,7 @@ export default function VideoSessionsPage() {
         <select
           value={filterStatus}
           onChange={(e) => { setFilterStatus(e.target.value); setPage(1); }}
+          aria-label="Status"
           className="text-sm border border-gray-300 rounded-lg px-3 py-1.5"
         >
           <option value="">{t('admin.videoSessions.status.SCHEDULED') ? 'Status' : 'Status'}</option>
@@ -203,6 +205,7 @@ export default function VideoSessionsPage() {
             value={searchQuery}
             onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
             placeholder={t('admin.videoSessions.selectClient')}
+            aria-label={t('admin.videoSessions.selectClient')}
             className="w-full ps-9 pe-3 py-1.5 text-sm border border-gray-300 rounded-lg"
           />
         </div>
@@ -333,6 +336,7 @@ export default function VideoSessionsPage() {
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page <= 1}
+                  aria-label="Previous page"
                   className="p-1.5 rounded hover:bg-gray-100 disabled:opacity-30"
                 >
                   <ChevronLeft className="w-4 h-4" />
@@ -340,6 +344,7 @@ export default function VideoSessionsPage() {
                 <button
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                   disabled={page >= totalPages}
+                  aria-label="Next page"
                   className="p-1.5 rounded hover:bg-gray-100 disabled:opacity-30"
                 >
                   <ChevronRight className="w-4 h-4" />
@@ -448,14 +453,41 @@ function CreateSessionModal({
     }
   };
 
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // Focus trap & Escape key handler
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+        } else {
+          if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" role="dialog" aria-modal="true" aria-label={t('admin.videoSessions.newSession')}>
+      <div ref={modalRef} className="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <h2 className="text-lg font-semibold text-gray-900">
             {t('admin.videoSessions.newSession')}
           </h2>
-          <button onClick={onClose} className="p-1.5 hover:bg-gray-100 rounded">
+          <button onClick={onClose} className="p-1.5 hover:bg-gray-100 rounded" autoFocus aria-label="Close">
             <X className="w-5 h-5 text-gray-500" />
           </button>
         </div>

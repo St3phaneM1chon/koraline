@@ -128,6 +128,7 @@ export default function CallLogClient() {
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
               placeholder={t('voip.callLog.searchPlaceholder')}
+              aria-label={t('voip.callLog.searchPlaceholder')}
               className="w-full ps-9 pe-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
@@ -136,6 +137,7 @@ export default function CallLogClient() {
         <select
           value={direction}
           onChange={(e) => { setDirection(e.target.value); setPage(1); }}
+          aria-label={t('voip.callLog.allDirections')}
           className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option value="">{t('voip.callLog.allDirections')}</option>
@@ -147,6 +149,7 @@ export default function CallLogClient() {
         <select
           value={status}
           onChange={(e) => { setStatus(e.target.value); setPage(1); }}
+          aria-label={t('voip.callLog.allStatuses')}
           className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option value="">{t('voip.callLog.allStatuses')}</option>
@@ -160,12 +163,14 @@ export default function CallLogClient() {
           type="date"
           value={dateFrom}
           onChange={(e) => { setDateFrom(e.target.value); setPage(1); }}
+          aria-label="Date from"
           className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
         <input
           type="date"
           value={dateTo}
           onChange={(e) => { setDateTo(e.target.value); setPage(1); }}
+          aria-label="Date to"
           className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
       </div>

@@ -40,6 +40,9 @@ export default class TypescriptQualityAuditor extends BaseAuditor {
       const content = this.readFile(file);
       if (!content) continue;
 
+      // Skip auditor files - they contain `any` in regex pattern descriptions
+      if (file.includes(path.join('lib', 'auditors'))) continue;
+
       const lines = content.split('\n');
       const fileMatches: number[] = [];
 

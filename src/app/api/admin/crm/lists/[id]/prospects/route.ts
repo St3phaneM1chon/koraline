@@ -150,6 +150,7 @@ export const POST = withAdminGuard(async (request: NextRequest, context: { param
         createdProspects.push(result);
         added++;
       } catch (err) {
+        console.error('[CRM/Prospects] Individual prospect create failed:', err);
         errors.push({ index: i, contactName: prospectsData[i].data.contactName, reason: err instanceof Error ? err.message : 'Unknown error' });
       }
     }

@@ -121,6 +121,7 @@ export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
       }
     }
   } catch (error) {
+    console.error('[VoIP/Tenants] GET error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

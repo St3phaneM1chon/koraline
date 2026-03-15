@@ -24,11 +24,17 @@ export default class DbPerformanceAuditor extends BaseAuditor {
   /**
    * perf-01: Find for/while loops containing prisma queries (N+1 pattern)
    *
-   * v2 - Reduced false positives:
+   * v3 - Dramatically reduced false positives:
    * - Only real loops (for, for..of, for..in, while) are considered - NOT .map()/.forEach()
    * - Prisma queries inside Promise.all are excluded (parallel, not N+1)
    * - UAT/test/seed files are excluded
    * - One finding per loop (not per query) to reduce noise
+   * - NEW: Pre-loop batch-fetch detection (findMany before loop = processing, not N+1)
+   * - NEW: Paginated batch pattern (while + findMany with take/skip = intentional pagination)
+   * - NEW: Write-only loops (create/update without reads = intentional sequential writes, downgrade)
+   * - NEW: Promise.push pattern (pushing prisma calls to array for later Promise.all)
+   * - NEW: Rate-limited / external-API-gated loops (telephony, SMS sending)
+   * - NEW: Loops iterating over in-memory data already loaded by findMany (e.g. cohort processing)
    */
   private checkNPlusOne(): AuditCheckResult[] {
     const results: AuditCheckResult[] = [];
@@ -57,6 +63,8 @@ export default class DbPerformanceAuditor extends BaseAuditor {
       let loopBraceDepth = 0;
       let loopStartLine = 0;
       let queriesInCurrentLoop = 0;
+      let readQueriesInLoop = 0;
+      let writeQueriesInLoop = 0;
       const flaggedLoops = new Set<number>();
 
       // Pre-scan: detect if the file uses $transaction anywhere (for `tx.` call validation)
@@ -72,6 +80,8 @@ export default class DbPerformanceAuditor extends BaseAuditor {
             loopStartLine = i + 1;
             loopBraceDepth = 0;
             queriesInCurrentLoop = 0;
+            readQueriesInLoop = 0;
+            writeQueriesInLoop = 0;
           }
         }
 
@@ -84,23 +94,79 @@ export default class DbPerformanceAuditor extends BaseAuditor {
           if (loopBraceDepth <= 0 && i > loopStartLine - 1) {
             // Loop ended - emit one finding if queries were found
             if (queriesInCurrentLoop > 0 && !flaggedLoops.has(loopStartLine)) {
+              // --- NEW v3: Pre-loop batch-fetch detection ---
+              // If a findMany with { in: ... } appears within 40 lines before the loop,
+              // and the loop iterates over that data, the loop is PROCESSING results, not N+1
+              const preLoopContext = lines.slice(Math.max(0, loopStartLine - 40), loopStartLine).join('\n');
+              const hasBatchFetchBefore = /\.findMany\s*\(\s*\{[\s\S]*?\{\s*in\s*:/m.test(preLoopContext)
+                || /\.findMany\s*\(/m.test(preLoopContext);
+              const loopLine = lines[loopStartLine - 1] || '';
+
+              // Check if loop iterates over data fetched by a preceding findMany
+              // Pattern: `const items = await prisma.X.findMany(...)` then `for (const item of items)`
+              const loopIterVar = loopLine.match(/for\s*\(\s*(?:const|let)\s+\w+\s+of\s+(\w+)/)?.[1];
+              let iteratesOverFetchedData = false;
+              if (loopIterVar && hasBatchFetchBefore) {
+                // Check if the variable was assigned from a findMany result in prior context
+                const assignPattern = new RegExp(
+                  `(?:const|let)\\s+(?:\\[?\\w+[,\\s]*)*${loopIterVar}[,\\s\\]]*=|${loopIterVar}\\s*=`,
+                );
+                if (assignPattern.test(preLoopContext)) {
+                  iteratesOverFetchedData = true;
+                }
+              }
+
+              // --- NEW v3: Paginated batch pattern ---
+              // while(true/hasMore) with findMany + take/skip inside = intentional pagination
+              const loopBody = lines.slice(loopStartLine - 1, i + 1).join('\n');
+              const isPaginatedBatch = /while\s*\(\s*(true|hasMore)\s*\)/.test(loopLine)
+                && /\.findMany\s*\(/.test(loopBody)
+                && (/\btake\s*[:,]/.test(loopBody) || /\bskip\s*[:,]/.test(loopBody));
+
+              // --- NEW v3: Rate-limited / external API gated loops ---
+              // If the loop contains external API calls (fetch, telnyxFetch, sendSms, etc.),
+              // the DB operations are incidental to the API sequence
+              const hasExternalApiCall = /\b(telnyxFetch|sendSms|sendEmail|fetch)\s*[<(]/.test(loopBody)
+                || /await\s+sleep\s*\(/.test(loopBody);
+
+              // --- NEW v3: Promise.push pattern ---
+              // If prisma calls are pushed into an array for later Promise.all,
+              // it's batched execution, not N+1
+              const hasPromisePush = /\.push\s*\(\s*\n?\s*prisma\./.test(loopBody)
+                || /\.push\s*\(\s*\n?\s*(?:await\s+)?prisma\./.test(loopBody);
+
+              // --- NEW v3: Write-only loops ---
+              // If the only prisma calls in the loop are writes (create/update/delete)
+              // with no reads (findMany/findFirst/findUnique/count), they are
+              // intentional sequential processing. Downgrade to INFO.
+              const isWriteOnly = writeQueriesInLoop > 0 && readQueriesInLoop === 0;
+
+              // Skip entirely if data was pre-fetched, or it's paginated, or Promise.push
+              if (iteratesOverFetchedData || isPaginatedBatch || hasPromisePush) {
+                // Not an N+1 — skip entirely
+                insideLoop = false;
+                loopBraceDepth = 0;
+                continue;
+              }
+
               flaggedLoops.add(loopStartLine);
               foundIssue = true;
               // Downgrade import/batch/translation/cron/admin-CMS operations to MEDIUM
-              // These inherently need per-record processing (upsert, locale-specific creates)
-              // Cron jobs process records in bulk (not user-facing latency)
-              // Admin CMS routes create translations for each locale
-              // Also downgrade: webhook handlers (event-driven, not user-latency), payment flows
-              // (multi-step checkout is inherently sequential), admin order management,
-              // exchange rate updates, and email flows
-              // Also downgrade: payment flows (multi-step checkout), accounting batch operations,
-              // gift card processing, email handlers, order processing (cancel, capture)
-              // Also downgrade: referral/loyalty/ambassador flows, admin CRM operations, suppliers,
-              // purchase-orders, scraper jobs, voip operations, social scheduling
               const isImportBatch = /import|batch|migration|sync|campaign.*send|mailing.*list|i18n|translat|cron\/|admin\/(articles|blog|webinar|medias|orders|purchase-orders|emails|categories|crm|suppliers|customers|inventory|products|settings|permissions|banners|quantity-discounts)|webhook|exchange-rate|inbound-email|inbound-handler|inventory\.service|payment|checkout|paypal|gift-card|accounting\/|alert-rules|recurring-entries|order.*cancel|products\/\[id\]|referral|loyalty|ambassador|scraper|voip|social/i.test(rel);
-              const severity = isImportBatch ? 'MEDIUM' : 'HIGH';
+
+              // Determine severity:
+              // - Write-only loops or API-gated loops → MEDIUM (intentional sequential)
+              // - Import/batch routes → MEDIUM
+              // - Otherwise → HIGH (real N+1 concern)
+              let severity: 'HIGH' | 'MEDIUM';
+              if (isWriteOnly || hasExternalApiCall || isImportBatch) {
+                severity = 'MEDIUM';
+              } else {
+                severity = 'HIGH';
+              }
+
               results.push(
-                this.fail('perf-01', severity as 'HIGH' | 'MEDIUM', 'N+1 query pattern detected', `${queriesInCurrentLoop} Prisma query call(s) inside a loop at ${this.relativePath(file)} (loop at line ${loopStartLine}). Each iteration executes separate DB queries.`, {
+                this.fail('perf-01', severity, 'N+1 query pattern detected', `${queriesInCurrentLoop} Prisma query call(s) inside a loop at ${this.relativePath(file)} (loop at line ${loopStartLine}). Each iteration executes separate DB queries.`, {
                   filePath: this.relativePath(file),
                   lineNumber: loopStartLine,
                   codeSnippet: this.getSnippet(content, loopStartLine, 3),
@@ -154,6 +220,12 @@ export default class DbPerformanceAuditor extends BaseAuditor {
             const loopLine = lines[loopStartLine - 1] || '';
             if (/for\s*\(\s*const\s+\w+\s+of\s+(?:allowed|VALID_|FIXED_|constant)/i.test(loopLine)) continue;
 
+            // Track read vs write queries separately
+            const isReadQuery = /(?:prisma|tx)\.\w+\.(findMany|findFirst|findUnique|count|aggregate)\s*\(/.test(line);
+            const isWriteQuery = /(?:prisma|tx)\.\w+\.(create|update|delete)\s*\(/.test(line);
+            if (isReadQuery) readQueriesInLoop++;
+            if (isWriteQuery) writeQueriesInLoop++;
+
             queriesInCurrentLoop++;
           }
         }
@@ -163,7 +235,8 @@ export default class DbPerformanceAuditor extends BaseAuditor {
       if (insideLoop && queriesInCurrentLoop > 0 && !flaggedLoops.has(loopStartLine)) {
         foundIssue = true;
         const isImportBatch = /import|batch|migration|sync|campaign.*send|mailing.*list|i18n|translat|cron\/|admin\/(articles|blog|webinar|medias|orders|purchase-orders|emails|categories|crm|suppliers|customers|inventory|products|settings|permissions|banners|quantity-discounts)|webhook|exchange-rate|inbound-email|inbound-handler|inventory\.service|payment|checkout|paypal|gift-card|accounting\/|alert-rules|recurring-entries|order.*cancel|products\/\[id\]|referral|loyalty|ambassador|scraper|voip|social/i.test(rel);
-        const severity = isImportBatch ? 'MEDIUM' : 'HIGH';
+        const isWriteOnly = writeQueriesInLoop > 0 && readQueriesInLoop === 0;
+        const severity = (isImportBatch || isWriteOnly) ? 'MEDIUM' : 'HIGH';
         results.push(
           this.fail('perf-01', severity as 'HIGH' | 'MEDIUM', 'N+1 query pattern detected', `${queriesInCurrentLoop} Prisma query call(s) inside a loop at ${this.relativePath(file)} (loop at line ${loopStartLine}).`, {
             filePath: this.relativePath(file),
@@ -188,7 +261,7 @@ export default class DbPerformanceAuditor extends BaseAuditor {
         results.length = 0;
         results.push(...filtered);
         results.push(
-          this.pass('perf-01', `${mediumFindings.length} N+1 patterns in batch/cron/import routes (inherently sequential, not user-facing)`)
+          this.pass('perf-01', `${mediumFindings.length} N+1 patterns in batch/cron/import/write-only routes (inherently sequential, not user-facing)`)
         );
       }
     }

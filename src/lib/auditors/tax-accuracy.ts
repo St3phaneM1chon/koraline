@@ -55,9 +55,9 @@ export default class TaxAccuracyAuditor extends BaseAuditor {
     // Skip payroll/exemption threshold amounts (dollar values, not rates)
     if (/annual.?exemption|exemption.?amount|threshold|maximum|minimum|ceiling/i.test(context)) return false;
 
-    // Skip variable initializations to zero (e.g., `let qst = 0;`, `gst = 0;`, `qst = 0;`)
-    // These are accumulator variables or resets, not tax rate definitions
-    if (/(?:let|var|const)?\s*\w*(?:gst|qst|hst)\w*\s*=\s*0\s*[;,]/.test(trimmedLine.toLowerCase())) return false;
+    // Skip variable initializations/properties set to zero (e.g., `let qst = 0;`, `gst = 0;`, `qst: 0,`)
+    // These are accumulator variables, resets, or default object properties, not tax rate definitions
+    if (/(?:let|var|const)?\s*\w*(?:gst|qst|hst)\w*\s*[:=]\s*0\s*[;,}]/.test(trimmedLine.toLowerCase())) return false;
 
     // Skip variable declarations with type annotations (e.g., `let gst: number;`)
     // These are variable declarations, not tax rate definitions

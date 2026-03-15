@@ -29,7 +29,27 @@ export const GET = withAdminGuard(async (_request: NextRequest, { params }) => {
 
     const session = await prisma.videoSession.findUnique({
       where: { id },
-      include: {
+      select: {
+        id: true,
+        platform: true,
+        topic: true,
+        contentType: true,
+        status: true,
+        scheduledAt: true,
+        duration: true,
+        startedAt: true,
+        endedAt: true,
+        meetingId: true,
+        hostJoinUrl: true,      // Admin-only: needed for host to join meeting
+        clientJoinUrl: true,
+        // password deliberately excluded — sensitive field
+        clientId: true,
+        createdById: true,
+        recordingImportId: true,
+        videoId: true,
+        notes: true,
+        createdAt: true,
+        updatedAt: true,
         client: { select: { id: true, name: true, email: true, image: true } },
         createdBy: { select: { id: true, name: true } },
         recordingImport: { select: { id: true, status: true, meetingTitle: true, blobUrl: true } },
@@ -65,7 +85,10 @@ export const PUT = withAdminGuard(async (request: NextRequest, { params }) => {
     }
     const { status, recordingImportId, videoId, notes } = parsed.data;
 
-    const existing = await prisma.videoSession.findUnique({ where: { id } });
+    const existing = await prisma.videoSession.findUnique({
+      where: { id },
+      select: { id: true, startedAt: true },
+    });
     if (!existing) {
       return NextResponse.json({ error: 'Video session not found' }, { status: 404 });
     }
@@ -91,7 +114,26 @@ export const PUT = withAdminGuard(async (request: NextRequest, { params }) => {
     const updated = await prisma.videoSession.update({
       where: { id },
       data: updateData,
-      include: {
+      select: {
+        id: true,
+        platform: true,
+        topic: true,
+        contentType: true,
+        status: true,
+        scheduledAt: true,
+        duration: true,
+        startedAt: true,
+        endedAt: true,
+        meetingId: true,
+        clientJoinUrl: true,
+        // password and hostJoinUrl deliberately excluded — sensitive fields
+        clientId: true,
+        createdById: true,
+        recordingImportId: true,
+        videoId: true,
+        notes: true,
+        createdAt: true,
+        updatedAt: true,
         client: { select: { id: true, name: true, email: true } },
         createdBy: { select: { id: true, name: true } },
         video: { select: { id: true, title: true, slug: true } },

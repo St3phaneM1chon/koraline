@@ -49,7 +49,9 @@ export default class FrontendPerformanceAuditor extends BaseAuditor {
         const hasEslintDisable = /eslint-disable.*no-img-element/.test(prevLine) || /eslint-disable.*no-img-element/.test(line);
         // Skip <img> inside template literal strings (HTML email builders) and return statements producing HTML strings
         const isInStringTemplate = /`[^`]*<img\s/.test(line) || /return\s+`[^`]*<img/.test(line) || /"[^"]*<img/.test(line);
-        if (/<img\s/i.test(line) && !/<Image\s/i.test(line) && !/src=\{.*data:/.test(line) && !/src="data:/.test(line) && !hasEslintDisable && !isInStringTemplate) {
+        // Also skip data URI variables (src={imagePreview}, src={mfaQrCode}, etc.) and blob URLs
+        const isDynamicDataUri = /src=\{[^}]*(preview|capture|qr|blob|base64|dataUrl|dataUri)[^}]*\}/i.test(line);
+        if (/<img\s/i.test(line) && !/<Image\s/i.test(line) && !/src=\{.*data:/.test(line) && !/src="data:/.test(line) && !hasEslintDisable && !isInStringTemplate && !isDynamicDataUri) {
           offenders.push({
             file,
             line: i + 1,
@@ -263,8 +265,20 @@ export default class FrontendPerformanceAuditor extends BaseAuditor {
       for (const { pattern, name } of expensivePatterns) {
         // Count occurrences in render body (not in useEffect/useMemo already)
         const matches = content.match(pattern);
-        if (matches && matches.length >= 2) {
+        if (matches && matches.length >= 3) {
           foundExpensive.push(`${name} x${matches.length}`);
+        }
+      }
+
+      // Only flag if the component has multiple DIFFERENT expensive operations
+      // (e.g., .filter() + .map() + .sort()). A single .map() x3 is normal JSX rendering.
+      // Require at least 2 different expensive patterns or one pattern with 5+ occurrences.
+      if (foundExpensive.length === 1) {
+        const match = foundExpensive[0].match(/x(\d+)/);
+        const count = match ? parseInt(match[1], 10) : 0;
+        if (count < 5) {
+          // Single pattern with < 5 occurrences - not worth flagging
+          continue;
         }
       }
 

@@ -67,7 +67,22 @@ export const GET = withAdminGuard(async (
     const [sessions, featuredVideos] = await Promise.all([
       prisma.videoSession.findMany({
         where: sessionWhere,
-        include: {
+        select: {
+          id: true,
+          platform: true,
+          topic: true,
+          contentType: true,
+          status: true,
+          scheduledAt: true,
+          duration: true,
+          startedAt: true,
+          endedAt: true,
+          // password and hostJoinUrl deliberately excluded — sensitive fields
+          clientJoinUrl: true,
+          clientId: true,
+          notes: true,
+          createdAt: true,
+          updatedAt: true,
           video: {
             select: {
               id: true,

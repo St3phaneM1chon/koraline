@@ -142,6 +142,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session: _sess
         return NextResponse.json({ error: `Unknown action: ${action}` }, { status: 400 });
     }
   } catch (error) {
+    console.error('[VoIP/Transfer] POST error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

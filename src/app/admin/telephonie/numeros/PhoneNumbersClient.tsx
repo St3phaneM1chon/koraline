@@ -72,17 +72,20 @@ export default function PhoneNumbersClient() {
               placeholder="+15145551234"
               value={form.number}
               onChange={(e) => setForm((f) => ({ ...f, number: e.target.value }))}
+              aria-label="Phone number"
               className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
             />
             <input
               placeholder={t('voip.connections.displayName')}
               value={form.displayName}
               onChange={(e) => setForm((f) => ({ ...f, displayName: e.target.value }))}
+              aria-label={t('voip.connections.displayName')}
               className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
             />
             <select
               value={form.country}
               onChange={(e) => setForm((f) => ({ ...f, country: e.target.value }))}
+              aria-label="Country"
               className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
             >
               <option value="CA">Canada</option>

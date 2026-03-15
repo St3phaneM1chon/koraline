@@ -530,7 +530,7 @@ export default function BannieresPage() {
                 <div className="w-32 h-20 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0 relative">
                   <Image
                     src={slide.backgroundUrl}
-                    alt=""
+                    alt={slide.title || 'Banner slide'}
                     fill
                     sizes="128px"
                     className="object-cover"

@@ -637,7 +637,7 @@ export default function ClientDetailPage() {
           {/* Avatar */}
           <div className="w-20 h-20 bg-slate-200 rounded-full flex items-center justify-center flex-shrink-0">
             {user.image ? (
-              <Image src={user.image} alt="" width={80} height={80} className="w-20 h-20 rounded-full" />
+              <Image src={user.image} alt={user.name ? `${user.name} profile photo` : 'User profile photo'} width={80} height={80} className="w-20 h-20 rounded-full" />
             ) : (
               <User className="w-10 h-10 text-slate-400" />
             )}
@@ -1111,7 +1111,7 @@ export default function ClientDetailPage() {
                       {sub.product?.imageUrl ? (
                         <Image
                           src={sub.product.imageUrl}
-                          alt=""
+                          alt={sub.product.name || 'Product image'}
                           width={64}
                           height={64}
                           className="w-16 h-16 object-cover rounded-lg"
@@ -1600,7 +1600,7 @@ function OrderSection({
                   {item.product?.imageUrl && (
                     <Image
                       src={item.product.imageUrl}
-                      alt=""
+                      alt={item.product?.name || item.productName || 'Product image'}
                       width={32}
                       height={32}
                       className="w-8 h-8 rounded object-cover"

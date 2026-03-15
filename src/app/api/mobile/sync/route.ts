@@ -39,6 +39,7 @@ export const POST = withAdminGuard(async (request) => {
         });
         results.push({ id: item.id, success: res.ok, error: res.ok ? undefined : `Status ${res.status}` });
       } catch (err) {
+        console.error(`[Mobile/Sync] Network error for item ${item.id}:`, err);
         results.push({ id: item.id, success: false, error: 'Erreur réseau' });
       }
     }
@@ -50,6 +51,7 @@ export const POST = withAdminGuard(async (request) => {
       results,
     });
   } catch (error) {
+    console.error('[Mobile/Sync] POST error:', error);
     return NextResponse.json({ error: 'Erreur synchronisation' }, { status: 500 });
   }
 });

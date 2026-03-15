@@ -87,6 +87,11 @@ export default class ApiLeakageAuditor extends BaseAuditor {
           const passwordInResponse = /NextResponse\.json\s*\([^)]*password|apiSuccess\s*\([^)]*password|res\.json\s*\([^)]*password/i.test(content);
           // If hashing, comparing, or validating password input and never returning it → safe
           if ((usesBcryptCompare || usesBcryptHash || hasZodPasswordField) && !passwordInResponse) continue;
+          // Password written in Prisma data:{} block (stored to DB, not returned) and
+          // stripped/destructured before response → safe
+          const passwordInDataBlock = /data\s*:\s*\{[\s\S]{0,500}password/i.test(content);
+          const passwordStripped = /\{\s*password\s*:\s*_|password:\s*_\w*\s*,?\s*\.\.\./.test(content);
+          if (passwordInDataBlock && (passwordStripped || !passwordInResponse)) continue;
         }
 
         // Skip token: when used for verification/lookup (find by token, JWT verify, not returned)
