@@ -7,7 +7,7 @@
 // Community backend wired: fetches from /api/community/posts and /api/community/categories
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { Suspense, useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
@@ -111,7 +111,7 @@ function CategoriesSkeleton() {
 
 // --- Main component ---
 
-export default function CommunityPage() {
+function CommunityContent() {
   const { data: session } = useSession();
   const { t, locale } = useI18n();
 
@@ -930,5 +930,13 @@ export default function CommunityPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function CommunityPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500" /></div>}>
+      <CommunityContent />
+    </Suspense>
   );
 }

@@ -1,6 +1,7 @@
 // FIX: force-dynamic because generateMetadata() calls getServerLocale() → cookies()/headers()
 export const dynamic = 'force-dynamic';
 
+import { Suspense } from 'react';
 import { Metadata } from 'next';
 import ShopPageClient from './ShopPageClient';
 import { JsonLd } from '@/components/seo/JsonLd';
@@ -55,7 +56,9 @@ export default function ShopPage() {
   return (
     <>
       <JsonLd data={breadcrumbJsonLd} />
-      <ShopPageClient />
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500" /></div>}>
+        <ShopPageClient />
+      </Suspense>
     </>
   );
 }

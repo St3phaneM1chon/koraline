@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useI18n } from '@/i18n/client';
 import { settingsProfileSchema, validateForm } from '@/lib/form-validation';
 import { FormError } from '@/components/ui/FormError';
@@ -25,7 +25,7 @@ interface AddressData {
   country: string;
 }
 
-export default function SettingsPage() {
+function SettingsContent() {
   const { data: session, status, update: updateSession } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -800,5 +800,13 @@ export default function SettingsPage() {
         variant="danger"
       />
     </div>
+  );
+}
+
+export default function SettingsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500" /></div>}>
+      <SettingsContent />
+    </Suspense>
   );
 }
