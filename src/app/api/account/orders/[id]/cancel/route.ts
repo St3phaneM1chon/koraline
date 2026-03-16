@@ -93,6 +93,21 @@ export const POST = withUserGuard(async (request: NextRequest, { session, params
     let refundedViaProvider = false;
 
     if (order.paymentStatus === 'PAID') {
+      // RACE CONDITION FIX: Atomically claim the refund by transitioning PAID → REFUNDING.
+      // If another concurrent request already claimed it, updateMany returns count=0.
+      const claimResult = await prisma.order.updateMany({
+        where: { id: orderId, paymentStatus: 'PAID' },
+        data: { paymentStatus: 'REFUNDING' },
+      });
+
+      if (claimResult.count === 0) {
+        // Another request already started the refund — don't issue a duplicate
+        return NextResponse.json(
+          { error: 'Refund already in progress for this order' },
+          { status: 409 }
+        );
+      }
+
       refundAmount = Number(order.total);
       refundMethod = order.paymentMethod || 'Original payment method';
 
@@ -113,7 +128,9 @@ export const POST = withUserGuard(async (request: NextRequest, { session, params
             amount: refundAmount,
           });
         } catch (stripeError) {
-          logger.error('[cancelOrder] Stripe refund failed', {
+          // Revert REFUNDING → PAID so customer can retry
+          await prisma.order.updateMany({ where: { id: orderId, paymentStatus: 'REFUNDING' }, data: { paymentStatus: 'PAID' } });
+          logger.error('[cancelOrder] Stripe refund failed, reverted to PAID', {
             error: stripeError instanceof Error ? stripeError.message : String(stripeError),
             orderId,
             stripePaymentId: order.stripePaymentId,
@@ -139,6 +156,8 @@ export const POST = withUserGuard(async (request: NextRequest, { session, params
           const captureId = orderData.purchase_units?.[0]?.payments?.captures?.[0]?.id as string | undefined;
 
           if (!captureId) {
+            // Revert REFUNDING → PAID so customer can retry or admin can process
+            await prisma.order.updateMany({ where: { id: orderId, paymentStatus: 'REFUNDING' }, data: { paymentStatus: 'PAID' } });
             return NextResponse.json(
               { error: 'PayPal capture ID not found — cannot process refund automatically. Please contact support.' },
               { status: 400 }
@@ -156,7 +175,9 @@ export const POST = withUserGuard(async (request: NextRequest, { session, params
 
           if (!refundRes.ok) {
             const refundError = await refundRes.json();
-            logger.error('[cancelOrder] PayPal refund failed', { error: refundError, orderId });
+            // Revert REFUNDING → PAID so customer can retry
+            await prisma.order.updateMany({ where: { id: orderId, paymentStatus: 'REFUNDING' }, data: { paymentStatus: 'PAID' } });
+            logger.error('[cancelOrder] PayPal refund failed, reverted to PAID', { error: refundError, orderId });
             return NextResponse.json(
               {
                 error: 'Refund failed',
@@ -176,7 +197,9 @@ export const POST = withUserGuard(async (request: NextRequest, { session, params
             amount: refundAmount,
           });
         } catch (paypalError) {
-          logger.error('[cancelOrder] PayPal refund error', {
+          // Revert REFUNDING → PAID so customer can retry
+          await prisma.order.updateMany({ where: { id: orderId, paymentStatus: 'REFUNDING' }, data: { paymentStatus: 'PAID' } });
+          logger.error('[cancelOrder] PayPal refund error, reverted to PAID', {
             error: paypalError instanceof Error ? paypalError.message : String(paypalError),
             orderId,
           });

@@ -189,6 +189,70 @@ export async function POST(request: NextRequest) {
         const notExpired = (!promo.startsAt || promo.startsAt <= now) && (!promo.endsAt || promo.endsAt >= now);
         const withinUsageLimit = !promo.usageLimit || promo.usageCount < promo.usageLimit;
         if (notExpired && withinUsageLimit) {
+          // Per-user usage limit check (parity with Stripe create-checkout)
+          if (promo.usageLimitPerUser && session.user.id) {
+            const userUsageCount = await prisma.promoCodeUsage.count({
+              where: { promoCodeId: promo.id, userId: session.user.id },
+            });
+            if (userUsageCount >= promo.usageLimitPerUser) {
+              return NextResponse.json(
+                { error: 'Vous avez atteint la limite d\'utilisation de ce code promo' },
+                { status: 400 }
+              );
+            }
+          }
+
+          // firstOrderOnly check (parity with Stripe create-checkout)
+          if (promo.firstOrderOnly && session.user.id) {
+            const previousPaidOrders = await prisma.order.count({
+              where: {
+                userId: session.user.id,
+                paymentStatus: { in: ['PAID', 'DELIVERED'] },
+              },
+            });
+            if (previousPaidOrders > 0) {
+              return NextResponse.json(
+                { error: 'Ce code promo est réservé aux premières commandes' },
+                { status: 400 }
+              );
+            }
+          }
+
+          // productIds restriction check (parity with Stripe create-checkout)
+          if (promo.productIds) {
+            let allowedProductIds: string[] = [];
+            try { allowedProductIds = JSON.parse(promo.productIds); } catch { /* malformed */ }
+            if (allowedProductIds.length > 0) {
+              const cartProductIds = verifiedItems.map(item => item.productId);
+              if (!cartProductIds.some(pid => allowedProductIds.includes(pid))) {
+                return NextResponse.json(
+                  { error: 'Ce code promo ne s\'applique pas aux produits de votre panier' },
+                  { status: 400 }
+                );
+              }
+            }
+          }
+
+          // categoryIds restriction check (parity with Stripe create-checkout)
+          if (promo.categoryIds) {
+            let allowedCategoryIds: string[] = [];
+            try { allowedCategoryIds = JSON.parse(promo.categoryIds); } catch { /* malformed */ }
+            if (allowedCategoryIds.length > 0) {
+              const cartProductIds = verifiedItems.map(item => item.productId);
+              const productsWithCategory = await prisma.product.findMany({
+                where: { id: { in: cartProductIds } },
+                select: { categoryId: true },
+              });
+              const cartCategoryIds = productsWithCategory.map(p => p.categoryId);
+              if (!cartCategoryIds.some(cid => cid && allowedCategoryIds.includes(cid))) {
+                return NextResponse.json(
+                  { error: 'Ce code promo ne s\'applique pas aux catégories de votre panier' },
+                  { status: 400 }
+                );
+              }
+            }
+          }
+
           if (promo.type === 'PERCENTAGE') {
             serverPromoDiscount = percentage(serverSubtotal, Number(promo.value));
           } else {
@@ -345,23 +409,41 @@ export async function POST(request: NextRequest) {
               },
             },
           },
-          items: verifiedItems.map((item) => {
-            // Apply proportional discount (promo + gift card) to each item
+          items: (() => {
+            // Apply proportional discount using "last item absorbs remainder" to prevent
+            // rounding drift that causes PayPal to reject the order (item_total mismatch)
             const totalDiscount = add(serverPromoDiscount, serverGiftCardDiscount);
-            const discountRatio = totalDiscount > 0 ? divide(totalDiscount, serverSubtotal) : 0;
-            const itemDiscount = multiply(item.price, discountRatio);
-            const discountedPrice = subtract(item.price, itemDiscount);
-            return {
-              name: item.name,
-              description: item.format || '',
-              quantity: item.quantity.toString(),
-              unit_amount: {
-                currency_code: currency.toUpperCase(),
-                value: discountedPrice.toFixed(2),
-              },
-              category: 'PHYSICAL_GOODS',
-            };
-          }),
+            let distributedDiscount = 0;
+            return verifiedItems.map((item, idx) => {
+              let discountedPrice: number;
+              if (totalDiscount > 0) {
+                if (idx < verifiedItems.length - 1) {
+                  const discountRatio = divide(totalDiscount, serverSubtotal);
+                  const lineTotal = multiply(item.price, item.quantity);
+                  const lineDiscount = Math.floor(multiply(lineTotal, discountRatio) * 100) / 100;
+                  distributedDiscount = add(distributedDiscount, lineDiscount);
+                  discountedPrice = subtract(item.price, divide(lineDiscount, item.quantity));
+                } else {
+                  // Last item absorbs remainder
+                  const remainingDiscount = subtract(totalDiscount, distributedDiscount);
+                  const lineTotal = multiply(item.price, item.quantity);
+                  discountedPrice = divide(subtract(lineTotal, remainingDiscount), item.quantity);
+                }
+              } else {
+                discountedPrice = item.price;
+              }
+              return {
+                name: item.name,
+                description: item.format || '',
+                quantity: item.quantity.toString(),
+                unit_amount: {
+                  currency_code: currency.toUpperCase(),
+                  value: Math.max(0, discountedPrice).toFixed(2),
+                },
+                category: 'PHYSICAL_GOODS' as const,
+              };
+            });
+          })(),
           shipping: shippingInfo ? {
             name: { full_name: `${shippingInfo.firstName} ${shippingInfo.lastName}` },
             address: {
