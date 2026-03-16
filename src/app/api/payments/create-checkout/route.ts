@@ -247,7 +247,7 @@ export async function POST(request: NextRequest) {
     const productIds = [...new Set(items.map((i: { productId: string }) => i.productId))];
     const allProducts = await prisma.product.findMany({
       where: { id: { in: productIds } },
-      select: { id: true, name: true, price: true, imageUrl: true, isActive: true, productType: true },
+      select: { id: true, name: true, price: true, imageUrl: true, isActive: true, productType: true, categoryId: true },
     });
     const productMap = new Map(allProducts.map(p => [p.id, p]));
 
@@ -416,11 +416,7 @@ export async function POST(request: NextRequest) {
             }
             if (allowedCategoryIds.length > 0) {
               const cartProductIds = verifiedItems.map((item) => item.productId);
-              const productsWithCategory = await prisma.product.findMany({
-                where: { id: { in: cartProductIds } },
-                select: { categoryId: true },
-              });
-              const cartProductCategoryIds = productsWithCategory.map(p => p.categoryId);
+              const cartProductCategoryIds = cartProductIds.map(id => productMap.get(id)?.categoryId);
               const hasMatchingCategory = cartProductCategoryIds.some(
                 (cid) => cid && allowedCategoryIds.includes(cid)
               );

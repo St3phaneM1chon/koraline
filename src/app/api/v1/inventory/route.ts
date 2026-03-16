@@ -93,20 +93,20 @@ export const GET = withApiAuth(async (request: NextRequest) => {
     prisma.product.count({ where }),
   ]);
 
-  // Compute summary statistics
-  const allProducts = await prisma.product.aggregate({
-    where: { isActive: true, trackInventory: true },
-    _sum: { stockQuantity: true },
-    _count: true,
-  });
-
-  const outOfStockCount = await prisma.product.count({
-    where: { isActive: true, trackInventory: true, stockQuantity: 0 },
-  });
-
-  const lowStockCount = await prisma.product.count({
-    where: { isActive: true, trackInventory: true, stockQuantity: { lte: 10, gt: 0 } },
-  });
+  // Compute summary statistics in parallel
+  const [allProducts, outOfStockCount, lowStockCount] = await Promise.all([
+    prisma.product.aggregate({
+      where: { isActive: true, trackInventory: true },
+      _sum: { stockQuantity: true },
+      _count: true,
+    }),
+    prisma.product.count({
+      where: { isActive: true, trackInventory: true, stockQuantity: 0 },
+    }),
+    prisma.product.count({
+      where: { isActive: true, trackInventory: true, stockQuantity: { lte: 10, gt: 0 } },
+    }),
+  ]);
 
   return jsonSuccess(products, {
     page,
