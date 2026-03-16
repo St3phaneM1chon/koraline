@@ -31,13 +31,18 @@ export const POST = withAdminGuard(
         return NextResponse.json({ error: 'Product not found' }, { status: 404 });
       }
 
-      // Generate unique slug
+      // Generate unique slug — single query instead of loop
       const baseSlug = `${source.slug}-copy`;
+      const existingSlugs = await prisma.product.findMany({
+        where: { slug: { startsWith: baseSlug } },
+        select: { slug: true },
+      });
+      const slugSet = new Set(existingSlugs.map((p) => p.slug));
       let slug = baseSlug;
-      let counter = 1;
-      while (await prisma.product.findUnique({ where: { slug } })) {
+      if (slugSet.has(slug)) {
+        let counter = 1;
+        while (slugSet.has(`${baseSlug}-${counter}`)) counter++;
         slug = `${baseSlug}-${counter}`;
-        counter++;
       }
 
       // Create the duplicate product

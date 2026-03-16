@@ -207,13 +207,15 @@ export const GET = withAdminGuard(async (request: NextRequest) => {
     // then filter credit notes by customerName for reliability (invoiceId is optional on CreditNote).
     let creditNoteNameToFilter: string | null = null;
     if (customerId) {
-      // Try to get customer name from prior invoices, or any invoice for this customer
+      // Use customer name from prior invoices, or from invoicesInPeriod (already fetched above)
       const nameSource = priorInvoices.length > 0
         ? priorInvoices[0]
-        : await prisma.customerInvoice.findFirst({
-            where: { customerId, deletedAt: null },
-            select: { customerName: true },
-          });
+        : invoicesInPeriod.length > 0
+          ? invoicesInPeriod[0]
+          : await prisma.customerInvoice.findFirst({
+              where: { customerId, deletedAt: null },
+              select: { customerName: true },
+            });
       creditNoteNameToFilter = nameSource?.customerName || null;
     } else {
       creditNoteNameToFilter = customerName;

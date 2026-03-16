@@ -60,6 +60,7 @@ model CartItem {
 
   @@unique([cartId, productId, formatId])
   @@index([cartId])
+  @@index([formatId])
   @@index([productId])
   @@index([createdAt])
   @@index([updatedAt])
@@ -457,6 +458,7 @@ model PaymentError {
 
   @@index([createdAt])
   @@index([orderId])
+  @@index([stripePaymentId])
   @@index([errorType])
   @@index([deletedAt])
 }
@@ -869,6 +871,8 @@ model Purchase {
   @@index([companyId])
   @@index([productId])
   @@index([status])
+  @@index([stripePaymentId])
+  @@index([paypalOrderId])
   @@index([userId])
   @@index([userId, createdAt]) // Phase 11: Purchase history queries
   @@index([status, createdAt]) // Phase 11: Reporting by status + date
@@ -939,6 +943,8 @@ model Refund {
 
   @@index([orderId])
   @@index([returnRequestId])
+  @@index([stripeRefundId])
+  @@index([paypalRefundId])
   @@index([status])
   @@index([createdAt])
   @@index([updatedAt])

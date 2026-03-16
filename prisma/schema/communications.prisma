@@ -84,6 +84,7 @@ model Conversation {
   messages      Message[]
 
   @@index([assignedToId])
+  @@index([assignedToId, status]) // Agent queue: find open conversations for an agent
   @@index([lastMessageAt])
   @@index([status])
   @@index([userId])
