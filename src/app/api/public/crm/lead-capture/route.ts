@@ -14,33 +14,17 @@ import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { processWorkflowTrigger } from '@/lib/crm/workflow-engine';
 import { getClientIpFromRequest } from '@/lib/admin-audit';
-
-// Simple rate limiter (in-memory, per IP)
-const rateLimits = new Map<string, { count: number; resetAt: number }>();
-const MAX_REQUESTS = 10; // per minute
-const WINDOW_MS = 60000;
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimits.get(ip);
-
-  if (!entry || entry.resetAt < now) {
-    rateLimits.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return true;
-  }
-
-  if (entry.count >= MAX_REQUESTS) return false;
-  entry.count++;
-  return true;
-}
+import { stripHtml, stripControlChars } from '@/lib/sanitize';
+import { rateLimitMiddleware } from '@/lib/rate-limiter';
 
 export async function POST(request: NextRequest) {
-  // Rate limit
+  // Rate limit (centralized, Redis-backed with in-memory fallback)
   const ip = getClientIpFromRequest(request);
-  if (!checkRateLimit(ip)) {
+  const rl = await rateLimitMiddleware(ip, '/api/contact');
+  if (!rl.success) {
     return NextResponse.json(
-      { success: false, error: 'Too many requests' },
-      { status: 429, headers: { 'Retry-After': '60' } }
+      { success: false, error: rl.error!.message },
+      { status: 429, headers: rl.headers }
     );
   }
 
@@ -63,6 +47,21 @@ export async function POST(request: NextRequest) {
       );
     }
     const { formId, contactName, email, phone, companyName, message, source, customFields } = parsed.data;
+
+    // XSS FIX: Sanitize all free-text fields before storage
+    const sanitize = (s: string | undefined) => s ? stripControlChars(stripHtml(s)).trim() : undefined;
+    const safeContactName = sanitize(contactName)!;
+    const safeCompanyName = sanitize(companyName);
+    const safeMessage = sanitize(message);
+    const safeSource = sanitize(source);
+
+    // Sanitize customFields values (user-submitted JSON)
+    const safeCustomFields: Record<string, unknown> = {};
+    if (customFields) {
+      for (const [key, val] of Object.entries(customFields)) {
+        safeCustomFields[sanitize(key)!] = typeof val === 'string' ? sanitize(val) : val;
+      }
+    }
 
     // Validate form exists if formId provided
     let form = null;
@@ -93,7 +92,7 @@ export async function POST(request: NextRequest) {
         await prisma.crmLead.update({
           where: { id: existing.id },
           data: {
-            ...(message ? { customFields: { ...(existing.customFields as object || {}), lastMessage: message } } : {}),
+            ...(safeMessage ? { customFields: { ...(existing.customFields as object || {}), lastMessage: safeMessage } } : {}),
           },
         });
 
@@ -107,15 +106,15 @@ export async function POST(request: NextRequest) {
     // Create lead
     const lead = await prisma.crmLead.create({
       data: {
-        contactName,
+        contactName: safeContactName,
         email: email || undefined,
         phone: phone || undefined,
-        companyName: companyName || undefined,
+        companyName: safeCompanyName,
         source: 'WEB',
         customFields: {
-          ...(customFields || {}),
-          ...(message ? { message } : {}),
-          ...(source ? { captureSource: source } : {}),
+          ...safeCustomFields,
+          ...(safeMessage ? { message: safeMessage } : {}),
+          ...(safeSource ? { captureSource: safeSource } : {}),
           formId: formId || undefined,
           capturedFrom: ip,
         },
@@ -137,7 +136,7 @@ export async function POST(request: NextRequest) {
       data: {
         type: 'NOTE',
         title: 'Web form submission',
-        description: message || `New lead from web form${form ? `: ${form.name}` : ''}`,
+        description: safeMessage || `New lead from web form${form ? `: ${form.name}` : ''}`,
         leadId: lead.id,
         metadata: { formId: formId ?? null, source: 'web_form' },
       },
@@ -171,12 +170,25 @@ export async function POST(request: NextRequest) {
 
     logger.info('Web-to-Lead capture', { leadId: lead.id, formId, source });
 
-    // Return success with redirect URL if configured
+    // Validate redirect URL — only allow relative or same-origin URLs
+    let safeRedirectUrl: string | undefined;
+    if (form?.redirectUrl) {
+      try {
+        const u = new URL(form.redirectUrl, 'https://biocyclepeptides.com');
+        if (u.protocol === 'https:' || u.protocol === 'http:') {
+          safeRedirectUrl = form.redirectUrl;
+        }
+      } catch {
+        // Invalid URL — discard
+      }
+    }
+
+    // Return success with validated redirect URL if configured
     return NextResponse.json({
       success: true,
       data: {
         leadId: lead.id,
-        redirectUrl: form?.redirectUrl || undefined,
+        redirectUrl: safeRedirectUrl,
       },
     }, { status: 201 });
 

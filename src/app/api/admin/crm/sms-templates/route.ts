@@ -12,6 +12,7 @@ import { withAdminGuard } from '@/lib/admin-api-guard';
 import { prisma } from '@/lib/db';
 import { apiSuccess, apiError } from '@/lib/api-response';
 import { ErrorCode } from '@/lib/error-codes';
+import { stripHtml, stripControlChars } from '@/lib/sanitize';
 
 // ---------------------------------------------------------------------------
 // Schemas
@@ -54,10 +55,14 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
 
   const { name, body: templateBody, variables } = parsed.data;
 
+  // XSS FIX: Sanitize template fields before storage
+  const safeName = stripControlChars(stripHtml(name)).trim();
+  const safeBody = stripControlChars(stripHtml(templateBody)).trim();
+
   const template = await prisma.smsTemplate.create({
     data: {
-      name,
-      body: templateBody,
+      name: safeName,
+      body: safeBody,
       variables,
     },
   });

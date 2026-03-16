@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { prisma } from '@/lib/db';
 import { apiSuccess, apiError, apiPaginated } from '@/lib/api-response';
+import { stripHtml, stripControlChars } from '@/lib/sanitize';
 
 // ---------------------------------------------------------------------------
 // Schemas
@@ -143,10 +144,13 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     }
   }
 
+  // XSS FIX: Sanitize free-text fields before storage
+  const sanitize = (s: string | undefined) => s ? stripControlChars(stripHtml(s)).trim() : null;
+
   const lead = await prisma.crmLead.create({
     data: {
-      contactName,
-      companyName: companyName || null,
+      contactName: sanitize(contactName)!,
+      companyName: sanitize(companyName),
       email: email || null,
       phone: phone || null,
       source: source || 'MANUAL',
@@ -156,7 +160,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
       assignedToId: assignedToId || null,
       tags: tags || [],
       customFields: customFields ? JSON.parse(JSON.stringify(customFields)) : undefined,
-      timezone: timezone || null,
+      timezone: sanitize(timezone),
       preferredLang: preferredLang || null,
     },
     include: {
