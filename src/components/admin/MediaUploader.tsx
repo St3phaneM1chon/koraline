@@ -27,13 +27,13 @@ interface MediaUploaderProps {
   previewSize?: 'sm' | 'md' | 'lg';
 }
 
-const CONTEXT_CONFIG: Record<MediaContext, { accept: string; folder: string; maxSizeMB: number }> = {
-  // G1-FLAW-05: Tighten product images to 5MB, remove GIF
-  'product-image': { accept: 'image/jpeg,image/png,image/webp', folder: 'products', maxSizeMB: 5 },
+// maxSizeMB is checked AFTER client-side resize (images auto-shrink to 2048px max)
+const CONTEXT_CONFIG: Record<MediaContext, { accept: string; folder: string; maxSizeMB: number; acceptRaw?: number }> = {
+  'product-image': { accept: 'image/jpeg,image/png,image/webp,image/heic,image/heif', folder: 'products', maxSizeMB: 10 },
   'product-video': { accept: 'video/mp4,video/webm', folder: 'products', maxSizeMB: 50 },
   'product-doc': { accept: 'application/pdf', folder: 'documents', maxSizeMB: 10 },
-  'banner': { accept: 'image/jpeg,image/png,image/webp', folder: 'banners', maxSizeMB: 10 },
-  'category': { accept: 'image/jpeg,image/png,image/webp', folder: 'categories', maxSizeMB: 5 },
+  'banner': { accept: 'image/jpeg,image/png,image/webp,image/heic,image/heif', folder: 'banners', maxSizeMB: 10 },
+  'category': { accept: 'image/jpeg,image/png,image/webp,image/heic,image/heif', folder: 'categories', maxSizeMB: 10 },
   'logo': { accept: 'image/jpeg,image/png,image/webp,image/gif', folder: 'branding', maxSizeMB: 5 },
   'seo': { accept: 'image/jpeg,image/png,image/webp', folder: 'seo', maxSizeMB: 5 },
   'general': { accept: 'image/jpeg,image/png,image/webp,image/gif,application/pdf', folder: 'general', maxSizeMB: 10 },
@@ -44,6 +44,60 @@ const PREVIEW_SIZES = {
   md: 'h-32 w-full',
   lg: 'h-48 w-full',
 };
+
+// Client-side image resize before upload — handles huge camera photos (50MB+)
+const MAX_CLIENT_DIMENSION = 2048; // Max px before upload (server further optimizes)
+const CLIENT_JPEG_QUALITY = 0.85;
+
+async function resizeImageClientSide(file: File): Promise<File> {
+  // Only resize images, not PDFs/videos
+  if (!file.type.startsWith('image/')) return file;
+
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(img.src);
+
+      const { width, height } = img;
+      // Skip if already small enough
+      if (width <= MAX_CLIENT_DIMENSION && height <= MAX_CLIENT_DIMENSION && file.size <= 5 * 1024 * 1024) {
+        resolve(file);
+        return;
+      }
+
+      // Calculate target dimensions maintaining aspect ratio
+      let targetW = width;
+      let targetH = height;
+      if (width > MAX_CLIENT_DIMENSION || height > MAX_CLIENT_DIMENSION) {
+        const ratio = Math.min(MAX_CLIENT_DIMENSION / width, MAX_CLIENT_DIMENSION / height);
+        targetW = Math.round(width * ratio);
+        targetH = Math.round(height * ratio);
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = targetW;
+      canvas.height = targetH;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) { resolve(file); return; }
+
+      ctx.drawImage(img, 0, 0, targetW, targetH);
+
+      // Output as JPEG (best size) or WebP
+      const outputType = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+      const quality = outputType === 'image/png' ? undefined : CLIENT_JPEG_QUALITY;
+
+      canvas.toBlob((blob) => {
+        if (!blob) { resolve(file); return; }
+        const ext = outputType === 'image/png' ? '.png' : '.jpg';
+        const name = file.name.replace(/\.[^.]+$/, ext);
+        resolve(new File([blob], name, { type: outputType }));
+      }, outputType, quality);
+    };
+
+    img.onerror = () => resolve(file); // Fallback to original on error
+    img.src = URL.createObjectURL(file);
+  });
+}
 
 export function MediaUploader({
   value,
@@ -83,13 +137,7 @@ export function MediaUploader({
   const uploadFile = useCallback(async (file: File) => {
     setError(null);
 
-    // Client-side validation
-    const maxBytes = config.maxSizeMB * 1024 * 1024;
-    if (file.size > maxBytes) {
-      setError(t('admin.mediaUploader.fileTooLarge', { max: `${config.maxSizeMB}MB` }));
-      return;
-    }
-
+    // Check MIME type first (before resize)
     const acceptTypes = config.accept.split(',');
     if (!acceptTypes.some(type => file.type === type || file.type.startsWith(type.replace('/*', '/')))) {
       setError(t('admin.mediaUploader.invalidType'));
@@ -100,8 +148,24 @@ export function MediaUploader({
     setProgress(0);
 
     try {
+      // Auto-resize large images client-side (handles 50MB+ camera photos)
+      let processedFile = file;
+      if (file.type.startsWith('image/')) {
+        setProgress(5); // Show early progress during resize
+        processedFile = await resizeImageClientSide(file);
+      }
+
+      // Validate size AFTER resize
+      const maxBytes = config.maxSizeMB * 1024 * 1024;
+      if (processedFile.size > maxBytes) {
+        setError(t('admin.mediaUploader.fileTooLarge', { max: `${config.maxSizeMB}MB` }));
+        setUploading(false);
+        setProgress(0);
+        return;
+      }
+
       const formData = new FormData();
-      formData.append('files', file);
+      formData.append('files', processedFile);
       formData.append('folder', config.folder);
 
       // Use XMLHttpRequest for real upload progress tracking
