@@ -66,6 +66,7 @@ export function FooterCorporate() {
             <input
               type="email"
               placeholder={t('auth.email')}
+              aria-label={t('auth.email')}
               style={{
                 padding: '12px 20px',
                 borderRadius: '6px',

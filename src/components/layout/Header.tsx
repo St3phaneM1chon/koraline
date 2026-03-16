@@ -39,7 +39,11 @@ export function Header() {
   };
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
+    <>
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:p-3 focus:bg-white focus:text-purple-700 focus:font-semibold focus:shadow-lg focus:rounded-md focus:top-2 focus:left-2">
+        {t('common.skipToContent')}
+      </a>
+      <header className="bg-white shadow-sm sticky top-0 z-50">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo */}
@@ -87,6 +91,8 @@ export function Header() {
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   className="flex items-center space-x-2 text-gray-700 hover:text-gray-900"
+                  aria-label={t('nav.accountMenu')}
+                  aria-expanded={userMenuOpen}
                 >
                   {session.user.image ? (
                     <Image
@@ -174,6 +180,8 @@ export function Header() {
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden p-2 text-gray-600 hover:text-gray-900"
+              aria-label={mobileMenuOpen ? t('nav.closeMenu') : t('nav.openMenu')}
+              aria-expanded={mobileMenuOpen}
             >
               <svg
                 className="w-6 h-6"
@@ -231,5 +239,6 @@ export function Header() {
         )}
       </nav>
     </header>
+    </>
   );
 }
