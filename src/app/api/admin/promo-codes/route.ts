@@ -126,36 +126,36 @@ export const POST = withAdminGuard(async (request, { session }) => {
       categoryIds,
     } = parsed.data;
 
-    // Check for duplicate code
-    const existing = await prisma.promoCode.findUnique({
-      where: { code: code.toUpperCase() },
-      select: { id: true },
-    });
-
-    if (existing) {
-      return NextResponse.json(
-        { error: 'A promo code with this code already exists' },
-        { status: 409 }
-      );
+    // Create promo code — rely on unique constraint to prevent duplicates atomically
+    let promoCode;
+    try {
+      promoCode = await prisma.promoCode.create({
+        data: {
+          code: code.toUpperCase(),
+          description: description || null,
+          type,
+          value,
+          minOrderAmount: minOrderAmount ?? null,
+          maxDiscount: maxDiscount ?? null,
+          usageLimit: usageLimit ?? null,
+          usageLimitPerUser: usageLimitPerUser ?? null,
+          startsAt: startsAt ? new Date(startsAt) : null,
+          endsAt: endsAt ? new Date(endsAt) : null,
+          firstOrderOnly: firstOrderOnly ?? false,
+          productIds: productIds ?? null,
+          categoryIds: categoryIds ?? null,
+        },
+      });
+    } catch (createErr) {
+      // Prisma P2002 = unique constraint violation (duplicate code)
+      if (createErr instanceof Error && 'code' in createErr && (createErr as { code: string }).code === 'P2002') {
+        return NextResponse.json(
+          { error: 'A promo code with this code already exists' },
+          { status: 409 }
+        );
+      }
+      throw createErr;
     }
-
-    const promoCode = await prisma.promoCode.create({
-      data: {
-        code: code.toUpperCase(),
-        description: description || null,
-        type,
-        value,
-        minOrderAmount: minOrderAmount ?? null,
-        maxDiscount: maxDiscount ?? null,
-        usageLimit: usageLimit ?? null,
-        usageLimitPerUser: usageLimitPerUser ?? null,
-        startsAt: startsAt ? new Date(startsAt) : null,
-        endsAt: endsAt ? new Date(endsAt) : null,
-        firstOrderOnly: firstOrderOnly ?? false,
-        productIds: productIds ?? null,
-        categoryIds: categoryIds ?? null,
-      },
-    });
 
     logAdminAction({
       adminUserId: session.user.id,

@@ -218,7 +218,7 @@ export const POST = withAdminGuard(async (request) => {
   } catch (error) {
     logger.error('POST /api/accounting/bank-rules/apply error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Internal error' },
+      { error: 'Failed to apply bank rules' },
       { status: 500 }
     );
   }

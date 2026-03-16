@@ -263,8 +263,9 @@ export async function POST(request: NextRequest) {
 
     // Handle Stripe-specific errors with user-friendly messages
     if (error instanceof Stripe.errors.StripeCardError) {
+      // Stripe card errors are user-facing (decline reason), safe to show
       return NextResponse.json(
-        { success: false, error: error.message },
+        { success: false, error: error.code === 'card_declined' ? 'Your card was declined' : 'Payment failed. Please try again.' },
         { status: 402 }
       );
     }

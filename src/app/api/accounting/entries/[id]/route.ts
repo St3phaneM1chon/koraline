@@ -146,7 +146,7 @@ export const PUT = withAdminGuard(async (
       error: error instanceof Error ? error.message : String(error),
     });
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Failed to update entry' },
+      { error: 'Failed to update entry' },
       { status: 400 }
     );
   }

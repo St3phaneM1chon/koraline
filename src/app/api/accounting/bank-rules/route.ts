@@ -116,7 +116,7 @@ export const GET = withAdminGuard(async (request) => {
   } catch (error) {
     logger.error('GET /api/accounting/bank-rules error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Internal error' },
+      { error: 'Internal error' },
       { status: 500 }
     );
   }
@@ -198,7 +198,7 @@ export const POST = withAdminGuard(async (request) => {
   } catch (error) {
     logger.error('POST /api/accounting/bank-rules error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Internal error' },
+      { error: 'Internal error' },
       { status: 500 }
     );
   }
@@ -306,7 +306,7 @@ export const PUT = withAdminGuard(async (request) => {
   } catch (error) {
     logger.error('PUT /api/accounting/bank-rules error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Internal error' },
+      { error: 'Internal error' },
       { status: 500 }
     );
   }
@@ -348,7 +348,7 @@ export const DELETE = withAdminGuard(async (request) => {
   } catch (error) {
     logger.error('DELETE /api/accounting/bank-rules error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Internal error' },
+      { error: 'Internal error' },
       { status: 500 }
     );
   }

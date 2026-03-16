@@ -140,7 +140,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
       error: error instanceof Error ? error.message : String(error),
     });
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Failed to send message' },
+      { error: 'Failed to send message' },
       { status: 500 },
     );
   }
