@@ -59,7 +59,7 @@ async function getProducts(filters: { category?: string; type?: string; sort?: s
   }
 
   if (filters.type) {
-    where.type = filters.type;
+    where.productType = filters.type;
   }
 
   if (filters.search) {
@@ -157,7 +157,7 @@ export default async function CataloguePage({ searchParams }: CataloguePageProps
     getCategories(),
   ]);
 
-  const productTypes = ['PEPTIDE', 'SUPPLEMENT', 'ACCESSORY'];
+  const productTypes = ['PEPTIDE', 'SUPPLEMENT', 'ACCESSORY', 'BUNDLE', 'CAPSULE', 'LAB_SUPPLY'];
   const selectedSlug = params.category;
 
   return (

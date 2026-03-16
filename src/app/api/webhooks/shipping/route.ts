@@ -271,7 +271,9 @@ async function processTrackingUpdate(
   const currentRank = STATUS_RANK[order.status || 'PENDING'] ?? 0;
   const newRank = STATUS_RANK[status] ?? 0;
 
-  if (newRank <= currentRank && status !== 'EXCEPTION' && status !== 'FAILED') {
+  // Once DELIVERED or RETURNED, lock the status — don't allow backward transitions
+  const isTerminal = (order.status === 'DELIVERED' || order.status === 'RETURNED') && status !== order.status;
+  if (isTerminal || (newRank <= currentRank && status !== 'EXCEPTION' && status !== 'FAILED')) {
     logger.info('[shipping-webhook] Skipped duplicate/stale update', {
       orderId: order.id,
       currentStatus: order.status,

@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, useMemo, useRef, ReactNode } from 'react';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
+import { useI18n } from '@/i18n/client';
 
 interface CartItem {
   productId: string;
@@ -47,6 +48,7 @@ interface StoredCart {
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const { data: session } = useSession();
+  const { t } = useI18n();
   const [items, setItems] = useState<CartItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -106,7 +108,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
           if (age > CART_TTL_MS) {
             // Cart expired - clear it and notify user
             localStorage.removeItem(CART_STORAGE_KEY);
-            toast.info('Your cart has expired after 24 hours of inactivity. Prices may have changed.');
+            toast.info(t('cart.expiredMessage'));
           } else if (Array.isArray(storedItems)) {
             setItems(storedItems);
           }
