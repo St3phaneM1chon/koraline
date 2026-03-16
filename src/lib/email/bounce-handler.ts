@@ -227,6 +227,18 @@ export async function recordBounce(event: BounceEvent): Promise<void> {
           expiresAt,
         },
       });
+
+      // AUTO-DEACTIVATE: Sync hard bounce to NewsletterSubscriber + MailingListSubscriber
+      // Previously required manual admin action via /api/admin/emails/mailing-list/clean
+      await prisma.newsletterSubscriber.updateMany({
+        where: { email: normalizedEmail, isActive: true },
+        data: { isActive: false, unsubscribedAt: new Date() },
+      }).catch((err) => logger.error('Auto-deactivate newsletter on hard bounce failed', { email: normalizedEmail, error: err instanceof Error ? err.message : String(err) }));
+
+      await prisma.mailingListSubscriber.updateMany({
+        where: { email: normalizedEmail, status: 'ACTIVE' },
+        data: { status: 'UNSUBSCRIBED', unsubscribedAt: new Date() },
+      }).catch((err) => logger.error('Auto-deactivate mailing list on hard bounce failed', { email: normalizedEmail, error: err instanceof Error ? err.message : String(err) }));
     }
 
     // Categorize the bounce reason for enriched logging

@@ -8,6 +8,7 @@ import { addEmailTracking } from '@/lib/email/tracking';
 import { shouldSuppressEmail } from '@/lib/email/bounce-handler';
 import { prisma } from '@/lib/db';
 import { getRedisClient, isRedisAvailable } from '@/lib/redis';
+import { EMAIL_ADDRESSES, EMAIL_SENDER_NAME } from '@/lib/email/constants';
 
 // Types pour les emails
 export interface EmailRecipient {
@@ -52,11 +53,11 @@ export interface EmailResult {
 
 // Configuration par défaut
 const DEFAULT_FROM: EmailRecipient = {
-  email: process.env.SMTP_FROM || 'noreply@biocyclepeptides.com',
-  name: 'BioCycle Peptides',
+  email: EMAIL_ADDRESSES.noreply,
+  name: EMAIL_SENDER_NAME,
 };
 
-const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@biocyclepeptides.com';
+const SUPPORT_EMAIL = EMAIL_ADDRESSES.support;
 
 // ---------------------------------------------------------------------------
 // DB-backed email config with TTL cache
@@ -84,8 +85,8 @@ async function getEmailConfig(): Promise<EmailConfig> {
 
     const config: EmailConfig = {
       provider: map['email.provider']?.toLowerCase() || process.env.EMAIL_PROVIDER || 'log',
-      senderEmail: map['email.senderEmail'] || process.env.SMTP_FROM || 'noreply@biocyclepeptides.com',
-      senderName: map['email.senderName'] || 'BioCycle Peptides',
+      senderEmail: map['email.senderEmail'] || EMAIL_ADDRESSES.noreply,
+      senderName: map['email.senderName'] || EMAIL_SENDER_NAME,
       replyEmail: map['email.replyEmail'] || process.env.SMTP_FROM || '',
     };
 
@@ -97,8 +98,8 @@ async function getEmailConfig(): Promise<EmailConfig> {
     });
     return {
       provider: process.env.EMAIL_PROVIDER || 'log',
-      senderEmail: process.env.SMTP_FROM || 'noreply@biocyclepeptides.com',
-      senderName: 'BioCycle Peptides',
+      senderEmail: EMAIL_ADDRESSES.noreply,
+      senderName: EMAIL_SENDER_NAME,
       replyEmail: process.env.SMTP_FROM || '',
     };
   }
@@ -489,7 +490,7 @@ async function sendViaResend(options: SendEmailOptions): Promise<EmailResult> {
   // Build headers for compliance and threading
   const headers: Record<string, string> = {};
   if (options.unsubscribeUrl) {
-    headers['List-Unsubscribe'] = `<mailto:unsubscribe@biocyclepeptides.com>, <${options.unsubscribeUrl}>`;
+    headers['List-Unsubscribe'] = `<mailto:${EMAIL_ADDRESSES.unsubscribe}>, <${options.unsubscribeUrl}>`;
     headers['List-Unsubscribe-Post'] = 'List-Unsubscribe=One-Click';
   }
   // Email threading headers
@@ -562,7 +563,7 @@ async function sendViaSendGrid(options: SendEmailOptions): Promise<EmailResult> 
   // Faille #7: List-Unsubscribe MUST be in personalizations.headers for SendGrid v3
   const sgHeaders: Record<string, string> = {};
   if (options.unsubscribeUrl) {
-    sgHeaders['List-Unsubscribe'] = `<mailto:unsubscribe@biocyclepeptides.com>, <${options.unsubscribeUrl}>`;
+    sgHeaders['List-Unsubscribe'] = `<mailto:${EMAIL_ADDRESSES.unsubscribe}>, <${options.unsubscribeUrl}>`;
     sgHeaders['List-Unsubscribe-Post'] = 'List-Unsubscribe=One-Click';
   }
   if (options.inReplyTo) sgHeaders['In-Reply-To'] = options.inReplyTo;
@@ -656,7 +657,7 @@ async function sendViaSMTP(options: SendEmailOptions): Promise<EmailResult> {
 
   const headers: Record<string, string> = {};
   if (options.unsubscribeUrl) {
-    headers['List-Unsubscribe'] = `<mailto:unsubscribe@biocyclepeptides.com>, <${options.unsubscribeUrl}>`;
+    headers['List-Unsubscribe'] = `<mailto:${EMAIL_ADDRESSES.unsubscribe}>, <${options.unsubscribeUrl}>`;
     headers['List-Unsubscribe-Post'] = 'List-Unsubscribe=One-Click';
   }
   if (options.inReplyTo) headers['In-Reply-To'] = options.inReplyTo;

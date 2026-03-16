@@ -11,6 +11,7 @@
 
 import { logger } from '@/lib/logger';
 import { sendEmail } from '@/lib/email/email-service';
+import { EMAIL_ADDRESSES } from '@/lib/email/constants';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -31,7 +32,7 @@ interface AlertOptions {
 // Configuration
 // ---------------------------------------------------------------------------
 
-const ADMIN_EMAIL = process.env.ADMIN_ALERT_EMAIL || process.env.SMTP_FROM || 'admin@biocyclepeptides.com';
+const ADMIN_EMAIL = process.env.ADMIN_ALERT_EMAIL || EMAIL_ADDRESSES.admin;
 
 // ---------------------------------------------------------------------------
 // Core
