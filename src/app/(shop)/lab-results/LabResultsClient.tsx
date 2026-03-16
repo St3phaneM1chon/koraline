@@ -132,8 +132,7 @@ export default function LabResultsClient({ coaData }: LabResultsClientProps) {
                         {coa.pdfUrl ? (
                           <a
                             href={coa.pdfUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            target="_blank" rel="noopener noreferrer"
                             className="inline-flex items-center gap-1 text-primary-600 hover:text-primary-700 text-sm font-medium"
                             aria-label={`${t('labResults.downloadCoa') || 'Download COA'} - ${coa.productName}`}
                           >

@@ -235,8 +235,7 @@ export function DigitalDeliveryTracking({ order }: DigitalDeliveryTrackingProps)
 
           <a
             href={`/api/receipts/${order.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
+            target="_blank" rel="noopener noreferrer"
             className="btn btn-secondary"
             style={{
               padding: '14px 20px',

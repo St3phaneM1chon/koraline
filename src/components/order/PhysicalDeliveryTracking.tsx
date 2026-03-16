@@ -172,8 +172,7 @@ export function PhysicalDeliveryTracking({ order }: PhysicalDeliveryTrackingProp
             {shipping.trackingUrl && (
               <a
                 href={shipping.trackingUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+                target="_blank" rel="noopener noreferrer"
                 className="btn btn-secondary"
                 style={{ padding: '10px 16px', fontSize: '13px' }}
               >
@@ -450,8 +449,7 @@ export function PhysicalDeliveryTracking({ order }: PhysicalDeliveryTrackingProp
         >
           <a
             href={`/api/receipts/${order.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
+            target="_blank" rel="noopener noreferrer"
             className="btn btn-secondary"
             style={{
               padding: '14px 20px',

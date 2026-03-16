@@ -177,8 +177,7 @@ export default function TrackOrderPage() {
                 <div className="px-6 pb-6">
                   <a
                     href={`https://www.canadapost-postescanada.ca/track-reperage/en#/details/${trackingResult.trackingNumber}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    target="_blank" rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-primary-600 hover:underline focus:outline-none focus:ring-2 focus:ring-primary-500 rounded"
                     aria-label={`${t('track.trackOnCarrier') || 'Track on'} ${trackingResult.carrier} (${t('common.opensInNewTab') || 'opens in new tab'})`}
                   >

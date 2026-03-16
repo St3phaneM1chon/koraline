@@ -862,8 +862,7 @@ export default function OrdersPage() {
                       {order.trackingUrl && (
                         <a
                           href={order.trackingUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          target="_blank" rel="noopener noreferrer"
                           className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
                         >
                           {t('account.orders.trackPackage')}

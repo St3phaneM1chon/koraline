@@ -334,8 +334,7 @@ export default function ProductTabs({ product, chemistryData }: ProductTabsProps
                       {ref.pubmedId && (
                         <a
                           href={`https://pubmed.ncbi.nlm.nih.gov/${ref.pubmedId}/`}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          target="_blank" rel="noopener noreferrer"
                           className="ms-2 text-blue-600 hover:underline"
                         >
                           [PubMed: {ref.pubmedId}]

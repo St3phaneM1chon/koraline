@@ -135,8 +135,7 @@ export function FooterCorporate() {
                 <a
                   key={social.name}
                   href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target="_blank" rel="noopener noreferrer"
                   style={{
                     width: '40px',
                     height: '40px',

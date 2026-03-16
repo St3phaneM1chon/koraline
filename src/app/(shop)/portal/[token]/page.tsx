@@ -611,8 +611,7 @@ export default function ClientPortalPage() {
                                   {inv.pdfUrl && (
                                     <a
                                       href={inv.pdfUrl}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
+                                      target="_blank" rel="noopener noreferrer"
                                       className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
                                     >
                                       <Download className="w-4 h-4" />

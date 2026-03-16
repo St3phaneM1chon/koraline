@@ -500,8 +500,7 @@ function PlatformButton({ platform, link, t }: { platform: string; link: string;
   return (
     <a
       href={link}
-      target="_blank"
-      rel="noopener noreferrer"
+      target="_blank" rel="noopener noreferrer"
       style={{
         display: 'flex',
         alignItems: 'center',

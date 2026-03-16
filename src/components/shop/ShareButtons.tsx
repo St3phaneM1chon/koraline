@@ -173,8 +173,7 @@ export default function ShareButtons({ url, title, description }: ShareButtonsPr
           <a
             key={link.name}
             href={link.href}
-            target="_blank"
-            rel="noopener noreferrer"
+            target="_blank" rel="noopener noreferrer"
             title={`Share on ${link.name}`}
             aria-label={`Share on ${link.name}`}
             className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 ${link.bgClass} ${link.hoverClass}`}
