@@ -11,21 +11,26 @@ export const dynamic = 'force-dynamic';
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { CRON_BY_NAME } from '@/lib/cron-registry';
 import { logger } from '@/lib/logger';
 
+const triggerSchema = z.object({
+  name: z.string().min(1).max(100).trim(),
+});
+
 export const POST = withAdminGuard(async (request: NextRequest) => {
   try {
     const body = await request.json();
-    const { name } = body as { name?: string };
-
-    if (!name || typeof name !== 'string') {
+    const parsed = triggerSchema.safeParse(body);
+    if (!parsed.success) {
       return NextResponse.json(
         { error: 'Missing or invalid "name" field' },
         { status: 400 }
       );
     }
+    const { name } = parsed.data;
 
     const def = CRON_BY_NAME.get(name);
     if (!def) {

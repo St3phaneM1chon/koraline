@@ -12,21 +12,29 @@ export const dynamic = 'force-dynamic';
  */
 
 import { NextResponse } from 'next/server';
+import { z } from 'zod';
 import { prisma } from '@/lib/db';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import {
-  DISPLAY_SIZE_TARGETS,
   optimizeForDisplay,
   isProcessableImage,
 } from '@/lib/media/image-pipeline';
 import { logger } from '@/lib/logger';
 
+const optimizeSchema = z.object({
+  context: z.enum(['product', 'category', 'banner', 'avatar', 'thumbnail', 'general']).default('general'),
+  mediaIds: z.array(z.string().min(1).max(100)).max(100).optional(),
+  quality: z.number().int().min(1).max(100).default(85),
+});
+
 export const POST = withAdminGuard(async (request: Request) => {
   try {
     const body = await request.json().catch(() => ({}));
-    const context = (body.context || 'general') as keyof typeof DISPLAY_SIZE_TARGETS;
-    const mediaIds = body.mediaIds as string[] | undefined;
-    const quality = body.quality || 85;
+    const parsed = optimizeSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Invalid input', details: parsed.error.flatten() }, { status: 400 });
+    }
+    const { context, mediaIds, quality } = parsed.data;
 
     // Find media to optimize
     const whereClause: Record<string, unknown> = {
