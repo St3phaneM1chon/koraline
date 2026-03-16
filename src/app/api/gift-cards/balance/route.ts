@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     const rl = await rateLimitMiddleware(ip, '/api/gift-cards/balance');
     if (!rl.success) {
       const res = NextResponse.json(
-        { error: rl.error!.message },
+        { error: 'Too many requests' },
         { status: 429 }
       );
       Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));

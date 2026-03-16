@@ -45,7 +45,7 @@ export const POST = withAdminGuard(
       const ip = getClientIpFromRequest(request);
       const rl = await rateLimitMiddleware(ip, '/api/admin/emails/flows/test');
       if (!rl.success) {
-        const res = NextResponse.json({ error: rl.error!.message }, { status: 429 });
+        const res = NextResponse.json({ error: 'Too many requests' }, { status: 429 });
         Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));
         return res;
       }

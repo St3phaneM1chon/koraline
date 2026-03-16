@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/reviews', session.user.id);
     if (!rl.success) {
-      return apiError(rl.error!.message, ErrorCode.RATE_LIMITED, { status: 429, request, headers: rl.headers });
+      return apiError('Too many requests', ErrorCode.RATE_LIMITED, { status: 429, request, headers: rl.headers });
     }
 
     const body = await request.json();

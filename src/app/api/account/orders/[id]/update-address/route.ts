@@ -16,6 +16,7 @@ import { rateLimitMiddleware } from '@/lib/rate-limiter';
 import { calculateTaxBreakdown } from '@/lib/tax-rates';
 import { add, subtract } from '@/lib/decimal-calculator';
 import { getClientIpFromRequest } from '@/lib/admin-audit';
+import { validateCsrf } from '@/lib/csrf-middleware';
 
 const updateAddressSchema = z.object({
   firstName: z.string().min(1, 'First name is required').max(100),
@@ -34,7 +35,13 @@ export const PUT = withUserGuard(async (request: NextRequest, { session, params 
     // Rate limiting
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/account/orders/update-address');
-    if (!rl.success) { const res = NextResponse.json({ error: rl.error!.message }, { status: 429 }); Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v)); return res; }
+    if (!rl.success) { const res = NextResponse.json({ error: 'Too many requests' }, { status: 429 }); Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v)); return res; }
+
+    // CSRF validation
+    const csrfValid = await validateCsrf(request);
+    if (!csrfValid) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+    }
 
     const orderId = params?.id;
     const body = await request.json();

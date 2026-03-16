@@ -140,7 +140,7 @@ export const PUT = withAdminGuard(async (request: NextRequest, { session }) => {
   const ip = getClientIpFromRequest(request);
   const rl = await rateLimitMiddleware(ip, '/api/admin/integrations/[platform]');
   if (!rl.success) {
-    const res = NextResponse.json({ error: rl.error!.message }, { status: 429 });
+    const res = NextResponse.json({ error: 'Too many requests' }, { status: 429 });
     Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));
     return res;
   }
@@ -205,7 +205,7 @@ export const POST = withAdminGuard(async (request: NextRequest, _ctx) => {
   const ip = getClientIpFromRequest(request);
   const rl = await rateLimitMiddleware(ip, '/api/admin/integrations/[platform]');
   if (!rl.success) {
-    const res = NextResponse.json({ error: rl.error!.message }, { status: 429 });
+    const res = NextResponse.json({ error: 'Too many requests' }, { status: 429 });
     Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));
     return res;
   }
@@ -272,7 +272,8 @@ export const POST = withAdminGuard(async (request: NextRequest, _ctx) => {
           );
           const waData = await waRes.json();
           if (waData.error) {
-            return NextResponse.json({ success: false, error: waData.error.message });
+            logger.error('[Integration] WhatsApp test failed', { error: waData.error.message });
+            return NextResponse.json({ success: false, error: 'WhatsApp API connection failed' });
           }
           return NextResponse.json({ success: true, phone: waData.display_phone_number || waData.id });
         }
@@ -315,7 +316,8 @@ export const POST = withAdminGuard(async (request: NextRequest, _ctx) => {
           const ytRes = await fetch(ytUrl);
           const ytData = await ytRes.json();
           if (ytData.error) {
-            return NextResponse.json({ success: false, error: ytData.error.message });
+            logger.error('[Integration] YouTube test failed', { error: ytData.error.message });
+            return NextResponse.json({ success: false, error: 'YouTube API connection failed' });
           }
           const channel = ytData.items?.[0];
           return NextResponse.json({ success: true, detail: channel?.snippet?.title || 'API Key valid' });
@@ -329,7 +331,8 @@ export const POST = withAdminGuard(async (request: NextRequest, _ctx) => {
           const metaRes = await fetch(`https://graph.facebook.com/v21.0/me?access_token=${metaToken}`);
           const metaData = await metaRes.json();
           if (metaData.error) {
-            return NextResponse.json({ success: false, error: metaData.error.message });
+            logger.error('[Integration] Meta test failed', { error: metaData.error.message });
+            return NextResponse.json({ success: false, error: 'Meta API connection failed' });
           }
           return NextResponse.json({ success: true, detail: metaData.name || metaData.id });
         }

@@ -104,7 +104,7 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
     // Rate limiting
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/account/wishlist');
-    if (!rl.success) { const res = NextResponse.json({ error: rl.error!.message }, { status: 429 }); Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v)); return res; }
+    if (!rl.success) { const res = NextResponse.json({ error: 'Too many requests' }, { status: 429 }); Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v)); return res; }
 
     const body = await request.json();
     const parsed = addWishlistSchema.safeParse(body);

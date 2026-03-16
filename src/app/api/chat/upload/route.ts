@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     const rl = await rateLimitMiddleware(ip, '/api/chat/upload', session?.user?.id);
     if (!rl.success) {
       const res = NextResponse.json(
-        { error: rl.error!.message },
+        { error: 'Too many requests' },
         { status: 429 }
       );
       Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));

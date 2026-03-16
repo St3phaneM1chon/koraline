@@ -212,7 +212,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
     const rl = await rateLimitMiddleware(ip, '/api/admin/medias/upload', session.user.id);
     if (!rl.success) {
       return NextResponse.json(
-        { error: rl.error!.message },
+        { error: 'Too many requests' },
         { status: 429, headers: rl.headers }
       );
     }

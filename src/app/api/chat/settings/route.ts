@@ -117,7 +117,7 @@ export async function PUT(request: NextRequest) {
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/chat/settings');
     if (!rl.success) {
-      const res = NextResponse.json({ error: rl.error!.message }, { status: 429 });
+      const res = NextResponse.json({ error: 'Too many requests' }, { status: 429 });
       Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));
       return res;
     }

@@ -26,6 +26,7 @@ import { rateLimitMiddleware } from '@/lib/rate-limiter';
 import { stripHtml, stripControlChars } from '@/lib/sanitize';
 import { createHash } from 'crypto';
 import { getClientIpFromRequest } from '@/lib/admin-audit';
+import { validateCsrf } from '@/lib/csrf-middleware';
 
 const deleteRequestSchema = z.object({
   reason: z.string().max(500).optional(),
@@ -43,11 +44,17 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
     const rl = await rateLimitMiddleware(ip, '/api/account/delete-request', userId);
     if (!rl.success) {
       const res = NextResponse.json(
-        { error: rl.error!.message },
+        { error: 'Too many requests' },
         { status: 429 }
       );
       Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));
       return res;
+    }
+
+    // CSRF validation
+    const csrfValid = await validateCsrf(request);
+    if (!csrfValid) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
     }
 
     // Zod schema validation for optional reason

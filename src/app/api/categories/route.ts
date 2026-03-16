@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/categories');
     if (!rl.success) {
-      const res = apiError(rl.error!.message, ErrorCode.RATE_LIMITED, { request });
+      const res = apiError('Too many requests', ErrorCode.RATE_LIMITED, { request });
       Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));
       return res;
     }
@@ -147,7 +147,7 @@ export async function POST(request: NextRequest) {
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/categories');
     if (!rl.success) {
-      const res = apiError(rl.error!.message, ErrorCode.RATE_LIMITED, { request });
+      const res = apiError('Too many requests', ErrorCode.RATE_LIMITED, { request });
       Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));
       return res;
     }

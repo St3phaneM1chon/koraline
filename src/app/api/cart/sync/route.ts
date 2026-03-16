@@ -23,8 +23,17 @@ const cartSyncSchema = z.object({
 });
 
 // GET: Load cart from DB for authenticated user
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    // Rate limit cart reads
+    const ip = getClientIpFromRequest(request);
+    const rl = await rateLimitMiddleware(ip, '/api/cart/sync');
+    if (!rl.success) {
+      const res = NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+      Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));
+      return res;
+    }
+
     const session = await auth();
     if (!session?.user?.id) {
       return NextResponse.json({ items: [] });
@@ -91,7 +100,7 @@ export async function POST(request: NextRequest) {
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/cart/sync');
     if (!rl.success) {
-      const res = NextResponse.json({ error: rl.error!.message }, { status: 429 });
+      const res = NextResponse.json({ error: 'Too many requests' }, { status: 429 });
       Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));
       return res;
     }

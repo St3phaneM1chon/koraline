@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     const rl = await rateLimitMiddleware(ip, '/api/orders/track');
     if (!rl.success) {
       const res = NextResponse.json(
-        { found: false, error: rl.error!.message },
+        { found: false, error: 'Too many requests' },
         { status: 429 }
       );
       Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));

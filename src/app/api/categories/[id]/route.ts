@@ -85,7 +85,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/categories/[id]');
     if (!rl.success) {
-      return apiError(rl.error!.message, ErrorCode.RATE_LIMITED, { request, headers: rl.headers });
+      return apiError('Too many requests', ErrorCode.RATE_LIMITED, { request, headers: rl.headers });
     }
 
     // SECURITY: CSRF protection
@@ -203,7 +203,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/categories/[id]');
     if (!rl.success) {
-      return apiError(rl.error!.message, ErrorCode.RATE_LIMITED, { request, headers: rl.headers });
+      return apiError('Too many requests', ErrorCode.RATE_LIMITED, { request, headers: rl.headers });
     }
 
     // SECURITY: CSRF protection

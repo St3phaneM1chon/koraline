@@ -35,6 +35,13 @@ const createPostSchema = z.object({
 
 export async function GET(request: NextRequest) {
   try {
+    // Rate limit public forum reads to prevent scraping
+    const ip = getClientIpFromRequest(request);
+    const rl = await rateLimitMiddleware(ip, '/api/community/posts');
+    if (!rl.success) {
+      return apiError('Too many requests', ErrorCode.RATE_LIMITED, { request });
+    }
+
     const { searchParams } = new URL(request.url);
     const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
     const limit = Math.min(
@@ -189,7 +196,7 @@ export async function POST(request: NextRequest) {
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/community/posts');
     if (!rl.success) {
-      return apiError(rl.error!.message, ErrorCode.RATE_LIMITED, { request });
+      return apiError('Too many requests', ErrorCode.RATE_LIMITED, { request });
     }
 
     // SEC-FIX: CSRF protection on mutation endpoint

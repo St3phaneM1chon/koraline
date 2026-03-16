@@ -11,6 +11,7 @@ import { prisma } from '@/lib/db';
 import { withUserGuard } from '@/lib/user-api-guard';
 import { revokeConsentSchema } from '@/lib/validations/consent';
 import { logger } from '@/lib/logger';
+import { validateCsrf } from '@/lib/csrf-middleware';
 
 // GET /api/account/consents/[id]
 export const GET = withUserGuard(async (_request: NextRequest, { session, params }) => {
@@ -39,6 +40,12 @@ export const GET = withUserGuard(async (_request: NextRequest, { session, params
 // PATCH /api/account/consents/[id] - Revoke consent
 export const PATCH = withUserGuard(async (request: NextRequest, { session, params }) => {
   try {
+    // CSRF validation
+    const csrfValid = await validateCsrf(request);
+    if (!csrfValid) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+    }
+
     const id = params?.id;
     const body = await request.json();
 

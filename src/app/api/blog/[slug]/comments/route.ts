@@ -184,7 +184,7 @@ export async function POST(
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/blog/comments');
     if (!rl.success) {
-      return NextResponse.json({ error: rl.error!.message }, { status: 429 });
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
     }
 
     // SECURITY: CSRF validation for comment submission

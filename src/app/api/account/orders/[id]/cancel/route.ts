@@ -17,6 +17,7 @@ import { STRIPE_API_VERSION } from '@/lib/stripe';
 import { getPayPalAccessToken, PAYPAL_API_URL } from '@/lib/paypal';
 import { clawbackAmbassadorCommission } from '@/lib/ambassador-commission';
 import { getClientIpFromRequest } from '@/lib/admin-audit';
+import { validateCsrf } from '@/lib/csrf-middleware';
 
 // KB-PP-BUILD-002: Lazy init to avoid crash when STRIPE_SECRET_KEY is absent at build time
 let _stripe: Stripe | null = null;
@@ -34,9 +35,15 @@ export const POST = withUserGuard(async (request: NextRequest, { session, params
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/account/orders/cancel');
     if (!rl.success) {
-      const res = NextResponse.json({ error: rl.error!.message }, { status: 429 });
+      const res = NextResponse.json({ error: 'Too many requests' }, { status: 429 });
       Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));
       return res;
+    }
+
+    // CSRF validation
+    const csrfValid = await validateCsrf(request);
+    if (!csrfValid) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
     }
 
     const orderId = params?.id;

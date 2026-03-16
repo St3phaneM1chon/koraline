@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { withUserGuard } from '@/lib/user-api-guard';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
+import { validateCsrf } from '@/lib/csrf-middleware';
 
 const notificationPrefsSchema = z.object({
   orderUpdates: z.boolean().optional(),
@@ -84,6 +85,11 @@ export const GET = withUserGuard(async (_request: NextRequest, { session }) => {
 // PUT - Update notification preferences
 export const PUT = withUserGuard(async (request: NextRequest, { session }) => {
   try {
+    // CSRF validation
+    const csrfValid = await validateCsrf(request);
+    if (!csrfValid) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+    }
 
     // Zod schema validation
     const body = await request.json();

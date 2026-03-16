@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 /**
  * POST /api/admin/media/optimize
  * Batch optimize images from the Media library.

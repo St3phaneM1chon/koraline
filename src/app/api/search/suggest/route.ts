@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     // Rate limiting
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/search/suggest');
-    if (!rl.success) { const res = NextResponse.json({ error: rl.error!.message }, { status: 429 }); Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v)); return res; }
+    if (!rl.success) { const res = NextResponse.json({ error: 'Too many requests' }, { status: 429 }); Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v)); return res; }
 
     const { searchParams } = new URL(request.url);
     const q = searchParams.get('q')?.trim();

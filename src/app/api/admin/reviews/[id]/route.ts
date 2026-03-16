@@ -32,7 +32,7 @@ export const PATCH = withAdminGuard(async (request: NextRequest, { session, para
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/admin/reviews/[id]');
     if (!rl.success) {
-      const res = NextResponse.json({ error: rl.error!.message }, { status: 429 });
+      const res = NextResponse.json({ error: 'Too many requests' }, { status: 429 });
       Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));
       return res;
     }
@@ -102,7 +102,7 @@ export const DELETE = withAdminGuard(async (request: NextRequest, { session, par
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/admin/reviews/[id]');
     if (!rl.success) {
-      const res = NextResponse.json({ error: rl.error!.message }, { status: 429 });
+      const res = NextResponse.json({ error: 'Too many requests' }, { status: 429 });
       Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));
       return res;
     }

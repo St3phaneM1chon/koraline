@@ -25,7 +25,7 @@ export const PUT = withUserGuard(async (request: NextRequest, { session }) => {
     const rl = await rateLimitMiddleware(ip, '/api/account/password', session.user.id);
     if (!rl.success) {
       const res = NextResponse.json(
-        { error: rl.error!.message },
+        { error: 'Too many requests' },
         { status: 429 }
       );
       Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));

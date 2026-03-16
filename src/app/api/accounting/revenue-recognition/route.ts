@@ -117,7 +117,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/accounting/revenue-recognition');
     if (!rl.success) {
-      const res = NextResponse.json({ error: rl.error!.message }, { status: 429 });
+      const res = NextResponse.json({ error: 'Too many requests' }, { status: 429 });
       Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));
       return res;
     }
@@ -159,7 +159,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
 
     // Handle known business errors
     if (error instanceof Error && error.message.includes('already exists')) {
-      return NextResponse.json({ error: error.message }, { status: 409 });
+      return NextResponse.json({ error: 'Ce schedule de revenus existe déjà' }, { status: 409 });
     }
 
     return NextResponse.json(

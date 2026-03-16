@@ -170,7 +170,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     });
 
     if (error instanceof Error && error.message.includes('already exists')) {
-      return NextResponse.json({ error: error.message }, { status: 409 });
+      return NextResponse.json({ error: 'This caller ID already exists' }, { status: 409 });
     }
 
     return NextResponse.json({ error: 'Caller ID operation failed' }, { status: 500 });

@@ -148,7 +148,7 @@ export async function POST(request: NextRequest) {
     // Rate limiting
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/company');
-    if (!rl.success) { const res = NextResponse.json({ error: rl.error!.message }, { status: 429 }); Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v)); return res; }
+    if (!rl.success) { const res = NextResponse.json({ error: 'Too many requests' }, { status: 429 }); Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v)); return res; }
 
     // CSRF protection
     const csrfValid = await validateCsrf(request);
@@ -275,7 +275,7 @@ export async function PUT(request: NextRequest) {
     // Rate limiting
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/company');
-    if (!rl.success) { const res = NextResponse.json({ error: rl.error!.message }, { status: 429 }); Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v)); return res; }
+    if (!rl.success) { const res = NextResponse.json({ error: 'Too many requests' }, { status: 429 }); Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v)); return res; }
 
     // CSRF protection
     const csrfValid = await validateCsrf(request);

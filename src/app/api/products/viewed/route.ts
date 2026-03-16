@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
     // Rate limiting
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/products/viewed');
-    if (!rl.success) { const res = apiError(rl.error!.message, ErrorCode.RATE_LIMITED); Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v)); return res; }
+    if (!rl.success) { const res = apiError('Too many requests', ErrorCode.RATE_LIMITED); Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v)); return res; }
 
     // CSRF protection
     const csrfValid = await validateCsrf(request);

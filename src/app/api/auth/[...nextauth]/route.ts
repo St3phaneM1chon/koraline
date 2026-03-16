@@ -71,7 +71,7 @@ export const POST = async (req: NextRequest) => {
       const rl = await rateLimitMiddleware(ip, '/api/auth/login');
       if (!rl.success) {
         return NextResponse.json(
-          { error: rl.error!.message },
+          { error: 'Too many requests' },
           { status: 429, headers: rl.headers }
         );
       }

@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/contact');
     if (!rl.success) {
-      return apiError(rl.error!.message, ErrorCode.RATE_LIMITED, { status: 429, request, headers: rl.headers });
+      return apiError('Too many requests', ErrorCode.RATE_LIMITED, { status: 429, request, headers: rl.headers });
     }
 
     // CSRF validation: Skip for public contact form (no authenticated session to protect).

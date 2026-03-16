@@ -35,7 +35,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/community/vote');
     if (!rl.success) {
-      return apiError(rl.error!.message, ErrorCode.RATE_LIMITED, { request });
+      return apiError('Too many requests', ErrorCode.RATE_LIMITED, { request });
     }
 
     // SEC-FIX: CSRF protection on mutation endpoint

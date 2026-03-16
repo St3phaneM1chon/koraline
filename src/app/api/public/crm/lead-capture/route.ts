@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
   const rl = await rateLimitMiddleware(ip, '/api/contact');
   if (!rl.success) {
     return NextResponse.json(
-      { success: false, error: rl.error!.message },
+      { success: false, error: 'Too many requests' },
       { status: 429, headers: rl.headers }
     );
   }

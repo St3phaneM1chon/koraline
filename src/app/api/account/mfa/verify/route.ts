@@ -14,6 +14,7 @@ import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
 import { getClientIpFromRequest } from '@/lib/admin-audit';
+import { validateCsrf } from '@/lib/csrf-middleware';
 
 const mfaVerifySchema = z.object({
   code: z.string().length(6, 'Code à 6 chiffres requis'),
@@ -27,9 +28,15 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
     const rl = await rateLimitMiddleware(ip, '/api/account/mfa/verify');
     if (!rl.success) {
       return NextResponse.json(
-        { error: rl.error?.message || 'Too many attempts. Please try again later.' },
+        { error: 'Too many requests' || 'Too many attempts. Please try again later.' },
         { status: 429 }
       );
+    }
+
+    // CSRF validation
+    const csrfValid = await validateCsrf(request);
+    if (!csrfValid) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
     }
 
     const body = await request.json();

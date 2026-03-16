@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     const rl = await rateLimitMiddleware(ip, '/api/promo/validate');
     if (!rl.success) {
       const res = NextResponse.json(
-        { valid: false, error: rl.error!.message },
+        { valid: false, error: 'Too many requests' },
         { status: 429 }
       );
       Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v));

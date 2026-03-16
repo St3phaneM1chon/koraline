@@ -7,6 +7,7 @@ import { prisma } from '@/lib/db';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
 import { logger } from '@/lib/logger';
 import { getClientIpFromRequest } from '@/lib/admin-audit';
+import { validateCsrf } from '@/lib/csrf-middleware';
 
 const createReturnSchema = z.object({
   orderId: z.string().min(1, 'orderId is required'),
@@ -85,7 +86,13 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
     // Rate limiting
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/account/returns');
-    if (!rl.success) { const res = NextResponse.json({ error: rl.error!.message }, { status: 429 }); Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v)); return res; }
+    if (!rl.success) { const res = NextResponse.json({ error: 'Too many requests' }, { status: 429 }); Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v)); return res; }
+
+    // CSRF validation
+    const csrfValid = await validateCsrf(request);
+    if (!csrfValid) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+    }
 
     // Get user
     const user = await prisma.user.findUnique({
@@ -212,7 +219,7 @@ export const PATCH = withUserGuard(async (request: NextRequest, { session }) => 
     // Rate limiting
     const ip = getClientIpFromRequest(request);
     const rl = await rateLimitMiddleware(ip, '/api/account/returns');
-    if (!rl.success) { const res = NextResponse.json({ error: rl.error!.message }, { status: 429 }); Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v)); return res; }
+    if (!rl.success) { const res = NextResponse.json({ error: 'Too many requests' }, { status: 429 }); Object.entries(rl.headers).forEach(([k, v]) => res.headers.set(k, v)); return res; }
 
     // Check admin role
     const user = await prisma.user.findUnique({
