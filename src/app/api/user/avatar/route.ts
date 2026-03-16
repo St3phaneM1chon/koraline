@@ -13,6 +13,8 @@ import { validateCsrf } from '@/lib/csrf-middleware';
 import { db } from '@/lib/db';
 import { storage } from '@/lib/storage';
 import { logger } from '@/lib/logger';
+import { rateLimitMiddleware } from '@/lib/rate-limiter';
+import { getClientIpFromRequest } from '@/lib/admin-audit';
 
 // POST - Upload avatar
 export async function POST(request: NextRequest) {
@@ -20,6 +22,13 @@ export async function POST(request: NextRequest) {
     const session = await auth();
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Rate limiting - prevent storage abuse via repeated uploads
+    const ip = getClientIpFromRequest(request);
+    const rl = await rateLimitMiddleware(ip, '/api/user/avatar', session.user.id);
+    if (!rl.success) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
     }
 
     // CSRF validation

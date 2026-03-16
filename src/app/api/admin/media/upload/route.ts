@@ -50,7 +50,13 @@ export const POST = withAdminGuard(async (request, context) => {
 
     const formData = await request.formData();
     const file = formData.get('file') as File | null;
-    const folder = (formData.get('folder') as string) || 'media';
+    // Sanitize folder path to prevent path traversal
+    const rawFolder = (formData.get('folder') as string) || 'media';
+    const folder = rawFolder
+      .replace(/\.\./g, '')
+      .replace(/[^a-zA-Z0-9_\-\/]/g, '')
+      .replace(/\/+/g, '/')
+      .replace(/^\/|\/$/g, '') || 'media';
 
     if (!file || !(file instanceof File)) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
