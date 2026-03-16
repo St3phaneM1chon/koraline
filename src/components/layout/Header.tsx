@@ -97,7 +97,7 @@ export function Header() {
                   {session.user.image ? (
                     <Image
                       src={session.user.image}
-                      alt={session.user.name || ''}
+                      alt={session.user.name || 'User profile'}
                       width={32}
                       height={32}
                       className="w-8 h-8 rounded-full"

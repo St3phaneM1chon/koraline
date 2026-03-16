@@ -211,7 +211,7 @@ export default function HeroSlider({ initialSlides }: HeroSliderProps) {
               {/* Desktop image */}
               <Image
                 src={s.backgroundUrl}
-                alt={s.title || ''}
+                alt={s.title || 'Hero banner'}
                 fill
                 priority={i === 0}
                 sizes="100vw"
@@ -220,7 +220,7 @@ export default function HeroSlider({ initialSlides }: HeroSliderProps) {
               {/* Mobile image */}
               <Image
                 src={s.backgroundMobile || s.backgroundUrl}
-                alt={s.title || ''}
+                alt={s.title || 'Hero banner'}
                 fill
                 priority={i === 0}
                 sizes="100vw"

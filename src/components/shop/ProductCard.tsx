@@ -171,7 +171,7 @@ export default memo(function ProductCard({
             <div className="relative aspect-square bg-neutral-100 overflow-hidden rounded-t-xl">
               <Image
                 src={imageUrl || '/images/products/peptide-default.png'}
-                alt={`${productName} - ${categoryName || ''}`}
+                alt={categoryName ? `${productName} - ${categoryName}` : productName}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 className="object-cover hover:scale-105 transition-transform duration-300"

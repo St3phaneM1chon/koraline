@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { useTranslations } from '@/hooks/useTranslations';
+import { addCSRFHeader } from '@/lib/csrf';
 import Link from 'next/link';
 
 // ---------------------------------------------------------------------------
@@ -140,7 +141,7 @@ export default function PreferenceForm({
     try {
       const res = await fetch('/api/email-preferences', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({ token, preferences }),
       });
 
@@ -179,7 +180,7 @@ export default function PreferenceForm({
     try {
       const res = await fetch('/api/email-preferences', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({ token, preferences: allOff }),
       });
 
