@@ -226,6 +226,12 @@ const RATE_LIMIT_CONFIGS: Record<string, { windowMs: number; maxRequests: number
 
   // F49 FIX: Media upload - 50 per user per hour (prevents storage abuse)
   'admin/medias/upload': { windowMs: 3600000, maxRequests: 50 },
+
+  // AUDIT-FIX: Email preferences - 10 per IP per hour (prevents enumeration)
+  'email-preferences': { windowMs: 3600000, maxRequests: 10 },
+
+  // AUDIT-FIX: Demo request - 3 per IP per hour (prevents spam)
+  'demo-request': { windowMs: 3600000, maxRequests: 3 },
 };
 
 // ---------------------------------------------------------------------------
@@ -281,6 +287,10 @@ function getEndpointType(path: string): string {
     // Account: distinguish /api/account/password and /api/account/delete-request
     if (segments[1] === 'account' && segments[2] === 'password') return 'account/password';
     if (segments[1] === 'account' && segments[2] === 'delete-request') return 'account/delete-request';
+    // Email preferences (path may include :GET/:PUT suffix from middleware)
+    if (segments[1]?.startsWith('email-preferences')) return 'email-preferences';
+    // Demo request
+    if (segments[1] === 'demo-request') return 'demo-request';
     return segments[1] || 'default';
   }
 
