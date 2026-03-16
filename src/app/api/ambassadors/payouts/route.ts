@@ -105,68 +105,81 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
       return NextResponse.json({ error: 'Ambassadeur non trouvé' }, { status: 404 });
     }
 
-    // Get all unpaid commissions for this ambassador
-    const pendingCommissions = await prisma.ambassadorCommission.findMany({
-      where: { ambassadorId, paidOut: false },
-      select: { id: true, commissionAmount: true },
-    });
-
-    if (pendingCommissions.length === 0) {
-      return NextResponse.json({ error: 'Aucune commission en attente' }, { status: 400 });
-    }
-
-    // Calculate total payout amount
-    const totalAmount = pendingCommissions.reduce(
-      (sum, c) => sum + Number(c.commissionAmount),
-      0
-    );
-
-    // FIX FLAW-041: Enforce minimum payout amount to avoid micro-payouts and banking fees
+    // Create payout and mark all commissions as paid in a single transaction
+    // to prevent race conditions where two concurrent requests both see unpaid commissions
     const MIN_PAYOUT_AMOUNT = 25.00; // $25 minimum
-    if (totalAmount < MIN_PAYOUT_AMOUNT) {
-      return NextResponse.json(
-        { error: `Montant minimum de paiement: $${MIN_PAYOUT_AMOUNT}. Montant actuel: $${totalAmount.toFixed(2)}` },
-        { status: 400 }
-      );
+
+    let payout: { id: string; amount: unknown; createdAt: Date; _commissionsCount: number };
+    try {
+      payout = await prisma.$transaction(async (tx) => {
+        // Fetch unpaid commissions INSIDE the transaction for atomicity
+        const pendingCommissions = await tx.ambassadorCommission.findMany({
+          where: { ambassadorId, paidOut: false },
+          select: { id: true, commissionAmount: true },
+        });
+
+        if (pendingCommissions.length === 0) {
+          throw new Error('NO_PENDING_COMMISSIONS');
+        }
+
+        const totalAmount = pendingCommissions.reduce(
+          (sum, c) => sum + Number(c.commissionAmount),
+          0
+        );
+
+        if (totalAmount < MIN_PAYOUT_AMOUNT) {
+          throw new Error(`MIN_PAYOUT:${totalAmount.toFixed(2)}`);
+        }
+
+        // Create the payout record
+        const newPayout = await tx.ambassadorPayout.create({
+          data: {
+            ambassadorId,
+            amount: totalAmount,
+            method: method || null,
+            reference: reference || null,
+            notes: notes || null,
+            processedById: session.user?.id || null,
+          },
+        });
+
+        // Mark all pending commissions as paid
+        const now = new Date();
+        await tx.ambassadorCommission.updateMany({
+          where: {
+            ambassadorId,
+            paidOut: false,
+          },
+          data: {
+            paidOut: true,
+            paidOutAt: now,
+            payoutId: newPayout.id,
+          },
+        });
+
+        return { ...newPayout, _commissionsCount: pendingCommissions.length };
+      });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : '';
+      if (msg === 'NO_PENDING_COMMISSIONS') {
+        return NextResponse.json({ error: 'Aucune commission en attente' }, { status: 400 });
+      }
+      if (msg.startsWith('MIN_PAYOUT:')) {
+        const amt = msg.split(':')[1];
+        return NextResponse.json(
+          { error: `Montant minimum de paiement: $${MIN_PAYOUT_AMOUNT}. Montant actuel: $${amt}` },
+          { status: 400 }
+        );
+      }
+      throw err;
     }
-
-    // Create payout and mark all commissions as paid in a transaction
-    const payout = await prisma.$transaction(async (tx) => {
-      // Create the payout record
-      const newPayout = await tx.ambassadorPayout.create({
-        data: {
-          ambassadorId,
-          amount: totalAmount,
-          method: method || null,
-          reference: reference || null,
-          notes: notes || null,
-          processedById: session.user?.id || null,
-        },
-      });
-
-      // Mark all pending commissions as paid
-      const now = new Date();
-      await tx.ambassadorCommission.updateMany({
-        where: {
-          ambassadorId,
-          paidOut: false,
-        },
-        data: {
-          paidOut: true,
-          paidOutAt: now,
-          payoutId: newPayout.id,
-        },
-      });
-
-      return newPayout;
-    });
 
     logAdminAction({
       adminUserId: session.user.id,
       action: 'PROCESS_AMBASSADOR_PAYOUT',
       targetType: 'AmbassadorPayout',
       targetId: payout.id,
-      newValue: { ambassadorId, amount: Number(payout.amount), commissionsCount: pendingCommissions.length },
+      newValue: { ambassadorId, amount: Number(payout.amount), commissionsCount: payout._commissionsCount },
       ipAddress: getClientIpFromRequest(request),
       userAgent: request.headers.get('user-agent') || undefined,
     }).catch((err) => { logger.error('[ambassadors/payouts] Non-blocking operation failed:', { error: err instanceof Error ? err.message : String(err) }); });
@@ -175,7 +188,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
       payout: {
         id: payout.id,
         amount: Number(payout.amount),
-        commissionsCount: pendingCommissions.length,
+        commissionsCount: payout._commissionsCount,
         createdAt: payout.createdAt.toISOString(),
       },
     });

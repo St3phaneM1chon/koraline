@@ -136,35 +136,34 @@ export const POST = withAdminGuard(async (
       );
     }
 
-    // Verify the assigned user exists and is an admin/employee
-    const assignee = await prisma.user.findUnique({
-      where: { id: assignedToId },
-      select: { id: true, name: true, email: true, role: true },
-    });
+    // Verify assignee, lead, and deal in parallel (independent lookups)
+    const [assignee, lead, deal] = await Promise.all([
+      prisma.user.findUnique({
+        where: { id: assignedToId },
+        select: { id: true, name: true, email: true, role: true },
+      }),
+      leadId
+        ? prisma.crmLead.findUnique({
+            where: { id: leadId },
+            select: { id: true, contactName: true },
+          })
+        : null,
+      dealId
+        ? prisma.crmDeal.findUnique({
+            where: { id: dealId },
+            select: { id: true, title: true },
+          })
+        : null,
+    ]);
+
     if (!assignee) {
       return apiError('Assigned user not found', ErrorCode.NOT_FOUND, { request, status: 404 });
     }
-
-    // Verify lead exists if provided
-    if (leadId) {
-      const lead = await prisma.crmLead.findUnique({
-        where: { id: leadId },
-        select: { id: true, contactName: true },
-      });
-      if (!lead) {
-        return apiError('Lead not found', ErrorCode.NOT_FOUND, { request, status: 404 });
-      }
+    if (leadId && !lead) {
+      return apiError('Lead not found', ErrorCode.NOT_FOUND, { request, status: 404 });
     }
-
-    // Verify deal exists if provided
-    if (dealId) {
-      const deal = await prisma.crmDeal.findUnique({
-        where: { id: dealId },
-        select: { id: true, title: true },
-      });
-      if (!deal) {
-        return apiError('Deal not found', ErrorCode.NOT_FOUND, { request, status: 404 });
-      }
+    if (dealId && !deal) {
+      return apiError('Deal not found', ErrorCode.NOT_FOUND, { request, status: 404 });
     }
 
     // Create the callback as a CrmTask with type=CALL

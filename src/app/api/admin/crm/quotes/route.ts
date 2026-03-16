@@ -13,6 +13,7 @@ import { prisma } from '@/lib/db';
 import { apiSuccess, apiError, apiPaginated } from '@/lib/api-response';
 import { ErrorCode } from '@/lib/error-codes';
 import { logger } from '@/lib/logger';
+import { stripHtml, stripControlChars } from '@/lib/sanitize';
 
 // ---------------------------------------------------------------------------
 // Schemas
@@ -20,7 +21,8 @@ import { logger } from '@/lib/logger';
 
 const quoteItemSchema = z.object({
   productId: z.string().cuid().optional().nullable(),
-  description: z.string().min(1, 'Description is required').max(500).trim(),
+  description: z.string().min(1, 'Description is required').max(500).trim()
+    .transform((v) => stripControlChars(stripHtml(v))),
   quantity: z.number().int().min(1, 'Quantity must be at least 1'),
   unitPrice: z.number().min(0, 'Unit price must be non-negative'),
   discount: z.number().min(0).max(100).default(0), // percentage
@@ -32,8 +34,10 @@ const createQuoteSchema = z.object({
   currency: z.string().max(3).default('CAD'),
   taxRate: z.number().min(0).max(1).default(0), // e.g. 0.14975 for QC
   validUntil: z.string().datetime().optional().nullable(),
-  notes: z.string().max(5000).trim().optional().nullable(),
-  terms: z.string().max(10000).trim().optional().nullable(),
+  notes: z.string().max(5000).trim().optional().nullable()
+    .transform((v) => v ? stripControlChars(stripHtml(v)) : v),
+  terms: z.string().max(10000).trim().optional().nullable()
+    .transform((v) => v ? stripControlChars(stripHtml(v)) : v),
   items: z.array(quoteItemSchema).min(1, 'At least one item is required'),
 });
 
