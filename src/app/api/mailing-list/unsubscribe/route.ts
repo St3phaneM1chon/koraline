@@ -22,11 +22,23 @@ function logUnsubscribe(subscriberId: string, email: string, ip: string, method:
 // GET - One-click unsubscribe (from email link)
 export async function GET(request: Request) {
   try {
+    // SECURITY: Rate limit to prevent token brute-force/enumeration
+    const ipAddr = getIp(request);
+    const rl = await rateLimitMiddleware(ipAddr, '/api/mailing-list/unsubscribe');
+    if (!rl.success) {
+      return NextResponse.redirect(new URL('/?unsubscribe=error', request.url));
+    }
+
     const { searchParams } = new URL(request.url);
     const token = searchParams.get('token');
 
     if (!token) {
       return NextResponse.redirect(new URL('/?unsubscribe=error', request.url));
+    }
+
+    // Validate token format (64 hex chars = 32 bytes)
+    if (!/^[a-f0-9]{64}$/.test(token)) {
+      return NextResponse.redirect(new URL('/?unsubscribe=invalid', request.url));
     }
 
     const subscriber = await prisma.mailingListSubscriber.findUnique({

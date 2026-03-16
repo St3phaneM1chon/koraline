@@ -3,15 +3,28 @@ export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
+import { rateLimitMiddleware } from '@/lib/rate-limiter';
 import { getClientIpFromRequest } from '@/lib/admin-audit';
 
 export async function GET(request: Request) {
   try {
+    // SECURITY: Rate limit to prevent token brute-force/enumeration
+    const ip = getClientIpFromRequest(request);
+    const rl = await rateLimitMiddleware(ip, '/api/mailing-list/confirm');
+    if (!rl.success) {
+      return NextResponse.redirect(new URL('/?subscription=error', request.url));
+    }
+
     const { searchParams } = new URL(request.url);
     const token = searchParams.get('token');
 
     if (!token) {
       return NextResponse.redirect(new URL('/?subscription=error', request.url));
+    }
+
+    // Validate token format (64 hex chars = 32 bytes)
+    if (!/^[a-f0-9]{64}$/.test(token)) {
+      return NextResponse.redirect(new URL('/?subscription=invalid', request.url));
     }
 
     const subscriber = await prisma.mailingListSubscriber.findUnique({
@@ -27,7 +40,6 @@ export async function GET(request: Request) {
     }
 
     const confirmedAt = new Date();
-    const ip = getClientIpFromRequest(request);
 
     await prisma.mailingListSubscriber.update({
       where: { id: subscriber.id },

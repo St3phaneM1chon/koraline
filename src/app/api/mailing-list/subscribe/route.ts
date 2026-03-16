@@ -65,55 +65,57 @@ export async function POST(request: NextRequest) {
     const name = rawName ? stripControlChars(stripHtml(rawName)) : undefined;
     const consentMethod = rawConsentMethod ? stripControlChars(stripHtml(rawConsentMethod)) : undefined;
 
-    // Check if already subscribed
-    const existing = await prisma.mailingListSubscriber.findUnique({ where: { email: email.toLowerCase() } });
+    const defaultPreferences = ['promotions', 'promo_codes', 'specials', 'new_products'];
+    const selectedPrefs = preferences?.length ? preferences : defaultPreferences;
+    const lowerEmail = email.toLowerCase();
+
+    // RACE CONDITION FIX: Check-then-upsert pattern.
+    // Step 1: Fast check — if already active, skip (no confirmation needed)
+    const existing = await prisma.mailingListSubscriber.findUnique({
+      where: { email: lowerEmail },
+      select: { status: true },
+    });
     if (existing?.status === 'ACTIVE') {
       return NextResponse.json({ message: 'Already subscribed' });
     }
 
-    // IP already extracted above for rate limiting; reuse for CASL compliance
-
+    // Step 2: Atomic upsert to prevent duplicate creation under concurrency.
+    // If two requests arrive simultaneously for the same email, one wins the
+    // create and the other gets an update — both generate valid tokens but only
+    // the last-committed token will work (the earlier confirmation email's token
+    // gets overwritten, which is harmless).
     const confirmToken = crypto.randomBytes(32).toString('hex');
     const unsubscribeToken = crypto.randomBytes(32).toString('hex');
 
-    const defaultPreferences = ['promotions', 'promo_codes', 'specials', 'new_products'];
-    const selectedPrefs = preferences?.length ? preferences : defaultPreferences;
-
-    if (existing) {
-      // Re-subscribe: update existing record
-      await prisma.mailingListSubscriber.update({
-        where: { id: existing.id },
-        data: {
-          status: 'PENDING',
-          confirmToken,
-          unsubscribeToken,
-          consentDate: new Date(),
-          consentIp: ip,
-          consentMethod: consentMethod || 'website_form',
-          unsubscribedAt: null,
-          confirmedAt: null,
+    await prisma.mailingListSubscriber.upsert({
+      where: { email: lowerEmail },
+      create: {
+        email: lowerEmail,
+        name: name?.trim() || null,
+        status: 'PENDING',
+        consentType: 'EXPRESS',
+        consentIp: ip,
+        consentMethod: consentMethod || 'website_form',
+        confirmToken,
+        unsubscribeToken,
+        preferences: {
+          create: selectedPrefs.map((cat: string) => ({
+            category: cat,
+            isEnabled: true,
+          })),
         },
-      });
-    } else {
-      await prisma.mailingListSubscriber.create({
-        data: {
-          email: email.toLowerCase(),
-          name: name?.trim() || null,
-          status: 'PENDING',
-          consentType: 'EXPRESS',
-          consentIp: ip,
-          consentMethod: consentMethod || 'website_form',
-          confirmToken,
-          unsubscribeToken,
-          preferences: {
-            create: selectedPrefs.map((cat: string) => ({
-              category: cat,
-              isEnabled: true,
-            })),
-          },
-        },
-      });
-    }
+      },
+      update: {
+        status: 'PENDING',
+        confirmToken,
+        unsubscribeToken,
+        consentDate: new Date(),
+        consentIp: ip,
+        consentMethod: consentMethod || 'website_form',
+        unsubscribedAt: null,
+        confirmedAt: null,
+      },
+    });
 
     // Send double opt-in confirmation email (CASL requirement)
     const baseUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://biocyclepeptides.com';

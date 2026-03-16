@@ -71,15 +71,19 @@ export const GET = withAdminGuard(async (_request, { params }) => {
         updatedAt: promoCode.updatedAt.toISOString(),
         _count: promoCode._count,
       },
-      usages: promoCode.usages.map((u) => ({
-        id: u.id,
-        userId: u.userId,
-        userName: userMap.get(u.userId)?.name ?? null,
-        userEmail: userMap.get(u.userId)?.email ?? null,
-        orderId: u.orderId,
-        discount: Number(u.discount),
-        usedAt: u.usedAt.toISOString(),
-      })),
+      usages: promoCode.usages.map((u) => {
+        const userEmail = userMap.get(u.userId)?.email;
+        return {
+          id: u.id,
+          userId: u.userId,
+          userName: userMap.get(u.userId)?.name ?? null,
+          // PII minimization: mask email to prevent exposure in admin logs/screenshots
+          userEmail: userEmail ? userEmail.replace(/^(.{2}).*(@.*)$/, '$1***$2') : null,
+          orderId: u.orderId,
+          discount: Number(u.discount),
+          usedAt: u.usedAt.toISOString(),
+        };
+      }),
     });
   } catch (error) {
     logger.error('Admin promo-code GET error', { error: error instanceof Error ? error.message : String(error) });
