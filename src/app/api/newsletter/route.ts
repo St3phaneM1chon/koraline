@@ -60,36 +60,32 @@ export async function POST(request: NextRequest) {
 
     // CASL compliance: Forward to double opt-in mailing list flow
     // Also save to legacy NewsletterSubscriber for backward compat
-    const existing = await prisma.newsletterSubscriber.findUnique({
+    // RACE CONDITION FIX: Use upsert instead of check-then-create to prevent
+    // duplicate records when two concurrent requests subscribe the same email.
+    await prisma.newsletterSubscriber.upsert({
       where: { email: email.toLowerCase() },
-    }).catch(() => null);
+      create: {
+        id: crypto.randomUUID(),
+        email: email.toLowerCase(),
+        isActive: false,
+        subscribedAt: new Date(),
+        source: source || 'footer',
+        locale: locale || 'fr',
+      },
+      update: {}, // Already exists — no-op (preserve existing state)
+    });
 
-    if (!existing) {
-      // Faille #34: Create as inactive (PENDING) until double opt-in confirmation.
-      // The /api/mailing-list/confirm route will activate this record after confirmation.
-      await prisma.newsletterSubscriber.create({
-        data: {
-          id: crypto.randomUUID(),
-          email: email.toLowerCase(),
-          isActive: false,
-          subscribedAt: new Date(),
-          source: source || 'footer',
-          locale: locale || 'fr',
-        },
-      });
-
-      // RGPD Art. 6/7: Create ConsentRecord for provable consent trail
-      await prisma.consentRecord.create({
-        data: {
-          email: email.toLowerCase(),
-          type: 'newsletter',
-          source: `website_${source || 'footer'}`,
-          consentText: 'J\'accepte de recevoir la newsletter et les promotions de BioCycle Peptides.',
-          grantedAt: new Date(),
-          ipAddress: ip,
-        },
-      }).catch((err) => logger.error('ConsentRecord creation failed (best-effort)', { error: err instanceof Error ? err.message : String(err) }));
-    }
+    // RGPD Art. 6/7: Create ConsentRecord for provable consent trail (best-effort)
+    await prisma.consentRecord.create({
+      data: {
+        email: email.toLowerCase(),
+        type: 'newsletter',
+        source: `website_${source || 'footer'}`,
+        consentText: 'J\'accepte de recevoir la newsletter et les promotions de BioCycle Peptides.',
+        grantedAt: new Date(),
+        ipAddress: ip,
+      },
+    }).catch((err) => logger.error('ConsentRecord creation failed (best-effort)', { error: err instanceof Error ? err.message : String(err) }));
 
     // FIX: FLAW-030 - Call mailing-list subscribe logic directly instead of self-calling via fetch.
     // The previous approach created a circular server-to-server HTTP call that adds latency,
