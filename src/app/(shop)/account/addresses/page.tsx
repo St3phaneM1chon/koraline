@@ -396,8 +396,9 @@ export default function AddressesPage() {
                 {/* Name */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.firstName')}</label>
+                    <label htmlFor="addr-firstName" className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.firstName')}</label>
                     <input
+                      id="addr-firstName"
                       type="text"
                       value={formData.firstName}
                       onChange={e => { setFormData({ ...formData, firstName: e.target.value }); clearFieldError('firstName'); }}
@@ -407,8 +408,9 @@ export default function AddressesPage() {
                     <FormError error={formErrors.firstName} />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.lastName')}</label>
+                    <label htmlFor="addr-lastName" className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.lastName')}</label>
                     <input
+                      id="addr-lastName"
                       type="text"
                       value={formData.lastName}
                       onChange={e => { setFormData({ ...formData, lastName: e.target.value }); clearFieldError('lastName'); }}
@@ -421,8 +423,9 @@ export default function AddressesPage() {
 
                 {/* Company */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.company')}</label>
+                  <label htmlFor="addr-company" className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.company')}</label>
                   <input
+                    id="addr-company"
                     type="text"
                     value={formData.company || ''}
                     onChange={e => setFormData({ ...formData, company: e.target.value })}
@@ -432,7 +435,7 @@ export default function AddressesPage() {
 
                 {/* Address */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.address')}</label>
+                  <label htmlFor="addr-address1" className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.address')}</label>
                   <AddressAutocomplete
                     value={formData.address1 || ''}
                     onChange={(addressComponents) => {
@@ -462,8 +465,9 @@ export default function AddressesPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.address2')}</label>
+                  <label htmlFor="addr-address2" className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.address2')}</label>
                   <input
+                    id="addr-address2"
                     type="text"
                     value={formData.address2 || ''}
                     onChange={e => setFormData({ ...formData, address2: e.target.value })}
@@ -475,8 +479,9 @@ export default function AddressesPage() {
                 {/* City & Province */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.city')}</label>
+                    <label htmlFor="addr-city" className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.city')}</label>
                     <input
+                      id="addr-city"
                       type="text"
                       value={formData.city}
                       onChange={e => { setFormData({ ...formData, city: e.target.value }); clearFieldError('city'); }}
@@ -486,8 +491,9 @@ export default function AddressesPage() {
                     <FormError error={formErrors.city} />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.province')}</label>
+                    <label htmlFor="addr-province" className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.province')}</label>
                     <select
+                      id="addr-province"
                       value={formData.province}
                       onChange={e => { setFormData({ ...formData, province: e.target.value }); clearFieldError('province'); }}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${formErrors.province ? 'border-red-500' : 'border-gray-300'}`}
@@ -503,8 +509,9 @@ export default function AddressesPage() {
                 {/* Postal Code & Country */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.postalCode')}</label>
+                    <label htmlFor="addr-postalCode" className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.postalCode')}</label>
                     <input
+                      id="addr-postalCode"
                       type="text"
                       value={formData.postalCode}
                       onChange={e => { setFormData({ ...formData, postalCode: e.target.value.toUpperCase() }); clearFieldError('postalCode'); }}
@@ -515,8 +522,9 @@ export default function AddressesPage() {
                     <FormError error={formErrors.postalCode} />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.country')}</label>
+                    <label htmlFor="addr-country" className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.country')}</label>
                     <select
+                      id="addr-country"
                       value={formData.country}
                       onChange={e => { setFormData({ ...formData, country: e.target.value, postalCode: '' }); clearFieldError('country'); clearFieldError('postalCode'); }}
                       className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${formErrors.country ? 'border-red-500' : 'border-gray-300'}`}
@@ -529,8 +537,9 @@ export default function AddressesPage() {
 
                 {/* Phone */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.phone')}</label>
+                  <label htmlFor="addr-phone" className="block text-sm font-medium text-gray-700 mb-1">{t('customerAddresses.phone')}</label>
                   <input
+                    id="addr-phone"
                     type="tel"
                     value={formData.phone || ''}
                     onChange={e => { setFormData({ ...formData, phone: e.target.value }); clearFieldError('phone'); }}

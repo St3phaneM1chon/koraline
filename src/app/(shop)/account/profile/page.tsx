@@ -286,12 +286,13 @@ export default function ProfilePage() {
 
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="profile-name" className="block text-sm font-medium text-gray-700 mb-2">
                 {t('account.fullName')}
               </label>
               {editMode ? (
                 <>
                   <input
+                    id="profile-name"
                     type="text"
                     value={formData.name}
                     onChange={(e) => { setFormData({ ...formData, name: e.target.value }); clearFieldError('name'); }}
@@ -313,12 +314,13 @@ export default function ProfilePage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="profile-phone" className="block text-sm font-medium text-gray-700 mb-2">
                 {t('account.phone')}
               </label>
               {editMode ? (
                 <>
                   <input
+                    id="profile-phone"
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => { setFormData({ ...formData, phone: e.target.value }); clearFieldError('phone'); }}
@@ -333,11 +335,12 @@ export default function ProfilePage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="profile-birthDate" className="block text-sm font-medium text-gray-700 mb-2">
                 {t('account.birthDate')}
               </label>
               {editMode ? (
                 <input
+                  id="profile-birthDate"
                   type="date"
                   value={formData.birthDate}
                   onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
@@ -354,12 +357,13 @@ export default function ProfilePage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="profile-locale" className="block text-sm font-medium text-gray-700 mb-2">
                 {t('account.preferredLanguage')}
               </label>
               {editMode ? (
                 <>
                   <select
+                    id="profile-locale"
                     value={formData.locale}
                     onChange={(e) => { setFormData({ ...formData, locale: e.target.value }); clearFieldError('locale'); }}
                     className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 ${formErrors.locale ? 'border-red-500' : 'border-gray-300'}`}
