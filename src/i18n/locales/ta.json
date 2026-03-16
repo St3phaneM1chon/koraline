@@ -11174,7 +11174,12 @@
       "expenses": "செலவுகள்",
       "profit": "லாபம்",
       "outstanding": "நிலுவை விலைப்பட்டியல்கள்",
-      "recentTransactions": "சமீபத்திய பரிவர்த்தனைகள்"
+      "recentTransactions": "சமீபத்திய பரிவர்த்தனைகள்",
+      "loadError": "Unable to load dashboard",
+      "revenueMTD": "Revenue MTD",
+      "expensesMTD": "Expenses MTD",
+      "profitMargin": "Profit Margin",
+      "noTransactions": "No transactions"
     },
     "receipts": {
       "title": "ரசீது பிடிப்பு",
@@ -11185,7 +11190,14 @@
       "amount": "தொகை",
       "date": "தேதி",
       "category": "வகை",
-      "save": "சேமி"
+      "save": "சேமி",
+      "helpText": "Take a photo of your receipt for automatic extraction",
+      "receiptImage": "Receipt",
+      "verifyInfo": "Verify the information",
+      "amountDollar": "Amount ($)",
+      "cancel": "Cancel",
+      "savedSuccess": "Receipt saved!",
+      "newReceipt": "New receipt"
     },
     "expenses": {
       "title": "செலவுகள்",
@@ -11196,7 +11208,24 @@
       "recent": "சமீபத்திய",
       "today": "இன்று",
       "thisWeek": "இந்த வாரம்",
-      "thisMonth": "இந்த மாதம்"
+      "thisMonth": "இந்த மாதம்",
+      "newExpense": "New Expense",
+      "amountCAD": "Amount (CAD)",
+      "descriptionPlaceholder": "Description...",
+      "noteOptional": "Note (optional)",
+      "saving": "Saving...",
+      "save": "Save",
+      "noRecent": "No recent expenses",
+      "categories": {
+        "office": "Office",
+        "transport": "Transport",
+        "meals": "Meals",
+        "supplies": "Supplies",
+        "energy": "Energy",
+        "rent": "Rent",
+        "services": "Services",
+        "other": "Other"
+      }
     },
     "timeTracker": {
       "title": "நேர கண்காணிப்பான்",
@@ -11205,7 +11234,12 @@
       "project": "திட்டம்",
       "todayTotal": "இன்று மொத்தம்",
       "weekTotal": "வாரம் மொத்தம்",
-      "noProject": "திட்டம் இல்லை"
+      "noProject": "திட்டம் இல்லை",
+      "pressToStop": "Tap to stop",
+      "pressToStart": "Tap to start",
+      "today": "Today",
+      "thisWeek": "This Week",
+      "noEntries": "No entries today"
     },
     "settings": {
       "title": "அமைப்புகள்",
@@ -11216,7 +11250,15 @@
       "paymentReceived": "பணம் பெறப்பட்டது",
       "offline": "ஆஃப்லைன் பயன்முறை",
       "storage": "சேமிப்பகம்",
-      "clearCache": "தற்காலிக நினைவகத்தை அழி"
+      "clearCache": "தற்காலிக நினைவகத்தை அழி",
+      "enablePush": "Enable push notifications",
+      "status": "Status",
+      "online": "Online",
+      "offlineStatus": "Offline",
+      "pendingChanges": "Pending changes",
+      "lastSync": "Last sync",
+      "syncNow": "Sync now",
+      "used": "used"
     },
     "nav": {
       "dashboard": "டாஷ்போர்டு",
@@ -11229,7 +11271,9 @@
       "banner": "ஆஃப்லைன் பயன்முறை",
       "syncing": "ஒத்திசைக்கிறது...",
       "syncComplete": "ஒத்திசைக்கப்பட்டது",
-      "pendingChanges": "நிலுவையில் உள்ள மாற்றங்கள்"
+      "pendingChanges": "நிலுவையில் உள்ள மாற்றங்கள்",
+      "syncMessage": "Changes will be synced when you reconnect",
+      "syncResult": "Synced: {succeeded} succeeded, {failed} failed"
     },
     "invoice": {
       "title": "புதிய விலைப்பட்டியல்",
@@ -11239,8 +11283,20 @@
       "amount": "தொகை",
       "tax": "வரி",
       "total": "மொத்தம்",
-      "send": "அனுப்பு"
-    }
+      "send": "அனுப்பு",
+      "clientName": "Client name *",
+      "clientEmail": "Client email",
+      "lines": "Lines",
+      "taxLabel": "GST/QST (14.975%)",
+      "subtotal": "Subtotal",
+      "tps": "GST (5%)",
+      "tvq": "QST (9.975%)",
+      "createdSuccess": "Invoice created!",
+      "newInvoice": "New invoice",
+      "sending": "Sending...",
+      "create": "Create invoice"
+    },
+    "header": "BioCycle Accounting"
   },
   "nav": {
     "accessories": "துணைக்கருவிகள்",

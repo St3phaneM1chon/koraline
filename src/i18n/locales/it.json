@@ -11174,7 +11174,12 @@
       "expenses": "Spese",
       "profit": "Profitto",
       "outstanding": "Fatture in sospeso",
-      "recentTransactions": "Transazioni recenti"
+      "recentTransactions": "Transazioni recenti",
+      "loadError": "Unable to load dashboard",
+      "revenueMTD": "Revenue MTD",
+      "expensesMTD": "Expenses MTD",
+      "profitMargin": "Profit Margin",
+      "noTransactions": "No transactions"
     },
     "receipts": {
       "title": "Cattura ricevute",
@@ -11185,7 +11190,14 @@
       "amount": "Importo",
       "date": "Data",
       "category": "Categoria",
-      "save": "Salva"
+      "save": "Salva",
+      "helpText": "Take a photo of your receipt for automatic extraction",
+      "receiptImage": "Receipt",
+      "verifyInfo": "Verify the information",
+      "amountDollar": "Amount ($)",
+      "cancel": "Cancel",
+      "savedSuccess": "Receipt saved!",
+      "newReceipt": "New receipt"
     },
     "expenses": {
       "title": "Spese",
@@ -11196,7 +11208,24 @@
       "recent": "Recenti",
       "today": "Oggi",
       "thisWeek": "Questa settimana",
-      "thisMonth": "Questo mese"
+      "thisMonth": "Questo mese",
+      "newExpense": "New Expense",
+      "amountCAD": "Amount (CAD)",
+      "descriptionPlaceholder": "Description...",
+      "noteOptional": "Note (optional)",
+      "saving": "Saving...",
+      "save": "Save",
+      "noRecent": "No recent expenses",
+      "categories": {
+        "office": "Office",
+        "transport": "Transport",
+        "meals": "Meals",
+        "supplies": "Supplies",
+        "energy": "Energy",
+        "rent": "Rent",
+        "services": "Services",
+        "other": "Other"
+      }
     },
     "timeTracker": {
       "title": "Registro tempo",
@@ -11205,7 +11234,12 @@
       "project": "Progetto",
       "todayTotal": "Totale oggi",
       "weekTotal": "Totale settimana",
-      "noProject": "Nessun progetto"
+      "noProject": "Nessun progetto",
+      "pressToStop": "Tap to stop",
+      "pressToStart": "Tap to start",
+      "today": "Today",
+      "thisWeek": "This Week",
+      "noEntries": "No entries today"
     },
     "settings": {
       "title": "Impostazioni",
@@ -11216,7 +11250,15 @@
       "paymentReceived": "Pagamento ricevuto",
       "offline": "Modalità offline",
       "storage": "Archiviazione",
-      "clearCache": "Svuota cache"
+      "clearCache": "Svuota cache",
+      "enablePush": "Enable push notifications",
+      "status": "Status",
+      "online": "Online",
+      "offlineStatus": "Offline",
+      "pendingChanges": "Pending changes",
+      "lastSync": "Last sync",
+      "syncNow": "Sync now",
+      "used": "used"
     },
     "nav": {
       "dashboard": "Dashboard",
@@ -11229,7 +11271,9 @@
       "banner": "Modalità offline",
       "syncing": "Sincronizzazione...",
       "syncComplete": "Sincronizzato",
-      "pendingChanges": "modifiche in sospeso"
+      "pendingChanges": "modifiche in sospeso",
+      "syncMessage": "Changes will be synced when you reconnect",
+      "syncResult": "Synced: {succeeded} succeeded, {failed} failed"
     },
     "invoice": {
       "title": "Nuova fattura",
@@ -11239,8 +11283,20 @@
       "amount": "Importo",
       "tax": "Tassa",
       "total": "Totale",
-      "send": "Invia"
-    }
+      "send": "Invia",
+      "clientName": "Client name *",
+      "clientEmail": "Client email",
+      "lines": "Lines",
+      "taxLabel": "GST/QST (14.975%)",
+      "subtotal": "Subtotal",
+      "tps": "GST (5%)",
+      "tvq": "QST (9.975%)",
+      "createdSuccess": "Invoice created!",
+      "newInvoice": "New invoice",
+      "sending": "Sending...",
+      "create": "Create invoice"
+    },
+    "header": "BioCycle Accounting"
   },
   "nav": {
     "accessories": "Accessori",

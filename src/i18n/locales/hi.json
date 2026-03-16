@@ -11174,7 +11174,12 @@
       "expenses": "व्यय",
       "profit": "लाभ",
       "outstanding": "बकाया चालान",
-      "recentTransactions": "हाल के लेनदेन"
+      "recentTransactions": "हाल के लेनदेन",
+      "loadError": "Unable to load dashboard",
+      "revenueMTD": "Revenue MTD",
+      "expensesMTD": "Expenses MTD",
+      "profitMargin": "Profit Margin",
+      "noTransactions": "No transactions"
     },
     "receipts": {
       "title": "रसीद कैप्चर",
@@ -11185,7 +11190,14 @@
       "amount": "राशि",
       "date": "तारीख",
       "category": "श्रेणी",
-      "save": "सहेजें"
+      "save": "सहेजें",
+      "helpText": "Take a photo of your receipt for automatic extraction",
+      "receiptImage": "Receipt",
+      "verifyInfo": "Verify the information",
+      "amountDollar": "Amount ($)",
+      "cancel": "Cancel",
+      "savedSuccess": "Receipt saved!",
+      "newReceipt": "New receipt"
     },
     "expenses": {
       "title": "व्यय",
@@ -11196,7 +11208,24 @@
       "recent": "हाल ही",
       "today": "आज",
       "thisWeek": "इस सप्ताह",
-      "thisMonth": "इस महीने"
+      "thisMonth": "इस महीने",
+      "newExpense": "New Expense",
+      "amountCAD": "Amount (CAD)",
+      "descriptionPlaceholder": "Description...",
+      "noteOptional": "Note (optional)",
+      "saving": "Saving...",
+      "save": "Save",
+      "noRecent": "No recent expenses",
+      "categories": {
+        "office": "Office",
+        "transport": "Transport",
+        "meals": "Meals",
+        "supplies": "Supplies",
+        "energy": "Energy",
+        "rent": "Rent",
+        "services": "Services",
+        "other": "Other"
+      }
     },
     "timeTracker": {
       "title": "समय ट्रैकर",
@@ -11205,7 +11234,12 @@
       "project": "परियोजना",
       "todayTotal": "आज कुल",
       "weekTotal": "सप्ताह कुल",
-      "noProject": "कोई परियोजना नहीं"
+      "noProject": "कोई परियोजना नहीं",
+      "pressToStop": "Tap to stop",
+      "pressToStart": "Tap to start",
+      "today": "Today",
+      "thisWeek": "This Week",
+      "noEntries": "No entries today"
     },
     "settings": {
       "title": "सेटिंग्स",
@@ -11216,7 +11250,15 @@
       "paymentReceived": "भुगतान प्राप्त",
       "offline": "ऑफ़लाइन मोड",
       "storage": "भंडारण",
-      "clearCache": "कैश साफ़ करें"
+      "clearCache": "कैश साफ़ करें",
+      "enablePush": "Enable push notifications",
+      "status": "Status",
+      "online": "Online",
+      "offlineStatus": "Offline",
+      "pendingChanges": "Pending changes",
+      "lastSync": "Last sync",
+      "syncNow": "Sync now",
+      "used": "used"
     },
     "nav": {
       "dashboard": "डैशबोर्ड",
@@ -11229,7 +11271,9 @@
       "banner": "ऑफ़लाइन मोड",
       "syncing": "सिंक हो रहा है...",
       "syncComplete": "सिंक हो गया",
-      "pendingChanges": "लंबित परिवर्तन"
+      "pendingChanges": "लंबित परिवर्तन",
+      "syncMessage": "Changes will be synced when you reconnect",
+      "syncResult": "Synced: {succeeded} succeeded, {failed} failed"
     },
     "invoice": {
       "title": "नया चालान",
@@ -11239,8 +11283,20 @@
       "amount": "राशि",
       "tax": "कर",
       "total": "कुल",
-      "send": "भेजें"
-    }
+      "send": "भेजें",
+      "clientName": "Client name *",
+      "clientEmail": "Client email",
+      "lines": "Lines",
+      "taxLabel": "GST/QST (14.975%)",
+      "subtotal": "Subtotal",
+      "tps": "GST (5%)",
+      "tvq": "QST (9.975%)",
+      "createdSuccess": "Invoice created!",
+      "newInvoice": "New invoice",
+      "sending": "Sending...",
+      "create": "Create invoice"
+    },
+    "header": "BioCycle Accounting"
   },
   "nav": {
     "accessories": "एक्सेसरीज़",
