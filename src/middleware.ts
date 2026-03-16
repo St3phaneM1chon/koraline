@@ -22,7 +22,7 @@ function addSecurityHeaders(response: NextResponse): void {
   // Control referrer information
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   // Restrict browser features (aligned with next.config.js)
-  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), interest-cohort=()');
+  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), interest-cohort=(), usb=(), bluetooth=(), magnetometer=(), gyroscope=(), accelerometer=()');
   // Disable DNS prefetching
   response.headers.set('X-DNS-Prefetch-Control', 'off');
   // HSTS: Force HTTPS for 2 years (aligned with next.config.js FAILLE-012)

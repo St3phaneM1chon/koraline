@@ -91,8 +91,12 @@ export async function POST(request: NextRequest) {
       }
     } else {
       // No Svix headers — check Bearer token fallback
-      const authHeader = request.headers.get('authorization');
-      if (authHeader !== `Bearer ${webhookSecret}`) {
+      // SEC: Use timing-safe comparison to prevent timing side-channel attacks
+      const authHeader = request.headers.get('authorization') || '';
+      const expectedAuth = `Bearer ${webhookSecret}`;
+      const authValid = authHeader.length === expectedAuth.length &&
+        timingSafeEqual(Buffer.from(authHeader), Buffer.from(expectedAuth));
+      if (!authValid) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
       }
     }

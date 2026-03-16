@@ -384,11 +384,11 @@ export default function ProductReviews({ productId, productName }: ProductReview
             {isLoadingReviews ? (
               <div className="text-center py-8">
                 <div className="inline-block w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
-                <p className="text-neutral-500 mt-2">Loading reviews...</p>
+                <p className="text-neutral-500 mt-2">{t('reviews.loading')}</p>
               </div>
             ) : sortedReviews.length === 0 ? (
               <div className="text-center py-8 text-neutral-500">
-                {filterRating || filterWithPhotos ? 'No reviews match your filters' : 'No reviews yet. Be the first to review!'}
+                {filterRating || filterWithPhotos ? t('reviews.noMatchingReviews') : t('reviews.noReviewsYet')}
               </div>
             ) : (
               sortedReviews.slice(0, visibleCount).map((review) => (
@@ -436,7 +436,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
                 {/* Response from store */}
                 {review.response && (
                   <div className="mt-4 ms-6 p-4 bg-primary-50 rounded-lg border-s-4 border-primary-500">
-                    <p className="text-sm font-medium text-primary-800">Response from BioCycle Peptides+</p>
+                    <p className="text-sm font-medium text-primary-800">{t('reviews.responseFrom')}</p>
                     <p className="text-sm text-neutral-600 mt-1">{review.response.content}</p>
                   </div>
                 )}
