@@ -90,44 +90,21 @@ export async function hashBackupCode(code: string): Promise<string> {
 /**
  * Vérifie un code de backup
  */
-// FAILLE-043 FIX: Rate limit backup code verification attempts
-const backupCodeAttempts = new Map<string, { count: number; firstAttempt: number }>();
-const BACKUP_CODE_MAX_ATTEMPTS = 5;
-const BACKUP_CODE_WINDOW_MS = 3600_000; // 1 hour
-const BACKUP_CODE_CACHE_MAX = 10_000;
-
-// Evict oldest half when cache exceeds max size (prevents memory leak)
-function enforceBackupCodeCacheSize(): void {
-  if (backupCodeAttempts.size <= BACKUP_CODE_CACHE_MAX) return;
-  let deleted = 0;
-  const toDelete = Math.floor(backupCodeAttempts.size / 2);
-  for (const key of backupCodeAttempts.keys()) {
-    if (deleted >= toDelete) break;
-    backupCodeAttempts.delete(key);
-    deleted++;
-  }
-}
+// AUDIT-FIX: Rate limit backup code verification via rateLimitMiddleware (Redis-backed)
+// Replaces in-memory Map to support multi-instance deployments
+// Config: 5 attempts per hour per user (see rate-limiter.ts 'mfa/backup-code')
 
 export async function verifyBackupCode(
   code: string,
   hashedCodes: string[],
   userId?: string
 ): Promise<{ valid: boolean; usedIndex: number }> {
-  // Rate limit check (keyed by userId if available)
+  // Rate limit check via centralized Redis-backed rate limiter
   if (userId) {
-    const now = Date.now();
-    const attempt = backupCodeAttempts.get(userId);
-    if (attempt) {
-      if (now - attempt.firstAttempt > BACKUP_CODE_WINDOW_MS) {
-        backupCodeAttempts.set(userId, { count: 1, firstAttempt: now });
-      } else if (attempt.count >= BACKUP_CODE_MAX_ATTEMPTS) {
-        return { valid: false, usedIndex: -1 };
-      } else {
-        attempt.count++;
-      }
-    } else {
-      enforceBackupCodeCacheSize();
-      backupCodeAttempts.set(userId, { count: 1, firstAttempt: now });
+    const { rateLimitMiddleware } = await import('./rate-limiter');
+    const rl = await rateLimitMiddleware(userId, 'mfa/backup-code');
+    if (!rl.success) {
+      return { valid: false, usedIndex: -1 };
     }
   }
 
@@ -141,7 +118,6 @@ export async function verifyBackupCode(
 
   const matchIndex = results.findIndex((r) => r);
   if (matchIndex !== -1) {
-    if (userId) backupCodeAttempts.delete(userId);
     return { valid: true, usedIndex: matchIndex };
   }
 

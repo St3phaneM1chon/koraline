@@ -12270,7 +12270,9 @@
       "searchProducts": "搜索产品",
       "shareProduct": "分享此产品",
       "stickyAddToCartBar": "固定加入购物车栏",
-      "thumbnailImage": "缩略图 {index}/{total}：{type}"
+      "thumbnailImage": "缩略图 {index}/{total}：{type}",
+      "scrollLeft": "Scroll left",
+      "scrollRight": "Scroll right"
     },
     "avgMass": "平均质量",
     "avgPurity": "平均纯度 99%+",

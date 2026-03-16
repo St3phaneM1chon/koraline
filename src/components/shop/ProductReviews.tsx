@@ -335,7 +335,9 @@ export default function ProductReviews({ productId, productName }: ProductReview
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
             <div className="flex flex-wrap items-center gap-2">
               <p className="text-sm text-neutral-500">
-                {filterRating ? `Showing ${filterRating}-star reviews` : `Showing all ${sortedReviews.length} reviews`}
+                {filterRating
+                  ? (t('reviews.showingStarReviews', { rating: String(filterRating) }) || `Showing ${filterRating}-star reviews`)
+                  : (t('reviews.showingAllReviews', { count: String(sortedReviews.length) }) || `Showing all ${sortedReviews.length} reviews`)}
                 {(filterRating || filterWithPhotos) && (
                   <button
                     onClick={() => {
@@ -344,7 +346,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
                     }}
                     className="ms-2 text-primary-500 hover:underline"
                   >
-                    Clear filters
+                    {t('reviews.clearFilters') || 'Clear filters'}
                   </button>
                 )}
               </p>
@@ -362,7 +364,7 @@ export default function ProductReviews({ productId, productName }: ProductReview
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
-                  With Photos ({reviewsWithPhotosCount})
+                  {t('reviews.withPhotos', { count: String(reviewsWithPhotosCount) }) || `With Photos (${reviewsWithPhotosCount})`}
                 </button>
               )}
             </div>

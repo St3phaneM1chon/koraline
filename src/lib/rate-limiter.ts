@@ -147,6 +147,9 @@ const RATE_LIMIT_CONFIGS: Record<string, { windowMs: number; maxRequests: number
   'auth/forgot-password': { windowMs: 300000, maxRequests: 3 },
   'auth/reset-password': { windowMs: 300000, maxRequests: 5 },
 
+  // AUDIT-FIX: MFA backup code verification - 5 per user per hour (Redis-backed, replaces in-memory Map)
+  'mfa/backup-code': { windowMs: 3600000, maxRequests: 5 },
+
   // API publiques - modere
   'products': { windowMs: 60000, maxRequests: 60 },
   'categories': { windowMs: 60000, maxRequests: 60 },

@@ -12270,7 +12270,9 @@
       "searchProducts": "தயாரிப்புகளைத் தேடு",
       "shareProduct": "இந்தத் தயாரிப்பைப் பகிர்",
       "stickyAddToCartBar": "நிலையான கார்ட்டில் சேர் பட்டி",
-      "thumbnailImage": "சிறுபடம் {index}/{total}: {type}"
+      "thumbnailImage": "சிறுபடம் {index}/{total}: {type}",
+      "scrollLeft": "Scroll left",
+      "scrollRight": "Scroll right"
     },
     "avgMass": "சராசரி நிறை",
     "avgPurity": "சராசரி தூய்மை 99%+",

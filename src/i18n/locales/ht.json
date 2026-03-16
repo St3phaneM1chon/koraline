@@ -12270,7 +12270,9 @@
       "searchProducts": "Chèche pwodwi",
       "shareProduct": "Pataje pwodwi sa a",
       "stickyAddToCartBar": "Ba ajoute nan panye fiks",
-      "thumbnailImage": "Viyèt {index} sou {total}: {type}"
+      "thumbnailImage": "Viyèt {index} sou {total}: {type}",
+      "scrollLeft": "Scroll left",
+      "scrollRight": "Scroll right"
     },
     "avgMass": "Mas mwayèn",
     "avgPurity": "Pite mwayèn 99%+",

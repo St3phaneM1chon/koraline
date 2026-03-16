@@ -12270,7 +12270,9 @@
       "searchProducts": "제품 검색",
       "shareProduct": "이 제품 공유",
       "stickyAddToCartBar": "고정 장바구니 추가 바",
-      "thumbnailImage": "썸네일 {index}/{total}: {type}"
+      "thumbnailImage": "썸네일 {index}/{total}: {type}",
+      "scrollLeft": "Scroll left",
+      "scrollRight": "Scroll right"
     },
     "avgMass": "평균 질량",
     "avgPurity": "평균 순도 99%+",

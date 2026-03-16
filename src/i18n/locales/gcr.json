@@ -12270,7 +12270,9 @@
       "searchProducts": "Chèché pwodui",
       "shareProduct": "Patajé pwodui-lasa",
       "stickyAddToCartBar": "Ba ajouté nan panyé fiks",
-      "thumbnailImage": "Viyèt {index} sou {total}: {type}"
+      "thumbnailImage": "Viyèt {index} sou {total}: {type}",
+      "scrollLeft": "Scroll left",
+      "scrollRight": "Scroll right"
     },
     "avgMass": "Mas mwayèn",
     "avgPurity": "Pité mwayèn 99%+",

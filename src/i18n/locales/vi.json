@@ -12270,7 +12270,9 @@
       "searchProducts": "Tìm kiếm sản phẩm",
       "shareProduct": "Chia sẻ sản phẩm này",
       "stickyAddToCartBar": "Thanh thêm vào giỏ cố định",
-      "thumbnailImage": "Hình thu nhỏ {index}/{total}: {type}"
+      "thumbnailImage": "Hình thu nhỏ {index}/{total}: {type}",
+      "scrollLeft": "Scroll left",
+      "scrollRight": "Scroll right"
     },
     "avgMass": "Khối lượng TB",
     "avgPurity": "Độ tinh khiết TB 99%+",

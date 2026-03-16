@@ -12598,7 +12598,9 @@
       "freeShippingBanner": "Promotion de livraison gratuite",
       "freeShippingInfo": "Livraison gratuite et informations qualité",
       "popularSearchFor": "Rechercher {term}",
-      "addToCartName": "Ajouter {name} au panier"
+      "addToCartName": "Ajouter {name} au panier",
+      "scrollLeft": "Défiler vers la gauche",
+      "scrollRight": "Défiler vers la droite"
     },
     "reviews": {
       "removeImage": "Supprimer l'image",

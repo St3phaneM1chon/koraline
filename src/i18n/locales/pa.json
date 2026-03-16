@@ -12270,7 +12270,9 @@
       "searchProducts": "ਉਤਪਾਦ ਖੋਜੋ",
       "shareProduct": "ਇਸ ਉਤਪਾਦ ਨੂੰ ਸਾਂਝਾ ਕਰੋ",
       "stickyAddToCartBar": "ਸਟਿੱਕੀ ਕਾਰਟ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰੋ ਬਾਰ",
-      "thumbnailImage": "ਥੰਬਨੇਲ {index}/{total}: {type}"
+      "thumbnailImage": "ਥੰਬਨੇਲ {index}/{total}: {type}",
+      "scrollLeft": "Scroll left",
+      "scrollRight": "Scroll right"
     },
     "avgMass": "ਔਸਤ ਪੁੰਜ",
     "avgPurity": "ਔਸਤ ਸ਼ੁੱਧਤਾ 99%+",

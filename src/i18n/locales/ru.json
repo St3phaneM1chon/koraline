@@ -12270,7 +12270,9 @@
       "searchProducts": "Поиск товаров",
       "shareProduct": "Поделиться этим товаром",
       "stickyAddToCartBar": "Фиксированная панель добавления в корзину",
-      "thumbnailImage": "Миниатюра {index} из {total}: {type}"
+      "thumbnailImage": "Миниатюра {index} из {total}: {type}",
+      "scrollLeft": "Scroll left",
+      "scrollRight": "Scroll right"
     },
     "avgMass": "Ср. масса",
     "avgPurity": "Ср. чистота 99%+",

@@ -12457,7 +12457,9 @@
       "searchProducts": "Search products",
       "shareProduct": "Share this product",
       "stickyAddToCartBar": "Sticky add to cart bar",
-      "thumbnailImage": "Thumbnail {index} of {total}: {type}"
+      "thumbnailImage": "Thumbnail {index} of {total}: {type}",
+      "scrollLeft": "Scroll left",
+      "scrollRight": "Scroll right"
     },
     "avgMass": "Avg. mass",
     "avgPurity": "Avg. Purity 99%+",

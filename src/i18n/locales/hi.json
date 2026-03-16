@@ -12270,7 +12270,9 @@
       "searchProducts": "उत्पाद खोजें",
       "shareProduct": "यह उत्पाद शेयर करें",
       "stickyAddToCartBar": "स्थिर कार्ट में जोड़ें बार",
-      "thumbnailImage": "थंबनेल {index}/{total}: {type}"
+      "thumbnailImage": "थंबनेल {index}/{total}: {type}",
+      "scrollLeft": "Scroll left",
+      "scrollRight": "Scroll right"
     },
     "avgMass": "औसत द्रव्यमान",
     "avgPurity": "औसत शुद्धता 99%+",

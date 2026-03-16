@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import ProductCard from './ProductCard';
+import { useI18n } from '@/i18n/client';
 
 interface ProductCarouselProps {
   products: Array<{
@@ -28,6 +29,7 @@ interface ProductCarouselProps {
 }
 
 export default function ProductCarousel({ products }: ProductCarouselProps) {
+  const { t } = useI18n();
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: 'left' | 'right') => {
@@ -48,18 +50,18 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
       <button
         onClick={() => scroll('left')}
         className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/90 backdrop-blur rounded-full shadow-md flex items-center justify-center hover:bg-white transition-all opacity-0 group-hover/carousel:opacity-100 -translate-x-4 group-hover/carousel:translate-x-2"
-        aria-label="Scroll left"
+        aria-label={t('shop.aria.scrollLeft') || 'Scroll left'}
       >
-        <svg className="w-5 h-5 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-5 h-5 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
       </button>
       <button
         onClick={() => scroll('right')}
         className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/90 backdrop-blur rounded-full shadow-md flex items-center justify-center hover:bg-white transition-all opacity-0 group-hover/carousel:opacity-100 translate-x-4 group-hover/carousel:-translate-x-2"
-        aria-label="Scroll right"
+        aria-label={t('shop.aria.scrollRight') || 'Scroll right'}
       >
-        <svg className="w-5 h-5 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-5 h-5 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
       </button>

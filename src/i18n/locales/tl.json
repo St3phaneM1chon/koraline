@@ -12270,7 +12270,9 @@
       "searchProducts": "Maghanap ng mga produkto",
       "shareProduct": "I-share ang produktong ito",
       "stickyAddToCartBar": "Sticky add to cart bar",
-      "thumbnailImage": "Thumbnail {index} ng {total}: {type}"
+      "thumbnailImage": "Thumbnail {index} ng {total}: {type}",
+      "scrollLeft": "Scroll left",
+      "scrollRight": "Scroll right"
     },
     "avgMass": "Avg. masa",
     "avgPurity": "Avg. kadalisayan 99%+",

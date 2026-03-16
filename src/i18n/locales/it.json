@@ -12270,7 +12270,9 @@
       "searchProducts": "Cerca prodotti",
       "shareProduct": "Condividi questo prodotto",
       "stickyAddToCartBar": "Barra fissa aggiungi al carrello",
-      "thumbnailImage": "Miniatura {index} di {total}: {type}"
+      "thumbnailImage": "Miniatura {index} di {total}: {type}",
+      "scrollLeft": "Scroll left",
+      "scrollRight": "Scroll right"
     },
     "avgMass": "Massa media",
     "avgPurity": "Purezza media 99%+",

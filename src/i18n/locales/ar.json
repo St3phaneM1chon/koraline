@@ -12270,7 +12270,9 @@
       "searchProducts": "البحث عن منتجات",
       "shareProduct": "مشاركة هذا المنتج",
       "stickyAddToCartBar": "شريط إضافة إلى السلة الثابت",
-      "thumbnailImage": "صورة مصغرة {index} من {total}: {type}"
+      "thumbnailImage": "صورة مصغرة {index} من {total}: {type}",
+      "scrollLeft": "Scroll left",
+      "scrollRight": "Scroll right"
     },
     "avgMass": "الكتلة المتوسطة",
     "avgPurity": "نقاء متوسط 99%+",

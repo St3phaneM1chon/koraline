@@ -12270,7 +12270,9 @@
       "searchProducts": "Sök produkter",
       "shareProduct": "Dela denna produkt",
       "stickyAddToCartBar": "Fast lägg-till-i-varukorgen-fält",
-      "thumbnailImage": "Miniatyr {index} av {total}: {type}"
+      "thumbnailImage": "Miniatyr {index} av {total}: {type}",
+      "scrollLeft": "Scroll left",
+      "scrollRight": "Scroll right"
     },
     "avgMass": "Genomsn. massa",
     "avgPurity": "Genomsn. renhet 99%+",
