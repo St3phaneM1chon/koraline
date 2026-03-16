@@ -10,9 +10,8 @@ import { z } from 'zod';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { getClientIpFromRequest } from '@/lib/admin-audit';
-
-// Rate limiting: max 5 demo requests per IP per hour
-const rateLimit = new Map<string, { count: number; resetAt: number }>();
+import { stripHtml, stripControlChars } from '@/lib/sanitize';
+import { rateLimitMiddleware } from '@/lib/rate-limiter';
 
 const demoRequestSchema = z.object({
   firstName: z.string().min(1).max(100),
@@ -27,20 +26,14 @@ const demoRequestSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
-    // Rate limit check
+    // Rate limit check (uses centralized rate limiter — 'contact' bucket: 3/hour)
     const ip = getClientIpFromRequest(request);
-    const now = Date.now();
-    const entry = rateLimit.get(ip);
-    if (entry && entry.resetAt > now) {
-      if (entry.count >= 5) {
-        return NextResponse.json(
-          { error: 'Trop de demandes. Veuillez réessayer plus tard.' },
-          { status: 429 }
-        );
-      }
-      entry.count++;
-    } else {
-      rateLimit.set(ip, { count: 1, resetAt: now + 3600_000 });
+    const rl = await rateLimitMiddleware(ip, '/api/contact');
+    if (!rl.success) {
+      return NextResponse.json(
+        { error: rl.error!.message },
+        { status: 429, headers: rl.headers }
+      );
     }
 
     // Parse and validate body
@@ -54,11 +47,19 @@ export async function POST(request: NextRequest) {
     }
     const data = parsed.data;
 
+    // XSS FIX: Sanitize all free-text fields before storage
+    const safeFirstName = stripControlChars(stripHtml(data.firstName)).trim();
+    const safeLastName = stripControlChars(stripHtml(data.lastName)).trim();
+    const safeCompany = stripControlChars(stripHtml(data.company)).trim();
+    const safeEmployees = stripControlChars(stripHtml(data.employees)).trim();
+    const safeNeeds = stripControlChars(stripHtml(data.needs)).trim();
+    const safeMessage = stripControlChars(stripHtml(data.message)).trim();
+
     // Create CRM Lead
     const lead = await prisma.crmLead.create({
       data: {
-        contactName: `${data.firstName} ${data.lastName}`,
-        companyName: data.company,
+        contactName: `${safeFirstName} ${safeLastName}`,
+        companyName: safeCompany,
         email: data.email,
         phone: data.phone || null,
         source: 'WEB',
@@ -67,9 +68,9 @@ export async function POST(request: NextRequest) {
         score: 30,
         tags: ['demo-request'],
         customFields: {
-          employees: data.employees,
-          needs: data.needs,
-          message: data.message,
+          employees: safeEmployees,
+          needs: safeNeeds,
+          message: safeMessage,
           requestedAt: new Date().toISOString(),
         },
       },
