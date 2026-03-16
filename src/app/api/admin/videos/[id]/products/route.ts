@@ -60,7 +60,7 @@ export const POST = withAdminGuard(async (request, { session, routeContext }) =>
 
     const parsed = linkProductSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
 
     const { productId, sortOrder } = parsed.data;
@@ -114,7 +114,7 @@ export const DELETE = withAdminGuard(async (request, { session, routeContext }) 
 
     const parsed = unlinkProductSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
 
     const link = await prisma.videoProductLink.findUnique({

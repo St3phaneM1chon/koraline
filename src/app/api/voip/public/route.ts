@@ -191,7 +191,7 @@ export async function POST(request: NextRequest) {
     const raw = await request.json();
     const parsed = publicPostSchema.safeParse(raw);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid input', details: parsed.error.flatten() }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
     }
 
     const { action } = parsed.data;

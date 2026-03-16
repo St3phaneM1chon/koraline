@@ -99,7 +99,7 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
     const body = await request.json();
     const parsed = createReturnSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { orderId, orderItemId, reason, details } = parsed.data;
 
@@ -227,7 +227,7 @@ export const PATCH = withUserGuard(async (request: NextRequest, { session }) => 
     const body = await request.json();
     const parsed = updateReturnSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { returnRequestId, status, resolution, adminNotes } = parsed.data;
 

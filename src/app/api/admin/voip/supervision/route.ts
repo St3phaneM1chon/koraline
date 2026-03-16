@@ -53,7 +53,7 @@ export const POST = withAdminGuard(async (
       return apiError(
         'Invalid supervision parameters',
         ErrorCode.VALIDATION_ERROR,
-        { request, details: parsed.error.flatten(), status: 400 }
+        { request, status: 400 }
       );
     }
 
@@ -138,7 +138,7 @@ export const PUT = withAdminGuard(async (request: NextRequest) => {
       return apiError(
         'Invalid sentiment parameters',
         ErrorCode.VALIDATION_ERROR,
-        { request, details: parsed.error.flatten(), status: 400 }
+        { request, status: 400 }
       );
     }
 

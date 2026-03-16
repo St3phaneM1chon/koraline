@@ -133,7 +133,7 @@ export async function POST(request: NextRequest) {
       const parsed = chatConversationSchema.safeParse(rawBody);
       if (!parsed.success) {
         return NextResponse.json(
-          { error: 'Invalid conversation data', details: parsed.error.errors },
+          { error: 'Invalid conversation data' },
           { status: 400 }
         );
       }

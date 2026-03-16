@@ -143,7 +143,7 @@ export const POST = withAdminGuard(async (request) => {
     const body = await request.json();
     const parsed = createBankRuleSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
 
     // Validate at least one condition
@@ -225,7 +225,7 @@ export const PUT = withAdminGuard(async (request) => {
     const body = await request.json();
     const parsed = updateBankRuleSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const validatedBody = parsed.data;
 

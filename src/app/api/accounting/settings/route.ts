@@ -76,9 +76,8 @@ export const PUT = withAdminGuard(async (request, { session }) => {
     // #89 Audit: Validate settings with zod schema (replaces manual allowlist)
     const parsed = accountingSettingsSchema.safeParse(body);
     if (!parsed.success) {
-      const firstError = parsed.error.errors[0];
       return NextResponse.json(
-        { error: `Paramètre invalide: ${firstError.path.join('.')} - ${firstError.message}` },
+        { error: 'Paramètre invalide' },
         { status: 400 }
       );
     }

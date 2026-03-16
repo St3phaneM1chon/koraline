@@ -41,7 +41,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session: _sess
     const raw = await request.json();
     const parsed = transferSchema.safeParse(raw);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid input', details: parsed.error.flatten() }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
     }
 
     const { action, callControlId, destination, conferenceId, conferenceName } = parsed.data;

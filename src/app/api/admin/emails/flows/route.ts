@@ -72,7 +72,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
     const body = await request.json();
     const parsed = createFlowSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { name, description, trigger, nodes, edges, isActive } = parsed.data;
 

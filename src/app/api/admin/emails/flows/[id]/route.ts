@@ -164,7 +164,7 @@ export const PUT = withAdminGuard(
       const body = await request.json();
       const parsed = updateFlowSchema.safeParse(body);
       if (!parsed.success) {
-        return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+        return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
       }
       const { name, description, trigger, nodes, edges, isActive } = parsed.data;
 
@@ -278,7 +278,7 @@ export const POST = withAdminGuard(
       const body = await request.json().catch(() => ({}));
       const parsed = validateFlowActionSchema.safeParse(body);
       if (!parsed.success) {
-        return NextResponse.json({ error: 'Unknown action. Use { "action": "validate" }', details: parsed.error.errors }, { status: 400 });
+        return NextResponse.json({ error: 'Unknown action. Use { "action": "validate" }' }, { status: 400 });
       }
       // action is validated as 'validate' by the schema
       const _action = parsed.data.action;

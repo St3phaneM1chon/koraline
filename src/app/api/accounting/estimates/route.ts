@@ -166,7 +166,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
     const parsed = createEstimateSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Données invalides', details: parsed.error.errors },
+        { error: 'Données invalides' },
         { status: 400 }
       );
     }

@@ -104,7 +104,7 @@ export const POST = withApiAuth(async (request: NextRequest) => {
   const parsed = createWebhookSchema.safeParse(rawBody);
   if (!parsed.success) {
     return jsonError(
-      parsed.error.errors[0]?.message || 'Invalid webhook data',
+      'Invalid webhook data',
       400
     );
   }

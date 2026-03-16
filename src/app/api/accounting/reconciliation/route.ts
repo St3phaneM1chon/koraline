@@ -55,7 +55,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
     const body = await request.json();
     const parsed = reconciliationPostSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { bankAccountId, criteria } = parsed.data;
 
@@ -311,7 +311,7 @@ export const PUT = withAdminGuard(async (request) => {
     const body = await request.json();
     const parsed = reconciliationPutSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { csvContent, bankAccountId, format } = parsed.data;
 

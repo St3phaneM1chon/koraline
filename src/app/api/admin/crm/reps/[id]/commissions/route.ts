@@ -75,7 +75,6 @@ export const POST = withAdminGuard(async (request: NextRequest, { params }: { se
     if (!parsed.success) {
       return apiError('Invalid request body', ErrorCode.VALIDATION_ERROR, {
         status: 400,
-        details: parsed.error.flatten(),
         request,
       });
     }
@@ -255,7 +254,6 @@ export const PATCH = withAdminGuard(async (request: NextRequest, { session, para
     if (!parsed.success) {
       return apiError('Invalid request body', ErrorCode.VALIDATION_ERROR, {
         status: 400,
-        details: parsed.error.flatten(),
         request,
       });
     }

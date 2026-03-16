@@ -97,7 +97,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     const body = await request.json();
     const parsed = createFiscalEventSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { title, titleFr, description, descriptionFr, dueDate, category, authority, frequency, amount, isRecurring, templateId, reminderDate } = parsed.data;
 
@@ -144,7 +144,7 @@ export const PATCH = withAdminGuard(async (request: NextRequest) => {
     const body = await request.json();
     const parsed = patchFiscalEventSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { id, status, completedBy, notes, amount } = parsed.data;
 

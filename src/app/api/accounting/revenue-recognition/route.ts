@@ -131,7 +131,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     const body = await request.json();
     const parsed = createScheduleSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Données invalides', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Données invalides' }, { status: 400 });
     }
 
     const { orderId, items, recognitionMethod, startDate } = parsed.data;

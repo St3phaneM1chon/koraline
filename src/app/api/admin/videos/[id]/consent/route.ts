@@ -63,7 +63,7 @@ export const POST = withAdminGuard(async (request, { session, routeContext }) =>
 
     const parsed = createConsentRequestSchema.safeParse({ ...body, videoId: id });
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
 
     const { clientId, formTemplateId, type } = parsed.data;

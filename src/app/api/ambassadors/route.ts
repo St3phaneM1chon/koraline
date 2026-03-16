@@ -244,7 +244,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session: _sess
     const parsed = createAmbassadorSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Validation error', details: parsed.error.flatten().fieldErrors },
+        { error: 'Validation error' },
         { status: 400 }
       );
     }

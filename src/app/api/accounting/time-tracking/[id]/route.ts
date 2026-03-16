@@ -99,7 +99,7 @@ export const PUT = withAdminGuard(async (request: NextRequest) => {
 
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Donnees invalides', details: parsed.error.errors },
+        { error: 'Donnees invalides' },
         { status: 400 }
       );
     }

@@ -139,7 +139,7 @@ export const PUT = withAdminGuard(async (request, { params }) => {
     const parsed = updatePayrollRunSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Donnees invalides', details: parsed.error.errors },
+        { error: 'Donnees invalides' },
         { status: 400 }
       );
     }

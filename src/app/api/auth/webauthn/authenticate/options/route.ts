@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     const parsed = webauthnAuthOptionsSchema.safeParse(rawBody);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid request body', details: parsed.error.flatten().fieldErrors },
+        { error: 'Invalid request body' },
         { status: 400 }
       );
     }

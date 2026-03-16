@@ -66,7 +66,7 @@ export const PUT = withAdminGuard(async (request: NextRequest, { session }) => {
     const body = await request.json();
     const parsed = teamsConfigSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { enabled, tenantId, clientId, webhookUrl } = parsed.data;
 
@@ -121,7 +121,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     const body = await request.json();
     const parsed = teamsActionSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
 
     if (parsed.data.action === 'test') {

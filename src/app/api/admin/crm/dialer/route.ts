@@ -144,7 +144,7 @@ export const POST = withAdminGuard(
     const parsed = startSessionSchema.safeParse(body);
     if (!parsed.success) {
       return apiError(
-        parsed.error.errors[0]?.message || 'Invalid request body',
+        'Invalid request body',
         'VALIDATION_ERROR',
         { status: 400 }
       );

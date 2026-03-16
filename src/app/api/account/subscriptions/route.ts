@@ -118,7 +118,7 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
     const body = await request.json();
     const parsed = createSubscriptionSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { productId, formatId, quantity, frequency } = parsed.data;
 
@@ -231,7 +231,7 @@ export const PATCH = withUserGuard(async (request: NextRequest, { session }) => 
     const body = await request.json();
     const parsed = updateSubscriptionSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { id, action } = parsed.data;
 

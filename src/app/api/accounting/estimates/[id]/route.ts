@@ -124,7 +124,7 @@ export const PUT = withAdminGuard(async (request: NextRequest, { session, params
     const parsed = updateEstimateSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Données invalides', details: parsed.error.errors },
+        { error: 'Données invalides' },
         { status: 400 }
       );
     }

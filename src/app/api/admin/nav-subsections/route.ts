@@ -31,7 +31,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
     const body = await request.json();
     const parsed = createNavSubSectionSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Validation failed', details: parsed.error.flatten() }, { status: 400 });
+      return NextResponse.json({ error: 'Validation failed' }, { status: 400 });
     }
     const subSection = await prisma.adminNavSubSection.create({ data: parsed.data });
 

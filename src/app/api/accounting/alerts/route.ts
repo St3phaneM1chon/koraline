@@ -300,7 +300,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     const body = await request.json();
     const parsed = createAlertSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { type, severity, title, message, entityType, entityId, link } = parsed.data;
 
@@ -353,7 +353,7 @@ export const PATCH = withAdminGuard(async (request: NextRequest, { session }) =>
     const body = await request.json();
     const parsed = patchAlertSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { alertId, action } = parsed.data;
 

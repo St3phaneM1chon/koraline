@@ -123,7 +123,7 @@ export const POST = withAdminGuard(async (request, _ctx) => {
     const body = await request.json();
     const parsed = createBankAccountSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { name, accountNumber, institution, type, currency, chartAccountId, apiCredentials } = parsed.data;
 
@@ -181,7 +181,7 @@ export const PUT = withAdminGuard(async (request, _ctx) => {
     const body = await request.json();
     const parsed = updateBankAccountSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { id, name, currentBalance, isActive, accountNumber, apiCredentials } = parsed.data;
 

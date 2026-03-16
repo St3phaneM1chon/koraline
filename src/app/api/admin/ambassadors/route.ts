@@ -84,7 +84,7 @@ export const POST = withAdminGuard(async (request) => {
 
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Validation failed', details: parsed.error.flatten().fieldErrors },
+        { error: 'Validation failed' },
         { status: 400 }
       );
     }

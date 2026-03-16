@@ -104,7 +104,7 @@ export async function POST(request: Request, context: RouteContext) {
 
     const parsed = submitConsentSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
 
     const consent = await prisma.siteConsent.findUnique({

@@ -67,7 +67,7 @@ export const PATCH = withAdminGuard(async (
       return apiError(
         'Invalid mode',
         ErrorCode.VALIDATION_ERROR,
-        { request, details: parsed.error.flatten(), status: 400 }
+        { request, status: 400 }
       );
     }
 

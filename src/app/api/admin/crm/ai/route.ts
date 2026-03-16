@@ -75,7 +75,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     case 'score_lead': {
       const parsed = scoreLeadSchema.safeParse(rawBody);
       if (!parsed.success) {
-        return apiError(parsed.error.errors[0]?.message || 'Invalid data', 'VALIDATION_ERROR', { status: 400, request });
+        return apiError('Invalid data', 'VALIDATION_ERROR', { status: 400, request });
       }
       const result = await aiLeadScore(parsed.data.leadId);
       return apiSuccess(result, { request });
@@ -84,7 +84,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     case 'score_deal': {
       const parsed = scoreDealSchema.safeParse(rawBody);
       if (!parsed.success) {
-        return apiError(parsed.error.errors[0]?.message || 'Invalid data', 'VALIDATION_ERROR', { status: 400, request });
+        return apiError('Invalid data', 'VALIDATION_ERROR', { status: 400, request });
       }
       const result = await aiDealScore(parsed.data.dealId);
       return apiSuccess(result, { request });
@@ -93,7 +93,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     case 'email_suggestion': {
       const parsed = emailSuggestionSchema.safeParse(rawBody);
       if (!parsed.success) {
-        return apiError(parsed.error.errors[0]?.message || 'Invalid data', 'VALIDATION_ERROR', { status: 400, request });
+        return apiError('Invalid data', 'VALIDATION_ERROR', { status: 400, request });
       }
       const result = await generateEmailSuggestion({
         leadId: parsed.data.leadId,
@@ -107,7 +107,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     case 'call_summary': {
       const parsed = callSummarySchema.safeParse(rawBody);
       if (!parsed.success) {
-        return apiError(parsed.error.errors[0]?.message || 'Invalid data', 'VALIDATION_ERROR', { status: 400, request });
+        return apiError('Invalid data', 'VALIDATION_ERROR', { status: 400, request });
       }
       const result = await generateCallSummary(parsed.data.transcriptionText);
       return apiSuccess(result, { request });

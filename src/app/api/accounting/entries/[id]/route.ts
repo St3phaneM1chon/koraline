@@ -71,7 +71,7 @@ export const PUT = withAdminGuard(async (
 
   if (!parsed.success) {
     return NextResponse.json(
-      { error: 'Validation error', details: parsed.error.flatten() },
+      { error: 'Validation error' },
       { status: 400 }
     );
   }

@@ -216,7 +216,7 @@ export async function POST(request: NextRequest) {
     const parsed = consentSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid consent preferences. Each category must be a boolean.', details: parsed.error.errors },
+        { error: 'Invalid consent preferences. Each category must be a boolean.' },
         { status: 400 }
       );
     }

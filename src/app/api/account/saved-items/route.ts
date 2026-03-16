@@ -146,7 +146,7 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
     const parsed = savedItemSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid data', details: parsed.error.errors },
+        { error: 'Invalid data' },
         { status: 400 }
       );
     }
@@ -225,7 +225,7 @@ export const DELETE = withUserGuard(async (request: NextRequest, { session }) =>
     const parsed = savedItemSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid data', details: parsed.error.errors },
+        { error: 'Invalid data' },
         { status: 400 }
       );
     }

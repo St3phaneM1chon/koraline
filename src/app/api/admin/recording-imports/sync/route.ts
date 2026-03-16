@@ -23,7 +23,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     const parsed = syncSchema.safeParse(rawBody);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Validation failed', details: parsed.error.flatten() },
+        { error: 'Validation failed' },
         { status: 400 }
       );
     }

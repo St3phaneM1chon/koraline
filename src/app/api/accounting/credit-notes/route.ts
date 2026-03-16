@@ -149,7 +149,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
     const body = await request.json();
     const parsed = createCreditNoteSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Données invalides', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Données invalides' }, { status: 400 });
     }
     const { invoiceId, reason, amount, items } = parsed.data;
 
@@ -310,7 +310,7 @@ export const PUT = withAdminGuard(async (request, { session }) => {
     const body = await request.json();
     const parsed = updateCreditNoteSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Donnees invalides', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Donnees invalides' }, { status: 400 });
     }
     const { id, status: newStatus, reason, customerName, customerEmail, items, amount } = parsed.data;
 

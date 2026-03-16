@@ -80,7 +80,7 @@ export const POST = withAdminGuard(async (
 
     if (!parsed.success) {
       return apiError('Invalid dashboard config', ErrorCode.VALIDATION_ERROR, {
-        request, status: 400, details: parsed.error.flatten(),
+        request, status: 400,
       });
     }
 

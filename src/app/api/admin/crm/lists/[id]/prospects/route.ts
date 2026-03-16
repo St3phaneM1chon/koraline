@@ -86,7 +86,6 @@ export const POST = withAdminGuard(async (request: NextRequest, context: { param
   if (!parsed.success) {
     return apiError('Invalid input', 'VALIDATION_ERROR', {
       status: 400,
-      details: parsed.error.flatten(),
       request,
     });
   }
@@ -191,7 +190,7 @@ export const DELETE = withAdminGuard(async (request: NextRequest, context: { par
   const parsed = deleteProspectsSchema.safeParse(body);
 
   if (!parsed.success) {
-    return apiError('Invalid input', 'VALIDATION_ERROR', { status: 400, details: parsed.error.flatten(), request });
+    return apiError('Invalid input', 'VALIDATION_ERROR', { status: 400, request });
   }
 
   const result = await prisma.prospect.deleteMany({

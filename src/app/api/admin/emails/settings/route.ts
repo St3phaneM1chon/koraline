@@ -71,7 +71,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }: { s
     const body = await request.json();
     const parsed = testEmailSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const testEmail = parsed.data.testEmail || session.user.email;
 
@@ -167,7 +167,7 @@ export const PUT = withAdminGuard(async (request: NextRequest, { session }: { se
     const body = await request.json();
     const parsed = updateSettingsSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
 
     const entries = Object.entries(parsed.data).filter(

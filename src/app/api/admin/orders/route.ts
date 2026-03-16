@@ -31,7 +31,7 @@ import { logger } from '@/lib/logger';
 // Shared validation error helper
 function validationError(parsed: { error: { flatten: () => unknown } }) {
   return NextResponse.json(
-    { error: 'Validation error', details: parsed.error.flatten() },
+    { error: 'Validation error' },
     { status: 400 }
   );
 }

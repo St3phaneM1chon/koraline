@@ -48,7 +48,7 @@ export const PATCH = withAdminGuard(async (request, { session, routeContext }) =
 
     const parsed = patchConsentTemplateSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
 
     const existing = await prisma.consentFormTemplate.findUnique({ where: { id }, select: { id: true } });

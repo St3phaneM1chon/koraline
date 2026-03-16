@@ -174,7 +174,7 @@ export async function POST(request: NextRequest) {
 
     const parsed = shippingPayloadSchema.safeParse(rawBody);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid input', details: parsed.error.flatten() }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
     }
 
     // Support single update or batch of updates

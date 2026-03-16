@@ -43,7 +43,7 @@ export const POST = withAdminGuard(async (
 
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid input', details: parsed.error.flatten() },
+        { error: 'Invalid input' },
         { status: 400 }
       );
     }

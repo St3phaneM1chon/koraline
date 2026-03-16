@@ -125,7 +125,7 @@ export const PUT = withAdminGuard(async (request) => {
     const body = await request.json();
     const parsed = updateReportSchema.safeParse(body);
     if (!parsed.success) {
-      return apiError('Invalid report data', 400, parsed.error.errors);
+      return apiError('Invalid report data', 400);
     }
 
     const { name, description, type, config, isTemplate, isPublic, schedule, recipients } = parsed.data;

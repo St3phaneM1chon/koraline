@@ -104,7 +104,7 @@ export const PUT = withAdminGuard(async (request, { session, params }) => {
     const parsed = updatePromoCodeSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Validation error', details: parsed.error.flatten() },
+        { error: 'Validation error' },
         { status: 400 }
       );
     }
@@ -207,7 +207,7 @@ export const PATCH = withAdminGuard(async (request, { session, params }) => {
     const parsed = patchPromoCodeSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Validation error', details: parsed.error.flatten() },
+        { error: 'Validation error' },
         { status: 400 }
       );
     }

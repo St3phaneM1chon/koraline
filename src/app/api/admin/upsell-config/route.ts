@@ -78,7 +78,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
     const parsed = upsellConfigSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid data', details: parsed.error.errors },
+        { error: 'Invalid data' },
         { status: 400 }
       );
     }
@@ -169,7 +169,7 @@ export const PUT = withAdminGuard(async (request, { session }) => {
     const parsed = upsellConfigUpdateSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid data', details: parsed.error.errors },
+        { error: 'Invalid data' },
         { status: 400 }
       );
     }

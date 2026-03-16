@@ -59,7 +59,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     const body = await request.json();
     const parsed = createSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.flatten() }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
 
     const { platform, content, imageUrl, scheduledAt, status } = parsed.data;

@@ -115,7 +115,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { params }) => {
 
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Donnees invalides', details: parsed.error.errors },
+        { error: 'Donnees invalides' },
         { status: 400 }
       );
     }
@@ -176,7 +176,7 @@ export const PUT = withAdminGuard(async (request: NextRequest, { params }) => {
     const parsed = updateMilestoneSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Donnees invalides', details: parsed.error.errors },
+        { error: 'Donnees invalides' },
         { status: 400 }
       );
     }

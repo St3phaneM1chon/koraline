@@ -118,7 +118,6 @@ export const PATCH = withAdminGuard(async (
     if (!parsed.success) {
       return apiError('Invalid input', ErrorCode.VALIDATION_ERROR, {
         request,
-        details: parsed.error.flatten(),
       });
     }
 

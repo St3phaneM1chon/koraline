@@ -145,7 +145,7 @@ export const PUT = withAdminGuard(async (request, { session, params }) => {
     const parsed = updatePurchaseOrderSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Donnees invalides', details: parsed.error.flatten() },
+        { error: 'Donnees invalides' },
         { status: 400 }
       );
     }

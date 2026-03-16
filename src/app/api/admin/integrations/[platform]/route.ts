@@ -159,7 +159,7 @@ export const PUT = withAdminGuard(async (request: NextRequest, { session }) => {
   const body = await request.json();
   const parsed = integrationConfigSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+    return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
   }
   const allowedFields = PLATFORM_FIELDS[platform as Platform] || [];
   const prefix = `integration.${platform}.`;
@@ -224,7 +224,7 @@ export const POST = withAdminGuard(async (request: NextRequest, _ctx) => {
   const body = await request.json();
   const parsed = integrationActionSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+    return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
   }
   const { action } = parsed.data;
 

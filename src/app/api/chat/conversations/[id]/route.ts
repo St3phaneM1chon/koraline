@@ -146,7 +146,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     const parsed = updateConversationSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Validation failed', details: parsed.error.flatten() },
+        { error: 'Validation failed' },
         { status: 400 }
       );
     }

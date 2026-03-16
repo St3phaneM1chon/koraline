@@ -33,7 +33,7 @@ export const PATCH = withAdminGuard(async (request: NextRequest, { session, para
     const parsed = notesSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Validation error', details: parsed.error.flatten() },
+        { error: 'Validation error' },
         { status: 400 }
       );
     }

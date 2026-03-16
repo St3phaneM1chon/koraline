@@ -29,7 +29,7 @@ export const POST = withApiHandler(async (ctx: ApiContext) => {
   const body = await ctx.request.json();
   const parsed = changePasswordSchema.safeParse(body);
   if (!parsed.success) {
-    return apiError('Invalid data', 400, parsed.error.errors);
+    return apiError('Invalid data', 400);
   }
   const { currentPassword, newPassword } = parsed.data;
 

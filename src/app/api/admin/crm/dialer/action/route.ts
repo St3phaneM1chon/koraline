@@ -74,7 +74,7 @@ export const POST = withAdminGuard(
     const parsed = actionSchema.safeParse(body);
     if (!parsed.success) {
       return apiError(
-        parsed.error.errors[0]?.message || 'Invalid action',
+        'Invalid action',
         'VALIDATION_ERROR',
         { status: 400 }
       );

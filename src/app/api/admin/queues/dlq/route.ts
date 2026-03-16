@@ -143,7 +143,6 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
       return NextResponse.json(
         {
           error: 'Invalid request body',
-          details: parsed.error.flatten().fieldErrors,
           expected: [
             '{ action: "retry", dlqJobId: "job-id" }',
             '{ action: "retryAll", originalQueue: "queue-name" }',

@@ -143,7 +143,7 @@ export const POST = withAdminGuard(async (request) => {
   const parsed = complianceActionSchema.safeParse(rawBody);
   if (!parsed.success) {
     return apiError(
-      parsed.error.errors[0]?.message || 'Invalid compliance data',
+      'Invalid compliance data',
       'VALIDATION_ERROR',
       { status: 400 }
     );

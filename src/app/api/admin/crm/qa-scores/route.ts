@@ -98,7 +98,6 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
   if (!parsed.success) {
     return apiError('Invalid input', ErrorCode.VALIDATION_ERROR, {
       status: 400,
-      details: parsed.error.flatten(),
       request,
     });
   }

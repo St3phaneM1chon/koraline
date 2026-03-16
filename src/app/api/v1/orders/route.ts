@@ -140,7 +140,7 @@ export const POST = withApiAuth(async (request: NextRequest) => {
   const parsed = createOrderSchema.safeParse(rawBody);
   if (!parsed.success) {
     return jsonError(
-      parsed.error.errors[0]?.message || 'Invalid order data',
+      'Invalid order data',
       400
     );
   }

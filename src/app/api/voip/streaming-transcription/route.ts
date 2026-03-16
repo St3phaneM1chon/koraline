@@ -170,7 +170,7 @@ export async function POST(request: NextRequest) {
     const raw = await request.json();
     const parsed = transcriptionEventSchema.safeParse(raw);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid input', details: parsed.error.flatten() }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
     }
 
     const { callId, text, type, speaker, confidence } = parsed.data;

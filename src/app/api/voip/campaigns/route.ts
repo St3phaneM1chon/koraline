@@ -70,7 +70,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session: _sess
     }).safeParse(raw);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid input', details: parsed.error.flatten() },
+        { error: 'Invalid input' },
         { status: 400 }
       );
     }

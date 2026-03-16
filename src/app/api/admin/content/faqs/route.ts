@@ -65,7 +65,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
     const body = await request.json();
     const parsed = createFaqSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { question, answer, category, sortOrder, isPublished } = parsed.data;
 
@@ -121,7 +121,7 @@ export const PUT = withAdminGuard(async (request: NextRequest, { session }) => {
     const body = await request.json();
     const parsed = updateFaqSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { id, question, answer, category, sortOrder, isPublished } = parsed.data;
 

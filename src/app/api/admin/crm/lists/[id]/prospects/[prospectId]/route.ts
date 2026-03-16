@@ -60,7 +60,6 @@ export const PUT = withAdminGuard(async (request: NextRequest, context: { params
   if (!parsed.success) {
     return apiError('Invalid input', 'VALIDATION_ERROR', {
       status: 400,
-      details: parsed.error.flatten(),
       request,
     });
   }

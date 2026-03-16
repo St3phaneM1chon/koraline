@@ -112,7 +112,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     const body = await request.json();
     const parsed = updateCategorySchema.safeParse(body);
     if (!parsed.success) {
-      return apiError('Invalid data', ErrorCode.VALIDATION_ERROR, { details: parsed.error.errors, request });
+      return apiError('Invalid data', ErrorCode.VALIDATION_ERROR, { request });
     }
 
     // Whitelist: only allow safe fields to be updated (H11 - mass assignment fix)

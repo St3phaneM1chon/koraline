@@ -33,7 +33,7 @@ export const PATCH = withAdminGuard(async (request, { session, params }) => {
     const body = await request.json();
     const parsed = patchNavSectionSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Validation failed', details: parsed.error.flatten() }, { status: 400 });
+      return NextResponse.json({ error: 'Validation failed' }, { status: 400 });
     }
     const section = await prisma.adminNavSection.update({
       where: { id: params?.id },

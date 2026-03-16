@@ -63,7 +63,7 @@ export const POST = withAdminGuard(async (
   const parsed = purchaseOrderSchema.safeParse(body);
 
   if (!parsed.success) {
-    return NextResponse.json({ error: 'Validation failed', details: parsed.error.flatten() }, { status: 400 });
+    return NextResponse.json({ error: 'Validation failed' }, { status: 400 });
   }
 
   const id = `po_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`;

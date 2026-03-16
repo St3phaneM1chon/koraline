@@ -133,7 +133,7 @@ export const POST = withAdminGuard(async (request) => {
     const body = await request.json();
     const parsed = createBudgetSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { name, year, lines } = parsed.data;
 
@@ -238,7 +238,7 @@ export const PUT = withAdminGuard(async (request, { session }) => {
     const body = await request.json();
     const parsed = updateBudgetLineSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { lineId, ...months } = parsed.data;
 

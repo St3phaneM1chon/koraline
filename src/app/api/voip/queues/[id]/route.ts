@@ -119,7 +119,7 @@ export async function PUT(
     const raw = await request.json();
     const parsed = queueUpdateSchema.safeParse(raw);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid input', details: parsed.error.flatten() }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
     }
 
     const {

@@ -255,7 +255,7 @@ export const PATCH = withAdminGuard(async (request, { session, params }) => {
     const parsed = adminUpdateUserSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Validation error', details: parsed.error.flatten() },
+        { error: 'Validation error' },
         { status: 400 }
       );
     }

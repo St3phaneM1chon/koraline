@@ -111,7 +111,7 @@ export const POST = withAdminGuard(async (
       return apiError(
         'Invalid callback data',
         ErrorCode.VALIDATION_ERROR,
-        { request, details: parsed.error.flatten(), status: 400 }
+        { request, status: 400 }
       );
     }
 

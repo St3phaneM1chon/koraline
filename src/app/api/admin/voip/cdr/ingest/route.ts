@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
 
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid CDR payload', details: parsed.error.flatten() },
+        { error: 'Invalid CDR payload' },
         { status: 400 }
       );
     }

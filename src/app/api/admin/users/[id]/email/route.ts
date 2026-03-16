@@ -32,7 +32,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { params }) => {
     const parsed = sendEmailSchema.safeParse(rawBody);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid data', details: parsed.error.errors },
+        { error: 'Invalid data' },
         { status: 400 }
       );
     }

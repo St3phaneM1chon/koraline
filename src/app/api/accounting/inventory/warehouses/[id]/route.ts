@@ -56,7 +56,7 @@ export const PUT = withAdminGuard(async (request, { params }) => {
 
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid data', details: parsed.error.flatten().fieldErrors },
+        { error: 'Invalid data' },
         { status: 400 }
       );
     }

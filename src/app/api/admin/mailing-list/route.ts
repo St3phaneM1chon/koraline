@@ -95,7 +95,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
     const parsed = addSubscriberSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid data', details: parsed.error.errors },
+        { error: 'Invalid data' },
         { status: 400 }
       );
     }
@@ -161,7 +161,7 @@ export const PATCH = withAdminGuard(async (request, { session }) => {
     const parsed = patchSubscriberSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid data', details: parsed.error.errors },
+        { error: 'Invalid data' },
         { status: 400 }
       );
     }

@@ -249,7 +249,7 @@ export const DELETE = withAdminGuard(async (request: NextRequest, { session }) =
     const parsed = archiveEmailLogsSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid data', details: parsed.error.errors },
+        { error: 'Invalid data' },
         { status: 400 }
       );
     }
@@ -293,7 +293,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
     const parsed = retryEmailSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid data', details: parsed.error.errors },
+        { error: 'Invalid data' },
         { status: 400 }
       );
     }

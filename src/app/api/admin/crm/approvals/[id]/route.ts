@@ -75,7 +75,6 @@ export const PUT = withAdminGuard(async (
     if (!parsed.success) {
       return apiError('Invalid input. Provide { action: "approve" | "reject", note?: string }', ErrorCode.VALIDATION_ERROR, {
         request,
-        details: parsed.error.flatten(),
       });
     }
 

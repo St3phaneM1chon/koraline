@@ -64,7 +64,7 @@ export const POST = withAdminGuard(async (request, { session, routeContext }) =>
 
     const parsed = createPlacementSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
 
     const video = await prisma.video.findUnique({ where: { id }, select: { id: true } });
@@ -118,7 +118,7 @@ export const DELETE = withAdminGuard(async (request, { session, routeContext }) 
 
     const parsed = deletePlacementSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
 
     const placement = await prisma.videoPlacement.findFirst({

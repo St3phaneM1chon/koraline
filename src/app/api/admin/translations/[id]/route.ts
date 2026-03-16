@@ -121,7 +121,7 @@ export const PUT = withAdminGuard(async (request: NextRequest, { session, params
     const body = await request.json();
     const parsed = translationUpdateSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { fields, approve } = parsed.data;
 

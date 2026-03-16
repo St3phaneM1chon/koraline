@@ -205,7 +205,7 @@ async function handleOrderUpdate(
   const parsed = updateOrderStatusSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
-      { error: 'Validation error', details: parsed.error.flatten() },
+      { error: 'Validation error' },
       { status: 400 }
     );
   }
@@ -430,7 +430,7 @@ async function handleRefund(
   const parsed = createRefundSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
-      { error: 'Validation error', details: parsed.error.flatten() },
+      { error: 'Validation error' },
       { status: 400 }
     );
   }
@@ -858,7 +858,7 @@ async function handleReship(
   const parsed = reshipSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
-      { error: 'Validation error', details: parsed.error.flatten() },
+      { error: 'Validation error' },
       { status: 400 }
     );
   }

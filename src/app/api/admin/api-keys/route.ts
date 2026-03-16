@@ -111,7 +111,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
   const parsed = createApiKeySchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
-      { success: false, error: 'Validation error', details: parsed.error.flatten() },
+      { success: false, error: 'Validation error' },
       { status: 400 }
     );
   }

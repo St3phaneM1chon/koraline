@@ -100,7 +100,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
   const parsed = permissionPostSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
-      { error: 'Validation error', details: parsed.error.flatten() },
+      { error: 'Validation error' },
       { status: 400 }
     );
   }

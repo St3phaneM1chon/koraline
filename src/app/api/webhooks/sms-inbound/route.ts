@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
     const rawParsed = JSON.parse(rawBody);
     const parsed = smsInboundSchema.safeParse(rawParsed);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid input', details: parsed.error.flatten() }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
     }
 
     const body = parsed.data;

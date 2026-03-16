@@ -135,7 +135,6 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
     if (!parsed.success) {
       return apiError('Invalid input', ErrorCode.VALIDATION_ERROR, {
         status: 400,
-        details: parsed.error.flatten(),
         request,
       });
     }
@@ -262,7 +261,6 @@ export const PATCH = withAdminGuard(async (request: NextRequest, { session, para
     if (!parsed.success) {
       return apiError('Invalid input', ErrorCode.VALIDATION_ERROR, {
         status: 400,
-        details: parsed.error.flatten(),
         request,
       });
     }

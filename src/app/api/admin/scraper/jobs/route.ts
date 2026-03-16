@@ -60,7 +60,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
 
   const parsed = createJobSchema.safeParse(body);
   if (!parsed.success) {
-    return apiError('Invalid input', 'VALIDATION_ERROR', { status: 400, details: parsed.error.flatten(), request });
+    return apiError('Invalid input', 'VALIDATION_ERROR', { status: 400, request });
   }
 
   try {

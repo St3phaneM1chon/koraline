@@ -82,7 +82,7 @@ export const POST = withAdminGuard(async (request) => {
     const body = await request.json();
     const parsed = createCurrencySchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { code, name, symbol, exchangeRate } = parsed.data;
 
@@ -130,7 +130,7 @@ export const PUT = withAdminGuard(async (request) => {
     const body = await request.json();
     const parsed = updateCurrencySchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { id, exchangeRate, isActive } = parsed.data;
 

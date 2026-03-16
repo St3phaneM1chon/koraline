@@ -44,7 +44,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
   const parsed = createFormSchema.safeParse(rawBody);
   if (!parsed.success) {
     return apiError(
-      parsed.error.errors[0]?.message || 'Invalid form data',
+      'Invalid form data',
       'VALIDATION_ERROR',
       { status: 400 }
     );

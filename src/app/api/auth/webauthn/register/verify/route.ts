@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
       const parsed = webAuthnRegisterSchema.safeParse(rawBody);
       if (!parsed.success) {
         return NextResponse.json(
-          { error: 'Invalid credential data', details: parsed.error.errors },
+          { error: 'Invalid credential data' },
           { status: 400 }
         );
       }

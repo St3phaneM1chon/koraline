@@ -39,7 +39,7 @@ export const POST = withAdminGuard(async (request, { params: paramsPromise }) =>
   const body = await request.json();
   const parsed = addDealProductSchema.safeParse(body);
   if (!parsed.success) {
-    return apiError('Invalid data', 'VALIDATION_ERROR', { status: 400, details: parsed.error.errors });
+    return apiError('Invalid data', 'VALIDATION_ERROR', { status: 400 });
   }
   const { productId, quantity, unitPrice, discount, notes } = parsed.data;
 

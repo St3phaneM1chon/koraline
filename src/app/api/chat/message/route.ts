@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
       const parsed = chatMessageSchema.safeParse(rawBody);
       if (!parsed.success) {
         return NextResponse.json(
-          { error: 'Invalid message data', details: parsed.error.errors },
+          { error: 'Invalid message data' },
           { status: 400 }
         );
       }

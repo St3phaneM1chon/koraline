@@ -92,7 +92,7 @@ export const PUT = withAdminGuard(async (request: NextRequest, { session }) => {
 
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid input', details: parsed.error.flatten() },
+        { error: 'Invalid input' },
         { status: 400 }
       );
     }

@@ -135,7 +135,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     const parsed = sendMessageSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Validation failed', details: parsed.error.flatten() },
+        { error: 'Validation failed' },
         { status: 400 }
       );
     }

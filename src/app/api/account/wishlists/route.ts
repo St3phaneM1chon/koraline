@@ -79,7 +79,7 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
     const body = await request.json();
     const parsed = createWishlistSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { name } = parsed.data;
 
@@ -124,7 +124,7 @@ export const PATCH = withUserGuard(async (request: NextRequest, { session }) => 
     const body = await request.json();
     const parsed = renameWishlistSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { id, name } = parsed.data;
 

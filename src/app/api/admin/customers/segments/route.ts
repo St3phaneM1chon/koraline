@@ -281,7 +281,7 @@ export const GET = withAdminGuard(async (request: NextRequest) => {
     const parsed = segmentCriteriaSchema.safeParse(raw);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid query parameters', details: parsed.error.flatten() },
+        { error: 'Invalid query parameters' },
         { status: 400 }
       );
     }
@@ -327,7 +327,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
 
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid request body', details: parsed.error.flatten() },
+        { error: 'Invalid request body' },
         { status: 400 }
       );
     }

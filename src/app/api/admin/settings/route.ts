@@ -190,7 +190,7 @@ export const PUT = withAdminGuard(async (request, { session }) => {
     // FAILLE-026 FIX: Validate PUT body with Zod
     const parsed = settingsPutSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Validation error', details: parsed.error.flatten() }, { status: 400 });
+      return NextResponse.json({ error: 'Validation error' }, { status: 400 });
     }
     const { siteSettings: siteSettingsData, settings: keyValueSettings } = parsed.data;
 
@@ -343,7 +343,7 @@ export const PATCH = withAdminGuard(async (request, { session }) => {
     const parsed = settingsPatchSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid data', details: parsed.error.errors },
+        { error: 'Invalid data' },
         { status: 400 }
       );
     }

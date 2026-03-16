@@ -68,7 +68,7 @@ export const PUT = withAdminGuard(async (request) => {
   const parsed = voicemailActionSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
-      { error: 'Validation error', details: parsed.error.flatten() },
+      { error: 'Validation error' },
       { status: 400 }
     );
   }

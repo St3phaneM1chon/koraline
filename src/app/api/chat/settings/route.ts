@@ -138,7 +138,7 @@ export async function PUT(request: NextRequest) {
     const parsed = chatSettingsSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid settings data', details: parsed.error.errors },
+        { error: 'Invalid settings data' },
         { status: 400 }
       );
     }

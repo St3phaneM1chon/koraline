@@ -54,7 +54,7 @@ export const PUT = withAdminGuard(
       const parsed = replaceTagsSchema.safeParse(body);
       if (!parsed.success) {
         return NextResponse.json(
-          { error: 'Invalid data', details: parsed.error.errors },
+          { error: 'Invalid data' },
           { status: 400 }
         );
       }
@@ -106,7 +106,7 @@ export const PATCH = withAdminGuard(
       const parsed = patchTagsSchema.safeParse(body);
       if (!parsed.success) {
         return NextResponse.json(
-          { error: 'Invalid data', details: parsed.error.errors },
+          { error: 'Invalid data' },
           { status: 400 }
         );
       }

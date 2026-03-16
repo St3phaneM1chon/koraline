@@ -40,7 +40,7 @@ export const POST = withAdminGuard(async (request: NextRequest, context: { param
   const parsed = integrateSchema.safeParse(body);
 
   if (!parsed.success) {
-    return apiError('Invalid input', 'VALIDATION_ERROR', { status: 400, details: parsed.error.flatten(), request });
+    return apiError('Invalid input', 'VALIDATION_ERROR', { status: 400, request });
   }
 
   const list = await prisma.prospectList.findUnique({ where: { id: listId } });

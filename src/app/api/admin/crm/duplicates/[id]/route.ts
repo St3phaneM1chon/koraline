@@ -52,7 +52,7 @@ export const POST = withAdminGuard(async (
   const parsed = mergeLeadsSchema.safeParse(rawBody);
   if (!parsed.success) {
     return apiError(
-      parsed.error.errors[0]?.message || 'Invalid merge data',
+      'Invalid merge data',
       'VALIDATION_ERROR',
       { status: 400, request }
     );

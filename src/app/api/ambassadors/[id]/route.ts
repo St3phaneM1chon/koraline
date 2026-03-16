@@ -80,7 +80,7 @@ export const PATCH = withAdminGuard(async (request: NextRequest, { session, para
     const parsed = updateAmbassadorSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Validation error', errorCode: 'VALIDATION_ERROR', details: parsed.error.flatten().fieldErrors },
+        { error: 'Validation error', errorCode: 'VALIDATION_ERROR' },
         { status: 400 }
       );
     }

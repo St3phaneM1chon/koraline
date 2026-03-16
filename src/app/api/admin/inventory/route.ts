@@ -167,7 +167,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
     const parsed = receiveStockSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid data', details: parsed.error.errors },
+        { error: 'Invalid data' },
         { status: 400 }
       );
     }
@@ -219,7 +219,7 @@ export const PUT = withAdminGuard(async (request, { session }) => {
     const parsed = adjustStockSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid data', details: parsed.error.errors },
+        { error: 'Invalid data' },
         { status: 400 }
       );
     }

@@ -27,7 +27,7 @@ export const POST = withAdminGuard(async (request: NextRequest, context: { sessi
   const parsed = runAuditSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
-      { error: 'Validation failed', details: parsed.error.flatten().fieldErrors },
+      { error: 'Validation failed' },
       { status: 400 }
     );
   }

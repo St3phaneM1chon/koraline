@@ -95,7 +95,7 @@ export const PATCH = withAdminGuard(async (request: NextRequest, { session, para
     const body = await request.json();
     const parsed = patchQuestionSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
 
     const existing = await prisma.productQuestion.findUnique({

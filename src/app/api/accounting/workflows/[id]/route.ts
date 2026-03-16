@@ -90,7 +90,6 @@ export const PUT = withAdminGuard(async (request: NextRequest, { params }) => {
     if (!parsed.success) {
       return apiError('Invalid data', 'VALIDATION_ERROR', {
         status: 400,
-        details: parsed.error.flatten().fieldErrors,
         request,
       });
     }

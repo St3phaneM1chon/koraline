@@ -73,7 +73,7 @@ export const POST = withAdminGuard(async (request, { session }) => {
 
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Invalid request', details: parsed.error.errors },
+        { error: 'Invalid request' },
         { status: 400 }
       );
     }
