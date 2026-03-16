@@ -93,7 +93,7 @@ export default function CaseStudiesPage() {
           <h2 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '40px', color: 'var(--gray-500)' }}>
             {t('caseStudies.featured')}
           </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '32px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))', gap: '32px' }}>
             {featuredStudies.map((study) => (
               <Link
                 key={study.id}
