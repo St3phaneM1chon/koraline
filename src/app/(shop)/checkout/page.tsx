@@ -784,8 +784,9 @@ export default function CheckoutPage() {
                         placeholder="(514) 555-0123"
                       />
                     </div>
-                    <label className="flex items-center gap-2">
+                    <label htmlFor="newsletter" className="flex items-center gap-2">
                       <input
+                        id="newsletter"
                         type="checkbox"
                         checked={contactInfo.newsletter}
                         onChange={(e) => setContactInfo({ ...contactInfo, newsletter: e.target.checked })}
@@ -1122,8 +1123,9 @@ export default function CheckoutPage() {
 
                     {/* Save address for logged in users */}
                     {session && (
-                      <label className="flex items-center gap-2 mt-4">
+                      <label htmlFor="save-address" className="flex items-center gap-2 mt-4">
                         <input
+                          id="save-address"
                           type="checkbox"
                           className="w-4 h-4 text-primary-500 rounded"
                           defaultChecked
@@ -1138,8 +1140,9 @@ export default function CheckoutPage() {
                   {/* Billing Address Section */}
                   <div className="mt-8 pt-6 border-t border-gray-200">
                     <h2 className="text-xl font-bold mb-4">{t('checkout.billingAddress')}</h2>
-                    <label className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg cursor-pointer mb-4">
+                    <label htmlFor="billing-same-as-shipping" className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg cursor-pointer mb-4">
                       <input
+                        id="billing-same-as-shipping"
                         type="checkbox"
                         checked={billingSameAsShipping}
                         onChange={(e) => setBillingSameAsShipping(e.target.checked)}
@@ -1504,8 +1507,9 @@ export default function CheckoutPage() {
                   
                   {/* Research Consent Checkbox - LEGAL REQUIREMENT */}
                   <div className={`mt-6 p-4 rounded-lg border ${researchConsentError && !researchConsent ? 'border-red-400 bg-red-50' : 'border-gray-200 bg-gray-50'}`}>
-                    <label className="flex items-start gap-3 cursor-pointer">
+                    <label htmlFor="research-consent" className="flex items-start gap-3 cursor-pointer">
                       <input
+                        id="research-consent"
                         type="checkbox"
                         checked={researchConsent}
                         onChange={(e) => {

@@ -273,6 +273,7 @@ function SettingsContent() {
           <div className="flex border-b border-neutral-200">
             <button
               onClick={() => { setActiveTab('profile'); setMessage(null); }}
+              aria-label={t('account.profile') || 'Profile'}
               className={`flex-1 py-4 px-4 text-sm font-medium transition-colors ${
                 activeTab === 'profile'
                   ? 'text-primary-600 border-b-2 border-primary-500 -mb-px'
@@ -280,7 +281,7 @@ function SettingsContent() {
               }`}
             >
               <div className="flex items-center justify-center gap-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
                 <span className="hidden sm:inline">{t('account.profile') }</span>
@@ -288,6 +289,7 @@ function SettingsContent() {
             </button>
             <button
               onClick={() => { setActiveTab('password'); setMessage(null); }}
+              aria-label={t('account.password') || 'Password'}
               className={`flex-1 py-4 px-4 text-sm font-medium transition-colors ${
                 activeTab === 'password'
                   ? 'text-primary-600 border-b-2 border-primary-500 -mb-px'
@@ -295,7 +297,7 @@ function SettingsContent() {
               }`}
             >
               <div className="flex items-center justify-center gap-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
                 <span className="hidden sm:inline">{t('account.password') }</span>
@@ -303,6 +305,7 @@ function SettingsContent() {
             </button>
             <button
               onClick={() => { setActiveTab('address'); setMessage(null); }}
+              aria-label={t('account.address') || 'Address'}
               className={`flex-1 py-4 px-4 text-sm font-medium transition-colors ${
                 activeTab === 'address'
                   ? 'text-primary-600 border-b-2 border-primary-500 -mb-px'
@@ -310,7 +313,7 @@ function SettingsContent() {
               }`}
             >
               <div className="flex items-center justify-center gap-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
@@ -319,6 +322,7 @@ function SettingsContent() {
             </button>
             <button
               onClick={() => { setActiveTab('security'); setMessage(null); }}
+              aria-label={t('account.mfaSecurity') || 'Security'}
               className={`flex-1 py-4 px-4 text-sm font-medium transition-colors ${
                 activeTab === 'security'
                   ? 'text-primary-600 border-b-2 border-primary-500 -mb-px'
@@ -326,7 +330,7 @@ function SettingsContent() {
               } ${mfaRequired && !session?.user?.mfaEnabled ? 'animate-pulse bg-red-50' : ''}`}
             >
               <div className="flex items-center justify-center gap-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
                 <span className="hidden sm:inline">{t('account.mfaSecurity')}</span>
@@ -710,7 +714,10 @@ function SettingsContent() {
                             {t('account.mfaEnterCode')}
                           </label>
                           <input
+                            id="mfa-verify-code"
                             type="text"
+                            inputMode="numeric"
+                            autoComplete="one-time-code"
                             value={mfaVerifyCode}
                             onChange={(e) => setMfaVerifyCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                             className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-center text-2xl tracking-widest"
