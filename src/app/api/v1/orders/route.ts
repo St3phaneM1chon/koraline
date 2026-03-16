@@ -233,22 +233,27 @@ export const POST = withApiAuth(async (request: NextRequest) => {
     return jsonError('No default currency configured', 500);
   }
 
-  // Generate order number
-  const lastOrder = await prisma.order.findFirst({
-    orderBy: { createdAt: 'desc' },
-    select: { orderNumber: true },
-  });
-  const nextNum = lastOrder
-    ? parseInt(lastOrder.orderNumber.replace(/\D/g, ''), 10) + 1
-    : 10001;
-  const orderNumber = `BP-${String(nextNum).padStart(6, '0')}`;
-
   const shippingCost = body.shippingCost;
   const tax = body.tax;
   const total = add(subtotal, shippingCost, tax);
 
   // Use a transaction to ensure order + items creation is atomic
+  // RACE CONDITION FIX: Generate order number INSIDE transaction with advisory lock
   const order = await prisma.$transaction(async (tx) => {
+    const year = new Date().getFullYear();
+    const prefix = `BP-${year}-`;
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(43)`;
+    const lastRows = await tx.$queryRaw<{ order_number: string }[]>`
+      SELECT "orderNumber" as order_number FROM "Order"
+      WHERE "orderNumber" LIKE ${prefix + '%'}
+      ORDER BY "orderNumber" DESC
+      LIMIT 1
+    `;
+    const lastNum = lastRows.length > 0
+      ? parseInt(lastRows[0].order_number.replace(prefix, ''), 10)
+      : 0;
+    const orderNumber = `${prefix}${String(lastNum + 1).padStart(6, '0')}`;
+
     const created = await tx.order.create({
       data: {
         orderNumber,

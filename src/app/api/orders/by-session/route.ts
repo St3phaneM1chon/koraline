@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
           stripePaymentId: stripeSession.payment_intent as string,
           userId: userSession.user.id,
         },
-        select: { orderNumber: true, status: true, total: true, createdAt: true },
+        select: { id: true, orderNumber: true, status: true, total: true, createdAt: true },
       });
 
       if (!order) {
@@ -61,6 +61,7 @@ export async function GET(request: NextRequest) {
 
       // SEC-17: Return only minimal confirmation data
       return NextResponse.json({
+        orderId: order.id,
         orderNumber: order.orderNumber,
         status: order.status,
         total: Number(order.total),
