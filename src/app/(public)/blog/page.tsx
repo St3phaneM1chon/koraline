@@ -6,6 +6,7 @@
  */
 
 import { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
 import { getStaticLocale, createServerTranslator } from '@/i18n/server';
@@ -260,6 +261,7 @@ export default async function BlogPage() {
             >
               <div
                 style={{
+                  position: 'relative',
                   backgroundColor: 'var(--gray-200)',
                   minHeight: '300px',
                   display: 'flex',
@@ -268,10 +270,12 @@ export default async function BlogPage() {
                 }}
               >
                 {featuredPost.imageUrl ? (
-                  <img
+                  <Image
                     src={featuredPost.imageUrl}
                     alt={featuredPost.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    style={{ objectFit: 'cover' }}
                   />
                 ) : (
                   <span style={{ fontSize: '80px' }} aria-hidden="true">
@@ -379,6 +383,7 @@ export default async function BlogPage() {
               >
                 <div
                   style={{
+                    position: 'relative',
                     backgroundColor: 'var(--gray-200)',
                     height: '180px',
                     display: 'flex',
@@ -387,10 +392,12 @@ export default async function BlogPage() {
                   }}
                 >
                   {post.imageUrl ? (
-                    <img
+                    <Image
                       src={post.imageUrl}
                       alt={post.title}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      style={{ objectFit: 'cover' }}
                     />
                   ) : (
                     <span style={{ fontSize: '48px' }} aria-hidden="true">

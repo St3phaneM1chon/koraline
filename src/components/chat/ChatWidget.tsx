@@ -12,6 +12,7 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import Image from 'next/image';
 import { useI18n } from '@/i18n/client';
 import { toast } from 'sonner';
 import {
@@ -507,8 +508,7 @@ export default function ChatWidget() {
                   </button>
                 </div>
                 <div className="flex items-center justify-center gap-1.5 mt-2">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/images/suite-koraline.png" alt="Suite Koraline" className="h-4 w-auto" />
+                  <Image src="/images/suite-koraline.png" alt="Suite Koraline" width={54} height={16} className="h-4 w-auto" />
                 </div>
               </div>
             </>

@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 interface Testimonial {
   id: string;
@@ -124,10 +125,12 @@ export default function TestimonialsPage() {
                       }}
                     >
                       {testimonial.imageUrl ? (
-                        <img
+                        <Image
                           src={testimonial.imageUrl}
                           alt={testimonial.name}
-                          style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover' }}
+                          width={48}
+                          height={48}
+                          style={{ borderRadius: '50%', objectFit: 'cover' }}
                         />
                       ) : (
                         <span>&#128100;</span>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { useI18n } from '@/i18n/client';
 
 interface ProductVideoProps {
@@ -80,10 +81,12 @@ export default function ProductVideo({ videoUrl }: ProductVideoProps) {
           aria-label={t('shop.aria.loadVideoPlayer')}
         >
           {thumbnailUrl ? (
-            <img
+            <Image
               src={thumbnailUrl}
               alt={t('video.thumbnail')}
-              className="w-full h-full object-cover"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
             />
           ) : (
             <div className="w-full h-full bg-neutral-800 flex items-center justify-center">

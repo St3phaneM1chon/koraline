@@ -7,6 +7,7 @@
 
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import DOMPurify from 'isomorphic-dompurify';
 import { prisma } from '@/lib/db';
@@ -307,16 +308,16 @@ export default async function BlogPostPage({ params }: PageProps) {
       {/* Featured image */}
       {post.imageUrl && (
         <div style={{ maxWidth: '900px', margin: '-32px auto 0', padding: '0 24px' }}>
-          <img
-            src={post.imageUrl}
-            alt={title}
-            style={{
-              width: '100%',
-              borderRadius: '16px',
-              objectFit: 'cover',
-              maxHeight: '400px',
-            }}
-          />
+          <div style={{ position: 'relative', width: '100%', height: '400px', borderRadius: '16px', overflow: 'hidden' }}>
+            <Image
+              src={post.imageUrl}
+              alt={title}
+              fill
+              sizes="(max-width: 900px) 100vw, 900px"
+              style={{ objectFit: 'cover' }}
+              priority
+            />
+          </div>
         </div>
       )}
 

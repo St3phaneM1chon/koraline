@@ -3,7 +3,13 @@
  * Generates professional PDF documents for consent records using pdf-lib.
  */
 
-import { PDFDocument, StandardFonts, rgb, PDFPage, PDFFont } from 'pdf-lib';
+import type { PDFDocument, PDFPage, PDFFont, RGB } from 'pdf-lib';
+
+// Lazy-load pdf-lib (~200KB) only when actually generating a PDF
+async function getPdfLib() {
+  const { PDFDocument, StandardFonts, rgb } = await import('pdf-lib');
+  return { PDFDocument, StandardFonts, rgb };
+}
 
 // ---------------------------------------------------------------------------
 // Types
@@ -53,12 +59,13 @@ const LINE_HEIGHT_LEGAL = 10;
 const SECTION_GAP = 24;
 const SUBSECTION_GAP = 6;
 
-const COLOR_BLACK = rgb(0, 0, 0);
-const COLOR_DARK = rgb(0.12, 0.12, 0.12);
-const COLOR_GRAY = rgb(0.4, 0.4, 0.4);
-const COLOR_LIGHT_GRAY = rgb(0.7, 0.7, 0.7);
-const COLOR_ORANGE = rgb(0.918, 0.345, 0.047); // #EA580C
-const COLOR_SEPARATOR = rgb(0.85, 0.85, 0.85);
+// Colors are initialized lazily alongside pdf-lib
+let COLOR_BLACK: RGB;
+let COLOR_DARK: RGB;
+let COLOR_GRAY: RGB;
+let COLOR_LIGHT_GRAY: RGB;
+let COLOR_ORANGE: RGB;
+let COLOR_SEPARATOR: RGB;
 
 const COMPANY_NAME = 'BioCycle Peptides';
 
@@ -173,7 +180,7 @@ class PdfCursor {
     options: {
       font?: PDFFont;
       size?: number;
-      color?: ReturnType<typeof rgb>;
+      color?: RGB;
       x?: number;
       lineHeight?: number;
       maxWidth?: number;
@@ -299,6 +306,15 @@ class PdfCursor {
 export async function generateConsentPdf(
   data: ConsentPdfData,
 ): Promise<Uint8Array> {
+  const { PDFDocument, StandardFonts, rgb } = await getPdfLib();
+  // Initialize colors on first use
+  COLOR_BLACK = rgb(0, 0, 0);
+  COLOR_DARK = rgb(0.12, 0.12, 0.12);
+  COLOR_GRAY = rgb(0.4, 0.4, 0.4);
+  COLOR_LIGHT_GRAY = rgb(0.7, 0.7, 0.7);
+  COLOR_ORANGE = rgb(0.918, 0.345, 0.047); // #EA580C
+  COLOR_SEPARATOR = rgb(0.85, 0.85, 0.85);
+
   const doc = await PDFDocument.create();
   const fontRegular = await doc.embedFont(StandardFonts.Helvetica);
   const fontBold = await doc.embedFont(StandardFonts.HelveticaBold);
