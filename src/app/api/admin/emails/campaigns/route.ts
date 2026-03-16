@@ -15,6 +15,7 @@ import { rateLimitMiddleware } from '@/lib/rate-limiter';
 import { validateCsrf } from '@/lib/csrf-middleware';
 import { safeParseJson } from '@/lib/email/utils';
 import { logger } from '@/lib/logger';
+import DOMPurify from 'isomorphic-dompurify';
 
 const createCampaignSchema = z.object({
   name: z.string().min(1).max(200).optional(),
@@ -143,11 +144,22 @@ export const POST = withAdminGuard(async (request, { session }) => {
       return NextResponse.json({ error: 'Name, subject, and htmlContent are required' }, { status: 400 });
     }
 
+    // SECURITY: Sanitize HTML to prevent stored XSS in campaign previews
+    const sanitizedHtml = DOMPurify.sanitize(htmlContent, {
+      ALLOWED_TAGS: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'br', 'hr', 'ul', 'ol', 'li',
+        'a', 'img', 'strong', 'em', 'b', 'i', 'u', 'span', 'div', 'table', 'thead', 'tbody',
+        'tr', 'th', 'td', 'blockquote', 'pre', 'code', 'center', 'font'],
+      ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'style', 'width', 'height',
+        'align', 'valign', 'bgcolor', 'color', 'border', 'cellpadding', 'cellspacing',
+        'target', 'rel', 'id', 'colspan', 'rowspan', 'face', 'size'],
+      ALLOW_DATA_ATTR: false,
+    });
+
     const campaign = await prisma.emailCampaign.create({
       data: {
         name,
         subject,
-        htmlContent,
+        htmlContent: sanitizedHtml,
         textContent: textContent || null,
         segmentQuery: segmentQuery ? JSON.stringify(segmentQuery) : null,
         status: 'DRAFT',

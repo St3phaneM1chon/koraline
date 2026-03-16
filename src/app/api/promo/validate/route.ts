@@ -172,7 +172,13 @@ export async function POST(request: NextRequest) {
       } else {
         let allowedProductIds: string[] = [];
         try {
-          allowedProductIds = JSON.parse(promoCode.productIds);
+          const parsed = JSON.parse(promoCode.productIds);
+          // Validate that parsed data is an array of strings (not arbitrary data)
+          if (Array.isArray(parsed) && parsed.every((v: unknown) => typeof v === 'string' && v.length <= 100)) {
+            allowedProductIds = parsed;
+          } else {
+            logger.error('Invalid productIds format (expected string[])', { promoCode: upperCode });
+          }
         } catch {
           // Malformed JSON in productIds - skip product filter (admin data entry error)
           logger.error('Malformed productIds JSON for promo code', { promoCode: upperCode });
@@ -201,7 +207,13 @@ export async function POST(request: NextRequest) {
       } else {
         let allowedCategoryIds: string[] = [];
         try {
-          allowedCategoryIds = JSON.parse(promoCode.categoryIds);
+          const parsed = JSON.parse(promoCode.categoryIds);
+          // Validate that parsed data is an array of strings (not arbitrary data)
+          if (Array.isArray(parsed) && parsed.every((v: unknown) => typeof v === 'string' && v.length <= 100)) {
+            allowedCategoryIds = parsed;
+          } else {
+            logger.error('Invalid categoryIds format (expected string[])', { promoCode: upperCode });
+          }
         } catch {
           // Malformed JSON in categoryIds - skip category filter
           logger.error('Malformed categoryIds JSON for promo code', { promoCode: upperCode });
