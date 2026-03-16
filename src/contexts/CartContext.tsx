@@ -153,7 +153,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const itemCount = useMemo(() => items.reduce((total, item) => total + item.quantity, 0), [items]);
 
-  const subtotal = useMemo(() => items.reduce((total, item) => total + item.price * item.quantity, 0), [items]);
+  const subtotal = useMemo(() => Math.round(items.reduce((total, item) => total + item.price * item.quantity, 0) * 100) / 100, [items]);
 
   // I-CART-7: Cart quantity limits
   const MAX_ITEM_QUANTITY = 10;

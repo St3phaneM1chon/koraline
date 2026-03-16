@@ -87,8 +87,9 @@ async function isDuplicateInRedis(eventId: string): Promise<boolean> {
     const redis = await getRedisClient();
     if (!redis) return false;
     const key = `webhook:dedup:${eventId}`;
-    const exists = await redis.get(key);
-    return exists !== null;
+    // Atomic check-and-set: SET NX returns 'OK' if key was set (not duplicate), null if already exists (duplicate)
+    const result = await redis.set(key, '1', 'EX', 3600, 'NX');
+    return result === null; // null = key already existed = duplicate
   } catch (error) {
     logger.error('[Webhook] Redis duplicate check failed, falling through', { error: error instanceof Error ? error.message : String(error) });
     return false;
@@ -101,7 +102,7 @@ async function markEventInRedis(eventId: string): Promise<void> {
     const redis = await getRedisClient();
     if (!redis) return;
     const key = `webhook:dedup:${eventId}`;
-    // Store with 1-hour TTL
+    // Ensure key exists with TTL (may already be set by isDuplicateInRedis SETNX)
     await redis.set(key, '1', 'EX', 3600);
   } catch (error) {
     logger.error('[Webhook] Redis mark event failed (in-memory dedup is primary)', { error: error instanceof Error ? error.message : String(error) });

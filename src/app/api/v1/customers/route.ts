@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 
 import { NextRequest } from 'next/server';
 import { Prisma } from '@prisma/client';
-import { withApiAuth, jsonSuccess, jsonError } from '@/lib/api/api-auth.middleware';
+import { withApiAuth, jsonSuccess } from '@/lib/api/api-auth.middleware';
 import { prisma } from '@/lib/db';
 
 export const GET = withApiAuth(async (request: NextRequest, { apiKey }) => {

@@ -9690,7 +9690,8 @@
     "sharedCartBanner": "شخص ما شارك سلة معك",
     "addSharedItems": "سلتك ستُضاف {count} عناصر",
     "dismissShared": "لا شكرًا",
-    "unavailable": "غير متوفر"
+    "unavailable": "غير متوفر",
+    "expiredMessage": "انتهت صلاحية سلة التسوق الخاصة بك بعد 24 ساعة من عدم النشاط. قد تكون الأسعار قد تغيرت."
   },
   "categories": {
     "accessories": "الإكسسوارات",
@@ -9765,7 +9766,11 @@
   "checkout": {
     "finalizeOrder": "إتمام الطلب",
     "digitalProductAccess": "📱 منتج رقمي - وصول فوري بعد الدفع",
-    "physicalProductShipping": "📦 منتج مادي - يتطلب الشحن"
+    "physicalProductShipping": "📦 منتج مادي - يتطلب الشحن",
+    "steps": {
+      "shipping": "الشحن",
+      "payment": "الدفع"
+    }
   },
   "common": {
     "answer": "جواب",

@@ -9690,7 +9690,8 @@
     "sharedCartBanner": "ਕਿਸੇ ਨੇ ਤੁਹਾਡੇ ਨਾਲ ਕਾਰਟ ਸਾਂਝੀ ਕੀਤੀ",
     "addSharedItems": "{count} ਆਈਟਮ ਕਾਰਟ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰੋ",
     "dismissShared": "ਨਹੀਂ ਧੰਨਵਾਦ",
-    "unavailable": "ਉਪਲਬਧ ਨਹੀਂ"
+    "unavailable": "ਉਪਲਬਧ ਨਹੀਂ",
+    "expiredMessage": "Your cart has expired after 24 hours of inactivity. Prices may have changed."
   },
   "categories": {
     "accessories": "ਐਕਸੈਸਰੀਜ਼",
@@ -9765,7 +9766,11 @@
   "checkout": {
     "finalizeOrder": "ਆਰਡਰ ਪੂਰਾ ਕਰੋ",
     "digitalProductAccess": "📱 ਡਿਜ਼ੀਟਲ ਉਤਪਾਦ - ਭੁਗਤਾਨ ਤੋਂ ਬਾਅਦ ਤੁਰੰਤ ਪਹੁੰਚ",
-    "physicalProductShipping": "📦 ਭੌਤਿਕ ਉਤਪਾਦ - ਸ਼ਿਪਿੰਗ ਲੋੜੀਂਦੀ"
+    "physicalProductShipping": "📦 ਭੌਤਿਕ ਉਤਪਾਦ - ਸ਼ਿਪਿੰਗ ਲੋੜੀਂਦੀ",
+    "steps": {
+      "shipping": "Shipping",
+      "payment": "Payment"
+    }
   },
   "common": {
     "answer": "ਜਵਾਬ",

@@ -9690,7 +9690,8 @@
     "sharedCartBanner": "Ai đó đã chia sẻ giỏ hàng với bạn",
     "addSharedItems": "Thêm {count} sản phẩm vào giỏ hàng",
     "dismissShared": "Không, cảm ơn",
-    "unavailable": "không có sẵn"
+    "unavailable": "không có sẵn",
+    "expiredMessage": "Your cart has expired after 24 hours of inactivity. Prices may have changed."
   },
   "categories": {
     "accessories": "Phụ Kiện",
@@ -9765,7 +9766,11 @@
   "checkout": {
     "finalizeOrder": "Hoàn tất đơn hàng",
     "digitalProductAccess": "📱 Sản phẩm kỹ thuật số - Truy cập ngay sau thanh toán",
-    "physicalProductShipping": "📦 Sản phẩm vật lý - Cần vận chuyển"
+    "physicalProductShipping": "📦 Sản phẩm vật lý - Cần vận chuyển",
+    "steps": {
+      "shipping": "Shipping",
+      "payment": "Payment"
+    }
   },
   "common": {
     "answer": "câu trả lời",

@@ -9701,7 +9701,8 @@
     "sharedCartBanner": "Quelqu'un a partagé un panier avec vous",
     "addSharedItems": "Ajouter {count} articles au panier",
     "dismissShared": "Non merci",
-    "unavailable": "indisponible(s)"
+    "unavailable": "indisponible(s)",
+    "expiredMessage": "Votre panier a expiré après 24 heures d'inactivité. Les prix peuvent avoir changé."
   },
   "categories": {
     "all": "Tous les produits",
@@ -9776,7 +9777,11 @@
   "checkout": {
     "finalizeOrder": "Finaliser la commande",
     "digitalProductAccess": "📱 Produit numérique - Accès immédiat après paiement",
-    "physicalProductShipping": "📦 Produit physique - Livraison requise"
+    "physicalProductShipping": "📦 Produit physique - Livraison requise",
+    "steps": {
+      "shipping": "Livraison",
+      "payment": "Paiement"
+    }
   },
   "common": {
     "answer": "réponse",

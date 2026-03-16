@@ -9690,7 +9690,8 @@
     "sharedCartBanner": "किसी ने आपके साथ कार्ट शेयर किया",
     "addSharedItems": "कार्ट में {count} आइटम जोड़ें",
     "dismissShared": "नहीं धन्यवाद",
-    "unavailable": "अनुपलब्ध"
+    "unavailable": "अनुपलब्ध",
+    "expiredMessage": "24 घंटे की निष्क्रियता के बाद आपका कार्ट समाप्त हो गया है। कीमतें बदल गई हो सकती हैं।"
   },
   "categories": {
     "accessories": "एक्सेसरीज़",
@@ -9765,7 +9766,11 @@
   "checkout": {
     "finalizeOrder": "ऑर्डर पूरा करें",
     "digitalProductAccess": "📱 डिजिटल उत्पाद - भुगतान के बाद तुरंत पहुंच",
-    "physicalProductShipping": "📦 भौतिक उत्पाद - शिपिंग आवश्यक"
+    "physicalProductShipping": "📦 भौतिक उत्पाद - शिपिंग आवश्यक",
+    "steps": {
+      "shipping": "शिपिंग",
+      "payment": "भुगतान"
+    }
   },
   "common": {
     "answer": "उत्तर",

@@ -9690,7 +9690,8 @@
     "sharedCartBanner": "May nag-share ng cart sa iyo",
     "addSharedItems": "Idagdag ang {count} item sa cart",
     "dismissShared": "Hindi na, salamat",
-    "unavailable": "hindi available"
+    "unavailable": "hindi available",
+    "expiredMessage": "Your cart has expired after 24 hours of inactivity. Prices may have changed."
   },
   "categories": {
     "accessories": "Mga Aksesorya",
@@ -9765,7 +9766,11 @@
   "checkout": {
     "finalizeOrder": "I-finalize ang order",
     "digitalProductAccess": "📱 Digital na produkto - Agad na access pagkatapos magbayad",
-    "physicalProductShipping": "📦 Physical na produkto - Kailangan ng shipping"
+    "physicalProductShipping": "📦 Physical na produkto - Kailangan ng shipping",
+    "steps": {
+      "shipping": "Shipping",
+      "payment": "Payment"
+    }
   },
   "common": {
     "answer": "sagot",

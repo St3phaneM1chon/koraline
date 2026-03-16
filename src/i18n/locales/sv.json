@@ -9690,7 +9690,8 @@
     "sharedCartBanner": "Någon delade en varukorg med dig",
     "addSharedItems": "Lägg till {count} artiklar i varukorgen",
     "dismissShared": "Nej tack",
-    "unavailable": "ej tillgänglig"
+    "unavailable": "ej tillgänglig",
+    "expiredMessage": "Din kundvagn har gått ut efter 24 timmars inaktivitet. Priserna kan ha ändrats."
   },
   "categories": {
     "accessories": "Tillbehör",
@@ -9765,7 +9766,11 @@
   "checkout": {
     "finalizeOrder": "Slutför beställning",
     "digitalProductAccess": "📱 Digital produkt - Omedelbar åtkomst efter betalning",
-    "physicalProductShipping": "📦 Fysisk produkt - Frakt krävs"
+    "physicalProductShipping": "📦 Fysisk produkt - Frakt krävs",
+    "steps": {
+      "shipping": "Frakt",
+      "payment": "Betalning"
+    }
   },
   "common": {
     "answer": "svar",

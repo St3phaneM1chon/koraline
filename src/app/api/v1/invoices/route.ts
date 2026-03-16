@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 
 import { NextRequest } from 'next/server';
 import { Prisma, InvoiceStatus } from '@prisma/client';
-import { withApiAuth, jsonSuccess } from '@/lib/api/api-auth.middleware';
+import { withApiAuth, jsonSuccess, jsonError } from '@/lib/api/api-auth.middleware';
 import { prisma } from '@/lib/db';
 
 export const GET = withApiAuth(async (request: NextRequest, { apiKey }) => {
@@ -31,7 +31,8 @@ export const GET = withApiAuth(async (request: NextRequest, { apiKey }) => {
 
   // SEC: Non-admin API keys can only see invoices for orders belonging to their creator
   if (!apiKey.isAdmin && apiKey.createdBy) {
-    where.order = { userId: apiKey.createdBy };
+    // CustomerInvoice has orderId but no order relation — filter by customerId
+    where.customerId = apiKey.createdBy;
   }
 
   if (status) where.status = status as InvoiceStatus;

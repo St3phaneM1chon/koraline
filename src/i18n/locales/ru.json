@@ -9690,7 +9690,8 @@
     "sharedCartBanner": "Кто-то поделился с вами корзиной",
     "addSharedItems": "Добавить {count} товаров в корзину",
     "dismissShared": "Нет, спасибо",
-    "unavailable": "недоступен"
+    "unavailable": "недоступен",
+    "expiredMessage": "Ваша корзина истекла после 24 часов бездействия. Цены могли измениться."
   },
   "categories": {
     "accessories": "Аксессуары",
@@ -9765,7 +9766,11 @@
   "checkout": {
     "finalizeOrder": "Оформить заказ",
     "digitalProductAccess": "📱 Цифровой продукт - Мгновенный доступ после оплаты",
-    "physicalProductShipping": "📦 Физический продукт - Требуется доставка"
+    "physicalProductShipping": "📦 Физический продукт - Требуется доставка",
+    "steps": {
+      "shipping": "Доставка",
+      "payment": "Оплата"
+    }
   },
   "common": {
     "answer": "ответ",

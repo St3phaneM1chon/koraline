@@ -9,6 +9,9 @@ export default function MobileSettings() {
   const [prefs, setPrefs] = useState({ overdueInvoices: true, taxReminders: true, dailySummary: false, paymentReceived: true });
   const [storageUsage, setStorageUsage] = useState<number>(0);
   const [storageQuota, setStorageQuota] = useState<number>(0);
+  const [isToggling, setIsToggling] = useState<string | null>(null);
+  const [isClearing, setIsClearing] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
   const offlineStatus = getOfflineStatus();
   const { t, locale } = useI18n();
 
@@ -18,20 +21,38 @@ export default function MobileSettings() {
   }, []);
 
   const togglePref = async (key: keyof typeof prefs) => {
-    const updated = { ...prefs, [key]: !prefs[key] };
-    setPrefs(updated);
-    await fetch('/api/mobile/notifications', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(updated) });
+    if (isToggling) return;
+    setIsToggling(key);
+    try {
+      const updated = { ...prefs, [key]: !prefs[key] };
+      setPrefs(updated);
+      await fetch('/api/mobile/notifications', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(updated) });
+    } finally {
+      setIsToggling(null);
+    }
   };
 
   const handleClearCache = async () => {
-    await clearCaches();
-    const est = await getStorageEstimate();
-    if (est) { setStorageUsage(est.usage); setStorageQuota(est.quota); }
+    if (isClearing) return;
+    setIsClearing(true);
+    try {
+      await clearCaches();
+      const est = await getStorageEstimate();
+      if (est) { setStorageUsage(est.usage); setStorageQuota(est.quota); }
+    } finally {
+      setIsClearing(false);
+    }
   };
 
   const handleSync = async () => {
-    const result = await processSyncQueue();
-    alert(t('mobile.offline.syncResult').replace('{succeeded}', String(result.succeeded)).replace('{failed}', String(result.failed)));
+    if (isSyncing) return;
+    setIsSyncing(true);
+    try {
+      const result = await processSyncQueue();
+      alert(t('mobile.offline.syncResult').replace('{succeeded}', String(result.succeeded)).replace('{failed}', String(result.failed)));
+    } finally {
+      setIsSyncing(false);
+    }
   };
 
   const fmtBytes = (b: number) => b < 1024 * 1024 ? `${(b / 1024).toFixed(0)} KB` : `${(b / (1024 * 1024)).toFixed(1)} MB`;
@@ -54,7 +75,7 @@ export default function MobileSettings() {
           {notifItems.map(({ key, label }) => (
             <div key={key} className="px-4 py-3 flex items-center justify-between">
               <span className="text-sm text-gray-700">{label}</span>
-              <button onClick={() => togglePref(key)} className={`w-10 h-6 rounded-full transition-colors ${prefs[key] ? 'bg-purple-600' : 'bg-gray-300'}`}>
+              <button onClick={() => togglePref(key)} disabled={isToggling === key} className={`w-10 h-6 rounded-full transition-colors ${prefs[key] ? 'bg-purple-600' : 'bg-gray-300'} ${isToggling === key ? 'opacity-50' : ''}`}>
                 <div className={`w-4 h-4 bg-white rounded-full shadow transition-transform mx-1 ${prefs[key] ? 'translate-x-4' : ''}`} />
               </button>
             </div>
@@ -74,7 +95,7 @@ export default function MobileSettings() {
           {offlineStatus.lastSyncAt && <div className="flex justify-between"><span className="text-gray-500">{t('mobile.settings.lastSync')}</span><span className="text-gray-700">{new Date(offlineStatus.lastSyncAt).toLocaleString(locale)}</span></div>}
         </div>
         {offlineStatus.pendingCount > 0 && (
-          <button onClick={handleSync} className="mt-3 w-full bg-purple-100 text-purple-700 py-2 rounded-lg text-sm font-medium">{t('mobile.settings.syncNow')}</button>
+          <button onClick={handleSync} disabled={isSyncing} className={`mt-3 w-full bg-purple-100 text-purple-700 py-2 rounded-lg text-sm font-medium ${isSyncing ? 'opacity-50 cursor-not-allowed' : ''}`}>{isSyncing ? '...' : t('mobile.settings.syncNow')}</button>
         )}
       </div>
 
@@ -83,7 +104,7 @@ export default function MobileSettings() {
         <div className="flex items-center gap-2 mb-3"><HardDrive className="w-4 h-4 text-purple-600" /><h3 className="text-sm font-semibold text-gray-700">{t('mobile.settings.storage')}</h3></div>
         <div className="text-sm text-gray-600 mb-2">{fmtBytes(storageUsage)} / {fmtBytes(storageQuota)} {t('mobile.settings.used')}</div>
         <div className="bg-gray-200 rounded-full h-2 mb-3"><div className="bg-purple-600 rounded-full h-2" style={{ width: `${storageQuota > 0 ? (storageUsage / storageQuota * 100) : 0}%` }} /></div>
-        <button onClick={handleClearCache} className="flex items-center gap-2 text-sm text-red-500 font-medium"><Trash2 className="w-4 h-4" /> {t('mobile.settings.clearCache')}</button>
+        <button onClick={handleClearCache} disabled={isClearing} className={`flex items-center gap-2 text-sm text-red-500 font-medium ${isClearing ? 'opacity-50 cursor-not-allowed' : ''}`}><Trash2 className="w-4 h-4" /> {isClearing ? '...' : t('mobile.settings.clearCache')}</button>
       </div>
     </div>
   );

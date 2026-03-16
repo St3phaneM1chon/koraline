@@ -28,6 +28,7 @@ export default function NavigateurPage() {
   const [modalMode, setModalMode] = useState<ModalMode>('section');
   const [modalAction, setModalAction] = useState<ModalAction>('create');
   const [editingItem, setEditingItem] = useState<NavSection | NavSubSection | NavPage | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const fetchSections = useCallback(async () => {
     try {
@@ -94,6 +95,8 @@ export default function NavigateurPage() {
   };
 
   const handleDelete = async (mode: ModalMode, id: string) => {
+    if (deletingId) return;
+    setDeletingId(id);
     const endpoint = mode === 'section' ? `/api/admin/nav-sections/${id}`
       : mode === 'subsection' ? `/api/admin/nav-subsections/${id}`
       : `/api/admin/nav-pages/${id}`;
@@ -107,6 +110,7 @@ export default function NavigateurPage() {
         await fetchSections();
       }
     } catch { toast.error(t('common.errorOccurred')); }
+    finally { setDeletingId(null); }
   };
 
   // Keep selections synced after refetch
@@ -215,7 +219,7 @@ export default function NavigateurPage() {
                   <button onClick={(e) => { e.stopPropagation(); openEditModal('section', sec); }} className="p-1 hover:bg-slate-200 rounded">
                     <Pencil className="w-3 h-3 text-slate-400" />
                   </button>
-                  <button onClick={(e) => { e.stopPropagation(); handleDelete('section', sec.id); }} className="p-1 hover:bg-red-100 rounded">
+                  <button onClick={(e) => { e.stopPropagation(); handleDelete('section', sec.id); }} disabled={deletingId === sec.id} className={`p-1 hover:bg-red-100 rounded ${deletingId === sec.id ? 'opacity-50' : ''}`}>
                     <Trash2 className="w-3 h-3 text-red-400" />
                   </button>
                   <ChevronRight className="w-4 h-4 text-slate-300" />
@@ -248,7 +252,7 @@ export default function NavigateurPage() {
                   <button onClick={(e) => { e.stopPropagation(); openEditModal('subsection', sub); }} className="p-1 hover:bg-slate-200 rounded">
                     <Pencil className="w-3 h-3 text-slate-400" />
                   </button>
-                  <button onClick={(e) => { e.stopPropagation(); handleDelete('subsection', sub.id); }} className="p-1 hover:bg-red-100 rounded">
+                  <button onClick={(e) => { e.stopPropagation(); handleDelete('subsection', sub.id); }} disabled={deletingId === sub.id} className={`p-1 hover:bg-red-100 rounded ${deletingId === sub.id ? 'opacity-50' : ''}`}>
                     <Trash2 className="w-3 h-3 text-red-400" />
                   </button>
                   <ChevronRight className="w-4 h-4 text-slate-300" />
@@ -282,7 +286,7 @@ export default function NavigateurPage() {
                   <button onClick={() => openEditModal('page', page)} className="p-1 hover:bg-slate-200 rounded">
                     <Pencil className="w-3 h-3 text-slate-400" />
                   </button>
-                  <button onClick={() => handleDelete('page', page.id)} className="p-1 hover:bg-red-100 rounded">
+                  <button onClick={() => handleDelete('page', page.id)} disabled={deletingId === page.id} className={`p-1 hover:bg-red-100 rounded ${deletingId === page.id ? 'opacity-50' : ''}`}>
                     <Trash2 className="w-3 h-3 text-red-400" />
                   </button>
                 </div>

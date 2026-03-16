@@ -44,6 +44,7 @@ export default function TransfertsClient({
   const [showModal, setShowModal] = useState(false);
   const [editingRule, setEditingRule] = useState<ForwardingRule | null>(null);
   const [saving, setSaving] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [form, setForm] = useState({
     extension: '',
     condition: 'always' as string,
@@ -134,9 +135,15 @@ export default function TransfertsClient({
   };
 
   const handleDelete = async (id: string) => {
+    if (deletingId) return;
     if (!confirm(t('common.confirmDelete'))) return;
-    const updatedRules = rules.filter((r) => r.id !== id);
-    await saveRules(updatedRules);
+    setDeletingId(id);
+    try {
+      const updatedRules = rules.filter((r) => r.id !== id);
+      await saveRules(updatedRules);
+    } finally {
+      setDeletingId(null);
+    }
   };
 
   const handleToggle = async (id: string) => {
@@ -207,7 +214,7 @@ export default function TransfertsClient({
                       <button onClick={() => openEdit(rule)} className="p-1.5 text-gray-400 hover:text-indigo-600 rounded">
                         <Pencil className="w-4 h-4" />
                       </button>
-                      <button onClick={() => handleDelete(rule.id)} className="p-1.5 text-gray-400 hover:text-red-500 rounded">
+                      <button onClick={() => handleDelete(rule.id)} disabled={deletingId === rule.id} className={`p-1.5 text-gray-400 hover:text-red-500 rounded ${deletingId === rule.id ? 'opacity-50' : ''}`}>
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>

@@ -9690,7 +9690,8 @@
     "sharedCartBanner": "有人与您分享了购物车",
     "addSharedItems": "将 {count} 件商品加入购物车",
     "dismissShared": "不了，谢谢",
-    "unavailable": "不可用"
+    "unavailable": "不可用",
+    "expiredMessage": "您的购物车因24小时未活动已过期。价格可能已更改。"
   },
   "categories": {
     "accessories": "配件",
@@ -9765,7 +9766,11 @@
   "checkout": {
     "finalizeOrder": "确认下单",
     "digitalProductAccess": "📱 数字产品 - 付款后立即访问",
-    "physicalProductShipping": "📦 实物产品 - 需要配送"
+    "physicalProductShipping": "📦 实物产品 - 需要配送",
+    "steps": {
+      "shipping": "配送",
+      "payment": "付款"
+    }
   },
   "common": {
     "answer": "回答",

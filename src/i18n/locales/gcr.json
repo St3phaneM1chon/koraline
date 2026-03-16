@@ -9690,7 +9690,8 @@
     "sharedCartBanner": "Yon moun patajé yon panyé avèk ou",
     "addSharedItems": "Ajouté {count} atik nan panyé",
     "dismissShared": "Non mèsi",
-    "unavailable": "pa disponib"
+    "unavailable": "pa disponib",
+    "expiredMessage": "Your cart has expired after 24 hours of inactivity. Prices may have changed."
   },
   "categories": {
     "accessories": "Aksèswa",
@@ -9765,7 +9766,11 @@
   "checkout": {
     "finalizeOrder": "Finalizé kòmand",
     "digitalProductAccess": "📱 Pwodui dijital - Aksè imédya aprè péman",
-    "physicalProductShipping": "📦 Pwodui fizik - Livrézon obligatwa"
+    "physicalProductShipping": "📦 Pwodui fizik - Livrézon obligatwa",
+    "steps": {
+      "shipping": "Shipping",
+      "payment": "Payment"
+    }
   },
   "common": {
     "answer": "repons",

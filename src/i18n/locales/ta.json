@@ -9690,7 +9690,8 @@
     "sharedCartBanner": "யாரோ உங்களுடன் கார்ட்டைப் பகிர்ந்துள்ளனர்",
     "addSharedItems": "{count} பொருட்களை கார்ட்டில் சேர்",
     "dismissShared": "வேண்டாம், நன்றி",
-    "unavailable": "கிடைக்கவில்லை"
+    "unavailable": "கிடைக்கவில்லை",
+    "expiredMessage": "Your cart has expired after 24 hours of inactivity. Prices may have changed."
   },
   "categories": {
     "accessories": "துணைக்கருவிகள்",
@@ -9765,7 +9766,11 @@
   "checkout": {
     "finalizeOrder": "ஆர்டரை முடிக்கவும்",
     "digitalProductAccess": "📱 டிஜிட்டல் தயாரிப்பு - பணம் செலுத்திய பின் உடனடி அணுகல்",
-    "physicalProductShipping": "📦 உடல் தயாரிப்பு - ஷிப்பிங் தேவை"
+    "physicalProductShipping": "📦 உடல் தயாரிப்பு - ஷிப்பிங் தேவை",
+    "steps": {
+      "shipping": "Shipping",
+      "payment": "Payment"
+    }
   },
   "common": {
     "answer": "பதில்",

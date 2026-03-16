@@ -73,9 +73,7 @@ export async function POST(request: NextRequest) {
       where: { id: session.user.id },
       data: {
         termsAcceptedAt: now,
-        termsVersion: stripControlChars(stripHtml(termsVersion)),
-        privacyVersion: privacyVersion ? stripControlChars(stripHtml(privacyVersion)) : undefined,
-        privacyAcceptedAt: now,
+        termsVersion: stripControlChars(stripHtml(privacyVersion ? `${termsVersion}|privacy:${privacyVersion}` : termsVersion)),
       },
     });
 

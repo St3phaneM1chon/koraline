@@ -47,6 +47,7 @@ export default function CampagnesClient({
   const [showModal, setShowModal] = useState(false);
   const [editingCampaign, setEditingCampaign] = useState<Campaign | null>(null);
   const [saving, setSaving] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [form, setForm] = useState({
     name: '',
     description: '',
@@ -133,7 +134,9 @@ export default function CampagnesClient({
   };
 
   const handleDelete = async (id: string) => {
+    if (deletingId) return;
     if (!confirm(t('common.confirmDelete'))) return;
+    setDeletingId(id);
     try {
       const res = await fetch(`/api/admin/voip/campaigns?id=${id}`, { method: 'DELETE' });
       if (!res.ok) {
@@ -144,6 +147,8 @@ export default function CampagnesClient({
       toast.success(t('common.deleted'));
     } catch {
       toast.error(t('common.error'));
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -238,7 +243,7 @@ export default function CampagnesClient({
                       <button onClick={() => openEdit(campaign)} className="p-1.5 text-gray-400 hover:text-indigo-600 rounded">
                         <Pencil className="w-4 h-4" />
                       </button>
-                      <button onClick={() => handleDelete(campaign.id)} className="p-1.5 text-gray-400 hover:text-red-500 rounded">
+                      <button onClick={() => handleDelete(campaign.id)} disabled={deletingId === campaign.id} className={`p-1.5 text-gray-400 hover:text-red-500 rounded ${deletingId === campaign.id ? 'opacity-50' : ''}`}>
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>

@@ -121,7 +121,7 @@ export function CheckoutPageClient({
           >
             <StepIndicator
               number={1}
-              label="Livraison"
+              label={t('checkout.steps.shipping')}
               active={currentStep === 'shipping'}
               completed={currentStep === 'payment'}
             />
@@ -136,7 +136,7 @@ export function CheckoutPageClient({
             />
             <StepIndicator
               number={2}
-              label="Paiement"
+              label={t('checkout.steps.payment')}
               active={currentStep === 'payment'}
               completed={false}
             />

@@ -9690,7 +9690,8 @@
     "sharedCartBanner": "누군가 장바구니를 공유했습니다",
     "addSharedItems": "{count}개 상품을 장바구니에 추가",
     "dismissShared": "괜찮습니다",
-    "unavailable": "품절"
+    "unavailable": "품절",
+    "expiredMessage": "24시간 비활성으로 장바구니가 만료되었습니다. 가격이 변경되었을 수 있습니다."
   },
   "categories": {
     "accessories": "액세서리",
@@ -9765,7 +9766,11 @@
   "checkout": {
     "finalizeOrder": "주문 완료",
     "digitalProductAccess": "📱 디지털 제품 - 결제 후 즉시 이용 가능",
-    "physicalProductShipping": "📦 실물 제품 - 배송 필요"
+    "physicalProductShipping": "📦 실물 제품 - 배송 필요",
+    "steps": {
+      "shipping": "배송",
+      "payment": "결제"
+    }
   },
   "common": {
     "answer": "답변",

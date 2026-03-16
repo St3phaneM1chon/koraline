@@ -189,6 +189,8 @@ export async function POST(
             payment_intent: order.stripePaymentId,
             amount: Math.round(refundAmount * 100), // Stripe uses cents
             reason: 'requested_by_customer',
+          }, {
+            idempotencyKey: `refund_order_${order.id}`,
           });
           stripeRefundId = refund.id;
           refundedViaProvider = true;

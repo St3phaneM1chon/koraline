@@ -9690,7 +9690,8 @@
     "sharedCartBanner": "Jemand hat einen Warenkorb mit Ihnen geteilt",
     "addSharedItems": "Fügen Sie {count} Artikel zum Warenkorb hinzu",
     "dismissShared": "Nein danke",
-    "unavailable": "nicht verfügbar"
+    "unavailable": "nicht verfügbar",
+    "expiredMessage": "Ihr Warenkorb ist nach 24 Stunden Inaktivität abgelaufen. Die Preise können sich geändert haben."
   },
   "categories": {
     "accessories": "Zubehör",
@@ -9765,7 +9766,11 @@
   "checkout": {
     "finalizeOrder": "Bestellung abschließen",
     "digitalProductAccess": "📱 Digitales Produkt - Sofortiger Zugang nach Zahlung",
-    "physicalProductShipping": "📦 Physisches Produkt - Versand erforderlich"
+    "physicalProductShipping": "📦 Physisches Produkt - Versand erforderlich",
+    "steps": {
+      "shipping": "Versand",
+      "payment": "Zahlung"
+    }
   },
   "common": {
     "answer": "Antwort",

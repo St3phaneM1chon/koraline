@@ -46,7 +46,7 @@ export const GET = withAdminGuard(async (request, _ctx) => {
     const from = searchParams.get('from');
     const to = searchParams.get('to');
     const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
-    const limit = Math.min(parseInt(searchParams.get('limit') || '20', 10), 100);
+    const limit = Math.max(1, Math.min(parseInt(searchParams.get('limit') || '20', 10), 100));
     const offset = (page - 1) * limit;
 
     // Build where clause

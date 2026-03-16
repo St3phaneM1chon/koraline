@@ -88,6 +88,7 @@ async function getProducts(filters: { category?: string; type?: string; sort?: s
     where,
     orderBy,
     include: { category: true },
+    take: 200,
   });
 }
 

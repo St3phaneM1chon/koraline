@@ -9701,7 +9701,8 @@
     "sharedCartBanner": "Someone shared a cart with you",
     "addSharedItems": "Add {count} items to cart",
     "dismissShared": "No thanks",
-    "unavailable": "unavailable"
+    "unavailable": "unavailable",
+    "expiredMessage": "Your cart has expired after 24 hours of inactivity. Prices may have changed."
   },
   "categories": {
     "accessories": "Accessories",
@@ -9776,7 +9777,11 @@
   "checkout": {
     "finalizeOrder": "Finalize Order",
     "digitalProductAccess": "📱 Digital product - Immediate access after payment",
-    "physicalProductShipping": "📦 Physical product - Shipping required"
+    "physicalProductShipping": "📦 Physical product - Shipping required",
+    "steps": {
+      "shipping": "Shipping",
+      "payment": "Payment"
+    }
   },
   "common": {
     "answer": "answer",

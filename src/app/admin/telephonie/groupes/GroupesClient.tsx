@@ -51,6 +51,7 @@ export default function GroupesClient({
   const [showModal, setShowModal] = useState(false);
   const [editingGroup, setEditingGroup] = useState<RingGroup | null>(null);
   const [saving, setSaving] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [form, setForm] = useState({
     name: '',
     strategy: 'RING_ALL' as Strategy,
@@ -136,7 +137,9 @@ export default function GroupesClient({
   };
 
   const handleDelete = async (id: string) => {
+    if (deletingId) return;
     if (!confirm(t('common.confirmDelete'))) return;
+    setDeletingId(id);
     try {
       const res = await fetch(`/api/admin/voip/ring-groups?id=${id}`, { method: 'DELETE' });
       if (!res.ok) {
@@ -147,6 +150,8 @@ export default function GroupesClient({
       toast.success(t('voip.admin.ringGroups.deleted'));
     } catch {
       toast.error(t('common.error'));
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -191,7 +196,7 @@ export default function GroupesClient({
                   <button onClick={() => openEdit(group)} className="p-1.5 text-gray-400 hover:text-indigo-600 rounded">
                     <Pencil className="w-4 h-4" />
                   </button>
-                  <button onClick={() => handleDelete(group.id)} className="p-1.5 text-gray-400 hover:text-red-500 rounded">
+                  <button onClick={() => handleDelete(group.id)} disabled={deletingId === group.id} className={`p-1.5 text-gray-400 hover:text-red-500 rounded ${deletingId === group.id ? 'opacity-50' : ''}`}>
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>

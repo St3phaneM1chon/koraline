@@ -53,6 +53,7 @@ export default function SondagesClient({
   const [formActive, setFormActive] = useState(true);
   const [formQuestions, setFormQuestions] = useState<SurveyQuestion[]>([]);
   const [saving, setSaving] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const openAdd = () => {
     setEditing(null);
@@ -154,13 +155,17 @@ export default function SondagesClient({
   };
 
   const handleDelete = async (survey: Survey) => {
+    if (deletingId) return;
     if (!confirm(t('common.confirmDelete'))) return;
+    setDeletingId(survey.id);
     try {
       await fetch(`/api/admin/voip/surveys?id=${survey.id}`, { method: 'DELETE' });
       setSurveys((prev) => prev.filter((s) => s.id !== survey.id));
       toast.success(t('common.deleted'));
     } catch {
       toast.error(t('common.error'));
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -265,7 +270,8 @@ export default function SondagesClient({
                     </button>
                     <button
                       onClick={() => handleDelete(survey)}
-                      className="p-1.5 text-gray-400 hover:text-red-500 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                      disabled={deletingId === survey.id}
+                      className={`p-1.5 text-gray-400 hover:text-red-500 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 ${deletingId === survey.id ? 'opacity-50' : ''}`}
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
