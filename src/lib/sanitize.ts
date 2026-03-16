@@ -69,6 +69,16 @@ export function stripControlChars(input: string): string {
 }
 
 /**
+ * GDPR-compliant email masking for log output.
+ * "john.doe@example.com" → "jo***@example.com"
+ */
+export function maskEmail(email: string): string {
+  if (!email || !email.includes('@')) return '***';
+  const [local, domain] = email.split('@');
+  return `${local.substring(0, 2)}***@${domain}`;
+}
+
+/**
  * Sanitize a webhook payload by stripping PCI/PII-sensitive fields
  * before persisting to the database.
  */

@@ -4,6 +4,7 @@
  */
 
 import { logger } from '@/lib/logger';
+import { maskEmail } from '@/lib/sanitize';
 import { addEmailTracking } from '@/lib/email/tracking';
 import { shouldSuppressEmail } from '@/lib/email/bounce-handler';
 import { prisma } from '@/lib/db';
@@ -310,7 +311,7 @@ export async function sendEmail(options: SendEmailOptions): Promise<EmailResult>
     emailData.text = htmlToText(emailData.html);
   }
 
-  logger.info('Sending email', { requestId, provider, to: recipients.map(r => r.email), subject: emailData.subject.slice(0, 80) });
+  logger.info('Sending email', { requestId, provider, to: recipients.map(r => maskEmail(r.email)), subject: emailData.subject.slice(0, 80) });
 
   // Try the configured provider first with retries, then fallback to others
   const primaryResult = await sendWithRetries(provider, emailData, requestId);

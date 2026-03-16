@@ -14,6 +14,7 @@
 
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
+import { maskEmail } from '@/lib/sanitize';
 import { sendEmail } from './email-service';
 import { generateUnsubscribeUrl } from './unsubscribe';
 import {
@@ -207,7 +208,7 @@ export async function sendOrderLifecycleEmail(
     });
 
     if (result.success) {
-      logger.info('[OrderLifecycleEmail] Email sent', { event, orderNumber: order.orderNumber, to: user.email, messageId: result.messageId });
+      logger.info('[OrderLifecycleEmail] Email sent', { event, orderNumber: order.orderNumber, to: maskEmail(user.email), messageId: result.messageId });
     } else {
       logger.error('[OrderLifecycleEmail] Failed to send email', { event, orderNumber: order.orderNumber, error: result.error });
     }

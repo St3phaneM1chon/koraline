@@ -11,6 +11,7 @@
  */
 
 import { prisma } from '@/lib/db';
+import { maskEmail } from '@/lib/sanitize';
 
 // ---------------------------------------------------------------------------
 // Unified AI completion layer (Claude preferred, OpenAI fallback)
@@ -357,7 +358,7 @@ export async function draftEmail(
       select: { name: true, email: true, orders: { take: 3, orderBy: { createdAt: 'desc' }, select: { orderNumber: true, total: true, status: true } } },
     });
     if (customer) {
-      contextData = `Customer: ${customer.name} (${customer.email})\nRecent orders: ${JSON.stringify(customer.orders)}`;
+      contextData = `Customer: ${customer.name} (${maskEmail(customer.email)})\nRecent orders: ${JSON.stringify(customer.orders)}`;
     }
   } else if (context.entityType === 'order' && context.entityId) {
     const order = await prisma.order.findUnique({

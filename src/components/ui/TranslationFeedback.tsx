@@ -41,8 +41,11 @@ export function TranslationFeedback() {
     return () => clearTimeout(timer);
   }, [locale]);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleSubmit = useCallback(async () => {
-    if (!rating) return;
+    if (!rating || isSubmitting) return;
+    setIsSubmitting(true);
 
     try {
       await fetch('/api/feedback/translation', {
@@ -61,8 +64,9 @@ export function TranslationFeedback() {
 
     localStorage.setItem(STORAGE_KEY, String(Date.now()));
     setSubmitted(true);
+    setIsSubmitting(false);
     setTimeout(() => setVisible(false), 2000);
-  }, [locale, rating, comment]);
+  }, [locale, rating, comment, isSubmitting]);
 
   const handleDismiss = () => {
     localStorage.setItem(STORAGE_KEY, String(Date.now()));
@@ -180,19 +184,21 @@ export function TranslationFeedback() {
               />
               <button
                 onClick={handleSubmit}
+                disabled={isSubmitting}
                 style={{
                   width: '100%',
                   padding: '8px',
-                  backgroundColor: '#f97316',
+                  backgroundColor: isSubmitting ? '#9ca3af' : '#f97316',
                   color: 'white',
                   border: 'none',
                   borderRadius: '6px',
                   fontSize: '13px',
                   fontWeight: 600,
-                  cursor: 'pointer',
+                  cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                  opacity: isSubmitting ? 0.7 : 1,
                 }}
               >
-                {t('translation.feedbackSubmit')}
+                {isSubmitting ? '...' : t('translation.feedbackSubmit')}
               </button>
             </>
           )}

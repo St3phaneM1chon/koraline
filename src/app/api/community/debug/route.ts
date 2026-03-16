@@ -37,6 +37,6 @@ export async function GET(_request: NextRequest) {
       nodeEnv: process.env.NODE_ENV,
     });
   } catch (error: unknown) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : String(error) }, { status: 500 });
+    return NextResponse.json({ error: 'Debug query failed' }, { status: 500 });
   }
 }

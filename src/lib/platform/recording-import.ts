@@ -8,6 +8,7 @@ import crypto from 'crypto';
 import { prisma } from '@/lib/db';
 import { getValidAccessToken, type Platform } from './oauth';
 import { logger } from '@/lib/logger';
+import { maskEmail } from '@/lib/sanitize';
 import { StorageService } from '@/lib/storage';
 import { VideoSource, UserRole } from '@prisma/client';
 
@@ -656,7 +657,7 @@ async function detectAndCreateConsent(
         videoTitle: importRecord.meetingTitle,
       });
     } catch (emailError) {
-      logger.warn(`[RecordingImport] Failed to send consent email to ${client.email}:`, emailError);
+      logger.warn('[RecordingImport] Failed to send consent email', { to: maskEmail(client.email), error: emailError instanceof Error ? emailError.message : String(emailError) });
     }
   }
 
