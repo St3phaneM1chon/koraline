@@ -101,7 +101,19 @@ export const POST = withAdminGuard(async (
   }
 
   // Transaction: create deal + update lead + create activities
-  const result = await prisma.$transaction(async (tx) => {
+  let result;
+  try {
+  result = await prisma.$transaction(async (tx) => {
+    // RACE CONDITION FIX: Re-check status inside transaction to prevent
+    // duplicate deals from concurrent conversion requests.
+    const freshLead = await tx.crmLead.findUnique({
+      where: { id },
+      select: { status: true },
+    });
+    if (!freshLead || freshLead.status === 'CONVERTED') {
+      throw new Error('LEAD_ALREADY_CONVERTED');
+    }
+
     // 1. Create the deal
     const deal = await tx.crmDeal.create({
       data: {
@@ -149,6 +161,12 @@ export const POST = withAdminGuard(async (
 
     return { deal, lead: updatedLead };
   });
+  } catch (error) {
+    if (error instanceof Error && error.message === 'LEAD_ALREADY_CONVERTED') {
+      return apiError('Lead was already converted by another user', 'CONFLICT', { status: 409, request });
+    }
+    throw error;
+  }
 
   return apiSuccess(result, { status: 201, request });
 }, { requiredPermission: 'crm.leads.edit' });

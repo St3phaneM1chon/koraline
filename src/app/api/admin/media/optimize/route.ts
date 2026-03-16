@@ -67,8 +67,23 @@ export const POST = withAdminGuard(async (request: Request) => {
           continue;
         }
 
+        // SECURITY: Validate URL to prevent SSRF - only allow trusted storage domains
+        let parsedUrl: URL;
+        try {
+          parsedUrl = new URL(media.url);
+        } catch {
+          results.push({ id: media.id, name: media.originalName, status: 'error', error: 'Invalid URL' });
+          continue;
+        }
+        const trustedHosts = ['blob.core.windows.net', 'azurewebsites.net', 'biocyclepeptides.com'];
+        const isTrusted = trustedHosts.some(h => parsedUrl.hostname.endsWith(h));
+        if (!isTrusted && parsedUrl.hostname !== 'localhost') {
+          results.push({ id: media.id, name: media.originalName, status: 'error', error: 'Untrusted URL domain' });
+          continue;
+        }
+
         // Fetch the image from its URL
-        const response = await fetch(media.url);
+        const response = await fetch(media.url, { signal: AbortSignal.timeout(10000) });
         if (!response.ok) {
           results.push({
             id: media.id,

@@ -7,6 +7,7 @@ export const dynamic = 'force-dynamic';
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import crypto from 'crypto';
 import { auth } from '@/lib/auth-config';
 import { validateCsrf } from '@/lib/csrf-middleware';
 import { db } from '@/lib/db';
@@ -64,9 +65,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid image file' }, { status: 400 });
     }
 
-    // Upload via storage service
-    const ext = file.name.split('.').pop() || 'jpg';
-    const filename = `avatar-${session.user.id}-${Date.now()}.${ext}`;
+    // SECURITY: Derive extension from magic bytes, not user-supplied filename.
+    // Prevents double-extension attacks (e.g., image.jpg.php)
+    const ext = isJpeg ? 'jpg' : isPng ? 'png' : isWebp ? 'webp' : isGif ? 'gif' : 'jpg';
+    const filename = `avatar-${session.user.id}-${Date.now()}-${crypto.randomUUID().slice(0, 8)}.${ext}`;
     const result = await storage.upload(buffer, filename, file.type, { folder: 'avatars' });
 
     // Delete old avatar from storage if it exists

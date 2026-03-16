@@ -81,22 +81,21 @@ export const POST = withAdminGuard(async (
       ? Math.floor((Date.now() - lastHistoryEntry.createdAt.getTime()) / 1000)
       : Math.floor((Date.now() - deal.createdAt.getTime()) / 1000);
 
-    // Execute move in a transaction
+    // Execute move in a transaction with atomic stage guard
     const updatedDeal = await prisma.$transaction(async (tx) => {
-      // Build deal update data
-      const dealUpdateData: Record<string, unknown> = {
-        stageId: newStageId,
-      };
-
-      // If new stage is won or lost, set actualCloseDate
-      if (newStage.isWon || newStage.isLost) {
-        dealUpdateData.actualCloseDate = new Date();
+      // RACE CONDITION FIX: Atomic claim — only move if still at expected stage.
+      // Prevents concurrent stage transitions from corrupting deal state.
+      const { count: claimed } = await tx.crmDeal.updateMany({
+        where: { id, stageId: deal.stageId },
+        data: { stageId: newStageId, ...(newStage.isWon || newStage.isLost ? { actualCloseDate: new Date() } : {}) },
+      });
+      if (claimed === 0) {
+        throw new Error('STAGE_CONFLICT');
       }
 
-      // Update deal stage
-      const updated = await tx.crmDeal.update({
+      // Re-read the updated deal with includes
+      const updated = await tx.crmDeal.findUniqueOrThrow({
         where: { id },
-        data: dealUpdateData,
         include: {
           stage: { select: { id: true, name: true, color: true, probability: true, isWon: true, isLost: true } },
           assignedTo: { select: { id: true, name: true, email: true } },
@@ -181,6 +180,10 @@ export const POST = withAdminGuard(async (
 
     return apiSuccess(updatedDeal, { request });
   } catch (error) {
+    // Handle atomic stage conflict (another user moved the deal concurrently)
+    if (error instanceof Error && error.message === 'STAGE_CONFLICT') {
+      return apiError('Deal stage was changed by another user. Please refresh and try again.', ErrorCode.VALIDATION_ERROR, { request, status: 409 });
+    }
     logger.error('[crm/deals/[id]/move] POST error', {
       error: error instanceof Error ? error.message : String(error),
     });
