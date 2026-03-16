@@ -66,11 +66,24 @@ export const POST = withAdminGuard(async (request, { session }) => {
     const where: Record<string, unknown> = { reconciliationStatus: 'PENDING', deletedAt: null };
     if (bankAccountId) where.bankAccountId = bankAccountId;
 
-    const dbTransactions = await prisma.bankTransaction.findMany({
-      where,
-      orderBy: { date: 'desc' },
-      take: maxBatchSize, // Process in batches to control memory usage
-    });
+    // Fetch bank transactions + journal entries in parallel (independent queries)
+    const [dbTransactions, dbEntries] = await Promise.all([
+      prisma.bankTransaction.findMany({
+        where,
+        orderBy: { date: 'desc' },
+        take: maxBatchSize,
+      }),
+      prisma.journalEntry.findMany({
+        where: { status: 'POSTED', deletedAt: null },
+        include: {
+          lines: {
+            include: { account: { select: { code: true, name: true } } },
+          },
+        },
+        orderBy: { date: 'desc' },
+        take: 1000,
+      }),
+    ]);
 
     const bankTransactions = dbTransactions.map((t) => ({
       id: t.id,
@@ -82,19 +95,6 @@ export const POST = withAdminGuard(async (request, { session }) => {
       reconciliationStatus: t.reconciliationStatus,
       importedAt: t.importedAt,
     }));
-
-    // Fetch posted journal entries for matching
-    const dbEntries = await prisma.journalEntry.findMany({
-      where: { status: 'POSTED', deletedAt: null },
-      include: {
-        lines: {
-          include: { account: { select: { code: true, name: true } } },
-        },
-      },
-      orderBy: { date: 'desc' },
-      // Fetch enough entries to cover reconciliation matching across a wide period
-      take: 1000,
-    });
 
     const journalEntries = dbEntries.map((e) => ({
       id: e.id,

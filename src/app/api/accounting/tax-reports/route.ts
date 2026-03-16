@@ -155,9 +155,9 @@ export const POST = withAdminGuard(async (request) => {
       endDate = new Date(Date.UTC(year, 11, 31, 23, 59, 59, 999));
     }
 
-    // Calculate taxes collected from paid orders
-    // Safety limit to prevent unbounded queries on large datasets
-    // Map regionCode to shippingState for filtering (e.g. QC, ON, BC)
+    // Calculate taxes from paid orders + supplier invoices using aggregate
+    // FIX: F083 - Use aggregate(_sum) instead of findMany+reduce to avoid loading
+    // up to 10k rows into memory. Aggregate runs in the DB, no row limit.
     const regionFilter: Record<string, unknown> = {
       paymentStatus: 'PAID',
       createdAt: { gte: startDate, lte: endDate },
@@ -165,37 +165,32 @@ export const POST = withAdminGuard(async (request) => {
     if (regionCode && regionCode !== 'ALL') {
       regionFilter.shippingState = regionCode;
     }
-    // FIX: F083 - TODO: Replace findMany+take with aggregate SQL for high-volume businesses
-    // Currently capped at 10000 orders which may miss data for large enterprises
-    const orders = await prisma.order.findMany({
-      where: regionFilter,
-      select: { taxTps: true, taxTvq: true, taxTvh: true, total: true },
-      take: 10000,
-    });
 
-    const tpsCollected = roundCurrency(orders.reduce((s, o) => s + Number(o.taxTps), 0));
-    const tvqCollected = roundCurrency(orders.reduce((s, o) => s + Number(o.taxTvq), 0));
-    const tvhCollected = roundCurrency(orders.reduce((s, o) => s + Number(o.taxTvh), 0));
-    const totalSales = roundCurrency(orders.reduce((s, o) => s + Number(o.total), 0));
+    const [orderAgg, supplierAgg] = await Promise.all([
+      prisma.order.aggregate({
+        where: regionFilter,
+        _sum: { taxTps: true, taxTvq: true, taxTvh: true, total: true },
+        _count: true,
+      }),
+      // FIX: F016 - Include taxOther (SupplierInvoice stores HST/TVH in taxOther)
+      prisma.supplierInvoice.aggregate({
+        where: {
+          status: { in: ['PAID', 'PARTIAL'] },
+          invoiceDate: { gte: startDate, lte: endDate },
+        },
+        _sum: { taxTps: true, taxTvq: true, taxOther: true },
+      }),
+    ]);
 
-    // Calculate taxes paid from supplier invoices
-    // Safety limit to prevent unbounded queries on large datasets
-    // FIX: F016 - Include taxOther in the select. SupplierInvoice model uses taxOther
-    // as the field for HST/TVH amounts (the model has no dedicated taxTvh column).
-    const supplierInvoices = await prisma.supplierInvoice.findMany({
-      where: {
-        status: { in: ['PAID', 'PARTIAL'] },
-        invoiceDate: { gte: startDate, lte: endDate },
-      },
-      select: { taxTps: true, taxTvq: true, taxOther: true },
-      take: 10000,
-    });
+    const tpsCollected = roundCurrency(Number(orderAgg._sum.taxTps ?? 0));
+    const tvqCollected = roundCurrency(Number(orderAgg._sum.taxTvq ?? 0));
+    const tvhCollected = roundCurrency(Number(orderAgg._sum.taxTvh ?? 0));
+    const totalSales = roundCurrency(Number(orderAgg._sum.total ?? 0));
 
-    const tpsPaid = roundCurrency(supplierInvoices.reduce((s, i) => s + Number(i.taxTps), 0));
-    const tvqPaid = roundCurrency(supplierInvoices.reduce((s, i) => s + Number(i.taxTvq), 0));
-    // FIX: F016 - Use taxOther as a proxy for TVH paid (SupplierInvoice stores HST in taxOther).
-    // This replaces the hardcoded 0 that was previously used for tvhPaid.
-    const tvhPaid = roundCurrency(supplierInvoices.reduce((s, i) => s + Number(i.taxOther), 0));
+    const tpsPaid = roundCurrency(Number(supplierAgg._sum.taxTps ?? 0));
+    const tvqPaid = roundCurrency(Number(supplierAgg._sum.taxTvq ?? 0));
+    // FIX: F016 - Use taxOther as a proxy for TVH paid
+    const tvhPaid = roundCurrency(Number(supplierAgg._sum.taxOther ?? 0));
 
     const netTps = roundCurrency(tpsCollected - tpsPaid);
     const netTvq = roundCurrency(tvqCollected - tvqPaid);
@@ -234,7 +229,7 @@ export const POST = withAdminGuard(async (request) => {
         netTvq,
         netTvh,
         netTotal,
-        salesCount: orders.length,
+        salesCount: orderAgg._count,
         totalSales,
         status: 'GENERATED',
         dueDate,

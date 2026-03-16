@@ -174,85 +174,70 @@ export const GET = withAdminGuard(async (request: NextRequest) => {
     }
 
     // ---------------------------------------------------------------
-    // 3. Fetch invoices in the period
+    // 3. Fetch ALL invoices for this customer in a single query
+    //    Then split by date range in code (eliminates 3 separate queries)
     // ---------------------------------------------------------------
-    const invoicesInPeriod = await prisma.customerInvoice.findMany({
+    const allCustomerInvoices = await prisma.customerInvoice.findMany({
       where: {
         ...customerFilter,
         deletedAt: null,
-        invoiceDate: {
-          gte: dateFrom,
-          lte: dateToEnd,
-        },
       },
       orderBy: { invoiceDate: 'asc' },
     });
 
-    // ---------------------------------------------------------------
-    // 4. Calculate opening balance (invoices before dateFrom)
-    // ---------------------------------------------------------------
-    const priorInvoices = await prisma.customerInvoice.findMany({
-      where: {
-        ...customerFilter,
-        deletedAt: null,
-        invoiceDate: { lt: dateFrom },
-        status: { notIn: ['VOID', 'CANCELLED'] },
-      },
-      select: { balance: true, customerName: true },
-    });
+    // Split invoices by date range in code
+    const invoicesInPeriod = allCustomerInvoices.filter(
+      (inv) => inv.invoiceDate >= dateFrom && inv.invoiceDate <= dateToEnd
+    );
+    const priorInvoices = allCustomerInvoices.filter(
+      (inv) => inv.invoiceDate < dateFrom && inv.status !== 'VOID' && inv.status !== 'CANCELLED'
+    );
 
-    // Also count prior credit notes.
+    // ---------------------------------------------------------------
+    // 4. Calculate opening balance + fetch credit notes
+    // ---------------------------------------------------------------
     // CreditNote has its own customerName field, but no customerId.
-    // When filtering by customerId, we first find the customer's name from invoices,
-    // then filter credit notes by customerName for reliability (invoiceId is optional on CreditNote).
+    // When filtering by customerId, we find the customer's name from invoices,
+    // then filter credit notes by customerName for reliability.
     let creditNoteNameToFilter: string | null = null;
     if (customerId) {
-      // Use customer name from prior invoices, or from invoicesInPeriod (already fetched above)
-      const nameSource = priorInvoices.length > 0
-        ? priorInvoices[0]
-        : invoicesInPeriod.length > 0
-          ? invoicesInPeriod[0]
-          : await prisma.customerInvoice.findFirst({
-              where: { customerId, deletedAt: null },
-              select: { customerName: true },
-            });
+      const nameSource = allCustomerInvoices.length > 0
+        ? allCustomerInvoices[0]
+        : await prisma.customerInvoice.findFirst({
+            where: { customerId, deletedAt: null },
+            select: { customerName: true },
+          });
       creditNoteNameToFilter = nameSource?.customerName || null;
     } else {
       creditNoteNameToFilter = customerName;
     }
 
-    const priorCreditNotes = creditNoteNameToFilter
-      ? await prisma.creditNote.findMany({
-          where: {
-            customerName: creditNoteNameToFilter,
-            deletedAt: null,
-            createdAt: { lt: dateFrom },
-            status: { notIn: ['VOID'] },
-          },
-          select: { total: true },
-        })
-      : [];
+    // Fetch both credit note queries in parallel
+    const [priorCreditNotes, creditNotesInPeriod] = creditNoteNameToFilter
+      ? await Promise.all([
+          prisma.creditNote.findMany({
+            where: {
+              customerName: creditNoteNameToFilter,
+              deletedAt: null,
+              createdAt: { lt: dateFrom },
+              status: { notIn: ['VOID'] },
+            },
+            select: { total: true },
+          }),
+          prisma.creditNote.findMany({
+            where: {
+              customerName: creditNoteNameToFilter,
+              deletedAt: null,
+              createdAt: { gte: dateFrom, lte: dateToEnd },
+              status: { notIn: ['VOID'] },
+            },
+            orderBy: { createdAt: 'asc' },
+          }),
+        ])
+      : [[], []];
 
     const openingBalance = priorInvoices.reduce((sum, inv) => sum + toNum(inv.balance), 0)
       - priorCreditNotes.reduce((sum, cn) => sum + toNum(cn.total), 0);
-
-    // ---------------------------------------------------------------
-    // 5. Fetch credit notes in the period
-    // ---------------------------------------------------------------
-    const creditNotesInPeriod = creditNoteNameToFilter
-      ? await prisma.creditNote.findMany({
-          where: {
-            customerName: creditNoteNameToFilter,
-            deletedAt: null,
-            createdAt: {
-              gte: dateFrom,
-              lte: dateToEnd,
-            },
-            status: { notIn: ['VOID'] },
-          },
-          orderBy: { createdAt: 'asc' },
-        })
-      : [];
 
     // ---------------------------------------------------------------
     // 6. Build line items
@@ -330,16 +315,11 @@ export const GET = withAdminGuard(async (request: NextRequest) => {
     const closingBalance = Math.round(runningBalance * 100) / 100;
 
     // ---------------------------------------------------------------
-    // 8. Status summary (across all non-deleted invoices for this customer)
+    // 8. Status summary (reuse allCustomerInvoices — no extra query needed)
     // ---------------------------------------------------------------
-    const allInvoices = await prisma.customerInvoice.findMany({
-      where: {
-        ...customerFilter,
-        deletedAt: null,
-        status: { notIn: ['VOID', 'CANCELLED'] },
-      },
-      select: { status: true, balance: true, dueDate: true },
-    });
+    const allInvoices = allCustomerInvoices.filter(
+      (inv) => inv.status !== 'VOID' && inv.status !== 'CANCELLED'
+    );
 
     const statusSummary = {
       draft: 0,
