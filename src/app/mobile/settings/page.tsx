@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Bell, Wifi, HardDrive, Trash2 } from 'lucide-react';
 import { getOfflineStatus, getStorageEstimate, clearCaches, requestNotificationPermission, processSyncQueue } from '@/lib/accounting/pwa.service';
 import { useI18n } from '@/i18n/client';
+import { addCSRFHeader } from '@/lib/csrf';
 
 export default function MobileSettings() {
   const [prefs, setPrefs] = useState({ overdueInvoices: true, taxReminders: true, dailySummary: false, paymentReceived: true });
@@ -26,7 +27,7 @@ export default function MobileSettings() {
     try {
       const updated = { ...prefs, [key]: !prefs[key] };
       setPrefs(updated);
-      await fetch('/api/mobile/notifications', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(updated) });
+      await fetch('/api/mobile/notifications', { method: 'PUT', headers: addCSRFHeader({ 'Content-Type': 'application/json' }), body: JSON.stringify(updated) });
     } finally {
       setIsToggling(null);
     }

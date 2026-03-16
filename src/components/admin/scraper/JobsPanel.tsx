@@ -15,6 +15,7 @@ import {
   X,
 } from 'lucide-react';
 import { useTranslations } from '@/hooks/useTranslations';
+import { addCSRFHeader } from '@/lib/csrf';
 import type { ScrapeJobInfo } from './types';
 
 interface JobsPanelProps {
@@ -128,7 +129,7 @@ export default function JobsPanel({ visible, onClose }: JobsPanelProps) {
 
   const handleCancel = async (jobId: string) => {
     try {
-      await fetch(`/api/admin/scraper/jobs/${jobId}`, { method: 'DELETE' });
+      await fetch(`/api/admin/scraper/jobs/${jobId}`, { method: 'DELETE', headers: addCSRFHeader({}) });
       fetchJobs();
     } catch {
       setError('Failed to cancel job');
@@ -139,7 +140,7 @@ export default function JobsPanel({ visible, onClose }: JobsPanelProps) {
     try {
       await fetch('/api/admin/scraper/jobs', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({
           query: job.query,
           engine: job.engine,

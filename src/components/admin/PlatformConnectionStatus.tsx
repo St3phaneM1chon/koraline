@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { CheckCircle2, XCircle, Link2, Unlink, Loader2, RefreshCw } from 'lucide-react';
 import { useI18n } from '@/i18n/client';
 import { toast } from 'sonner';
+import { addCSRFHeader } from '@/lib/csrf';
 
 interface ConnectionInfo {
   isConnected: boolean;
@@ -84,7 +85,7 @@ export function PlatformConnectionStatus({ platform, usesOAuth = true }: Platfor
 
     setActionLoading(true);
     try {
-      const res = await fetch(`/api/admin/platform-connections/${platform}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/platform-connections/${platform}`, { method: 'DELETE', headers: addCSRFHeader({}) });
       if (res.ok) {
         toast.success(t('admin.platformConnections.disconnected') || 'Platform disconnected');
         loadStatus();
@@ -101,7 +102,7 @@ export function PlatformConnectionStatus({ platform, usesOAuth = true }: Platfor
   const handleTest = async () => {
     setActionLoading(true);
     try {
-      const res = await fetch(`/api/admin/platform-connections/${platform}/test`, { method: 'POST' });
+      const res = await fetch(`/api/admin/platform-connections/${platform}/test`, { method: 'POST', headers: addCSRFHeader({}) });
       const data = await res.json();
       if (data.success) {
         toast.success(data.message || t('admin.platformConnections.testSuccess') || 'Connection OK');

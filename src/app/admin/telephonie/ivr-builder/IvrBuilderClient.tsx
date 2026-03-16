@@ -28,6 +28,7 @@ import {
   Users,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { addCSRFHeader } from '@/lib/csrf';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -211,13 +212,13 @@ export default function IvrBuilderClient({
       if (editingMenuId) {
         res = await fetch(`/api/voip/ivr/${editingMenuId}`, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
           body: JSON.stringify(payload),
         });
       } else {
         res = await fetch('/api/voip/ivr', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
           body: JSON.stringify(payload),
         });
       }
@@ -265,7 +266,7 @@ export default function IvrBuilderClient({
       if (!confirm(t('voip.admin.ivrEditor.confirmDelete'))) return;
       setDeleting(true);
       try {
-        const res = await fetch(`/api/voip/ivr/${menuId}`, { method: 'DELETE' });
+        const res = await fetch(`/api/voip/ivr/${menuId}`, { method: 'DELETE', headers: addCSRFHeader({}) });
         if (!res.ok) throw new Error('Failed to delete');
         setMenus((prev) => prev.filter((m) => m.id !== menuId));
         if (selectedMenuId === menuId) {

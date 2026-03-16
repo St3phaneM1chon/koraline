@@ -140,7 +140,7 @@ function SettingsContent() {
     try {
       const res = await fetch('/api/account/profile', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: JSON.stringify(profileData),
       });
       
@@ -184,7 +184,7 @@ function SettingsContent() {
     try {
       const res = await fetch('/api/account/password', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: JSON.stringify({
           currentPassword: passwordData.currentPassword,
           newPassword: passwordData.newPassword,
@@ -220,7 +220,7 @@ function SettingsContent() {
       // Also save to backend
       await fetch('/api/account/address', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: JSON.stringify(addressData),
       });
 

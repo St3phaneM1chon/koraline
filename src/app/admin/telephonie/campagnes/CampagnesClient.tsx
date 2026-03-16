@@ -10,6 +10,7 @@ import {
   Megaphone, Plus, Pencil, Trash2, X, Check, Phone, Users, BarChart3,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { addCSRFHeader } from '@/lib/csrf';
 
 interface Campaign {
   id: string;
@@ -110,7 +111,7 @@ export default function CampagnesClient({
 
       const res = await fetch('/api/admin/voip/campaigns', {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(body),
       });
       if (!res.ok) {
@@ -138,7 +139,7 @@ export default function CampagnesClient({
     if (!confirm(t('common.confirmDelete'))) return;
     setDeletingId(id);
     try {
-      const res = await fetch(`/api/admin/voip/campaigns?id=${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/voip/campaigns?id=${id}`, { method: 'DELETE', headers: addCSRFHeader({}) });
       if (!res.ok) {
         toast.error('Failed');
         return;

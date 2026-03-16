@@ -11,6 +11,7 @@ import {
   CheckCircle, XCircle, Loader2,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { addCSRFHeader } from '@/lib/csrf';
 
 type Provider = 'telnyx' | 'voipms';
 
@@ -42,7 +43,7 @@ export default function ConnectionsClient({ initialConnections }: { initialConne
     try {
       const res = await fetch('/api/admin/voip/connections', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(form),
       });
       if (!res.ok) throw new Error('Failed to save');
@@ -68,7 +69,7 @@ export default function ConnectionsClient({ initialConnections }: { initialConne
     try {
       const res = await fetch('/api/admin/voip/connections', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({ provider }),
       });
       const data = await res.json();
@@ -87,7 +88,7 @@ export default function ConnectionsClient({ initialConnections }: { initialConne
   const handleDelete = async (provider: string) => {
     if (!confirm(t('voip.connections.confirmDelete'))) return;
     try {
-      await fetch(`/api/admin/voip/connections?provider=${provider}`, { method: 'DELETE' });
+      await fetch(`/api/admin/voip/connections?provider=${provider}`, { method: 'DELETE', headers: addCSRFHeader({}) });
       setConnections((prev) => prev.filter((c) => c.provider !== provider));
       toast.success(t('voip.connections.deleted'));
     } catch {

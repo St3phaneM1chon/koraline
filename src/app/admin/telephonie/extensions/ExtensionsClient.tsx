@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useI18n } from '@/i18n/client';
 import { Headphones, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { addCSRFHeader } from '@/lib/csrf';
 
 interface Extension {
   id: string;
@@ -28,7 +29,7 @@ export default function ExtensionsClient({ extensions: initial }: { extensions: 
     try {
       const res = await fetch('/api/admin/voip/extensions', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(form),
       });
       if (!res.ok) {
@@ -49,7 +50,7 @@ export default function ExtensionsClient({ extensions: initial }: { extensions: 
   const handleDelete = async (id: string) => {
     if (!confirm(t('common.confirmDelete'))) return;
     try {
-      await fetch(`/api/admin/voip/extensions?id=${id}`, { method: 'DELETE' });
+      await fetch(`/api/admin/voip/extensions?id=${id}`, { method: 'DELETE', headers: addCSRFHeader({}) });
       setExtensions((prev) => prev.filter((e) => e.id !== id));
       toast.success(t('common.deleted'));
     } catch {

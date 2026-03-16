@@ -10,6 +10,7 @@ import {
   Users, Plus, Pencil, Trash2, X, Check, UserPlus, UserMinus, Clock,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { addCSRFHeader } from '@/lib/csrf';
 
 interface QueueMember {
   id: string;
@@ -113,7 +114,7 @@ export default function GroupesClient({
 
       const res = await fetch('/api/admin/voip/ring-groups', {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(body),
       });
       if (!res.ok) {
@@ -141,7 +142,7 @@ export default function GroupesClient({
     if (!confirm(t('common.confirmDelete'))) return;
     setDeletingId(id);
     try {
-      const res = await fetch(`/api/admin/voip/ring-groups?id=${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/voip/ring-groups?id=${id}`, { method: 'DELETE', headers: addCSRFHeader({}) });
       if (!res.ok) {
         toast.error('Failed');
         return;

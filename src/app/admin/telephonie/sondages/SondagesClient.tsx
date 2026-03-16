@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useI18n } from '@/i18n/client';
 import { ClipboardCheck, Plus, Pencil, Trash2, X, ToggleLeft, ToggleRight, BarChart3 } from 'lucide-react';
 import { toast } from 'sonner';
+import { addCSRFHeader } from '@/lib/csrf';
 
 interface SurveyQuestion {
   id: string;
@@ -109,7 +110,7 @@ export default function SondagesClient({
         : '/api/admin/voip/surveys';
       const res = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(payload),
       });
       if (!res.ok) {
@@ -138,7 +139,7 @@ export default function SondagesClient({
     try {
       const res = await fetch(`/api/admin/voip/surveys?id=${survey.id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({ ...survey, active: !survey.active }),
       });
       if (!res.ok) {
@@ -159,7 +160,7 @@ export default function SondagesClient({
     if (!confirm(t('common.confirmDelete'))) return;
     setDeletingId(survey.id);
     try {
-      await fetch(`/api/admin/voip/surveys?id=${survey.id}`, { method: 'DELETE' });
+      await fetch(`/api/admin/voip/surveys?id=${survey.id}`, { method: 'DELETE', headers: addCSRFHeader({}) });
       setSurveys((prev) => prev.filter((s) => s.id !== survey.id));
       toast.success(t('common.deleted'));
     } catch {
