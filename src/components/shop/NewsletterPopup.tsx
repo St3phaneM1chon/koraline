@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { useI18n } from '@/i18n/client';
+import { addCSRFHeader } from '@/lib/csrf';
 
 export default function NewsletterPopup() {
   const { t } = useI18n();
@@ -120,7 +121,7 @@ export default function NewsletterPopup() {
       // CASL-compliant: Use double opt-in endpoint
       const response = await fetch('/api/mailing-list/subscribe', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({
           email,
           consentMethod: 'popup',

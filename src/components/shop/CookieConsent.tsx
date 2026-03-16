@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useI18n } from '@/i18n/client';
+import { addCSRFHeader } from '@/lib/csrf';
 
 export default function CookieConsent() {
   const { t } = useI18n();
@@ -39,7 +40,7 @@ export default function CookieConsent() {
 
     fetch('/api/consent', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
       body: JSON.stringify(payload),
     }).catch(() => {
       // Silent catch - localStorage already records the choice for UI,

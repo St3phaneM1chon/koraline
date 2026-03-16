@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Mail, Check, AlertCircle } from 'lucide-react';
 import { useI18n } from '@/i18n/client';
+import { addCSRFHeader } from '@/lib/csrf';
 
 export default function MailingListSignup() {
   const { t } = useI18n();
@@ -19,7 +20,7 @@ export default function MailingListSignup() {
     try {
       const res = await fetch('/api/mailing-list/subscribe', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({ email, name, consentMethod: 'website_form' }),
       });
       const data = await res.json();

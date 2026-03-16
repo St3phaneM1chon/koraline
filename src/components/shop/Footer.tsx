@@ -7,6 +7,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useI18n } from '@/i18n/client';
+import { addCSRFHeader } from '@/lib/csrf';
 
 export default function Footer() {
   const { t } = useI18n();
@@ -22,7 +23,7 @@ export default function Footer() {
     try {
       const res = await fetch('/api/newsletter', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({ email }),
       });
       const data = await res.json();
@@ -69,14 +70,14 @@ export default function Footer() {
               📧 <a href="mailto:info@biocyclepeptides.com" className="text-primary-400 hover:underline">info@biocyclepeptides.com</a>
             </p>
             <p className="text-neutral-300 text-sm">
-              📍 Montreal, Quebec, Canada
+              📍 {t('footer.location') || 'Montréal, Québec, Canada'}
             </p>
 
             {/* Trust Badges */}
             <div className="flex items-center gap-4 mt-4 text-xs text-neutral-300">
-              <span>✓ 99%+ Purity</span>
-              <span>✓ Lab Tested</span>
-              <span>✓ Made in Canada</span>
+              <span>✓ {t('footer.trustPurity')}</span>
+              <span>✓ {t('footer.trustLabTested')}</span>
+              <span>✓ {t('footer.trustMadeInCanada')}</span>
             </div>
           </div>
 
