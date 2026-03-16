@@ -218,9 +218,9 @@ function breadcrumbSchema(postTitle: string, slug: string) {
 // Helpers
 // ---------------------------------------------------------------------------
 
-function formatDate(date: Date | null): string {
+function formatDate(date: Date | null, locale: string = 'en'): string {
   if (!date) return '';
-  return date.toLocaleDateString('fr-FR', {
+  return date.toLocaleDateString(locale, {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
@@ -302,7 +302,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
         <p style={{ fontSize: '14px', opacity: 0.8 }}>
           {post.author && <span>{post.author} &bull; </span>}
-          {formatDate(post.publishedAt)}
+          {formatDate(post.publishedAt, locale)}
           {post.readTime && <span> &bull; {post.readTime} {t('blog.readTime') || 'min de lecture'}</span>}
         </p>
       </section>

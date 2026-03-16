@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useI18n } from '@/i18n/client';
 
 interface NewsArticle {
   id: string;
@@ -35,10 +36,10 @@ const typeColors: Record<string, string> = {
   'certification': '#06b6d4',
 };
 
-function formatDate(dateStr: string | null): string {
+function formatDate(dateStr: string | null, locale: string = 'en'): string {
   if (!dateStr) return '';
   const date = new Date(dateStr);
-  return date.toLocaleDateString('fr-FR', {
+  return date.toLocaleDateString(locale, {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
@@ -46,6 +47,7 @@ function formatDate(dateStr: string | null): string {
 }
 
 export default function NewsPage() {
+  const { locale } = useI18n();
   const [articles, setArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -135,7 +137,7 @@ export default function NewsPage() {
                     >
                       {item.type}
                     </span>
-                    <span style={{ fontSize: '13px', color: 'var(--gray-400)' }}>{formatDate(item.publishedAt)}</span>
+                    <span style={{ fontSize: '13px', color: 'var(--gray-400)' }}>{formatDate(item.publishedAt, locale)}</span>
                   </div>
                   <h3 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '12px', color: 'var(--gray-500)' }}>
                     {item.title}
@@ -173,7 +175,7 @@ export default function NewsPage() {
                   }}
                 >
                   <div style={{ width: '100px', flexShrink: 0 }}>
-                    <span style={{ fontSize: '13px', color: 'var(--gray-400)' }}>{formatDate(item.publishedAt)}</span>
+                    <span style={{ fontSize: '13px', color: 'var(--gray-400)' }}>{formatDate(item.publishedAt, locale)}</span>
                   </div>
                   <div>
                     <div style={{ display: 'flex', gap: '12px', marginBottom: '8px', alignItems: 'center' }}>

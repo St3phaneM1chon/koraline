@@ -122,9 +122,9 @@ function blogListSchema(posts: BlogPostRow[]) {
 // Helpers
 // ---------------------------------------------------------------------------
 
-function formatDate(date: Date | null): string {
+function formatDate(date: Date | null, locale: string = 'en'): string {
   if (!date) return '';
-  return date.toLocaleDateString('fr-FR', {
+  return date.toLocaleDateString(locale, {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
@@ -328,7 +328,7 @@ export default async function BlogPage() {
                   {featuredPost.excerpt}
                 </p>
                 <p style={{ fontSize: '13px', color: 'var(--gray-400)' }}>
-                  {featuredPost.author} &bull; {formatDate(featuredPost.publishedAt)} &bull;{' '}
+                  {featuredPost.author} &bull; {formatDate(featuredPost.publishedAt, locale)} &bull;{' '}
                   {featuredPost.readTime} {t('blog.readTime') || 'min de lecture'}
                 </p>
               </div>
@@ -442,7 +442,7 @@ export default async function BlogPage() {
                     {post.excerpt}
                   </p>
                   <p style={{ fontSize: '12px', color: 'var(--gray-400)' }}>
-                    {formatDate(post.publishedAt)} &bull; {post.readTime} min
+                    {formatDate(post.publishedAt, locale)} &bull; {post.readTime} min
                   </p>
                 </div>
               </Link>

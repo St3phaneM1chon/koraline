@@ -68,15 +68,20 @@ export const GET = withAdminGuard(async (_request, { params }) => {
     `;
 
     // A7-P2-008: Flatten 3-level include into separate queries
-    // (was: userPermissionGroup -> group -> permissions -> permission)
-    const userPermGroups = await prisma.userPermissionGroup.findMany({
-      where: { userId: id },
-      include: {
-        group: { select: { id: true, name: true, description: true, color: true } },
-      },
-    });
+    // Parallelize userPermGroups + overrides (both depend only on id)
+    const [userPermGroups, overrides] = await Promise.all([
+      prisma.userPermissionGroup.findMany({
+        where: { userId: id },
+        include: {
+          group: { select: { id: true, name: true, description: true, color: true } },
+        },
+      }),
+      prisma.userPermissionOverride.findMany({
+        where: { userId: id },
+      }),
+    ]);
 
-    // Fetch group permissions separately to avoid 3-level nesting
+    // Fetch group permissions (depends on userPermGroups result)
     const groupIds = userPermGroups.map((upg) => upg.groupId);
     const groupPerms = groupIds.length > 0
       ? await prisma.permissionGroupPermission.findMany({
@@ -100,11 +105,6 @@ export const GET = withAdminGuard(async (_request, { params }) => {
       color: upg.group.color,
       permissions: permsByGroupId.get(upg.groupId) || [],
     }));
-
-    // Get individual overrides
-    const overrides = await prisma.userPermissionOverride.findMany({
-      where: { userId: id },
-    });
 
     // Combine all permissions
     const groupPermissions = groups.flatMap((g) =>

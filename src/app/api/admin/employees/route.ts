@@ -72,15 +72,20 @@ export const GET = withAdminGuard(async (request: NextRequest, _ctx) => {
     const hasPasswordMap = new Map(passwordChecks.map((r) => [r.id, r.hasPassword]));
 
     // A7-P2-008: Flatten 3-level include into separate queries
-    // (was: userPermissionGroup -> group -> permissions -> permission)
-    const userPermGroups = await prisma.userPermissionGroup.findMany({
-      where: { userId: { in: userIds } },
-      include: {
-        group: { select: { id: true, name: true } },
-      },
-    });
+    // Parallelize userPermGroups + overrides (both depend only on userIds)
+    const [userPermGroups, overrides] = await Promise.all([
+      prisma.userPermissionGroup.findMany({
+        where: { userId: { in: userIds } },
+        include: {
+          group: { select: { id: true, name: true } },
+        },
+      }),
+      prisma.userPermissionOverride.findMany({
+        where: { userId: { in: userIds } },
+      }),
+    ]);
 
-    // Fetch group permissions in a separate flat query
+    // Fetch group permissions (depends on userPermGroups result)
     const groupIds = [...new Set(userPermGroups.map((upg) => upg.groupId))];
     const groupPermissions = groupIds.length > 0
       ? await prisma.permissionGroupPermission.findMany({
@@ -116,11 +121,6 @@ export const GET = withAdminGuard(async (request: NextRequest, _ctx) => {
       }
       permissionsByUser.set(upg.userId, existing);
     }
-
-    // Also get individual overrides
-    const overrides = await prisma.userPermissionOverride.findMany({
-      where: { userId: { in: userIds } },
-    });
 
     const overridesByUser = new Map<string, string[]>();
     for (const override of overrides) {
