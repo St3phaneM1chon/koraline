@@ -7,15 +7,28 @@ export const dynamic = 'force-dynamic';
 
 import { NextRequest } from 'next/server';
 import { Prisma } from '@prisma/client';
-import { withApiAuth, jsonSuccess } from '@/lib/api/api-auth.middleware';
+import { withApiAuth, jsonSuccess, jsonError } from '@/lib/api/api-auth.middleware';
 import { prisma } from '@/lib/db';
 
-export const GET = withApiAuth(async (request: NextRequest) => {
+export const GET = withApiAuth(async (request: NextRequest, { apiKey }) => {
   const url = new URL(request.url);
 
   const page = Math.max(1, parseInt(url.searchParams.get('page') || '1', 10));
   const limit = Math.min(100, Math.max(1, parseInt(url.searchParams.get('limit') || '20', 10)));
   const skip = (page - 1) * limit;
+
+  // SEC: Non-admin API keys can only list their own profile
+  if (!apiKey.isAdmin && apiKey.createdBy) {
+    return jsonSuccess([await prisma.user.findUnique({
+      where: { id: apiKey.createdBy },
+      select: {
+        id: true, email: true, name: true, phone: true, locale: true,
+        loyaltyPoints: true, lifetimePoints: true, loyaltyTier: true,
+        referralCode: true, createdAt: true, updatedAt: true,
+        _count: { select: { orders: true, reviews: true } },
+      },
+    })].filter(Boolean), { page: 1, limit: 1, total: 1, totalPages: 1 });
+  }
 
   const search = url.searchParams.get('search');
   const loyaltyTier = url.searchParams.get('loyaltyTier');

@@ -9,16 +9,22 @@ import { NextRequest } from 'next/server';
 import { withApiAuth, jsonSuccess, jsonError } from '@/lib/api/api-auth.middleware';
 import { prisma } from '@/lib/db';
 
-export const GET = withApiAuth(async (_request: NextRequest, { params }) => {
+export const GET = withApiAuth(async (_request: NextRequest, { params, apiKey }) => {
   const id = params?.id;
   if (!id) {
     return jsonError('Invoice ID is required', 400);
   }
 
+  // SEC: Non-admin API keys can only access invoices for their own orders
+  const ownerFilter = (!apiKey.isAdmin && apiKey.createdBy)
+    ? { order: { userId: apiKey.createdBy } }
+    : {};
+
   const invoice = await prisma.customerInvoice.findFirst({
     where: {
       OR: [{ id }, { invoiceNumber: id }],
       deletedAt: null,
+      ...ownerFilter,
     },
     select: {
       id: true,

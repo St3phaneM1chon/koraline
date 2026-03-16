@@ -9,16 +9,22 @@ import { NextRequest } from 'next/server';
 import { withApiAuth, jsonSuccess, jsonError } from '@/lib/api/api-auth.middleware';
 import { prisma } from '@/lib/db';
 
-export const GET = withApiAuth(async (_request: NextRequest, { params }) => {
+export const GET = withApiAuth(async (_request: NextRequest, { params, apiKey }) => {
   const id = params?.id;
   if (!id) {
     return jsonError('Order ID is required', 400);
   }
 
+  // SEC: Non-admin API keys can only access their own orders
+  const ownerFilter = (!apiKey.isAdmin && apiKey.createdBy)
+    ? { userId: apiKey.createdBy }
+    : {};
+
   // Try finding by ID first, then by orderNumber
   const order = await prisma.order.findFirst({
     where: {
       OR: [{ id }, { orderNumber: id }],
+      ...ownerFilter,
     },
     select: {
       id: true,

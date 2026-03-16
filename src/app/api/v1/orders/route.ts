@@ -14,7 +14,7 @@ import { prisma } from '@/lib/db';
 import { add, multiply } from '@/lib/decimal-calculator';
 import { stripHtml } from '@/lib/sanitize';
 
-export const GET = withApiAuth(async (request: NextRequest) => {
+export const GET = withApiAuth(async (request: NextRequest, { apiKey }) => {
   const url = new URL(request.url);
 
   const page = Math.max(1, parseInt(url.searchParams.get('page') || '1', 10));
@@ -31,9 +31,20 @@ export const GET = withApiAuth(async (request: NextRequest) => {
 
   const where: Prisma.OrderWhereInput = {};
 
+  // SEC: Non-admin API keys can only see their own orders
+  if (!apiKey.isAdmin && apiKey.createdBy) {
+    where.userId = apiKey.createdBy;
+  }
+
   if (status) where.status = status;
   if (paymentStatus) where.paymentStatus = paymentStatus;
-  if (userId) where.userId = userId;
+  if (userId) {
+    // Non-admin keys cannot filter by arbitrary userId
+    if (!apiKey.isAdmin && apiKey.createdBy) {
+      return jsonError('Non-admin API keys cannot filter by userId', 403);
+    }
+    where.userId = userId;
+  }
   if (dateFrom || dateTo) {
     where.createdAt = {};
     if (dateFrom) where.createdAt.gte = new Date(dateFrom);

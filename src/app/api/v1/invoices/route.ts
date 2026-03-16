@@ -10,7 +10,7 @@ import { Prisma, InvoiceStatus } from '@prisma/client';
 import { withApiAuth, jsonSuccess } from '@/lib/api/api-auth.middleware';
 import { prisma } from '@/lib/db';
 
-export const GET = withApiAuth(async (request: NextRequest) => {
+export const GET = withApiAuth(async (request: NextRequest, { apiKey }) => {
   const url = new URL(request.url);
 
   const page = Math.max(1, parseInt(url.searchParams.get('page') || '1', 10));
@@ -29,8 +29,19 @@ export const GET = withApiAuth(async (request: NextRequest) => {
     deletedAt: null, // Only non-deleted invoices
   };
 
+  // SEC: Non-admin API keys can only see invoices for orders belonging to their creator
+  if (!apiKey.isAdmin && apiKey.createdBy) {
+    where.order = { userId: apiKey.createdBy };
+  }
+
   if (status) where.status = status as InvoiceStatus;
-  if (customerId) where.customerId = customerId;
+  if (customerId) {
+    // Non-admin keys cannot filter by arbitrary customerId
+    if (!apiKey.isAdmin && apiKey.createdBy) {
+      return jsonError('Non-admin API keys cannot filter by customerId', 403);
+    }
+    where.customerId = customerId;
+  }
   if (dateFrom || dateTo) {
     where.invoiceDate = {};
     if (dateFrom) where.invoiceDate.gte = new Date(dateFrom);

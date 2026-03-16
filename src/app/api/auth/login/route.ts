@@ -33,7 +33,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    let body: { email?: string; password?: string };
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        { message: 'Corps JSON invalide' },
+        { status: 400 }
+      );
+    }
     const { email, password } = body;
 
     // C-03 FIX: Input validation

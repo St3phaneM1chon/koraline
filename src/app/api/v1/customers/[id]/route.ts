@@ -9,10 +9,15 @@ import { NextRequest } from 'next/server';
 import { withApiAuth, jsonSuccess, jsonError } from '@/lib/api/api-auth.middleware';
 import { prisma } from '@/lib/db';
 
-export const GET = withApiAuth(async (_request: NextRequest, { params }) => {
+export const GET = withApiAuth(async (_request: NextRequest, { params, apiKey }) => {
   const id = params?.id;
   if (!id) {
     return jsonError('Customer ID is required', 400);
+  }
+
+  // SEC: Non-admin API keys can only access their own profile
+  if (!apiKey.isAdmin && apiKey.createdBy && id !== apiKey.createdBy) {
+    return jsonError('Access denied: you can only access your own customer profile', 403);
   }
 
   // Try by ID first, then by email

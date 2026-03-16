@@ -57,6 +57,10 @@ interface ApiKeyContext {
   apiKeyId: string;
   apiKeyName: string;
   permissions: string[];
+  /** userId of the key creator — used for ownership scoping (null for admin keys) */
+  createdBy: string | null;
+  /** True if the key has admin/* wildcard permissions */
+  isAdmin: boolean;
 }
 
 type ApiHandler = (
@@ -381,10 +385,14 @@ export function withApiAuth(handler: ApiHandler, requiredPermission: ApiPermissi
       }
 
       // 6. Execute handler
+      const parsedPerms: string[] = JSON.parse(apiKeyRecord.permissions);
+      const isAdmin = parsedPerms.includes('*') || parsedPerms.includes('admin');
       const apiKeyContext: ApiKeyContext = {
         apiKeyId: apiKeyRecord.id,
         apiKeyName: apiKeyRecord.name,
-        permissions: JSON.parse(apiKeyRecord.permissions),
+        permissions: parsedPerms,
+        createdBy: apiKeyRecord.createdBy || null,
+        isAdmin,
       };
 
       const response = await handler(request, { apiKey: apiKeyContext, params });

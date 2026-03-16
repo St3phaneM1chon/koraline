@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import bcrypt from 'bcryptjs';
+import { z } from 'zod';
 import {
   generateToken,
   formatUser,
@@ -11,7 +12,14 @@ import {
   getClientIp,
 } from '@/lib/auth-jwt';
 import { checkRateLimit } from '@/lib/rate-limiter';
+import { stripHtml } from '@/lib/sanitize';
 import { logger } from '@/lib/logger';
+
+const registerSchema = z.object({
+  name: z.string().max(200).optional(),
+  email: z.string().min(1).max(320),
+  password: z.string().min(1).max(200),
+});
 
 export async function POST(request: NextRequest) {
   const ip = getClientIp(request);
@@ -33,8 +41,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
-    const { name, email, password } = body;
+    let rawBody: unknown;
+    try {
+      rawBody = await request.json();
+    } catch {
+      return NextResponse.json(
+        { message: 'Corps JSON invalide' },
+        { status: 400 }
+      );
+    }
+
+    const parsed = registerSchema.safeParse(rawBody);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { message: 'Données d\'inscription invalides' },
+        { status: 400 }
+      );
+    }
+
+    const { name, email, password } = parsed.data;
 
     // C-03 FIX: Input validation
     if (!email || !password) {
@@ -75,11 +100,14 @@ export async function POST(request: NextRequest) {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
+    // Sanitize name to prevent stored XSS
+    const sanitizedName = name ? stripHtml(name).trim() : normalizedEmail.split('@')[0];
+
     // FIX: Default role is CUSTOMER (was incorrectly EMPLOYEE)
     const user = await prisma.user.create({
       data: {
         email: normalizedEmail,
-        name: name || normalizedEmail.split('@')[0],
+        name: sanitizedName,
         password: hashedPassword,
         emailVerified: new Date(),
         role: 'CUSTOMER',
