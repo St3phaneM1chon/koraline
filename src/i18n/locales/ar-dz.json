@@ -12397,6 +12397,7 @@
     "price": "السعر",
     "priceAsc": "السعر: من الأقل إلى الأعلى",
     "priceDesc": "السعر: من الأعلى إلى الأقل",
+    "product": "منتج",
     "productCount": "منتج",
     "productCount_one": "{count} منتج",
     "productCount_other": "{count} منتجات",
@@ -12569,6 +12570,12 @@
     "youSave": "أنت توفر",
     "cancelTitle": "إلغاء الاشتراك",
     "confirmCancelButton": "تأكيد الإلغاء"
+  },
+  "theme": {
+    "darkMode": "الوضع الداكن",
+    "lightMode": "الوضع الفاتح",
+    "switchToDark": "التبديل إلى الوضع الداكن",
+    "switchToLight": "التبديل إلى الوضع الفاتح"
   },
   "toast": {
     "address": {

@@ -12397,6 +12397,7 @@
     "price": "Pris",
     "priceAsc": "Pris: Lägst till högst",
     "priceDesc": "Pris: Högst till lägst",
+    "product": "produkt",
     "productCount": "produkt",
     "productCount_one": "{count} produkt",
     "productCount_other": "{count} produkter",
@@ -12569,6 +12570,12 @@
     "youSave": "Du sparar",
     "cancelTitle": "Avbryt prenumeration",
     "confirmCancelButton": "Bekräfta avbokning"
+  },
+  "theme": {
+    "darkMode": "Mörkt läge",
+    "lightMode": "Ljust läge",
+    "switchToDark": "Byt till mörkt läge",
+    "switchToLight": "Byt till ljust läge"
   },
   "toast": {
     "address": {

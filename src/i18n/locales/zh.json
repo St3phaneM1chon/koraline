@@ -12397,6 +12397,7 @@
     "price": "价格",
     "priceAsc": "价格：从低到高",
     "priceDesc": "价格：从高到低",
+    "product": "产品",
     "productCount": "产品",
     "productCount_one": "{count} 个产品",
     "productCount_other": "{count} 个产品",
@@ -12569,6 +12570,12 @@
     "youSave": "您节省了",
     "cancelTitle": "取消订阅",
     "confirmCancelButton": "确认取消"
+  },
+  "theme": {
+    "darkMode": "深色模式",
+    "lightMode": "浅色模式",
+    "switchToDark": "切换到深色模式",
+    "switchToLight": "切换到浅色模式"
   },
   "toast": {
     "address": {

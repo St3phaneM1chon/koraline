@@ -12397,6 +12397,7 @@
     "price": "ਕੀਮਤ",
     "priceAsc": "ਕੀਮਤ: ਘੱਟ ਤੋਂ ਵੱਧ",
     "priceDesc": "ਕੀਮਤ: ਵੱਧ ਤੋਂ ਘੱਟ",
+    "product": "ਉਤਪਾਦ",
     "productCount": "ਉਤਪਾਦ",
     "productCount_one": "{count} ਉਤਪਾਦ",
     "productCount_other": "{count} ਉਤਪਾਦ",
@@ -12569,6 +12570,12 @@
     "youSave": "ਤੁਸੀਂ ਬਚਾਉਂਦੇ ਹੋ",
     "cancelTitle": "ਸਬਸਕ੍ਰਿਪਸ਼ਨ ਰੱਦ ਕਰੋ",
     "confirmCancelButton": "ਰੱਦ ਕਰਨ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ"
+  },
+  "theme": {
+    "darkMode": "ਡਾਰਕ ਮੋਡ",
+    "lightMode": "ਲਾਈਟ ਮੋਡ",
+    "switchToDark": "ਡਾਰਕ ਮੋਡ ਵਿੱਚ ਬਦਲੋ",
+    "switchToLight": "ਲਾਈਟ ਮੋਡ ਵਿੱਚ ਬਦਲੋ"
   },
   "toast": {
     "address": {

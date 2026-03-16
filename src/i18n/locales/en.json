@@ -12592,6 +12592,7 @@
     "price": "Price",
     "priceAsc": "Price: Low to High",
     "priceDesc": "Price: High to Low",
+    "product": "product",
     "productCount": "product",
     "productCount_one": "{count} product",
     "productCount_other": "{count} products",
@@ -12758,6 +12759,12 @@
     "youSave": "You save",
     "cancelTitle": "Cancel Subscription",
     "confirmCancelButton": "Confirm Cancellation"
+  },
+  "theme": {
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode",
+    "switchToDark": "Switch to dark mode",
+    "switchToLight": "Switch to light mode"
   },
   "toast": {
     "address": {

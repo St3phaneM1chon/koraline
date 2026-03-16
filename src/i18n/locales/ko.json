@@ -12397,6 +12397,7 @@
     "price": "가격",
     "priceAsc": "가격: 낮은 순",
     "priceDesc": "가격: 높은 순",
+    "product": "제품",
     "productCount": "제품",
     "productCount_one": "{count}개 제품",
     "productCount_other": "{count}개 제품",
@@ -12569,6 +12570,12 @@
     "youSave": "당신이 절약한 금액",
     "cancelTitle": "구독 취소",
     "confirmCancelButton": "취소 확인"
+  },
+  "theme": {
+    "darkMode": "다크 모드",
+    "lightMode": "라이트 모드",
+    "switchToDark": "다크 모드로 전환",
+    "switchToLight": "라이트 모드로 전환"
   },
   "toast": {
     "address": {

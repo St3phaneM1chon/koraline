@@ -159,14 +159,13 @@ export async function POST(request: NextRequest) {
     cookieStore.delete('webauthn-email');
 
     // Set the NextAuth session cookie
-    const isProduction = process.env.NODE_ENV === 'production';
-    const cookieName = isProduction
-      ? '__Secure-authjs.session-token'
-      : 'authjs.session-token';
-
-    cookieStore.set(cookieName, token, {
+    // SECURITY FIX: Always use 'authjs.session-token' WITHOUT __Secure- prefix.
+    // auth-config.ts forces this name for all environments because Azure App Service
+    // terminates TLS at the load balancer and Auth.js uses the cookie name as salt
+    // for key derivation. Mismatched names = decryption failure.
+    cookieStore.set('authjs.session-token', token, {
       httpOnly: true,
-      secure: isProduction,
+      secure: true,
       sameSite: 'lax',
       maxAge: 3600,
       path: '/',

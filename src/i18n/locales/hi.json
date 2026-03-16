@@ -12397,6 +12397,7 @@
     "price": "कीमत",
     "priceAsc": "कीमत: कम से अधिक",
     "priceDesc": "कीमत: अधिक से कम",
+    "product": "उत्पाद",
     "productCount": "उत्पाद",
     "productCount_one": "{count} उत्पाद",
     "productCount_other": "{count} उत्पाद",
@@ -12569,6 +12570,12 @@
     "youSave": "आप बचाते हैं",
     "cancelTitle": "सदस्यता रद्द करें",
     "confirmCancelButton": "रद्द करने की पुष्टि करें"
+  },
+  "theme": {
+    "darkMode": "डार्क मोड",
+    "lightMode": "लाइट मोड",
+    "switchToDark": "डार्क मोड में बदलें",
+    "switchToLight": "लाइट मोड में बदलें"
   },
   "toast": {
     "address": {

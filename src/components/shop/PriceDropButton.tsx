@@ -250,7 +250,7 @@ export default function PriceDropButton({
       <button
         onClick={handleToggleWatch}
         disabled={isLoading}
-        className={`w-9 h-9 rounded-full flex items-center justify-center transition-all shadow-sm ${
+        className={`w-11 h-11 rounded-full flex items-center justify-center transition-all shadow-sm ${
           isWatching
             ? 'bg-primary-500 text-white hover:bg-primary-600'
             : 'bg-white/90 text-neutral-500 hover:bg-white hover:text-primary-500'
@@ -259,12 +259,12 @@ export default function PriceDropButton({
         aria-label={isWatching ? t('priceAlert.stopWatching') : t('priceAlert.watchPrice')}
       >
         {isLoading ? (
-          <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
         ) : (
-          <svg className="w-5 h-5" fill={isWatching ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+          <svg className="w-5 h-5" fill={isWatching ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
           </svg>
         )}
@@ -274,16 +274,19 @@ export default function PriceDropButton({
       {showPopover && !isWatching && (
         <div
           ref={popoverRef}
+          role="dialog"
+          aria-label={t('priceAlert.title')}
+          onKeyDown={(e) => { if (e.key === 'Escape') setShowPopover(false); }}
           className="absolute top-full end-0 mt-2 z-50 bg-white rounded-lg shadow-xl border border-neutral-200 p-4 w-64"
         >
-          <h4 className="font-semibold text-sm mb-2">Set Price Alert</h4>
+          <h4 className="font-semibold text-sm mb-2">{t('priceAlert.title')}</h4>
           <p className="text-xs text-neutral-500 mb-3">
-            Get notified when price drops
+            {t('priceAlert.description')}
           </p>
           <div className="space-y-3">
             <div>
               <label className="block text-xs font-medium text-neutral-700 mb-1">
-                Target Price (optional)
+                {t('priceAlert.targetPrice')}
               </label>
               <div className="relative">
                 <span className="absolute start-3 top-1/2 -translate-y-1/2 text-neutral-400 text-sm">$</span>
@@ -299,7 +302,7 @@ export default function PriceDropButton({
                 />
               </div>
               <p className="text-xs text-neutral-400 mt-1">
-                Current: {fmtPrice(currentPrice)}
+                {t('priceAlert.currentPrice').replace('${price}', fmtPrice(currentPrice))}
               </p>
             </div>
             <div className="flex gap-2">
@@ -307,14 +310,14 @@ export default function PriceDropButton({
                 onClick={() => setShowPopover(false)}
                 className="flex-1 px-3 py-2 text-sm border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
               >
-                Cancel
+                {t('common.cancel')}
               </button>
               <button
                 onClick={handleSetWatch}
                 disabled={isLoading}
                 className="flex-1 px-3 py-2 text-sm bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50"
               >
-                {isLoading ? 'Setting...' : 'Set Alert'}
+                {isLoading ? t('priceAlert.setting') : t('priceAlert.setAlert')}
               </button>
             </div>
           </div>

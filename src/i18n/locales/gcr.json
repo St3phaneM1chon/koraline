@@ -12397,6 +12397,7 @@
     "price": "Pri",
     "priceAsc": "Prix : Bas à Élevé",
     "priceDesc": "Prix : Élevé à Bas",
+    "product": "prodwi",
     "productCount": "pwodui",
     "productCount_one": "{count} pwodui",
     "productCount_other": "{count} pwodui",
@@ -12569,6 +12570,12 @@
     "youSave": "Ou ékonomize",
     "cancelTitle": "Anilé Abònman",
     "confirmCancelButton": "Konfirmé Anilasyon"
+  },
+  "theme": {
+    "darkMode": "Mòd somb",
+    "lightMode": "Mòd klè",
+    "switchToDark": "Chanjé an mòd somb",
+    "switchToLight": "Chanjé an mòd klè"
   },
   "toast": {
     "address": {

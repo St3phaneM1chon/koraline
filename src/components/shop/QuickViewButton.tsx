@@ -23,13 +23,14 @@ export default function QuickViewButton({ onClick, className = '' }: QuickViewBu
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
         aria-label={t('shop.aria.quickView')}
-        className={`p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white hover:scale-110 transition-all ${className}`}
+        className={`p-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white hover:scale-110 transition-all ${className}`}
       >
         <svg
           className="w-5 h-5 text-neutral-700"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"

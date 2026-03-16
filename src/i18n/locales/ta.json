@@ -12397,6 +12397,7 @@
     "price": "விலை",
     "priceAsc": "விலை: குறைவிலிருந்து அதிகத்திற்கு",
     "priceDesc": "விலை: அதிகத்திலிருந்து குறைக்க",
+    "product": "பொருள்",
     "productCount": "தயாரிப்பு",
     "productCount_one": "{count} தயாரிப்பு",
     "productCount_other": "{count} தயாரிப்புகள்",
@@ -12569,6 +12570,12 @@
     "youSave": "நீங்கள் சேமிக்கிறீர்கள்",
     "cancelTitle": "சந்தாவை ரத்துசெய்",
     "confirmCancelButton": "ரத்தை உறுதிப்படுத்து"
+  },
+  "theme": {
+    "darkMode": "இருண்ட பயன்முறை",
+    "lightMode": "ஒளி பயன்முறை",
+    "switchToDark": "இருண்ட பயன்முறைக்கு மாறு",
+    "switchToLight": "ஒளி பயன்முறைக்கு மாறு"
   },
   "toast": {
     "address": {

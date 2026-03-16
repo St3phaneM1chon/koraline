@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useI18n } from '@/i18n/client';
@@ -87,16 +87,64 @@ export default function MegaMenu({ isOpen, onClose }: MegaMenuProps) {
     }
   }, [isOpen, locale]);
 
-  // Handle ESC key
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+  // Keyboard navigation for menu items (ArrowDown/ArrowUp/Home/End/Escape)
+  const handleMenuKeyDown = useCallback((e: KeyboardEvent) => {
+    if (!isOpen || !menuRef.current) return;
+
+    const focusableItems = menuRef.current.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled])'
+    );
+    if (focusableItems.length === 0) return;
+
+    const currentIndex = Array.from(focusableItems).indexOf(
+      document.activeElement as HTMLElement
+    );
+
+    switch (e.key) {
+      case 'Escape':
+        e.preventDefault();
         onClose();
+        break;
+      case 'ArrowDown': {
+        e.preventDefault();
+        const nextIndex = currentIndex < focusableItems.length - 1 ? currentIndex + 1 : 0;
+        focusableItems[nextIndex].focus();
+        break;
       }
-    };
-    document.addEventListener('keydown', handleEsc);
-    return () => document.removeEventListener('keydown', handleEsc);
+      case 'ArrowUp': {
+        e.preventDefault();
+        const prevIndex = currentIndex > 0 ? currentIndex - 1 : focusableItems.length - 1;
+        focusableItems[prevIndex].focus();
+        break;
+      }
+      case 'Home': {
+        e.preventDefault();
+        focusableItems[0].focus();
+        break;
+      }
+      case 'End': {
+        e.preventDefault();
+        focusableItems[focusableItems.length - 1].focus();
+        break;
+      }
+    }
   }, [isOpen, onClose]);
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleMenuKeyDown);
+    return () => document.removeEventListener('keydown', handleMenuKeyDown);
+  }, [handleMenuKeyDown]);
+
+  // Focus first item when menu opens
+  useEffect(() => {
+    if (isOpen && menuRef.current) {
+      const firstItem = menuRef.current.querySelector<HTMLElement>('a[href], button:not([disabled])');
+      if (firstItem) {
+        // Delay to let the menu render
+        requestAnimationFrame(() => firstItem.focus());
+      }
+    }
+  }, [isOpen]);
 
   // Handle mouse leave with delay
   const handleMouseLeave = () => {
@@ -177,7 +225,7 @@ export default function MegaMenu({ isOpen, onClose }: MegaMenuProps) {
                         </div>
                         {parent._count && parent._count.products > 0 && (
                           <div className="text-xs text-gray-400">
-                            {parent._count.products} {parent._count.products === 1 ? 'product' : 'products'}
+                            {parent._count.products} {parent._count.products === 1 ? (t('shop.product') || 'product') : (t('shop.products') || 'products')}
                           </div>
                         )}
                       </div>

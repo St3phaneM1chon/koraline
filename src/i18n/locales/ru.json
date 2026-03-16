@@ -12397,6 +12397,7 @@
     "price": "Цена",
     "priceAsc": "Цена: по возрастанию",
     "priceDesc": "Цена: по убыванию",
+    "product": "товар",
     "productCount": "товар",
     "productCount_one": "{count} товар",
     "productCount_other": "{count} товаров",
@@ -12569,6 +12570,12 @@
     "youSave": "Вы экономите",
     "cancelTitle": "Отменить подписку",
     "confirmCancelButton": "Подтвердить отмену"
+  },
+  "theme": {
+    "darkMode": "Тёмная тема",
+    "lightMode": "Светлая тема",
+    "switchToDark": "Переключить на тёмную тему",
+    "switchToLight": "Переключить на светлую тему"
   },
   "toast": {
     "address": {

@@ -12665,6 +12665,7 @@
     },
     "resetFilters": "Réinitialiser les filtres",
     "retry": "Réessayer",
+    "product": "produit",
     "productCount": "produit",
     "productCount_one": "{count} produit",
     "productCount_other": "{count} produits",
@@ -12758,6 +12759,12 @@
     "cancel": "Annuler",
     "cancelTitle": "Annuler l'abonnement",
     "confirmCancelButton": "Confirmer l'annulation"
+  },
+  "theme": {
+    "darkMode": "Mode sombre",
+    "lightMode": "Mode clair",
+    "switchToDark": "Passer en mode sombre",
+    "switchToLight": "Passer en mode clair"
   },
   "toast": {
     "wishlist": {

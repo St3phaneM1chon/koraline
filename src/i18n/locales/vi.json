@@ -12397,6 +12397,7 @@
     "price": "Giá",
     "priceAsc": "Giá: Thấp đến Cao",
     "priceDesc": "Giá: Cao đến Thấp",
+    "product": "sản phẩm",
     "productCount": "sản phẩm",
     "productCount_one": "{count} sản phẩm",
     "productCount_other": "{count} sản phẩm",
@@ -12569,6 +12570,12 @@
     "youSave": "Bạn tiết kiệm",
     "cancelTitle": "Hủy đăng ký",
     "confirmCancelButton": "Xác nhận hủy"
+  },
+  "theme": {
+    "darkMode": "Chế độ tối",
+    "lightMode": "Chế độ sáng",
+    "switchToDark": "Chuyển sang chế độ tối",
+    "switchToLight": "Chuyển sang chế độ sáng"
   },
   "toast": {
     "address": {

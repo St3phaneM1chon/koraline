@@ -185,6 +185,15 @@ const RATE_LIMIT_CONFIGS: Record<string, { windowMs: number; maxRequests: number
   // SEC-19: Gift card balance check - 5 per IP per minute
   'gift-cards/balance': { windowMs: 60000, maxRequests: 5 },
 
+  // AUDIT-FIX: Gift card redeem - 5 per IP per hour (prevents brute-force code enumeration)
+  'gift-cards/redeem': { windowMs: 3600000, maxRequests: 5 },
+
+  // AUDIT-FIX: Loyalty redeem - 5 per user per hour (prevents point manipulation abuse)
+  'loyalty/redeem': { windowMs: 3600000, maxRequests: 5 },
+
+  // AUDIT-FIX: Loyalty earn - 10 per user per hour (prevents point farming)
+  'loyalty/earn': { windowMs: 3600000, maxRequests: 10 },
+
   // SEC-18: Order tracking - 10 per IP per minute
   'orders/track': { windowMs: 60000, maxRequests: 10 },
 

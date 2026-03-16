@@ -12397,6 +12397,7 @@
     "price": "Presyo",
     "priceAsc": "Presyo: Mura hanggang Mahal",
     "priceDesc": "Presyo: Mahal hanggang Mura",
+    "product": "produkto",
     "productCount": "produkto",
     "productCount_one": "{count} produkto",
     "productCount_other": "{count} mga produkto",
@@ -12569,6 +12570,12 @@
     "youSave": "Ikaw ay nag-save",
     "cancelTitle": "Kanselahin ang Subscription",
     "confirmCancelButton": "Kumpirmahin ang Pagkansela"
+  },
+  "theme": {
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode",
+    "switchToDark": "Lumipat sa dark mode",
+    "switchToLight": "Lumipat sa light mode"
   },
   "toast": {
     "address": {

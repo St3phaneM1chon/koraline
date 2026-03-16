@@ -12397,6 +12397,7 @@
     "price": "Preis",
     "priceAsc": "Preis: aufsteigend",
     "priceDesc": "Preis: absteigend",
+    "product": "Produkt",
     "productCount": "Produkt",
     "productCount_one": "{count} Produkt",
     "productCount_other": "{count} Produkte",
@@ -12569,6 +12570,12 @@
     "youSave": "Sie sparen",
     "cancelTitle": "Abonnement kündigen",
     "confirmCancelButton": "Kündigung bestätigen"
+  },
+  "theme": {
+    "darkMode": "Dunkelmodus",
+    "lightMode": "Hellmodus",
+    "switchToDark": "Zum Dunkelmodus wechseln",
+    "switchToLight": "Zum Hellmodus wechseln"
   },
   "toast": {
     "address": {

@@ -12397,6 +12397,7 @@
     "price": "Prezzo",
     "priceAsc": "Prezzo: crescente",
     "priceDesc": "Prezzo: decrescente",
+    "product": "prodotto",
     "productCount": "prodotto",
     "productCount_one": "{count} prodotto",
     "productCount_other": "{count} prodotti",
@@ -12569,6 +12570,12 @@
     "youSave": "Risparmi",
     "cancelTitle": "Annulla abbonamento",
     "confirmCancelButton": "Conferma annullamento"
+  },
+  "theme": {
+    "darkMode": "Tema scuro",
+    "lightMode": "Tema chiaro",
+    "switchToDark": "Passa al tema scuro",
+    "switchToLight": "Passa al tema chiaro"
   },
   "toast": {
     "address": {

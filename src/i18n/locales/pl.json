@@ -12397,6 +12397,7 @@
     "price": "Cena",
     "priceAsc": "Cena: od najniższej do najwyższej",
     "priceDesc": "Cena: od najwyższej do najniższej",
+    "product": "produkt",
     "productCount": "produkt",
     "productCount_one": "{count} produkt",
     "productCount_other": "{count} produktów",
@@ -12569,6 +12570,12 @@
     "youSave": "Oszczędzasz",
     "cancelTitle": "Anuluj subskrypcję",
     "confirmCancelButton": "Potwierdź anulowanie"
+  },
+  "theme": {
+    "darkMode": "Tryb ciemny",
+    "lightMode": "Tryb jasny",
+    "switchToDark": "Przełącz na tryb ciemny",
+    "switchToLight": "Przełącz na tryb jasny"
   },
   "toast": {
     "address": {

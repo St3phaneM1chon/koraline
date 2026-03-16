@@ -59,6 +59,7 @@ export default function WishlistButton({
           stroke="currentColor"
           viewBox="0 0 24 24"
           strokeWidth={2}
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -77,7 +78,7 @@ export default function WishlistButton({
   return (
     <button
       onClick={handleClick}
-      className={`w-9 h-9 rounded-full flex items-center justify-center transition-all shadow-sm ${
+      className={`w-11 h-11 rounded-full flex items-center justify-center transition-all shadow-sm ${
         inWishlist
           ? 'bg-red-500 text-white hover:bg-red-600'
           : 'bg-white/90 text-neutral-500 hover:bg-white hover:text-red-500'
@@ -92,6 +93,7 @@ export default function WishlistButton({
         stroke="currentColor"
         viewBox="0 0 24 24"
         strokeWidth={2}
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"

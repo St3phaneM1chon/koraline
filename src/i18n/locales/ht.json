@@ -12397,6 +12397,7 @@
     "price": "Pri",
     "priceAsc": "Pri: Ba pou ale wo",
     "priceDesc": "Pri: Wo pou ale ba",
+    "product": "pwodwi",
     "productCount": "pwodwi",
     "productCount_one": "{count} pwodwi",
     "productCount_other": "{count} pwodwi",
@@ -12569,6 +12570,12 @@
     "youSave": "Ou ekonomize",
     "cancelTitle": "Anile Abònman",
     "confirmCancelButton": "Konfime Anilasyon"
+  },
+  "theme": {
+    "darkMode": "Mòd nwa",
+    "lightMode": "Mòd klè",
+    "switchToDark": "Chanje pou mòd nwa",
+    "switchToLight": "Chanje pou mòd klè"
   },
   "toast": {
     "address": {
