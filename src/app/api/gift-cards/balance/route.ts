@@ -27,9 +27,9 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const code = searchParams.get('code');
 
-    if (!code) {
+    if (!code || code.length > 30 || !/^[A-Za-z0-9\-]+$/.test(code)) {
       return NextResponse.json(
-        { error: 'Gift card code is required' },
+        { error: 'Invalid gift card code' },
         { status: 400 }
       );
     }

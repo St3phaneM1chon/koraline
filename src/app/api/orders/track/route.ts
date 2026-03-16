@@ -45,7 +45,9 @@ export async function GET(request: NextRequest) {
     const orderNumber = searchParams.get('orderNumber');
     const email = searchParams.get('email');
 
-    if (!orderNumber || !email) {
+    // Validate inputs
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!orderNumber || !email || orderNumber.length > 50 || email.length > 255 || !emailRegex.test(email)) {
       return NextResponse.json(
         { found: false, error: 'Order number and email required' },
         { status: 400 }

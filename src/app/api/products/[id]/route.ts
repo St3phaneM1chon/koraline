@@ -11,7 +11,7 @@ import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { UserRole } from '@/types';
 import { enqueue, withTranslation, getTranslatedFields, DB_SOURCE_LOCALE } from '@/lib/translation';
-import { defaultLocale } from '@/i18n/config';
+import { defaultLocale, isValidLocale } from '@/i18n/config';
 import { apiSuccess, apiError, apiNoContent, withETag, validateContentType } from '@/lib/api-response';
 import { ErrorCode } from '@/lib/error-codes';
 import { validateCsrf } from '@/lib/csrf-middleware';
@@ -85,7 +85,8 @@ interface RouteParams {
 export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
     const { id } = await params;
-    const locale = request.nextUrl.searchParams.get('locale') || defaultLocale;
+    const rawLocale = request.nextUrl.searchParams.get('locale') || defaultLocale;
+    const locale = isValidLocale(rawLocale) ? rawLocale : defaultLocale;
 
     // A7-P0-002: Redis cache for product detail (keyed by id + locale)
     const cacheKey = `${CacheKeys.products.byId(id)}:locale=${locale}`;
