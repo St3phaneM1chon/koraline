@@ -419,7 +419,7 @@ export default function ProductEditClient({ product, categories, isOwner }: Prop
         toast.success(t('admin.productForm.formatDeleted'));
       } else {
         const err = await res.json().catch(() => null);
-        toast.error(err?.error || t('admin.productForm.formatDeleteError'));
+        toast.error(err?.error?.message || t('admin.productForm.formatDeleteError'));
       }
     } catch {
       toast.error(t('admin.productForm.deletionError'));
@@ -437,8 +437,10 @@ export default function ProductEditClient({ product, categories, isOwner }: Prop
         headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({
           ...formData,
+          price: typeof formData.price === 'string' ? parseFloat(formData.price) || 0 : formData.price,
+          compareAtPrice: formData.compareAtPrice != null ? (typeof formData.compareAtPrice === 'string' ? parseFloat(formData.compareAtPrice as string) || null : formData.compareAtPrice) : null,
           purity: formData.purity ? parseFloat(formData.purity) : null,
-          molecularWeight: formData.molecularWeight ? parseFloat(formData.molecularWeight) : null,
+          molecularWeight: formData.molecularWeight || null,
           customSections: productTexts.map(({ id: _id, ...rest }) => rest),
         }),
       });
@@ -450,7 +452,7 @@ export default function ProductEditClient({ product, categories, isOwner }: Prop
         router.refresh();
       } else {
         const data = await res.json();
-        toast.error(data.error || t('admin.productForm.updateError'));
+        toast.error(data.error?.message || t('admin.productForm.updateError'));
       }
     } catch {
       toast.error(t('admin.productForm.updateError'));

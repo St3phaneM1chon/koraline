@@ -256,7 +256,7 @@ export default function ProductsListClient({
       const data = await res.json();
 
       if (!res.ok) {
-        toast.error(data.error || t('admin.products.importError'));
+        toast.error(data.error?.message || t('admin.products.importError'));
         return;
       }
 
@@ -326,7 +326,7 @@ export default function ProductsListClient({
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        toast.error(data.error || t('admin.products.duplicateError'));
+        toast.error(data.error?.message || t('admin.products.duplicateError'));
         return;
       }
       const data = await res.json();
@@ -418,7 +418,7 @@ export default function ProductsListClient({
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        toast.error(data.error || t('admin.products.bulkPriceError'));
+        toast.error(data.error?.message || t('admin.products.bulkPriceError'));
         return;
       }
       const data = await res.json();
@@ -451,7 +451,7 @@ export default function ProductsListClient({
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        toast.error(data.error || t('admin.products.scheduleError'));
+        toast.error(data.error?.message || t('admin.products.scheduleError'));
         return;
       }
       toast.success(

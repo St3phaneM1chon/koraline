@@ -248,11 +248,11 @@ export default function NewProductClient({ categories }: Props) {
       });
 
       if (res.ok) {
-        const data = await res.json();
-        router.push(`/admin/produits/${data.product.id}`);
+        const { data: responseData } = await res.json();
+        router.push(`/admin/produits/${responseData.product.id}`);
       } else {
         const data = await res.json();
-        toast.error(data.error || t('admin.productForm.creationError'));
+        toast.error(data.error?.message || t('admin.productForm.creationError'));
       }
     } catch {
       toast.error(t('admin.productForm.creationError'));

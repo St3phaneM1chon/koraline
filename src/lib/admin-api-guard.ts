@@ -139,9 +139,12 @@ export function withAdminGuard(
 
       // ---------------------------------------------------------------
       // 1b. FIX: FAILLE-066 - Reject oversized JSON bodies (max 1MB)
+      //     Skip for multipart/form-data (file uploads have their own size checks)
       // ---------------------------------------------------------------
+      const contentType = request.headers.get('content-type') || '';
+      const isMultipart = contentType.includes('multipart/form-data');
       const contentLength = request.headers.get('content-length');
-      if (contentLength && parseInt(contentLength, 10) > 1_048_576) {
+      if (!isMultipart && contentLength && parseInt(contentLength, 10) > 1_048_576) {
         return jsonError('Request body too large', 413);
       }
 

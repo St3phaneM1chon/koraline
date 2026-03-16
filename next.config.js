@@ -204,6 +204,10 @@ const nextConfig = {
       'date-fns', '@radix-ui/react-icons', 'lucide-react',
       'recharts', 'reactflow', '@azure/identity', '@azure/storage-blob', 'jose', 'zod',
     ],
+    // FIX: Bug 4 — Increase body size limit for media uploads (default 1MB too low)
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
   },
   
   // Images - Optimisation et domaines autorisés
