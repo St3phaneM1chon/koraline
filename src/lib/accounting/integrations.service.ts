@@ -9,6 +9,7 @@
 
 import { JournalEntry, getPaymentProcessorFees } from './types';
 import { logger } from '@/lib/logger';
+import { add, subtract, multiply } from '@/lib/decimal-calculator';
 
 // ============================================
 // QUICKBOOKS ONLINE INTEGRATION
@@ -361,7 +362,7 @@ export async function syncInventoryValuation(
       where: { accountId: inventoryAccount.id },
       _sum: { debit: true, credit: true },
     });
-    accountBalance = Number(journalLines._sum.debit || 0) - Number(journalLines._sum.credit || 0);
+    accountBalance = subtract(Number(journalLines._sum.debit || 0), Number(journalLines._sum.credit || 0));
   }
   
   const difference = totalValue - accountBalance;
@@ -446,11 +447,19 @@ export function processPayPalWebhook(
     lines: { accountCode: string; accountName: string; debit: number; credit: number }[];
   };
 } {
-  const amount = parseFloat(resource.amount.value);
+  const rawAmount = Number(resource.amount.value);
+  // Bounds check: PayPal amounts should be positive and within sane limits
+  if (isNaN(rawAmount) || rawAmount <= 0 || rawAmount > 999_999_999.99) {
+    return { shouldCreateEntry: false };
+  }
+  const amount = rawAmount;
   // Default PayPal fee: 2.9% + $0.30 — configurable via SiteSetting (module=payments)
-  const fee = resource.transaction_info?.fee_amount
-    ? parseFloat(resource.transaction_info.fee_amount.value)
-    : Math.round((amount * 0.029 + 0.30) * 100) / 100;
+  const defaultFee = add(multiply(amount, 0.029), 0.30);
+  const rawFee = resource.transaction_info?.fee_amount
+    ? Number(resource.transaction_info.fee_amount.value)
+    : defaultFee;
+  // Bounds check: fee should be non-negative and not exceed the amount
+  const fee = isNaN(rawFee) || rawFee < 0 || rawFee > amount ? defaultFee : rawFee;
 
   switch (eventType) {
     case 'PAYMENT.CAPTURE.COMPLETED':
@@ -581,17 +590,17 @@ export async function syncPayPalTransactions(
 
   const totalReceived = transactions
     .filter(t => t.status === 'COMPLETED')
-    .reduce((sum, t) => sum + parseFloat(t.amount.value), 0);
+    .reduce((sum, t) => add(sum, Number(t.amount.value)), 0);
 
   const totalFees = transactions
     .filter(t => t.transaction_info?.fee_amount)
-    .reduce((sum, t) => sum + parseFloat(t.transaction_info!.fee_amount!.value), 0);
+    .reduce((sum, t) => add(sum, Number(t.transaction_info!.fee_amount!.value)), 0);
 
   return {
     transactions,
     totalReceived,
     totalFees,
-    netAmount: totalReceived - totalFees,
+    netAmount: subtract(totalReceived, totalFees),
   };
 }
 

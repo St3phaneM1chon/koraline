@@ -6,6 +6,7 @@
 import { JournalEntry, JournalLine } from './types';
 import { logger } from '@/lib/logger';
 import { GST_RATE, QST_RATE, QC_COMBINED_RATE } from '@/lib/tax/tax-constants';
+import { sanitizeCsvCell } from '@/lib/accounting/bank-import.service';
 
 // ============================================
 // ENTRY TEMPLATES
@@ -489,7 +490,8 @@ export function parseCSVForEntries(
     const cols = lines[i].split(',').map(c => c.trim().replace(/^"|"$/g, ''));
 
     const date = cols[headers.indexOf('date')];
-    const description = cols[headers.indexOf('description')];
+    // CSV Injection Prevention: sanitize user-controlled text fields
+    const description = sanitizeCsvCell(cols[headers.indexOf('description')]);
     const account = cols[headers.indexOf('account')];
     const debit = parseFloat(cols[headers.indexOf('debit')]) || 0;
     const credit = parseFloat(cols[headers.indexOf('credit')]) || 0;

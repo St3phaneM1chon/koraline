@@ -57,7 +57,12 @@ export async function fetchBOCRate(currency: string): Promise<number> {
     if (observations && observations.length > 0) {
       const latest = observations[observations.length - 1];
       const rateKey = `FX${currency}CAD`;
-      return parseFloat(latest[rateKey]?.v || '1');
+      const parsedRate = parseFloat(latest[rateKey]?.v || '1');
+      // Bounds check: FX rates from external API should be positive and reasonable
+      if (isNaN(parsedRate) || parsedRate <= 0 || parsedRate > 10000) {
+        throw new Error(`Invalid FX rate from BOC API: ${latest[rateKey]?.v}`);
+      }
+      return parsedRate;
     }
 
     throw new Error('No rate data');
@@ -306,10 +311,15 @@ export async function getHistoricalRates(
       const rateKey = `FX${currency}CAD`;
       return observations
         .filter((obs: Record<string, { v?: string }>) => obs[rateKey]?.v)
-        .map((obs: Record<string, { v?: string } | string>) => ({
-          date: new Date(obs.d as string),
-          rate: parseFloat((obs[rateKey] as { v?: string })?.v || '1'),
-        }));
+        .map((obs: Record<string, { v?: string } | string>) => {
+          const parsedRate = parseFloat((obs[rateKey] as { v?: string })?.v || '1');
+          // Bounds check: FX rates from external API should be positive and reasonable
+          if (isNaN(parsedRate) || parsedRate <= 0 || parsedRate > 10000) {
+            logger.warn('Invalid historical FX rate from BOC API, using fallback 1', { value: (obs[rateKey] as { v?: string })?.v });
+            return { date: new Date(obs.d as string), rate: 1 };
+          }
+          return { date: new Date(obs.d as string), rate: parsedRate };
+        });
     }
 
     throw new Error('No observations returned from BOC API');

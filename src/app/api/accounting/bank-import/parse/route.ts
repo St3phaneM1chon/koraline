@@ -7,6 +7,7 @@ import {
   parseTDCSV,
   detectCSVFormat,
   categorizeTransaction,
+  sanitizeCsvCell,
 } from '@/lib/accounting';
 import { logger } from '@/lib/logger';
 
@@ -104,7 +105,8 @@ function parseGenericCSV(csvContent: string) {
     if (cols.length < 3) continue;
 
     const dateStr = cols[0];
-    const description = cols[1];
+    // CSV Injection Prevention: sanitize user-controlled text fields
+    const description = sanitizeCsvCell(cols[1]);
     const amountStr = cols[2];
 
     const amount = Math.abs(parseFloat(amountStr.replace(/[^0-9.-]/g, '')) || 0);

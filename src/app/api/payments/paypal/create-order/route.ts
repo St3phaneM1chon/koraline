@@ -372,9 +372,8 @@ export async function POST(request: NextRequest) {
           data: { status: 'RELEASED', releasedAt: new Date() },
         });
       }
-      const errorMsg = stockError instanceof Error ? stockError.message : 'Erreur lors de la réservation du stock';
       logger.error('Stock reservation error (PayPal)', { error: stockError instanceof Error ? stockError.message : String(stockError) });
-      return NextResponse.json({ error: errorMsg }, { status: 400 });
+      return NextResponse.json({ error: 'Erreur lors de la réservation du stock' }, { status: 400 });
     }
 
     const accessToken = await getPayPalAccessToken();

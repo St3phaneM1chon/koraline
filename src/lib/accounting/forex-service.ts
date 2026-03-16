@@ -3,6 +3,8 @@
  * Uses Bank of Canada / ECB as free data sources
  */
 
+import { multiply, subtract } from '@/lib/decimal-calculator';
+
 export interface FXRate {
   from: string;
   to: string;
@@ -49,10 +51,15 @@ export async function getExchangeRate(from: string, to: string): Promise<FXRate>
         const latest = observations[observations.length - 1];
         const rateKey = Object.keys(latest).find(k => k.startsWith('FX'));
         if (rateKey && latest[rateKey]?.v) {
+          const parsedRate = Number(latest[rateKey].v);
+          // Bounds check: FX rates should be positive and within reasonable range
+          if (isNaN(parsedRate) || parsedRate <= 0 || parsedRate > 10000) {
+            throw new Error(`Invalid FX rate from API: ${latest[rateKey].v}`);
+          }
           const rate: FXRate = {
             from,
             to,
-            rate: parseFloat(latest[rateKey].v),
+            rate: parsedRate,
             timestamp: new Date(),
             source: 'bank_of_canada',
           };
@@ -91,8 +98,8 @@ export function calculateFXGainLoss(
   originalRate: number,
   currentRate: number
 ): { gainLoss: number; isGain: boolean } {
-  const originalCAD = originalAmount * originalRate;
-  const currentCAD = originalAmount * currentRate;
-  const gainLoss = currentCAD - originalCAD;
-  return { gainLoss: Math.round(gainLoss * 100) / 100, isGain: gainLoss >= 0 };
+  const originalCAD = multiply(originalAmount, originalRate);
+  const currentCAD = multiply(originalAmount, currentRate);
+  const gainLoss = subtract(currentCAD, originalCAD);
+  return { gainLoss, isGain: gainLoss >= 0 };
 }

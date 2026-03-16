@@ -7,6 +7,37 @@ import { BankTransaction, ReconciliationStatus } from './types';
 import { decrypt } from '@/lib/security';
 import { logger } from '@/lib/logger';
 
+// ---------------------------------------------------------------------------
+// CSV Injection Prevention (Security: HIGH)
+// ---------------------------------------------------------------------------
+// When CSV data is imported and later exported to Excel, cell values starting
+// with certain characters can be interpreted as formulas, enabling formula
+// injection attacks. Prefix such values with a single quote to neutralize them.
+// ---------------------------------------------------------------------------
+
+/**
+ * Sanitize a CSV cell value to prevent formula injection.
+ * Any value starting with =, +, -, @, TAB, or CR is prefixed with a single
+ * quote so Excel/LibreOffice treat it as plain text.
+ */
+export function sanitizeCsvCell(value: string): string {
+  if (/^[=+\-@\t\r]/.test(value)) {
+    return "'" + value;
+  }
+  return value;
+}
+
+/**
+ * Validate that a parsed numeric amount from CSV is within sane bounds.
+ * Returns 0 for NaN or out-of-range values (negative or absurdly large).
+ */
+function validateCsvAmount(raw: number): number {
+  if (isNaN(raw) || !isFinite(raw)) return 0;
+  if (raw < 0) return 0;
+  if (raw > 999_999_999.99) return 0;
+  return raw;
+}
+
 /** Try to decrypt a value; if it fails (legacy plaintext), return as-is */
 async function safeDecryptField(value: string | null): Promise<string | null> {
   if (!value) return null;
@@ -312,9 +343,10 @@ export function parseDesjardinsCSV(csvContent: string, bankAccountId: string = '
 
     // Desjardins format: Date,Description,Retrait,Dépôt,Solde
     const date = parseDate(cols[0]);
-    const description = cols[1].trim();
-    const withdrawal = parseFloat(cols[2].replace(/[^0-9.-]/g, '')) || 0;
-    const deposit = parseFloat(cols[3].replace(/[^0-9.-]/g, '')) || 0;
+    // CSV Injection Prevention: sanitize user-controlled text fields
+    const description = sanitizeCsvCell(cols[1].trim());
+    const withdrawal = validateCsvAmount(Number(cols[2].replace(/[^0-9.-]/g, '')) || 0);
+    const deposit = validateCsvAmount(Number(cols[3].replace(/[^0-9.-]/g, '')) || 0);
 
     const amount = withdrawal > 0 ? withdrawal : deposit;
     const type = withdrawal > 0 ? 'DEBIT' : 'CREDIT';
@@ -362,9 +394,10 @@ export function parseTDCSV(csvContent: string, bankAccountId: string = 'td-main'
 
     // TD format: Date,Description,Withdrawals,Deposits,Balance
     const date = parseDate(cols[0]);
-    const description = cols[1].trim();
-    const withdrawal = parseFloat(cols[2].replace(/[^0-9.-]/g, '')) || 0;
-    const deposit = parseFloat(cols[3].replace(/[^0-9.-]/g, '')) || 0;
+    // CSV Injection Prevention: sanitize user-controlled text fields
+    const description = sanitizeCsvCell(cols[1].trim());
+    const withdrawal = validateCsvAmount(Number(cols[2].replace(/[^0-9.-]/g, '')) || 0);
+    const deposit = validateCsvAmount(Number(cols[3].replace(/[^0-9.-]/g, '')) || 0);
 
     const amount = withdrawal > 0 ? withdrawal : deposit;
     const type = withdrawal > 0 ? 'DEBIT' : 'CREDIT';

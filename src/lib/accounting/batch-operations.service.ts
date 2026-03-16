@@ -19,6 +19,7 @@ import { roundCurrency } from '@/lib/financial';
 import { add, subtract } from '@/lib/decimal-calculator';
 import { generateCSV } from '@/lib/csv-export';
 import { assertPeriodOpen } from '@/lib/accounting/validation';
+import { sanitizeCsvCell } from '@/lib/accounting/bank-import.service';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -47,8 +48,8 @@ export type BatchStatus = (typeof BATCH_STATUSES)[number];
 
 const batchJournalLineSchema = z.object({
   accountId: z.string().min(1, 'accountId requis'),
-  debit: z.number().min(0).default(0),
-  credit: z.number().min(0).default(0),
+  debit: z.number().min(0).max(999_999_999.99, 'Montant débit trop élevé').default(0),
+  credit: z.number().min(0).max(999_999_999.99, 'Montant crédit trop élevé').default(0),
   description: z.string().optional(),
 });
 
@@ -67,7 +68,7 @@ const batchInvoiceStatusItemSchema = z.object({
 
 const batchPaymentItemSchema = z.object({
   invoiceId: z.string().min(1, 'ID facture requis'),
-  amount: z.number().positive('Montant positif requis'),
+  amount: z.number().positive('Montant positif requis').max(999_999_999.99, 'Montant trop élevé (max 999 999 999,99)'),
   paymentDate: z.string().refine((d) => !isNaN(Date.parse(d)), 'Date invalide'),
   paymentMethod: z.string().optional(),
   reference: z.string().optional(),
@@ -77,11 +78,11 @@ const batchExpenseItemSchema = z.object({
   date: z.string().refine((d) => !isNaN(Date.parse(d)), 'Date invalide'),
   description: z.string().min(1, 'Description requise').max(500),
   vendorName: z.string().max(200).optional(),
-  subtotal: z.number().min(0, 'Sous-total >= 0'),
-  taxGst: z.number().min(0).default(0),
-  taxQst: z.number().min(0).default(0),
-  taxOther: z.number().min(0).default(0),
-  total: z.number().min(0, 'Total >= 0'),
+  subtotal: z.number().min(0, 'Sous-total >= 0').max(999_999_999.99, 'Sous-total trop élevé'),
+  taxGst: z.number().min(0).max(999_999_999.99).default(0),
+  taxQst: z.number().min(0).max(999_999_999.99).default(0),
+  taxOther: z.number().min(0).max(999_999_999.99).default(0),
+  total: z.number().min(0, 'Total >= 0').max(999_999_999.99, 'Total trop élevé'),
   category: z.string().min(1, 'Catégorie requise'),
   paymentMethod: z.string().optional(),
   notes: z.string().max(2000).optional(),
@@ -925,16 +926,18 @@ function parseCSVLines(content: string): string[][] {
 export function csvToExpenseItems(records: Record<string, string>[]): unknown[] {
   return records.map((row) => ({
     date: row['date'] || row['Date'] || row['DATE'] || '',
-    description: row['description'] || row['Description'] || row['DESCRIPTION'] || '',
-    vendorName: row['vendor'] || row['vendorName'] || row['Vendor'] || row['Fournisseur'] || '',
+    // CSV Injection Prevention: sanitize user-controlled text fields
+    description: sanitizeCsvCell(row['description'] || row['Description'] || row['DESCRIPTION'] || ''),
+    vendorName: sanitizeCsvCell(row['vendor'] || row['vendorName'] || row['Vendor'] || row['Fournisseur'] || ''),
     subtotal: parseFloat(row['subtotal'] || row['Subtotal'] || row['Sous-total'] || row['amount'] || row['Amount'] || row['Montant'] || '0'),
     taxGst: parseFloat(row['taxGst'] || row['TPS'] || row['gst'] || row['GST'] || '0'),
     taxQst: parseFloat(row['taxQst'] || row['TVQ'] || row['qst'] || row['QST'] || '0'),
     taxOther: parseFloat(row['taxOther'] || row['Autre taxe'] || row['otherTax'] || '0'),
     total: parseFloat(row['total'] || row['Total'] || row['TOTAL'] || '0'),
-    category: row['category'] || row['Category'] || row['Catégorie'] || row['CATEGORY'] || 'office',
-    paymentMethod: row['paymentMethod'] || row['Payment Method'] || row['Mode de paiement'] || '',
-    notes: row['notes'] || row['Notes'] || row['NOTES'] || '',
+    // CSV Injection Prevention: sanitize user-controlled text fields
+    category: sanitizeCsvCell(row['category'] || row['Category'] || row['Catégorie'] || row['CATEGORY'] || 'office'),
+    paymentMethod: sanitizeCsvCell(row['paymentMethod'] || row['Payment Method'] || row['Mode de paiement'] || ''),
+    notes: sanitizeCsvCell(row['notes'] || row['Notes'] || row['NOTES'] || ''),
   }));
 }
 
@@ -948,14 +951,15 @@ export function csvToJournalEntryItems(records: Record<string, string>[]): unkno
 
   for (const row of records) {
     const date = row['date'] || row['Date'] || row['DATE'] || '';
-    const description = row['description'] || row['Description'] || row['DESCRIPTION'] || '';
+    // CSV Injection Prevention: sanitize user-controlled text fields
+    const description = sanitizeCsvCell(row['description'] || row['Description'] || row['DESCRIPTION'] || '');
     const key = `${date}|${description}`;
 
     if (!groups.has(key)) {
       groups.set(key, {
         description,
         date,
-        reference: row['reference'] || row['Reference'] || row['Référence'] || '',
+        reference: sanitizeCsvCell(row['reference'] || row['Reference'] || row['Référence'] || ''),
         lines: [],
       });
     }
@@ -964,7 +968,8 @@ export function csvToJournalEntryItems(records: Record<string, string>[]): unkno
       accountId: row['accountId'] || row['Account ID'] || row['Compte'] || '',
       debit: parseFloat(row['debit'] || row['Debit'] || row['Débit'] || '0'),
       credit: parseFloat(row['credit'] || row['Credit'] || row['Crédit'] || '0'),
-      description: row['lineDescription'] || row['Line Description'] || row['Description ligne'] || '',
+      // CSV Injection Prevention: sanitize user-controlled text fields
+      description: sanitizeCsvCell(row['lineDescription'] || row['Line Description'] || row['Description ligne'] || ''),
     });
   }
 

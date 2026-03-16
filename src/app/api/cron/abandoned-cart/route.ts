@@ -46,6 +46,7 @@ import { sendEmail, abandonedCartEmail, generateUnsubscribeUrl } from '@/lib/ema
 import { shouldSuppressEmail } from '@/lib/email/bounce-handler';
 import { logger } from '@/lib/logger';
 import { withJobLock } from '@/lib/cron-lock';
+import { multiply, add } from '@/lib/decimal-calculator';
 
 const BATCH_SIZE = 10;
 const MIN_ABANDONMENT_MINUTES = 60; // 1 hour minimum
@@ -250,13 +251,13 @@ export async function GET(request: NextRequest) {
             const product = productMap.get(item.productId);
             return {
               name: product?.name || 'Product',
-              price: Number(item.priceAtAdd) * item.quantity,
+              price: multiply(Number(item.priceAtAdd), item.quantity),
               quantity: item.quantity,
               imageUrl: product?.imageUrl || undefined,
             };
           });
 
-          const cartTotal = emailItems.reduce((sum, item) => sum + item.price, 0);
+          const cartTotal = emailItems.reduce((sum, item) => add(sum, item.price), 0);
 
           // Generate unsubscribe URL (CAN-SPAM / RGPD / LCAP compliance)
           const unsubscribeUrl = await generateUnsubscribeUrl(user.email, 'marketing', user.id).catch(() => undefined);
