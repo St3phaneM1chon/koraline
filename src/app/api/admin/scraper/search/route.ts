@@ -15,6 +15,7 @@ import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { apiSuccess, apiError } from '@/lib/api-response';
+import { logger } from '@/lib/logger';
 import { decomposeRegion, haversineDistance, pointInPolygon, type RegionShape, type GeoPoint } from '@/lib/scraper/polygon-decomposition';
 import type { ScrapedPlace } from '@/lib/scraper/google-maps-playwright';
 
@@ -160,6 +161,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     return apiSuccess(filtered.slice(0, data.maxResults), { request });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Search failed';
-    return apiError('Google Maps scrape failed', 'EXTERNAL_SERVICE_ERROR', { status: 502, details: message, request });
+    logger.error('[scraper/search] Scrape failed', { error: message });
+    return apiError('Google Maps scrape failed', 'EXTERNAL_SERVICE_ERROR', { status: 502, request });
   }
 }, { rateLimit: 3 });

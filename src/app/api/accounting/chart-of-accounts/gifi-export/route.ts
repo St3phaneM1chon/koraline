@@ -15,6 +15,7 @@ export const GET = withAdminGuard(async (_request, { session }) => {
     const accounts = await prisma.chartOfAccount.findMany({
       where: { isActive: true },
       orderBy: { code: 'asc' },
+      take: 10000,
     });
 
     // CSV header row

@@ -156,6 +156,7 @@ export const POST = withAdminGuard(async (_request, { session }) => {
         OR: [{ gifiCode: null }, { gifiCode: '' }],
       },
       orderBy: { code: 'asc' },
+      take: 5000,
     });
 
     let assigned = 0;

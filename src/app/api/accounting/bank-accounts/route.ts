@@ -62,6 +62,7 @@ export const GET = withAdminGuard(async (_request, _ctx) => {
   try {
     const accounts = await prisma.bankAccount.findMany({
       orderBy: { createdAt: 'desc' },
+      take: 200,
       select: {
         id: true,
         name: true,

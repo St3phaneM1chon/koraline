@@ -81,6 +81,7 @@ export const GET = withAdminGuard(async (request) => {
       where,
       include: { children: true },
       orderBy: { code: 'asc' },
+      take: 5000,
     });
 
     // Update cache

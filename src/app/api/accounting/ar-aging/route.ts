@@ -30,6 +30,7 @@ export const GET = withAdminGuard(async (request) => {
         status: { notIn: ['PAID', 'CANCELLED', 'VOID'] },
       },
       orderBy: { dueDate: 'asc' },
+      take: 10000,
     });
 
     // Initialize buckets dynamically from boundaries

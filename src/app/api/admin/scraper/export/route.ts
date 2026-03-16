@@ -13,6 +13,7 @@ import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { apiError } from '@/lib/api-response';
+import { logger } from '@/lib/logger';
 import { generateCSV } from '@/lib/csv-export';
 
 const placeSchema = z.object({
@@ -99,6 +100,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Export failed';
-    return apiError('Google Maps export failed', 'EXTERNAL_SERVICE_ERROR', { status: 502, details: message, request });
+    logger.error('[scraper/export] CSV export failed', { error: message });
+    return apiError('Google Maps export failed', 'EXTERNAL_SERVICE_ERROR', { status: 502, request });
   }
 }, { rateLimit: 10 });
