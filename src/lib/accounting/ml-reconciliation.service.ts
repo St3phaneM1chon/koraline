@@ -9,6 +9,7 @@
 
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
+import { add } from '@/lib/decimal-calculator';
 import { BankTransaction, JournalEntry, ReconciliationSuggestion } from './types';
 
 interface MatchingRule {
@@ -157,8 +158,8 @@ function calculateFeatures(
   // Amount matching (fuzzy)
   const bankAmount = Math.abs(bankTx.amount);
   const entryAmount = bankTx.type === 'CREDIT'
-    ? entry.lines.reduce((sum, l) => sum + Number(l.debit), 0)
-    : entry.lines.reduce((sum, l) => sum + Number(l.credit), 0);
+    ? entry.lines.reduce((sum, l) => add(sum, Number(l.debit)), 0)
+    : entry.lines.reduce((sum, l) => add(sum, Number(l.credit)), 0);
 
   const amountDiff = Math.abs(bankAmount - entryAmount);
   const amountTolerance = bankAmount * 0.02; // 2% tolerance

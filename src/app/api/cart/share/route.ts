@@ -18,6 +18,7 @@ import { SignJWT, jwtVerify } from 'jose';
 import { logger } from '@/lib/logger';
 import { stripHtml } from '@/lib/sanitize';
 import { getClientIpFromRequest } from '@/lib/admin-audit';
+import { rateLimitMiddleware } from '@/lib/rate-limiter';
 
 // ---------------------------------------------------------------------------
 // Config
@@ -45,33 +46,6 @@ function getShareSecret(): Uint8Array {
     }
   }
   return _shareSecret;
-}
-
-// ---------------------------------------------------------------------------
-// Rate limiting (10 creates per minute per IP)
-// ---------------------------------------------------------------------------
-
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT_MAX = 10;
-const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-
-  if (!entry || now >= entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    // Cleanup old entries periodically
-    if (rateLimitMap.size > 5000) {
-      for (const [key, val] of rateLimitMap) {
-        if (now >= val.resetAt) rateLimitMap.delete(key);
-      }
-    }
-    return true;
-  }
-
-  entry.count++;
-  return entry.count <= RATE_LIMIT_MAX;
 }
 
 // ---------------------------------------------------------------------------
@@ -112,14 +86,11 @@ interface SharedCartPayload {
 
 export async function POST(request: NextRequest) {
   try {
-    // Rate limit by IP
+    // Rate limit by IP (centralized Redis-backed limiter, no memory leak)
     const ip = getClientIpFromRequest(request);
-
-    if (!checkRateLimit(ip)) {
-      return NextResponse.json(
-        { error: 'Rate limit exceeded. Try again later.' },
-        { status: 429 }
-      );
+    const rl = await rateLimitMiddleware(ip, '/api/cart/share');
+    if (!rl.success) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
     }
 
     const body = await request.json();

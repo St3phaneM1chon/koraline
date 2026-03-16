@@ -6,6 +6,7 @@
  */
 
 import { prisma } from '@/lib/db';
+import { add, subtract } from '@/lib/decimal-calculator';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -150,7 +151,7 @@ export async function generateBalanceSheet(date: Date): Promise<BalanceSheetData
 
   for (const acct of accounts) {
     const rawBalance = acct.journalLines.reduce(
-      (sum, line) => sum + Number(line.debit) - Number(line.credit),
+      (sum, line) => add(sum, subtract(Number(line.debit), Number(line.credit))),
       0,
     );
 
@@ -275,7 +276,7 @@ export async function generateIncomeStatement(
 
   for (const acct of accounts) {
     const rawBalance = acct.journalLines.reduce(
-      (sum, line) => sum + Number(line.debit) - Number(line.credit),
+      (sum, line) => add(sum, subtract(Number(line.debit), Number(line.credit))),
       0,
     );
 

@@ -11,6 +11,9 @@ import { db } from '@/lib/db';
 import { publishChatEvent } from '@/lib/chat/realtime';
 import { logger } from '@/lib/logger';
 import { validateBody } from '@/lib/api-validation';
+import { validateCsrf } from '@/lib/csrf-middleware';
+import { rateLimitMiddleware } from '@/lib/rate-limiter';
+import { getClientIpFromRequest } from '@/lib/admin-audit';
 
 const markReadSchema = z.object({
   conversationId: z.string().min(1, 'conversationId is required').max(100),
@@ -24,6 +27,19 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    // CSRF protection
+    const csrfValid = await validateCsrf(request);
+    if (!csrfValid) {
+      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+    }
+
+    // Rate limiting
+    const ip = getClientIpFromRequest(request);
+    const rl = await rateLimitMiddleware(ip, '/api/chat/read');
+    if (!rl.success) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+    }
+
     const body = await request.json();
     const validation = validateBody(markReadSchema, body);
     if (!validation.success) return validation.response;

@@ -21,24 +21,7 @@ import {
   shouldEscalateToHuman,
 } from '@/lib/crm/chatbot-engine';
 import { getClientIpFromRequest } from '@/lib/admin-audit';
-
-// ---------------------------------------------------------------------------
-// Rate limiter (in-memory, per IP)
-// ---------------------------------------------------------------------------
-
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-  if (!entry || entry.resetAt < now) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + 60_000 });
-    return true;
-  }
-  if (entry.count >= 30) return false;
-  entry.count++;
-  return true;
-}
+import { rateLimitMiddleware } from '@/lib/rate-limiter';
 
 // ---------------------------------------------------------------------------
 // Validation schema
@@ -57,8 +40,8 @@ const chatbotRequestSchema = z.object({
 
 export async function POST(request: NextRequest) {
   const ip = getClientIpFromRequest(request);
-
-  if (!checkRateLimit(ip)) {
+  const rl = await rateLimitMiddleware(ip, '/api/public/chatbot');
+  if (!rl.success) {
     return NextResponse.json(
       { success: false, error: 'Too many requests' },
       { status: 429 },

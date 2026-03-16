@@ -11,6 +11,8 @@
 import { prisma } from '@/lib/db';
 import { Prisma } from '@prisma/client';
 import { logger } from '@/lib/logger';
+import { add, subtract } from '@/lib/decimal-calculator';
+import { roundCurrency } from '@/lib/financial';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -409,8 +411,8 @@ async function executeIncomeStatement(config: ReportConfig): Promise<ReportResul
 
       const key = line.account.code;
       const existing = accountMap.get(key) || { code: line.account.code, name: line.account.name, type: acctType, debit: 0, credit: 0 };
-      existing.debit += Number(line.debit);
-      existing.credit += Number(line.credit);
+      existing.debit = add(existing.debit, Number(line.debit));
+      existing.credit = add(existing.credit, Number(line.credit));
       accountMap.set(key, existing);
     }
   }
@@ -420,11 +422,11 @@ async function executeIncomeStatement(config: ReportConfig): Promise<ReportResul
 
   for (const acct of accountMap.values()) {
     const netAmount = acct.type === 'REVENUE'
-      ? acct.credit - acct.debit
-      : acct.debit - acct.credit;
+      ? subtract(acct.credit, acct.debit)
+      : subtract(acct.debit, acct.credit);
 
     if (minAmount && Math.abs(netAmount) < minAmount) continue;
-    if (acct.type === 'REVENUE') totalRevenue += netAmount;
+    if (acct.type === 'REVENUE') totalRevenue = add(totalRevenue, netAmount);
 
     rows.push({
       accountCode: acct.code,
@@ -503,7 +505,7 @@ async function executeBalanceSheet(config: ReportConfig): Promise<ReportResult> 
 
   for (const acct of accounts) {
     const balance = acct.journalLines.reduce(
-      (sum, l) => sum + Number(l.debit) - Number(l.credit),
+      (sum, l) => add(sum, subtract(Number(l.debit), Number(l.credit))),
       0,
     );
     // For liability and equity, negate to show positive
@@ -515,7 +517,7 @@ async function executeBalanceSheet(config: ReportConfig): Promise<ReportResult> 
       accountCode: acct.code,
       accountName: acct.name,
       accountType: acct.type,
-      balance: Math.round(displayBalance * 100) / 100,
+      balance: roundCurrency(displayBalance),
       normalBalance: acct.normalBalance,
     });
   }
@@ -575,8 +577,8 @@ async function executeCashFlow(config: ReportConfig): Promise<ReportResult> {
     for (const line of entry.lines) {
       const key = line.account.code;
       const existing = acctMap.get(key) || { code: line.account.code, name: line.account.name, inflow: 0, outflow: 0 };
-      existing.inflow += Number(line.debit);
-      existing.outflow += Number(line.credit);
+      existing.inflow = add(existing.inflow, Number(line.debit));
+      existing.outflow = add(existing.outflow, Number(line.credit));
       acctMap.set(key, existing);
     }
   }
@@ -792,8 +794,8 @@ async function executeTaxSummary(config: ReportConfig): Promise<ReportResult> {
 
       const key = code;
       const existing = accountMap.get(key) || { code, name: line.account.name, taxType, collected: 0, paid: 0 };
-      existing.collected += Number(line.credit);
-      existing.paid += Number(line.debit);
+      existing.collected = add(existing.collected, Number(line.credit));
+      existing.paid = add(existing.paid, Number(line.debit));
       accountMap.set(key, existing);
     }
   }
@@ -804,9 +806,9 @@ async function executeTaxSummary(config: ReportConfig): Promise<ReportResult> {
       accountCode: acct.code,
       accountName: acct.name,
       taxType: acct.taxType,
-      collected: Math.round(acct.collected * 100) / 100,
-      paid: Math.round(acct.paid * 100) / 100,
-      netTax: Math.round((acct.collected - acct.paid) * 100) / 100,
+      collected: roundCurrency(acct.collected),
+      paid: roundCurrency(acct.paid),
+      netTax: subtract(acct.collected, acct.paid),
     });
   }
 
@@ -1037,9 +1039,9 @@ async function executeCustomReport(config: ReportConfig): Promise<ReportResult> 
         rows.push({
           accountCode: line.account.code,
           accountName: line.account.name,
-          debit: Math.round(Number(line.debit) * 100) / 100,
-          credit: Math.round(Number(line.credit) * 100) / 100,
-          balance: Math.round((Number(line.debit) - Number(line.credit)) * 100) / 100,
+          debit: roundCurrency(Number(line.debit)),
+          credit: roundCurrency(Number(line.credit)),
+          balance: subtract(Number(line.debit), Number(line.credit)),
         });
       }
     }

@@ -16,6 +16,7 @@ import { prisma } from '@/lib/db';
 import { Prisma } from '@prisma/client';
 import { logger } from '@/lib/logger';
 import { roundCurrency } from '@/lib/financial';
+import { add, subtract } from '@/lib/decimal-calculator';
 import { generateCSV } from '@/lib/csv-export';
 import { assertPeriodOpen } from '@/lib/accounting/validation';
 
@@ -346,51 +347,63 @@ async function processBatchPayments(
 
       const { invoiceId, amount } = parsed.data;
 
-      // Find invoice
-      const invoice = await prisma.customerInvoice.findUnique({
-        where: { id: invoiceId },
-        select: { id: true, invoiceNumber: true, status: true, total: true, amountPaid: true },
-      });
+      // FIX CRITICAL: Wrap read+update in Serializable transaction to prevent
+      // race condition where concurrent batch payments read stale amountPaid
+      const txResult = await prisma.$transaction(async (tx) => {
+        const invoice = await tx.customerInvoice.findUnique({
+          where: { id: invoiceId },
+          select: { id: true, invoiceNumber: true, status: true, total: true, amountPaid: true },
+        });
 
-      if (!invoice) {
-        results.push({ index: i, success: false, error: `Facture ${invoiceId} introuvable` });
+        if (!invoice) {
+          return { success: false as const, error: `Facture ${invoiceId} introuvable` };
+        }
+
+        if (invoice.status === 'VOID' || invoice.status === 'CANCELLED') {
+          return { success: false as const, error: `Facture ${invoice.invoiceNumber} est ${invoice.status}` };
+        }
+
+        // FIX: Use Decimal arithmetic to avoid floating-point precision loss
+        const currentPaid = Number(invoice.amountPaid || 0);
+        const invoiceTotal = Number(invoice.total);
+        const newPaid = add(currentPaid, amount);
+        const balance = subtract(invoiceTotal, newPaid);
+
+        const isFullyPaid = newPaid >= invoiceTotal;
+        await tx.customerInvoice.update({
+          where: { id: invoiceId },
+          data: {
+            amountPaid: new Prisma.Decimal(newPaid),
+            balance: new Prisma.Decimal(balance),
+            status: isFullyPaid ? 'PAID' : (newPaid > 0 ? 'PARTIAL' : 'SENT'),
+            paidAt: isFullyPaid ? new Date() : undefined,
+          },
+        });
+
+        return {
+          success: true as const,
+          id: invoiceId,
+          data: {
+            invoiceNumber: invoice.invoiceNumber,
+            amount,
+            totalPaid: newPaid,
+            invoiceTotal,
+            fullyPaid: isFullyPaid,
+          },
+        };
+      }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
+
+      if (!txResult.success) {
+        results.push({ index: i, success: false, error: txResult.error });
         await updateJobProgress(jobId, i + 1, results);
         continue;
       }
-
-      if (invoice.status === 'VOID' || invoice.status === 'CANCELLED') {
-        results.push({ index: i, success: false, error: `Facture ${invoice.invoiceNumber} est ${invoice.status}` });
-        await updateJobProgress(jobId, i + 1, results);
-        continue;
-      }
-
-      const currentPaid = Number(invoice.amountPaid || 0);
-      const invoiceTotal = Number(invoice.total);
-      const newPaid = currentPaid + amount;
-
-      // Update invoice
-      const isFullyPaid = newPaid >= invoiceTotal;
-      await prisma.customerInvoice.update({
-        where: { id: invoiceId },
-        data: {
-          amountPaid: new Prisma.Decimal(newPaid),
-          balance: new Prisma.Decimal(invoiceTotal - newPaid),
-          status: isFullyPaid ? 'PAID' : (newPaid > 0 ? 'PARTIAL' : 'SENT'),
-          paidAt: isFullyPaid ? new Date() : undefined,
-        },
-      });
 
       results.push({
         index: i,
         success: true,
-        id: invoiceId,
-        data: {
-          invoiceNumber: invoice.invoiceNumber,
-          amount,
-          totalPaid: newPaid,
-          invoiceTotal,
-          fullyPaid: isFullyPaid,
-        },
+        id: txResult.id,
+        data: txResult.data,
       });
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);

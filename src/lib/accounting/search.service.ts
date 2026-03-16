@@ -22,6 +22,7 @@
  */
 
 import { db as prisma } from '@/lib/db';
+import { add } from '@/lib/decimal-calculator';
 
 export interface SearchQuery {
   // Text search
@@ -152,7 +153,7 @@ export async function advancedSearch(
     });
 
     for (const entry of entries) {
-      const totalAmount = entry.lines.reduce((sum, l) => sum + Number(l.debit), 0);
+      const totalAmount = entry.lines.reduce((sum, l) => add(sum, Number(l.debit)), 0);
       
       // Apply amount filter
       if (amountMin !== undefined && totalAmount < amountMin) continue;

@@ -13,6 +13,7 @@
 
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
+import { add, subtract } from '@/lib/decimal-calculator';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -127,7 +128,7 @@ export async function autoReconcileByReference(
 
     // Amount matching
     // F046 FIX: Consider both debits and credits for accurate amount matching
-    const entryAmount = entry.lines.reduce((sum, l) => sum + Number(l.debit) - Number(l.credit), 0);
+    const entryAmount = entry.lines.reduce((sum, l) => add(sum, subtract(Number(l.debit), Number(l.credit))), 0);
     const amountDiff = Math.abs(bankAmount - entryAmount);
 
     if (amountDiff < 0.01) {
@@ -205,7 +206,7 @@ export async function autoReconcileByAmount(
 
   for (const entry of entries) {
     // F046 FIX: Consider both debits and credits for accurate amount matching
-    const entryAmount = entry.lines.reduce((sum, l) => sum + Number(l.debit) - Number(l.credit), 0);
+    const entryAmount = entry.lines.reduce((sum, l) => add(sum, subtract(Number(l.debit), Number(l.credit))), 0);
     const amountDiff = Math.abs(bankAmount - Math.abs(entryAmount));
 
     // Only consider exact amount matches (within penny)
@@ -329,7 +330,7 @@ export async function runAutoReconciliation(): Promise<AutoReconciliationResult>
   const entryData = allEntries.map((entry) => ({
     entry,
     normalizedRef: normalize(entry.reference || entry.description),
-    amount: entry.lines.reduce((sum, l) => sum + Number(l.debit) - Number(l.credit), 0),
+    amount: entry.lines.reduce((sum, l) => add(sum, subtract(Number(l.debit), Number(l.credit))), 0),
   }));
 
   for (const bankTx of pendingTxs) {

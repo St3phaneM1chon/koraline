@@ -16,6 +16,7 @@ import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { stripHtml, stripControlChars } from '@/lib/sanitize';
 import { getClientIpFromRequest } from '@/lib/admin-audit';
+import { rateLimitMiddleware } from '@/lib/rate-limiter';
 
 const chatPostSchema = z.object({
   action: z.enum(['start', 'message', 'end']),
@@ -26,24 +27,10 @@ const chatPostSchema = z.object({
   senderName: z.string().optional(),
 });
 
-// Simple rate limiter: max 30 requests per minute per IP
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-  if (!entry || entry.resetAt < now) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + 60000 });
-    return true;
-  }
-  if (entry.count >= 30) return false;
-  entry.count++;
-  return true;
-}
-
 export async function POST(request: NextRequest) {
   const ip = getClientIpFromRequest(request);
-  if (!checkRateLimit(ip)) {
+  const rl = await rateLimitMiddleware(ip, '/api/public/chat');
+  if (!rl.success) {
     return NextResponse.json({ success: false, error: 'Too many requests' }, { status: 429 });
   }
 

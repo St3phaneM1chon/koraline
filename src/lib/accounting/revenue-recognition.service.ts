@@ -22,6 +22,7 @@ import { prisma } from '@/lib/db';
 import { ACCOUNT_CODES } from './types';
 import { logger } from '@/lib/logger';
 import { assertJournalBalance, assertPeriodOpen } from './validation';
+import { add, subtract } from '@/lib/decimal-calculator';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -506,7 +507,7 @@ export async function getDeferredRevenueBalance(
     _sum: { credit: true, debit: true },
   });
 
-  const balance = Number(deferredLines._sum.credit || 0) - Number(deferredLines._sum.debit || 0);
+  const balance = subtract(Number(deferredLines._sum.credit || 0), Number(deferredLines._sum.debit || 0));
 
   // Get schedule details
   const schedules = await prisma.journalEntry.findMany({
@@ -566,7 +567,7 @@ export async function getRevenueByType(
     },
     _sum: { credit: true, debit: true },
   });
-  const pointOfSale = Number(posLines._sum.credit || 0) - Number(posLines._sum.debit || 0);
+  const pointOfSale = subtract(Number(posLines._sum.credit || 0), Number(posLines._sum.debit || 0));
 
   // Subscription revenue: from REVRECOG entries for STRAIGHT_LINE schedules
   const recognitionEntries = await prisma.journalEntry.findMany({
@@ -588,7 +589,7 @@ export async function getRevenueByType(
   let milestoneRevenue = 0;
 
   for (const entry of recognitionEntries) {
-    const lineTotal = entry.lines.reduce((sum, l) => sum + Number(l.credit) - Number(l.debit), 0);
+    const lineTotal = entry.lines.reduce((sum, l) => add(sum, subtract(Number(l.credit), Number(l.debit))), 0);
 
     // Determine the schedule method from the original schedule
     const scheduleRefMatch = entry.reference?.match(/REVRECOG-(REVSCHED-[^-]+(?:-[^-]+)*)-\d+/);
@@ -601,12 +602,12 @@ export async function getRevenueByType(
       if (schedule) {
         const meta = parseScheduleMetadata(schedule.description);
         if (meta?.method === 'MILESTONE') {
-          milestoneRevenue += lineTotal;
+          milestoneRevenue = add(milestoneRevenue, lineTotal);
         } else {
-          subscriptionRevenue += lineTotal;
+          subscriptionRevenue = add(subscriptionRevenue, lineTotal);
         }
       } else {
-        subscriptionRevenue += lineTotal; // Default to subscription
+        subscriptionRevenue = add(subscriptionRevenue, lineTotal); // Default to subscription
       }
     }
   }
@@ -625,13 +626,13 @@ export async function getRevenueByType(
     },
     _sum: { credit: true, debit: true },
   });
-  const posScheduleRevenue = Number(posScheduleLines._sum.credit || 0) - Number(posScheduleLines._sum.debit || 0);
+  const posScheduleRevenue = subtract(Number(posScheduleLines._sum.credit || 0), Number(posScheduleLines._sum.debit || 0));
 
   return {
-    pointOfSale: Math.round((pointOfSale + posScheduleRevenue) * 100) / 100,
-    subscription: Math.round(subscriptionRevenue * 100) / 100,
-    milestone: Math.round(milestoneRevenue * 100) / 100,
-    total: Math.round((pointOfSale + posScheduleRevenue + subscriptionRevenue + milestoneRevenue) * 100) / 100,
+    pointOfSale: add(pointOfSale, posScheduleRevenue),
+    subscription: subscriptionRevenue,
+    milestone: milestoneRevenue,
+    total: add(pointOfSale, posScheduleRevenue, subscriptionRevenue, milestoneRevenue),
   };
 }
 
