@@ -435,6 +435,7 @@ model JournalEntry {
   @@index([type, deletedAt]) // S10: Composite for stripe-sync queries (find by type, exclude deleted)
   @@index([status, deletedAt]) // S10: Composite for active entry queries by status
   @@index([type, status]) // A7-P2: Composite for accounting entries filtered by type + status together
+  @@index([type, status, date]) // Composite for accounting reports filtering by type, status, and date range
   @@index([createdAt])
   @@index([updatedAt])
 }

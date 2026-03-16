@@ -21,6 +21,8 @@ model InventoryReservation {
   @@index([productId])
   @@index([status])
   @@index([createdAt])
+  @@index([cartId, status])   // Checkout: find active reservations for a cart
+  @@index([orderId, status])  // Payment webhook: find/consume reservations for an order
 }
 
 model InventoryTransaction {
