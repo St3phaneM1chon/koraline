@@ -347,6 +347,7 @@ model InboxMessage {
   updatedAt       DateTime          @updatedAt
 
   @@index([conversationId])
+  @@index([conversationId, createdAt])
   @@index([createdAt])
 }
 

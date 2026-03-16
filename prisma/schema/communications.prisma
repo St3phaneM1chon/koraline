@@ -124,6 +124,7 @@ model EmailLog {
   @@index([userId])
   @@index([userId, sentAt])
   @@index([campaignId])
+  @@index([campaignId, status])
 }
 
 // Faille #11: Persistent bounce tracking (was in-memory only, lost on restart)

@@ -42,6 +42,7 @@ model AmbassadorCommission {
 
   @@unique([ambassadorId, orderId])
   @@index([ambassadorId])
+  @@index([orderId])
   @@index([paidOut])
   @@index([payoutId])
   @@index([createdAt])
