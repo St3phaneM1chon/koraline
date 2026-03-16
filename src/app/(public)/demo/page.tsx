@@ -6,6 +6,7 @@
 
 import { useState } from 'react';
 import { useI18n } from '@/i18n/client';
+import { addCSRFHeader } from '@/lib/csrf';
 
 export default function DemoPage() {
   const { t } = useI18n();
@@ -31,7 +32,7 @@ export default function DemoPage() {
     try {
       const res = await fetch('/api/demo-request', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(formData),
       });
       const data = await res.json();
