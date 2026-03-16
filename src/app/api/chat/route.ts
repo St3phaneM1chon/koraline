@@ -234,9 +234,10 @@ export async function POST(request: NextRequest) {
       const greeting = settings?.chatbotGreeting || getDefaultGreeting(visitorLanguage || 'en');
       
       // F-036 FIX: Create greeting message and include it directly without re-fetching
+      const newConvId = conversation.id;
       const greetingMsg = await db.chatMessage.create({
         data: {
-          conversationId: conversation!.id,
+          conversationId: newConvId,
           content: greeting,
           sender: 'BOT',
           senderName: 'BioCycle Assistant',

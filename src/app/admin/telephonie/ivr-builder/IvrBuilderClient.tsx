@@ -726,7 +726,7 @@ export default function IvrBuilderClient({
                     {t('voip.admin.ivrEditor.afterHours')} ({selectedMenu.businessHoursStart} - {selectedMenu.businessHoursEnd}):
                   </span>
                   <button
-                    onClick={() => setSelectedMenuId(selectedMenu.afterHoursMenuId!)}
+                    onClick={() => setSelectedMenuId(selectedMenu.afterHoursMenuId ?? '')}
                     className="font-medium underline"
                   >
                     {getMenuName(selectedMenu.afterHoursMenuId)}

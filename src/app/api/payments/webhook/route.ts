@@ -411,6 +411,9 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session, eventId:
     });
   }
 
+  // Currency is now guaranteed non-null (looked up or created above)
+  const resolvedCurrencyId = currency.id;
+
   // Amounts in metadata are always in CAD (base currency).
   // Stripe charged the user in the selected currency, but we
   // record accounting values in CAD for consistency.
@@ -556,7 +559,7 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session, eventId:
         taxTvh,
         taxPst,
         total: cadTotal,
-        currencyId: currency!.id,
+        currencyId: resolvedCurrencyId,
         exchangeRate: checkoutExchangeRate,
         paymentMethod: 'STRIPE_CARD',
         paymentStatus: 'PAID',

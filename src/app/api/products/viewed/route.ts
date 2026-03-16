@@ -78,16 +78,16 @@ export async function GET(request: NextRequest) {
     const productMap = new Map(products.map(p => [p.id, p]));
     const sorted = productIds
       .map(id => productMap.get(id))
-      .filter(Boolean)
+      .filter((p): p is NonNullable<typeof p> => Boolean(p))
       .map(p => ({
-        id: p!.id,
-        name: p!.name,
-        slug: p!.slug,
-        price: Number(p!.price),
-        compareAtPrice: p!.compareAtPrice ? Number(p!.compareAtPrice) : null,
-        imageUrl: p!.images[0]?.url || p!.imageUrl,
-        averageRating: p!.averageRating ? Number(p!.averageRating) : null,
-        inStock: p!.formats.some(f => f.inStock && f.stockQuantity > 0),
+        id: p.id,
+        name: p.name,
+        slug: p.slug,
+        price: Number(p.price),
+        compareAtPrice: p.compareAtPrice ? Number(p.compareAtPrice) : null,
+        imageUrl: p.images[0]?.url || p.imageUrl,
+        averageRating: p.averageRating ? Number(p.averageRating) : null,
+        inStock: p.formats.some(f => f.inStock && f.stockQuantity > 0),
       }));
 
     return apiSuccess({ products: sorted });
