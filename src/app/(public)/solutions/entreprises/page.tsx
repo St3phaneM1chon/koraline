@@ -2,17 +2,26 @@
  * PAGE SOLUTIONS ENTREPRISES
  */
 
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
-export const metadata = {
-  title: 'Solutions entreprises',
-  description: 'Solutions peptidiques sur mesure pour les entreprises. Approvisionnement en volume, comptes dédiés et support technique spécialisé.',
+export const metadata: Metadata = {
+  title: 'Solutions peptidiques pour entreprises et laboratoires | BioCycle Peptides',
+  description: 'Approvisionnement en peptides de recherche pour entreprises et laboratoires. Volume, comptes dedies, support technique et livraison rapide au Canada.',
+  alternates: {
+    canonical: 'https://biocyclepeptides.com/solutions/entreprises',
+  },
   openGraph: {
-    title: 'Solutions entreprises | BioCycle Peptides',
-    description: 'Solutions peptidiques sur mesure pour les entreprises.',
+    title: 'Solutions peptidiques pour entreprises et laboratoires | BioCycle Peptides',
+    description: 'Approvisionnement en peptides de recherche pour entreprises et laboratoires. Volume, comptes dedies et support technique.',
     url: 'https://biocyclepeptides.com/solutions/entreprises',
     siteName: 'BioCycle Peptides',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Solutions peptidiques pour entreprises et laboratoires | BioCycle Peptides',
+    description: 'Approvisionnement en peptides de recherche pour entreprises et laboratoires. Volume, comptes dedies et support technique.',
   },
 };
 

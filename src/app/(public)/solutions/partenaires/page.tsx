@@ -2,17 +2,26 @@
  * PAGE SOLUTIONS PARTENAIRES
  */
 
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
-export const metadata = {
-  title: 'Programme partenaires',
-  description: 'Rejoignez le réseau de partenaires BioCycle Peptides. Affiliés, revendeurs et distributeurs dans le domaine de la recherche peptidique.',
+export const metadata: Metadata = {
+  title: 'Programme partenaires et revendeurs peptides | BioCycle Peptides',
+  description: 'Devenez partenaire BioCycle Peptides. Programme d\'affiliation, revendeurs agrees et distributeurs de peptides de recherche au Canada et a l\'international.',
+  alternates: {
+    canonical: 'https://biocyclepeptides.com/solutions/partenaires',
+  },
   openGraph: {
-    title: 'Programme partenaires | BioCycle Peptides',
-    description: 'Rejoignez le réseau de partenaires BioCycle Peptides.',
+    title: 'Programme partenaires et revendeurs peptides | BioCycle Peptides',
+    description: 'Devenez partenaire BioCycle Peptides. Programme d\'affiliation, revendeurs agrees et distributeurs de peptides de recherche.',
     url: 'https://biocyclepeptides.com/solutions/partenaires',
     siteName: 'BioCycle Peptides',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Programme partenaires et revendeurs peptides | BioCycle Peptides',
+    description: 'Devenez partenaire BioCycle Peptides. Programme d\'affiliation, revendeurs agrees et distributeurs de peptides de recherche.',
   },
 };
 

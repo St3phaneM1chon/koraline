@@ -1,14 +1,22 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Contactez-nous',
-  description: 'Communiquez avec BioCycle Peptides. Fournisseur canadien de peptides de recherche basé à Montréal. Support bilingue disponible.',
+  title: 'Contactez-nous | BioCycle Peptides',
+  description: 'Communiquez avec BioCycle Peptides, fournisseur canadien de peptides de recherche basé à Montréal. Support bilingue disponible.',
+  alternates: {
+    canonical: 'https://biocyclepeptides.com/contact',
+  },
   openGraph: {
     title: 'Contactez-nous | BioCycle Peptides',
-    description: 'Communiquez avec BioCycle Peptides. Support bilingue disponible.',
+    description: 'Communiquez avec BioCycle Peptides, fournisseur canadien de peptides de recherche basé à Montréal. Support bilingue disponible.',
     url: 'https://biocyclepeptides.com/contact',
     siteName: 'BioCycle Peptides',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Contactez-nous | BioCycle Peptides',
+    description: 'Communiquez avec BioCycle Peptides, fournisseur canadien de peptides de recherche basé à Montréal. Support bilingue disponible.',
   },
 };
 

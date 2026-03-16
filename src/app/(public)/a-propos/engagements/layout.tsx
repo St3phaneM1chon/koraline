@@ -1,14 +1,22 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Nos engagements',
-  description: 'Les engagements de BioCycle Peptides envers la qualité, la pureté et la distribution responsable de peptides de recherche au Canada.',
+  title: 'Nos engagements | BioCycle Peptides',
+  description: 'Qualité, transparence, éthique et environnement : découvrez les 5 engagements fondamentaux de BioCycle Peptides envers la communauté scientifique canadienne.',
+  alternates: {
+    canonical: 'https://biocyclepeptides.com/a-propos/engagements',
+  },
   openGraph: {
     title: 'Nos engagements | BioCycle Peptides',
-    description: 'Engagements envers la qualité, la pureté et la distribution responsable de peptides de recherche.',
+    description: 'Qualité, transparence, éthique et environnement : découvrez les 5 engagements fondamentaux de BioCycle Peptides envers la communauté scientifique canadienne.',
     url: 'https://biocyclepeptides.com/a-propos/engagements',
     siteName: 'BioCycle Peptides',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Nos engagements | BioCycle Peptides',
+    description: 'Qualité, transparence, éthique et environnement : découvrez les 5 engagements fondamentaux de BioCycle Peptides envers la communauté scientifique canadienne.',
   },
 };
 

@@ -2,17 +2,26 @@
  * PAGE SOLUTIONS PARTICULIERS
  */
 
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
-export const metadata = {
-  title: 'Solutions particuliers',
-  description: 'Peptides de recherche pour les chercheurs individuels. Commandes en petites quantités, guides de reconstitution et support technique.',
+export const metadata: Metadata = {
+  title: 'Peptides de recherche pour chercheurs individuels | BioCycle Peptides',
+  description: 'Commandez des peptides de recherche en petites quantites. Guides de reconstitution, certificats d\'analyse et support technique pour chercheurs.',
+  alternates: {
+    canonical: 'https://biocyclepeptides.com/solutions/particuliers',
+  },
   openGraph: {
-    title: 'Solutions particuliers | BioCycle Peptides',
-    description: 'Peptides de recherche pour les chercheurs individuels.',
+    title: 'Peptides de recherche pour chercheurs individuels | BioCycle Peptides',
+    description: 'Commandez des peptides de recherche en petites quantites. Guides de reconstitution, certificats d\'analyse et support technique.',
     url: 'https://biocyclepeptides.com/solutions/particuliers',
     siteName: 'BioCycle Peptides',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Peptides de recherche pour chercheurs individuels | BioCycle Peptides',
+    description: 'Commandez des peptides de recherche en petites quantites. Guides de reconstitution, certificats d\'analyse et support technique.',
   },
 };
 

@@ -1,14 +1,22 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Notre histoire',
-  description: 'L\'histoire de BioCycle Peptides — de sa fondation à Montréal à devenir le fournisseur de peptides de recherche de confiance au Canada.',
+  title: 'Notre histoire | BioCycle Peptides',
+  description: 'De sa fondation à Montréal à fournisseur de confiance au Canada, découvrez le parcours de BioCycle Peptides et notre engagement envers la recherche peptidique.',
+  alternates: {
+    canonical: 'https://biocyclepeptides.com/a-propos/histoire',
+  },
   openGraph: {
     title: 'Notre histoire | BioCycle Peptides',
-    description: 'L\'histoire de BioCycle Peptides, de sa fondation à Montréal.',
+    description: 'De sa fondation à Montréal à fournisseur de confiance au Canada, découvrez le parcours de BioCycle Peptides et notre engagement envers la recherche peptidique.',
     url: 'https://biocyclepeptides.com/a-propos/histoire',
     siteName: 'BioCycle Peptides',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Notre histoire | BioCycle Peptides',
+    description: 'De sa fondation à Montréal à fournisseur de confiance au Canada, découvrez le parcours de BioCycle Peptides et notre engagement envers la recherche peptidique.',
   },
 };
 

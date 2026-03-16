@@ -2,17 +2,26 @@
  * PAGE CAS D'USAGE
  */
 
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
-export const metadata = {
-  title: 'Cas d\'usage',
-  description: 'Découvrez comment les peptides de recherche BioCycle Peptides répondent à vos défis scientifiques spécifiques.',
+export const metadata: Metadata = {
+  title: 'Cas d\'usage des peptides de recherche | BioCycle Peptides',
+  description: 'Explorez les applications concretes des peptides BioCycle Peptides dans la recherche scientifique, les etudes precliniques et le developpement.',
+  alternates: {
+    canonical: 'https://biocyclepeptides.com/solutions/cas-usage',
+  },
   openGraph: {
-    title: 'Cas d\'usage | BioCycle Peptides',
-    description: 'Comment les peptides BioCycle Peptides répondent à vos défis scientifiques.',
+    title: 'Cas d\'usage des peptides de recherche | BioCycle Peptides',
+    description: 'Explorez les applications concretes des peptides BioCycle Peptides dans la recherche scientifique et les etudes precliniques.',
     url: 'https://biocyclepeptides.com/solutions/cas-usage',
     siteName: 'BioCycle Peptides',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Cas d\'usage des peptides de recherche | BioCycle Peptides',
+    description: 'Explorez les applications concretes des peptides BioCycle Peptides dans la recherche scientifique et les etudes precliniques.',
   },
 };
 

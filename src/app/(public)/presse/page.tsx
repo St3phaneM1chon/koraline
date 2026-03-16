@@ -2,17 +2,26 @@
  * PAGE PRESSE
  */
 
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
-export const metadata = {
-  title: 'Presse',
-  description: 'Espace presse BioCycle Peptides : communiqués de presse, ressources médias et contact pour les journalistes.',
+export const metadata: Metadata = {
+  title: 'Espace presse | BioCycle Peptides',
+  description: 'Espace presse BioCycle Peptides : communiqués de presse, ressources médias et contact pour les journalistes et professionnels.',
+  alternates: {
+    canonical: 'https://biocyclepeptides.com/presse',
+  },
   openGraph: {
-    title: 'Presse | BioCycle Peptides',
-    description: 'Communiqués de presse, ressources médias et contact pour les journalistes.',
+    title: 'Espace presse | BioCycle Peptides',
+    description: 'Espace presse BioCycle Peptides : communiqués de presse, ressources médias et contact pour les journalistes et professionnels.',
     url: 'https://biocyclepeptides.com/presse',
     siteName: 'BioCycle Peptides',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Espace presse | BioCycle Peptides',
+    description: 'Communiqués de presse, ressources médias et contact pour les journalistes.',
   },
 };
 
