@@ -9,6 +9,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { auth } from '@/lib/auth-config';
 import { prisma } from '@/lib/db';
+import { getStaticLocale, createServerTranslator } from '@/i18n/server';
+import type { Locale } from '@/i18n/config';
 
 async function getPurchases(userId: string) {
   return prisma.purchase.findMany({
@@ -30,21 +32,23 @@ export default async function PurchasesPage() {
   }
 
   const purchases = await getPurchases(session.user.id);
+  const locale = getStaticLocale();
+  const t = createServerTranslator(locale as Locale);
 
   const statusLabels: Record<string, { label: string; color: string }> = {
-    COMPLETED: { label: 'Payé', color: 'bg-green-100 text-green-700' },
-    PENDING: { label: 'En attente', color: 'bg-yellow-100 text-yellow-700' },
-    FAILED: { label: 'Échoué', color: 'bg-red-100 text-red-700' },
-    REFUNDED: { label: 'Remboursé', color: 'bg-gray-100 text-gray-700' },
+    COMPLETED: { label: t('dashboard.achats.statusPaid'), color: 'bg-green-100 text-green-700' },
+    PENDING: { label: t('dashboard.achats.statusPending'), color: 'bg-yellow-100 text-yellow-700' },
+    FAILED: { label: t('dashboard.achats.statusFailed'), color: 'bg-red-100 text-red-700' },
+    REFUNDED: { label: t('dashboard.achats.statusRefunded'), color: 'bg-gray-100 text-gray-700' },
   };
 
   const paymentMethodLabels: Record<string, string> = {
-    STRIPE_CARD: 'Carte',
-    APPLE_PAY: 'Apple Pay',
-    GOOGLE_PAY: 'Google Pay',
-    PAYPAL: 'PayPal',
-    VISA_CLICK_TO_PAY: 'Visa',
-    MASTERCARD_CLICK_TO_PAY: 'Mastercard',
+    STRIPE_CARD: t('dashboard.achats.payCard'),
+    APPLE_PAY: t('dashboard.achats.payApplePay'),
+    GOOGLE_PAY: t('dashboard.achats.payGooglePay'),
+    PAYPAL: t('dashboard.achats.payPaypal'),
+    VISA_CLICK_TO_PAY: t('dashboard.achats.payVisa'),
+    MASTERCARD_CLICK_TO_PAY: t('dashboard.achats.payMastercard'),
   };
 
   // Calculer les totaux
@@ -60,15 +64,15 @@ export default async function PurchasesPage() {
             <div>
               <nav className="flex items-center space-x-2 text-sm text-gray-500 mb-2">
                 <Link href="/dashboard/customer" className="hover:text-gray-700">
-                  Dashboard
+                  {t('dashboard.achats.breadcrumbDashboard')}
                 </Link>
                 <span>/</span>
-                <span className="text-gray-900">Mes achats</span>
+                <span className="text-gray-900">{t('dashboard.achats.breadcrumbPurchases')}</span>
               </nav>
-              <h1 className="text-2xl font-bold text-gray-900">Historique des achats</h1>
+              <h1 className="text-2xl font-bold text-gray-900">{t('dashboard.achats.title')}</h1>
             </div>
             <div className="text-end">
-              <p className="text-sm text-gray-500">Total dépensé</p>
+              <p className="text-sm text-gray-500">{t('dashboard.achats.totalSpent')}</p>
               <p className="text-2xl font-bold text-gray-900">{totalSpent.toFixed(2)} $</p>
             </div>
           </div>
@@ -92,13 +96,13 @@ export default async function PurchasesPage() {
               />
             </svg>
             <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Aucun achat
+              {t('dashboard.achats.noPurchases')}
             </h3>
             <p className="text-gray-600 mb-4">
-              Commencez par explorer notre catalogue de formations
+              {t('dashboard.achats.noPurchasesHint')}
             </p>
             <Link href="/catalogue" className="btn-primary">
-              Voir les formations
+              {t('dashboard.achats.viewCourses')}
             </Link>
           </div>
         ) : (
@@ -107,22 +111,22 @@ export default async function PurchasesPage() {
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Date
+                    {t('dashboard.achats.thDate')}
                   </th>
                   <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Formation
+                    {t('dashboard.achats.thCourse')}
                   </th>
                   <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Paiement
+                    {t('dashboard.achats.thPayment')}
                   </th>
                   <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
+                    {t('dashboard.achats.thStatus')}
                   </th>
                   <th className="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Montant
+                    {t('dashboard.achats.thAmount')}
                   </th>
                   <th className="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Reçu
+                    {t('dashboard.achats.thReceipt')}
                   </th>
                 </tr>
               </thead>
@@ -130,7 +134,7 @@ export default async function PurchasesPage() {
                 {purchases.map((purchase) => (
                   <tr key={purchase.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(purchase.createdAt).toLocaleDateString('fr-CA', {
+                      {new Date(purchase.createdAt).toLocaleDateString(locale, {
                         year: 'numeric',
                         month: 'short',
                         day: 'numeric',
@@ -142,7 +146,7 @@ export default async function PurchasesPage() {
                           {purchase.product.imageUrl ? (
                             <Image
                               src={purchase.product.imageUrl}
-                              alt=""
+                              alt={purchase.product.name}
                               width={40}
                               height={40}
                               className="w-full h-full object-cover"
@@ -217,7 +221,7 @@ export default async function PurchasesPage() {
                                 d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
                               />
                             </svg>
-                            Imprimer
+                            {t('dashboard.achats.print')}
                           </button>
                         </div>
                       )}

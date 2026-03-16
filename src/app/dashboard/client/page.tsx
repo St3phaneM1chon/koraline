@@ -9,7 +9,8 @@ import Link from 'next/link';
 import { auth } from '@/lib/auth-config';
 import { prisma } from '@/lib/db';
 import { UserRole } from '@/types';
-import { getApiTranslator } from '@/i18n/server';
+import { getStaticLocale, createServerTranslator } from '@/i18n/server';
+import type { Locale } from '@/i18n/config';
 
 async function getClientData(userId: string) {
   // Query 1: company basics
@@ -123,16 +124,17 @@ export default async function ClientDashboard() {
     redirect('/dashboard');
   }
 
-  const { t } = await getApiTranslator();
+  const locale = getStaticLocale();
+  const t = createServerTranslator(locale as Locale);
   const data = await getClientData(session.user.id);
 
   if (!data) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Profil entreprise non configuré</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">{t('dashboard.client.profileNotConfigured')}</h1>
           <Link href="/dashboard/customer" className="btn-primary">
-            Retour au tableau de bord
+            {t('dashboard.client.backToDashboard')}
           </Link>
         </div>
       </div>
@@ -174,7 +176,7 @@ export default async function ClientDashboard() {
                 </svg>
               </div>
               <div className="ms-4">
-                <p className="text-sm text-gray-500">Étudiants</p>
+                <p className="text-sm text-gray-500">{t('dashboard.client.students')}</p>
                 <p className="text-2xl font-bold text-gray-900">{stats.totalStudents}</p>
               </div>
             </div>
@@ -188,7 +190,7 @@ export default async function ClientDashboard() {
                 </svg>
               </div>
               <div className="ms-4">
-                <p className="text-sm text-gray-500">Taux complétion</p>
+                <p className="text-sm text-gray-500">{t('dashboard.client.completionRate')}</p>
                 <p className="text-2xl font-bold text-gray-900">{stats.completionRate}%</p>
               </div>
             </div>
@@ -202,7 +204,7 @@ export default async function ClientDashboard() {
                 </svg>
               </div>
               <div className="ms-4">
-                <p className="text-sm text-gray-500">Formations actives</p>
+                <p className="text-sm text-gray-500">{t('dashboard.client.activeCourses')}</p>
                 <p className="text-2xl font-bold text-gray-900">{stats.totalCourses}</p>
               </div>
             </div>
@@ -216,7 +218,7 @@ export default async function ClientDashboard() {
                 </svg>
               </div>
               <div className="ms-4">
-                <p className="text-sm text-gray-500">Total investi</p>
+                <p className="text-sm text-gray-500">{t('dashboard.client.totalInvested')}</p>
                 <p className="text-2xl font-bold text-gray-900">{Number(stats.totalSpent).toFixed(2)} $</p>
               </div>
             </div>
@@ -227,15 +229,15 @@ export default async function ClientDashboard() {
           {/* Liste des étudiants */}
           <section className="bg-white rounded-xl border border-gray-200">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900">Mes étudiants</h2>
+              <h2 className="text-lg font-semibold text-gray-900">{t('dashboard.client.myStudents')}</h2>
               <Link href="/client/etudiants" className="text-blue-600 hover:underline text-sm">
-                Voir tout
+                {t('dashboard.viewAll')}
               </Link>
             </div>
             <div className="divide-y divide-gray-200">
               {company.customers.length === 0 ? (
                 <div className="p-6 text-center text-gray-500">
-                  Aucun étudiant associé
+                  {t('dashboard.client.noStudentsAssociated')}
                 </div>
               ) : (
                 company.customers.slice(0, 5).map((cc) => (
@@ -251,21 +253,21 @@ export default async function ClientDashboard() {
                           {cc.user.name || cc.user.email}
                         </p>
                         <p className="text-sm text-gray-500">
-                          {cc.user.courseAccesses.length} formation(s)
+                          {cc.user.courseAccesses.length} {t('dashboard.client.coursesCount')}
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
                       {cc.user.courseAccesses.some((a: { completedAt: Date | null }) => a.completedAt) && (
                         <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">
-                          Certifié
+                          {t('dashboard.client.certified')}
                         </span>
                       )}
                       <Link
                         href={`/client/etudiants/${cc.customerId}`}
                         className="text-blue-600 hover:underline text-sm"
                       >
-                        Détails
+                        {t('dashboard.client.details')}
                       </Link>
                     </div>
                   </div>
@@ -277,15 +279,15 @@ export default async function ClientDashboard() {
           {/* Achats récents */}
           <section className="bg-white rounded-xl border border-gray-200">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900">Achats récents</h2>
+              <h2 className="text-lg font-semibold text-gray-900">{t('dashboard.client.recentPurchases')}</h2>
               <Link href="/client/achats" className="text-blue-600 hover:underline text-sm">
-                Voir tout
+                {t('dashboard.viewAll')}
               </Link>
             </div>
             <div className="divide-y divide-gray-200">
               {company.purchases.length === 0 ? (
                 <div className="p-6 text-center text-gray-500">
-                  Aucun achat
+                  {t('dashboard.client.noPurchases')}
                 </div>
               ) : (
                 company.purchases.map((purchase) => (
@@ -293,7 +295,7 @@ export default async function ClientDashboard() {
                     <div>
                       <p className="font-medium text-gray-900">{purchase.product.name}</p>
                       <p className="text-sm text-gray-500">
-                        {new Date(purchase.createdAt).toLocaleDateString('fr-CA')}
+                        {new Date(purchase.createdAt).toLocaleDateString(locale)}
                       </p>
                     </div>
                     <div className="text-end">
@@ -305,7 +307,7 @@ export default async function ClientDashboard() {
                           ? 'bg-green-100 text-green-700'
                           : 'bg-yellow-100 text-yellow-700'
                       }`}>
-                        {purchase.status === 'COMPLETED' ? 'Payé' : 'En attente'}
+                        {purchase.status === 'COMPLETED' ? t('dashboard.client.statusPaid') : t('dashboard.client.statusPending')}
                       </span>
                     </div>
                   </div>
