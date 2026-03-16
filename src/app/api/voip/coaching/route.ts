@@ -10,6 +10,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/db';
 import { withAdminGuard } from '@/lib/admin-api-guard';
+import { logger } from '@/lib/logger';
 import {
   startCoachingCall,
   supervisorJoin,
@@ -75,6 +76,7 @@ export const GET = withAdminGuard(async (request: NextRequest, { session: _sessi
 
     return NextResponse.json({ data: sessions });
   } catch (error) {
+    logger.error('[voip/coaching] Error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -382,6 +384,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
         return NextResponse.json({ error: `Unknown action: ${action}` }, { status: 400 });
     }
   } catch (error) {
+    logger.error('[voip/coaching] Error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

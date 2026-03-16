@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { prisma } from '@/lib/db';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { getQueueStats } from '@/lib/voip/queue-engine';
+import { logger } from '@/lib/logger';
 
 const queueCreateSchema = z.object({
   companyId: z.string().min(1, 'companyId is required'),
@@ -65,6 +66,7 @@ export const GET = withAdminGuard(async (request: NextRequest, { session: _sessi
 
     return NextResponse.json({ data: enriched, totalQueued: liveStats.totalQueued });
   } catch (error) {
+    logger.error('[voip/queues] Error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -126,6 +128,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session: _sess
 
     return NextResponse.json({ data: queue }, { status: 201 });
   } catch (error) {
+    logger.error('[voip/queues] Error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

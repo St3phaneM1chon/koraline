@@ -9,6 +9,7 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { auth } from '@/lib/auth-config';
+import { logger } from '@/lib/logger';
 import {
   startDialerSession,
   pauseSession,
@@ -82,6 +83,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: `Unknown action: ${action}` }, { status: 400 });
     }
   } catch (error) {
+    logger.error('[voip/dialer] Error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -108,6 +110,7 @@ export async function GET(request: NextRequest) {
     const state = getSessionState(session.user.id);
     return NextResponse.json({ data: state });
   } catch (error) {
+    logger.error('[voip/dialer] Error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

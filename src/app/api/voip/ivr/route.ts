@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { prisma } from '@/lib/db';
 import { auth } from '@/lib/auth-config';
 import { buildGreetingText } from '@/lib/voip/ivr-engine';
+import { logger } from '@/lib/logger';
 import {
   ConversationalIVR,
   type ConversationalIVRConfig,
@@ -66,6 +67,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ data: enriched });
   } catch (error) {
+    logger.error('[voip/ivr] Error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -164,6 +166,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ data: menu }, { status: 201 });
   } catch (error) {
+    logger.error('[voip/ivr] Error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

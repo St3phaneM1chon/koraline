@@ -68,9 +68,9 @@ export const GET = withAdminGuard(async (_request: NextRequest, _ctx) => {
     const stats = await getQueueStats();
     return NextResponse.json({ stats, timestamp: new Date().toISOString() });
   } catch (error) {
-    // BE-SEC-04: Don't leak error details in production
+    logger.error('[admin/translations/night-worker] GET error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
-      { error: 'Failed to get stats', ...(process.env.NODE_ENV === 'development' ? { details: error instanceof Error ? error.message : String(error) } : {}) },
+      { error: 'Failed to get stats' },
       { status: 500 }
     );
   }

@@ -10,6 +10,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/db';
 import { auth } from '@/lib/auth-config';
+import { logger } from '@/lib/logger';
 
 const scriptCreateSchema = z.object({
   companyId: z.string().min(1, 'companyId is required'),
@@ -41,6 +42,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ data: scripts });
   } catch (error) {
+    logger.error('[voip/scripts] Error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -74,6 +76,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ data: script }, { status: 201 });
   } catch (error) {
+    logger.error('[voip/scripts] Error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

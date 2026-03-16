@@ -9,6 +9,7 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { prisma } from '@/lib/db';
+import { logger } from '@/lib/logger';
 
 export const GET = withAdminGuard(async (_request: NextRequest, { session }) => {
   try {
@@ -53,10 +54,11 @@ export const GET = withAdminGuard(async (_request: NextRequest, { session }) => 
       },
     });
   } catch (error) {
+    logger.error('[admin/voip/health] Health check failed', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json({
       status: 'error',
       canAutoRegister: false,
-      error: error instanceof Error ? error.message : 'Health check failed',
+      error: 'Health check failed',
     }, { status: 500 });
   }
 });

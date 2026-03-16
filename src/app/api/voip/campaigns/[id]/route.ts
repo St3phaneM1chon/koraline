@@ -12,6 +12,7 @@ import { z } from 'zod';
 import { prisma } from '@/lib/db';
 import { auth } from '@/lib/auth-config';
 import { resolveTenant } from '@/lib/voip/tenant-context';
+import { logger } from '@/lib/logger';
 
 export async function GET(
   _request: NextRequest,
@@ -64,6 +65,7 @@ export async function GET(
 
     return NextResponse.json({ data: campaign, stats });
   } catch (error) {
+    logger.error('[voip/campaigns/id] Error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -158,6 +160,7 @@ export async function PUT(
 
     return NextResponse.json({ data: campaign });
   } catch (error) {
+    logger.error('[voip/campaigns/id] Error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -206,6 +209,7 @@ export async function DELETE(
 
     return NextResponse.json({ status: 'deleted' });
   } catch (error) {
+    logger.error('[voip/campaigns/id] Error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

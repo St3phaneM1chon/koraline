@@ -10,6 +10,7 @@ export const dynamic = 'force-dynamic';
 
 import { NextRequest, NextResponse } from 'next/server';
 import { withAdminGuard } from '@/lib/admin-api-guard';
+import { logger } from '@/lib/logger';
 import {
   orderConfirmationEmail,
   welcomeEmail,
@@ -125,7 +126,7 @@ export const GET = withAdminGuard(async (request: NextRequest) => {
       },
     });
   } catch (error) {
-    const errMsg = error instanceof Error ? error.message : String(error);
-    return NextResponse.json({ error: 'Failed to generate email preview', details: errMsg }, { status: 500 });
+    logger.error('[admin/email-preview] Error', { error: error instanceof Error ? error.message : String(error) });
+    return NextResponse.json({ error: 'Failed to generate email preview' }, { status: 500 });
   }
 });

@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { prisma } from '@/lib/db';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { markCampaignDncl } from '@/lib/voip/dncl';
+import { logger } from '@/lib/logger';
 
 export const GET = withAdminGuard(async (request: NextRequest, { session: _session }) => {
   try {
@@ -37,6 +38,7 @@ export const GET = withAdminGuard(async (request: NextRequest, { session: _sessi
 
     return NextResponse.json({ data: campaigns });
   } catch (error) {
+    logger.error('[voip/campaigns] Error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -140,6 +142,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session: _sess
 
     return NextResponse.json({ data: campaign }, { status: 201 });
   } catch (error) {
+    logger.error('[voip/campaigns] Error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
