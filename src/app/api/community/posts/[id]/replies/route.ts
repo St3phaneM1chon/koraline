@@ -163,9 +163,9 @@ export async function POST(request: NextRequest, context: RouteContext) {
     const parsed = createReplySchema.safeParse(body);
     if (!parsed.success) {
       return apiError(
-        parsed.error.errors[0].message,
+        'Invalid input',
         ErrorCode.VALIDATION_ERROR,
-        { details: parsed.error.errors.map(e => ({ path: e.path.join('.'), message: e.message })), request }
+        { request }
       );
     }
     const { content, parentReplyId } = parsed.data;

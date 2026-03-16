@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     const parsed = validateReferralSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { valid: false, error: 'Invalid data', details: parsed.error.errors },
+        { valid: false, error: 'Invalid data' },
         { status: 400 }
       );
     }

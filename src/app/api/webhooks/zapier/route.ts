@@ -77,8 +77,8 @@ function validateApiKey(request: NextRequest): boolean {
  *
  * Headers checked (in order): x-zapier-signature, x-hook-secret
  *
- * If ZAPIER_WEBHOOK_SECRET is not set, verification is skipped with a warning
- * (graceful degradation for development environments).
+ * SECURITY: In production, ZAPIER_WEBHOOK_SECRET MUST be set.
+ * In development, verification is skipped with a warning.
  */
 function verifyHmacSignature(
   rawBody: string,
@@ -87,9 +87,15 @@ function verifyHmacSignature(
   const secret = process.env.ZAPIER_WEBHOOK_SECRET;
 
   if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      logger.error(
+        '[zapier] ZAPIER_WEBHOOK_SECRET not configured in PRODUCTION — rejecting request. ' +
+          'Set this env var to secure the webhook endpoint.'
+      );
+      return { valid: false, skipped: false, error: 'Webhook secret not configured' };
+    }
     logger.warn(
-      '[zapier] ZAPIER_WEBHOOK_SECRET not configured — HMAC signature verification DISABLED. ' +
-        'Set this env var in production to secure the webhook endpoint.'
+      '[zapier] ZAPIER_WEBHOOK_SECRET not configured — HMAC verification skipped (dev only).'
     );
     return { valid: true, skipped: true };
   }
@@ -243,7 +249,7 @@ export async function POST(request: NextRequest) {
 
     const parsed = zapierPostSchema.safeParse(raw);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid input', details: parsed.error.flatten() }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
     }
 
     const { action } = parsed.data;
@@ -344,7 +350,7 @@ export async function POST(request: NextRequest) {
       error: err instanceof Error ? err.message : String(err),
     });
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : 'Internal error' },
+      { error: 'Internal error' },
       { status: 500 }
     );
   }

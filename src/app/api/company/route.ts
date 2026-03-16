@@ -165,7 +165,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const parsed = createCompanySchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const {
       name,
@@ -292,7 +292,7 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
     const parsed = updateCompanySchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
     const { id } = parsed.data;
 

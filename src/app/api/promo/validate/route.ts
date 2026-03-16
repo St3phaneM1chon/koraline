@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const parsed = promoValidateSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ valid: false, error: 'Invalid data', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ valid: false, error: 'Invalid data' }, { status: 400 });
     }
     const { code, subtotal, cartItems } = parsed.data;
 

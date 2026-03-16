@@ -150,7 +150,7 @@ export async function POST(
     const parsed = clientActionSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: 'Données invalides', details: parsed.error.errors },
+        { error: 'Données invalides' },
         { status: 400 }
       );
     }
