@@ -170,9 +170,11 @@ export function estimateWeightBasedShipping(
   totalWeightGrams: number,
   country: string
 ): number {
-  // Simple weight-based estimate (will be replaced by carrier API)
-  const baseRate = country === 'CA' ? 5.99 : country === 'US' ? 9.99 : 19.99;
-  const perKgRate = country === 'CA' ? 2.00 : country === 'US' ? 4.00 : 8.00;
+  // Use same rates as calculateShipping for consistency
+  const region: 'CA' | 'US' | 'INTL' = country === 'CA' ? 'CA' : country === 'US' ? 'US' : 'INTL';
+  const wr = WEIGHT_RATES[region];
+  const baseRate = wr.baseRate;
+  const perKgRate = wr.perKgRate;
   const weightKg = totalWeightGrams / 1000;
   return Math.round((baseRate + weightKg * perKgRate) * 100) / 100;
 }

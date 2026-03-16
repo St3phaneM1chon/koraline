@@ -240,7 +240,9 @@ export async function consumeReservation(
             AND "stockQuantity" >= ${reservation.quantity}
         `;
         if (rowsAffected === 0) {
-          logger.warn('[consumeReservation] Insufficient stock', { formatId: reservation.formatId, requested: reservation.quantity });
+          logger.error('[consumeReservation] CRITICAL: Insufficient stock — skipping sale transaction', { formatId: reservation.formatId, requested: reservation.quantity, orderId });
+          // Skip this reservation's inventory transaction — do NOT record a SALE for stock that wasn't decremented
+          continue;
         }
       } else {
         // E-07 FIX: Decrement stock for base products (no formatId)
@@ -253,7 +255,8 @@ export async function consumeReservation(
             AND "stockQuantity" >= ${reservation.quantity}
         `;
         if (rowsAffected === 0) {
-          logger.warn('[consumeReservation] Insufficient stock for base product', { productId: reservation.productId, requested: reservation.quantity });
+          logger.error('[consumeReservation] CRITICAL: Insufficient stock for base product — skipping sale transaction', { productId: reservation.productId, requested: reservation.quantity, orderId });
+          continue;
         }
       }
 

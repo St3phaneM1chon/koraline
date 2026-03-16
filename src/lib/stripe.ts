@@ -79,23 +79,26 @@ export async function getOrCreateStripeCustomer(
 ): Promise<string> {
   const { prisma } = await import('./db');
   
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { stripeCustomerId: true },
+  // Use transaction to prevent race condition where concurrent requests both create a Stripe customer
+  return prisma.$transaction(async (tx) => {
+    const user = await tx.user.findUnique({
+      where: { id: userId },
+      select: { stripeCustomerId: true },
+    });
+
+    if (user?.stripeCustomerId) {
+      return user.stripeCustomerId;
+    }
+
+    const customer = await createStripeCustomer(email, name, { userId });
+
+    await tx.user.update({
+      where: { id: userId },
+      data: { stripeCustomerId: customer.id },
+    });
+
+    return customer.id;
   });
-  
-  if (user?.stripeCustomerId) {
-    return user.stripeCustomerId;
-  }
-  
-  const customer = await createStripeCustomer(email, name, { userId });
-  
-  await prisma.user.update({
-    where: { id: userId },
-    data: { stripeCustomerId: customer.id },
-  });
-  
-  return customer.id;
 }
 
 // =====================================================

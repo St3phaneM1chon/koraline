@@ -944,28 +944,33 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session, eventId:
               });
               pointsToAward = capCheck.adjustedPoints;
             }
-            const newBalance = (user.loyaltyPoints || 0) + pointsToAward;
+            // FIX: Use atomic increment to prevent race condition with concurrent webhooks
+            await prisma.user.update({
+              where: { id: userId },
+              data: {
+                loyaltyPoints: { increment: pointsToAward },
+                lifetimePoints: { increment: pointsToAward },
+              },
+            });
+            // Fetch updated balance for the transaction log
+            const updatedUser = await prisma.user.findUnique({
+              where: { id: userId },
+              select: { loyaltyPoints: true },
+            });
             await prisma.loyaltyTransaction.create({
               data: {
                 userId,
                 type: 'EARN_PURCHASE',
                 points: pointsToAward,
                 description: `Purchase ${orderNumber}`,
-                balanceAfter: newBalance,
+                balanceAfter: updatedUser?.loyaltyPoints || 0,
                 // A8-P2-005 FIX: Set expiration on purchase points (12 months)
                 expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
                 metadata: JSON.stringify({ orderId: order.id, orderNumber, total: Number(cadTotal) }),
               },
             });
-            await prisma.user.update({
-              where: { id: userId },
-              data: {
-                loyaltyPoints: newBalance,
-                lifetimePoints: (user.lifetimePoints || 0) + pointsToAward,
-              },
-            });
             sideEffectResults.loyaltyPoints = 'ok';
-            logger.info('Loyalty points awarded', { userId, pointsToAward, newBalance, orderNumber });
+            logger.info('Loyalty points awarded', { userId, pointsToAward, newBalance: updatedUser?.loyaltyPoints || 0, orderNumber });
           }
         } else {
           sideEffectResults.loyaltyPoints = 'skipped';
@@ -1116,7 +1121,7 @@ async function handleRefund(charge: Stripe.Charge, eventId: string) {
     await tx.order.update({
       where: { id: order.id },
       data: {
-        paymentStatus: isFullRefund ? 'REFUNDED' : 'PAID',
+        paymentStatus: isFullRefund ? 'REFUNDED' : 'PARTIALLY_REFUNDED',
         status: isFullRefund ? 'CANCELLED' : order.status,
       },
     });
