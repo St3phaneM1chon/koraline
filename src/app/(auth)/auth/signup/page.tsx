@@ -208,7 +208,7 @@ function SignUpContent() {
 
         {/* Erreur */}
         {formError && (
-          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+          <div id="signup-error" role="alert" className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
             <p className="text-sm">{formError}</p>
           </div>
         )}
@@ -289,6 +289,9 @@ function SignUpContent() {
                 id="name"
                 type="text"
                 required
+                aria-required="true"
+                aria-invalid={!!formError}
+                aria-describedby={formError ? 'signup-error' : undefined}
                 autoComplete="name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -306,6 +309,9 @@ function SignUpContent() {
                 id="email"
                 type="email"
                 required
+                aria-required="true"
+                aria-invalid={!!formError}
+                aria-describedby={formError ? 'signup-error' : undefined}
                 autoComplete="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -323,6 +329,9 @@ function SignUpContent() {
                 id="password"
                 type="password"
                 required
+                aria-required="true"
+                aria-invalid={!!formError}
+                aria-describedby={formError ? 'signup-error' : undefined}
                 autoComplete="new-password"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -354,6 +363,9 @@ function SignUpContent() {
                 id="confirmPassword"
                 type="password"
                 required
+                aria-required="true"
+                aria-invalid={!!formError}
+                aria-describedby={formError ? 'signup-error' : undefined}
                 autoComplete="new-password"
                 value={formData.confirmPassword}
                 onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
@@ -376,6 +388,7 @@ function SignUpContent() {
               <input
                 id="referralCode"
                 type="text"
+                aria-describedby={formError ? 'signup-error' : undefined}
                 autoComplete="off"
                 value={formData.referralCode}
                 onChange={(e) => setFormData({ ...formData, referralCode: e.target.value.toUpperCase() })}
@@ -403,6 +416,8 @@ function SignUpContent() {
               <input
                 id="acceptTerms"
                 type="checkbox"
+                aria-required="true"
+                aria-invalid={!!formError}
                 checked={formData.acceptTerms}
                 onChange={(e) => setFormData({ ...formData, acceptTerms: e.target.checked })}
                 className="mt-1 h-4 w-4 text-primary-500 border-gray-300 rounded focus:ring-primary-500"

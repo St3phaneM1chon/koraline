@@ -102,6 +102,9 @@ function AcceptTermsContent() {
             <input
               type="checkbox"
               id="accept-terms"
+              aria-required="true"
+              aria-invalid={!!error}
+              aria-describedby={error ? 'accept-terms-error' : undefined}
               checked={accepted}
               onChange={(e) => {
                 setAccepted(e.target.checked);
@@ -141,7 +144,7 @@ function AcceptTermsContent() {
 
           {/* Error */}
           {error && (
-            <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>
+            <p id="accept-terms-error" role="alert" className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>
           )}
 
           {/* Submit */}

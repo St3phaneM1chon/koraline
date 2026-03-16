@@ -99,7 +99,7 @@ export default function ForgotPasswordPage() {
 
         {/* Erreur */}
         {error && (
-          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+          <div id="forgot-password-error" role="alert" className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
             <p className="text-sm">{error}</p>
           </div>
         )}
@@ -114,6 +114,9 @@ export default function ForgotPasswordPage() {
                 id="email"
                 type="email"
                 required
+                aria-required="true"
+                aria-invalid={!!error}
+                aria-describedby={error ? 'forgot-password-error' : undefined}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"

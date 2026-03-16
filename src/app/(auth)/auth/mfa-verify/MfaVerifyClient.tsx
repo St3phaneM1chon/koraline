@@ -77,6 +77,9 @@ export default function MfaVerifyClient() {
               id="mfaCode"
               type="text"
               required
+              aria-required="true"
+              aria-invalid={!!error}
+              aria-describedby={error ? 'mfa-verify-error' : undefined}
               value={code}
               onChange={(e) => setCode(e.target.value)}
               className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-center text-2xl tracking-widest"
@@ -92,7 +95,7 @@ export default function MfaVerifyClient() {
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+            <div id="mfa-verify-error" role="alert" className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
               {error}
             </div>
           )}
