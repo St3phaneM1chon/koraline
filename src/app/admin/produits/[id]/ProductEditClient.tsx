@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Plus, Trash2, ExternalLink, FileText, ImageIcon, Video, Link2, Globe, Check, AlertTriangle, Pencil, ClipboardList, FileEdit, Package, ShoppingCart, Tag, Film, Loader2, Star, Briefcase } from 'lucide-react';
-import { getFormatTypes, getProductTypes, getAvailabilityOptions, VOLUME_OPTIONS, getStockDisplay } from '../product-constants';
+import { ArrowLeft, Plus, Trash2, ExternalLink, FileText, ImageIcon, Video, Link2, Globe, Check, AlertTriangle, Pencil, ClipboardList, FileEdit, Package, ShoppingCart, Tag, Film, Loader2, Star, Briefcase, Settings2, X, GripVertical, ChevronUp, ChevronDown } from 'lucide-react';
+import { getFormatTypes, getProductTypes, getAvailabilityOptions, VOLUME_OPTIONS, getStockDisplay, fetchFormatTypes } from '../product-constants';
 import { MediaUploader } from '@/components/admin/MediaUploader';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { useI18n } from '@/i18n/client';
@@ -118,6 +118,10 @@ export default function ProductEditClient({ product, categories, isOwner }: Prop
   const [translationStatuses, setTranslationStatuses] = useState<TranslationStatus[]>([]);
   const [isDirty, setIsDirty] = useState(false);
 
+  // Dynamic format types from API
+  const [dynamicFormatTypes, setDynamicFormatTypes] = useState<{ value: string; label: string }[]>([]);
+  const [showFormatTypeManager, setShowFormatTypeManager] = useState(false);
+
   // Bridge states (#25: sales, #17: promos, #27: videos)
   const [salesData, setSalesData] = useState<{
     totalUnitsSold: number; totalOrders: number; totalRevenue: number;
@@ -184,8 +188,16 @@ export default function ProductEditClient({ product, categories, isOwner }: Prop
     }
   }, [activeTab, product.id, salesData, promosData, videosData, reviewsData, dealsData, bridgeLoading]);
 
-  const FORMAT_TYPES = getFormatTypes(t);
+  // Load dynamic format types from API, fallback to hardcoded
+  const FALLBACK_FORMAT_TYPES = getFormatTypes(t);
+  const FORMAT_TYPES = dynamicFormatTypes.length > 0 ? dynamicFormatTypes : FALLBACK_FORMAT_TYPES;
   const PRODUCT_TYPES = getProductTypes(t);
+
+  useEffect(() => {
+    fetchFormatTypes().then((types) => {
+      if (types.length > 0) setDynamicFormatTypes(types);
+    });
+  }, []);
 
   const [formData, setFormData] = useState({
     name: product.name,
@@ -941,13 +953,24 @@ export default function ProductEditClient({ product, categories, isOwner }: Prop
                 <h2 className="text-lg font-semibold text-neutral-900">{t('admin.productForm.availableFormats')}</h2>
                 <p className="text-sm text-neutral-500">{t('admin.productForm.formatsDescription')}</p>
               </div>
-              <button
-                onClick={handleAddFormat}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
-              >
-                <Plus className="w-4 h-4" />
-                {t('admin.productForm.addFormat')}
-              </button>
+              <div className="flex items-center gap-2">
+                {isOwner && (
+                  <button
+                    onClick={() => setShowFormatTypeManager(true)}
+                    className="inline-flex items-center gap-2 px-3 py-2 border border-neutral-300 text-neutral-700 rounded-lg hover:bg-neutral-50 transition-colors text-sm"
+                  >
+                    <Settings2 className="w-4 h-4" />
+                    {t('admin.productForm.manageFormatTypes')}
+                  </button>
+                )}
+                <button
+                  onClick={handleAddFormat}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
+                >
+                  <Plus className="w-4 h-4" />
+                  {t('admin.productForm.addFormat')}
+                </button>
+              </div>
             </div>
 
             {formats.length === 0 ? (
@@ -974,6 +997,7 @@ export default function ProductEditClient({ product, categories, isOwner }: Prop
                     {isEditing ? (
                       <EditFormatForm
                         format={format}
+                        formatTypes={FORMAT_TYPES}
                         onSave={handleSaveFormat}
                         onCancel={() => setEditingFormatId(null)}
                       />
@@ -983,7 +1007,9 @@ export default function ProductEditClient({ product, categories, isOwner }: Prop
                           {format.imageUrl ? (
                             <Image src={format.imageUrl} alt={format.name || 'Product format image'} width={48} height={48} className="w-12 h-12 object-cover rounded-lg border" />
                           ) : (
-                            <span className="text-2xl">{FORMAT_TYPES.find(ft => ft.value === format.formatType)?.icon || '📦'}</span>
+                            <div className="w-12 h-12 bg-neutral-100 rounded-lg border border-neutral-200 flex items-center justify-center">
+                              <Package className="w-5 h-5 text-neutral-400" />
+                            </div>
                           )}
                           <div>
                             <div className="flex items-center gap-2">
@@ -1287,6 +1313,19 @@ export default function ProductEditClient({ product, categories, isOwner }: Prop
         onCancel={() => setConcurrentEditConfirm(null)}
         variant="warning"
       />
+
+      {/* Format Type Manager Dialog */}
+      {showFormatTypeManager && (
+        <FormatTypeManager
+          onClose={() => {
+            setShowFormatTypeManager(false);
+            // Reload format types after management
+            fetchFormatTypes().then((types) => {
+              if (types.length > 0) setDynamicFormatTypes(types);
+            });
+          }}
+        />
+      )}
     </div>
   );
 }
@@ -1295,10 +1334,12 @@ export default function ProductEditClient({ product, categories, isOwner }: Prop
 
 function EditFormatForm({
   format: initialFormat,
+  formatTypes,
   onSave,
   onCancel,
 }: {
   format: ProductFormat;
+  formatTypes: { value: string; label: string }[];
   // BUG-049 FIX: onSave now receives both the edited format and the initial format
   // so the parent can diff them and detect concurrent edits via updatedAt
   onSave: (format: ProductFormat, initialFormat: ProductFormat) => void;
@@ -1307,7 +1348,7 @@ function EditFormatForm({
   const { t } = useI18n();
   const [format, setFormat] = useState({ ...initialFormat });
 
-  const FORMAT_TYPES = getFormatTypes(t);
+  const FORMAT_TYPES = formatTypes;
   const AVAILABILITY_OPTIONS = getAvailabilityOptions(t);
 
   const stock = getStockDisplay(format.stockQuantity, format.lowStockThreshold, t);
@@ -1326,7 +1367,7 @@ function EditFormatForm({
         <div>
           <label className="block text-xs font-medium text-neutral-600 mb-1">{t('admin.productForm.type')} *</label>
           <select aria-label="Type de format" value={format.formatType} onChange={(e) => setFormat({ ...format, formatType: e.target.value })} className="w-full px-3 py-2 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            {FORMAT_TYPES.map(type => (<option key={type.value} value={type.value}>{type.icon} {type.label}</option>))}
+            {FORMAT_TYPES.map(type => (<option key={type.value} value={type.value}>{type.label}</option>))}
           </select>
         </div>
         <div>
@@ -1422,6 +1463,279 @@ function EditFormatForm({
         <button onClick={() => onSave(format, initialFormat)} className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600">
           {t('admin.productForm.save')}
         </button>
+      </div>
+    </div>
+  );
+}
+
+// ==================== FORMAT TYPE MANAGER DIALOG ====================
+
+interface FormatTypeOption {
+  id: string;
+  value: string;
+  label: string;
+  sortOrder: number;
+  isActive: boolean;
+}
+
+function FormatTypeManager({ onClose }: { onClose: () => void }) {
+  const { t } = useI18n();
+  const [types, setTypes] = useState<FormatTypeOption[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [savingId, setSavingId] = useState<string | null>(null);
+  const [newValue, setNewValue] = useState('');
+  const [newLabel, setNewLabel] = useState('');
+  const [addingNew, setAddingNew] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editLabel, setEditLabel] = useState('');
+
+  const loadTypes = () => {
+    fetch('/api/admin/format-types?active=false')
+      .then((r) => r.json())
+      .then((j) => setTypes(j.data || []))
+      .catch(() => toast.error(t('admin.formatTypes.loadError')))
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => { loadTypes(); }, []);
+
+  const handleAdd = async () => {
+    if (!newValue.trim() || !newLabel.trim()) return;
+    setSavingId('new');
+    try {
+      const res = await fetch('/api/admin/format-types', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...addCSRFHeader() },
+        body: JSON.stringify({ value: newValue.toUpperCase().replace(/\s+/g, '_'), label: newLabel }),
+      });
+      const json = await res.json();
+      if (res.ok) {
+        toast.success(t('admin.formatTypes.addSuccess'));
+        setNewValue('');
+        setNewLabel('');
+        setAddingNew(false);
+        loadTypes();
+      } else {
+        toast.error(json.error?.message || json.error || t('admin.formatTypes.addError'));
+      }
+    } catch { toast.error(t('admin.formatTypes.addError')); }
+    setSavingId(null);
+  };
+
+  const handleUpdateLabel = async (id: string) => {
+    if (!editLabel.trim()) return;
+    setSavingId(id);
+    try {
+      const res = await fetch(`/api/admin/format-types/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', ...addCSRFHeader() },
+        body: JSON.stringify({ label: editLabel }),
+      });
+      if (res.ok) {
+        toast.success(t('admin.formatTypes.updateSuccess'));
+        setEditingId(null);
+        loadTypes();
+      } else {
+        const json = await res.json();
+        toast.error(json.error?.message || json.error || t('admin.formatTypes.updateError'));
+      }
+    } catch { toast.error(t('admin.formatTypes.updateError')); }
+    setSavingId(null);
+  };
+
+  const handleToggleActive = async (item: FormatTypeOption) => {
+    setSavingId(item.id);
+    try {
+      const res = await fetch(`/api/admin/format-types/${item.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', ...addCSRFHeader() },
+        body: JSON.stringify({ isActive: !item.isActive }),
+      });
+      if (res.ok) loadTypes();
+      else toast.error(t('admin.formatTypes.updateError'));
+    } catch { toast.error(t('admin.formatTypes.updateError')); }
+    setSavingId(null);
+  };
+
+  const handleDelete = async (item: FormatTypeOption) => {
+    if (!window.confirm(t('admin.formatTypes.deleteConfirm', { label: item.label }))) return;
+    setSavingId(item.id);
+    try {
+      const res = await fetch(`/api/admin/format-types/${item.id}`, {
+        method: 'DELETE',
+        headers: addCSRFHeader(),
+      });
+      if (res.ok) {
+        toast.success(t('admin.formatTypes.deleteSuccess'));
+        loadTypes();
+      } else {
+        const json = await res.json();
+        toast.error(json.error?.message || json.error || t('admin.formatTypes.deleteError'));
+      }
+    } catch { toast.error(t('admin.formatTypes.deleteError')); }
+    setSavingId(null);
+  };
+
+  const handleMoveUp = async (item: FormatTypeOption, index: number) => {
+    if (index === 0) return;
+    const prev = types[index - 1];
+    setSavingId(item.id);
+    await Promise.all([
+      fetch(`/api/admin/format-types/${item.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', ...addCSRFHeader() }, body: JSON.stringify({ sortOrder: prev.sortOrder }) }),
+      fetch(`/api/admin/format-types/${prev.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', ...addCSRFHeader() }, body: JSON.stringify({ sortOrder: item.sortOrder }) }),
+    ]);
+    loadTypes();
+    setSavingId(null);
+  };
+
+  const handleMoveDown = async (item: FormatTypeOption, index: number) => {
+    if (index >= types.length - 1) return;
+    const next = types[index + 1];
+    setSavingId(item.id);
+    await Promise.all([
+      fetch(`/api/admin/format-types/${item.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', ...addCSRFHeader() }, body: JSON.stringify({ sortOrder: next.sortOrder }) }),
+      fetch(`/api/admin/format-types/${next.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', ...addCSRFHeader() }, body: JSON.stringify({ sortOrder: item.sortOrder }) }),
+    ]);
+    loadTypes();
+    setSavingId(null);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" role="dialog" aria-modal="true">
+      <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full mx-4 max-h-[80vh] flex flex-col">
+        {/* Header */}
+        <div className="flex items-center justify-between p-5 border-b border-neutral-200">
+          <h2 className="text-lg font-semibold text-neutral-900">{t('admin.formatTypes.title')}</h2>
+          <button onClick={onClose} className="p-2 text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100 rounded-lg">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="flex-1 overflow-y-auto p-5 space-y-3">
+          {loading ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="w-6 h-6 animate-spin text-neutral-400" />
+            </div>
+          ) : types.length === 0 ? (
+            <p className="text-sm text-neutral-500 text-center py-4">{t('admin.formatTypes.empty')}</p>
+          ) : (
+            types.map((item, index) => (
+              <div
+                key={item.id}
+                className={`flex items-center gap-3 p-3 rounded-lg border ${item.isActive ? 'border-neutral-200 bg-white' : 'border-neutral-100 bg-neutral-50 opacity-60'} ${savingId === item.id ? 'opacity-50 pointer-events-none' : ''}`}
+              >
+                {/* Reorder buttons */}
+                <div className="flex flex-col gap-0.5">
+                  <button onClick={() => handleMoveUp(item, index)} disabled={index === 0} className="p-0.5 text-neutral-400 hover:text-neutral-600 disabled:opacity-30">
+                    <ChevronUp className="w-3.5 h-3.5" />
+                  </button>
+                  <button onClick={() => handleMoveDown(item, index)} disabled={index >= types.length - 1} className="p-0.5 text-neutral-400 hover:text-neutral-600 disabled:opacity-30">
+                    <ChevronDown className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                {/* Value code */}
+                <code className="text-xs text-neutral-400 bg-neutral-100 px-2 py-1 rounded font-mono min-w-[100px]">{item.value}</code>
+
+                {/* Label (editable) */}
+                <div className="flex-1">
+                  {editingId === item.id ? (
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={editLabel}
+                        onChange={(e) => setEditLabel(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') handleUpdateLabel(item.id); if (e.key === 'Escape') setEditingId(null); }}
+                        className="flex-1 px-2 py-1 border border-indigo-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        autoFocus
+                      />
+                      <button onClick={() => handleUpdateLabel(item.id)} className="text-indigo-600 hover:text-indigo-700">
+                        <Check className="w-4 h-4" />
+                      </button>
+                      <button onClick={() => setEditingId(null)} className="text-neutral-400 hover:text-neutral-600">
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ) : (
+                    <span
+                      className="text-sm text-neutral-900 cursor-pointer hover:text-indigo-600"
+                      onClick={() => { setEditingId(item.id); setEditLabel(item.label); }}
+                    >
+                      {item.label}
+                    </span>
+                  )}
+                </div>
+
+                {/* Actions */}
+                <button
+                  onClick={() => handleToggleActive(item)}
+                  className={`px-2 py-1 text-xs rounded-full font-medium ${item.isActive ? 'bg-green-100 text-green-700' : 'bg-neutral-200 text-neutral-500'}`}
+                >
+                  {item.isActive ? t('admin.formatTypes.active') : t('admin.formatTypes.inactive')}
+                </button>
+                <button
+                  onClick={() => handleDelete(item)}
+                  className="p-1.5 text-neutral-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                  title={t('admin.formatTypes.deleteTooltip')}
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Add new */}
+        <div className="border-t border-neutral-200 p-5">
+          {addingNew ? (
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-neutral-600 mb-1">{t('admin.formatTypes.valueLabel')}</label>
+                  <input
+                    type="text"
+                    value={newValue}
+                    onChange={(e) => setNewValue(e.target.value.toUpperCase().replace(/[^A-Z0-9_]/g, ''))}
+                    placeholder="VIAL_5ML"
+                    className="w-full px-3 py-2 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono"
+                  />
+                  <p className="text-xs text-neutral-400 mt-1">UPPER_SNAKE_CASE</p>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-neutral-600 mb-1">{t('admin.formatTypes.labelField')}</label>
+                  <input
+                    type="text"
+                    value={newLabel}
+                    onChange={(e) => setNewLabel(e.target.value)}
+                    placeholder="Fiole 5ml"
+                    className="w-full px-3 py-2 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+              </div>
+              <div className="flex justify-end gap-2">
+                <button onClick={() => { setAddingNew(false); setNewValue(''); setNewLabel(''); }} className="px-3 py-1.5 text-sm text-neutral-600 border border-neutral-200 rounded-lg hover:bg-neutral-50">
+                  {t('admin.productForm.cancel')}
+                </button>
+                <button
+                  onClick={handleAdd}
+                  disabled={!newValue.trim() || !newLabel.trim() || savingId === 'new'}
+                  className="px-3 py-1.5 text-sm bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 disabled:opacity-50"
+                >
+                  {savingId === 'new' ? <Loader2 className="w-4 h-4 animate-spin" /> : t('admin.formatTypes.add')}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={() => setAddingNew(true)}
+              className="inline-flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-700 font-medium"
+            >
+              <Plus className="w-4 h-4" />
+              {t('admin.formatTypes.addNew')}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

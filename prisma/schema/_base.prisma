@@ -77,19 +77,19 @@ enum ExpenseStatus {
   REIMBURSED
 }
 
-enum FormatType {
-  VIAL_2ML
-  VIAL_10ML
-  CARTRIDGE_3ML
-  KIT_12
-  CAPSULE_60
-  CAPSULE_120
-  PACK_5
-  PACK_10
-  BUNDLE
-  ACCESSORY
-  NASAL_SPRAY
-  CREAM
+// FormatType enum removed — formatType is now a String field
+// Managed dynamically via FormatTypeOption table in admin UI
+
+model FormatTypeOption {
+  id        String   @id @default(cuid())
+  value     String   @unique   // e.g. "VIAL_2ML", "CAPSULE_60"
+  label     String              // Display label in French
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive, sortOrder])
 }
 
 enum HeroMediaType {

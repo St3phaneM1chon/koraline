@@ -326,7 +326,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
             const f = formats[index] as Record<string, unknown>;
             const formatData = {
               productId: id,
-              formatType: ((f.formatType as string) || 'VIAL_2ML') as import('@prisma/client').FormatType,
+              formatType: (f.formatType as string) || 'VIAL_2ML',
               name: f.name as string,
               description: (f.description as string) || '',
               imageUrl: (f.imageUrl as string) || null,

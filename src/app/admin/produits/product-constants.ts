@@ -2,19 +2,34 @@ type TranslateFn = (key: string, params?: Record<string, string | number>) => st
 
 export function getFormatTypes(t: TranslateFn) {
   return [
-    { value: 'VIAL_2ML', label: t('admin.productConstants.formatVial2ml'), icon: '💉' },
-    { value: 'VIAL_10ML', label: t('admin.productConstants.formatVial10ml'), icon: '💉' },
-    { value: 'CARTRIDGE_3ML', label: t('admin.productConstants.formatCartridge3ml'), icon: '🔫' },
-    { value: 'KIT_12', label: t('admin.productConstants.formatKit12'), icon: '📦' },
-    { value: 'CAPSULE_60', label: t('admin.productConstants.formatCapsule60'), icon: '💊' },
-    { value: 'CAPSULE_120', label: t('admin.productConstants.formatCapsule120'), icon: '💊' },
-    { value: 'PACK_5', label: t('admin.productConstants.formatPack5'), icon: '📦' },
-    { value: 'PACK_10', label: t('admin.productConstants.formatPack10'), icon: '📦' },
-    { value: 'BUNDLE', label: t('admin.productConstants.formatBundle'), icon: '🎁' },
-    { value: 'ACCESSORY', label: t('admin.productConstants.formatAccessory'), icon: '🔧' },
-    { value: 'NASAL_SPRAY', label: t('admin.productConstants.formatNasalSpray'), icon: '💨' },
-    { value: 'CREAM', label: t('admin.productConstants.formatCream'), icon: '🧴' },
+    { value: 'VIAL_2ML', label: t('admin.productConstants.formatVial2ml') },
+    { value: 'VIAL_10ML', label: t('admin.productConstants.formatVial10ml') },
+    { value: 'CARTRIDGE_3ML', label: t('admin.productConstants.formatCartridge3ml') },
+    { value: 'KIT_12', label: t('admin.productConstants.formatKit12') },
+    { value: 'CAPSULE_60', label: t('admin.productConstants.formatCapsule60') },
+    { value: 'CAPSULE_120', label: t('admin.productConstants.formatCapsule120') },
+    { value: 'PACK_5', label: t('admin.productConstants.formatPack5') },
+    { value: 'PACK_10', label: t('admin.productConstants.formatPack10') },
+    { value: 'BUNDLE', label: t('admin.productConstants.formatBundle') },
+    { value: 'ACCESSORY', label: t('admin.productConstants.formatAccessory') },
+    { value: 'NASAL_SPRAY', label: t('admin.productConstants.formatNasalSpray') },
+    { value: 'CREAM', label: t('admin.productConstants.formatCream') },
   ];
+}
+
+/** Fetch dynamic format types from API (for admin use). Falls back to hardcoded list. */
+export async function fetchFormatTypes(): Promise<{ value: string; label: string }[]> {
+  try {
+    const res = await fetch('/api/admin/format-types');
+    if (res.ok) {
+      const json = await res.json();
+      return (json.data || []).map((ft: { value: string; label: string }) => ({
+        value: ft.value,
+        label: ft.label,
+      }));
+    }
+  } catch {}
+  return [];
 }
 
 export function getProductTypes(t: TranslateFn) {

@@ -7018,7 +7018,27 @@
       "noCategoriesAvailable": "Non categories available. Please Creer a Categorie first.",
       "overwrite": "Overwrite",
       "selectCategory": "-- Selectionner a Categorie --",
-      "slugTaken": "This slug is already dans use. Please choose a different one."
+      "slugTaken": "This slug is already dans use. Please choose a different one.",
+      "manageFormatTypes": "Gérer les types"
+    },
+    "formatTypes": {
+      "title": "Types de format",
+      "loadError": "Erreur de chargement des types",
+      "empty": "Aucun type de format défini.",
+      "active": "Actif",
+      "inactive": "Inactif",
+      "addNew": "Ajouter un type",
+      "add": "Ajouter",
+      "addSuccess": "Type ajouté avec succès",
+      "addError": "Erreur lors de l'ajout",
+      "updateSuccess": "Type mis à jour",
+      "updateError": "Erreur lors de la mise à jour",
+      "deleteConfirm": "Supprimer le type « {label} » ? Cette action est irréversible.",
+      "deleteSuccess": "Type supprimé",
+      "deleteError": "Erreur lors de la suppression",
+      "deleteTooltip": "Supprimer (uniquement si non utilisé)",
+      "valueLabel": "Code (identifiant)",
+      "labelField": "Libellé"
     },
     "platform": {
       "notFound": "Plateforme introuvable"

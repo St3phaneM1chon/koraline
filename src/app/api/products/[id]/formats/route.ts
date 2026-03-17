@@ -137,7 +137,7 @@ export async function POST(
       return tx.productFormat.create({
         data: {
           productId: id,
-          formatType: formatType as import('@prisma/client').FormatType,
+          formatType,
           name,
           description,
           imageUrl,

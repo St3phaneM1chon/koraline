@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Plus, Trash2, ExternalLink, FileText, ImageIcon, Video, Link2, ClipboardList, FileEdit, Package } from 'lucide-react';
-import { getFormatTypes, getProductTypes, getAvailabilityOptions, VOLUME_OPTIONS, getStockDisplay } from '../product-constants';
+import { getFormatTypes, fetchFormatTypes, getProductTypes, getAvailabilityOptions, VOLUME_OPTIONS, getStockDisplay } from '../product-constants';
 import { MediaUploader } from '@/components/admin/MediaUploader';
 import { useI18n } from '@/i18n/client';
 import { toast } from 'sonner';
@@ -63,6 +63,15 @@ export default function NewProductClient({ categories }: Props) {
   const [activeTab, setActiveTab] = useState<'header' | 'texts' | 'formats'>('header');
 
   const PRODUCT_TYPES = getProductTypes(t);
+  const [dynamicFormatTypes, setDynamicFormatTypes] = useState<{ value: string; label: string }[]>([]);
+  const FALLBACK_FORMAT_TYPES = getFormatTypes(t);
+  const FORMAT_TYPES = dynamicFormatTypes.length > 0 ? dynamicFormatTypes : FALLBACK_FORMAT_TYPES;
+
+  useEffect(() => {
+    fetchFormatTypes().then((types) => {
+      if (types.length > 0) setDynamicFormatTypes(types);
+    });
+  }, []);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -802,6 +811,7 @@ export default function NewProductClient({ categories }: Props) {
                   key={format.id}
                   format={format}
                   index={index}
+                  formatTypes={FORMAT_TYPES}
                   onUpdate={(updates) => updateFormat(format.id, updates)}
                   onRemove={() => removeFormat(format.id)}
                 />
@@ -819,18 +829,20 @@ export default function NewProductClient({ categories }: Props) {
 function FormatCard({
   format,
   index,
+  formatTypes,
   onUpdate,
   onRemove,
 }: {
   format: FormatToCreate;
   index: number;
+  formatTypes: { value: string; label: string }[];
   onUpdate: (updates: Partial<FormatToCreate>) => void;
   onRemove: () => void;
 }) {
   const { t } = useI18n();
   const [expanded, setExpanded] = useState(true);
 
-  const FORMAT_TYPES = getFormatTypes(t);
+  const FORMAT_TYPES = formatTypes;
   const AVAILABILITY_OPTIONS = getAvailabilityOptions(t);
 
   const stock = getStockDisplay(format.stockQuantity, format.lowStockThreshold, t);
@@ -851,7 +863,9 @@ function FormatCard({
         className="flex items-center justify-between p-4 cursor-pointer hover:bg-neutral-50 transition-colors"
       >
         <div className="flex items-center gap-3">
-          <span className="text-2xl">{FORMAT_TYPES.find(ft => ft.value === format.formatType)?.icon || '📦'}</span>
+          <div className="w-10 h-10 bg-neutral-100 rounded-lg border border-neutral-200 flex items-center justify-center">
+                    <Package className="w-5 h-5 text-neutral-400" />
+                  </div>
           <div>
             <div className="flex items-center gap-2">
               <p className="font-medium text-neutral-900">
@@ -900,7 +914,7 @@ function FormatCard({
                 className="w-full px-3 py-2 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 {FORMAT_TYPES.map(type => (
-                  <option key={type.value} value={type.value}>{type.icon} {type.label}</option>
+                  <option key={type.value} value={type.value}>{type.label}</option>
                 ))}
               </select>
             </div>

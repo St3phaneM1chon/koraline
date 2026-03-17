@@ -4,10 +4,27 @@
  */
 
 import { randomBytes, createHmac } from 'crypto';
-import { logger } from '@/lib/logger';
+// NOTE: logger (winston) MUST NOT be imported at top-level because this module
+// is also used in Client Components (addCSRFHeader, fetchWithCSRF).
+// Winston requires 'fs' which breaks browser bundling. Use csrfLog() instead.
 // NOTE: cookies() from 'next/headers' is loaded dynamically inside server-only
 // functions to avoid breaking client component imports of this module.
 // See: verifyCSRFMiddleware() and setCSRFCookie()
+
+/** Thin logging wrapper: server uses winston logger, client uses console */
+function csrfLog(level: 'warn' | 'error', message: string, meta?: Record<string, unknown>) {
+  if (typeof window !== 'undefined') {
+    // Client-side: use console (no winston in browser)
+    console[level](`[CSRF] ${message}`, meta || '');
+    return;
+  }
+  // Server-side: lazy-import winston logger to avoid bundling in client
+  import('@/lib/logger').then(({ logger }) => {
+    logger[level](message, meta);
+  }).catch(() => {
+    console[level](`[CSRF] ${message}`, meta || '');
+  });
+}
 
 // SECURITY: In production, CSRF_SECRET or NEXTAUTH_SECRET must be set.
 // In development, use a stable dev-only secret instead of the insecure 'build-placeholder'.
@@ -32,7 +49,7 @@ function resolveCSRFSecret(): string {
 
   // Development: use a stable, clearly-marked dev secret
   if (typeof window === 'undefined') {
-    logger.warn('[csrf] CSRF_SECRET not set - using development fallback (NOT safe for production)');
+    csrfLog('warn', '[csrf] CSRF_SECRET not set - using development fallback (NOT safe for production)');
   }
   return DEV_FALLBACK_SECRET;
 }
@@ -80,7 +97,7 @@ export function decodeCSRFToken(encoded: string): CSRFToken | null {
   try {
     return JSON.parse(Buffer.from(encoded, 'base64').toString());
   } catch (error) {
-    logger.error('[CSRF] Failed to decode CSRF token', { error: error instanceof Error ? error.message : String(error) });
+    csrfLog('error', '[CSRF] Failed to decode CSRF token', { error: error instanceof Error ? error.message : String(error) });
     return null;
   }
 }
@@ -139,18 +156,18 @@ export async function verifyCSRFMiddleware(request: Request): Promise<{
 
   if (!cookieToken) {
     // FAILLE-079 FIX: Log CSRF validation failures for security monitoring
-    logger.warn('[CSRF] Validation failed', { event: 'csrf_failed', reason: 'missing_cookie', method: request.method, url: request.url });
+    csrfLog('warn', '[CSRF] Validation failed', { event: 'csrf_failed', reason: 'missing_cookie', method: request.method, url: request.url });
     return { valid: false, error: 'Cookie CSRF manquant' };
   }
 
   if (!headerToken) {
-    logger.warn('[CSRF] Validation failed', { event: 'csrf_failed', reason: 'missing_header', method: request.method, url: request.url });
+    csrfLog('warn', '[CSRF] Validation failed', { event: 'csrf_failed', reason: 'missing_header', method: request.method, url: request.url });
     return { valid: false, error: 'Header CSRF manquant' };
   }
 
   const result = verifyCSRFToken(cookieToken, headerToken);
   if (!result.valid) {
-    logger.warn('[CSRF] Validation failed', { event: 'csrf_failed', reason: 'invalid_token', method: request.method, url: request.url });
+    csrfLog('warn', '[CSRF] Validation failed', { event: 'csrf_failed', reason: 'invalid_token', method: request.method, url: request.url });
   }
   return result;
 }

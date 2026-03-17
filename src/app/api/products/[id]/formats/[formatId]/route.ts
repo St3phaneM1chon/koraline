@@ -168,7 +168,7 @@ export async function PUT(
     const format = await prisma.productFormat.update({
       where: { id: formatId },
       data: {
-        formatType: formatType ? (formatType as import('@prisma/client').FormatType) : undefined,
+        formatType: formatType || undefined,
         name: name ?? undefined,
         description,
         imageUrl,

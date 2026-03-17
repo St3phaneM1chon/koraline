@@ -7006,7 +7006,27 @@
       "concurrentEditTitle": "Concurrent Edit Detected",
       "concurrentEditWarning": "This format was modified by another user since you started editing. Save anyway and overwrite their changes?",
       "formatValidationError": "Format Validation Error",
-      "selectCategory": "-- Select a category --"
+      "selectCategory": "-- Select a category --",
+      "manageFormatTypes": "Manage types"
+    },
+    "formatTypes": {
+      "title": "Format Types",
+      "loadError": "Error loading format types",
+      "empty": "No format types defined.",
+      "active": "Active",
+      "inactive": "Inactive",
+      "addNew": "Add a type",
+      "add": "Add",
+      "addSuccess": "Type added successfully",
+      "addError": "Error adding type",
+      "updateSuccess": "Type updated",
+      "updateError": "Error updating type",
+      "deleteConfirm": "Delete type \"{label}\"? This action cannot be undone.",
+      "deleteSuccess": "Type deleted",
+      "deleteError": "Error deleting type",
+      "deleteTooltip": "Delete (only if unused)",
+      "valueLabel": "Code (identifier)",
+      "labelField": "Label"
     },
     "platform": {
       "notFound": "Platform not found"

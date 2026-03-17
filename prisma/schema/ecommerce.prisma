@@ -686,7 +686,7 @@ model ProductFormat {
   comparePrice      Decimal?                   @db.Decimal(10, 2)
   discontinuedAt    DateTime?
   dosageMg          Decimal?                   @db.Decimal(10, 2)
-  formatType        FormatType                 @default(VIAL_2ML)
+  formatType        String                     @default("VIAL_2ML")
   imageUrl          String?
   lowStockThreshold Int                        @default(5)
   trackInventory    Boolean                    @default(true)

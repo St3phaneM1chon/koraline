@@ -165,7 +165,7 @@ export interface ProductImage {
 export interface ProductFormat {
   id: string;
   productId: string;
-  formatType: FormatType;
+  formatType: string;
   name: string;
   description: string | null;
   imageUrl: string | null;
@@ -258,20 +258,7 @@ export enum ProductType {
   CAPSULE = 'CAPSULE',         // Capsules orales
 }
 
-export enum FormatType {
-  VIAL_2ML = 'VIAL_2ML',
-  VIAL_10ML = 'VIAL_10ML',
-  CARTRIDGE_3ML = 'CARTRIDGE_3ML',
-  KIT_12 = 'KIT_12',
-  CAPSULE_60 = 'CAPSULE_60',
-  CAPSULE_120 = 'CAPSULE_120',
-  PACK_5 = 'PACK_5',
-  PACK_10 = 'PACK_10',
-  BUNDLE = 'BUNDLE',
-  ACCESSORY = 'ACCESSORY',
-  NASAL_SPRAY = 'NASAL_SPRAY',
-  CREAM = 'CREAM',
-}
+// FormatType is now a dynamic string managed via FormatTypeOption table
 
 /**
  * BUG-067 FIX: Canonical lowercase format type for client-side components.

@@ -502,7 +502,7 @@ export async function POST(request: NextRequest) {
         // Formats
         formats: formats && formats.length > 0 ? {
           create: formats.map((f: Record<string, unknown>, index: number) => ({
-            formatType: (String(f.formatType || 'VIAL_2ML')) as import('@prisma/client').FormatType,
+            formatType: String(f.formatType || 'VIAL_2ML'),
             name: String(f.name),
             description: String(f.description || ''),
             imageUrl: f.imageUrl ? String(f.imageUrl) : null,

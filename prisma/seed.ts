@@ -1,4 +1,4 @@
-import { PrismaClient, ProductType, FormatType, DiscountType, StockStatus } from '@prisma/client';
+import { PrismaClient, ProductType, DiscountType, StockStatus } from '@prisma/client';
 import { hash } from 'bcryptjs';
 import { seedAccounting } from './seed-accounting';
 import { seedCustomerData } from './seed-customer-data';
@@ -10,18 +10,18 @@ const prisma = new PrismaClient();
 async function createAllFormats(productId: string, _baseName: string, baseSku: string, basePrice: number) {
   const formats = [
     // Vials individuels
-    { type: FormatType.VIAL_2ML, name: '5mg Vial', dosage: 5, price: basePrice, sku: `${baseSku}-5MG`, stock: 150, default: true, sort: 1, image: '/images/formats/vial-2ml.png' },
-    { type: FormatType.VIAL_2ML, name: '10mg Vial', dosage: 10, price: basePrice * 1.8, sku: `${baseSku}-10MG`, stock: 100, sort: 2, image: '/images/formats/vial-2ml.png' },
-    { type: FormatType.VIAL_10ML, name: '20mg Vial (10ml)', dosage: 20, price: basePrice * 3.2, sku: `${baseSku}-20MG`, stock: 50, sort: 3, image: '/images/formats/vial-10ml.png' },
+    { type: 'VIAL_2ML', name: '5mg Vial', dosage: 5, price: basePrice, sku: `${baseSku}-5MG`, stock: 150, default: true, sort: 1, image: '/images/formats/vial-2ml.png' },
+    { type: 'VIAL_2ML', name: '10mg Vial', dosage: 10, price: basePrice * 1.8, sku: `${baseSku}-10MG`, stock: 100, sort: 2, image: '/images/formats/vial-2ml.png' },
+    { type: 'VIAL_10ML', name: '20mg Vial (10ml)', dosage: 20, price: basePrice * 3.2, sku: `${baseSku}-20MG`, stock: 50, sort: 3, image: '/images/formats/vial-10ml.png' },
     // Cartouches
-    { type: FormatType.CARTRIDGE_3ML, name: '5mg Cartridge (3ml)', dosage: 5, price: basePrice * 1.5, sku: `${baseSku}-5MG-CART`, stock: 80, sort: 4, image: '/images/formats/cartridge.png' },
-    { type: FormatType.CARTRIDGE_3ML, name: '10mg Cartridge (3ml)', dosage: 10, price: basePrice * 2.5, sku: `${baseSku}-10MG-CART`, stock: 60, sort: 5, image: '/images/formats/cartridge.png' },
+    { type: 'CARTRIDGE_3ML', name: '5mg Cartridge (3ml)', dosage: 5, price: basePrice * 1.5, sku: `${baseSku}-5MG-CART`, stock: 80, sort: 4, image: '/images/formats/cartridge.png' },
+    { type: 'CARTRIDGE_3ML', name: '10mg Cartridge (3ml)', dosage: 10, price: basePrice * 2.5, sku: `${baseSku}-10MG-CART`, stock: 60, sort: 5, image: '/images/formats/cartridge.png' },
     // Kit de 12 cartouches
-    { type: FormatType.KIT_12, name: '5mg x 12 Cartridges Kit', dosage: 60, units: 12, price: basePrice * 15, comparePrice: basePrice * 18, sku: `${baseSku}-5MG-KIT12`, stock: 20, sort: 6, image: '/images/formats/kit-12.png' },
-    { type: FormatType.KIT_12, name: '10mg x 12 Cartridges Kit', dosage: 120, units: 12, price: basePrice * 25, comparePrice: basePrice * 30, sku: `${baseSku}-10MG-KIT12`, stock: 15, sort: 7, image: '/images/formats/kit-12.png' },
+    { type: 'KIT_12', name: '5mg x 12 Cartridges Kit', dosage: 60, units: 12, price: basePrice * 15, comparePrice: basePrice * 18, sku: `${baseSku}-5MG-KIT12`, stock: 20, sort: 6, image: '/images/formats/kit-12.png' },
+    { type: 'KIT_12', name: '10mg x 12 Cartridges Kit', dosage: 120, units: 12, price: basePrice * 25, comparePrice: basePrice * 30, sku: `${baseSku}-10MG-KIT12`, stock: 15, sort: 7, image: '/images/formats/kit-12.png' },
     // Packs de vials
-    { type: FormatType.PACK_5, name: '5mg x 5 Vials Pack', dosage: 25, units: 5, price: basePrice * 4.5, comparePrice: basePrice * 5, sku: `${baseSku}-5MG-5PK`, stock: 40, sort: 8, image: '/images/formats/pack-5.png' },
-    { type: FormatType.PACK_10, name: '5mg x 10 Vials Pack', dosage: 50, units: 10, price: basePrice * 8, comparePrice: basePrice * 10, sku: `${baseSku}-5MG-10PK`, stock: 25, sort: 9, image: '/images/formats/pack-10.png' },
+    { type: 'PACK_5', name: '5mg x 5 Vials Pack', dosage: 25, units: 5, price: basePrice * 4.5, comparePrice: basePrice * 5, sku: `${baseSku}-5MG-5PK`, stock: 40, sort: 8, image: '/images/formats/pack-5.png' },
+    { type: 'PACK_10', name: '5mg x 10 Vials Pack', dosage: 50, units: 10, price: basePrice * 8, comparePrice: basePrice * 10, sku: `${baseSku}-5MG-10PK`, stock: 25, sort: 9, image: '/images/formats/pack-10.png' },
   ];
 
   for (const format of formats) {
@@ -49,9 +49,9 @@ async function createAllFormats(productId: string, _baseName: string, baseSku: s
 // Helper pour créer formats avec capsules
 async function createCapsuleFormats(productId: string, baseSku: string, basePrice: number) {
   const formats = [
-    { type: FormatType.CAPSULE_60, name: '60 Capsules', units: 60, price: basePrice, sku: `${baseSku}-60CAP`, stock: 100, default: true, sort: 1, image: '/images/formats/capsules-60.png' },
-    { type: FormatType.CAPSULE_120, name: '120 Capsules', units: 120, price: basePrice * 1.8, sku: `${baseSku}-120CAP`, stock: 50, sort: 2, image: '/images/formats/capsules-120.png' },
-    { type: FormatType.PACK_5, name: '60 Capsules x 5 Pack', units: 300, price: basePrice * 4.2, comparePrice: basePrice * 5, sku: `${baseSku}-60CAP-5PK`, stock: 20, sort: 3, image: '/images/formats/pack-5.png' },
+    { type: 'CAPSULE_60', name: '60 Capsules', units: 60, price: basePrice, sku: `${baseSku}-60CAP`, stock: 100, default: true, sort: 1, image: '/images/formats/capsules-60.png' },
+    { type: 'CAPSULE_120', name: '120 Capsules', units: 120, price: basePrice * 1.8, sku: `${baseSku}-120CAP`, stock: 50, sort: 2, image: '/images/formats/capsules-120.png' },
+    { type: 'PACK_5', name: '60 Capsules x 5 Pack', units: 300, price: basePrice * 4.2, comparePrice: basePrice * 5, sku: `${baseSku}-60CAP-5PK`, stock: 20, sort: 3, image: '/images/formats/pack-5.png' },
   ];
 
   for (const format of formats) {
@@ -661,7 +661,7 @@ async function main() {
   await prisma.productFormat.create({
     data: {
       productId: selank.id,
-      formatType: FormatType.NASAL_SPRAY,
+      formatType: 'NASAL_SPRAY',
       name: '10ml Nasal Spray',
       volumeMl: 10,
       price: 45.00,
@@ -697,7 +697,7 @@ async function main() {
   await prisma.productFormat.create({
     data: {
       productId: semax.id,
-      formatType: FormatType.NASAL_SPRAY,
+      formatType: 'NASAL_SPRAY',
       name: '10ml Nasal Spray',
       volumeMl: 10,
       price: 65.00,
@@ -804,7 +804,7 @@ async function main() {
   await prisma.productFormat.create({
     data: {
       productId: ghkcu.id,
-      formatType: FormatType.CREAM,
+      formatType: 'CREAM',
       name: '50ml Topical Cream',
       volumeMl: 50,
       price: 85.00,
@@ -910,7 +910,7 @@ async function main() {
     prisma.productFormat.create({
       data: {
         productId: bacWater.id,
-        formatType: FormatType.ACCESSORY,
+        formatType: 'ACCESSORY',
         name: '10ml Vial',
         volumeMl: 10,
         price: 13.00,
@@ -925,7 +925,7 @@ async function main() {
     prisma.productFormat.create({
       data: {
         productId: bacWater.id,
-        formatType: FormatType.ACCESSORY,
+        formatType: 'ACCESSORY',
         name: '30ml Vial',
         volumeMl: 30,
         price: 25.00,
@@ -939,7 +939,7 @@ async function main() {
     prisma.productFormat.create({
       data: {
         productId: bacWater.id,
-        formatType: FormatType.PACK_10,
+        formatType: 'PACK_10',
         name: '10ml x 10 Pack',
         volumeMl: 100,
         unitCount: 10,
@@ -975,7 +975,7 @@ async function main() {
     prisma.productFormat.create({
       data: {
         productId: insulinSyringes.id,
-        formatType: FormatType.ACCESSORY,
+        formatType: 'ACCESSORY',
         name: 'Box of 10',
         unitCount: 10,
         price: 15.00,
@@ -990,7 +990,7 @@ async function main() {
     prisma.productFormat.create({
       data: {
         productId: insulinSyringes.id,
-        formatType: FormatType.ACCESSORY,
+        formatType: 'ACCESSORY',
         name: 'Box of 50',
         unitCount: 50,
         price: 45.00,
@@ -1005,7 +1005,7 @@ async function main() {
     prisma.productFormat.create({
       data: {
         productId: insulinSyringes.id,
-        formatType: FormatType.ACCESSORY,
+        formatType: 'ACCESSORY',
         name: 'Box of 100',
         unitCount: 100,
         price: 75.00,
@@ -1040,7 +1040,7 @@ async function main() {
   await prisma.productFormat.create({
     data: {
       productId: injectionPen.id,
-      formatType: FormatType.ACCESSORY,
+      formatType: 'ACCESSORY',
       name: 'Single Pen',
       unitCount: 1,
       price: 35.00,
