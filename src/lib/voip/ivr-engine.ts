@@ -26,7 +26,7 @@ function isBusinessHours(menu: {
   if (!menu.businessHoursStart || !menu.businessHoursEnd) return true;
 
   const now = new Date();
-  const tz = menu.timezone || 'America/New_York';
+  const tz = menu.timezone || 'America/Toronto';
 
   const formatter = new Intl.DateTimeFormat('en-US', {
     timeZone: tz,
@@ -81,13 +81,22 @@ export async function resolveIvrMenu(phoneNumber: { routeToIvr: string | null })
 
 /**
  * Build a TTS greeting from IVR menu options.
+ * Supports French and English based on menu language.
  */
 export function buildGreetingText(
   options: Array<{ digit: string; label: string }>,
-  companyName = 'BioCycle'
+  companyName = 'BioCycle',
+  language = 'fr-CA'
 ): string {
-  const lines = options.map(opt => `Pour ${opt.label}, appuyez sur ${opt.digit}.`);
-  return `Bienvenue chez ${companyName}. ${lines.join(' ')}`;
+  const isFrench = language.startsWith('fr');
+
+  if (isFrench) {
+    const lines = options.map(opt => `Pour ${opt.label}, appuyez sur ${opt.digit}.`);
+    return `Bienvenue chez ${companyName}. ${lines.join(' ')}`;
+  }
+
+  const lines = options.map(opt => `For ${opt.label}, press ${opt.digit}.`);
+  return `Welcome to ${companyName}. ${lines.join(' ')}`;
 }
 
 /**
@@ -104,10 +113,15 @@ export async function playIvrMenu(
     options: Array<{ digit: string; label: string }>;
   }
 ): Promise<void> {
-  const greeting = menu.greetingText || buildGreetingText(menu.options);
+  const greeting = menu.greetingText || buildGreetingText(menu.options, 'Attitudes VIP', menu.language);
 
-  // Play consent notice + greeting, then gather
-  const fullPrompt = `Cet appel peut être enregistré à des fins de qualité. ${greeting}`;
+  // Consent notice is already included in the greetingText from phone-system-config
+  // Only prepend if using auto-generated greeting
+  const fullPrompt = menu.greetingText
+    ? greeting
+    : (menu.language.startsWith('fr')
+        ? `Cet appel peut être enregistré à des fins de qualité. ${greeting}`
+        : `This call may be recorded for quality purposes. ${greeting}`);
 
   await telnyx.gatherDtmf(callControlId, {
     prompt: fullPrompt,
@@ -163,23 +177,30 @@ export async function handleIvrTimeout(
   },
   attempts: number
 ): Promise<void> {
+  const isFrench = menu.language.startsWith('fr');
+
   if (menu.timeoutAction === 'replay' && attempts < 3) {
     await telnyx.speakText(callControlId,
-      "Nous n'avons pas reçu votre choix.");
+      isFrench ? "Nous n'avons pas reçu votre choix." : "We did not receive your selection.",
+      { language: menu.language });
     await playIvrMenu(callControlId, menu);
     return;
   }
 
   if (menu.timeoutAction === 'voicemail' || attempts >= 3) {
     await telnyx.speakText(callControlId,
-      "Vous êtes dirigé vers la messagerie vocale. Laissez votre message après le bip.");
+      isFrench
+        ? "Vous êtes dirigé vers la messagerie vocale. Laissez votre message après le bip."
+        : "You are being directed to voicemail. Please leave your message after the tone.",
+      { language: menu.language });
     await telnyx.startRecording(callControlId, { channels: 'single', format: 'wav' });
     return;
   }
 
   if (menu.timeoutAction === 'operator') {
     await telnyx.speakText(callControlId,
-      "Transfert vers un agent. Veuillez patienter.");
+      isFrench ? "Transfert vers un agent. Veuillez patienter." : "Transferring to an agent. Please hold.",
+      { language: menu.language });
     // The queue engine will pick this up via transfer_queue
     if (menu.timeoutTarget) {
       await executeIvrAction(callControlId, 'transfer_queue', menu.timeoutTarget, null);

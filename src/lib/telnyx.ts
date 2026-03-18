@@ -381,3 +381,102 @@ export async function listPhoneNumbers(params?: {
     },
   });
 }
+
+/**
+ * Update a phone number's configuration (connection, tags, etc.)
+ */
+export async function updatePhoneNumber(phoneNumberId: string, config: {
+  connectionId?: string;
+  tags?: string[];
+  customerReference?: string;
+}) {
+  return telnyxFetch(`/phone_numbers/${phoneNumberId}`, {
+    method: 'PATCH',
+    body: {
+      ...(config.connectionId ? { connection_id: config.connectionId } : {}),
+      ...(config.tags ? { tags: config.tags } : {}),
+      ...(config.customerReference ? { customer_reference: config.customerReference } : {}),
+    },
+  });
+}
+
+/**
+ * Send SMS via Telnyx API.
+ */
+export async function sendSms(options: {
+  from: string;
+  to: string;
+  text: string;
+  messagingProfileId?: string;
+}) {
+  return telnyxFetch('/messages', {
+    method: 'POST',
+    body: {
+      from: options.from,
+      to: options.to,
+      text: options.text,
+      ...(options.messagingProfileId
+        ? { messaging_profile_id: options.messagingProfileId }
+        : {}),
+    },
+  });
+}
+
+/**
+ * Get geographic caller ID for a destination number.
+ * Returns the best local number to show based on the callee's area code.
+ */
+export function getGeographicCallerId(
+  destinationNumber: string,
+  availableNumbers: Array<{ number: string; region?: string | null; country: string }>
+): string {
+  const defaultCallerId = getDefaultCallerId();
+
+  if (!destinationNumber || availableNumbers.length === 0) {
+    return defaultCallerId;
+  }
+
+  // Normalize destination
+  const dest = destinationNumber.replace(/[^+\d]/g, '');
+
+  // US number → use US DID
+  if (dest.startsWith('+1') && !dest.startsWith('+14') && !dest.startsWith('+15')
+    && !dest.startsWith('+16') && !dest.startsWith('+17') && !dest.startsWith('+18')
+    && !dest.startsWith('+19')) {
+    // Not a Canadian area code (rough check)
+  }
+
+  // Match by area code for Canadian/US numbers
+  if (dest.startsWith('+1')) {
+    const areaCode = dest.substring(2, 5);
+
+    // Ontario area codes
+    const ontarioAreaCodes = ['416', '437', '647', '905', '289', '365', '226', '519', '548', '613', '343', '705', '249', '807'];
+    // Quebec area codes
+    const quebecAreaCodes = ['514', '438', '450', '579', '819', '873', '418', '581', '367'];
+
+    if (ontarioAreaCodes.includes(areaCode)) {
+      const torontoDid = availableNumbers.find(n => n.region === 'Toronto');
+      if (torontoDid) return torontoDid.number;
+    }
+
+    if (quebecAreaCodes.includes(areaCode)) {
+      const montrealDid = availableNumbers.find(n => n.region === 'Montreal' || n.region === 'Gatineau');
+      if (montrealDid) return montrealDid.number;
+    }
+
+    // US area codes (not in Canadian list)
+    const usDid = availableNumbers.find(n => n.country === 'US');
+    if (usDid && !ontarioAreaCodes.includes(areaCode) && !quebecAreaCodes.includes(areaCode)) {
+      return usDid.number;
+    }
+  }
+
+  // European numbers
+  if (!dest.startsWith('+1')) {
+    const euDid = availableNumbers.find(n => !['CA', 'US'].includes(n.country));
+    if (euDid) return euDid.number;
+  }
+
+  return defaultCallerId;
+}

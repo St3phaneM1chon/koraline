@@ -12,6 +12,7 @@
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import * as telnyx from '@/lib/telnyx';
+import { sendPushToUser, sendPushToStaff } from '@/lib/apns';
 import { VoipStateMap } from './voip-state';
 
 // Track active voicemail recordings — Redis-backed
@@ -28,7 +29,7 @@ const activeVoicemails = new VoipStateMap<{
 export async function startVoicemail(
   callControlId: string,
   target: string,
-  callerInfo?: { from?: string; callerName?: string }
+  callerInfo?: { from?: string; callerName?: string; language?: string }
 ): Promise<void> {
   // Find the extension
   const extension = await prisma.sipExtension.findFirst({
@@ -46,12 +47,20 @@ export async function startVoicemail(
   const extensionId = extension?.id || target;
   const agentName = extension?.user?.name || 'notre équipe';
 
-  // Play voicemail greeting
-  const greeting = `Vous avez joint la boîte vocale de ${agentName}. `
-    + `Veuillez laisser votre message après le bip. `
-    + `Appuyez sur la touche dièse lorsque vous avez terminé.`;
+  // Determine language from caller info or default to FR
+  const lang = callerInfo?.language || 'fr-CA';
+  const isFrench = lang.startsWith('fr');
 
-  await telnyx.speakText(callControlId, greeting);
+  // Play voicemail greeting in detected language
+  const greeting = isFrench
+    ? `Vous avez joint la boîte vocale de ${agentName}. `
+      + `Veuillez laisser votre message après le bip. `
+      + `Appuyez sur la touche dièse lorsque vous avez terminé.`
+    : `You have reached the voicemail of ${agentName}. `
+      + `Please leave your message after the tone. `
+      + `Press the pound key when you are finished.`;
+
+  await telnyx.speakText(callControlId, greeting, { language: lang });
 
   // Track the voicemail
   activeVoicemails.set(callControlId, {
@@ -121,7 +130,14 @@ export async function handleVoicemailSaved(
     duration: durationSec,
   });
 
-  // Trigger transcription in background
+  // Send push notification to extension owner + all staff
+  sendVoicemailNotification(vmInfo, durationSec).catch(err => {
+    logger.error('[Voicemail] Push notification failed', {
+      error: err instanceof Error ? err.message : String(err),
+    });
+  });
+
+  // Trigger transcription in background (will send updated push when done)
   if (blobUrl) {
     transcribeVoicemail(voicemail.id, blobUrl).catch(err => {
       logger.error('[Voicemail] Transcription failed', {
@@ -198,6 +214,45 @@ async function transcribeVoicemail(voicemailId: string, audioUrl: string): Promi
     });
     // Non-critical: voicemail is still saved without transcription
   }
+}
+
+/**
+ * Send push notification for a new voicemail.
+ */
+async function sendVoicemailNotification(
+  vmInfo: { extensionId: string; callerNumber: string; callerName?: string },
+  durationSec?: number
+): Promise<void> {
+  const callerDisplay = vmInfo.callerName || vmInfo.callerNumber;
+  const durationDisplay = durationSec
+    ? `${Math.floor(durationSec / 60)}:${(durationSec % 60).toString().padStart(2, '0')}`
+    : '';
+
+  // Find the extension owner
+  const extension = await prisma.sipExtension.findUnique({
+    where: { id: vmInfo.extensionId },
+    select: { userId: true },
+  });
+
+  const payload = {
+    title: 'Nouveau message vocal',
+    body: `${callerDisplay}${durationDisplay ? ` (${durationDisplay})` : ''}`,
+    category: 'CALL',
+    sound: 'Courriel.caf',
+    data: {
+      type: 'voicemail',
+      callerNumber: vmInfo.callerNumber,
+      callerName: vmInfo.callerName || '',
+    },
+  };
+
+  // Push to extension owner specifically
+  if (extension?.userId) {
+    await sendPushToUser(extension.userId, payload);
+  }
+
+  // Also notify all staff (small team, everyone should know)
+  await sendPushToStaff(payload);
 }
 
 /**

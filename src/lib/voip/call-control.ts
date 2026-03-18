@@ -11,6 +11,7 @@
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import * as telnyx from '@/lib/telnyx';
+import { sendPushToStaff } from '@/lib/apns';
 import { resolveIvrMenu, playIvrMenu, handleIvrInput, handleIvrTimeout } from './ivr-engine';
 import { routeToQueue, removeFromQueue } from './queue-engine';
 import { handleVoicemailSaved, isVoicemailActive, cleanupVoicemail, startVoicemail } from './voicemail-engine';
@@ -48,6 +49,8 @@ export const activeCallStates = new VoipStateMap<{
   isVoicemail?: boolean;
   callerNumber?: string;
   callerName?: string;
+  language?: string; // Detected language (from dialed number or caller preference)
+  dialedNumber?: string; // The number that was called (for multi-DID routing)
 }>('voip:call:');
 
 /**
@@ -103,7 +106,12 @@ export async function handleCallEvent(eventType: string, payload: CallEventPaylo
 async function handleCallInitiated(payload: CallEventPayload) {
   const { callControlId, from, to, direction, connectionId } = payload;
 
-  // Create call log entry
+  // Look up the phone number to get language and forwarding config
+  const phoneNumber = to ? await prisma.phoneNumber.findUnique({
+    where: { number: to },
+  }) : null;
+
+  // Create call log entry with phone number linkage
   const callLog = await prisma.callLog.create({
     data: {
       pbxUuid: callControlId,
@@ -112,6 +120,7 @@ async function handleCallInitiated(payload: CallEventPayload) {
       direction: direction === 'inbound' ? 'INBOUND' : 'OUTBOUND',
       startedAt: new Date(),
       status: 'RINGING',
+      ...(phoneNumber ? { phoneNumberId: phoneNumber.id } : {}),
       ...(connectionId ? {
         connection: {
           connect: { provider: 'telnyx' },
@@ -125,6 +134,8 @@ async function handleCallInitiated(payload: CallEventPayload) {
     callLogId: callLog.id,
     callerNumber: from,
     callerName: undefined,
+    dialedNumber: to,
+    language: phoneNumber?.language || 'fr-CA',
     ...(payload.clientState as Record<string, string> || {}),
   });
 
@@ -133,11 +144,38 @@ async function handleCallInitiated(payload: CallEventPayload) {
     direction,
     from,
     to,
+    language: phoneNumber?.language,
+    region: phoneNumber?.region,
   });
 
-  // For inbound calls: answer and route
+  // For inbound calls: check forwarding first, then answer
   if (direction === 'inbound') {
+    // Handle forwarding (alias numbers like Gatineau → Montreal)
+    if (phoneNumber?.forwardTo) {
+      logger.info('[CallControl] Forwarding call', {
+        from: to,
+        forwardTo: phoneNumber.forwardTo,
+      });
+      await telnyx.transferCall(callControlId, phoneNumber.forwardTo, {
+        from: from,
+      });
+      return;
+    }
+
     await telnyx.answerCall(callControlId);
+
+    // Send push notification to staff for incoming call
+    sendPushToStaff({
+      title: 'Appel entrant',
+      body: `${from || 'Inconnu'} → ${phoneNumber?.displayName || to}`,
+      category: 'CALL',
+      sound: 'Appel.caf',
+      data: {
+        type: 'incoming_call',
+        callerNumber: from || '',
+        dialedNumber: to || '',
+      },
+    }).catch(() => { /* non-blocking */ });
   }
 }
 
@@ -234,8 +272,11 @@ async function handleGatherEnded(payload: CallEventPayload) {
     if (menu) {
       await handleIvrTimeout(callControlId, menu, attempts);
     } else {
-      await telnyx.speakText(callControlId,
-        "Nous n'avons pas reçu votre choix. Transfert vers un agent.");
+      const lang = state.language || 'fr-CA';
+      const msg = lang.startsWith('fr')
+        ? "Nous n'avons pas reçu votre choix. Transfert vers un agent."
+        : "We did not receive your selection. Transferring to an agent.";
+      await telnyx.speakText(callControlId, msg, { language: lang });
     }
     return;
   }
@@ -250,19 +291,25 @@ async function handleGatherEnded(payload: CallEventPayload) {
     const attempts = (state.ivrAttempts || 0) + 1;
     activeCallStates.set(callControlId, { ...state, ivrAttempts: attempts });
 
+    const lang = state.language || menu?.language || 'fr-CA';
+    const isFr = lang.startsWith('fr');
+
     if (attempts >= (menu?.maxRetries || 3)) {
       // Max retries — route to operator or voicemail
       if (menu?.timeoutAction === 'voicemail' && menu.timeoutTarget) {
         await startVoicemail(callControlId, menu.timeoutTarget, {
           from: state.callerNumber,
+          language: lang,
         });
       } else {
         await telnyx.speakText(callControlId,
-          "Transfert vers un agent. Veuillez patienter.");
+          isFr ? "Transfert vers un agent. Veuillez patienter." : "Transferring to an agent. Please hold.",
+          { language: lang });
       }
     } else {
       await telnyx.speakText(callControlId,
-        "Choix invalide. Veuillez réessayer.");
+        isFr ? "Choix invalide. Veuillez réessayer." : "Invalid selection. Please try again.",
+        { language: lang });
       // Replay the menu
       if (menu) {
         await playIvrMenu(callControlId, menu);
@@ -360,29 +407,43 @@ async function handleTranscription(payload: CallEventPayload) {
 
 /**
  * Route an inbound call based on the dialed number's configuration.
- * Priority: IVR → Queue → Extension → Default greeting
+ * Priority: IVR → Queue → Extension → Default simultaneous ring
+ *
+ * Enhanced features:
+ * - Multi-language support (greetings in the number's language)
+ * - Forwarding already handled in handleCallInitiated
+ * - Simultaneous ring to all staff as fallback
+ * - Voicemail fallback after ring timeout
  */
 async function routeInboundCall(callControlId: string, payload: CallEventPayload) {
   const { to } = payload;
+  const state = activeCallStates.get(callControlId);
+  const language = state?.language || 'fr-CA';
+  const isFrench = language.startsWith('fr');
 
   const phoneNumber = to ? await prisma.phoneNumber.findUnique({
     where: { number: to },
   }) : null;
 
   if (!phoneNumber) {
+    // Unknown number — play bilingual greeting and route to general queue
     await telnyx.speakText(callControlId,
-      "Merci d'avoir appelé. Veuillez patienter pendant que nous transférons votre appel.");
+      "Merci d'avoir appelé Attitudes VIP. Thank you for calling Attitudes VIP. " +
+      "Veuillez patienter. Please hold.",
+      { language: 'fr-CA' });
+    await routeToQueue(callControlId, 'general-queue');
     return;
   }
 
-  // Route 1: IVR Menu
+  // Route 1: IVR Menu (primary routing method)
   if (phoneNumber.routeToIvr) {
     const menu = await resolveIvrMenu(phoneNumber);
     if (menu) {
       activeCallStates.set(callControlId, {
-        ...activeCallStates.get(callControlId),
+        ...state,
         ivrMenuId: menu.id,
         ivrAttempts: 0,
+        language: menu.language || language,
       });
       await playIvrMenu(callControlId, menu);
       return;
@@ -391,6 +452,10 @@ async function routeInboundCall(callControlId: string, payload: CallEventPayload
 
   // Route 2: Queue
   if (phoneNumber.routeToQueue) {
+    const consentMsg = isFrench
+      ? "Cet appel peut être enregistré à des fins de qualité. Veuillez patienter."
+      : "This call may be recorded for quality purposes. Please hold.";
+    await telnyx.speakText(callControlId, consentMsg, { language });
     await routeToQueue(callControlId, phoneNumber.routeToQueue);
     return;
   }
@@ -401,16 +466,21 @@ async function routeInboundCall(callControlId: string, payload: CallEventPayload
       where: { extension: phoneNumber.routeToExt },
     });
     if (ext) {
-      await telnyx.speakText(callControlId,
-        "Cet appel peut être enregistré à des fins de qualité. Transfert en cours.");
+      const transferMsg = isFrench
+        ? "Cet appel peut être enregistré à des fins de qualité. Transfert en cours."
+        : "This call may be recorded for quality purposes. Transferring now.";
+      await telnyx.speakText(callControlId, transferMsg, { language });
       await telnyx.transferCall(callControlId, `sip:${ext.sipUsername}@sip.telnyx.com`);
       return;
     }
   }
 
-  // Default: generic greeting
-  await telnyx.speakText(callControlId,
-    "Cet appel peut être enregistré à des fins de qualité. Veuillez patienter.");
+  // Default: Route to general queue (ring all agents simultaneously)
+  const defaultMsg = isFrench
+    ? "Cet appel peut être enregistré à des fins de qualité. Veuillez patienter pendant que nous vous mettons en communication."
+    : "This call may be recorded for quality purposes. Please hold while we connect you.";
+  await telnyx.speakText(callControlId, defaultMsg, { language });
+  await routeToQueue(callControlId, 'general-queue');
 }
 
 // ── Outbound Dialer ─────────────────────────

@@ -638,9 +638,14 @@ model PhoneNumber {
   type         PhoneNumberType @default(LOCAL)
 
   // Routing
-  routeToIvr   String? // FusionPBX IVR ID
-  routeToQueue String? // FusionPBX queue name
+  routeToIvr   String? // IVR Menu ID
+  routeToQueue String? // Queue name
   routeToExt   String? // Direct extension
+  forwardTo    String? // Forward to another E.164 number (alias/forwarding)
+
+  // Multi-language & region
+  language     String   @default("fr-CA") // Primary language: fr-CA, en-US, en-CA, es
+  region       String?  // "Montreal", "Toronto", "Toll-Free", "US", "EU"
 
   isActive     Boolean         @default(true)
   monthlyCost  Decimal?        @db.Decimal(10, 2)
@@ -1089,6 +1094,7 @@ model IvrMenu {
   timeoutTarget String?
 
   // Schedule-based routing
+  timezone           String  @default("America/Toronto") // IANA timezone
   businessHoursStart String? // "09:00"
   businessHoursEnd   String? // "17:00"
   afterHoursMenuId   String? // ID of after-hours IvrMenu
