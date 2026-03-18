@@ -22,6 +22,7 @@ import { STRIPE_API_VERSION } from '@/lib/stripe';
 import { calculatePurchasePoints, calculateTierFromPoints } from '@/lib/constants';
 import { subtract, applyRate } from '@/lib/decimal-calculator';
 import { checkEarningCaps } from '@/lib/loyalty/points-engine';
+import { sendPushToStaff } from '@/lib/apns';
 
 // Lazy-initialized Stripe client to avoid crashing during Next.js build/SSG
 // when STRIPE_SECRET_KEY is not available in the CI environment.
@@ -1042,6 +1043,15 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session, eventId:
     sideEffectResults.smsNotification = msg;
     logger.error('[webhook] SMS notification failed', { orderNumber, error: msg });
   }
+
+  // 9. Push notification to staff mobile devices (fire-and-forget)
+  sendPushToStaff({
+    title: `Nouvelle vente ${orderNumber}`,
+    body: `${Number(cadTotal).toFixed(2)} $ CAD`,
+    category: 'SALE',
+    sound: 'NouvelleVente.caf',
+    data: { orderNumber, type: 'sale' },
+  }).catch(() => {});
 
   // ---------------------------------------------------------------------------
   // T3-5: Summary log — shows which side effects succeeded/failed/were skipped

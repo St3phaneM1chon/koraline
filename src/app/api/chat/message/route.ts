@@ -30,6 +30,7 @@ import { publishChatEvent } from '@/lib/chat/realtime';
 import type { ChatSender, ChatMessageType } from '@prisma/client';
 import { z } from 'zod';
 import { getClientIpFromRequest } from '@/lib/admin-audit';
+import { sendPushToStaff } from '@/lib/apns';
 
 export async function POST(request: NextRequest) {
   try {
@@ -340,6 +341,16 @@ export async function POST(request: NextRequest) {
       data: { message: savedMessage },
       timestamp: Date.now(),
     }).catch((err) => { logger.error('[chat/message] Non-blocking operation failed:', { error: err instanceof Error ? err.message : String(err) }); });
+
+    // Push notification to staff when a visitor/customer sends a message
+    if (sender === 'VISITOR') {
+      sendPushToStaff({
+        title: 'Nouveau message chat',
+        body: content.slice(0, 100),
+        category: 'CHAT',
+        sound: 'Chat.caf',
+      }).catch(() => {});
+    }
 
     // Si réponse du bot, la sauvegarder aussi
     // FIX: F-062 - Removed duplicate lastMessageAt update; the update above already covers this
