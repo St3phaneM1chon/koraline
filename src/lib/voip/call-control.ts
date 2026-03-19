@@ -132,22 +132,35 @@ async function handleCallInitiated(payload: CallEventPayload) {
   }) : null;
 
   // Create call log entry with phone number linkage
-  const callLog = await prisma.callLog.create({
-    data: {
-      pbxUuid: callControlId,
-      callerNumber: from || 'unknown',
-      calledNumber: to || 'unknown',
-      direction: direction === 'inbound' ? 'INBOUND' : 'OUTBOUND',
-      startedAt: new Date(),
-      status: 'RINGING',
-      ...(phoneNumber ? { phoneNumberId: phoneNumber.id } : {}),
-      ...(connectionId ? {
-        connection: {
-          connect: { provider: 'telnyx' },
-        },
-      } : {}),
-    },
-  });
+  let callLog;
+  try {
+    callLog = await prisma.callLog.create({
+      data: {
+        pbxUuid: callControlId,
+        callerNumber: from || 'unknown',
+        calledNumber: to || 'unknown',
+        direction: direction === 'inbound' ? 'INBOUND' : 'OUTBOUND',
+        startedAt: new Date(),
+        status: 'RINGING',
+        ...(phoneNumber ? { phoneNumberId: phoneNumber.id } : {}),
+      },
+    });
+  } catch (err) {
+    // Fallback: create minimal call log if relation fails
+    logger.warn('[CallControl] CallLog create failed, trying minimal', {
+      error: err instanceof Error ? err.message : String(err),
+    });
+    callLog = await prisma.callLog.create({
+      data: {
+        pbxUuid: callControlId,
+        callerNumber: from || 'unknown',
+        calledNumber: to || 'unknown',
+        direction: direction === 'inbound' ? 'INBOUND' : 'OUTBOUND',
+        startedAt: new Date(),
+        status: 'RINGING',
+      },
+    });
+  }
 
   // Cache the call state for later events
   activeCallStates.set(callControlId, {
