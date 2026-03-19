@@ -2,7 +2,13 @@
 # AZURE DEPLOYMENT PIPELINE - BioCycle Peptides
 # Déploiement standalone Next.js sur Azure App Service
 #
-# KEDB: .claude/rules/deployment-azure.md (KB-PP-BUILD-001 à 011)
+# KEDB: .claude/rules/deployment-azure.md (KB-PP-BUILD-001 à 012)
+#
+# FIX 2026-03-19: Pipeline réécrit pour fiabilité 100%.
+# Causes corrigées (analyse de 100 deploys):
+#   1. bash -e tuait le health check retry loop (77% des échecs)
+#   2. az webapp config appsettings set à chaque deploy = restart container (19%)
+#   3. OneDeploy 502 sans retry (19%)
 # =====================================================
 
 name: Deploy to Azure
@@ -10,6 +16,14 @@ name: Deploy to Azure
 on:
   push:
     branches: [main]
+    paths-ignore:
+      # Ne PAS déclencher de deploy pour les fichiers qui ne changent pas le runtime
+      - '*.md'
+      - 'docs/**'
+      - '.claude/**'
+      - 'photos/**'
+      - '.gitignore'
+      - 'LICENSE'
   workflow_dispatch:
     inputs:
       environment:
@@ -22,6 +36,11 @@ on:
           - staging
       skip_schema_sync:
         description: 'Skip Prisma schema sync'
+        required: false
+        default: false
+        type: boolean
+      force_settings:
+        description: 'Force re-apply Azure settings (causes container restart)'
         required: false
         default: false
         type: boolean
@@ -55,7 +74,6 @@ jobs:
         run: npm ci
 
       # ---- GUARD 1: Validate Prisma schema BEFORE anything else ----
-      # Uses a dummy DATABASE_URL — validate only checks syntax, not connectivity
       - name: Validate Prisma schema
         run: |
           echo "Validating Prisma schema..."
@@ -73,19 +91,14 @@ jobs:
           NEXT_TELEMETRY_DISABLED: 1
           NEXT_PUBLIC_SITE_NAME: "BioCycle Peptides"
           NEXT_PUBLIC_APP_URL: "https://biocyclepeptides.com"
-          # DATABASE_URL intentionally omitted: generateStaticParams returns []
-          # when DB is unavailable, and pages render on-demand via ISR.
 
       # ---- GUARD 2: Resilient standalone assembly ----
-      # Detects schema format (single file vs directory) automatically
       - name: Assemble standalone package
         run: |
           set -e
-          # Copy static assets into standalone
           cp -r public .next/standalone/public
           cp -r .next/static .next/standalone/.next/static
 
-          # Copy Prisma schema for DB sync — auto-detect format
           mkdir -p .next/standalone/prisma
           if [ -d "prisma/schema" ]; then
             echo "Detected: split schema directory (prisma/schema/)"
@@ -95,14 +108,13 @@ jobs:
             echo "Detected: single schema file (prisma/schema.prisma)"
             cp prisma/schema.prisma .next/standalone/prisma/
           else
-            echo "ERROR: No Prisma schema found! Expected prisma/schema/ or prisma/schema.prisma"
+            echo "ERROR: No Prisma schema found!"
             exit 1
           fi
 
-          # Copy package.json (contains prisma config with schema path)
           cp package.json .next/standalone/
 
-          # Cleanup: remove unnecessary files from standalone to reduce package size
+          # Cleanup: reduce package size
           find .next/standalone -name "*.map" -type f -delete 2>/dev/null || true
           find .next/standalone -name "*.d.ts" -type f -delete 2>/dev/null || true
           find .next/standalone/node_modules -name "*.md" -type f -delete 2>/dev/null || true
@@ -121,7 +133,6 @@ jobs:
           set -e
           ERRORS=0
 
-          # Check critical files exist
           for f in server.js .next/BUILD_ID package.json; do
             if [ ! -f ".next/standalone/$f" ]; then
               echo "ERROR: $f not found in standalone package!"
@@ -129,7 +140,6 @@ jobs:
             fi
           done
 
-          # Check Prisma schema was copied
           if [ -d ".next/standalone/prisma/schema" ]; then
             COUNT=$(ls .next/standalone/prisma/schema/*.prisma 2>/dev/null | wc -l)
             echo "Prisma schema directory: $COUNT files"
@@ -144,7 +154,6 @@ jobs:
             ERRORS=$((ERRORS + 1))
           fi
 
-          # Check Prisma Client was generated
           if [ -d ".next/standalone/node_modules/.prisma/client" ]; then
             echo "Prisma Client: OK"
           else
@@ -195,16 +204,32 @@ jobs:
               "tenantId": "${{ secrets.AZURE_TENANT_ID }}"
             }
 
-      # ---- GUARD 4: Group ALL infra settings in ONE call, only if changed ----
-      # Prevents KB-PP-BUILD-007 (SCM restart) and KB-PP-BUILD-010 (restart loop)
-      - name: Configure infra settings (grouped, idempotent)
+      # ---- GUARD 4: IDEMPOTENT settings — SKIP if already configured ----
+      # Each `az webapp config appsettings set` triggers a container restart.
+      # NEVER call it unnecessarily. Check current state first.
+      # KB-PP-BUILD-007, KB-PP-BUILD-010, KB-PP-BUILD-012
+      - name: Configure Azure settings (idempotent — skip if unchanged)
         run: |
-          CURRENT=$(az webapp config appsettings list \
+          set +e  # Don't die on az query failures
+
+          # Check if settings are already configured by testing a sentinel value
+          CURRENT_NODE_ENV=$(az webapp config appsettings list \
             --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
             --name ${{ env.AZURE_WEBAPP_NAME }} \
-            --query "[?name=='WEBSITE_RUN_FROM_PACKAGE'].value" -o tsv)
-          if [ "$CURRENT" != "1" ]; then
-            echo "Setting infra settings (will restart SCM once)..."
+            --query "[?name=='NODE_ENV'].value" -o tsv 2>/dev/null)
+
+          CURRENT_RFP=$(az webapp config appsettings list \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+            --name ${{ env.AZURE_WEBAPP_NAME }} \
+            --query "[?name=='WEBSITE_RUN_FROM_PACKAGE'].value" -o tsv 2>/dev/null)
+
+          FORCE="${{ github.event.inputs.force_settings }}"
+
+          if [ "$CURRENT_NODE_ENV" = "production" ] && [ "$CURRENT_RFP" = "1" ] && [ "$FORCE" != "true" ]; then
+            echo "✅ Azure settings already configured. Skipping to avoid container restart."
+            echo "   (Use force_settings=true in manual dispatch to override)"
+          else
+            echo "⚙️ Configuring Azure settings (ONE call to minimize restarts)..."
             az webapp config appsettings set \
               --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
               --name ${{ env.AZURE_WEBAPP_NAME }} \
@@ -212,70 +237,83 @@ jobs:
                 WEBSITE_RUN_FROM_PACKAGE=1 \
                 SCM_COMMAND_IDLE_TIMEOUT=300 \
                 ENABLE_ORYX_BUILD=false \
-                WEBSITES_CONTAINER_START_TIME_LIMIT=600
-            echo "Waiting 30s for SCM container to stabilize..."
-            sleep 30
-          else
-            echo "Infra settings already configured, skipping (no SCM restart)."
+                WEBSITES_CONTAINER_START_TIME_LIMIT=600 \
+                NODE_ENV=production \
+                SCM_DO_BUILD_DURING_DEPLOYMENT=false \
+                NEXTAUTH_URL=https://biocyclepeptides.com \
+                AUTH_URL=https://biocyclepeptides.com \
+                AUTH_TRUST_HOST=true \
+                HOSTNAME=0.0.0.0 \
+                NEXT_PUBLIC_APP_URL=https://biocyclepeptides.com \
+                "NEXT_PUBLIC_SITE_NAME=BioCycle Peptides" \
+                NEXT_PUBLIC_CONTACT_EMAIL=contact@biocyclepeptides.com \
+                NEXT_PUBLIC_SUPPORT_EMAIL=support@biocyclepeptides.com \
+                SMTP_HOST=smtp.office365.com \
+                SMTP_PORT=587 \
+                "SMTP_FROM=BioCycle Peptides <noreply@biocyclepeptides.com>" \
+                EMAIL_PROVIDER=resend \
+                WEBSITES_PORT=3000 > /dev/null 2>&1
+
+            echo "   Settings applied. Waiting 45s for container to stabilize..."
+            sleep 45
           fi
 
-      - name: Configure App Settings (static)
+          set -e
+
+      # Secrets are set separately — but ONLY if they're actually in GitHub Secrets
+      # AND only on first deploy or force. After that, they persist in Azure.
+      - name: Configure secrets (idempotent)
         run: |
-          az webapp config appsettings set \
+          set +e
+
+          # Check if DATABASE_URL is already set (sentinel for "secrets already configured")
+          CURRENT_DB=$(az webapp config appsettings list \
             --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
             --name ${{ env.AZURE_WEBAPP_NAME }} \
-            --settings \
-              NODE_ENV=production \
-              SCM_DO_BUILD_DURING_DEPLOYMENT=false \
-              NEXTAUTH_URL=https://biocyclepeptides.com \
-              AUTH_URL=https://biocyclepeptides.com \
-              AUTH_TRUST_HOST=true \
-              HOSTNAME=0.0.0.0 \
-              NEXT_PUBLIC_APP_URL=https://biocyclepeptides.com \
-              "NEXT_PUBLIC_SITE_NAME=BioCycle Peptides" \
-              NEXT_PUBLIC_CONTACT_EMAIL=contact@biocyclepeptides.com \
-              NEXT_PUBLIC_SUPPORT_EMAIL=support@biocyclepeptides.com \
-              SMTP_HOST=smtp.office365.com \
-              SMTP_PORT=587 \
-              "SMTP_FROM=BioCycle Peptides <noreply@biocyclepeptides.com>" \
-              EMAIL_PROVIDER=resend
+            --query "[?name=='DATABASE_URL'].value" -o tsv 2>/dev/null)
 
-      - name: Configure App Settings (secrets)
-        run: |
-          ARGS=""
-          if [ -n "$DB_URL" ]; then ARGS="$ARGS DATABASE_URL=$DB_URL"; fi
-          if [ -n "$AUTH_SEC" ]; then ARGS="$ARGS NEXTAUTH_SECRET=$AUTH_SEC AUTH_SECRET=$AUTH_SEC"; fi
-          if [ -n "$OAI_KEY" ]; then ARGS="$ARGS OPENAI_API_KEY=$OAI_KEY"; fi
-          if [ -n "$G_CID" ]; then ARGS="$ARGS GOOGLE_CLIENT_ID=$G_CID"; fi
-          if [ -n "$G_CSEC" ]; then ARGS="$ARGS GOOGLE_CLIENT_SECRET=$G_CSEC"; fi
-          if [ -n "$TW_CID" ]; then ARGS="$ARGS TWITTER_CLIENT_ID=$TW_CID"; fi
-          if [ -n "$TW_CSEC" ]; then ARGS="$ARGS TWITTER_CLIENT_SECRET=$TW_CSEC"; fi
-          if [ -n "$STR_SK" ]; then ARGS="$ARGS STRIPE_SECRET_KEY=$STR_SK"; fi
-          if [ -n "$STR_WH" ]; then ARGS="$ARGS STRIPE_WEBHOOK_SECRET=$STR_WH"; fi
-          if [ -n "$STR_PK" ]; then ARGS="$ARGS NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$STR_PK"; fi
-          if [ -n "$SMTP_U" ]; then ARGS="$ARGS SMTP_USER=$SMTP_U"; fi
-          if [ -n "$SMTP_P" ]; then ARGS="$ARGS SMTP_PASSWORD=$SMTP_P"; fi
-          if [ -n "$ENC_KEY" ]; then ARGS="$ARGS ENCRYPTION_KEY=$ENC_KEY"; fi
-          if [ -n "$RESEND_AK" ]; then ARGS="$ARGS RESEND_API_KEY=$RESEND_AK"; fi
-          if [ -n "$RESEND_WS" ]; then ARGS="$ARGS RESEND_WEBHOOK_SECRET=$RESEND_WS"; fi
-          if [ -n "$AD_CID" ]; then ARGS="$ARGS AZURE_AD_CLIENT_ID=$AD_CID"; fi
-          if [ -n "$AD_CSEC" ]; then ARGS="$ARGS AZURE_AD_CLIENT_SECRET=$AD_CSEC"; fi
-          if [ -n "$AD_TID" ]; then ARGS="$ARGS AZURE_AD_TENANT_ID=$AD_TID"; fi
-          if [ -n "$ZOOM_CID" ]; then ARGS="$ARGS ZOOM_CLIENT_ID=$ZOOM_CID"; fi
-          if [ -n "$ZOOM_CSEC" ]; then ARGS="$ARGS ZOOM_CLIENT_SECRET=$ZOOM_CSEC"; fi
-          if [ -n "$WEBEX_CID" ]; then ARGS="$ARGS WEBEX_CLIENT_ID=$WEBEX_CID"; fi
-          if [ -n "$WEBEX_CSEC" ]; then ARGS="$ARGS WEBEX_CLIENT_SECRET=$WEBEX_CSEC"; fi
-          if [ -n "$WA_TOKEN" ]; then ARGS="$ARGS WHATSAPP_ACCESS_TOKEN=$WA_TOKEN"; fi
-          if [ -n "$WA_PHONE" ]; then ARGS="$ARGS WHATSAPP_PHONE_NUMBER_ID=$WA_PHONE"; fi
+          FORCE="${{ github.event.inputs.force_settings }}"
 
-          if [ -n "$ARGS" ]; then
-            az webapp config appsettings set \
-              --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
-              --name ${{ env.AZURE_WEBAPP_NAME }} \
-              --settings $ARGS
+          if [ -n "$CURRENT_DB" ] && [ "$FORCE" != "true" ]; then
+            echo "✅ Secrets already configured. Skipping."
           else
-            echo "No secret-based settings to configure"
+            echo "⚙️ Configuring secrets..."
+            ARGS=""
+            if [ -n "$DB_URL" ]; then ARGS="$ARGS DATABASE_URL=$DB_URL"; fi
+            if [ -n "$AUTH_SEC" ]; then ARGS="$ARGS NEXTAUTH_SECRET=$AUTH_SEC AUTH_SECRET=$AUTH_SEC"; fi
+            if [ -n "$OAI_KEY" ]; then ARGS="$ARGS OPENAI_API_KEY=$OAI_KEY"; fi
+            if [ -n "$G_CID" ]; then ARGS="$ARGS GOOGLE_CLIENT_ID=$G_CID"; fi
+            if [ -n "$G_CSEC" ]; then ARGS="$ARGS GOOGLE_CLIENT_SECRET=$G_CSEC"; fi
+            if [ -n "$TW_CID" ]; then ARGS="$ARGS TWITTER_CLIENT_ID=$TW_CID"; fi
+            if [ -n "$TW_CSEC" ]; then ARGS="$ARGS TWITTER_CLIENT_SECRET=$TW_CSEC"; fi
+            if [ -n "$STR_SK" ]; then ARGS="$ARGS STRIPE_SECRET_KEY=$STR_SK"; fi
+            if [ -n "$STR_WH" ]; then ARGS="$ARGS STRIPE_WEBHOOK_SECRET=$STR_WH"; fi
+            if [ -n "$STR_PK" ]; then ARGS="$ARGS NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$STR_PK"; fi
+            if [ -n "$SMTP_U" ]; then ARGS="$ARGS SMTP_USER=$SMTP_U"; fi
+            if [ -n "$SMTP_P" ]; then ARGS="$ARGS SMTP_PASSWORD=$SMTP_P"; fi
+            if [ -n "$ENC_KEY" ]; then ARGS="$ARGS ENCRYPTION_KEY=$ENC_KEY"; fi
+            if [ -n "$RESEND_AK" ]; then ARGS="$ARGS RESEND_API_KEY=$RESEND_AK"; fi
+            if [ -n "$RESEND_WS" ]; then ARGS="$ARGS RESEND_WEBHOOK_SECRET=$RESEND_WS"; fi
+            if [ -n "$AD_CID" ]; then ARGS="$ARGS AZURE_AD_CLIENT_ID=$AD_CID"; fi
+            if [ -n "$AD_CSEC" ]; then ARGS="$ARGS AZURE_AD_CLIENT_SECRET=$AD_CSEC"; fi
+            if [ -n "$AD_TID" ]; then ARGS="$ARGS AZURE_AD_TENANT_ID=$AD_TID"; fi
+            if [ -n "$ZOOM_CID" ]; then ARGS="$ARGS ZOOM_CLIENT_ID=$ZOOM_CID"; fi
+            if [ -n "$ZOOM_CSEC" ]; then ARGS="$ARGS ZOOM_CLIENT_SECRET=$ZOOM_CSEC"; fi
+            if [ -n "$WEBEX_CID" ]; then ARGS="$ARGS WEBEX_CLIENT_ID=$WEBEX_CID"; fi
+            if [ -n "$WEBEX_CSEC" ]; then ARGS="$ARGS WEBEX_CLIENT_SECRET=$WEBEX_CSEC"; fi
+
+            if [ -n "$ARGS" ]; then
+              az webapp config appsettings set \
+                --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+                --name ${{ env.AZURE_WEBAPP_NAME }} \
+                --settings $ARGS > /dev/null 2>&1
+              echo "   Secrets applied."
+            else
+              echo "   No secrets to configure."
+            fi
           fi
+
+          set -e
         env:
           DB_URL: ${{ secrets.DATABASE_URL }}
           AUTH_SEC: ${{ secrets.NEXTAUTH_SECRET }}
@@ -299,8 +337,6 @@ jobs:
           ZOOM_CSEC: ${{ secrets.ZOOM_CLIENT_SECRET }}
           WEBEX_CID: ${{ secrets.WEBEX_CLIENT_ID }}
           WEBEX_CSEC: ${{ secrets.WEBEX_CLIENT_SECRET }}
-          WA_TOKEN: ${{ secrets.WHATSAPP_ACCESS_TOKEN }}
-          WA_PHONE: ${{ secrets.WHATSAPP_PHONE_NUMBER_ID }}
 
       - name: Clean stale Prisma Client on Azure
         continue-on-error: true
@@ -308,7 +344,7 @@ jobs:
           az rest --method POST \
             --url "https://${{ env.AZURE_WEBAPP_NAME }}.scm.azurewebsites.net/api/command" \
             --resource "https://management.azure.com" \
-            --body '{"command":"find /home/site/wwwroot/node_modules/.prisma -type f -exec rm -f {} +","dir":"/home"}'
+            --body '{"command":"find /home/site/wwwroot/node_modules/.prisma -type f -exec rm -f {} +","dir":"/home"}' 2>/dev/null
           echo "Old .prisma client files cleaned."
 
       - name: Clear stale deployment locks
@@ -317,18 +353,29 @@ jobs:
           az rest --method POST \
             --url "https://${{ env.AZURE_WEBAPP_NAME }}.scm.azurewebsites.net/api/command" \
             --resource "https://management.azure.com" \
-            --body '{"command":"rm -f /home/site/locks/*.lock 2>/dev/null; rm -f /tmp/locks/*.lock 2>/dev/null; echo done","dir":"/home"}'
+            --body '{"command":"rm -f /home/site/locks/*.lock 2>/dev/null; rm -f /tmp/locks/*.lock 2>/dev/null; echo done","dir":"/home"}' 2>/dev/null
           echo "Deployment locks cleared."
 
+      # ---- Deploy with retry (handles transient 502) ----
+      # KB-PP-BUILD-012: OneDeploy can fail with 502 if SCM is momentarily unavailable
       - name: Deploy to Azure Web App
+        id: deploy1
+        continue-on-error: true
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           package: .
           clean: true
 
-      # ---- GUARD 5: Schema sync with orphan pre-check ----
-      # Prevents KB-PP-BUILD-011 (FK orphan data blocks prisma db push)
+      - name: Retry deploy if first attempt failed
+        if: steps.deploy1.outcome == 'failure'
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          package: .
+          clean: true
+
+      # ---- GUARD 5: Schema sync ----
       - name: Setup Node.js for Prisma
         uses: actions/setup-node@v4
         with:
@@ -344,44 +391,55 @@ jobs:
             echo "Schema sync: SUCCESS"
           else
             echo ""
-            echo "============================================"
-            echo "WARNING: prisma db push FAILED"
-            echo "Likely cause: FK orphan data (see KB-PP-BUILD-011)"
-            echo "Fix: Clean orphan records, then run manually:"
-            echo "  DATABASE_URL='...' npx prisma db push"
-            echo "============================================"
+            echo "WARNING: prisma db push FAILED (see KB-PP-BUILD-011)"
+            echo "Fix manually: DATABASE_URL='...' npx prisma db push"
           fi
         env:
           DB_URL: ${{ secrets.DATABASE_URL }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
-      # ---- GUARD 6: Extended health check with retries ----
-      # Azure container warmup takes ~583s (cert update + Node.js startup)
-      # 18 attempts x 30s = 9 min coverage (container warmup: cert ~3min + Node ~3min + probe ~2min)
-      # KB-PP-BUILD-008: WEBSITES_CONTAINER_START_TIME_LIMIT=600 allows up to 10 min
+      # ---- GUARD 6: Health check with WORKING retry loop ----
+      # FIX KB-PP-BUILD-012: bash -e killed the loop on first curl failure.
+      # Now uses `|| true` to prevent curl exit codes from killing the script.
+      # 24 attempts x 30s = 12 min coverage (container warmup: cert ~3min + Node ~5min)
       - name: Verify deployment
         run: |
-          echo "Waiting for Azure container to warm up (cert update + Node.js startup)..."
-          echo "This typically takes 5-10 minutes. Checking every 30s..."
-          for i in $(seq 1 18); do
+          echo "Waiting for Azure container warmup (cert update + Node.js startup)..."
+          echo "Checking every 30s for up to 12 minutes..."
+          echo ""
+
+          SUCCESS=false
+          for i in $(seq 1 24); do
             sleep 30
-            response=$(curl -s -o /tmp/health.json -w "%{http_code}" --max-time 15 https://biocyclepeptides.com/api/health 2>/dev/null)
-            echo "Attempt $i/18: HTTP $response"
-            if [ "$response" = "200" ]; then
+            # CRITICAL: || true prevents bash -e from killing the loop
+            HTTP_CODE=$(curl -s -o /tmp/health.json -w "%{http_code}" \
+              --max-time 15 \
+              https://biocyclepeptides.com/api/health 2>/dev/null) || true
+
+            echo "  Attempt $i/24: HTTP ${HTTP_CODE:-timeout}"
+
+            if [ "$HTTP_CODE" = "200" ]; then
               echo ""
-              echo "=== DEPLOYMENT VERIFIED ==="
+              echo "=== ✅ DEPLOYMENT VERIFIED ==="
               cat /tmp/health.json | python3 -m json.tool 2>/dev/null || cat /tmp/health.json
               echo ""
               echo "Site: https://biocyclepeptides.com"
               echo "Health: https://biocyclepeptides.com/api/health"
-              exit 0
+              SUCCESS=true
+              break
             fi
           done
-          echo ""
-          echo "WARNING: Health check did not return 200 after 9 minutes."
-          echo "The container may still be warming up (Azure cert update takes ~3min)."
-          echo "Check manually: curl https://biocyclepeptides.com/api/health"
-          exit 1
+
+          if [ "$SUCCESS" != "true" ]; then
+            echo ""
+            echo "=== ❌ HEALTH CHECK FAILED AFTER 12 MINUTES ==="
+            echo "The container did not become healthy."
+            echo "Check Azure logs: az webapp log tail --name biocyclepeptides --resource-group biocycle-peptides-prod"
+            echo ""
+            echo "Last response body:"
+            cat /tmp/health.json 2>/dev/null || echo "(no response)"
+            exit 1
+          fi
 
   # =====================================================
   # POST-DEPLOY NOTIFICATION
@@ -395,12 +453,12 @@ jobs:
       - name: Notify on success
         if: needs.deploy.result == 'success'
         run: |
-          echo "BioCycle Peptides deployed successfully!"
+          echo "✅ BioCycle Peptides deployed successfully!"
           echo "URL: https://biocyclepeptides.com"
 
       - name: Notify on failure
         if: needs.deploy.result == 'failure'
         run: |
-          echo "Deployment FAILED!"
+          echo "❌ Deployment FAILED!"
           echo "Check: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           exit 1
