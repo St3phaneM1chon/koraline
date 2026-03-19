@@ -14,14 +14,16 @@ export const dynamic = 'force-dynamic';
  *   https://biocyclepeptides.com/api/voip/webhooks/telnyx
  *
  * SECURITY AUDIT 2026-03-15: PAYMENT-PCI — VERIFIED SAFE.
- * POST handler verifies Telnyx HMAC-SHA256 signature using TELNYX_WEBHOOK_SECRET.
- * Includes timestamp replay protection (5-minute window) and timing-safe comparison.
- * In production, requests are rejected if TELNYX_WEBHOOK_SECRET is not configured.
+ * POST handler verifies Telnyx Ed25519 signature using TELNYX_WEBHOOK_SECRET (public key).
+ * Includes timestamp replay protection (5-minute window).
  * Redis-based idempotency check prevents duplicate event processing (24h TTL).
+ *
+ * CRITICAL FIX 2026-03-19: Telnyx sends direction='incoming'/'outgoing', NOT 'inbound'/'outbound'.
+ * The webhook handler now normalizes direction before passing to call-control.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createHmac, timingSafeEqual } from 'crypto';
+import { verify } from 'crypto';
 import { logger } from '@/lib/logger';
 import { getRedisClient } from '@/lib/redis';
 import { handleCallEvent } from '@/lib/voip/call-control';
@@ -83,11 +85,12 @@ export async function POST(request: NextRequest) {
   try {
     const rawBody = await request.text();
 
-    // Verify Telnyx webhook signature (HMAC-SHA256)
-    const signingSecret = process.env.TELNYX_WEBHOOK_SECRET;
-    if (signingSecret) {
-      const signature = request.headers.get('telnyx-signature-ed25519')
-        || request.headers.get('x-telnyx-signature');
+    // Verify Telnyx webhook signature (Ed25519)
+    // Telnyx signs webhooks using Ed25519 (NOT HMAC-SHA256).
+    // The public key is the TELNYX_WEBHOOK_SECRET (base64-encoded Ed25519 public key).
+    const publicKeyBase64 = process.env.TELNYX_WEBHOOK_SECRET;
+    if (publicKeyBase64) {
+      const signature = request.headers.get('telnyx-signature-ed25519');
       const timestamp = request.headers.get('telnyx-timestamp');
 
       if (!signature || !timestamp) {
@@ -102,23 +105,35 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'Timestamp too old' }, { status: 403 });
       }
 
-      // HMAC verification: sha256(timestamp + rawBody)
-      const expectedSignature = createHmac('sha256', signingSecret)
-        .update(timestamp + rawBody)
-        .digest('hex');
-
+      // Ed25519 verification: verify(timestamp + rawBody) against signature using public key
       try {
-        if (!timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))) {
-          logger.warn('[Telnyx Webhook] Invalid signature');
+        const signedPayload = `${timestamp}|${rawBody}`;
+        const signatureBuffer = Buffer.from(signature, 'base64');
+        const publicKeyDer = Buffer.concat([
+          // Ed25519 DER prefix for SubjectPublicKeyInfo
+          Buffer.from('302a300506032b6570032100', 'hex'),
+          Buffer.from(publicKeyBase64, 'base64'),
+        ]);
+
+        const isValid = verify(
+          null, // Ed25519 doesn't use a separate hash algorithm
+          Buffer.from(signedPayload),
+          { key: publicKeyDer, format: 'der', type: 'spki' },
+          signatureBuffer,
+        );
+
+        if (!isValid) {
+          logger.warn('[Telnyx Webhook] Invalid Ed25519 signature');
           return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
         }
-      } catch {
-        logger.warn('[Telnyx Webhook] Signature comparison failed');
+      } catch (verifyErr) {
+        logger.warn('[Telnyx Webhook] Signature verification failed', {
+          error: verifyErr instanceof Error ? verifyErr.message : String(verifyErr),
+        });
         return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
       }
     } else {
       // TELNYX_WEBHOOK_SECRET not set — allow requests but log warning
-      // TODO: Configure TELNYX_WEBHOOK_SECRET in Azure App Settings for production security
       logger.warn('[Telnyx Webhook] TELNYX_WEBHOOK_SECRET not set — skipping signature verification');
     }
 
@@ -175,6 +190,14 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Normalize Telnyx direction: 'incoming'→'inbound', 'outgoing'→'outbound'
+    // Telnyx Call Control API sends 'incoming'/'outgoing' but our internal code
+    // uses 'inbound'/'outbound'. This mismatch was the root cause of calls not
+    // being answered — answerCall() was never called because 'incoming' !== 'inbound'.
+    const normalizedDirection = payload.direction === 'incoming' ? 'inbound'
+      : payload.direction === 'outgoing' ? 'outbound'
+      : (payload.direction as 'inbound' | 'outbound' | undefined);
+
     // Route event to appropriate handler
     await handleCallEvent(event_type, {
       callControlId,
@@ -183,7 +206,7 @@ export async function POST(request: NextRequest) {
       connectionId: payload.connection_id,
       from: payload.from,
       to: payload.to,
-      direction: payload.direction as 'inbound' | 'outbound' | undefined,
+      direction: normalizedDirection,
       state: payload.state,
       clientState,
       hangupCause: payload.hangup_cause,

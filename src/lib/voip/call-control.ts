@@ -39,6 +39,8 @@ const activeSentiment = new Map<string, LiveSentimentAnalyzer>();
 const activeConversationalIVR = new Map<string, ConversationalIVR>();
 
 // Event payload shape from webhook handler
+// NOTE: Telnyx Call Control sends 'incoming'/'outgoing', NOT 'inbound'/'outbound'.
+// We normalize to 'inbound'/'outbound' in the webhook handler for internal consistency.
 export interface CallEventPayload {
   callControlId: string;
   callLegId?: string;
