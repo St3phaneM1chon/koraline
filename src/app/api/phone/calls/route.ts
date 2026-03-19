@@ -42,7 +42,7 @@ export const GET = withMobileGuard(async (request, { session }) => {
     // Fetch voicemails for missed/voicemail calls to expose their URLs
     const voicemailCallerNumbers = calls
       .filter(c => c.status === 'MISSED' || c.status === 'VOICEMAIL' || c.status === 'NO_ANSWER')
-      .map(c => c.fromNumber)
+      .map(c => c.callerNumber)
       .filter(Boolean) as string[];
 
     let voicemailMap = new Map<string, string>();
@@ -55,34 +55,47 @@ export const GET = withMobileGuard(async (request, { session }) => {
           select: { callerNumber: true, blobUrl: true, createdAt: true },
           orderBy: { createdAt: 'desc' },
         });
-        // Map caller number to most recent voicemail URL
         for (const vm of voicemails) {
           if (vm.blobUrl && !voicemailMap.has(vm.callerNumber)) {
             voicemailMap.set(vm.callerNumber, vm.blobUrl);
           }
         }
       } catch {
-        // Voicemail table might not exist yet — graceful fallback
         logger.warn('[Phone Calls] Voicemail lookup failed, continuing without');
       }
     }
 
     // Map to iOS expected format
-    const mapped = calls.map(call => ({
-      id: call.id,
-      callerNumber: call.fromNumber || '',
-      callerName: null,
-      calleeNumber: call.toNumber || '',
-      calleeName: null,
-      direction: call.direction,
-      status: call.status,
-      duration: call.duration,
-      startedAt: call.startedAt?.toISOString(),
-      endedAt: call.endedAt?.toISOString() || null,
-      recordingUrl: call.recording?.id ? `/api/recordings/${call.recording.id}` : null,
-      voicemailUrl: voicemailMap.get(call.fromNumber || '') || null,
-      extension: null,
-    }));
+    // Fix direction: if callerNumber is our number, it's OUTBOUND; if calledNumber is our number, it's INBOUND
+    const OUR_NUMBERS = ['+14388030370', '+18735860370', '+14378880370', '+18443040370'];
+
+    const mapped = calls.map(call => {
+      // Determine real direction from the phone numbers
+      let realDirection = call.direction;
+      if (call.callerNumber && call.calledNumber) {
+        if (OUR_NUMBERS.includes(call.callerNumber)) {
+          realDirection = 'OUTBOUND';
+        } else if (OUR_NUMBERS.includes(call.calledNumber)) {
+          realDirection = 'INBOUND';
+        }
+      }
+
+      return {
+        id: call.id,
+        callerNumber: call.callerNumber || '',
+        callerName: call.callerName || null,
+        calleeNumber: call.calledNumber || '',
+        calleeName: null,
+        direction: realDirection,
+        status: call.status,
+        duration: call.duration,
+        startedAt: call.startedAt?.toISOString(),
+        endedAt: call.endedAt?.toISOString() || null,
+        recordingUrl: call.recording?.id ? `/api/recordings/${call.recording.id}` : null,
+        voicemailUrl: voicemailMap.get(call.callerNumber || '') || null,
+        extension: null,
+      };
+    });
 
     return NextResponse.json(mapped);
   } catch (error) {
