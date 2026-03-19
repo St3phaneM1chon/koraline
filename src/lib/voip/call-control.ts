@@ -124,14 +124,31 @@ export async function handleCallEvent(eventType: string, payload: CallEventPaylo
 // ── Event Handlers ─────────────────────────
 
 async function handleCallInitiated(payload: CallEventPayload) {
-  const { callControlId, from, to, direction, connectionId } = payload;
+  const { callControlId, from, to, direction } = payload;
 
+  // ─── CRITICAL: Answer inbound calls IMMEDIATELY before any DB work ────
+  // Telnyx has a short timeout (~30s). If we do DB queries first,
+  // the call will timeout and hang up before we answer.
+  if (direction === 'inbound') {
+    try {
+      await telnyx.answerCall(callControlId);
+      logger.info('[CallControl] Call answered', { callControlId, from, to });
+    } catch (answerError) {
+      logger.error('[CallControl] answerCall failed', {
+        callControlId,
+        error: answerError instanceof Error ? answerError.message : String(answerError),
+      });
+      return; // Can't proceed if we can't answer
+    }
+  }
+
+  // ─── Now do DB operations (non-blocking for call flow) ────
   // Look up the phone number to get language and forwarding config
   const phoneNumber = to ? await prisma.phoneNumber.findUnique({
     where: { number: to },
   }) : null;
 
-  // Create call log entry with phone number linkage
+  // Create call log entry
   let callLog;
   try {
     callLog = await prisma.callLog.create({
@@ -141,12 +158,11 @@ async function handleCallInitiated(payload: CallEventPayload) {
         calledNumber: to || 'unknown',
         direction: direction === 'inbound' ? 'INBOUND' : 'OUTBOUND',
         startedAt: new Date(),
-        status: 'RINGING',
+        status: direction === 'inbound' ? 'IN_PROGRESS' : 'RINGING',
         ...(phoneNumber ? { phoneNumberId: phoneNumber.id } : {}),
       },
     });
   } catch (err) {
-    // Fallback: create minimal call log if relation fails
     logger.warn('[CallControl] CallLog create failed, trying minimal', {
       error: err instanceof Error ? err.message : String(err),
     });
@@ -181,7 +197,8 @@ async function handleCallInitiated(payload: CallEventPayload) {
     region: phoneNumber?.region,
   });
 
-  // For inbound calls: check forwarding first, then answer
+  // For inbound calls: handle forwarding or continue to routing
+  // (answerCall already done above)
   if (direction === 'inbound') {
     // Handle forwarding (alias numbers like Gatineau → Montreal)
     if (phoneNumber?.forwardTo) {
@@ -194,8 +211,6 @@ async function handleCallInitiated(payload: CallEventPayload) {
       });
       return;
     }
-
-    await telnyx.answerCall(callControlId);
 
     // Send push notification to staff for incoming call
     sendPushToStaff({
