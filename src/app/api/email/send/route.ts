@@ -38,28 +38,55 @@ export const POST = withMobileGuard(async (request, { session }) => {
 
     const { to, subject, body, bodyHtml, replyToId, fromAccount } = parsed.data;
 
-    // Determine sender
-    const senderEmail = fromAccount || 'noreply@biocyclepeptides.com';
+    // Validate sender against allowed domains
+    const allowedDomains = ['biocyclepeptides.com', 'attitudes.vip'];
+    const senderEmail = fromAccount || 'info@biocyclepeptides.com';
+    const senderDomain = senderEmail.split('@')[1]?.toLowerCase();
+
+    if (senderDomain && !allowedDomains.includes(senderDomain)) {
+      logger.warn('[Email Send] Unauthorized sender domain', { fromAccount, userId: session.user.id });
+      return NextResponse.json(
+        { error: `Le domaine ${senderDomain} n'est pas autorisé pour l'envoi.` },
+        { status: 400 }
+      );
+    }
+
     const senderName = session.user.name || 'BioCycle Peptides';
 
     // Send via the email service (handles provider fallback, rate limiting, etc.)
-    const result = await sendEmail({
-      to: { email: to },
-      subject,
-      html: bodyHtml || `<div style="font-family: sans-serif; white-space: pre-wrap;">${body.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>`,
-      text: body,
-      from: { email: senderEmail, name: senderName },
-      replyTo: senderEmail,
-      emailType: 'transactional',
-    });
+    let result;
+    try {
+      result = await sendEmail({
+        to: { email: to },
+        subject,
+        html: bodyHtml || `<div style="font-family: sans-serif; white-space: pre-wrap;">${body.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>`,
+        text: body,
+        from: { email: senderEmail, name: senderName },
+        replyTo: senderEmail,
+        emailType: 'transactional',
+      });
+    } catch (sendError) {
+      const errMsg = sendError instanceof Error ? sendError.message : String(sendError);
+      logger.error('[Email Send] sendEmail threw', {
+        to, fromAccount: senderEmail, error: errMsg, userId: session.user.id,
+      });
+      return NextResponse.json(
+        { error: `Erreur d'envoi: ${errMsg}` },
+        { status: 500 }
+      );
+    }
 
     if (!result.success) {
       logger.error('[Email Send] Failed from mobile', {
         to,
+        fromAccount: senderEmail,
         error: result.error,
         userId: session.user.id,
       });
-      return NextResponse.json({ error: result.error || 'Failed to send email' }, { status: 500 });
+      return NextResponse.json(
+        { error: result.error || `Échec de l'envoi depuis ${senderEmail}. Vérifiez que le domaine est vérifié.` },
+        { status: 500 }
+      );
     }
 
     // Save to email conversation for history
