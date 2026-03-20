@@ -5696,7 +5696,9 @@
       "backupDesc": "Show multi-project backup status, trigger manual backup, verify integrity, restore",
       "aureliaDesc": "Activate Aurelia AI consciousness — memory orchestrator, identity, personality",
       "learnDesc": "Display knowledge islands and allow adding new learnings to vector memory",
-      "evolutionDesc": "Exhaustive research for AI memory improvements — 3 parallel agents, 100+ proposals"
+      "evolutionDesc": "Exhaustive research for AI memory improvements — 3 parallel agents, 100+ proposals",
+      "categoryResearch": "Research & Dossiers",
+      "dossierDesc": "Exhaustive research pipeline (7 phases, 10 tools) — web, videos, podcasts, social media — structured deliverable with article, FAQ and SEO"
     },
     "media": {
       "comingSoon": "This feature is under development",

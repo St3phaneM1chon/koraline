@@ -73,12 +73,14 @@ const DIAL_PAD = [
 ];
 
 const DISPOSITIONS = [
-  { label: 'Interested', value: 'INTERESTED', color: 'bg-green-500' },
-  { label: 'Not Interested', value: 'NOT_INTERESTED', color: 'bg-gray-500' },
-  { label: 'Callback', value: 'CALLBACK', color: 'bg-blue-500' },
+  { label: 'Resolved', value: 'resolved', color: 'bg-green-600' },
+  { label: 'Interested', value: 'interested', color: 'bg-green-500' },
+  { label: 'Callback', value: 'callback', color: 'bg-blue-500' },
+  { label: 'Escalated', value: 'escalated', color: 'bg-amber-600' },
+  { label: 'Complaint', value: 'complaint', color: 'bg-red-600' },
   { label: 'Voicemail', value: 'VOICEMAIL', color: 'bg-yellow-500' },
-  { label: 'DNC', value: 'DO_NOT_CALL', color: 'bg-red-500' },
-  { label: 'Wrong Number', value: 'WRONG_NUMBER', color: 'bg-orange-500' },
+  { label: 'DNC / Spam', value: 'do_not_call', color: 'bg-red-500' },
+  { label: 'Info Only', value: 'information', color: 'bg-gray-500' },
 ];
 
 // Map Telnyx CallState → SoftphoneState
@@ -176,6 +178,9 @@ export default function Softphone({ onCallEnd }: SoftphoneProps) {
   const [showNotes, setShowNotes] = useState(false);
   const [callNotes, setCallNotes] = useState('');
 
+  // Track the last call log ID for wrap-up disposition saving
+  const lastCallLogIdRef = useRef<string | null>(null);
+
   // Auto-answer for ACD agents
   const [autoAnswer, setAutoAnswer] = useState(false);
 
@@ -269,6 +274,17 @@ export default function Softphone({ onCallEnd }: SoftphoneProps) {
     if (wasActive && isNowIdle && !isInWrapUp) {
       callDurationAtHangupRef.current = telnyx.call.duration;
       setIsRecording(false);
+
+      // Fetch the most recent call log ID for wrap-up (non-blocking)
+      fetch('/api/voip/call?limit=1&offset=0')
+        .then((res) => res.json())
+        .then((json) => {
+          const calls = json?.data;
+          if (Array.isArray(calls) && calls.length > 0) {
+            lastCallLogIdRef.current = calls[0].id;
+          }
+        })
+        .catch(() => {}); // Non-critical
 
       // If ACW duration is 0, skip wrap-up entirely
       if (acwDuration === 0) {
@@ -715,8 +731,22 @@ export default function Softphone({ onCallEnd }: SoftphoneProps) {
     const duration = callDurationAtHangupRef.current;
     onCallEnd?.(duration, disposition);
 
-    // Log CRM activity
+    // Log CRM activity (existing lead-based logging)
     await logCrmActivity(duration, disposition);
+
+    // Save disposition to CallLog and trigger post-call workflow via wrap-up API
+    const callLogId = lastCallLogIdRef.current;
+    if (callLogId) {
+      fetch('/api/voip/wrap-up', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          callLogId,
+          disposition,
+          notes: callNotes || undefined,
+        }),
+      }).catch(() => {}); // Non-blocking
+    }
 
     // Clear wrap-up and ACW timer
     if (wrapUpTimerRef.current) clearTimeout(wrapUpTimerRef.current);
@@ -724,10 +754,12 @@ export default function Softphone({ onCallEnd }: SoftphoneProps) {
     acwIntervalRef.current = null;
     setAcwCountdown(0);
     setIsInWrapUp(false);
+    setCallNotes('');
     setPhoneNumber('');
     setContactInfo(null);
+    lastCallLogIdRef.current = null;
     toast.success(`Call logged: ${disposition}`);
-  }, [onCallEnd, logCrmActivity]);
+  }, [onCallEnd, logCrmActivity, callNotes]);
 
   // ---------------------------------------------------------------------------
   // Force-ready: skip ACW and return to idle immediately — C31
@@ -1318,6 +1350,15 @@ export default function Softphone({ onCallEnd }: SoftphoneProps) {
                 </div>
               </div>
             )}
+
+            {/* Agent notes field */}
+            <textarea
+              value={callNotes}
+              onChange={(e) => setCallNotes(e.target.value)}
+              placeholder="Notes (optional)..."
+              rows={2}
+              className="w-full mb-2 px-3 py-2 text-sm border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-1 focus:ring-primary-500"
+            />
 
             <div className="grid grid-cols-2 gap-2">
               {DISPOSITIONS.map((d) => (

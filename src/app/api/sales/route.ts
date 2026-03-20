@@ -24,8 +24,12 @@ export const GET = withMobileGuard(async (request, { session }) => {
         include: {
           user: { select: { name: true, email: true } },
           items: {
-            include: {
-              product: { select: { name: true } },
+            select: {
+              id: true,
+              productName: true,
+              quantity: true,
+              unitPrice: true,
+              total: true,
             },
           },
           currency: { select: { code: true } },
@@ -51,10 +55,10 @@ export const GET = withMobileGuard(async (request, { session }) => {
       createdAt: order.createdAt.toISOString(),
       items: order.items.map(item => ({
         id: item.id,
-        productName: item.product?.name || item.productName || 'Product',
+        productName: item.productName || 'Product',
         quantity: item.quantity,
         unitPrice: parseFloat(item.unitPrice.toString()),
-        totalPrice: parseFloat(item.totalPrice.toString()),
+        totalPrice: parseFloat(item.total.toString()),
       })),
     }));
 

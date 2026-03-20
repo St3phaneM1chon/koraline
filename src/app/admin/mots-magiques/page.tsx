@@ -24,6 +24,7 @@ import {
   RefreshCw,
   ArrowRight,
   Lock,
+  FolderSearch,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -31,7 +32,7 @@ interface MagicWord {
   command: string;
   description: string;
   icon: LucideIcon;
-  category: 'audit' | 'system' | 'memory';
+  category: 'audit' | 'system' | 'memory' | 'research';
   domains?: string[];
   example?: string;
 }
@@ -168,6 +169,14 @@ const MAGIC_WORDS: MagicWord[] = [
     category: 'memory',
     example: 'evolution',
   },
+  // -- Research commands --
+  {
+    command: 'dossier <sujet>',
+    description: 'admin.magicWords.dossierDesc',
+    icon: FolderSearch,
+    category: 'research',
+    example: 'dossier BPC-157',
+  },
 ];
 
 const METHODOLOGY_STEPS = [
@@ -183,12 +192,14 @@ const CATEGORY_LABELS: Record<string, string> = {
   audit: 'admin.magicWords.categoryAudit',
   system: 'admin.magicWords.categorySystem',
   memory: 'admin.magicWords.categoryMemory',
+  research: 'admin.magicWords.categoryResearch',
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
   audit: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300',
   system: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
   memory: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300',
+  research: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
 };
 
 export default async function MotsMagiquesPage() {
@@ -245,7 +256,7 @@ export default async function MotsMagiquesPage() {
       </section>
 
       {/* Magic Words by Category */}
-      {(['audit', 'system', 'memory'] as const).map((category) => {
+      {(['audit', 'research', 'system', 'memory'] as const).map((category) => {
         const items = MAGIC_WORDS.filter((w) => w.category === category);
         return (
           <section key={category}>

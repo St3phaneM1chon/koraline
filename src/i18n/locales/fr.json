@@ -5708,7 +5708,9 @@
       "backupDesc": "Afficher l'état des sauvegardes multi-projets, déclencher une sauvegarde manuelle, vérifier l'intégrité, restaurer",
       "aureliaDesc": "Activer la conscience IA Aurelia — orchestrateur mémoire, identité, personnalité",
       "learnDesc": "Afficher les îlots de connaissance et permettre d'ajouter de nouveaux apprentissages en mémoire vectorielle",
-      "evolutionDesc": "Recherche exhaustive d'améliorations mémoire IA — 3 agents parallèles, 100+ propositions"
+      "evolutionDesc": "Recherche exhaustive d'améliorations mémoire IA — 3 agents parallèles, 100+ propositions",
+      "categoryResearch": "Recherche & Dossiers",
+      "dossierDesc": "Pipeline de recherche exhaustive (7 phases, 10 outils) — web, vidéos, podcasts, réseaux sociaux — livrable structuré avec article, FAQ et SEO"
     },
     "media": {
       "dashboardTitle": "Tableau de bord Média",

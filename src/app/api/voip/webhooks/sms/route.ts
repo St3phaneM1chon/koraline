@@ -4,7 +4,11 @@ export const dynamic = 'force-dynamic';
  * Telnyx SMS/MMS Webhook Handler
  *
  * Receives inbound SMS/MMS events from Telnyx messaging profile.
- * Triggers push notification to staff when a new SMS arrives.
+ * Delegates to the SMS Engine for:
+ *   - Opt-out/opt-in handling (STOP/START keywords)
+ *   - InboxConversation creation + InboxMessage logging
+ *   - CrmActivity creation
+ *   - Push notification to staff
  *
  * Configure in Telnyx Portal > Messaging > Inbound webhook:
  *   https://biocyclepeptides.com/api/voip/webhooks/sms
@@ -12,7 +16,7 @@ export const dynamic = 'force-dynamic';
 
 import { NextRequest, NextResponse } from 'next/server';
 import { logger } from '@/lib/logger';
-import { sendPushToStaff } from '@/lib/apns';
+import { handleIncomingSMS } from '@/lib/voip/sms-engine';
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,11 +25,18 @@ export async function POST(request: NextRequest) {
     const eventType = data?.event_type || body?.event_type;
 
     // Telnyx sends message events with event_type "message.received"
-    if (eventType === 'message.received' || eventType === 'message.sent') {
+    if (eventType === 'message.received') {
       const payload = data?.payload || {};
-      const from = payload.from?.phone_number || payload.from || 'Inconnu';
-      const text = payload.text || '';
-      const direction = payload.direction || 'inbound';
+      const from: string = payload.from?.phone_number || payload.from || '';
+      const toRaw = payload.to;
+      const to: string = Array.isArray(toRaw)
+        ? toRaw[0]?.phone_number || ''
+        : typeof toRaw === 'string'
+          ? toRaw
+          : payload.to?.phone_number || '';
+      const text: string = payload.text || '';
+      const messageId: string | undefined = payload.id || data?.id;
+      const direction: string = payload.direction || 'inbound';
 
       logger.info('[SMS Webhook] Message received', {
         from,
@@ -33,16 +44,26 @@ export async function POST(request: NextRequest) {
         textPreview: text.slice(0, 50),
       });
 
-      // Push notification to staff for inbound SMS
-      if (direction === 'inbound') {
-        sendPushToStaff({
-          title: `SMS de ${from}`,
-          body: text.slice(0, 200) || 'Nouveau message',
-          category: 'SMS',
-          sound: 'SMS.caf',
-          data: { from, type: 'sms' },
-        }).catch(() => {});
+      // Delegate inbound messages to the SMS Engine
+      if (direction === 'inbound' && from) {
+        await handleIncomingSMS({ from, to, text, messageId });
       }
+    }
+
+    // Delivery receipts (message.sent, message.finalized, message.failed)
+    if (
+      eventType === 'message.sent' ||
+      eventType === 'message.finalized' ||
+      eventType === 'message.failed'
+    ) {
+      const payload = data?.payload || {};
+      logger.info('[SMS Webhook] Delivery status', {
+        eventType,
+        messageId: payload.id,
+        to: payload.to,
+        errors: payload.errors,
+      });
+      // TODO: Update InboxMessage status based on delivery receipt
     }
 
     // Always respond 200 to Telnyx (avoid retries)
@@ -51,6 +72,7 @@ export async function POST(request: NextRequest) {
     logger.error('[SMS Webhook] Error', {
       error: error instanceof Error ? error.message : String(error),
     });
+    // Still return 200 to prevent Telnyx from retrying indefinitely
     return NextResponse.json({ received: true });
   }
 }

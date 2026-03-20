@@ -48,6 +48,7 @@ import { LOYALTY_TIER_THRESHOLDS } from '@/lib/constants';
 import { addCSRFHeader } from '@/lib/csrf';
 import { useSoftphone } from '@/components/voip/SoftphoneProvider';
 import CustomerVideos from '@/components/admin/CustomerVideos';
+import CustomerCommunications from '@/components/admin/customers/CustomerCommunications';
 
 // ---------------------------------------------------------------------------
 // Interfaces
@@ -1086,113 +1087,10 @@ export default function ClientDetailPage() {
       )}
 
       {/* ================================================================= */}
-      {/* TAB: Communications                                               */}
+      {/* TAB: Communications (Unified Timeline)                            */}
       {/* ================================================================= */}
       {activeTab === 'communications' && (
-        <div className="space-y-4">
-          {conversations.length > 0 ? (
-            conversations.map((conv) => {
-              const isExpanded = expandedConversations.has(conv.id);
-              const lastMsg = conv.messages.length > 0 ? conv.messages[conv.messages.length - 1] : null;
-              const isOpen = conv.status === 'open' || conv.status === 'OPEN';
-
-              return (
-                <div key={conv.id} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-                  {/* Conversation header */}
-                  <button
-                    onClick={() => toggleConversation(conv.id)}
-                    className="w-full px-4 py-3 flex items-center justify-between hover:bg-slate-50 transition-colors"
-                  >
-                    <div className="flex items-center gap-3">
-                      <StatusBadge variant={isOpen ? 'success' : 'neutral'} dot>
-                        {isOpen
-                          ? t('admin.customerDetail.communications.statusOpen')
-                          : t('admin.customerDetail.communications.statusClosed')}
-                      </StatusBadge>
-                      <span className="text-xs text-slate-400 uppercase font-medium">
-                        {conv.language}
-                      </span>
-                      <span className="text-xs text-slate-400">
-                        {formatDateTime(conv.updatedAt)}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      {lastMsg && (
-                        <span className="text-sm text-slate-500 max-w-[300px] truncate hidden md:inline">
-                          {lastMsg.content.substring(0, 80)}
-                          {lastMsg.content.length > 80 ? '...' : ''}
-                        </span>
-                      )}
-                      <span className="text-xs text-slate-400">
-                        {conv.messages.length} {t('admin.customerDetail.communications.messagesCount')}
-                      </span>
-                      {isExpanded ? (
-                        <ChevronUp className="w-4 h-4 text-slate-400" />
-                      ) : (
-                        <ChevronDown className="w-4 h-4 text-slate-400" />
-                      )}
-                    </div>
-                  </button>
-
-                  {/* Expanded messages */}
-                  {isExpanded && (
-                    <div className="border-t border-slate-100 divide-y divide-slate-50">
-                      {conv.messages.map((msg) => {
-                        const roleLabel =
-                          msg.role === 'user'
-                            ? t('admin.customerDetail.communications.roleUser')
-                            : msg.role === 'assistant'
-                              ? t('admin.customerDetail.communications.roleAssistant')
-                              : t('admin.customerDetail.communications.roleAgent');
-                        const roleBg =
-                          msg.role === 'user'
-                            ? 'bg-indigo-50'
-                            : msg.role === 'assistant'
-                              ? 'bg-slate-50'
-                              : 'bg-emerald-50';
-                        const roleColor =
-                          msg.role === 'user'
-                            ? 'text-indigo-700'
-                            : msg.role === 'assistant'
-                              ? 'text-slate-600'
-                              : 'text-emerald-700';
-
-                        return (
-                          <div key={msg.id} className={`px-4 py-3 ${roleBg}`}>
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className={`text-xs font-semibold ${roleColor}`}>
-                                {roleLabel}
-                              </span>
-                              <span className="text-xs text-slate-400">
-                                {formatDateTime(msg.createdAt)}
-                              </span>
-                              {msg.originalLanguage && msg.originalLanguage !== conv.language && (
-                                <span className="text-xs text-slate-400">
-                                  ({t('admin.customerDetail.communications.translated')} {msg.originalLanguage})
-                                </span>
-                              )}
-                            </div>
-                            <p className="text-sm text-slate-800 whitespace-pre-wrap">{msg.content}</p>
-                            {msg.translatedContent && (
-                              <p className="text-xs text-slate-400 mt-1 italic">
-                                {t('admin.customerDetail.communications.original')}: {msg.translatedContent}
-                              </p>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              );
-            })
-          ) : (
-            <div className="text-center py-12 bg-white rounded-xl border border-slate-200">
-              <MessageSquare className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-              <p className="text-slate-500">{t('admin.customerDetail.communications.empty')}</p>
-            </div>
-          )}
-        </div>
+        <CustomerCommunications customerId={id} />
       )}
 
       {/* ================================================================= */}

@@ -39,6 +39,9 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: t('errors.unauthorized') }, { status: 401 });
     }
 
+    // Detect mobile request early — needed for status mapping and response format
+    const isMobileRequest = request.headers.get('authorization')?.startsWith('Bearer ');
+
     const { searchParams } = request.nextUrl;
     const status = searchParams.get('status');
     // FIX: Bound pagination params to prevent abuse
@@ -62,13 +65,37 @@ export async function GET(request: NextRequest) {
     }
 
     if (status) {
-      where.status = status;
+      // Map mobile status values back to backend enum values
+      // Mobile sends: ACTIVE, CLOSED, WAITING
+      // Backend enum: OPEN, PENDING, RESOLVED, CLOSED
+      if (isMobileRequest) {
+        if (status === 'ACTIVE') {
+          where.status = { in: ['OPEN', 'PENDING'] };
+        } else if (status === 'CLOSED') {
+          where.status = { in: ['CLOSED', 'RESOLVED'] };
+        } else if (status === 'WAITING') {
+          where.status = 'PENDING';
+        } else {
+          where.status = status;
+        }
+      } else {
+        where.status = status;
+      }
     }
 
     const [conversations, total] = await Promise.all([
       prisma.conversation.findMany({
         where,
-        include: {
+        select: {
+          id: true,
+          subject: true,
+          status: true,
+          assignedToId: true,
+          lastMessageAt: true,
+          unreadCount: true,
+          createdAt: true,
+          updatedAt: true,
+          userId: true,
           user: {
             select: { id: true, name: true, email: true, image: true },
           },
@@ -96,36 +123,31 @@ export async function GET(request: NextRequest) {
       prisma.conversation.count({ where }),
     ]);
 
-    // Detect mobile request (Bearer token) — return flat array with iOS-compatible fields
-    const isMobileRequest = request.headers.get('authorization')?.startsWith('Bearer ');
+    // Mobile: return flat array with iOS-compatible fields
     if (isMobileRequest) {
-      const mobileMapped = conversations.map((c: Record<string, unknown>) => {
-        const user = c.user as { id: string; name: string | null; email: string; image: string | null } | null;
-        const assignedTo = c.assignedTo as { id: string; name: string | null } | null;
-        const msgs = c.messages as Array<{ id: string; content: string; createdAt: Date | string; senderId: string }>;
-        const count = c._count as { messages: number } | undefined;
-
-        // Map backend status to iOS enum values
-        let mobileStatus = (c.status as string) || 'OPEN';
-        if (mobileStatus === 'OPEN' || mobileStatus === 'IN_PROGRESS') mobileStatus = 'ACTIVE';
-        else if (mobileStatus === 'CLOSED') mobileStatus = 'CLOSED';
+      const mobileMapped = conversations.map((c) => {
+        // Map backend status (OPEN, PENDING, RESOLVED, CLOSED) to iOS enum values (ACTIVE, CLOSED, WAITING)
+        const backendStatus = c.status || 'OPEN';
+        let mobileStatus: string;
+        if (backendStatus === 'OPEN' || backendStatus === 'PENDING') mobileStatus = 'ACTIVE';
+        else if (backendStatus === 'CLOSED' || backendStatus === 'RESOLVED') mobileStatus = 'CLOSED';
         else mobileStatus = 'WAITING';
 
         return {
           id: c.id,
-          customerName: user?.name || user?.email || 'Client',
-          customerEmail: user?.email || '',
+          customerName: c.user?.name || c.user?.email || 'Client',
+          customerEmail: c.user?.email || '',
           subject: c.subject || null,
           status: mobileStatus,
-          lastMessageAt: c.lastMessageAt ? (c.lastMessageAt instanceof Date ? c.lastMessageAt.toISOString() : c.lastMessageAt) : null,
-          unreadCount: count?.messages ?? 0,
+          lastMessageAt: c.lastMessageAt instanceof Date ? c.lastMessageAt.toISOString() : (c.lastMessageAt ?? null),
+          unreadCount: c.unreadCount ?? 0,
           assignedToId: c.assignedToId || null,
-          assignedToName: assignedTo?.name || null,
-          messages: msgs.map(m => ({
+          assignedToName: c.assignedTo?.name || null,
+          messages: c.messages.map(m => ({
             id: m.id,
             content: m.content,
-            senderType: m.senderId === user?.id ? 'CUSTOMER' : 'AGENT',
-            senderName: m.senderId === user?.id ? (user?.name || 'Client') : (assignedTo?.name || 'Agent'),
+            senderType: m.senderId === c.user?.id ? 'CUSTOMER' : 'AGENT',
+            senderName: m.senderId === c.user?.id ? (c.user?.name || 'Client') : (c.assignedTo?.name || 'Agent'),
             createdAt: m.createdAt instanceof Date ? m.createdAt.toISOString() : m.createdAt,
             isRead: true,
           })),
