@@ -750,6 +750,9 @@ model CallLog {
   disposition    String? // "resolved", "callback_needed", "escalated"
   tags           String[] // ["urgent", "complaint", "billing"]
 
+  // Metadata (JSON bag for consent tracking, custom fields, etc.)
+  metadata       Json?
+
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
 
@@ -1311,5 +1314,28 @@ model SmsTemplate {
   campaigns SmsCampaign[]
 
   @@index([isActive])
+}
+
+// =============================================================
+// Aurelia AI Chat (Real Aurelia via Mac Studio bridge)
+// =============================================================
+
+model AureliaChat {
+  id               String   @id @default(cuid())
+  conversationId   String
+  userId           String
+  content          String   @db.Text
+  role             String   // USER, AURELIA, SYSTEM
+  status           String   @default("PENDING") // PENDING, PROCESSING, ANSWERED, FAILED
+  contextUsed      Json?    // Vector results + knowledge used
+  processingTimeMs Int?
+  voiceUrl         String?  // Pre-generated TTS audio URL (cache)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  user             User     @relation("aureliaChats", fields: [userId], references: [id])
+
+  @@index([conversationId, createdAt])
+  @@index([status])
+  @@index([userId, createdAt])
 }
 

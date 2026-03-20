@@ -253,6 +253,9 @@ model User {
   // Scrape Jobs
   scrapeJobsCreated      ScrapeJob[]           @relation("ScrapeJobCreator")
 
+  // Aurelia AI Chat
+  aureliaChats           AureliaChat[]         @relation("aureliaChats")
+
   // FIX A1-P0-002: Reverse relations for newly added FKs
   subscriptions          Subscription[]        @relation("UserSubscriptions")
   wishlists              Wishlist[]            @relation("UserWishlists")
