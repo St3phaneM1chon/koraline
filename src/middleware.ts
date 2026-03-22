@@ -203,7 +203,6 @@ export async function middleware(request: NextRequest) {
     });
     res.headers.set('x-request-id', requestId);
     res.headers.set('x-tenant-slug', tenantSlug);
-    res.headers.set('x-tenant-super-admin', isSuperAdmin ? '1' : '0');
     addSecurityHeaders(res);
     return res;
   }
@@ -275,7 +274,6 @@ export async function middleware(request: NextRequest) {
     });
     res.headers.set('x-request-id', requestId);
     res.headers.set('x-tenant-slug', tenantSlug);
-    res.headers.set('x-tenant-super-admin', isSuperAdmin ? '1' : '0');
     res.headers.set('Access-Control-Allow-Origin', getTenantOrigin(tenantSlug));
     res.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
     res.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-idempotency-key, x-request-id, x-csrf-token');
@@ -311,7 +309,6 @@ export async function middleware(request: NextRequest) {
     res.headers.set('x-request-id', requestId);
     res.headers.set('x-locale', locale);
     res.headers.set('x-tenant-slug', tenantSlug);
-    res.headers.set('x-tenant-super-admin', isSuperAdmin ? '1' : '0');
     addSecurityHeaders(res);
     return res;
   }
@@ -373,7 +370,6 @@ export async function middleware(request: NextRequest) {
 
   // Multi-Tenant headers
   response.headers.set('x-tenant-slug', tenantSlug);
-  response.headers.set('x-tenant-super-admin', isSuperAdmin ? '1' : '0');
 
   // Ajouter la locale en header pour les composants server
   response.headers.set('x-locale', locale);
