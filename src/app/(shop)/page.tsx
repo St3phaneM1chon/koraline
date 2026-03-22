@@ -7,34 +7,35 @@ import { JsonLd } from '@/components/seo/JsonLd';
 // Revalidate hero slides every 60 seconds (ISR) for fresh content without blocking render
 export const revalidate = 60;
 
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
+const siteDescription = "Canada's trusted source for premium research peptides. Lab-tested, 99%+ purity, fast shipping.";
+
 export const metadata: Metadata = {
-  title: 'BioCycle Peptides - Premium Research Peptides Canada',
+  title: `${siteName} - Premium Research Peptides Canada`,
   description:
-    "Canada's trusted source for premium research peptides. Lab-tested, 99%+ purity, fast shipping. Shop BPC-157, TB-500, Semaglutide and more.",
+    `${siteDescription} Shop BPC-157, TB-500, Semaglutide and more.`,
   alternates: {
-    canonical: 'https://biocyclepeptides.com',
+    canonical: process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip',
   },
   openGraph: {
-    title: 'BioCycle Peptides - Premium Research Peptides Canada',
-    description:
-      "Canada's trusted source for premium research peptides. Lab-tested, 99%+ purity, fast shipping.",
-    url: 'https://biocyclepeptides.com',
+    title: `${siteName} - Premium Research Peptides Canada`,
+    description: siteDescription,
+    url: process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip',
     type: 'website',
     images: [
       {
-        url: 'https://biocyclepeptides.com/opengraph-image',
+        url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/opengraph-image`,
         width: 1200,
         height: 630,
-        alt: 'BioCycle Peptides - Premium Research Peptides Canada',
+        alt: `${siteName} - Premium Research Peptides Canada`,
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'BioCycle Peptides - Premium Research Peptides Canada',
-    description:
-      "Canada's trusted source for premium research peptides. Lab-tested, 99%+ purity, fast shipping.",
-    images: ['https://biocyclepeptides.com/opengraph-image'],
+    title: `${siteName} - Premium Research Peptides Canada`,
+    description: siteDescription,
+    images: [`${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/opengraph-image`],
   },
 };
 
@@ -85,29 +86,33 @@ export default async function HomePage() {
     getTestimonials(),
   ]);
 
-  const siteUrl = 'https://biocyclepeptides.com';
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
 
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'BioCycle Peptides',
+    name: siteName,
     url: siteUrl,
-    logo: `${siteUrl}/images/BioCyclePeptide_transparent.png`,
-    description: "Canada's trusted source for premium research peptides. Lab-tested, 99%+ purity.",
+    logo: `${siteUrl}/icon-512.png`,
+    description: `${siteName} - Suite Koraline SaaS e-commerce platform`,
     address: {
       '@type': 'PostalAddress',
+      addressLocality: 'Montreal',
+      addressRegion: 'QC',
       addressCountry: 'CA',
     },
-    sameAs: [
-      'https://www.facebook.com/biocyclepeptides',
-      'https://www.instagram.com/biocyclepeptides',
-    ],
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer service',
+      url: `${siteUrl}/contact`,
+      availableLanguage: ['English', 'French'],
+    },
   };
 
   const webSiteSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'BioCycle Peptides',
+    name: siteName,
     url: siteUrl,
     potentialAction: {
       '@type': 'SearchAction',
@@ -120,7 +125,7 @@ export default async function HomePage() {
     <>
       <JsonLd data={organizationSchema} />
       <JsonLd data={webSiteSchema} />
-      <h1 className="sr-only">BioCycle Peptides - Research Peptides</h1>
+      <h1 className="sr-only">{siteName} - Research Peptides</h1>
       <HomePageClient initialHeroSlides={heroSlides} initialTestimonials={testimonials} />
     </>
   );
