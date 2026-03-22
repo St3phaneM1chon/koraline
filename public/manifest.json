@@ -1,11 +1,11 @@
 {
-  "name": "BioCycle Peptides",
-  "short_name": "BioCycle",
-  "description": "BioCycle Peptides - Premium Research Peptides Canada",
+  "name": "Attitudes VIP - Suite Koraline",
+  "short_name": "Koraline",
+  "description": "Attitudes VIP - Suite Koraline SaaS e-commerce platform",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#238838",
+  "theme_color": "#0066CC",
   "orientation": "portrait-primary",
   "categories": ["business", "productivity"],
   "icons": [
