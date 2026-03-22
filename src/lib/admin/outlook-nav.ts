@@ -34,12 +34,10 @@ export const railItems: NavRailItem[] = [
   { id: 'dashboard', labelKey: 'admin.nav.dashboard', icon: LayoutDashboard },
   { id: 'commerce', labelKey: 'admin.nav.commerce', icon: ShoppingCart, badge: 'pendingOrders' },
   { id: 'marketing', labelKey: 'admin.nav.marketing', icon: Megaphone },
-  { id: 'community', labelKey: 'admin.nav.community', icon: MessageCircle, badge: 'unreadChats' },
-  { id: 'loyalty', labelKey: 'admin.nav.loyalty', icon: Award },
   { id: 'media', labelKey: 'admin.nav.mediaSection', icon: Video },
   { id: 'emails', labelKey: 'admin.nav.emails', icon: Mail, badge: 'inboxCount' },
   { id: 'telephony', labelKey: 'admin.nav.telephony', icon: Phone },
-  { id: 'crm', labelKey: 'admin.nav.crm', icon: Briefcase },
+  { id: 'crm', labelKey: 'admin.nav.crm', icon: Briefcase, badge: 'unreadChats' },
   { id: 'accounting', labelKey: 'admin.nav.accounting', icon: Calculator },
   { id: 'system', labelKey: 'admin.nav.system', icon: Settings },
 ];
@@ -79,6 +77,14 @@ export const folderSections: Record<string, NavFolderSection> = {
         ],
         defaultOpen: true,
       },
+      {
+        labelKey: 'admin.nav.reports',
+        items: [
+          { href: '/admin/rapports', labelKey: 'admin.nav.reports', icon: FileBarChart },
+        ],
+        collapsible: true,
+        defaultOpen: false,
+      },
     ],
   },
 
@@ -108,6 +114,15 @@ export const folderSections: Record<string, NavFolderSection> = {
         ],
         defaultOpen: true,
       },
+      {
+        labelKey: 'admin.nav.community',
+        items: [
+          { href: '/admin/avis', labelKey: 'admin.nav.reviews', icon: Star },
+          { href: '/admin/questions', labelKey: 'admin.nav.questions', icon: HelpCircle },
+        ],
+        collapsible: true,
+        defaultOpen: false,
+      },
     ],
   },
 
@@ -119,51 +134,18 @@ export const folderSections: Record<string, NavFolderSection> = {
         items: [
           { href: '/admin/promo-codes', labelKey: 'admin.nav.promoCodes', icon: Tag },
           { href: '/admin/promotions', labelKey: 'admin.nav.promotions', icon: Percent },
-          { href: '/admin/newsletter', labelKey: 'admin.nav.newsletter', icon: Mail },
           { href: '/admin/bannieres', labelKey: 'admin.nav.banners', icon: ImageIcon },
           { href: '/admin/upsell', labelKey: 'admin.nav.upsell', icon: TrendingUp },
         ],
         defaultOpen: true,
       },
       {
-        // FIX A3-P2: Add missing blog and analytics pages to nav
-        labelKey: 'admin.nav.contentMarketing',
+        labelKey: 'admin.nav.engagement',
         items: [
-          { href: '/admin/blog', labelKey: 'admin.nav.blog', icon: PenLine },
-          { href: '/admin/blog/analytics', labelKey: 'admin.nav.blogAnalytics', icon: BarChart2 },
-          { href: '/admin/rapports', labelKey: 'admin.nav.reports', icon: FileBarChart },
+          { href: '/admin/ambassadeurs', labelKey: 'admin.nav.ambassadors', icon: Award },
+          { href: '/admin/fidelite', labelKey: 'admin.nav.loyaltyProgram', icon: Gift },
         ],
         collapsible: true,
-        defaultOpen: false,
-      },
-    ],
-  },
-
-  community: {
-    railId: 'community',
-    title: 'admin.nav.community',
-    groups: [
-      {
-        items: [
-          { href: '/admin/avis', labelKey: 'admin.nav.reviews', icon: Star },
-          { href: '/admin/questions', labelKey: 'admin.nav.questions', icon: HelpCircle },
-          { href: '/admin/chat', labelKey: 'admin.nav.chatSupport', icon: MessageCircle, badge: 'unreadChats' },
-          { href: '/admin/ambassadeurs', labelKey: 'admin.nav.ambassadors', icon: Award },
-        ],
-        defaultOpen: true,
-      },
-    ],
-  },
-
-  loyalty: {
-    railId: 'loyalty',
-    title: 'admin.nav.loyalty',
-    groups: [
-      {
-        items: [
-          { href: '/admin/fidelite', labelKey: 'admin.nav.loyaltyProgram', icon: Gift },
-          { href: '/admin/webinaires', labelKey: 'admin.nav.webinars', icon: Video },
-        ],
         defaultOpen: true,
       },
     ],
@@ -177,8 +159,18 @@ export const folderSections: Record<string, NavFolderSection> = {
         items: [
           { href: '/admin/media', labelKey: 'admin.nav.mediaDashboard', icon: Layout },
           { href: '/admin/media/analytics', labelKey: 'admin.nav.mediaAnalytics', icon: BarChart3 },
+          { href: '/admin/webinaires', labelKey: 'admin.nav.webinars', icon: Video },
         ],
         defaultOpen: true,
+      },
+      {
+        labelKey: 'admin.nav.contentMarketing',
+        items: [
+          { href: '/admin/blog', labelKey: 'admin.nav.blog', icon: PenLine },
+          { href: '/admin/blog/analytics', labelKey: 'admin.nav.blogAnalytics', icon: BarChart2 },
+        ],
+        collapsible: true,
+        defaultOpen: false,
       },
       {
         labelKey: 'admin.nav.mediaPlatforms',
@@ -278,6 +270,7 @@ export const folderSections: Record<string, NavFolderSection> = {
         collapsible: true,
         items: [
           { href: '/admin/emails?tab=templates', labelKey: 'admin.nav.emailTemplates', icon: FileText },
+          { href: '/admin/newsletter', labelKey: 'admin.nav.newsletter', icon: Mail },
           { href: '/admin/emails?tab=campaigns', labelKey: 'admin.nav.emailCampaigns', icon: Megaphone },
           { href: '/admin/emails?tab=flows', labelKey: 'admin.nav.emailFlows', icon: Zap },
           { href: '/admin/emails?tab=analytics', labelKey: 'admin.nav.emailAnalytics', icon: BarChart2 },
@@ -379,6 +372,7 @@ export const folderSections: Record<string, NavFolderSection> = {
         labelKey: 'admin.nav.crmComms',
         items: [
           { href: '/admin/crm/inbox', labelKey: 'admin.nav.crmInbox', icon: Inbox },
+          { href: '/admin/chat', labelKey: 'admin.nav.chatSupport', icon: MessageCircle, badge: 'unreadChats' },
           { href: '/admin/crm/campaigns', labelKey: 'admin.nav.crmCampaigns', icon: Megaphone },
           { href: '/admin/crm/sms-campaigns', labelKey: 'admin.nav.crmSmsCampaigns', icon: MessageSquare },
           { href: '/admin/crm/sms-templates', labelKey: 'admin.nav.crmSmsTemplates', icon: FileText },
@@ -585,7 +579,6 @@ export const folderSections: Record<string, NavFolderSection> = {
         // FIX A3-P2: Add missing monitoring and webhooks to nav
         labelKey: 'admin.nav.tools',
         items: [
-          { href: '/admin/scraper', labelKey: 'admin.nav.scraper', icon: Search },
           { href: '/admin/monitoring', labelKey: 'admin.nav.monitoring', icon: Monitor },
           { href: '/admin/system/crons', labelKey: 'admin.nav.cronMonitoring', icon: Clock },
           { href: '/admin/webhooks', labelKey: 'admin.nav.webhooks', icon: ArrowRightLeft },
@@ -626,14 +619,13 @@ export const folderSections: Record<string, NavFolderSection> = {
 /** Determine which rail section is active based on the current pathname */
 export function getActiveRailId(pathname: string): string {
   if (pathname.startsWith('/admin/comptabilite')) return 'accounting';
-  if (pathname.startsWith('/admin/emails')) return 'emails';
-  if (pathname.startsWith('/admin/commandes') || pathname.startsWith('/admin/customers') || pathname.startsWith('/admin/clients') || pathname.startsWith('/admin/abonnements') || pathname.startsWith('/admin/inventaire') || pathname.startsWith('/admin/fournisseurs') || pathname.startsWith('/admin/paiements') || pathname.startsWith('/admin/produits') || pathname.startsWith('/admin/categories') || pathname.startsWith('/admin/bundles')) return 'commerce';
-  if (pathname.startsWith('/admin/promo-codes') || pathname.startsWith('/admin/promotions') || pathname.startsWith('/admin/newsletter') || pathname.startsWith('/admin/bannieres') || pathname.startsWith('/admin/upsell') || pathname.startsWith('/admin/blog') || pathname.startsWith('/admin/rapports')) return 'marketing';
-  if (pathname.startsWith('/admin/avis') || pathname.startsWith('/admin/questions') || pathname.startsWith('/admin/chat') || pathname.startsWith('/admin/ambassadeurs')) return 'community';
-  if (pathname.startsWith('/admin/fidelite') || pathname.startsWith('/admin/webinaires')) return 'loyalty';
-  if (pathname.startsWith('/admin/media')) return 'media';
+  if (pathname.startsWith('/admin/emails') || pathname.startsWith('/admin/newsletter')) return 'emails';
+  if (pathname.startsWith('/admin/commandes') || pathname.startsWith('/admin/customers') || pathname.startsWith('/admin/clients') || pathname.startsWith('/admin/abonnements') || pathname.startsWith('/admin/inventaire') || pathname.startsWith('/admin/fournisseurs') || pathname.startsWith('/admin/paiements') || pathname.startsWith('/admin/produits') || pathname.startsWith('/admin/categories') || pathname.startsWith('/admin/bundles') || pathname.startsWith('/admin/avis') || pathname.startsWith('/admin/questions')) return 'commerce';
+  if (pathname.startsWith('/admin/promo-codes') || pathname.startsWith('/admin/promotions') || pathname.startsWith('/admin/bannieres') || pathname.startsWith('/admin/upsell') || pathname.startsWith('/admin/ambassadeurs') || pathname.startsWith('/admin/fidelite')) return 'marketing';
+  if (pathname.startsWith('/admin/media') || pathname.startsWith('/admin/webinaires') || pathname.startsWith('/admin/blog')) return 'media';
+  if (pathname.startsWith('/admin/rapports')) return 'dashboard';
   if (pathname.startsWith('/admin/telephonie')) return 'telephony';
-  if (pathname.startsWith('/admin/crm') || pathname.startsWith('/admin/scraper')) return 'crm';
+  if (pathname.startsWith('/admin/crm') || pathname.startsWith('/admin/scraper') || pathname.startsWith('/admin/chat')) return 'crm';
   if (pathname.startsWith('/admin/permissions') || pathname.startsWith('/admin/logs') || pathname.startsWith('/admin/employes') || pathname.startsWith('/admin/parametres') || pathname.startsWith('/admin/uat') || pathname.startsWith('/admin/audits') || pathname.startsWith('/admin/backups') || pathname.startsWith('/admin/mots-magiques') || pathname.startsWith('/admin/livraison') || pathname.startsWith('/admin/devises') || pathname.startsWith('/admin/seo') || pathname.startsWith('/admin/traductions') || pathname.startsWith('/admin/contenu') || pathname.startsWith('/admin/navigateur') || pathname.startsWith('/admin/diagnostics') || pathname.startsWith('/admin/analytics') || pathname.startsWith('/admin/monitoring') || pathname.startsWith('/admin/webhooks') || pathname.startsWith('/admin/securite') || pathname.startsWith('/admin/system') || pathname.startsWith('/admin/tutoriels')) return 'system';
   return 'dashboard';
 }
