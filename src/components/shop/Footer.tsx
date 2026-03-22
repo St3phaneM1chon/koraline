@@ -67,7 +67,7 @@ export default function Footer() {
               {t('footer.description') || 'Canada\'s trusted source for high-purity research peptides. 99%+ purity guaranteed with third-party lab testing.'}
             </p>
             <p className="text-neutral-300 text-sm mb-2">
-              📧 <a href="mailto:info@biocyclepeptides.com" className="text-primary-400 hover:underline">info@biocyclepeptides.com</a>
+              📧 <a href="mailto:info@attitudes.vip" className="text-primary-400 hover:underline">info@attitudes.vip</a>
             </p>
             <p className="text-neutral-300 text-sm">
               📍 {t('footer.location') || 'Montréal, Québec, Canada'}
