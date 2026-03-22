@@ -624,7 +624,7 @@ model Product {
   tags                String?
   // DUAL-STOCK NOTE: Product.stockQuantity is a DENORMALIZED aggregate.
   // The source of truth for inventory is ProductOption.stockQuantity.
-  // This field should equal SUM(formats.stockQuantity) and is used only for
+  // This field should equal SUM(options.stockQuantity) and is used only for
   // quick product-level filtering (e.g., "show in-stock products").
   // Checkout and inventory operations MUST use ProductOption.stockQuantity.
   stockQuantity       Int                  @default(0)
@@ -757,7 +757,7 @@ model ProductOption {
   @@index([sku])
   @@index([isActive])
   @@index([productId, isActive])
-  @@index([productId, availability]) // S10: Composite for finding in-stock formats per product
+  @@index([productId, availability]) // S10: Composite for finding in-stock options per product
   @@index([createdAt])
   @@index([updatedAt])
   @@index([tenantId])

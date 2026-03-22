@@ -44,7 +44,7 @@ async function main() {
     // Find the product in DB
     const product = await prisma.product.findUnique({
       where: { slug: dbSlug },
-      include: { formats: true, images: true },
+      include: { options: true, images: true },
     });
 
     if (!product) {

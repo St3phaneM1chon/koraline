@@ -130,7 +130,7 @@ export async function seedCustomerData() {
   console.log('🔍 Recherche des produits existants...');
 
   const products = await prisma.product.findMany({
-    include: { formats: true, category: true },
+    include: { options: true, category: true },
   });
 
   const productMap = new Map(products.map(p => [p.slug, p]));

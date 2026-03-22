@@ -314,7 +314,7 @@ export default function BundleDetailPage() {
                       </h3>
                       {selectedFormat && (
                         <p className="text-sm text-gray-600 mb-1">
-                          {t('shop.format')}: {selectedFormat.name}
+                          {t('shop.option')}: {selectedFormat.name}
                         </p>
                       )}
                       {item.product.purity && (

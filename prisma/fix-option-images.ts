@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 async function main() {
   const products = await prisma.product.findMany({
     where: { isActive: true },
-    include: { formats: true },
+    include: { options: true },
   });
 
   let updated = 0;
