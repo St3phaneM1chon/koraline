@@ -1,4 +1,4 @@
-# BioCycle Peptides - robots.txt
+# Attitudes VIP - Suite Koraline - robots.txt
 User-agent: *
 Allow: /
 
@@ -13,7 +13,7 @@ Disallow: /auth/
 Allow: /api/products
 
 # Sitemap
-Sitemap: https://biocyclepeptides.com/sitemap.xml
+Sitemap: https://attitudes.vip/sitemap.xml
 
 # Crawl delay
 Crawl-delay: 1
