@@ -1,14 +1,16 @@
 import type { Metadata } from 'next';
 import AccountSidebar from '@/components/account/AccountSidebar';
 
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
+
 export const metadata: Metadata = {
   title: 'Mon compte',
-  description: 'Gérez votre compte BioCycle Peptides, vos commandes, adresses et préférences.',
+  description: `Gérez votre compte ${siteName}, vos commandes, adresses et préférences.`,
   robots: { index: false, follow: false },
   openGraph: {
-    title: 'Mon compte | BioCycle Peptides',
-    description: 'Gérez votre compte BioCycle Peptides.',
-    siteName: 'BioCycle Peptides',
+    title: `Mon compte | ${siteName}`,
+    description: `Gérez votre compte ${siteName}.`,
+    siteName,
     type: 'website',
   },
 };

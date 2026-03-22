@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const title = t('community.title') || 'Community Forum';
   const description = t('community.subtitle') || 'Connect with fellow researchers, share experiences, ask questions, and learn from the community.';
-  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://biocyclepeptides.com';
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
 
   return {
     title,
@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url: `${siteUrl}/community`,
-      siteName: 'BioCycle Peptides',
+      siteName: process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP',
       type: 'website',
       locale,
     },

@@ -33,23 +33,24 @@ export async function generateMetadata({
     return { title: 'Bundle Not Found' };
   }
 
-  const ogImageUrl = `https://biocyclepeptides.com/api/og?title=${encodeURIComponent(bundle.name)}&type=product&subtitle=Bundle`;
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
+  const ogImageUrl = `${siteUrl}/api/og?title=${encodeURIComponent(bundle.name)}&type=product&subtitle=Bundle`;
 
   return {
     title: bundle.name,
     description: bundle.description || `${bundle.name} - Research peptide bundle`,
     alternates: {
-      canonical: `https://biocyclepeptides.com/bundles/${slug}`,
+      canonical: `${siteUrl}/bundles/${slug}`,
     },
     openGraph: {
-      title: `${bundle.name} | BioCycle Peptides`,
+      title: `${bundle.name} | ${process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}`,
       description: bundle.description || `${bundle.name} - Research peptide bundle`,
-      url: `https://biocyclepeptides.com/bundles/${slug}`,
+      url: `${siteUrl}/bundles/${slug}`,
       images: [{ url: ogImageUrl, width: 1200, height: 630, alt: bundle.name }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${bundle.name} | BioCycle Peptides`,
+      title: `${bundle.name} | ${process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}`,
       description: bundle.description || `${bundle.name} - Research peptide bundle`,
       images: [ogImageUrl],
     },

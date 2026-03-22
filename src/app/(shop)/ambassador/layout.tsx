@@ -4,14 +4,16 @@ import type { Metadata } from 'next';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { faqSchema, breadcrumbSchema } from '@/lib/structured-data';
 
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
+
 export const metadata: Metadata = {
   title: 'Programme ambassadeur',
-  description: 'Rejoignez le programme ambassadeur BioCycle Peptides et gagnez jusqu\'à 20 % de commission en partageant des peptides de recherche de confiance.',
+  description: `Rejoignez le programme ambassadeur ${siteName} et gagnez jusqu'à 20 % de commission en partageant des peptides de recherche de confiance.`,
   openGraph: {
-    title: 'Programme ambassadeur | BioCycle Peptides',
+    title: `Programme ambassadeur | ${siteName}`,
     description: 'Gagnez jusqu\'à 20 % de commission en partageant des peptides de recherche de confiance.',
-    url: 'https://biocyclepeptides.com/ambassador',
-    siteName: 'BioCycle Peptides',
+    url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/ambassador`,
+    siteName,
     type: 'website',
   },
 };

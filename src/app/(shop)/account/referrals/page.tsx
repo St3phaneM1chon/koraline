@@ -132,7 +132,7 @@ export default function ReferralsPage() {
 
   const siteUrl = typeof window !== 'undefined'
     ? window.location.origin
-    : process.env.NEXT_PUBLIC_APP_URL || 'https://biocyclepeptides.com';
+    : process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
 
   const referralLink = stats?.referralCode
     ? `${siteUrl}/shop?ref=${stats.referralCode}`
@@ -222,9 +222,10 @@ export default function ReferralsPage() {
 
   // Share via email
   const handleShareEmail = () => {
-    const subject = encodeURIComponent('Join BioCycle Peptides and save!');
+    const _siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
+    const subject = encodeURIComponent(`Join ${_siteName} and save!`);
     const body = encodeURIComponent(
-      `Hey! I've been using BioCycle Peptides and thought you'd like it too.\n\nSign up with my referral link and get a discount on your first order ($25+ minimum):\n${referralLink}\n\nOr use my code at checkout: ${stats?.referralCode}\n\nWe both earn 1,000 loyalty points!`
+      `Hey! I've been using ${_siteName} and thought you'd like it too.\n\nSign up with my referral link and get a discount on your first order ($25+ minimum):\n${referralLink}\n\nOr use my code at checkout: ${stats?.referralCode}\n\nWe both earn 1,000 loyalty points!`
     );
     window.open(`mailto:?subject=${subject}&body=${body}`, '_self');
   };
@@ -232,7 +233,7 @@ export default function ReferralsPage() {
   // Share via WhatsApp
   const handleShareWhatsApp = () => {
     const text = encodeURIComponent(
-      `Check out BioCycle Peptides! Use my referral link to sign up and we both earn 1,000 loyalty points: ${referralLink}`
+      `Check out ${process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}! Use my referral link to sign up and we both earn 1,000 loyalty points: ${referralLink}`
     );
     window.open(`https://wa.me/?text=${text}`, '_blank');
   };

@@ -53,24 +53,25 @@ export async function generateMetadata({
     return { title: 'Article Not Found' };
   }
 
-  const ogImageUrl = `https://biocyclepeptides.com/api/og?title=${encodeURIComponent(meta.title)}&type=article`;
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
+  const ogImageUrl = `${siteUrl}/api/og?title=${encodeURIComponent(meta.title)}&type=article`;
 
   return {
     title: meta.title,
     description: meta.description,
     alternates: {
-      canonical: `https://biocyclepeptides.com/learn/${slug}`,
+      canonical: `${siteUrl}/learn/${slug}`,
     },
     openGraph: {
-      title: `${meta.title} | BioCycle Peptides`,
+      title: `${meta.title} | ${process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}`,
       description: meta.description,
-      url: `https://biocyclepeptides.com/learn/${slug}`,
+      url: `${siteUrl}/learn/${slug}`,
       type: 'article',
       images: [{ url: ogImageUrl, width: 1200, height: 630, alt: meta.title }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${meta.title} | BioCycle Peptides`,
+      title: `${meta.title} | ${process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}`,
       description: meta.description,
       images: [ogImageUrl],
     },

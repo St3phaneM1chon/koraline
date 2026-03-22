@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
 
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
+
 export const metadata: Metadata = {
   title: 'Commande confirmée',
-  description: 'Votre commande BioCycle Peptides a été confirmée. Merci pour votre achat.',
+  description: `Votre commande ${siteName} a été confirmée. Merci pour votre achat.`,
   robots: { index: false, follow: false },
   openGraph: {
-    title: 'Commande confirmée | BioCycle Peptides',
-    description: 'Votre commande BioCycle Peptides a été confirmée.',
-    siteName: 'BioCycle Peptides',
+    title: `Commande confirmée | ${siteName}`,
+    description: `Votre commande ${siteName} a été confirmée.`,
+    siteName,
     type: 'website',
   },
 };

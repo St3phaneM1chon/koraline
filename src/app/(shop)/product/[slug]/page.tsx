@@ -108,7 +108,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://biocyclepeptides.com';
+  const siteUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
   const primaryImage = product.images.find(img => img.isPrimary) || product.images[0];
   const ogFallback = `${siteUrl}/api/og?title=${encodeURIComponent(name)}&subtitle=${encodeURIComponent(subtitle)}&type=product`;
   const rawImageUrl = primaryImage?.url || product.imageUrl || ogFallback;

@@ -346,7 +346,7 @@ export default function EstimateClientPortalPage() {
           <div className="bg-indigo-600 px-8 py-6 text-white">
             <div className="flex justify-between items-start">
               <div>
-                <h1 className="text-2xl font-bold">BioCycle Peptides</h1>
+                <h1 className="text-2xl font-bold">{process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}</h1>
                 <p className="text-indigo-200 text-sm mt-1">Research-grade peptides</p>
               </div>
               <div className="text-end">

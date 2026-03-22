@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const title = `${t('shop.allProducts')} - ${t('shop.title')}`;
   const description = `${t('home.peptidesDesc')}. ${t('shop.labTested')}, ${t('shop.avgPurity')}, ${t('shop.fastShipping')}.`;
-  const siteUrl = 'https://biocyclepeptides.com';
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
   const ogImageUrl = `${siteUrl}/api/og?title=${encodeURIComponent(t('shop.allProducts'))}&type=product`;
 
   return {
@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
       canonical: `${siteUrl}/shop`,
     },
     openGraph: {
-      title: `${title} - BioCycle Peptides`,
+      title: `${title} - ${process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}`,
       description,
       url: `${siteUrl}/shop`,
       type: 'website',
@@ -40,7 +40,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} - BioCycle Peptides`,
+      title: `${title} - ${process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}`,
       description,
       images: [ogImageUrl],
     },

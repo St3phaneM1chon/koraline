@@ -21,14 +21,16 @@ import PreferenceForm from './PreferenceForm';
 import type { EmailPreferences } from './PreferenceForm';
 import Link from 'next/link';
 
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
+
 export const metadata: Metadata = {
   title: 'Préférences courriel',
-  description: 'Gérez vos préférences de communication par courriel avec BioCycle Peptides.',
+  description: `Gérez vos préférences de communication par courriel avec ${siteName}.`,
   robots: { index: false, follow: false },
   openGraph: {
-    title: 'Préférences courriel | BioCycle Peptides',
+    title: `Préférences courriel | ${siteName}`,
     description: 'Gérez vos préférences de communication par courriel.',
-    siteName: 'BioCycle Peptides',
+    siteName,
     type: 'website',
   },
 };
@@ -135,7 +137,7 @@ function ErrorPage({ type }: { type: 'missing' | 'invalid' | 'expired' | 'error'
               d="M10 19l-7-7m0 0l7-7m-7 7h18"
             />
           </svg>
-          Back to BioCycle Peptides
+          Back to {process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}
         </Link>
       </div>
     </div>

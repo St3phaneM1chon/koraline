@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
 
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
+
 export const metadata: Metadata = {
   title: 'Mes consentements',
-  description: 'Gérez vos consentements et préférences de communication avec BioCycle Peptides.',
+  description: `Gérez vos consentements et préférences de communication avec ${siteName}.`,
   robots: { index: false, follow: false },
   openGraph: {
-    title: 'Mes consentements | BioCycle Peptides',
+    title: `Mes consentements | ${siteName}`,
     description: 'Gérez vos consentements et préférences de communication.',
-    siteName: 'BioCycle Peptides',
+    siteName,
     type: 'website',
   },
 };

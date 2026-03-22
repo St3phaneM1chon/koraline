@@ -619,7 +619,7 @@ export default function HomePage({ initialHeroSlides, initialTestimonials = [] }
           <div className="mb-8">
             <Image
               src="/images/brand/signature-header.png"
-              alt="BioCycle Peptides"
+              alt={process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}
               width={600}
               height={200}
               className="h-14 md:h-20 w-auto mx-auto brightness-0 invert"

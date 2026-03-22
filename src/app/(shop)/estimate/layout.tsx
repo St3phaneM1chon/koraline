@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
 
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
+
 export const metadata: Metadata = {
   title: 'Soumission',
-  description: 'Consultez votre soumission BioCycle Peptides. Détails des produits, prix et conditions.',
+  description: `Consultez votre soumission ${siteName}. Détails des produits, prix et conditions.`,
   robots: { index: false, follow: false },
   openGraph: {
-    title: 'Soumission | BioCycle Peptides',
-    description: 'Consultez votre soumission BioCycle Peptides.',
-    siteName: 'BioCycle Peptides',
+    title: `Soumission | ${siteName}`,
+    description: `Consultez votre soumission ${siteName}.`,
+    siteName,
     type: 'website',
   },
 };

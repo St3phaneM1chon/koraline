@@ -295,7 +295,7 @@ export default function OrdersPage() {
       // Header
       doc.setFontSize(24);
       doc.setTextColor(173, 71, 0); // Orange
-      doc.text('BioCycle Peptides', 20, 25);
+      doc.text(process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP', 20, 25);
       
       doc.setFontSize(10);
       doc.setTextColor(100, 100, 100);
@@ -458,7 +458,7 @@ export default function OrdersPage() {
       doc.setFontSize(9);
       doc.setTextColor(150, 150, 150);
       doc.text(t('account.orders.pdfFooterDisclaimer'), 20, y);
-      doc.text('support@biocyclepeptides.com | biocyclepeptides.com', 20, y + 5);
+      doc.text('support@biocyclepeptides.com | attitudes.vip', 20, y + 5);
       
       // Save
       doc.save(`Facture_${order.orderNumber}.pdf`);
@@ -1378,10 +1378,10 @@ function InvoiceModal({
             {/* Invoice Header */}
             <div className="flex justify-between items-start mb-8">
               <div>
-                <h1 className="text-2xl font-bold text-primary-500">BioCycle Peptides</h1>
+                <h1 className="text-2xl font-bold text-primary-500">{process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}</h1>
                 <p className="text-gray-500 text-sm">{t('account.orders.pdfSubtitle')}</p>
                 <p className="text-gray-500 text-sm mt-2">support@biocyclepeptides.com</p>
-                <p className="text-gray-500 text-sm">biocyclepeptides.com</p>
+                <p className="text-gray-500 text-sm">attitudes.vip</p>
               </div>
               <div className="text-end">
                 <h2 className="text-xl font-bold text-gray-900">{t('account.orders.pdfInvoiceTitle')}</h2>

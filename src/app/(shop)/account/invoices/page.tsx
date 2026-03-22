@@ -589,7 +589,7 @@ export default function InvoicesPage() {
                 {/* Company header + Invoice info */}
                 <div className="flex flex-col sm:flex-row justify-between items-start mb-8 gap-4">
                   <div>
-                    <h1 className="text-2xl font-bold text-primary-500">BioCycle Peptides Inc.</h1>
+                    <h1 className="text-2xl font-bold text-primary-500">{process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'} Inc.</h1>
                     <p className="text-gray-500 text-sm mt-1">1234 Boulevard des Sciences</p>
                     <p className="text-gray-500 text-sm">Montreal, QC H3C 1K3, Canada</p>
                     <p className="text-gray-500 text-sm">(514) 555-0199 | support@biocyclepeptides.com</p>
@@ -784,7 +784,7 @@ export default function InvoicesPage() {
                     {t('account.invoices.thankYou') || 'Thank you for your purchase!'}
                   </p>
                   <p className="text-xs text-gray-400 mt-1">
-                    BioCycle Peptides Inc. | support@biocyclepeptides.com | www.biocyclepeptides.com
+                    {process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'} Inc. | support@biocyclepeptides.com | www.attitudes.vip
                   </p>
                 </div>
               </div>
@@ -802,7 +802,7 @@ export default function InvoicesPage() {
             {/* Company header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px' }}>
               <div>
-                <h1 style={{ fontSize: '22px', fontWeight: 'bold', color: '#c85000' }}>BioCycle Peptides Inc.</h1>
+                <h1 style={{ fontSize: '22px', fontWeight: 'bold', color: '#c85000' }}>{process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'} Inc.</h1>
                 <p style={{ fontSize: '12px', color: '#666' }}>1234 Boulevard des Sciences</p>
                 <p style={{ fontSize: '12px', color: '#666' }}>Montreal, QC H3C 1K3, Canada</p>
                 <p style={{ fontSize: '12px', color: '#666' }}>(514) 555-0199 | support@biocyclepeptides.com</p>
@@ -916,7 +916,7 @@ export default function InvoicesPage() {
             {/* Print footer */}
             <div style={{ marginTop: '40px', textAlign: 'center', borderTop: '1px solid #ddd', paddingTop: '12px' }}>
               <p style={{ fontSize: '11px', color: '#737373' }}>Thank you for your purchase!</p>
-              <p style={{ fontSize: '10px', color: '#737373' }}>BioCycle Peptides Inc. | support@biocyclepeptides.com | www.biocyclepeptides.com</p>
+              <p style={{ fontSize: '10px', color: '#737373' }}>{process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'} Inc. | support@biocyclepeptides.com | www.attitudes.vip</p>
             </div>
           </div>
         </div>

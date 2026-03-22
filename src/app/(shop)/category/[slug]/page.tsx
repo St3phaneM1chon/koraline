@@ -43,21 +43,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const locale = getStaticLocale();
   const translated = await withTranslation(category, 'Category', locale);
 
+  const catSiteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
   const title = category.parent
-    ? `${translated.name} - ${category.parent.name} | BioCycle Peptides`
-    : `${translated.name} | BioCycle Peptides`;
+    ? `${translated.name} - ${category.parent.name} | ${catSiteName}`
+    : `${translated.name} | ${catSiteName}`;
   const description = translated.description || '';
 
   return {
     title,
     description,
     alternates: {
-      canonical: `https://biocyclepeptides.com/category/${slug}`,
+      canonical: `${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/category/${slug}`,
     },
     openGraph: {
       title,
       description,
-      url: `https://biocyclepeptides.com/category/${slug}`,
+      url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/category/${slug}`,
       type: 'website',
     },
     twitter: {
@@ -167,7 +168,7 @@ export default async function CategoryPage({ params }: PageProps) {
   }));
 
   // JSON-LD structured data for SEO
-  const baseUrl = 'https://biocyclepeptides.com';
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
   const breadcrumbItems = [
     { '@type': 'ListItem' as const, position: 1, name: 'Home', item: baseUrl },
     ...(translatedParent ? [{

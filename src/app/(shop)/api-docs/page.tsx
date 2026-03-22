@@ -34,7 +34,7 @@ interface EndpointDef {
 // Data
 // ---------------------------------------------------------------------------
 
-const BASE_URL = 'https://biocyclepeptides.com';
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
 
 const ENDPOINTS: EndpointDef[] = [
   {

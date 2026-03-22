@@ -425,7 +425,7 @@ export default function ClientPortalPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h1 className="text-2xl font-bold">BioCycle Peptides</h1>
+              <h1 className="text-2xl font-bold">{process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}</h1>
               <p className="text-indigo-200 text-sm mt-1">
                 {t('portal.clientPortal')}
               </p>
@@ -1036,7 +1036,7 @@ export default function ClientPortalPage() {
 
       {/* Footer */}
       <div className="text-center py-6 text-xs text-gray-400">
-        <p>BioCycle Peptides Inc. &bull; Montreal, QC, Canada &bull; biocyclepeptides.com</p>
+        <p>{process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'} Inc. &bull; Montreal, QC, Canada &bull; attitudes.vip</p>
       </div>
     </div>
   );

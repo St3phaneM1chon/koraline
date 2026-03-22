@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
 
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
+
 export const metadata: Metadata = {
   title: 'Ensembles et kits de peptides',
-  description: 'Économisez avec les ensembles de recherche préconfigurés BioCycle Peptides. Tout ce dont vous avez besoin à prix réduit.',
+  description: `Économisez avec les ensembles de recherche préconfigurés ${siteName}. Tout ce dont vous avez besoin à prix réduit.`,
   openGraph: {
-    title: 'Ensembles et kits de peptides | BioCycle Peptides',
+    title: `Ensembles et kits de peptides | ${siteName}`,
     description: 'Ensembles de recherche préconfigurés à prix réduit.',
-    url: 'https://biocyclepeptides.com/bundles',
-    siteName: 'BioCycle Peptides',
+    url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/bundles`,
+    siteName,
     type: 'website',
   },
 };

@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
+
 export const metadata: Metadata = {
-  title: 'Account Settings | BioCycle Peptides',
+  title: `Account Settings | ${siteName}`,
   description: 'Manage your account security settings, password, two-factor authentication, and privacy preferences.',
   robots: { index: false, follow: false },
   openGraph: {
-    title: 'Account Settings | BioCycle Peptides',
+    title: `Account Settings | ${siteName}`,
     description: 'Manage your account security settings, password, two-factor authentication, and privacy preferences.',
   },
 };

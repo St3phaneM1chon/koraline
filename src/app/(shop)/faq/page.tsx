@@ -7,34 +7,36 @@ import { JsonLd } from '@/components/seo/JsonLd';
 import { faqSchema, breadcrumbSchema } from '@/lib/structured-data';
 import { prisma } from '@/lib/db';
 
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
+
 export const metadata: Metadata = {
   title: 'Frequently Asked Questions',
   description:
-    'Find answers to common questions about research peptides, ordering, shipping, reconstitution, and quality at BioCycle Peptides.',
+    `Find answers to common questions about research peptides, ordering, shipping, reconstitution, and quality at ${siteName}.`,
   alternates: {
-    canonical: 'https://biocyclepeptides.com/faq',
+    canonical: `${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/faq`,
   },
   openGraph: {
-    title: 'FAQ - BioCycle Peptides',
+    title: `FAQ - ${siteName}`,
     description:
       'Find answers to common questions about research peptides, ordering, shipping, and quality.',
-    url: 'https://biocyclepeptides.com/faq',
+    url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/faq`,
     type: 'website',
     images: [
       {
-        url: 'https://biocyclepeptides.com/api/og?title=FAQ&type=page',
+        url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/api/og?title=FAQ&type=page`,
         width: 1200,
         height: 630,
-        alt: 'FAQ - BioCycle Peptides',
+        alt: `FAQ - ${siteName}`,
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FAQ - BioCycle Peptides',
+    title: `FAQ - ${siteName}`,
     description:
       'Find answers to common questions about research peptides, ordering, shipping, and quality.',
-    images: ['https://biocyclepeptides.com/api/og?title=FAQ&type=page'],
+    images: [`${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/api/og?title=FAQ&type=page`],
   },
 };
 

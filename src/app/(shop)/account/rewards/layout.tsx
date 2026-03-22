@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
+
 export const metadata: Metadata = {
-  title: 'My Rewards | BioCycle Peptides',
+  title: `My Rewards | ${siteName}`,
   description: 'View your loyalty points balance, earned rewards, and redeem discounts on research peptides.',
   robots: { index: false, follow: false },
   openGraph: {
-    title: 'My Rewards | BioCycle Peptides',
+    title: `My Rewards | ${siteName}`,
     description: 'View your loyalty points balance, earned rewards, and redeem discounts on research peptides.',
   },
 };

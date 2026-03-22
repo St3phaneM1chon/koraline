@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
+
 export const metadata: Metadata = {
-  title: 'My Research Protocols | BioCycle Peptides',
+  title: `My Research Protocols | ${siteName}`,
   description: 'Manage your saved research protocols and peptide usage documentation.',
   robots: { index: false, follow: false },
   openGraph: {
-    title: 'My Research Protocols | BioCycle Peptides',
+    title: `My Research Protocols | ${siteName}`,
     description: 'Manage your saved research protocols and peptide usage documentation.',
   },
 };

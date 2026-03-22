@@ -2,14 +2,16 @@ import type { Metadata } from 'next';
 import { prisma } from '@/lib/db';
 import LabResultsClient from './LabResultsClient';
 
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
+
 export const metadata: Metadata = {
   title: 'Résultats de laboratoire et certificats d\'analyse',
-  description: 'Consultez les résultats de tests de laboratoires tiers et les certificats d\'analyse (COA) pour tous les peptides BioCycle. Pureté vérifiée à 99 %+.',
+  description: `Consultez les résultats de tests de laboratoires tiers et les certificats d'analyse (COA) pour tous les peptides ${siteName}. Pureté vérifiée à 99 %+.`,
   openGraph: {
-    title: 'Résultats de laboratoire | BioCycle Peptides',
+    title: `Résultats de laboratoire | ${siteName}`,
     description: 'Résultats de tests tiers et certificats d\'analyse (COA). Pureté vérifiée à 99 %+.',
-    url: 'https://biocyclepeptides.com/lab-results',
-    siteName: 'BioCycle Peptides',
+    url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/lab-results`,
+    siteName,
     type: 'website',
   },
 };

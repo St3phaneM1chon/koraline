@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
 
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
+
 export const metadata: Metadata = {
   title: 'Webinaires',
-  description: 'Participez aux webinaires BioCycle Peptides pour apprendre sur la recherche peptidique, les protocoles et les meilleures pratiques.',
+  description: `Participez aux webinaires ${siteName} pour apprendre sur la recherche peptidique, les protocoles et les meilleures pratiques.`,
   openGraph: {
-    title: 'Webinaires | BioCycle Peptides',
+    title: `Webinaires | ${siteName}`,
     description: 'Webinaires sur la recherche peptidique, les protocoles et les meilleures pratiques.',
-    url: 'https://biocyclepeptides.com/webinars',
-    siteName: 'BioCycle Peptides',
+    url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/webinars`,
+    siteName,
     type: 'website',
   },
 };
