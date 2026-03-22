@@ -280,10 +280,10 @@ function formatCurrency(amount: number, currency: string): string {
 
 // Configuration de l'entreprise depuis les variables d'environnement
 export const businessConfig = {
-  name: process.env.BUSINESS_NAME || 'BioCycle Peptides Inc.',
-  address: process.env.BUSINESS_ADDRESS || '123 Rue Principale, Montréal, QC H2X 1Y6',
-  phone: process.env.BUSINESS_PHONE || '(514) 555-0123',
-  email: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@biocyclepeptides.com',
+  name: process.env.BUSINESS_NAME || process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP',
+  address: process.env.BUSINESS_ADDRESS || 'Montréal, QC, Canada',
+  phone: process.env.BUSINESS_PHONE || '',
+  email: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@attitudes.vip',
   taxNumbers: {
     tps: process.env.TPS_NUMBER || '',
     tvq: process.env.TVQ_NUMBER || '',

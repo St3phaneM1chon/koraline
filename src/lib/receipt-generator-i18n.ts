@@ -248,7 +248,7 @@ const businessConfig = {
   name: process.env.BUSINESS_NAME || 'Formations Pro',
   address: process.env.BUSINESS_ADDRESS || '123 Rue Exemple, Montréal, QC H2X 1Y6',
   phone: process.env.BUSINESS_PHONE || '(514) 555-0123',
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'contact@biocyclepeptides.com',
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'contact@attitudes.vip',
   tps: process.env.BUSINESS_TPS || '123456789 RT0001',
   tvq: process.env.BUSINESS_TVQ || '1234567890 TQ0001',
 };
