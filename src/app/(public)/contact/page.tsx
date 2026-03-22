@@ -121,7 +121,7 @@ export default function ContactPage() {
                 icon="📍"
                 title={t('contact.headquarters')}
                 lines={[
-                  'BioCycle Peptides Inc.',
+                  process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP',
                   'Montréal, Québec',
                   'Canada',
                 ]}
@@ -138,8 +138,8 @@ export default function ContactPage() {
                 icon="✉️"
                 title={t('contact.emailAddress')}
                 lines={[
-                  'support@biocyclepeptides.com',
-                  'info@biocyclepeptides.com',
+                  'support@attitudes.vip',
+                  'info@attitudes.vip',
                   t('contact.responseTime'),
                 ]}
                 isEmail
