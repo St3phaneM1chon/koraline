@@ -122,7 +122,7 @@ export default function Header() {
             <Link href="/" className="flex items-center shrink-0">
               <Image
                 src="/images/brand/signature-header.png"
-                alt="BioCycle Peptides"
+                alt={process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}
                 width={600}
                 height={200}
                 className="h-10 sm:h-12 w-auto"

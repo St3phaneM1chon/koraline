@@ -119,54 +119,58 @@ export const viewport: Viewport = {
   themeColor: '#238838',
 };
 
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
+const siteDescription = process.env.NEXT_PUBLIC_SITE_DESCRIPTION || `${siteName} - Suite Koraline SaaS e-commerce platform`;
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://biocyclepeptides.com'),
+  metadataBase: new URL(siteUrl),
   title: {
-    template: '%s | BioCycle Peptides',
-    default: 'BioCycle Peptides - Premium Research Peptides Canada',
+    template: `%s | ${siteName}`,
+    default: `${siteName} - Suite Koraline`,
   },
-  description: 'BioCycle Peptides - Canada\'s trusted source for premium research peptides. Lab-tested, 99%+ purity, fast shipping.',
+  description: siteDescription,
   robots: {
     index: true,
     follow: true,
   },
   referrer: 'strict-origin-when-cross-origin',
-  keywords: ['peptides', 'research peptides', 'Canada', 'BPC-157', 'TB-500', 'Semaglutide', 'lab tested'],
+  keywords: ['e-commerce', 'SaaS', 'Koraline', 'boutique en ligne', 'Canada'],
   alternates: {
-    canonical: 'https://biocyclepeptides.com',
+    canonical: siteUrl,
     languages: Object.fromEntries([
-      ...locales.map((loc) => [loc, `https://biocyclepeptides.com?lang=${loc}`]),
-      ['x-default', 'https://biocyclepeptides.com'],
+      ...locales.map((loc) => [loc, `${siteUrl}?lang=${loc}`]),
+      ['x-default', siteUrl],
     ]),
   },
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'BioCycle Peptides',
+    title: siteName,
   },
   openGraph: {
-    title: 'BioCycle Peptides - Premium Research Peptides',
-    description: 'Canada\'s trusted source for premium research peptides. Lab-tested, 99%+ purity.',
-    url: 'https://biocyclepeptides.com',
-    siteName: 'BioCycle Peptides',
+    title: `${siteName} - Suite Koraline`,
+    description: siteDescription,
+    url: siteUrl,
+    siteName: siteName,
     locale: 'en_CA',
     type: 'website',
     images: [
       {
-        url: 'https://biocyclepeptides.com/opengraph-image',
+        url: `${siteUrl}/opengraph-image`,
         width: 1200,
         height: 630,
-        alt: 'BioCycle Peptides - Premium Research Peptides Canada',
+        alt: `${siteName} - Suite Koraline`,
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@biocyclepeptides',
-    title: 'BioCycle Peptides - Premium Research Peptides',
-    description: 'Canada\'s trusted source for premium research peptides. Lab-tested, 99%+ purity.',
-    images: ['https://biocyclepeptides.com/opengraph-image'],
+    site: '@AttitudesVIP',
+    title: `${siteName} - Suite Koraline`,
+    description: siteDescription,
+    images: [`${siteUrl}/opengraph-image`],
   },
 };
 
@@ -240,13 +244,13 @@ export default async function RootLayout({
         {/* theme-color set via viewport export */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="BioCycle" />
+        <meta name="apple-mobile-web-app-title" content={siteName} />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         {/* hreflang for all 22 supported locales */}
         {locales.map((loc) => (
-          <link key={loc} rel="alternate" hrefLang={loc} href={`https://biocyclepeptides.com?lang=${loc}`} />
+          <link key={loc} rel="alternate" hrefLang={loc} href={`https://attitudes.vip?lang=${loc}`} />
         ))}
-        <link rel="alternate" hrefLang="x-default" href="https://biocyclepeptides.com" />
+        <link rel="alternate" hrefLang="x-default" href="https://attitudes.vip" />
         {/* Service worker registered via ServiceWorkerRegistration client component in body */}
         {/* Anti-FOUC: apply dark class before first paint to avoid white flash.
             SECURITY AUDIT 2026-03-15: dangerouslySetInnerHTML — VERIFIED SAFE.

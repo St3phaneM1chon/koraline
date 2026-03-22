@@ -57,7 +57,7 @@ export default function Footer() {
             <div className="mb-4">
               <Image
                 src="/images/brand/signature-header.png"
-                alt="BioCycle Peptides"
+                alt={process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}
                 width={600}
                 height={200}
                 className="h-10 w-auto brightness-0 invert"
@@ -238,7 +238,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex items-center gap-3">
               <p className="text-sm text-neutral-400">
-                © {new Date().getFullYear()} BioCycle Peptides. {t('footer.copyright') || 'All rights reserved.'}
+                © {new Date().getFullYear()} {process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}. {t('footer.copyright') || 'All rights reserved.'}
               </p>
             </div>
             <div className="flex items-center gap-3 text-neutral-300">

@@ -51,7 +51,7 @@ export function Header() {
             <Link href="/" className="flex items-center">
               <Image
                 src="/images/brand/signature-header.png"
-                alt="BioCycle Peptides"
+                alt={process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}
                 width={600}
                 height={200}
                 className="h-8 w-auto"

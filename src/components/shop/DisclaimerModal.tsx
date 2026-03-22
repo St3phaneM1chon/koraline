@@ -109,7 +109,7 @@ export default function DisclaimerModal() {
         <div className="flex justify-center mb-6">
           <Image
             src="/images/brand/signature-header.png"
-            alt="BioCycle Peptides"
+            alt={process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}
             width={600}
             height={200}
             className="h-12 w-auto"

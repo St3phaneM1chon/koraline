@@ -355,7 +355,7 @@ export default function ChatWidget() {
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="font-semibold text-sm truncate">
-                {t('chat.header.title') || 'BioCycle Peptides'}
+                {t('chat.header.title') || process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}
               </h3>
               <p className="text-xs text-purple-200 truncate">
                 {t('chat.header.subtitle') || 'We typically reply within minutes'}
