@@ -5,7 +5,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Production: Standalone build for Azure/Docker deployment
-  output: 'standalone',
+  // Disabled on Railway (uses Railpack builder natively, standalone causes OOM on small instances)
+  ...(process.env.RAILWAY_ENVIRONMENT ? {} : { output: 'standalone' }),
   
   // TypeScript: 0 errors as of 2026-03-16 (was ~958 on 2026-02-20, all fixed)
   // Kept true to prevent CI failures from transient type generation issues
