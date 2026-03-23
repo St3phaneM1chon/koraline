@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Plus, Trash2, ExternalLink, FileText, ImageIcon, Video, Link2, ClipboardList, FileEdit, Package } from 'lucide-react';
-import { getFormatTypes, fetchFormatTypes, getProductTypes, getAvailabilityOptions, VOLUME_OPTIONS, getStockDisplay } from '../product-constants';
+import { getFormatTypes, fetchFormatTypes, getProductTypes, fetchProductTypes, getAvailabilityOptions, VOLUME_OPTIONS, getStockDisplay } from '../product-constants';
 import { MediaUploader } from '@/components/admin/MediaUploader';
 import { useI18n } from '@/i18n/client';
 import { toast } from 'sonner';
@@ -62,7 +62,11 @@ export default function NewProductClient({ categories }: Props) {
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState<'header' | 'texts' | 'options'>('header');
 
-  const PRODUCT_TYPES = getProductTypes(t);
+  // Dynamic product types from API
+  const [dynamicProductTypes, setDynamicProductTypes] = useState<{ value: string; label: string }[]>([]);
+  const FALLBACK_PRODUCT_TYPES = getProductTypes(t);
+  const PRODUCT_TYPES = dynamicProductTypes.length > 0 ? dynamicProductTypes : FALLBACK_PRODUCT_TYPES;
+
   const [dynamicFormatTypes, setDynamicFormatTypes] = useState<{ value: string; label: string }[]>([]);
   const FALLBACK_FORMAT_TYPES = getFormatTypes(t);
   const FORMAT_TYPES = dynamicFormatTypes.length > 0 ? dynamicFormatTypes : FALLBACK_FORMAT_TYPES;
@@ -70,6 +74,9 @@ export default function NewProductClient({ categories }: Props) {
   useEffect(() => {
     fetchFormatTypes().then((types) => {
       if (types.length > 0) setDynamicFormatTypes(types);
+    });
+    fetchProductTypes().then((types) => {
+      if (types.length > 0) setDynamicProductTypes(types);
     });
   }, []);
 
@@ -79,14 +86,9 @@ export default function NewProductClient({ categories }: Props) {
     slug: '',
     shortDescription: '',
     description: '',
-    productType: 'PEPTIDE',
+    productType: 'PHYSICAL',
     price: 0,
     compareAtPrice: '',
-    purity: '99.30',
-    molecularWeight: '',
-    casNumber: '',
-    molecularFormula: '',
-    storageConditions: '',
     // FIX: BUG-066 - Use empty string for imageUrl default; placeholder shown via component fallback
     imageUrl: '',
     videoUrl: '',
@@ -248,8 +250,6 @@ export default function NewProductClient({ categories }: Props) {
         body: JSON.stringify({
           ...formData,
           price: formData.price || options[0]?.price || 0,
-          purity: formData.purity ? parseFloat(formData.purity) : null,
-          molecularWeight: formData.molecularWeight ? parseFloat(formData.molecularWeight as string) : null,
           customSections: productTexts.map(({ id: _id, ...rest }) => rest),
           // TODO: BUG-047 - Add client-side Zod validation for options before sending to API
           options: options.map(({ id: _id, ...f }) => f),
@@ -355,7 +355,12 @@ export default function NewProductClient({ categories }: Props) {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">{t('admin.productForm.productType')} *</label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-sm font-medium text-neutral-700">{t('admin.productForm.productType')} *</label>
+                    <Link href="/admin/parametres/product-types" className="text-xs text-indigo-500 hover:text-indigo-700 transition-colors">
+                      {t('admin.productForm.manageTypes')}
+                    </Link>
+                  </div>
                   <select
                     value={formData.productType}
                     onChange={(e) => setFormData({ ...formData, productType: e.target.value })}
@@ -436,74 +441,10 @@ export default function NewProductClient({ categories }: Props) {
               </div>
             </div>
 
-            {/* Peptide specs */}
+            {/* Price */}
             <div className="bg-white rounded-xl border border-neutral-200 p-6">
-              <h2 className="text-lg font-semibold text-neutral-900 mb-4">{t('admin.productForm.peptideSpecs')}</h2>
+              <h2 className="text-lg font-semibold text-neutral-900 mb-4">{t('admin.productForm.priceAndOptions')}</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">
-                    {t('admin.productForm.purity')}
-                    <span className="text-neutral-400 font-normal ms-1">{t('admin.productForm.purityDefault')}</span>
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      max="100"
-                      value={formData.purity}
-                      onChange={(e) => setFormData({ ...formData, purity: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    />
-                    <span className="absolute end-3 top-1/2 -translate-y-1/2 text-neutral-400">%</span>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">{t('admin.productForm.casNumber')}</label>
-                  <input
-                    type="text"
-                    value={formData.casNumber}
-                    onChange={(e) => setFormData({ ...formData, casNumber: e.target.value })}
-                    placeholder="137525-51-0"
-                    className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">{t('admin.productForm.molecularWeight')}</label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={formData.molecularWeight}
-                    onChange={(e) => setFormData({ ...formData, molecularWeight: e.target.value })}
-                    placeholder="1419.53"
-                    className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">{t('admin.productForm.molecularFormula')}</label>
-                  <input
-                    type="text"
-                    value={formData.molecularFormula}
-                    onChange={(e) => setFormData({ ...formData, molecularFormula: e.target.value })}
-                    placeholder="C62H98N16O22"
-                    className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono text-sm"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">{t('admin.productForm.storageConditions')}</label>
-                  <input
-                    type="text"
-                    value={formData.storageConditions}
-                    onChange={(e) => setFormData({ ...formData, storageConditions: e.target.value })}
-                    placeholder={t('admin.productForm.placeholderStorageConditions')}
-                    className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-
                 <div>
                   <label className="block text-sm font-medium text-neutral-700 mb-1">{t('admin.productForm.basePrice')} *</label>
                   <input

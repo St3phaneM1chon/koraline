@@ -28,7 +28,7 @@
 - When adding a page: add i18n keys FIRST, then write the component
 
 ### 4. Database Coherence
-- Local DB: `postgresql://peptide:peptide123@localhost:5433/peptide_plus` (Docker)
+- Local DB: `postgresql://peptide:peptide123@localhost:5432/peptide_plus` (brew postgresql@14)
 - Production DB: Azure PostgreSQL (see .env)
 - After schema changes, verify BOTH databases have matching structures
 - Use `prisma db push` for dev, `prisma migrate` for production

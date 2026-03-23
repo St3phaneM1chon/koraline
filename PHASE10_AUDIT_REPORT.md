@@ -88,8 +88,8 @@
 | RACE-CONDITIONS | 4 | 0 | ✅ Clean |
 | API-LEAKAGE | 3 | 7 | **FIXED: password leak in employee API** + meeting password (false positive) |
 | DB-PERFORMANCE | 1 | 51 | N+1 queries in CRM/loyalty modules — performance, not correctness |
-| WEBHOOK-IDEMPOTENCY | 1 | 9 | Missing dedup checks on webhook handlers |
-| CRON-RELIABILITY | 3 | 2 | Missing try/catch in 2 cron jobs |
+| WEBHOOK-IDEMPOTENCY | 10 | 0 | **FALSE POSITIVE** — all 16 handlers already have dedup (Redis/DB/status-rank) |
+| CRON-RELIABILITY | 5 | 0 | **FIXED**: try/catch added to 2 scraper job routes |
 | EMAIL-CASL | 4 | 0 | ✅ Clean |
 | I18N-COMPLETENESS | 5 | 1 | False positive — 22 locales × 13,082 keys = 100% |
 | WEBAUTHN-MFA | 4 | 0 | ✅ Clean |
@@ -99,7 +99,7 @@
 - Many section findings are false positives (auditor checks prisma/schema.prisma instead of prismaSchemaFolder)
 - Accessibility: 20 findings (modals without focus trap, form labels)
 - Frontend Performance: 11 findings (lazy loading opportunities)
-- Error Observability: 12 findings (silent catch blocks)
+- Error Observability: 0 findings — **FIXED**: 13 silent catch blocks across 11 files
 - Architecture: 7 findings (2 circular imports)
 
 ---
@@ -203,9 +203,9 @@
 3. **Schema sync** — 3 new models + 5 new enums pushed to production DB
 
 ### P1 — Fixed This Session
-1. Webhook idempotency — added dedup check to webhook handlers
-2. Cron jobs — added try/catch wrappers to cron handlers
-3. Silent catch blocks — added console.error logging to accounting API routes
+1. ~~Webhook idempotency~~ — **FALSE POSITIVE**: all 16 handlers already have dedup (Redis/DB/status-rank)
+2. Cron jobs — added try/catch to 2 scraper job routes (media-cleanup already had try/catch)
+3. Silent catch blocks — added logging to 13 catch blocks across 11 accounting API files
 
 ### P2 — Backlog
 1. 51 N+1 query patterns in CRM/loyalty (performance optimization)
@@ -270,18 +270,29 @@
 
 ### Architecture Notes
 - The project is architecturally sound at 307 models / 859 routes
-- i18n coverage is exemplary (100% across 22 locales)
-- Security posture is strong after the password leak fix
-- Payment/webhook integration patterns need idempotency standardization
+- i18n coverage is exemplary (100% across 22 locales, ~9,500+ keys)
+- Security posture is strong: 0 SQL injection, 0 XSS, 0 exposed secrets
+- All 16 webhook handlers have idempotency (Redis/DB/status-rank)
+- All 13 dangerouslySetInnerHTML instances are DOMPurify-sanitized or hardcoded
+- CSRF: Double Submit Cookie with HMAC-SHA256, comprehensive
+- Auth: 84% of API routes protected (16% public by design)
+- Zod validation: 59% of routes (41% use manual validation)
+
+### Deep Audit Agent Findings (P2/P3)
+- **Prisma**: 72 relations missing explicit onDelete rules (defaults to Restrict)
+- **Prisma**: Missing composite indexes on User, Product, CrmDeal (performance)
+- **Frontend**: `/a-propos/page.tsx` has hardcoded French text (not using t())
+- **API**: 49 route files with TODO/STUB markers (feature flags, A/B testing)
+- **Performance**: Good lazy loading pattern, proper batch queries, some admin pages lack Suspense
 
 ---
 
 ## Verification
 
 ```
-✅ npm run build — Local build succeeds
+✅ npm run build — Local build succeeds (all 5 commits)
 ✅ npx prisma validate — Schema valid
-✅ GET /api/health → 200
+✅ GET /api/health → 200 (7/10 passing, 3 optional warnings)
 ✅ GET / → 200
 ✅ GET /shop → 200
 ✅ GET /contact → 200
@@ -293,3 +304,13 @@
 ✅ Data parity verified (categories, products, translations, articles)
 ✅ i18n 100% (22 locales × 13,082 keys)
 ```
+
+## Commits (5 total)
+
+| # | SHA | Description | Files |
+|---|-----|-------------|-------|
+| 1 | `7d752148` | Blue theme + branding + favicon + i18n fix | 44 |
+| 2 | `17b85012` | Security: remove password hash from employee API | 2 |
+| 3 | `5df8d2f3` | Auditors: prismaSchemaFolder support | 22 |
+| 4 | `25580168` | Fix schemaPath reference in azure-local-sync | 1 |
+| 5 | `923eb052` | P1: error logging + try/catch + audit report | 15 |

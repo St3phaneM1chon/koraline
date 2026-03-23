@@ -54,10 +54,10 @@ else:
     BACKUP_DIR = PROJECT_ROOT / "backups"
 MANIFEST_FILE = BACKUP_DIR / "backup_manifest.json"
 
-# Local Docker DB
+# Local DB (brew postgresql@14 on port 5432, or Docker on port 5433)
 LOCAL_DB = {
     "host": "localhost",
-    "port": "5433",
+    "port": "5432",
     "name": "peptide_plus",
     "user": "peptide",
     "password": "peptide123",

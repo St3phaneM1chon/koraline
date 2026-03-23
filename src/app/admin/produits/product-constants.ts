@@ -34,13 +34,31 @@ export async function fetchFormatTypes(): Promise<{ value: string; label: string
 
 export function getProductTypes(t: TranslateFn) {
   return [
-    { value: 'PEPTIDE', label: t('admin.productConstants.typePeptide') },
-    { value: 'SUPPLEMENT', label: t('admin.productConstants.typeSupplement') },
+    { value: 'PHYSICAL', label: t('admin.productConstants.typePhysical') },
+    { value: 'DIGITAL', label: t('admin.productConstants.typeDigital') },
+    { value: 'SERVICE', label: t('admin.productConstants.typeService') },
+    { value: 'SUBSCRIPTION', label: t('admin.productConstants.typeSubscription') },
+    { value: 'COURSE', label: t('admin.productConstants.typeCourse') },
+    { value: 'EVENT', label: t('admin.productConstants.typeEvent') },
+    { value: 'GIFT_CARD', label: t('admin.productConstants.typeGiftCard') },
     { value: 'ACCESSORY', label: t('admin.productConstants.typeAccessory') },
     { value: 'BUNDLE', label: t('admin.productConstants.typeBundle') },
-    { value: 'CAPSULE', label: t('admin.productConstants.typeCapsule') },
-    { value: 'LAB_SUPPLY', label: t('admin.productConstants.typeLabSupply') },
   ];
+}
+
+/** Fetch dynamic product types from API. Falls back to empty array. */
+export async function fetchProductTypes(): Promise<{ value: string; label: string }[]> {
+  try {
+    const res = await fetch('/api/admin/product-types');
+    if (res.ok) {
+      const json = await res.json();
+      return (json.data || []).map((pt: { value: string; label: string }) => ({
+        value: pt.value,
+        label: pt.label,
+      }));
+    }
+  } catch {}
+  return [];
 }
 
 export function getAvailabilityOptions(t: TranslateFn) {
