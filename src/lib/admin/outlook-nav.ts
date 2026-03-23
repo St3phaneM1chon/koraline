@@ -40,6 +40,7 @@ export const railItems: NavRailItem[] = [
   { id: 'crm', labelKey: 'admin.nav.crm', icon: Briefcase, badge: 'unreadChats' },
   { id: 'accounting', labelKey: 'admin.nav.accounting', icon: Calculator },
   { id: 'system', labelKey: 'admin.nav.system', icon: Settings },
+  { id: 'dev', labelKey: 'admin.nav.development', icon: FlaskConical },
 ];
 
 // ── Folder Pane (tree navigation per rail section) ───────────
@@ -78,9 +79,11 @@ export const folderSections: Record<string, NavFolderSection> = {
         defaultOpen: true,
       },
       {
-        labelKey: 'admin.nav.reports',
+        labelKey: 'admin.nav.reportsAndAnalytics',
         items: [
           { href: '/admin/rapports', labelKey: 'admin.nav.reports', icon: FileBarChart },
+          { href: '/admin/analytics', labelKey: 'admin.nav.analytics', icon: BarChart3 },
+          { href: '/admin/analytics/cross-module', labelKey: 'admin.nav.crossModuleAnalytics', icon: BarChart2 },
         ],
         collapsible: true,
         defaultOpen: false,
@@ -111,6 +114,7 @@ export const folderSections: Record<string, NavFolderSection> = {
           { href: '/admin/inventaire', labelKey: 'admin.nav.inventory', icon: Archive },
           { href: '/admin/fournisseurs', labelKey: 'admin.nav.suppliers', icon: Truck },
           { href: '/admin/paiements/reconciliation', labelKey: 'admin.nav.paymentReconciliation', icon: Scale },
+          { href: '/admin/livraison', labelKey: 'admin.nav.shippingZones', icon: Truck },
         ],
         defaultOpen: true,
       },
@@ -147,6 +151,15 @@ export const folderSections: Record<string, NavFolderSection> = {
         ],
         collapsible: true,
         defaultOpen: true,
+      },
+      {
+        labelKey: 'admin.nav.contentAndSeo',
+        items: [
+          { href: '/admin/seo', labelKey: 'admin.nav.seo', icon: Search },
+          { href: '/admin/contenu', labelKey: 'admin.nav.contentPages', icon: FileText },
+        ],
+        collapsible: true,
+        defaultOpen: false,
       },
     ],
   },
@@ -554,12 +567,46 @@ export const folderSections: Record<string, NavFolderSection> = {
       {
         items: [
           { href: '/admin/permissions', labelKey: 'admin.nav.permissions', icon: Shield },
-          { href: '/admin/logs', labelKey: 'admin.nav.logsAudit', icon: Activity },
           { href: '/admin/employes', labelKey: 'admin.nav.employees', icon: UserCheck },
           { href: '/admin/parametres', labelKey: 'admin.nav.settings', icon: Settings },
           { href: '/admin/parametres/modules', labelKey: 'admin.nav.modules', icon: ToggleRight },
+        ],
+        defaultOpen: true,
+      },
+      {
+        labelKey: 'admin.nav.configuration',
+        items: [
+          { href: '/admin/devises', labelKey: 'admin.nav.currencies', icon: DollarSign },
+          { href: '/admin/traductions', labelKey: 'admin.nav.translations', icon: Languages },
+          { href: '/admin/webhooks', labelKey: 'admin.nav.webhooks', icon: ArrowRightLeft },
+          { href: '/admin/securite', labelKey: 'admin.nav.security', icon: Shield },
+        ],
+        collapsible: true,
+        defaultOpen: true,
+      },
+      {
+        labelKey: 'admin.nav.help',
+        items: [
+          { href: '/admin/tutoriels', labelKey: 'admin.nav.tutorials', icon: GraduationCap },
+        ],
+        collapsible: true,
+        defaultOpen: true,
+      },
+    ],
+  },
+
+  // Section Développement — visible uniquement pour Attitudes (super-admin)
+  // Peut être masquée par tenant via le système de modules
+  dev: {
+    railId: 'dev',
+    title: 'admin.nav.development',
+    groups: [
+      {
+        items: [
+          { href: '/admin/logs', labelKey: 'admin.nav.logsAudit', icon: Activity },
           { href: '/admin/uat', labelKey: 'admin.nav.uatTesting', icon: FlaskConical },
           { href: '/admin/diagnostics', labelKey: 'admin.nav.networkDiagnostics', icon: Wifi },
+          { href: '/admin/navigateur', labelKey: 'admin.nav.webNavigator', icon: Globe },
         ],
         defaultOpen: true,
       },
@@ -576,36 +623,10 @@ export const folderSections: Record<string, NavFolderSection> = {
         defaultOpen: true,
       },
       {
-        // FIX A3-P2: Add missing monitoring and webhooks to nav
-        labelKey: 'admin.nav.tools',
+        labelKey: 'admin.nav.infrastructure',
         items: [
           { href: '/admin/monitoring', labelKey: 'admin.nav.monitoring', icon: Monitor },
           { href: '/admin/system/crons', labelKey: 'admin.nav.cronMonitoring', icon: Clock },
-          { href: '/admin/webhooks', labelKey: 'admin.nav.webhooks', icon: ArrowRightLeft },
-          { href: '/admin/analytics', labelKey: 'admin.nav.analytics', icon: BarChart3 },
-          { href: '/admin/analytics/cross-module', labelKey: 'admin.nav.crossModuleAnalytics', icon: BarChart2 },
-          { href: '/admin/securite', labelKey: 'admin.nav.security', icon: Shield },
-        ],
-        collapsible: true,
-        defaultOpen: true,
-      },
-      {
-        labelKey: 'admin.nav.configuration',
-        items: [
-          { href: '/admin/livraison', labelKey: 'admin.nav.shippingZones', icon: Truck },
-          { href: '/admin/devises', labelKey: 'admin.nav.currencies', icon: DollarSign },
-          { href: '/admin/seo', labelKey: 'admin.nav.seo', icon: Search },
-          { href: '/admin/traductions', labelKey: 'admin.nav.translations', icon: Languages },
-          { href: '/admin/contenu', labelKey: 'admin.nav.contentPages', icon: FileText },
-          { href: '/admin/navigateur', labelKey: 'admin.nav.webNavigator', icon: Globe },
-        ],
-        collapsible: true,
-        defaultOpen: true,
-      },
-      {
-        labelKey: 'admin.nav.help',
-        items: [
-          { href: '/admin/tutoriels', labelKey: 'admin.nav.tutorials', icon: GraduationCap },
         ],
         collapsible: true,
         defaultOpen: true,
@@ -620,12 +641,13 @@ export const folderSections: Record<string, NavFolderSection> = {
 export function getActiveRailId(pathname: string): string {
   if (pathname.startsWith('/admin/comptabilite')) return 'accounting';
   if (pathname.startsWith('/admin/emails') || pathname.startsWith('/admin/newsletter')) return 'emails';
-  if (pathname.startsWith('/admin/commandes') || pathname.startsWith('/admin/customers') || pathname.startsWith('/admin/clients') || pathname.startsWith('/admin/abonnements') || pathname.startsWith('/admin/inventaire') || pathname.startsWith('/admin/fournisseurs') || pathname.startsWith('/admin/paiements') || pathname.startsWith('/admin/produits') || pathname.startsWith('/admin/categories') || pathname.startsWith('/admin/bundles') || pathname.startsWith('/admin/avis') || pathname.startsWith('/admin/questions')) return 'commerce';
-  if (pathname.startsWith('/admin/promo-codes') || pathname.startsWith('/admin/promotions') || pathname.startsWith('/admin/bannieres') || pathname.startsWith('/admin/upsell') || pathname.startsWith('/admin/ambassadeurs') || pathname.startsWith('/admin/fidelite')) return 'marketing';
+  if (pathname.startsWith('/admin/commandes') || pathname.startsWith('/admin/customers') || pathname.startsWith('/admin/clients') || pathname.startsWith('/admin/abonnements') || pathname.startsWith('/admin/inventaire') || pathname.startsWith('/admin/fournisseurs') || pathname.startsWith('/admin/paiements') || pathname.startsWith('/admin/produits') || pathname.startsWith('/admin/categories') || pathname.startsWith('/admin/bundles') || pathname.startsWith('/admin/avis') || pathname.startsWith('/admin/questions') || pathname.startsWith('/admin/livraison')) return 'commerce';
+  if (pathname.startsWith('/admin/promo-codes') || pathname.startsWith('/admin/promotions') || pathname.startsWith('/admin/bannieres') || pathname.startsWith('/admin/upsell') || pathname.startsWith('/admin/ambassadeurs') || pathname.startsWith('/admin/fidelite') || pathname.startsWith('/admin/seo') || pathname.startsWith('/admin/contenu')) return 'marketing';
   if (pathname.startsWith('/admin/media') || pathname.startsWith('/admin/webinaires') || pathname.startsWith('/admin/blog')) return 'media';
-  if (pathname.startsWith('/admin/rapports')) return 'dashboard';
+  if (pathname.startsWith('/admin/rapports') || pathname.startsWith('/admin/analytics')) return 'dashboard';
+  if (pathname.startsWith('/admin/logs') || pathname.startsWith('/admin/uat') || pathname.startsWith('/admin/diagnostics') || pathname.startsWith('/admin/navigateur') || pathname.startsWith('/admin/mots-magiques') || pathname.startsWith('/admin/audits') || pathname.startsWith('/admin/backups') || pathname.startsWith('/admin/monitoring') || pathname.startsWith('/admin/system/crons')) return 'dev';
   if (pathname.startsWith('/admin/telephonie')) return 'telephony';
   if (pathname.startsWith('/admin/crm') || pathname.startsWith('/admin/scraper') || pathname.startsWith('/admin/chat')) return 'crm';
-  if (pathname.startsWith('/admin/permissions') || pathname.startsWith('/admin/logs') || pathname.startsWith('/admin/employes') || pathname.startsWith('/admin/parametres') || pathname.startsWith('/admin/uat') || pathname.startsWith('/admin/audits') || pathname.startsWith('/admin/backups') || pathname.startsWith('/admin/mots-magiques') || pathname.startsWith('/admin/livraison') || pathname.startsWith('/admin/devises') || pathname.startsWith('/admin/seo') || pathname.startsWith('/admin/traductions') || pathname.startsWith('/admin/contenu') || pathname.startsWith('/admin/navigateur') || pathname.startsWith('/admin/diagnostics') || pathname.startsWith('/admin/analytics') || pathname.startsWith('/admin/monitoring') || pathname.startsWith('/admin/webhooks') || pathname.startsWith('/admin/securite') || pathname.startsWith('/admin/system') || pathname.startsWith('/admin/tutoriels')) return 'system';
+  if (pathname.startsWith('/admin/permissions') || pathname.startsWith('/admin/employes') || pathname.startsWith('/admin/parametres') || pathname.startsWith('/admin/devises') || pathname.startsWith('/admin/traductions') || pathname.startsWith('/admin/webhooks') || pathname.startsWith('/admin/securite') || pathname.startsWith('/admin/tutoriels')) return 'system';
   return 'dashboard';
 }
