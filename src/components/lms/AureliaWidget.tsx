@@ -28,6 +28,8 @@ interface AureliaWidgetProps {
   };
   /** Nom de l'etudiant pour personnalisation */
   studentName?: string;
+  /** Province de l'etudiant (null = pas encore definie) */
+  studentProvince?: string | null;
 }
 
 interface Message {
@@ -37,7 +39,23 @@ interface Message {
   timestamp: Date;
 }
 
-export default function AureliaWidget({ context, studentName }: AureliaWidgetProps) {
+const PROVINCE_OPTIONS = [
+  { code: 'AB', label: 'Alberta' },
+  { code: 'BC', label: 'Colombie-Britannique' },
+  { code: 'MB', label: 'Manitoba' },
+  { code: 'NB', label: 'Nouveau-Brunswick' },
+  { code: 'NL', label: 'Terre-Neuve-et-Labrador' },
+  { code: 'NS', label: 'Nouvelle-Ecosse' },
+  { code: 'NT', label: 'Territoires du Nord-Ouest' },
+  { code: 'NU', label: 'Nunavut' },
+  { code: 'ON', label: 'Ontario' },
+  { code: 'PE', label: 'Ile-du-Prince-Edouard' },
+  { code: 'QC', label: 'Quebec' },
+  { code: 'SK', label: 'Saskatchewan' },
+  { code: 'YT', label: 'Yukon' },
+];
+
+export default function AureliaWidget({ context, studentName, studentProvince }: AureliaWidgetProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -47,6 +65,8 @@ export default function AureliaWidget({ context, studentName }: AureliaWidgetPro
   const [speakingMessageId, setSpeakingMessageId] = useState<string | null>(null);
   const [loadingTtsId, setLoadingTtsId] = useState<string | null>(null);
   const [autoSpeak, setAutoSpeak] = useState(false);
+  const [showProvincePrompt, setShowProvincePrompt] = useState(!studentProvince);
+  const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -158,7 +178,9 @@ export default function AureliaWidget({ context, studentName }: AureliaWidgetPro
   // Message d'accueil contextuel
   useEffect(() => {
     if (isOpen && messages.length === 0) {
-      const greeting = getContextualGreeting();
+      const greeting = showProvincePrompt
+        ? `Bonjour${studentName ? `, ${studentName}` : ''}! Je suis Aurelia, ta tutrice personnelle. Avant de commencer, j'ai besoin de savoir dans quelle province tu travailles — les lois et regulateurs varient d'une province a l'autre au Canada.`
+        : getContextualGreeting();
       setMessages([{
         id: 'greeting',
         role: 'assistant',
@@ -343,6 +365,47 @@ export default function AureliaWidget({ context, studentName }: AureliaWidgetPro
           {context?.courseTitle && (
             <div className="px-3 py-1.5 bg-blue-50 text-xs text-blue-700 border-b">
               📖 {context.courseTitle} {context.lessonTitle ? `→ ${context.lessonTitle}` : ''}
+            </div>
+          )}
+
+          {/* Province selector (shown once if province not set) */}
+          {showProvincePrompt && !selectedProvince && (
+            <div className="px-3 py-2 bg-amber-50 border-b border-amber-100">
+              <p className="text-xs text-amber-700 font-medium mb-2">Dans quelle province travailles-tu?</p>
+              <select
+                value=""
+                onChange={async (e) => {
+                  const code = e.target.value;
+                  if (!code) return;
+                  setSelectedProvince(code);
+                  setShowProvincePrompt(false);
+                  // Save to profile
+                  try {
+                    await fetch('/api/lms/preferences', {
+                      method: 'PUT',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ workProvince: code }),
+                    });
+                  } catch { /* silent */ }
+                  const prov = PROVINCE_OPTIONS.find(p => p.code === code);
+                  setMessages(prev => [
+                    ...prev,
+                    {
+                      id: `province-${Date.now()}`,
+                      role: 'assistant',
+                      content: `Parfait! J'ai note que tu travailles en ${prov?.label || code}. Je vais adapter mes reponses aux lois et regulateurs de ta province. Pose-moi ta premiere question!`,
+                      timestamp: new Date(),
+                    },
+                  ]);
+                }}
+                className="w-full px-2 py-1.5 border border-amber-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                aria-label="Province de travail"
+              >
+                <option value="">Selectionner...</option>
+                {PROVINCE_OPTIONS.map(p => (
+                  <option key={p.code} value={p.code}>{p.label} ({p.code})</option>
+                ))}
+              </select>
             </div>
           )}
 

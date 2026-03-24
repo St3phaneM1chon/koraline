@@ -24,6 +24,7 @@
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { getRetrievability, type FsrsCard, type Rating, scheduleReview } from './fsrs-engine';
+import { buildProvincialContext, getProvinceRegulation } from './provincial-data';
 
 // ---------------------------------------------------------------------------
 // Types — Public API (backward-compatible)
@@ -148,7 +149,10 @@ const INSURANCE_ANALOGIES: Record<string, string> = {
   'divulgation': `Analogie: Imagine que tu vends une voiture d'occasion. Si tu caches un problème de moteur au client et qu'il tombe en panne, tu es responsable. En assurance, c'est pareil — la divulgation complète est obligatoire des deux côtés. [Source: Code civil art. 2408-2413]`,
   'incontestabilite': `Analogie: Après 2 ans de mariage, même si tu découvres que ton conjoint avait un secret, le mariage reste valide. L'incontestabilité en assurance vie fonctionne de façon similaire — après la période, l'assureur ne peut plus contester. [Source: Code civil art. 2424]`,
   'subrogation': `Analogie: Tu prêtes de l'argent à un ami pour payer un mécanicien incompétent. Maintenant TOI tu veux récupérer auprès du mécanicien ce qu'il doit. En assurance, l'assureur paie le sinistre puis "prend ta place" pour récupérer contre le responsable. [Source: Code civil art. 2474]`,
-  'bonne-foi': `Analogie: Un contrat d'assurance, c'est comme une relation de confiance. Si tu mens à ton assureur sur tes antécédents médicaux, c'est comme mentir à ton médecin — ça ne peut que mal finir. La bonne foi est uberrimae fidei (de la plus haute bonne foi). [Source: Code civil art. 2408]`,
+  'bonne-foi': `Analogie: Un contrat d'assurance, c'est comme une relation de confiance. Si tu mens à ton assureur sur tes antécédents médicaux, c'est comme mentir à ton médecin — ça ne peut que mal finir. La bonne foi est uberrimae fidei (de la plus haute bonne foi). [Source: Code civil art. 2408 (QC) / Common law: Carter v. Boehm (1766)]`,
+  'auto-public-vs-prive': `Analogie: Imagine que le gouvernement gère tous les restaurants de ta ville (auto publique: BC, SK, MB, QC blessures) vs un marché libre de restaurants en compétition (auto privée: ON, AB, etc.). Le public offre un service universel mais moins de choix. Le privé offre plus de choix mais les prix varient. Chaque province a fait son choix!`,
+  'common-law-vs-code-civil': `Analogie: Le common law c'est comme une recette qui évolue — chaque juge ajoute un ingrédient (jurisprudence). Le Code civil du Québec c'est comme un livre de recettes complet écrit d'avance — tout est codifié. Les deux systèmes arrivent souvent au même résultat, mais par des chemins différents.`,
+  'llqp-vs-pqap': `Analogie: Le LLQP (Life Licence Qualification Program) et le PQAP (Programme de Qualification en Assurance de Personnes) sont comme deux diplômes différents pour le même métier. Le LLQP est accepté dans les 12 provinces de common law; le PQAP est spécifique au Québec avec ses 4 examens AMF (F-111 à F-313). Même profession, différent parcours!`,
 };
 
 // ---------------------------------------------------------------------------
@@ -302,9 +306,13 @@ const METACOGNITIVE_PATTERNS = [
 const CAREER_PATTERNS = [
   /comment\s+devenir/i,
   /carri[eè]re|promotion|salaire|emploi/i,
-  /examen\s+amf|certification\s+amf/i,
-  /permis\s+(amf|courtier|agent)/i,
+  /examen\s+(amf|llqp|pqap|ribo)|certification\s+(amf|provinciale)/i,
+  /permis\s+(amf|courtier|agent|assurance|fsra|ribo)/i,
   /(avenir|futur)\s+(en|dans)\s+l'?assurance/i,
+  /licen[cs]e|licensing|certifi[eé]/i,
+  /formation\s+continue|ufc|ce\s+credits/i,
+  /transfert\s+de\s+permis|r[eé]ciprocit[eé]/i,
+  /cip|fcip|clu|chs|cfp|caib|paa/i,
 ];
 
 const GREETING_PATTERNS = [
@@ -421,18 +429,33 @@ function buildSystemPrompt(
   emotion: EmotionalState,
   scaffolding: ScaffoldingLevel
 ): string {
-  const basePrompt = `Tu es Aurélia, tutrice IA personnelle pour la formation en assurance au Québec.
-Tu es chaleureuse, rigoureuse, patiente et professionnelle. Tu tutoies tes étudiants avec respect.
+  const basePrompt = `Tu es Aurélia, avocate senior en droit des assurances au Canada et tutrice IA d'élite spécialisée en enseignement aux adultes.
+
+IDENTITÉ PROFESSIONNELLE:
+- Avocate senior avec 25 ans d'expérience en droit des assurances dans toutes les provinces canadiennes.
+- Spécialiste de l'enseignement aux adultes pour l'obtention des certifications provinciales (LLQP, PQAP, GIE, CIP, FCIP, CLU, CHS, CFP).
+- Experte en formation continue obligatoire (UFC/CE) et formations de spécialisation approfondies.
+- Maîtrise parfaite du Code civil du Québec (assurances) ET de la common law (11 autres provinces).
+- Connaissance exhaustive des lois, règlements, directives et jurisprudence de CHAQUE province et territoire.
+- Tu connais les Insurance Acts de chaque province, les directives de l'OSFI, le PCMLTFA/LRPCFAT et PIPEDA.
+- Tu es au fait des différences entre les régimes d'auto-assurance (public: ICBC, SGI, MPI, SAAQ vs privé).
+
+PERSONNALITÉ:
+- Chaleureuse, rigoureuse, patiente et professionnelle. Tu tutoies tes étudiants avec respect.
+- Tu enseignes avec la précision d'une juriste et l'empathie d'une pédagogue expérimentée.
+- Tu utilises des cas réels, des analogies du quotidien et des mises en situation professionnelles.
 
 RÈGLES ABSOLUES (non négociables):
 1. TOUJOURS répondre aux questions claires avec des réponses claires + un exemple pertinent concret.
-2. TOUJOURS illustrer chaque concept avec un exemple du quotidien ou un cas réel en assurance.
-3. JAMAIS inventer de référence légale — cite UNIQUEMENT des sources vérifiées entre [Source: ...]. Si tu n'es pas certaine, dis "Je ne suis pas certaine de cette information spécifique. Vérifie avec l'AMF ou ton superviseur."
-4. TOUJOURS adapter ton niveau de langue et de difficulté au profil de l'étudiant.
+2. TOUJOURS illustrer chaque concept avec un exemple du quotidien ou un cas réel en assurance adapté à la PROVINCE de l'étudiant.
+3. JAMAIS inventer de référence légale — cite UNIQUEMENT des sources vérifiées entre [Source: Loi, art. X] ou [Source: Règlement, s. X]. Si tu n'es pas certaine, dis "Je ne suis pas certaine de cette information spécifique. Vérifie avec ton régulateur provincial."
+4. TOUJOURS adapter ton niveau de langue, de difficulté ET de juridiction au profil de l'étudiant.
 5. TOUJOURS donner du feedback constructif après chaque réponse de l'étudiant.
 6. TOUJOURS encourager — jamais critiquer. Reformule les erreurs de manière constructive.
 7. Mode Socratique (questions guidées) UNIQUEMENT pendant les exercices, quiz, role-play et vérifications de compréhension. Sinon, ENSEIGNE directement.
-8. JAMAIS bloquer l'apprentissage en refusant de répondre ou en posant trop de questions avant d'expliquer. Tu es là pour ENSEIGNER.`;
+8. JAMAIS bloquer l'apprentissage en refusant de répondre ou en posant trop de questions avant d'expliquer. Tu es là pour ENSEIGNER.
+9. TOUJOURS préciser de quelle province/loi tu parles quand l'information varie entre les juridictions. Si l'étudiant est au Québec, cite le Code civil et la LDPSF. Si en Ontario, cite l'Insurance Act (Ontario) et le SABS. Etc.
+10. Quand un concept diffère entre common law et code civil, EXPLIQUER les deux approches et pourquoi elles diffèrent.`;
 
   // Mode-specific instructions
   const modeInstructions: Record<TutorMode, string> = {
@@ -487,7 +510,13 @@ MODE FORMATION RAPIDE:
     EXPLORATION: `\nL'étudiant EXPLORE un sujet → Donne une explication riche et structurée. Plusieurs angles si possible. Encourage sa curiosité.`,
     VERIFICATION_REQUEST: `\nL'étudiant veut être TESTÉ → Passe en mode quiz. Pose une question adaptée à son niveau. Utilise la taxonomie de Bloom.`,
     METACOGNITIVE: `\nL'étudiant pose une question sur COMMENT ÉTUDIER → Donne des stratégies d'apprentissage concrètes. Rappel actif, répétition espacée, interleaving.`,
-    CAREER_QUESTION: `\nL'étudiant pose une question de CARRIÈRE → Conseille de manière professionnelle sur le parcours en assurance, les certifications, l'AMF, les permis.`,
+    CAREER_QUESTION: `\nL'étudiant pose une question de CARRIÈRE → Conseille de manière professionnelle sur le parcours en assurance dans SA province:
+- Certifications requises (LLQP pour common law, PQAP pour QC)
+- Processus de licensing auprès du régulateur provincial
+- CE/UFC obligatoires par province
+- Spécialisations disponibles (CIP, FCIP, CLU, CHS, CFP, CAIB)
+- Perspectives de carrière et progression
+- Si pertinent: réciprocité entre provinces (transfert de permis)`,
     GREETING: `\nL'étudiant te SALUE → Réponds chaleureusement. Rappelle brièvement ce qu'on a fait la dernière fois (si historique). Propose de continuer ou d'aborder un nouveau sujet.`,
     OFF_TOPIC: `\nMessage HORS SUJET → Redirige gentiment vers l'assurance. "C'est une bonne question mais revenons à notre sujet!"`,
     UNKNOWN: '',
@@ -657,6 +686,9 @@ function findRelevantAnalogies(message: string): string[] {
     'incontestabilite': ['incontestabilité', 'contestation', 'période', '2 ans'],
     'subrogation': ['subrogation', 'recours', 'récupération'],
     'bonne-foi': ['bonne foi', 'uberrimae', 'honnêteté', 'loyauté'],
+    'auto-public-vs-prive': ['auto publique', 'auto privée', 'icbc', 'sgi', 'mpi', 'saaq', 'régime public'],
+    'common-law-vs-code-civil': ['common law', 'code civil', 'différence', 'québec vs', 'juridique'],
+    'llqp-vs-pqap': ['llqp', 'pqap', 'permis', 'licence', 'examen amf', 'certification'],
   };
 
   for (const [key, keywords] of Object.entries(analogyKeywords)) {
@@ -685,6 +717,7 @@ async function getStudentContext(
   profile: {
     preferredName?: string | null;
     firstName?: string | null;
+    province?: string | null;
     frustrationTolerance?: string | null;
     testAnxiety?: string | null;
     confidenceLevel?: string | null;
@@ -705,6 +738,8 @@ async function getStudentContext(
       preferredName: true,
       firstName: true,
       language: true,
+      province: true,
+      workProvince: true,
       currentRole: true,
       yearsExperience: true,
       yearsInInsurance: true,
@@ -740,6 +775,17 @@ async function getStudentContext(
   const parts: string[] = [];
   const name = profile.preferredName || profile.firstName || 'l\'étudiant';
   parts.push(`Nom: ${name}`);
+
+  // Provincial context (critical for pan-Canadian adaptation)
+  const effectiveProvince = profile.workProvince || profile.province;
+  if (effectiveProvince) {
+    const reg = getProvinceRegulation(effectiveProvince);
+    if (reg) {
+      parts.push(`Province: ${reg.name.fr} (${reg.code})`);
+      parts.push(`Régime juridique: ${reg.legalRegime === 'CIVIL_CODE' ? 'Code civil du Québec' : 'Common law'}`);
+      parts.push(`Régulateur: ${reg.insuranceRegulator.acronym}`);
+    }
+  }
 
   if (profile.currentRole) parts.push(`Rôle: ${profile.currentRole}`);
   if (profile.yearsInInsurance) parts.push(`Expérience assurance: ${profile.yearsInInsurance} ans`);
@@ -777,6 +823,7 @@ async function getStudentContext(
     profile: {
       preferredName: profile.preferredName,
       firstName: profile.firstName,
+      province: profile.workProvince || profile.province,
       frustrationTolerance: profile.frustrationTolerance,
       testAnxiety: profile.testAnxiety,
       confidenceLevel: profile.confidenceLevel,
@@ -1239,7 +1286,7 @@ export async function chat(
       userId,
       context?.conceptId ? [context.conceptId] : undefined
     ),
-    retrieveKnowledge(tenantId, message, context?.topic, 5),
+    retrieveKnowledge(tenantId, message, context?.topic, 8),
   ]);
 
   // ── 3. Extract session state from history ────────────────────────
@@ -1300,6 +1347,24 @@ export async function chat(
   // Student profile injection
   if (studentData.contextString) {
     contextParts.push(`<student-profile>\n${studentData.contextString}\n</student-profile>`);
+  }
+
+  // Provincial context injection (pan-Canadian awareness)
+  const studentProvince = studentData.profile?.province;
+  if (studentProvince) {
+    const provincialCtx = buildProvincialContext(studentProvince);
+    if (provincialCtx) {
+      contextParts.push(`<provincial-context>
+CONSCIENCE PROVINCIALE — Adapte tes reponses a cette province:
+${provincialCtx}
+
+REGLES:
+- TOUJOURS preciser quelle loi/province s'applique quand tu donnes une information reglementaire.
+- Si l'etudiant pose une question qui varie par province, mentionner les differences cles.
+- Utiliser les exemples adaptes au contexte provincial (ex: SAAQ pour QC, ICBC pour BC, SGI pour SK).
+- Si ${studentProvince === 'QC' ? 'Code civil du Quebec' : 'common law'}: adapter le vocabulaire juridique en consequence.
+</provincial-context>`);
+    }
   }
 
   // Concept mastery injection (inner-outer loop)

@@ -11,6 +11,7 @@ import { useTranslations } from '@/hooks/useTranslations';
 interface Preferences {
   studyTime: 'morning' | 'afternoon' | 'evening';
   sessionDuration: 15 | 25 | 45 | 60;
+  workProvince: string;
   notifyEmail: boolean;
   notifyPush: boolean;
   notifySms: boolean;
@@ -26,6 +27,7 @@ interface Preferences {
 const defaultPrefs: Preferences = {
   studyTime: 'morning',
   sessionDuration: 25,
+  workProvince: '',
   notifyEmail: true,
   notifyPush: false,
   notifySms: false,
@@ -37,6 +39,22 @@ const defaultPrefs: Preferences = {
   consentAnalytics: false,
   consentMarketing: false,
 };
+
+const PROVINCE_OPTIONS = [
+  { code: 'AB', label: 'Alberta' },
+  { code: 'BC', label: 'Colombie-Britannique' },
+  { code: 'MB', label: 'Manitoba' },
+  { code: 'NB', label: 'Nouveau-Brunswick' },
+  { code: 'NL', label: 'Terre-Neuve-et-Labrador' },
+  { code: 'NS', label: 'Nouvelle-Ecosse' },
+  { code: 'NT', label: 'Territoires du Nord-Ouest' },
+  { code: 'NU', label: 'Nunavut' },
+  { code: 'ON', label: 'Ontario' },
+  { code: 'PE', label: 'Ile-du-Prince-Edouard' },
+  { code: 'QC', label: 'Quebec' },
+  { code: 'SK', label: 'Saskatchewan' },
+  { code: 'YT', label: 'Yukon' },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Toggle Component                                                    */
@@ -182,6 +200,29 @@ export default function StudyPreferencesPage() {
       </div>
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        {/* ---------------------------------------------------------- */}
+        {/*  Province de travail                                         */}
+        {/* ---------------------------------------------------------- */}
+        <section className="bg-white rounded-xl border border-gray-200 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-1">{t('learn.preferences.provinceTitle')}</h2>
+          <p className="text-sm text-gray-500 mb-2">{t('learn.preferences.provinceDesc')}</p>
+          <p className="text-xs text-amber-600 mb-4">{t('learn.preferences.provinceNote')}</p>
+
+          <select
+            value={prefs.workProvince}
+            onChange={(e) => updatePref('workProvince', e.target.value)}
+            className="w-full max-w-sm px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            aria-label={t('learn.preferences.provinceLabel')}
+          >
+            <option value="">{t('learn.preferences.selectProvince')}</option>
+            {PROVINCE_OPTIONS.map((p) => (
+              <option key={p.code} value={p.code}>
+                {p.label} ({p.code})
+              </option>
+            ))}
+          </select>
+        </section>
+
         {/* ---------------------------------------------------------- */}
         {/*  Study Schedule                                              */}
         {/* ---------------------------------------------------------- */}

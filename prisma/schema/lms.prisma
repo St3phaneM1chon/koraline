@@ -948,7 +948,8 @@ model StudentProfile {
   age              Int?
   gender           String?          // optionnel, jamais force
   city             String?
-  province         String?
+  province         String?          // AB, BC, MB, NB, NL, NS, NT, NU, ON, PE, QC, SK, YT
+  workProvince     String?          // Province de travail (peut differer de residence)
   country          String           @default("CA")
   language         String           @default("fr")
   secondLanguage   String?          // pour contenu bilingue

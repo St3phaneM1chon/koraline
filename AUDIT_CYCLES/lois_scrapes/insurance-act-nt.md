@@ -1,0 +1,8412 @@
+# Insurance Act - Northwest Territories
+# Source: CanLII - https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-i-4/latest/rsnwt-1988-c-i-4.html
+# Province: NT
+# Citation: Insurance Act, RSNWT 1988, c I-4
+
+This website uses cookies to various ends, as detailed in our [Privacy Policy](https://www.canlii.org/info/privacy.html). You may accept all these cookies or choose only those categories of cookies that are acceptable to you.
+
+Manage your cookiesAccept all cookies
+
+![Table of Contents Icon](https://www.canlii.org/images/icons/toc.svg)
+
+Table of Contents
+
+![Versions Icon](https://www.canlii.org/images/icons/versions.svg)
+
+Versions
+
+8
+
+![Regulations Icon](https://www.canlii.org/images/icons/regulations.svg)
+
+Regulations
+
+3
+
+![Amendments Icon](https://www.canlii.org/images/icons/amendments.svg)
+
+Amendments
+
+
+9
+
+![Cited Icon](https://www.canlii.org/images/icons/cited.svg)
+
+Cited by
+
+56
+
+![AI Analysis Icon](https://www.canlii.org/images/icons/ai.svg)
+
+AI analysis
+
+myCanlii
+
+|     |     |
+| --- | --- |
+|  |  |
+|  |  |
+|  |  |
+
+Loading paragraph markers
+
+# Insurance Act, RSNWT 1988, c I-4
+
+[![Icon of a french and english text](https://www.canlii.org/images/icons/translation.svg)](https://www.canlii.org/fr/nt/legis/lois/lrtn-o-1988-c-i-4/derniere/lrtn-o-1988-c-i-4.html "French Version")
+
+[Subscribe to this RSS feed to be informed of recent changes to this statute.](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-i-4/rss.xml "Subscribe to this RSS feed to be informed of recent changes to this statute.")
+
+[![Pdf icon](https://www.canlii.org/images/icons/pdf.svg)](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-i-4/latest/rsnwt-1988-c-i-4.pdf "Download Pdf")
+
+- Set up noteup alert
+
+- Set up legislative amendment alert
+
+
+Current version: in force since 2022-03-31
+
+Link to the latest version :
+
+
+[https://canlii.ca/t/8j07](https://canlii.ca/t/8j07)
+
+Stable link to this version :
+
+
+[https://canlii.ca/t/55fww](https://canlii.ca/t/55fww)
+
+Citation to this version:
+
+
+Insurance Act, RSNWT 1988, c I-4, < [https://canlii.ca/t/55fww](https://canlii.ca/t/55fww) \> retrieved on 2026-03-24
+
+
+Currency:
+
+
+Last updated from the [web site](https://www.justice.gov.nt.ca/en/legislation/) of the Department of Justice of the Northwest Territories Government on 2026-03-20
+
+
+INSURANCEACTRSNWT1988,c.I-4
+
+AMENDEDBYRSNWT1988,c.1(Supp.)InforceApril21,1989;SI-014-89RSNWT1988,c.37(Supp.)RSNWT1988,c.99(Supp.)SNWT1991-92,c.31Sections3and4inforceJanuary1,1994SNWT1994,c.7InforceJanuary1,1995;SI-019-94SNWT1995,c.11SNWT1997,c.12InforceJuly1,1998;SI-009-98SNWT1998,c.17SNWT1998,c.24SNWT1999,c.21InforceDecember31,1999[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2005-c-2/latest/snwt-2005-c-2.html)2005,c.2[SNWT](https://www.canlii.org/en/nt/laws/stat/snwt-2007-c-21/latest/snwt-2007-c-21.html)2007,c.21InforceApril1,2008;SI-006-2007[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html)2011,c.16[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2014-c-31/latest/snwt-2014-c-31.html)2014,c.31[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2017-c-20/latest/snwt-2017-c-20.html)2017,c.20[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2019-c-30/latest/snwt-2019-c-30.html)2019,c.30InforceJanuary1,2020SI-019-2019[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2022-c-4/latest/snwt-2022-c-4.html)2022,c.4
+
+LOISURLESASSURANCESLRTN-O1988,ch.I-4
+
+MODIFIÉEPARLRTN-O1988,ch.1(Suppl.)Envigueurle21avril1989;TR-014-89LRTN-O1988,ch.37(Suppl.)LRTN-O1988,ch.99(Suppl.)LTN-O1991-1992,ch.31Articles3et4envigueurle1erjanvier1994LTN-O1994,ch.7Envigueurle1erjanvier1995;TR-019-94LTN-O1995,ch.11LTN-O1997,ch.12Envigueurle1erjuillet1998;TR-009-98LTN-O1998,ch.17LTN-O1998,ch.24LTN-O1999,ch.21Envigueurle31décembre1999LTN-O[2005,](https://www.canlii.org/en/nt/laws/astat/snwt-2005-c-2/latest/snwt-2005-c-2.html)ch.2[LTN-O](https://www.canlii.org/en/nt/laws/stat/snwt-2007-c-21/latest/snwt-2007-c-21.html)2007,ch.21Envigueurle1eravril2008;TR-006-2007LTN-O[2011,](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html)ch.16LTN-O2014,ch.31\[A\]LTN-O[2017,](https://www.canlii.org/en/nt/laws/astat/snwt-2017-c-20/latest/snwt-2017-c-20.html)ch.20LTN-O[2019,](https://www.canlii.org/en/nt/laws/astat/snwt-2019-c-30/latest/snwt-2019-c-30.html)ch.30Envigueurle1erjanvier2020TR-019-2019LTN-O2022,ch.4
+
+Thisconsolidationisnotanofficialstatementofthelaw.ItisanofficeconsolidationpreparedbyLegislationDivision,DepartmentofJustice,forconvenience only.The authoritative textofstatutes canbeascertainedfromtheRevisedStatutesoftheNorthwestTerritories,1988andtheAnnualVolumesoftheStatutesoftheNorthwestTerritories.
+
+AnyCertifiedBillsnotyetincludedintheAnnualVolumescanbeobtainedthroughtheOfficeoftheClerkoftheLegislativeAssembly.
+
+CertifiedBills,copiesofthisconsolidationandotherG.N.W.T.legislationcanbeaccessedonlineat
+
+https://www.justice.gov.nt.ca/en/browse/laws-and-legislation/
+
+Laprésentecodificationadministrativeneconstituepasletexteofficieldelaloi;ellen’estétabliequ’àtitredocumentaireparlesAffaireslégislatives duministèredelaJustice.SeuleslesloiscontenuesdanslesLoisréviséesdesTerritoiresduNord-Ouest(1988)etdanslesvolumesannuelsdesLoisdesTerritoiresduNord-Ouestontforcedeloi.
+
+Lesprojetsdeloicertifiésnefigurantpasdanslesvolumesannuelspeuventêtreobtenusens’adressantaubureaudugreffierdel’Assembléelégislative.
+
+Lesprojetsdeloicertifiés,copiesdelaprésentecodificationadministrativeetautresloisduG.T.N.-O.sontdisponiblesenligneàl’adressesuivante:
+
+https://www.justice.gov.nt.ca/en/browse/laws-and-legislation/
+
+TABLEOFCONTENTSINTERPRETATIONDefinitionsInterpretation
+
+PART IGENERALPROVISIONSAPPLICABLETOINSURERS
+
+INSURANCEANDINSURERSApplicationofPartUndertakinginsuranceCarryingonbusinessPaymentsondeathofmembers
+
+LICENCESNecessityforlicenceProhibition:failuretoobtainlicenceProhibition:actingonbehalfofunlicensedinsurerExceptionReinsurancewithunlicensedinsurerInsurersthatmaybelicensedEffectoflicenceLicencetocarryoninsurancebusiness
+
+DeterminationofclassesofinsurancebySuperintendentLimitationsorconditionsonlicenceConditionsofautomobileinsurancelicencePunishmentforbreachMembershipinFacilityAssociationInsurersDutyofFacilityAssociationAgentsActionsbyandagainstFacilityAssociationServiceNoticeofofficersanddirectorsRecordofinformationLicensingexemptionPreparationandfilingofratesReviewofratesCommencementofratesScopeoflifeinsurancelicenceScopeoffireinsurancelicenceInsuranceofautomobilesProofofcompliance
+
+1
+
+2
+
+3
+
+45
+
+6
+
+78
+
+9
+
+10
+
+1112
+
+13
+
+(1)(2)
+
+(1)(2)(3)(4)
+
+(1)(2)(3)
+
+(4)(1)(2)(1)
+
+(2)
+
+(3)(1)(2)(1)(2)(3)(4)(1)(2)(3)(4)(5)(1)(2)(3)
+
+(1)(2)(1)
+
+TABLEDESMATIÈRESDÉFINITIONSDéfinitionsInterprétationdelaversionanglaisedelaLoi
+
+PARTIEIDISPOSITIONSGÉNÉRALESAPPLICABLESAUXASSUREURS
+
+ASSURANCEETASSUREURSChampd’applicationdelaprésentepartieOpérationsd’assuranceExploitationd’uneentrepriseClubs,associationsousociétés
+
+LICENCESLicenceobligatoireInterdictionInterdiction:mandataired’unassureurnonautoriséExceptionsRéassuranceauprèsd’unassureurnonautoriséAssureursadmissiblesEffetdelalicenceAutorisationd’exploiterplusd’unecatégoried’assuranceDécisiondusurintendant
+
+RestrictionsouconditionsConditionsd’exploitation:assuranceautomobilePeineencasdecontraventionAssociationdesassureursConséquencesObligationdel’AssociationdesassureursAgentPoursuitescontrel’AssociationSignificationAvisausurintendantInscriptionsurleregistreExemptionDépôtdestauxExamendestauxEntréeenvigueurdestauxLicenced’assurance-vieLicenced’assurance-incendieAssurancedesautomobilesPreuve
+
+1
+
+EvidencebyinsurerwhenheadofficeoutsideNorthwestTerritoriesLicenceofextra-provincialorterritorialcorporationNoticeofapplicationforlicenceDocumentstobefiledbyapplicantsforlicencePowerofattorney:executionPowerofattorney:contentsEffectofcopyandevidenceChangesinchiefagentServiceofprocessEvidenceCostsofexaminationDutytofileamendmentsFormoflicenceTermoflicenceConditionsoflicenceVariationoflicenceFailuretopayclaimRevivaloflicenceMemberofcompensationassociationOthercompensationassociationsBylawsAssessmentsandleviesFailuretopayassessmentsorleviesCessationofdebtExemptionsDesignationsReportonassetsandcontraventionsSuspensionorcancellationoflicenceNoticeModified,limitedorconditionallicenceFurthergroundsforsuspensionorcancellationStatisticalreturnsCompilationofdataAuditanddirectionifrecordsnotdulykeptExpensesofauditOffenceInformationrespectingautomobileinsuranceclaimsIncludedinformationAccesstoinformationAnnualstatementFormandcontentsWhomayverifystatementReplytoinquiriesUnearnedpremiumsReverseliabilityonnon-cancellableaccidentandsicknessinsurance
+
+1415
+
+16
+
+1718
+
+1920
+
+21
+
+21.1
+
+22
+
+(2)(3)
+
+(1)(2)(3)(4)(5)(6)(7)(8)(9)(1)(2)(3)(4)(1)(2)(1)(1.1)(2)(3)(4)(5)(6)
+
+(1)(2)(3)(4)(5)
+
+(1)(2)(3)(4)(5)(1)
+
+(2)(3)(1)(2)(3)(4)(5)(6)
+
+Siègesocialsituéàl’extérieurdesTerritoiresduNord-OuestSociétéextra-territoriale
+
+AvisdelademandedelicenceDocumentsàdéposerProcurationContenudelaprocurationEffetprobantdelacopieChangementd’agentprincipalSignificationdesactesdeprocédurePreuveFraisdesexamensObligationdedéposerlesmodificationsFormedelalicenceDuréedelalicenceConditionsdeslicencesModificationdelalicenceDéfautd’acquitterlademandederèglementRemiseenvigueurdeslicencesMembresd’uneassociationd’indemnisationIdemRèglementsadministratifsCotisationsetcontributionsDéfautdepaiementCréanceExemptionsDésignationRapportauministreSuspensionouannulationdelalicenceAvisLicencemodifiée,limitéeouconditionnelleMotifssupplémentairesdesuspensionoud’annulationRapportsstatistiquesCompilationdesdonnéesVérificationetinstructionsFraisdelavérificationInfractionRéclamationsauxtermesd’uncontratd’assuranceautomobileRenseignementsAccèsàl’informationDéclarationannuelleFormeetcontenuPersonnesautoriséesàvérifierladéclarationDemandederenseignementsPrimesnonacquisesAssurance-accidentetassurance-maladienonrésiliables
+
+2
+
+StatusofaccountsreceivableandunauthorizedinvestmentsValuationofsecuritiesPublishedstatementsStatementsoffinancialstandingDefinition:"variableinsurancecontract"ProhibitionFormsContentsofinformationfolderDeliverytoapplicantNewinformationfoldersReporttoMinisterProhibitionorderSeparateaccounts
+
+INSURANCEWITHUNLICENSEDINSURERS
+
+Insurancewithunlicensedinsurers
+
+GENERALTraffickinginlifeinsurancepoliciesPrivilegedinformationFilingformofpolicyProhibitionofcertainpoliciesEffectofcontraventionoflawonclaimforindemnityInsurerwithholdingpayment
+
+OFFENCEANDPUNISHMENTGeneraloffenceandpunishmentIncreasedpunishmentforinsurerSuspensionoflicencePunishmentforcarryingonbusinesswithoutlicencePunishmentfordefaultinmakingreturnsBurdenofproofoflicenceRecoveryanddispositionoffines
+
+Regulations
+
+REGULATIONS
+
+23242526
+
+272829
+
+30
+
+31
+
+323334
+
+35
+
+36
+
+37
+
+38
+
+(7)(8)
+
+(1)(2)(3)
+
+(1)(2)
+
+(1)(2)
+
+(1)(2)(3)(4)
+
+(5)(6)(7)
+
+ContenudeladéclarationannuelleÉvaluationdesvaleursInfractionInfractionDéfinition:«contratd’assurancevariable»InterdictionFormulairesContenududépliantexplicatifRemisedudépliantNouveaudépliantRapportauministreOrdonnanced’interdictionComptesséparés
+
+ASSURANCESAUPRÈSD’ASSUREURSNONTITULAIRESD’UNELICENCE
+
+Assuranceauprèsd’unassureurnontitulaired’unelicence
+
+DISPOSITIONSGÉNÉRALESAchatdepolicesd’assurance-vieRenseignementsprotégésDépôtdesformulairesFormulairesinterditsConséquenced’uneinfraction
+
+Intérêt
+
+INFRACTIONETPEINEInfractionetpeinegénéralesExceptionSuspensiondelalicenceExploitationd’uneentreprised’assurancesanslicenceAmendesupplémentaireencasdedéfautChargedelapreuveRecouvrementetdépôtdesamendes
+
+Règlements
+
+RÈGLEMENTS
+
+3
+
+PARTIICONTRACTSOFINSURANCEINNORTHWESTTERRITORIES
+
+CONTRACTSOFINSURANCEApplicationContractsdeemedtobemadeinNorthwestTerritoriesApplicationTermsandconditionsofcontractExemptionContentsofrenewalreceiptWhatregardtobegiventoproposalErroneousstatementinapplicationforcontractMaterialityCopyofproposalInconsistencywithActRightsofinsuredContentsofpolicyExemptionApplicationAppraisalsMattersindisagreementCostsAppointmentbySupremeCourtjudgeRelieffromforfeitureHowpolicypayableWaiveroftermorconditionCertainactsnotconstitutingwaiverRight of claimant against insurerwhereexecutionagainstinsuredreturnedunsatisfiedExemptionConsolidationofactionsWhereminorsareentitledtoinsurancemoneyApportionmentofsumsdirectedtobepaidForeigndomicileorresidenceEffectofdeliveryofpolicyUnpaidpremiumNoteorchequeforpremiumnothonouredFormsprovidedbyinsurerOffenceEffectofprovidingformsWhenactionmaybecommencedundercontract
+
+INSURANCEASCOLLATERALSECURITY
+
+ReceiptascommissionPaymentofcommissionOffence
+
+3940
+
+41
+
+4243
+
+4445
+
+464748
+
+49
+
+50
+
+51
+
+52
+
+53
+
+54
+
+(1)(2)(3)(4)(5)(6)(7)
+
+(1)(2)(1)(2)(1)(2)(3)(4)(5)
+
+(1)(2)(1)
+
+(2)(1)(2)(3)(4)(1)(2)(3)
+
+(1)(2)(3)
+
+(1)(2)(3)
+
+PARTIEIICONTRATSD’ASSURANCEDANSLESTERRITOIRESDUNORD-OUEST
+
+CONTRATSD’ASSURANCEChampd’applicationPrésomption
+
+Non-applicationModalitésducontratExceptionRenouvellementValeurdelapropositionInexactitudesdanslapropositionAppréciationducaractèreessentielCopiedelapropositionIncompatibilitéaveclaloiDroitsdel’assuréContenudelapoliceExceptionChampd’applicationNominationsDésaccordFraisNominationparunjugedelaCoursuprêmeAnnulationdeladéchéancePaiementRenonciationdel’assureurIdemActioncontrel’assureur
+
+ExceptionRéuniond’actionsDroitsdesmineursRépartitionRésidentsàl’étrangerConséquencedelaremisedelapolicePrimesnonacquittéesRésiliationencasdenon-paiementd’unelettredechangeFormulairesInfractionConséquencedelaremiseDélaipréalableàl’actionenrecouvrement
+
+ASSURANCEÀTITREDEGARANTIESUBSIDIAIRE
+
+CommissionverséeaucréancierhypothécaireIdemInfraction
+
+4
+
+RighttorefundofpremiumonterminationofcontractStatementinnotice
+
+CONTRACTSOFTITLEINSURANCEContractsoftitleinsuranceLimitationsandconditions
+
+GENERALRacialorreligiousdiscriminationPaymentintocourtDischargetoinsurer
+
+PARTIIIFIREINSURANCE
+
+ApplicationofPartAutomobilesExtentofcoveragebycontractRadioactivecontaminationCoveragewherepropertyremoveExtendedinsurancePowertoextendmeaningof"lightning"inlivestockcontractsFormofcontractRenewalNoticetootherpersonsFormofnoticeDefinition:"policy"StatutoryconditionsLimitationofliabilityclauseRateablecontributionPostponementofeffectofpolicCertainrestrictionsvalidAscertainmentofprorataproportionsConstructionInsuranceonidentifiedarticlesSpecialstipulationsSubrogationAmountrecoveredinsufficienttoindemnify
+
+Definitions
+
+PARTIVLIFEINSURANCE
+
+INTERPRETATION
+
+55
+
+56
+
+5758
+
+5960
+
+616263
+
+646566
+
+6768
+
+69
+
+(1)(2)
+
+(1)(2)
+
+(1)(2)
+
+(1)(2)(1)(2)(3)(4)(5)
+
+(1)(2)(1)(2)
+
+(1)(2)(3)(4)(5)(6)
+
+(1)(2)
+
+CessiondudroitauremboursementdelaprimeNotedansl’avis
+
+CONTRATSD’ASSURANCE-TITREContratsd’assurance-titreConditions
+
+DISPOSITIONSGÉNÉRALESDiscriminationfondéesurlaraceoulareligionConsignationLibérationdel’assureur
+
+PARTIEIIIASSURANCE-INCENDIE
+
+Champd’applicationAutomobileCouvertureContaminationradioactiveBiensdéplacésAssuranceétendueExtensiondumot«foudre»(assurancedubétail)FormeducontratRenouvellementAvisdel’assureurFormedel’avisDéfinition:«police»ConditionslégalesClauselimitativeResponsabilitéproportionnelleInterprétationValiditédecertainesrestrictionsDéterminationdelapartproportionnelleInterprétationAssuranced’articlesindividualisésStipulationsspécialesSubrogationRépartitionproportionnelle
+
+Définitions
+
+PARTIEIVASSURANCE-VIE
+
+DÉFINITIONS
+
+5
+
+APPLICATIONOFPARTApplicationBeneficiaryforvaluePreferredbeneficiaryGroupinsurance
+
+ISSUANCEANDCONTENTSOFPOLICY
+
+IssuingpolicyDocumentsformingcontractContractoffraternalsocietyCopyofapplicationApplicationContentsofpolicyContentsofgrouppolicyContentsofgroupcertificate
+
+CONDITIONSGOVERNINGFORMATIONOFCONTRACT
+
+InsurableinterestExceptionsConsentofpersonunder16year
+
+Definition:"insurableinterest"ContracttakingeffectDeliverytoagentDeathbeforedeliveryofpolicyDefaultinpayingpremiumPaymentbyregisteredmailWhomaypaypremiumPeriodofgraceStatusofcontractduringperiodofgraceDutytodiscloseFailuretodiscloseApplicationUncontestabilityUncontestabilityingroupinsurance
+
+Non-disclosurebyinsurerApplicationMisstatementofageLimitationofinsurableageMisstatementofageingroupinsurance
+
+EffectofsuicideSuicideandreinstatementApplicationReinstatementExceptionsApplicationofothersections
+
+70
+
+71
+
+72
+
+737475
+
+76
+
+7778
+
+7980
+
+8182
+
+8384
+
+858687
+
+(1)(2)(3)
+
+(1)(2)(3)(4)(1)(2)
+
+(1)(2)(3)
+
+(1)(2)(3)(1)(2)(1)(2)(3)(1)(2)(1)(2)(3)
+
+(1)(2)(3)
+
+(1)(2)(1)(2)(3)(4)
+
+APPLICATIONDELAPRÉSENTEPARTIEChampd’applicationBénéficiairemoyennantcontrepartieBénéficiaireprivilégiéAssurancecollective
+
+ÉTABLISSEMENTETCONTENUDELAPOLICE
+
+ÉtablissementdelapoliceÉlémentsducontratSociétédesecoursmutuelCopiedelapropositionExceptionsContenudelapoliceContenudelapoliced’assurancecollectiveCertificatd’assurancecollective
+
+CONDITIONSRÉGISSANTLAFORMATIONDUCONTRAT
+
+IntérêtassurableExceptionsConsentementdespersonnesâgéesdemoinsde16ansDéfinition:«intérêtassurable»EntréeenvigueurducontratRemiseàl’agentDécèsavantlaremisedelapoliceDéfautdepaiementPaiementparlaposte,enrecommandéPersonnesautoriséesàverserlaprimeDélaidegrâceValiditéducontratpendantlapériodedegrâceObligationdecommuniquertouslesfaitsOmissionExceptionsIncontestabilitéIncontestabilitélorsqu’ils’agitd’uneassurancecollectiveOmissiondelapartdel’assureurExceptionDéclarationinexactesurl’âgeÂgelimiteDéclarationinexactedansuncontratd’assurancecollectiveSuicideSuicideetremiseenvigueurducontratExceptionRemiseenvigueurExceptionApplicationdesarticles81et82
+
+6
+
+DESIGNATIONOFBENEFICIARIESANDPERSONALREPRESENTATIVES
+
+DesignationChangeindesignationDeemingprovisionDesignationofbeneficiaryirrevocablyAttempteddesignationDesignationininvalidwillPrioritiesRevocationofdesignationinwillRevocationofdesignationinpurportedwillTrusteeforbeneficiaryPaymenttotrusteeBeneficiarypredeceasinglifeinsuredSeveralbeneficiariesRighttoinsurancemoneyInsurancemoneyfreefromcreditorsExecutionandseizure
+
+DEALINGSWITHCONTRACTDURINGLIFETIMEOFINSURED
+
+InsureddealingwithcontractInsuredentitledtodividendsInsurermayusedividendsTransferofrightsandinterestsofinsuredWheretwoormorepersonsnamedSavingInterestofassigneeEffectonrightsofbeneficiaryUnconditionalassignmentProhibitionagainstassignmentGrouplifeinsuredenforcingrights
+
+MINORSCapacity:minorCapacity:minorbeneficiary
+
+PROCEEDINGSUNDERCONTRACT
+
+ProofofclaimPlaceofpaymentDollarsPaymentoutsideNorthwestTerritories
+
+ExceptionforgroupinsuranceActioninNorthwestTerritories
+
+Limitationperiod
+
+88
+
+8990
+
+91929394
+
+9596
+
+97
+
+98
+
+99
+
+100101
+
+102103
+
+104105
+
+(1)(2)(3)(1)(2)(1)(2)(3)(4)(1)(2)(1)(2)
+
+(1)(2)
+
+(1)(2)(1)(2)(3)(1)(2)(3)(4)
+
+(1)(2)(3)
+
+(4)
+
+(1)
+
+DÉSIGNATIONDESBÉNÉFICIAIRESETDESREPRÉSENTANTSPERSONNELS
+
+DésignationChangementdedésignationPrésomptionDésignationirrévocabled’unbénéficiaireDésignationnonirrévocableDésignationdansuntestamentinvalideDésignationpostérieureAnnulationdeladésignationIdemNominationd’unfiduciairePaiementaufiduciairePrédécèsdubénéficiairePluralitédebénéficiairesDroitdubénéficiaireetdufiduciaireExclusiondelasuccessionInsaisissabilité
+
+OPÉRATIONSSURLECONTRATPENDANTLAVIEDEL’ASSURÉ
+
+OpérationsurlecontratDroitdel’assurésurlesdividendesAffectationdesdividendesparl’assureurTransfertPluralitédespersonnesdésignéesRéserveDroitsducessionnaireConséquencesurlesdroitsdubénéficiaireCessioninconditionnelleIncessibilitéAssurancecollectivesurlavie
+
+MINEURSCapacité:mineursCapacité:bénéficiairesmineurs
+
+PROCÉDURESRELATIVESÀUNCONTRAT
+
+PreuvedelaréclamationLieudupaiementDollarsPaiementàl’extérieurdesTerritoiresduNord-OuestExceptiondans lecasdesassurancescollectivesActionintentéedanslesTerritoiresduNord-OuestPrescription
+
+7
+
+ExceptionDocumentsaffectingtitle
+
+SavingDeclarationastosufficiencyofproofPowerofCourtDeclarationastopresumptionofdeathOrderPaymentunderorderStayofproceedingsAppealPowerofCourtPaymentintocourtSimultaneousdeathsDefinition:"instalments"InsurancemoneypayableininstalmentsCommutationbybeneficiary
+
+CommutationafterdeathofbeneficiaryInsurerholdinginsurancemoneyExceptionOrderforpaymentDischargeCostsWherebeneficiaryaminorCostsProcedureBeneficiaryunderdisability
+
+MISCELLANEOUSPROVISIONSPresumptionagainstagencyInsurergivinginformation
+
+PARTVAUTOMOBILEINSURANCE
+
+INTERPRETATIONDefinitionsAPPLICATIONOFPARTApplicationofPartExemptionUnregisteredautomobilesLiensandsecurityinterests
+
+APPROVALOFFORMSApprovalofformsbySuperintendentInsurerrequiringadditionalinformationApprovalofpoliciesinspecialcases
+
+106
+
+107108109
+
+110111112113114115
+
+116117118119
+
+120
+
+121122
+
+123
+
+124
+
+125
+
+(2)(1)
+
+(2)(1)(2)
+
+(1)(2)
+
+(1)(2)(3)
+
+(4)(1)(2)(1)(2)
+
+(1)(2)(3)
+
+(1)(2)(3)(4)
+
+(1)(2)(3)
+
+ExceptionDocumentsconcernantledroitauxsommesassuréesRéserveDéclarationd’insuffisancedepreuvesPouvoirsdutribunalDéclarationconcernant laprésomptiondedécèsOrdonnanceLibérationdel’assureurSuspensionAppelPouvoirsdutribunalConsignationCodécèsDéfinition:«versements»SommesassuréespayablesparversementsModificationapportéeàlademandedubénéficiaireEscompteaprèslamortdubénéficiaireSommesassuréesenpossessionExceptionOrdonnancededistributionLibérationdel’assureurFraisBénéficiairemineurFraisProcédureBénéficiaireincapable
+
+DISPOSITIONSDIVERSESPrésomptionRenseignementsdonnésparl’assureur
+
+PARTIEVASSURANCEAUTOMOBILE
+
+DÉFINITIONSDéfinitionsCHAMPD’APPLICATIONApplicationdelapartieExceptionsIdemIdem
+
+APPROBATIONDESFORMULAIRESApprobationdesformulairesparlesurintendantRenseignementssupplémentairesCasspéciaux
+
+8
+
+ApprovalofextensionsStandardowner’spolicyRevocationofapprovalReasonfordecisionInsurancecardMisrepresentation
+
+APPLICATIONANDPOLICYPersonsforbiddentoactasagentCopyofapplicationinpolicy
+
+Policyissued where nosignedapplicationPolicy:copyPolicy:formCertificateofpolicyApplicationofotherprovisionsProofoftermsofpolicyEndorsementonformsMisrepresentationorcontraventionofconditionsUseofapplicationasdefenceProofofstatementDefinition:"policy"StatutoryconditionsExceptionsrespectingstatutoryconditionsOmission:statutorycondition3Omission:statutorycondition4
+
+MOTORVEHICLELIABILITYPOLICIES
+
+Coverage:owner’spolicy,specificautomobileCoverage:owner’spolicy,otherautomobileDeathofpersonnamedinowner’spolicyCoverageofnon-owner’spolicyPersonsdeemednotownersTerritoriallimitsRightsofunnamedinsuredAdditionalagreementsLiabilityfromownershipExceptionsfromliabilityLimitationtoexceptionfromliabilityFamilyexclusionclausesExceptionExceptionsfromliabilityExceptionfromliabilityinendorsementtocontractDefinition:"radioactivematerial"ExceptionsfromliabilityExceptionCertainrulesexceptedMinimumliabilityunderpolicyPriorities
+
+126127
+
+128
+
+129130
+
+131
+
+132133134135136137138139140
+
+141142
+
+143
+
+144
+
+(4)(5)(6)(7)(8)(9)
+
+(1)(2)(3)(4)(5)(6)(7)(8)(1)(2)(3)(1)(2)(1)(2)(3)
+
+(1)(2)(3)
+
+(1)(2)
+
+(1)(2)(3)(4)(1)(2)
+
+ApprobationdusurintendantPolicetypedepropriétaireRévocationdesapprobationsMotifsCarted’assuranceDéclarationinexacte
+
+PROPOSITIONETPOLICEInterdictionAdjonctiond’unecopiedelapropositionàlapoliceRemised’unformulairedepropositionàl’assuréPolice:remisePolice:remiseCertificatdepoliceApplicationdesautresdispositionsPreuvedesmodalitésdelapoliceTexteduparagraphe128(1)AssertioninexacteoucontraventionUtilisationdesdéclarationsendéfenseIdemDéfinition:«police»ConditionslégalesExceptionsIdemIdem
+
+POLICESDERESPONSABILITÉAUTOMOBILE
+
+Garantiedelapolice;automobiledésignéeAutreautomobileDécèsdel’assuréPolicedeconducteurPrésomptionLimitesterritorialesDroitsdesassurésnonnommésEntentessupplémentairesRestrictionExceptionsRéserveClaused’exclusionExceptionExceptionsExceptions
+
+Définition:«substancesradioactives»ExceptionsExceptionExceptionsdecertainesrèglesResponsabilitéminimalePriorité
+
+9
+
+Minimumlimitswhere separatelimitsdesignatedVariationoflimitsStipulationinmotorvehicleliabilitypolicyBindingprovisionExcessinsuranceTerminationofexcessinsuranceAgreementforpartialpaymentofclaimbyinsuredDefinition:"nuclearenergyhazard"LiabilitywhennuclearenergycontractalsoinforceWhencontractdeemedinforceAdvancepaymentsandreleasebyclaimantConditionprecedentPaymentIntentionDefencewheremorethanonecontractHearingOrderContributionApplicationofinsurancemoneyundermotorvehicleliabilitypolicyLimitationperiodOthercreditorexcludedRighttohaveinsurancemoneyappliedPurportedpolicyContributionamonginsurersPaymentintocourtEffectoforderDefencerespectingexcesslimitsrelatingtosection143coverageDefencewherecoverageundersection141Defencewhereexcesslimits
+
+DefencewherevehicleusedinbusinessofcarryingpassengersInsured’sliabilitytoreimburseinsurerInsurermaybemadethirdpartyRightsofinsurerRightsofotherinsurersNoticeofactionDisclosinginsurance
+
+PHYSICALDAMAGECOVER
+
+StipulationsinphysicaldamagecoverPartialpaymentoflossclauseInsertionofwarningAdjustingamountofclaimException
+
+145146147
+
+148
+
+149
+
+150
+
+151
+
+152
+
+153154
+
+155
+
+(3)(4)(1)(2)(1)(2)
+
+(1)(2)
+
+(3)(1)(2)(3)(4)(1)(2)(3)(4)(1)
+
+(2)(3)(4)(5)(6)(7)(8)(9)
+
+(10)(11)
+
+(12)(13)(14)(15)(16)(1)(2)
+
+(1)(2)(1)(2)
+
+MontantsminimauxdistinctsModificationdesmontantsminimauxDispositionsobligatoiresObligationdel’assuréAssurancecomplémentaireFindel’assurancecomplémentaireConventionprévoyantleremboursement
+
+Définition:«risquenucléaire»ResponsabilitédécoulantderisquesnucléairesPrésomptionPaiementparl’assureuretquittanceConditionpréalablePaiementIntentionDéfensedel’assuré;pluralitéd’assureursAudienceOrdonnanceContributiondechaqueassureurAffectationdessommesassurées
+
+PrescriptionExclusiondecertainscréanciersProtectiondudroitdestiersDocumentcenséêtreunepoliceContributiondesautresassureursConsignationConséquencedel’ordonnanceGarantieobligatoire
+
+Garantieviséeauxarticles141et142MoyensdedéfenseencasdegarantiesupérieureauxlimitesMoyensdedéfense:transportdespassagersResponsabilitédel’assuréMiseencausedel’assureurDroitsdel’assureurIdemAvisàl’assureurCommunicationducontenudel’assurance
+
+COUVERTUREDESDOMMAGESDIRECTS
+
+CouverturedesdommagesdirectsClaused’indemnisationpartielleMentionexpresseRèglementdelaréclamationException
+
+10
+
+LIMITEDACCIDENTINSURANCEDefinitionsApplicationDeemingprovisionUninsuredautomobilecoverageDependentrelativeSubrogationReleaseRegulationsMedical,rehabilitationandfuneralbenefitsReleasebyclaimantDemandbyinsurerFirstlossandexcessinsurance
+
+ExcessinsuranceIdemDeemingprovisionDeathanddisabilitybenefitsReleasebyclaimantDemandbyinsurerDeemingprovisionDemandforparticularsofinsuranceOffenceRightsofunnamedinsuredFirstliabilityExceptionPaymentintocourtDischargeofinsurerLimitationperiodClaimant’sobligationtoinformReleasebyclaimantofbenefitsunderSchedule
+
+OTHERINSURANCEDefinition:"rateableproportion"OtherinsuranceInsurerliableforrateableportion
+
+SUBROGATIONSubrogationPro-ratingrecoveryActionwhensection154appliesApplicationtoSupremeCourtPartiesonapplicationConcurrenceinsettlementorrelease
+
+156
+
+157
+
+158
+
+159160161
+
+162163164
+
+165
+
+166
+
+(1)(2)(3)(4)(5)(6)(7)(8)(1)(2)(3)(4)
+
+(5)(6)(7)(1)(2)(3)(4)(1)(2)
+
+(1)(2)(1)(2)
+
+(1)(2)
+
+(1)(2)(3)
+
+(1)(2)(3)(4)(5)(6)
+
+ASSURANCE-ACCIDENTLIMITÉEDéfinitionsChampd’applicationPrésomptionGarantie:automobilenonassuréeParentàchargeSubrogationQuittanceRèglementsFraismédicaux,etc.QuittanceIdemAssuranceaupremierrisqueetassurancecomplémentaireAssurancecomplémentaireIdemPrésomptionIndemnitésdedécèsetd’incapacitéQuittanceIdemPrésomptionMiseendemeureInfractionDroitsdel’assurénondésignéResponsabilitépremièreIdemConsignationQuittancePrescriptionObligationduréclamantQuittance
+
+AUTREASSURANCEDéterminationdelaquotitéAssurancecomplémentaireIdem
+
+SUBROGATIONSubrogationRépartitionproportionnelleApplicationdel’article154DemandeàlaCoursuprêmePartiesàlademandeAcceptationdelaquittanceoudurèglement
+
+11
+
+PARTVIACCIDENTANDSICKNESSINSURANCE
+
+INTERPRETATIONDefinitionsAPPLICATIONOFPARTContractsmadeonorafterApril1,1976ContractsmadebeforeApril1,1976Exemptions
+
+GENERALGroupinsuranceIssueofpolicyExemptionsContentsofpolicyConfinementclausesContentsofgrouppolicyDefinitionsContinuationofinsurancewherecontractterminatedPreservationofrightswherecontractreplacedContentsofgroupcertificateExemptionExceptionorreductionExceptionorreductionaffectingonlyoneprovisionExceptionorreductioninendorsement,insertionorriderMisstatementofageExemptionStatutoryconditionsOmissionor variation of statutoryconditionsOmission:statutoryconditions3,4,9Omission:statutoryconditions5,6VariationofcertainstatutoryconditionsNovariationincertaincircumstancesVaryingtimeperiodsTitleofstatutoryconditionContract byfraternalsocietyNoticeofstatutoryconditionsTerminationfornon-paymentofinitialorrenewalpremiumExemptionRightwherepremiumunpaidWherechequeornoteforpremiumnotpaidExemption:contractofgroupinsuranceExemption:contractmadebyfraternalsocietyInsurableinterest
+
+167
+
+168
+
+169170171
+
+172173174
+
+175176
+
+177178
+
+179180
+
+181
+
+182
+
+(1)(2)(3)
+
+(1)(2)
+
+(1)(2)
+
+(3)(1)(2)(1)(2)
+
+(3)(4)(5)
+
+(1)(2)(3)(4)(5)(6)(7)(8)
+
+(1)
+
+(2)(1)(2)(3)(4)
+
+PARTIEVIASSURANCE-ACCIDENTETMALADIE
+
+DÉFINITIONSDéfinitionsCHAMPD’APPLICATIONApplicationdelaprésentepartieIdemExceptions
+
+DISPOSITIONSGÉNÉRALESAssurancecollectivePoliceobligatoireExceptionsContenudelapoliceNullitédecertainesconditionsContenudelapoliced’assurancecollectiveDéfinitionsMaintienenvigueurdel’assurance
+
+MaintienenvigueurdesdroitsencasderemplacementContenuducertificatd’assurancecollectiveExceptionExclusionouréductionIdem
+
+IdemDéclarationinexacteconcernantl’âgeExceptionConditionslégalesOmissionoumodificationdesconditionslégalesOmission:conditionslégales3,4et9Omission:conditionslégales5et6ModificationdecertainesconditionslégalesIdemIdemTitred’uneconditionlégaleContrat concluparunesociétédesecoursmutuelAvisdesconditionslégalesFinducontratencasdenon-paiement
+
+ExceptionDroitsdel’assureurChèquesansprovisionExceptionIdemIntérêtassurable
+
+12
+
+LackofinsurableinterestExceptionsConsenttoinsurance
+
+POLICIESONLIVESOFMINORSCapacity:minorCapacity:minorbeneficiary
+
+MISREPRESENTATIONANDNON-DISCLOSURE
+
+DutytodiscloseFailuretodiscloseGroupinsurancefailuretodiscloseIncontestabilityExemptionApplicationofincontestabilitytoreinstatementPre-existingconditionsMisstatementofageMisstatementofageingroupinsurance
+
+Trueage
+
+BENEFICIARIESDesignationofbeneficiaryDesignationininvalidwillPrioritiesRevocationofdesignationinwillRevocationofdesignationinpurportedwillDeemingprovisionDeathofbeneficiaryRighttosueTrusteeforbeneficiaryDocumentsaffectingtitleSavingInterestofassigneeRightsandinterestsofassigneeProhibitionagainstassignmentInsurancemoneyExecutionandseizureGrouppersoninsuredenforcingrights
+
+SimultaneousdeathsPaymentintocourtCostsofproceedingsDischargeofinsurerWherebeneficiaryaminorCostsProcedureBeneficiaryunderdisabilityPaymentsnotexceeding$2,000
+
+183
+
+184
+
+185
+
+186187188189
+
+190
+
+191
+
+192193
+
+194195196197
+
+198
+
+199200
+
+(1)(2)(3)
+
+(1)(2)
+
+(1)(2)(3)(1)(2)
+
+(1)(2)
+
+(3)
+
+(1)(2)(3)(4)(5)(1)(2)(3)
+
+(1)(2)(3)(4)(5)(1)(2)
+
+(1)(2)(3)(1)(2)(3)
+
+Absenced’intérêtassurableExceptionConsentement
+
+POLICESSURLAVIEDESMINEURSCapacité:mineursCapacité:bénéficiairesmineurs
+
+ASSERTIONSINEXACTESETOMISSIONS
+
+DéclarationobligatoireRéticenceAssurancecollectiveIncontestabilitéExceptionApplicationàlaremiseenvigueurConditionpréexistanteDéclarationinexacteconcernantl’âgeDéclarationinexactedansuncontratd’assurancecollectiveÂgevéritable
+
+BÉNÉFICIAIRESDésignationdubénéficiaireDésignationdansuntestamentinvalidePrioritéAnnulationdeladésignationIdemPrésomptionPrécédèsdubénéficiaireDroitdubénéficiaireetdufiduciaireNominationd’unfiduciaireDroitdeverserlessommesassuréesRéserveIntérêtducessionnaireDroitsetintérêtsducessionnaireIncessibilitéExclusiondelasuccessionInsaisissabilitéDroitsdespersonnesassuréesparuneassurancecollectiveDécèssimultanésConsignationFraisPaiementlibératoireMineursFraisProcédureBénéficiairefrappéd’incapacitéMontantmaximalde2000$
+
+13
+
+PlaceofpaymentExceptionforgroupinsuranceDollarsPaymentoutsideNorthwestTerritories
+
+PaymenttopersonalrepresentativeActioninNorthwestTerritoriesInsurergivinginformationUndueprominenceRelieffromforfeiturePresumptionagainstagency
+
+PARTVIILIVESTOCKINSURANCE
+
+ApplicationofPartPropertythatmaybeinsuredApplicationofprovisionsastofireinsuranceTermofcontractRenewingpoliciesTermofrenewal
+
+PARTVIIIFRATERNALSOCIETIES
+
+LicenceIssuingoflicencesSocietiesdeemednottobefraternalsocieties
+
+PARTVIII.1RECIPROCALORINTER-INSURANCEEXCHANGES
+
+DefinitionsContractsInsurerExecutionofcontractCourtactionNameofexchangeRequirementforlicenceFilingrequirementsInitialapplicationandrenewalLicenceApplicationofsection16ServiceLiabilityReinsuranceSuspensionorcancellationoflicenceEffectNoticeAppealCertificateofdecisionandevidence
+
+201
+
+202203204205206
+
+207208209
+
+210
+
+211
+
+(1)(2)(3)(4)
+
+(5)
+
+(1)(2)(3)
+
+(1)(2)(3)
+
+211.01211.02(1)(2)211.03211.04211.05211.06211.07(1)(2)211.08(1)(2)211.09211.10211.11211.12(1)(2)(3)211.13(1)(2)
+
+LieudupaiementExceptiondans lecasdesassurancescollectivesDollarsPaiementàl’extérieurdesTerritoiresduNord-OuestPaiementaureprésentantpersonnelActiondanslesTerritoiresduNord-OuestRenseignementsdonnésparl’assureurPrésentationuniformedesdispositionsRedressementPrésomption
+
+PARTIEVIIASSURANCEDUBÉTAIL
+
+ApplicationBiensquipeuventêtreassurésApplicationdesdispositionsdel’assurance-incendieDuréeducontratRenouvellementPériodederenouvellement
+
+PARTIEVIIISOCIÉTÉSDESECOURSMUTUEL
+
+LicenceobligatoireDélivrancedeslicencesPrésomption
+
+PARTIEVIII.1BOURSESD’ASSURANCERÉCIPROQUE
+
+DéfinitionsContratsPrésomptionPassationdescontratsActionenjusticeNomdelabourseLicence:exigenceDépôt:exigencesDemandeinitialeetrenouvellementLicenceApplicationdel’article16SignificationEngagementRéassuranceSuspensionouannulationdelalicenceEffetAvisAppelAttestationdeladécision
+
+14
+
+ProcedureFireinsuranceInspectionandrighttoadjustRegulations
+
+PARTIXAGENTS,BROKERSANDADJUSTERS
+
+LICENCESOFINSURANCEAGENTSLicensingagentClassesoflicencesIssueoflicenceNoticeofappointmentofagentLimitationsoflicenceNoticeofterminationofagencyFailuretogivenoticeDisentitlementtolicenceExpirationoflicenceRenewalAuthority:agentsAuthority:lifeinsuranceagentCollectorsOfficersoffraternalsocieties
+
+MembersoffraternalsocietiesSalariedofficersandemployeesactingwithoutlicenceLicensingoftransportationticketagents
+
+Offence:actingasagentwithoutlicenceOffence:actingasinsurancebrokerwithoutlicenceRegulationsScopeofregulations
+
+LICENCESOFINSURANCESALESPERSONS
+
+LicencesTypeofinsuranceIssueoflicenceNoticeofappointmentLifeinsuranceNoticeofterminationofemploymentFailuretogivenoticeExpirationoflicenceRenewalForwhomsalespersonmayactOffence:actingassalespersonwithoutlicence
+
+(3)211.14(1)(2)211.15
+
+212
+
+213
+
+214215216
+
+217
+
+218219
+
+220
+
+221
+
+222
+
+(1)(2)(3)(4)(5)(6)(7)(1)(2)(3)(1)(2)
+
+(1)(2)
+
+(1)(2)
+
+(1)(2)
+
+(1)(2)(3)(4)(5)(6)(7)(1)(2)(3)(4)
+
+PratiqueetprocédureAssurance-incendieInspectionRèglement
+
+PARTIEIXAGENTS,COURTIERSETEXPERTS
+
+LICENCESD’AGENTSD’ASSURANCELicenceCatégoriesdelicencesDélivrancedelalicenceAvisdenominationd’unagentRestrictionsFindelarelationd’agence;avisausurintendantInfractionInadmissibilitéExpirationRenouvellementPouvoirs:agentsPouvoirs:agentd’assurance-viePercepteursDirigeantsetsalariésdessociétésdesecoursmutuelMembresdesociétésdesecoursmutuelDirigeantsetsalariésdesassureurs
+
+LicenceauxpréposésauxbilletsdescompagniesdetransportInfractionIdem
+
+RèglementsPortéedesrèglements
+
+LICENCESDEVENDEURSD’ASSURANCE
+
+LicencesCatégoriesdelicencesDélivrancedelalicenceNominationd’unagentAssurance-vieFindel’emploi;avisausurintendantDéfautdedonneravisExpirationRenouvellementPouvoirsduvendeurInfraction
+
+15
+
+LICENCESOFINSURANCEBROKERS
+
+LicencetobrokerApplicationIssuanceoflicenceExpirationoflicenceRenewaloflicenceSecurityStatusofbrokerOffenceDealingwithunlicensedinsurersStatementofinsuredSubmissiontoSuperintendentBooksofaccountMonthlyreturnTaxonpremiumsReleaseofsecurityForfeitureoflicence,offence
+
+PROVISIONSRELATINGTOAGENTSANDBROKERSGENERALLY
+
+AgentorbrokerreceivingpremiumsExemptionFraudulentrepresentationsPersonalliabilityofagentforunlawfulcontracts
+
+LICENCESOFINSURANCEADJUSTERSLicencesofinsuranceadjustersFilingapplicationIssueandexpirationoflicenceRenewaloflicenceOffence:actingasadjusterwithoutlicenceProhibitionagainstpublicadjustersofmotoraccidentclaimsExemption
+
+PROVISIONSRELATINGTOAGENTS,BROKERSANDADJUSTERSGENERALLY
+
+Offence:actingasagent,brokeroradjusterwithoutauthorityAgentorbrokerholdingmoneyintrustAgentorbrokerholdingpremiumintrustPaymentofcompensation,andoffenceAgreementastopremiumotherthanasinpolicy,andoffence
+
+223
+
+224
+
+225226227
+
+228
+
+229
+
+230
+
+231
+
+(1)(2)(3)(4)(5)(6)(7)(8)(1)(2)(3)(4)(5)(6)(7)(8)
+
+(1)(2)
+
+(1)(2)(3)(4)(5)(1)
+
+(2)
+
+(1)(2)(3)(1)(2)
+
+LICENCESDESCOURTIERSD’ASSURANCE
+
+LicencedecourtierDemandeécriteDélivrancedelalicenceExpirationdelalicenceRenouvellementCautionnementQualitéducourtierInfractionAssureursnontitulairesd’unelicenceDéclarationdel’assuréRapportausurintendantRegistrescomptablesRapportmensuelTaxesRemiseducautionnementInfraction
+
+DISPOSITIONSGÉNÉRALESCONCERNANTLESAGENTSETLESCOURTIERS
+
+Versementdesprimesàl’agentExceptionAssertionsfrauduleusesResponsabilitépersonnelle
+
+LICENCESD’EXPERTSENSINISTRESLicencesd’expertensinistresDemandeécriteDélivranceetexpirationdelalicenceRenouvellementInfractionInterdiction
+
+Exception
+
+DISPOSITIONSGÉNÉRALESCONCERNANTLESAGENTS,LESCOURTIERSETLESEXPERTSENSINISTRES
+
+InfractionFiducieIdemInterdictionInterdictiond’offrirdesrabais
+
+16
+
+ExceptionsOffence:inducinginsuredwithrespecttolifeinsuranceOffence:misleadingstatements,comparisonsorcoercionReturnstoSuperintendentRevocationorsuspensionNoticeApplicationAdvisoryboardCompositionofadvisoryboardHearingandreportPresidingmemberAppealEffectofdecisionpendingappealLimitedorconditionallicence
+
+REGULATIONSRegulationsPARTXUNFAIRANDDECEPTIVEACTSANDPRACTICESINTHEBUSINESSOFINSURANCE
+
+DefinitionsProhibitionInvestigationbySuperintendantOrderofSuperintendentTerms,conditionsandrevocationoforderHearingServiceandeffectoforderOffenceandpunishment
+
+PARTXIINSURANCEPREMIUMTAX
+
+DefinitionsDefinition:"businesstransactedintheNorthwestTerritories"AmountoftaxExceptionsLevyoninsurancecompaniesWhentaxpayableVerificationofreturnInterestonoverduetaxesReturnsInspectorsProductionofbooksExaminationOffenceandpunishmentCancellationoflicence
+
+232
+
+233234
+
+235
+
+236237
+
+238
+
+239240241242
+
+243
+
+244245
+
+246247
+
+248249250
+
+251
+
+(3)(1)
+
+(2)
+
+(1)(2)(1)(2)(3)(4)(5)(1)(2)
+
+(1)(2)(3)(4)
+
+(1)(2)(3)
+
+(1)(2)
+
+(1)(2)(3)(4)
+
+ExceptionsInterdiction
+
+DéclarationsoucomparaisonstrompeusesRapportsausurintendantRévocationoususpensionAvisApplicationConseilconsultatifCompositionduconseilconsultatifAudienceetrapportPrésidentAppelSuspensiondel’exécutionLicencelimitéeouconditionnelle
+
+RÈGLEMENTSRèglementsPARTIEXACTESETPRATIQUESMALHONNÊTESETTROMPEURSDANSLECOMMERCEDESASSURANCES
+
+DéfinitionsInterdictionEnquêtesparlesurintendantOrdonnancedusurintendantModalitésAudienceSignificationInfractionetpeine
+
+PARTIEXITAXESURLESPRIMESD’ASSURANCE
+
+DéfinitionsDéfinition:«opérationseffectuéesdanslesTerritoiresduNord-Ouest»MontantdelataxeExceptionsContributiondescompagniesd’assuranceVersementAttestationdurapportIntérêtsurlesoldenonpayéRenseignementssupplémentairesInspecteursAccèsauxdocumentsInterrogatoiresoussermentInfractionetpeineAnnulationdelalicence
+
+17
+
+OffencesandpunishmentActoromissionofcompanyStatusofunpaidtaxesRegulations
+
+PARTXIIADMINISTRATION
+
+SuperintendentDutiesofSuperintendentActingSuperintendentApprovalofformsPowersofSuperintendentrespectingevidenceOathsHoldingsharesActionagainstSuperintendentPowerofSuperintendenttobringactionLeaveRecordkeepingInspectionofrecordsPublicationinNorthwestTerritoriesGazetteEvidenceoflicencestatusEvidenceoffilingofdocumentsDecisionofSuperintendentCopyofdecisionStenographicreportAppealCertificationofdecisionandevidencePracticeandprocedureLimitationonappealInquiriesbySuperintendentAccesstobooksDutytoprovideinformationonrequestInspectionAccesstobooksInspectionofinsurersDutyofofficersandagentsProductionofbooksExaminationofaffairsofinsurerExpensesofexaminationServiceofnoticeorprocessInsurertofileaddressForwardingnoticeorprocessPublicationbySuperintendentAnnualreportPublicationAgreementsRegulations
+
+ANNEXE
+
+252
+
+253
+
+254
+
+254.1255256257258
+
+259260
+
+261
+
+262
+
+263264265
+
+266
+
+267268269270
+
+271272
+
+(1)(2)(3)
+
+(1)(2)(3)
+
+(1)(2)(3)(1)(2)(1)(2)(3)(1)(2)(3)(1)(2)(3)(4)
+
+(1)(2)(3)(1)(2)(3)(4)(5)(1)(2)
+
+(1)(2)
+
+InfractionsetpeinePrésomptionCréancesdugouvernementRèglements
+
+PARTIEXIIADMINISTRATION
+
+SurintendantObligationsdusurintendantSuppléantApprobationdesformulairesPouvoirsdusurintendantSermentsInterdictionActioncontrelesurintendantPouvoirdusurintendantd’intenteruneactionPermissionRegistresExamendesregistresPublicationdanslaGazettePreuvePreuvedudépôtdedocumentsDécisiondusurintendantTexted’unedécisionNotessténographiquesAppelTextecertifiéconformedeladécisionProcédureRestrictionDemandedusurintendantAccèsauxdocumentsRenseignementsàfournirausurintendantInspectionAccèsauxdocumentsInspectiondesassureursObligationdesdirigeantsetdesagentsLivresetregistresExamendelasituationdel’assureurFraisd’examenSignificationdesactesdeprocédureAvisdel’adressepostaleTransmissiondesavisouactesdeprocédurePublicationRapportannuelPublicationEntentesRèglementsSCHEDULE
+
+18
+
+Definitions
+
+INSURANCEACTINTERPRETATION
+
+1.(1)InthisAct,exceptwhereinconsistentwiththeinterpretationsectionsofanyPart,
+
+"accidentinsurance"meansinsurancebywhichtheinsurerundertakes,otherwisethanincidentallyto someotherclassofinsurancedefinedbyorunderthisAct,topayinsurancemoneyin theeventofaccidenttothepersonorpersonsinsured,butdoesnotincludeinsurancebywhichtheinsurerundertakestopayinsurancemoneybothintheeventofdeathbyaccidentandintheeventofdeathfromanyothercause;(assurance-accident)
+
+"accidentaldeathinsurance"meansinsuranceundertakenbyaninsureraspartofacontractoflifeinsurancebywhichtheinsurerundertakestopayanadditionalamountofinsurancemoneyintheeventofthedeathbyaccidentofthepersonwhoselifeisinsured;(assuranceencasdedécèsaccidentel)
+
+"actuary"meansaFellowoftheCanadianInstituteofActuaries;(actuaire)
+
+"adjuster"meansapersonwho,(a)onbehalfofaninsureroraninsured,forcompensation,directlyorindirectlysolicitstherighttonegotiatethesettlementoforinvestigatealossorclaimunderacontractorafidelity,suretyor guarantybondissuedbyan insurer, orinvestigates,adjustsorsettlesanysuchlossorclaim,or(b)holdshimselforherselfoutasanadjuster,investigator,consultantoradviserwithrespecttothesettlementofsuchlossesorclaims,butdoesnotinclude,(c)abarristerorsolicitoractingintheusualcourseofthatprofession,(d)atrusteeoragent of the property insured,(e)asalariedemployeeofalicensedinsurerwhileactingonbehalfofthelicensedinsurerintheadjustmentoflosses,(f)apersonwhoisemployedasanappraiser, engineer or otherexpertsolelyforthepurposeofgivingexpertadviceorevidence,or
+
+LOISURLESASSURANCESDÉFINITIONS
+
+1.(1)Lesdéfinitionsquisuivents’appliquentàlaprésenteloi,sousréservedesdéfinitionsetrèglesd’interprétationparticulièrescontenuesdanschacunedesesparties.
+
+«actuaire»Fellowdel’InstitutCanadiendesActuaires.(actuary)
+
+«agenceprincipale»Lebureauoul’établissementprincipaldanslesTerritoiresduNord-Ouestdel’assureurtitulaired’unelicencedontlesiègesocialestsituéàl’extérieurdesTerritoiresduNord-Ouest.(chiefagency)
+
+«agent»Personnequi,àl’exceptiondecellequiagitenvertudesparagraphes216(1)ou(2),oudel’article217,moyennantunerémunération,solliciteuncontratd’assurancepourlecompted’unassureuroutransmet,pourlecompted’untiers,unepropositiond’assuranceouunepoliced’assuranceàunassureuroudelapart de celui-ci,ou prend partouoffre deprendrepartàlanégociationd’uncontratd’assurance,desaprolongationoudesonrenouvellement.(agent)
+
+«appel»Touterévisionjudiciaired’unjugement,d’unedécision,d’uneordonnance,d’unedirective,d’unedétermination,d’uneconclusionoud’unedéclarationdeculpabilité,d’unecausequiafaitl’objetd’unexposédecauseoudontleprononcédujugementaétéreporté,ainsique de l’annulationdesprocédures,notammentparvoiedecertiorari.(appeal)
+
+«Associationdesassureurs»L’associationàbutnonlucratif,nonconstituéeenpersonnemorale,desassureursappeléeAssociationdesassureurs,constituéedanslebutderépartirlesrisquesenmatièred’assuranceautomobileafind’offrircetteassuranceàtouslespropriétairesd’automobile,etmaintenueenexistenceenvertudel’article7delaLoisurl’assurance-automobileobligatoire(Ontario). (FacilityAssociation)
+
+«associationd’indemnisation»Personnemoraleouassociationnonconstituéedontlebutestd’indemniserles titulaires de policesdesassureurs insolvables etlesréclamantsadmissibles,etquiestdésignéeàcetitreenvertudel’alinéa19a).(compensationassociation)
+
+Définitions
+
+19
+
+(g)apersonwhoactsasanadjusterofmarinelossesonly;(expertouexpertensinistres)
+
+"agent"meansapersonwho,forcompensation,notbeingapersonactingundertheauthorityofsubsection216(1)or(2)orsection217,solicitsinsuranceonbehalfofaninsurerortransmits,forapersonotherthan himself orherself,an applicationfororapolicyofinsurancetoorfromsuchinsureroroffersorassumestoactinthenegotiationofsuchinsurance orinnegotiatingitscontinuanceor renewal;(agent)
+
+"aircraft insurance"meansinsuranceagainst loss ofordamagetoanaircraftandagainstliabilityforlossordamageto personsor property causedbyanaircraftorbytheoperationofanaircraft;(assurance-aéronefs)
+
+"appeal"includesajudicialrevisionorreviewofajudgment,decision,order,direction,determination,findingorconviction,andacasestatedorreserved,andaremovalofproceedingsbywayofcertiorari, orotherwise;(appel)
+
+"automobile"includesaself-propelledvehicle,andthetrailers,accessoriesandequipmentofautomobiles,butdoesnotincludewatercraft,aircraftorrailwayrolling-stockthatrunsonrails;(automobile)
+
+"automobileinsurance"meansinsurance(a)againstliabilityarisingoutof(i)bodilyinjurytoorthedeathofaperson,or(ii)lossofordamagetoproperty,causedbyanautomobileortheuseoroperationofanautomobile,or(b)againstlossofordamagetoanautomobileandthelossofuseofanautomobile,andincludesinsuranceotherwisecomingwithintheclassofaccidentinsurancewheretheaccidentiscausedbyanautomobileortheuseoroperationofanautomobile,whetherliabilityexistsornot,ifthecontractalsoincludesinsurancedescribedinparagraph(a);(assuranceautomobile)
+
+"boilerandmachineryinsurance"meansinsuranceagainstlossofordamagetopersonsorpropertyandagainstliabilityforlossordamagetopersonsorpropertythroughtheexplosion,collapse,ruptureorbreakdownof,oraccidentto,boilersormachineryofanykind;(assurancedeschaudièresetmachines)
+
+«assurance»L’engagementparunepersonneenversuneautredel’indemniserdetoutsinistreoudeladégagerdetouteresponsabilitédufaitd’unsinistrerelativementàunrisqueoupérildéterminéauquell’objetassurépeutêtreexposé,oudeverserunesomme outouteautrechosedevaleurlorsqu’uncertainévénementseproduit.(insurance)
+
+«assurance-accident»Assuranceparlaquellel’assureurs’engage,defaçonnonaccessoireàtouteautrecatégoried’assurancedéfiniesouslerégimedelaprésenteloi,àverserunesommeassuréeencasd’accidentàlaouauxpersonnesassurées;la présentedéfinitionnevisetoutefoispasuneassuranceparlaquellel’assureurs’engage,àlafoisencasdedécèsaccidenteletencasdedécèsoccasionnépartouteautrecause,àverserunesommeassurée.(accidentinsurance)
+
+«assurance-aéronefs»Assurancecontrelaperted’unaéronefoucontrelesdommagesquiluisontcausésetcontrelaresponsabilitédécoulantdespertesoudesdommagescausésauxpersonnesouauxbiensparunaéronefousonexploitation.(aircraftinsurance)
+
+«assuranceautomobile»S’entendàlafois:a)del’assurance-responsabilitédécoulantdeslésionscorporellessubiesparunepersonne,oudesondécès,oudespertesoudommagesmatérielscausésparuneautomobile,sonutilisationousaconduite;b)del’assurancecontrelaperted’uneautomobileoucontrelesdommagesquiluisontcausésetlaprivationdejouissancequiendécoule.Laprésentedéfinitions’entendégalementd’uneassurancequiseraitnormalementinclusedanslacatégoriedesassurances-accidentslorsquel’accidentestcauséparuneautomobile,sonutilisationousaconduite, qu’ilyaitounon responsabilité,silecontratcomprendaussil’assurancementionnéeàl’alinéaa).(automobileinsurance)
+
+«assurance-cautionnement»L’engagementd’exécuteruneententeouuncontrat,oudes’acquitterd’unefiducie,d’unefonctionoud’uneobligationencasdedéfautdelapersonnequiyesttenue,oudeverserunesomme,soitlorsdudéfaut,soitaulieudel’exécutiondel’obligation,soitdanslecas où ledéfautoccasionneuneperteouundommage;laprésentedéfinitionnevisetoutefoispasl’assurance-crédit.(guaranteeinsurance)
+
+20
+
+"broker"meansapersonwho,forcompensation,notbeingapersonactingundertheauthorityofsubsection216(1),(2)orsection217,actsoraidsinanymannerinnegotiatingcontractsofinsuranceorplacingrisksoreffectinginsuranceorinnegotiatingthecontinuanceorrenewalofsuchcontractsforapersonotherthanhimselforherself;(courtier)
+
+"chiefagency"meanstheprincipalofficeorplaceofbusinessintheNorthwestTerritoriesofalicensedinsurerhavingitsheadofficeoutsidetheTerritories;(agenceprincipale)
+
+"compensationassociation"meansabodycorporateoranunincorporatedassociationthathasthepurposeofcompensatingpolicyholdersandeligibleclaimantsofinsolventinsurersandthatisdesignatedunderparagraph19(a)asacompensationassociation;(associationd’indemnisation)
+
+"contract"meansa contract of insurance,andincludesapolicy,certificate, interimreceipt, renewal receiptorwritingevidencing thecontract,whethersealedornot,andabindingoralagreement;(contrat)
+
+"creditinsurance"meansinsuranceagainstlosstotheinsuredthroughtheinsolvencyordefaultofapersontowhomcreditisgiveninrespectofgoods,waresormerchandise;(assurance-crédit)
+
+"disabilityinsurance"meansinsuranceundertakenbyaninsureraspartofacontractoflifeinsurancebywhichtheinsurerundertakestopayinsurancemoneyorto provide otherbenefitsintheeventthatthepersonwhoselifeisinsuredbecomesdisabledasaresultofbodilyinjuryordisease;(assurance-invalidité)
+
+"dueapplication"includestheinformation,evidenceandmaterialthattheSuperintendentrequirestobeprovided,andalsothepaymentoftheprescribedfeesinrespectofanyapplication,certificateordocumentrequiredorissuedbyvirtueofthisAct;(demandeconforme)
+
+"employers’liabilityinsurance"meansinsurance,notbeinginsuranceincidentaltosomeotherclassofinsurancedefinedbyor under thisAct,againstlosstoanemployerthroughliabilityforaccidentalinjurytoordeathof anemployeearisingoutofor in the courseofhisorheremployment,butdoesnotincludeworkers’compensationinsurance;(assurance-responsabilitédesemployeurs)
+
+«assurancecontrelebrisdesglaces»Assurance,quin’estpascontractéeaccessoirementàuneassuranced’uneautrecatégoriedéfiniesouslerégimedelaprésenteloi,contrelebris des glaces,plaquesde verreou vitres,oucontrelesdommagesquileursontcausés,qu’ellessoientinstalléesouentransit.(plateglassinsurance)
+
+«assurancecontrelevol»Assurancecontrelespertesoulesdommagesrésultantd’unvol,d’undétournementillicite,d’uncambriolage,d’unvolaveceffraction,d’unvolqualifiéoud’unfaux.(theftinsurance)
+
+«assurancecontreles dommages matériels»Assurancecontre la pertedebiensou les dommagescausésàdesbiens,quin’estpasaccessoireàuneassuranced’uneautrecatégoriedéfiniesouslerégimedelaprésenteloinin’enfaitpartie.(propertydamageinsurance)
+
+«assurancecontre lesfuitesd’extincteursautomatiques»Assurancecontrelespertesoulesdommagesmatérielsrésultantdelaruptureoudesfuitesd’extincteursautomatiquesoudetoutautresystèmedeprotectioncontrelesincendies,oudespompes,desconduitesd’eauoudelaplomberieet sesaccessoires.(sprinklerleakageinsurance)
+
+«assurance-crédit»Assurance contre les pertes subiesparl’assurépar suite del’insolvabilitéoududéfautdepayerd’unepersonneàlaquelleestaccordéducréditsurdesbiens,denréesoumarchandises.(creditinsurance)
+
+«assurancedetransportsterrestres»Assurance,autrequ’uneassurancemaritime,contrelaperted’unbienoulesdommagescausésàunbien:a)soitpendantletransitouàl’occasiond’unretarddanssontransport;b)soitlorsquelesurintendantestd’avis quelerisque est essentiellementunrisquedetransit.(inlandtransporationinsurance)
+
+«assurancedeschaudièresetmachines»Assurancecontrelespertesoudommagesmatérielsetlepréjudicecorporel,etcontrelaresponsabilitéquiendécoule,provoquésparl’explosion,l’effondrement,larupture,lapanneoulebrisdechaudièresoudemachinesdetoutessortes.(boilerandmachineryinsurance)
+
+«assurancedubétail»Assurance,quin’estpascontractéeaccessoirementà une assurance d’uneautre
+
+21
+
+"endowmentinsurance",asappliedtoafraternalsociety,meansanundertaking topayanascertainedorascertainablesumatafixedfuturedateifthepersonwhoselifeisinsuredisthenalive,oratthedeathofthatpersonifthatpersondiesbeforethatdate;(assurancemixte)
+
+"FacilityAssociation"meanstheunincorporatednon-profitassociationofinsurerscalledtheFacilityAssociation,establishedforthepurposeofallocatingautomobileinsuranceriskstoensuretheavailabilityofinsurancetoownersofautomobilesandcontinuedundersection7oftheCompulsoryAutomobileInsuranceAct(Ontario);(Associationdesassureurs)
+
+"fireinsurance"meansinsurance,notbeinginsuranceincidentaltosomeotherclassofinsurancedefinedbyorunderthisAct,againstlossofor damagetopropertythroughfire,lightningorexplosionduetoignition;(assurance-incendie)
+
+"foreignjurisdiction"meansajurisdictionotherthantheNorthwestTerritories;(territoireétranger)
+
+"fraternalsociety"meansasociety,orderorassociationincorporatedforthepurposeofmakingwithitsmembersonly,andnotforprofit,contractsoflife,accidentorsicknessinsurance in accordance withitsconstitution, bylaws andrulesandthisAct;(sociétedesecoursmutuel)
+
+"guaranteeinsurance"meanstheundertakingtoperformanagreementorcontractortodischargeatrust,duty or obligationondefaultof thepersonliablefortheperformanceordischargeortopaymoneyonthedefaultorinplaceoftheperformanceordischarge,orwherethereislossordamagethroughthedefault,butdoesnotincludecreditinsurance;(assurance-cautionnement)
+
+"headoffice"meanstheplacewherethechiefexecutiveofficerofaninsurertransactshisorherbusiness;(siègesocial)
+
+"inlandtransportationinsurance"meansinsurance,otherthan marineinsurance, againstloss ofordamagetoproperty,(a)while intransitorduringdelay incidentaltotransit,or(b)where,intheopinionoftheSuperintendent, theriskissubstantially atransitrisk;(assurancedetransportsterrestres)
+
+catégoriedéfiniesouslerégimedelaprésenteloi,contrelespertesd’animauxduesàlamort,àlamaladieouàunaccident.(livestockinsurance)
+
+«assuranceencasdedécèsaccidentel»Assurancefaisantpartied’uncontratd’assurance-vieparlaquellel’assureurs’engageàverserun supplémentdesommesassuréesencasdedécèsaccidenteldelapersonneassurée.(accidentaldeathinsurance)
+
+«assurance-hypothèque»Assurancecontrelapertecauséeparledéfautdel’emprunteur lorsqueleprêtestgarantiparunehypothèqueportantsurdesbiensimmobiliersouparunintérêtsurdesbiensimmobiliers.(mortgageinsurance)
+
+«assurance-incendie»Assurance,quin’estpascontractéeaccessoirementàune assuranced’uneautrecatégoriedéfiniesouslerégimedelaprésenteloi,contrelespertes oulesdommagesmatérielscausésparlefeu,lafoudreoul’explosiondueàlacombustion.(fireinsurance)
+
+«assurance-indemnisationdestravailleurs»Régimed’indemnisationdestravailleursprévuàla[Loi](https://www.canlii.org/en/nt/laws/stat/snwt-2007-c-21/latest/snwt-2007-c-21.html)surl’indemnisationdestravailleursoudansuneautreloiayantlemêmeobjetetédictéeailleursauCanada.(workers’compensationinsurance)
+
+«assurance-invalidité»Assurancefaisantpartied’uncontratd’assurance-vieparlaquellel’assureurs’engageàverserunesommeassuréeouàfournird’autresprestationssil’assurédevientinvalideàlasuited’unelésioncorporelleoud’unemaladie.(disabilityinsurance)
+
+«assurance-maladie»Assuranceparlaquellel’assureurs’engageàverserunesommeassuréeencasdemaladiedelaoudespersonnesassurées,maisnecomprendpasl’assurance-invalidité.(sicknessinsurance)
+
+«assurancemaritime»Selonlecas:a)l’assurance-responsabilitédécoulantdeslésionscorporellessubiesparunepersonneoudesondécès,oudespertesoudesdommagesmatériels;b)l’assurancecontrelaperted’unbienouledommagequiluiestcausé,àl’occasion,soitd’unvoyageenmerousurleseauxinternes,soitd’unretardlorsduvoyage,soitd’une
+
+22
+
+"insurance"meanstheundertakingbyonepersontoindemnifyanotherpersonagainstlossorliabilityforlossinrespectofacertainriskorperiltowhichtheobjectoftheinsurancemaybeexposed,ortopayasumofmoneyorotherthing ofvalueonthe happeningofacertainevent;(assurance)
+
+"insurancefund"asappliedtoa fraternal societyor asappliedtoacorporationnotincorporatedexclusivelyforthetransactionofinsurance,includesallmoney,securitiesformoneyandassetsappropriatedbytherulesofthesocietyorcorporationtothepaymentofinsuranceliabilitiesorappropriatedforthemanagementof the insurancebranch or department ordivisionofthesociety,orotherwiselegallyavailableforinsuranceliabilities,butdoesnotincludefundsofatradeunionappropriatedtoorapplicableforthevoluntaryassistanceofwage earnersunemployedoronstrike;(fondsd’assurance)
+
+"insurancemoney"meanstheamountpayablebyaninsurerunderacontract,andincludesallbenefits,surplus,profits,dividends,bonusesandannuitiespayableunderthecontract;(sommesassurées)
+
+"insurer"meansthepersonwhoundertakesoragreesorofferstoundertakeacontract;(assureur)
+
+"licence"meansa licenceissuedunderthisActbytheSuperintendent;(licence)
+
+"lifeinsurance"meansinsurancebywhichaninsurerundertakestopayinsurancemoney,(a)ondeath,(b)onthehappeningofaneventorcontingencydependentonhumanlife,(c)at afixedordeterminablefuturetime, or(d)foratermdependentonhumanlife,and,withoutrestrictingthegeneralityoftheabove,includesaccidentaldeathinsurancebutnotaccidentinsurance;(assurance-vie)
+
+"livestockinsurance"meansinsurance,notbeinginsuranceincidentaltosomeotherclassofinsurancedefinedbyorunderthisAct,againstlossthroughthedeathorsicknessoforaccidenttoananimal;(assurancedubétail)
+
+"marineinsurance"meansinsuranceagainst,(a)liabilityarisingoutof(i)bodilyinjurytoordeathofaperson,or
+
+partiedutransportquines’effectuepaspareau,maisquifaitpartiedecevoyage.(marineinsurance)
+
+«assurancemixte»Danslecasd’unesociétédesecoursmutuel,désignel’engagementdepayeràunedateultérieurepréciseunesommedéterminée,ouquipeut l’être, silapersonneassuréeestalorsvivante,ouàsondécès,siledécèssurvientavantcettedate.(endowmentinsurance)
+
+«assurancemutuelle»Contratd’assurancedanslequellacontrepartien’estnifixéenicertainelorsdelaconclusionducontrat,maisnedoitêtredéterminéequ’àsonexpirationouàcertainespériodesfixespendantladuréeducontratselonlesstatistiquesdel’assureurquiportentsurlatotalitédescontratsdecettesorte,quelemontantmaximaldecettecontrepartiesoitpréalablementarrêtéounon.(mutualinsurance)
+
+«assurance-responsabilité civile» Assurance contre laperteoulesdommagesàlapersonneouauxbiensdetiersquin’estpasaccessoireàuneassuranced’uneautrecatégoriedéfiniesouslerégimedelaprésenteloinin’enfaitpartie.(publicliabilityinsurance)
+
+«assurance-responsabilitédesemployeurs»Assurance,quin’estpascontractéeaccessoirementàuneassuranced’uneautre catégoriedéfiniesouslerégimedelaprésenteloi,quigarantitl’employeurcontretoutepertequesaresponsabilitéluifaitencourirrelativementauxblessuresaccidentellescauséesàunemployéouaudécèsd’unemployédansl’exécutiondesesfonctions;laprésentedéfinitionnevisetoutefoispasl’assurance-indemnisationdestravailleurs.(employers’liabilityinsurance)
+
+«assurance-titre»Assurancecontrelespertesoulesdommagesrésultantdel’invaliditéd’untitredepropriétéoudetoutautreactesemblable,oudetoutautrevicedontilspeuventêtreentachés.(titleinsurance)
+
+«assurance-vie»Assuranceparlaquelleunassureurs’engageàverserunesommeassurée:a)lorsquesurvientundécès;b)lorsquesurvientunévénementouuneéventualitéserattachantàlaviehumaine;c)àuneépoqueultérieurepréciseoudéterminable;d)pendantune périodeserattachant àlaviehumaine;sansquesoitlimitéelaportéegénéraledecequi
+
+23
+
+(ii)thelossofordamagetoproperty,or(b)thelossofordamagetoproperty,occurringduringavoyageormarineadventureatseaor onaninland waterway or duringdelayincidental tothat,orduringtransitotherwisethanbywaterincidentaltosuchavoyageormarineadventure;(assurancemaritime)
+
+"mortgageinsurance"meansinsuranceagainstlosscausedbydefaultonthepartofaborrowerunderaloansecuredbyamortgageonrealproperty,ahypotheconimmovablepropertyoraninterestinrealorimmovableproperty;(assurance-hypothèque)
+
+"motorvehicleliability policy" meansapolicy orpartofapolicyevidencingacontractinsuring(a)theownerordriverofanautomobile,or(b)apersonwhoisnottheownerordriverofanautomobile where theautomobileisbeingusedoroperatedbyhisorheremployee oragentorany otherpersononhisorherbehalf,againstliabilityarisingoutofbodilyinjurytoorthedeathof a person orlossordamagetoproperty causedbyanautomobileortheuseoroperationofanautomobile;(policederesponsabilitéautomobile)
+
+"mutualinsurance"meansacontractofinsuranceinwhichtheconsiderationisnotfixedorcertainatthetime thecontractis made and istobedetermined attheterminationofthecontractoratfixedperiodsduringthetermofthe contractaccordingtothe experienceoftheinsurerinrespectofallsimilarcontracts,whetherornotthemaximumamountoftheconsiderationispredetermined;(assurancemutuelle)
+
+"non-owner’spolicy"meansamotorvehicleliabilitypolicyinsuringapersonsolelyinrespectofthe useoroperationbythepersonoronhisorherbehalfofanautomobile thatisnotownedbytheperson;(police deconducteur)
+
+"officer"includesatrustee,director,manager,treasurer,secretaryormemberoftheboardorcommitteeofmanagementofaninsurerandapersonappointedbytheinsurertosueandbesuedinitsbehalf;(dirigeant)
+
+"onproof",asappliedto any matterconnectedwiththelicensingof an insurerorotherperson,meansonprooftothesatisfactionoftheSuperintendent;(versionanglaiseseulement)
+
+précède,laprésentedéfinitions’entendégalementdel’assuranceencasdedécèsaccidentel,maisnevisepasl’assurance-accident.(lifeinsurance)
+
+«assureur»Lapersonnequiconclutuncontrat, ouquiaccepteouoffredeleconclure.(insurer)
+
+«automobile»S’entendnotammentd’unvéhiculeautomobileainsiquedesremorques,desaccessoiresetdel’équipementdesautomobiles;laprésentedéfinitionnevisetoutefoispaslesbateaux,lesaéronefsoulesvéhiculesferroviaires.(automobile)
+
+«biens»S’entendnotammentdesprofits,recettesetautresintérêtspécuniaires,desdépensesdelocation,d’intérêt,detaxesetautresdépensesetfrais,etégalementdes dépensesoccasionnéesparl’incapacitéd’occuperleslocauxassurés,maisseulementdanslamesureoùlecontratleprévoitexpressément.(property)
+
+«conjoint» S’entendausensdel’ [article](https://www.canlii.org/en/nt/laws/stat/snwt-1997-c-18/latest/snwt-1997-c-18.html#sec1_smooth)1 de la[Loi](https://www.canlii.org/en/nt/laws/stat/snwt-1997-c-18/latest/snwt-1997-c-18.html)surledroitdelafamille.(spouse)
+
+«contrat»Contratd’assurance;laprésentedéfinitions’entendnotammentd’unepolice,d’uncertificat,d’unequittanceprovisoire,d’unequittancederenouvellement,d’unécrit,scelléounon,constatantlecontrat,etd’uneconventionverbaleliantlesparties.(contract)
+
+«courtier»Personnequi,àl’exceptiondecellequiagitenvertudesparagraphes216(1)ou(2),oudel’article 217, moyennantune rémunération, prend partoucontribuedequelquemanièrequecesoitàlanégociationdecontratsd’assurance,auplacementderisques,àlasouscriptiond’assuranceouàlanégociationdelaprolongationoudurenouvellementdecescontratspouruntiers.(broker)
+
+«demandeconforme»S’entendnotammentdesrenseignements,élémentsdepreuveetobjetsquelesurintendantexigedeluiremettre,etaussiduversementdesdroitsréglementairesapplicablesàtoutedemandeprévuepar la présente loiouàtoutcertificatoudocumentdélivrésoussonrégime.(dueapplication)
+
+«dirigeant»S’entendnotammentdufiduciaire,del’administrateur,dudirecteur,dutrésorier,dusecrétaireoudumembreduconseild’administrationouducomitédegestiond’unassureuretdetoute
+
+24
+
+"owner’spolicy"meansamotorvehicleliabilitypolicyinsuringapersoninrespectoftheownership,useoroperationofanautomobileownedbythepersonandwithinthedescriptionordefinitionoftheautomobileinthepolicyand, ifthecontract soprovides,inrespectoftheuseoroperationofanyotherautomobile;(policedepropriétaire)
+
+"PlanofOperation"meanstheplanestablishedinthearticlesofassociationoftheFacilityAssociationforprovidingacontractofautomobileinsurancetoownersandlicenseddriversofautomobileswho,butforthePlanofOperation,wouldbeunabletoobtainautomobileinsurance;(régimed’assurance)
+
+"plateglassinsurance"meansinsurance,notbeinginsuranceincidentaltosomeotherclassofinsurancedefined byor under thisAct,againstloss ofordamagetoplate,sheetorwindowglass,whetherinplaceorintransit;(assurancecontrelebrisdesglaces)
+
+"policy"meanstheinstrumentevidencingacontract;(police)
+
+"premium"meansthesingleorperiodicalpaymentunderacontractforinsurance,andincludesdues,assessments,administrationfeespaidfortheadministrationorservicingof acontractforinsurance,andotherconsiderations;(prime)
+
+"property"includesprofits,earningsandotherpecuniaryinterests,andexpenditureforrents,interest,taxesandotheroutgoingsandchargesandinrespectofinabilitytooccupytheinsuredpremises,butonlytotheextent of expressprovisioninthecontract; (biens)
+
+"propertydamage insurance" means insurance againstlossof ordamagetoproperty thatisnot included in orincidentaltosomeotherclassofinsurancedefinedbyorunderthisAct;(assurancecontrelesdommagesmatériels)
+
+"publicliabilityinsurance"meansinsuranceagainstloss or damageto the person orpropertyofothersthatisnotincludedinorincidentaltosomeotherclassofinsurancedefinedbyorunderthisAct;(assurance-responsabilitécivile)
+
+"salesperson"meansapersonwhoisemployedbyalicensedinsuranceagentorbrokeronastatedsalarythatisnotsupplementedbycommission,bonusor anyotherremunerationto solicitinsuranceortransact, forapersonotherthanhimselforherself,anapplication
+
+personnequel’assureurnommepouresterenjusticepoursoncompte.(officer)
+
+«expert»ou«expertensinistres»Personnequi,selonlecas:a)pourlecomptedel’assuréoudel’assureur,moyennant unerémunération,sollicite,directementouindirectement,ledroitdenégocierlerèglementd’unsinistrecouvertpar uncontratd’assuranceouuncontratd’assurance-cautionnementdélivréparunassureur;b)seprésentecommeexpertouconseillerenmatièrederèglementdesinistrescouvertsparcescontrats;laprésentedéfinitionnevisetoutefoispas:c)l’avocatagissant dans lecadrenormal desesactivitésprofessionnelles;d)lefiduciaireoul’agentdes biens assurés;e)lesalariéd’unassureurtitulaired’unelicencequinégocielerèglementd’unsinistrepourle comptedesonemployeur;f)l’évaluateur,l’ingénieurouautreexpertdontlesservicesprofessionnelsnesontretenusquedanslebutdedonnerunavis;g)l’expertensinistresmaritimes.(adjuster)
+
+«fondsd’assurance»Danslecasd’unesociétédesecoursmutueloudetoutepersonnemoralequin’apasétéconstituéeuniquementàtitredecompagnied’assurance,s’entendnotammentdessommes,garantiesetélémentsd’actifaffectés,d’aprèslesrèglements delasociété ou de la personne morale,auxpaiementsdesengagementscontractésauxtermesd’uncontratd’assuranceouaffectésàlagestiondelasection, duservice oududépartementd’assurancesdelasociété,ouquisontparailleurslégalementdisponiblespourlepaiementdesengagementscontractés;laprésentedéfinitionnevisetoutefoispaslesfondsd’unsyndicatquisontaffectésouquipeuventserviràl’assistancevolontairedeschômeursoudesgrévistes.(insurancefund)
+
+«licence» Licence quelesurintendant délivreenvertudelaprésenteloi.(licence)
+
+«police»Ledocumentquifaitfoid’uncontrat.(policy)
+
+25
+
+fora policy of insurance,ortoactinthenegotiationofsuchinsuranceorinnegotiatingitscontinuanceorrenewal,orcollectsandreceivespremiumsonbehalfofhisorheremployeronly,butdoesnotincludealicensedinsuranceagent,brokeroremployeeengagedsolelyinofficedutiesforanagentorbrokerorapersonactingundertheauthorityofsection216;(vendeur)
+
+"sicknessinsurance"meansinsurancebywhichtheinsurerundertakestopayinsurancemoneyintheeventofsicknessofthepersonorpersonsinsured,butdoesnot include disabilityinsurance; (assurance-maladie)
+
+"spouse"hasthemeaningassignedtothattermby[section](https://www.canlii.org/en/nt/laws/stat/snwt-1997-c-18/latest/snwt-1997-c-18.html#sec1_smooth)1ofthe[Family](https://www.canlii.org/en/nt/laws/stat/snwt-1997-c-18/latest/snwt-1997-c-18.html)LawAct;(conjoint)
+
+"sprinklerleakageinsurance" meansinsuranceagainstlossofor damagetopropertythrough thebreakageorleakage ofsprinklerequipmentorotherfireprotectionsystem,orofpumps,waterpipesorplumbinganditsfixtures;(assurancecontrelesfruitsd’extincteursautomatiques)
+
+"Superintendent"meanstheSuperintendentofInsuranceappointedundersubsection254(1)andincludestheDeputySuperintendentofInsurance;(surintendant)
+
+"theftinsurance"meansinsuranceagainstlossordamagethroughtheft,wrongfulconversion,burglary,house-breaking,robberyorforgery;(assurancecontrelevol)
+
+"titleinsurance"meansinsuranceagainstlossorliabilityforlossduetotheinvalidityof the titletoanypropertyorofanyinstrument, ortoanydefectinsuchtitleorinstrument;(assurance-titre)
+
+"workers’compensationinsurance"meanstheprovisionofcompensationtoworkersunderthe[Workers’](https://www.canlii.org/en/nt/laws/stat/snwt-2007-c-21/latest/snwt-2007-c-21.html)CompensationAct,oranenactmentofsimilarpurposeelsewhereinCanada. (assurance-indemnisationdestravailleurs)
+
+«policedeconducteur»Policeassurantunepersonneuniquementàl’égarddelaresponsabilitéqu’ellepourraitencouriràl’occasiondel’utilisationoudelaconduite qu’elleouqu’une autre personneensonnomfaitd’unvéhiculeautomobiledontellen’estpaspropriétaire.(non-owner’spolicy)
+
+«policedepropriétaire» Police assurant unepersonneàl’égarddelaresponsabilité qu’ellepourrait encouriràl’occasiondel’utilisationoudelaconduited’unvéhiculeautomobile dontelle est propriétaire dansleslimitesetselonlestermesdelapoliceet,silecontratleprévoit,àl’égarddel’utilisationoudelaconduitedetouteautreautomobile.(owner’sproperty)
+
+«policederesponsabilitéautomobile»Policeoupartied’unepolicequifaitfoid’uncontratassurant:a)soitlepropriétaireouleconducteurd’uneautomobile;b)soitunepersonneautrequelepropriétaireouleconducteurlorsquel’automobileestutiliséeouconduiteparl’employéoulereprésentantdecelui-ci,oupartouteautrepersonnepoursoncompte,contrelaresponsabilitédécoulantdeslésionscorporellessubiespar uneautrepersonneoududécèsdecelle-ci,oudespertesoudesdommagesmatérielscausésparuneautomobileou parsonutilisationousaconduite.(motorvehicleliabilitypolicy)
+
+«prime» Lepaiementunique ou périodiqueàeffectuerenconformité avec uncontrat d’assurance;la présentedéfinitions’entendnotammentdesdroits,descotisations, desfraisd’administrationversésàl’égarddelagestionoudutraitementd’uncontratd’assurance, et de toute autre contrepartie.(premium)
+
+«régimed’assurance» Lerégimemis sur pied danslesstatutsdel’Associationdesassureursafindepouvoiroffriruncontratd’assuranceautomobileauxpropriétairesetconducteursd’automobiletitulairesdupermisdeconduirequi,n’étaitdurégime,seraientincapablesd’ensouscrireun.(PlanofOperation)
+
+«siègesocial»Lelieuoùlepremierdirigeantd’unassureurexercesesfonctions.(headoffice)
+
+«sociétédesecoursmutuel»Société,ordreouassociationconstituéenpersonnemoraleàbutnonlucratif,ayantpourobjetdepasser,uniquementavecsesmembres,descontrats d’assurance-vie,d’assurance-accidentoud’assurance-maladieen
+
+26
+
+Interpretation
+
+ApplicationofPart
+
+(2)Inthestatutoryconditionscontainedinsubsections64(2)and129(2)andinsection177,andintheSchedule,wordsimportingmalepersonsincludefemalepersons.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2005-c-2/latest/snwt-2005-c-2.html#sec5.1subsec2_smooth)2005,c.2,s.5.1(2);[SNWT](https://www.canlii.org/en/nt/laws/stat/snwt-2007-c-21/latest/snwt-2007-c-21.html)2007,c.21,Sch.,s.5(3);[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2),[(3)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec3_smooth), [(4)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec4_smooth).
+
+PART IGENERALPROVISIONSAPPLICABLETOINSURERS
+
+INSURANCEANDINSURERS
+
+2.(1)ThisPartappliestoinsuranceundertakenintheNorthwestTerritoriesandtoallinsurerscarryingonbusinessintheTerritories.
+
+conformitéavecsonacteconstitutif,sesrèglementsadministratifs,sesrèglesetlaprésenteloi.(fraternalsociety)
+
+«sommesassurées»Lemontantpayableparunassureurauxtermesd’uncontrat;laprésentedéfinitionvisenotammentlesprestations,excédents,profits,dividendes,bonisetrentespayablesauxtermesducontrat.(insurancemoney)
+
+«surintendant»Le surintendantdesassurancesnomméenvertuduparagraphe254(1);laprésentedéfinitionviseaussilesurintendantadjointdesassurances.(Superintendent)
+
+«territoireétranger»TerritoireautrequelesTerritoiresduNord-Ouest.(foreignjurisdiction)
+
+«vendeur»Employéd’uncourtieroud’unagentd’assurancetitulaired’unelicencedontlesalaireestfixeetnedépendpas decommissions,primesou autrerémunérationaccordéepourvendredel’assuranceous’occuperaunomd’untiersdepropositionsd’assurance,oupourprendrepartàlanégociationd’untelcontrat,desaprolongationoudesonrenouvellement,ouquiperçoitetreçoitdesprimespourlecomptedesonemployeurseulement.Laprésentedéfinitionnevisetoutefoispasl’agentoulecourtierd’assurancetitulaired’unelicence,oul’employéaffectéuniquementautravaildebureaupouruntelagent oucourtier,ouune personne agissantenvertudel’article216.(salesperson)
+
+(2)Pourl’applicationdesconditionslégalesénoncéesauxparagraphes64(2)et129(2),àl’article177ainsiqu’àl’annexedelaversionanglaise,lemasculins’applique,lecaséchéant,auxpersonnesphysiques de l’unoul’autresexe.LTN-O2005,ch.2,art.5.1(2);[LTN-O](https://www.canlii.org/en/nt/laws/stat/snwt-2007-c-21/latest/snwt-2007-c-21.html)2007,ch.21,ann.,art.5(2) et (3);LTN-O2011,ch.16,art.12(2)et(3).
+
+PARTIEIDISPOSITIONSGÉNÉRALESAPPLICABLESAUXASSUREURS
+
+ASSURANCEETASSUREURS
+
+2.(1)Laprésenteparties’appliqueauxcontratsd’assurancesouscritsdanslesTerritoiresduNord-OuestetàtouslesassureursquiexploitentleurentreprisedanslesTerritoiresduNord-Ouest.
+
+InterprétationdelaversionanglaisedelaLoi
+
+Champd’applicationdelaprésentepartie
+
+27
+
+Undertakinginsurance
+
+Carryingonbusiness
+
+Paymentsondeathofmembers
+
+(2)AninsurerundertakingacontractthatunderthisActisdeemedtobemadeintheNorthwestTerritories,whetherthecontractisoriginalorrenewed,excepttherenewalfromtimetotimeoflifeinsurancepolicies,shallbedeemedtobeundertakinginsuranceintheTerritorieswithinthemeaningofthisPart.
+
+(3)AninsurerundertakinginsuranceintheNorthwestTerritoriesorthatintheTerritories,(a)displaysorcausestobedisplayedasigncontainingthenameofaninsurer;(b)maintainsoroperates,eitherinitsownnameorinthenameofitsagentorotherrepresentative,anofficeforthetransactionofthebusinessofinsuranceeitherinoroutsidetheTerritories;(c)distributesorpublishesorcausestobedistributedorpublishedanyproposal,circular,card,advertisement,printedformorsimilardocuments;(d)makesorcausestobemadeanywrittenororalsolicitationforinsurance;(e)issuesor deliversanypolicyofinsuranceorinterimreceiptorcollectsorreceivesornegotiatesfororcauses tobecollectedorreceivedornegotiatedforanypremiumforacontractofinsuranceorinspectsanyriskoradjustsanylossunderacontractofinsurance,otherwisethanthroughalicensedbrokerpursuanttosections223and224;or(f)prosecutesor maintains intheTerritoriesanactionorproceedinginrespectofacontractofinsurance,shallbedeemedtobeaninsurercarryingonbusinessintheTerritorieswithinthemeaningofthisAct.
+
+(4)Anyclub,societyorassociationincorporatedorunincorporatedthatreceives,eitherastrusteesorotherwise,contributionsormoneyfromitsmembersoutofwhichgratuitiesorbenefitsarepaiddirectlyorindirectly onthedeathofitsmembers,or anyofthem,shallbedeemedtobeaninsurercarryingonbusinessintheNorthwestTerritorieswithinthemeaningofthisAct.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2), [(5)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec5_smooth), [(6)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec6_smooth).
+
+(2)L’assureurquis’engageparuncontratd’assurancequi,auxtermesdelaprésenteloi,estréputéavoirétéconcludanslesTerritoiresduNord-Ouest,quelecontratsoituncontratoriginalouunrenouvellement,àl’exceptiondurenouvellementoccasionneldespolicesd’assurance-vie,estprésuméfairedesopérationsd’assurancedanslesTerritoiresduNord-Ouestausensdelaprésentepartie.
+
+(3)EstréputéêtreunassureurquiexploitesonentreprisedanslesTerritoiresduNord-Ouestausensdelaprésenteloi,l’assureurquifaitdesopérationsd’assurancedanslesTerritoiresduNord-Ouestouqui,danslesTerritoiresduNord-Ouest:a)afficheoufaitafficheruneenseignecontenantlenomd’unassureur;b)ensonnompropre,ouaunomd’unagentouautrereprésentant,tientougèretoutbureaudanslebutdefairedesopérationsd’assurancesoitàl’intérieur,soitàl’extérieurdesTerritoiresduNord-Ouest;c)distribue,publieoufaitdistribueroupublierdespropositions,circulaires,cartes,annonces,imprimésoudocumentssemblables;d)effectueoufaiteffectuertoutesollicitationd’assuranceparécritouverbalement;e)établitouremetunepoliceouunequittanceprovisoire,ouencaisse,reçoit,négocie,oufaitencaisser,recevoirounégocier touteprimerelativeàuncontratd’assurance,ouévaluetoutrisqueouexpertisetoutsinistrecouvertparuncontratd’assurance,saufparl’intermédiaired’uncourtiertitulaired’unelicenceenconformitéaveclesarticles223et224;f)engageoupoursuitdanslesTerritoiresduNord-Ouestuneactionouuneprocédurerelativeàuncontratd’assurance.
+
+(4)Lesclubs, sociétés ou associationsconstituésounonenpersonnemoralequireçoiventnotamment àtitredefiduciairesdescontributionsousommesprovenantdeleursmembresetsurlesquellesdesbénéficesoudesversementssontfaitsdirectementouindirectementlorsdudécèsdel’undeleursmembressontréputésdesassureursexploitantleurentreprisedanslesTerritoiresduNord-Ouestausensdelaprésenteloi.LTN-O2011,ch.16,art.12(2).
+
+Opérationsd’assurance
+
+Exploitationd’uneentreprise
+
+Clubs,associationsousociétés
+
+28
+
+Necessityforlicence
+
+Prohibition:failuretoobtainlicence
+
+Prohibition:actingonbehalfofunlicensedinsurer
+
+Exception
+
+Reinsurancewithunlicensedinsurer
+
+Insurersthatmaybelicensed
+
+LICENCES
+
+3.(1)EveryinsurerundertakinginsuranceintheNorthwestTerritoriesorcarryingonbusinessintheTerritoriesshallobtainfromtheSuperintendentandholdalicenceunderthisAct.
+
+(2)EveryinsurerundertakinginsuranceorcarryingonbusinessintheNorthwestTerritorieswithouthavingobtainedalicenceasrequiredbythissectionisguiltyofanoffence.
+
+(3)EverypersonwhointheNorthwestTerritoriesdoesorcausestobedoneanyactorthingmentionedinsubsection2(3) or(4)onbehalfof orasagentof aninsurernotlicensedunderthisActorwhoreceivesdirectlyorindirectlyanyremunerationforsodoingisguiltyofanoffence.
+
+(4)ThefollowingarenotinsurerswithinthemeaningofthisActandarenotrequired orentitledtobelicensedassuch:(a)pensionfundsocietiesoremployees’mutualbenefitsocietiesincorporatedintheNorthwestTerritories;(b)co rp orationsmentionedinparagraphs211(3)(a)and(b).[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+4.NothinginthisActpreventsalicensedinsurerwhohaslawfullyeffectedacontractofinsuranceintheNorthwestTerritoriesfromreinsuringtheriskorpartof the risk withaninsurertransactingbusinessoutsidetheTerritoriesandnotlicensedunderthisAct.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+5.(1)OndueapplicationandonproofofcompliancewiththisAct,theSuperintendent may issuea licencetoundertake contractsofinsuranceand carryonbusinessintheNorthwestTerritoriestoanyinsurercomingwithinoneofthefollowingclasses:(a)jointstockinsurancecompanies;(b)mutualinsurancecorporations;(c)cash-mutualinsurancecorporations;(d)fraternalsocieties;(e)companiesdulyincorporatedtoundertakeinsurancecontractsandnotwithintheclassesmentionedinparagraphs(a)to(d);
+
+LICENCES
+
+3.(1)Touslesassureursquifontdesopérationsd’assurancedanslesTerritoiresduNord-Ouestouyexploitentleurentreprisesonttenusd’obtenirdusurintendantetdedétenirunelicenceenconformitéaveclaprésenteloi.
+
+(2)Commetuneinfraction l’assureurquifaitdesopérationsd’assurancedanslesTerritoiresduNord-Ouestouyexploitesonentreprisesansavoirobtenudelicenceenconformitéavecleprésentarticle.
+
+(3)Commetuneinfractiontoutepersonnequi,danslesTerritoiresduNord-Ouest,accomplitoufaitaccomplirtoutacteoutoutechosementionnéauxparagraphes2(3)ou(4)pour le compted’unagentouàtitred’agentd’unassureurquin’estpastitulaired’unelicenceenconformitéaveclaprésenteloi, ou quireçoit,directementouindirectement,unerémunérationpourcefaire.
+
+(4)Lesorganismesquisuiventnesontpasdesassureursausensdelaprésenteloietn’ontni le droitnil’obligationd’êtretitulairesd’unelicence:a)lessociétésmutuellesd’employésoulessociétésdefondsdepensionconstituéesdanslesTerritoiresduNord-Ouest;b)lespersonnesmoralesviséesauxalinéas211(3)a)etb).LTN-O2011,ch.16,art.12(2).
+
+4.Laprésenteloineportepasatteinteaudroitd’unassureurtitulaired’unelicencequialégalementconcluuncontratd’assurancedanslesTerritoiresduNord-Ouestderéassurerlerisqueouunepartiedecelui-ciauprèsd’unassureurquiexploitesonentrepriseàl’extérieurdesTerritoiresduNord-Ouestetquin’estpastitulaired’unelicenceprévueparlaprésenteloi.LTN-O2011,ch.16,art.12(2).
+
+5.(1)Lesurintendantpeutdélivrerunelicenceautorisantsontitulaireàsouscriredescontratsd’assuranceetàexploitersonentreprisedanslesTerritoiresduNord-Ouestàl’assureurquiappartientàl’unedescatégoriesquisuiventetquiluiprésenteunedemandeconformeetaccompagnéedelapreuvequ’ils’estconforméauxexigencesdelaprésenteloi:a)lescompagniesd’assuranceparactions;b)lescompagniesd’assurancemutuelle;c)lescompagniesd’assurancemutuelleaucomptant;d)lessociétésdesecoursmutuel;e)lescompagniesconstituéesenpersonne
+
+Licenceobligatoire
+
+Interdiction
+
+Interdiction:mandataired’unassureurnonautorisé
+
+Exceptions
+
+Réassuranceauprèsd’unassureurnonautorisé
+
+Assureursadmissibles
+
+29
+
+Effectoflicence
+
+Licencetocarryoninsurancebusiness
+
+DeterminationofclassesofinsurancebySuperintend-ent
+
+Limitationsorconditionsonlicence
+
+Conditionsofautomobileinsurancelicence
+
+(f)underwriters orsyndicatesofunderwritersoperatingontheplanknownasLloyds;(g)Repealed,[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec7_smooth)2011,c.16,s.12(7);(h)pensionfundassociations.
+
+(2)Alicenceauthorizes the insurernamedinthelicencetoexerciseintheNorthwestTerritoriesallrightsandpowersreasonablyincidentaltothecarryingonofthebusinessofinsurancenamedinthelicencethatarenot inconsistent withthisActorwith itsActorinstrumentofincorporationororganization.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html)2011,c.16,s.(2),(7).
+
+6.(1)SubjecttotheprovisionsofthePartsofthisActthatparticularlyrelatetotheclassesofinsurersmentionedinsubsection5(1),alicencemaybeissuedtoaninsurerto carryonanyoneormoreof the classesofinsurancedefinedin subsection 1(1)andsuchotherclassesasareprescribed.
+
+(2)ForthepurposesofthisAct,theSuperintendentmaydeterminetheclassorclassesofinsuranceintowhichthecircumstancesorconditionsinanycasemay bring anyinsuranceissuedorthatmaybeissuedinrespectthereto,andthepolicyformtobeusedforthatclassofinsurance.
+
+(3)AnylicencemaybeissuedsubjecttothelimitationsandconditionsthattheSuperintendentmayimpose.
+
+7.(1)AlicencetocarryonautomobileinsuranceintheNorthwestTerritoriesissubjecttothefollowingconditions:(a)inanyactionintheTerritoriesagainstthelicensedinsureror itsinsuredarisingoutofanautomobileaccidentintheTerritories,theinsurershallappearandshallnotsetupanydefencetoaclaimunderacontractmadeoutsidetheTerritories,includinganydefenceastothelimitorlimitsofliabilityunderthecontract,thatmightnotbesetupifthecontractwereevidencedbyamotorvehicleliabilitypolicyissuedintheTerritoriesandthecontractmadeoutside
+
+moraleetautoriséesàsouscriredescontratsd’assurancequin’appartiennentàaucunedescatégoriesviséesauxalinéasa)àd);f)lessouscripteursougroupesdesouscripteursquisontmembresdelasociétéappeléelaLloyds;g)Abrogé,LTN-O2011,ch.16,art.12(7);h)lesassociationsdefondsdepension.
+
+(2)LalicenceautorisesontitulaireàexercerdanslesTerritoires du Nord-Ouestlesdroitsetpouvoirsquidécoulentraisonnablementdel’exploitationdel’entreprised’assuranceindiquéedanslalicenceetquine sontpasincompatiblesaveclaprésenteloi,avec saloiouautredocumentconstitutif,ousesstatuts.LTN-O2011,ch.16,art.12(2)et(7).
+
+Effetdelalicence
+
+6.(1)SousréservedesdispositionsdespartiesdelaAutorisationprésenteloiquiontspécialementtraitàl’unedescatégoriesd’assureursmentionnéesauparagraphe 5(1),ilpeut être accordé àun assureurunelicencel’autorisantàexploiterplusd’unedescatégoriesd’assurancedéfiniesauparagraphe1(1)ettouteautrecatégorieréglementaire.
+
+(2)Pourl’applicationdelaprésenteloi,lesurintendantpeutdéterminerlaoulescatégoriesd’assurancedontfaitpartieuncontratd’assurance,compte tenu des circonstances, ainsiqueleformulairedepolicequidoitêtreutiliséàcetégard.
+
+(3)Unelicencepeut êtreassortie desrestrictionsetdesconditionsquelesurintendantfixe.
+
+d’exploiterplusd’unecatégoried’assurance
+
+Décisiondusurintendant
+
+Restrictionsouconditions
+
+7.(1)UnelicenceautorisantsontitulaireàexploiterConditionsuneentreprised’assuranceautomobiledanslesTerritoiresduNord-Ouestestsoumiseauxconditionssuivantes:a)danstouteactionintentéedanslesTerritoiresduNord-Ouestcontrel’assureurtitulaired’unelicenceousonassuréparsuited’unaccidentd’automobilesurvenudanslesTerritoiresduNord-Ouest,l’assureurcomparaîtetnepeutinvoqueraucunmoyendedéfensecontreunedemandederèglementfondéesurun contratconcluàl’extérieurdesTerritoiresduNord-Ouest,notammenttoutmoyendedéfensefondé
+
+d’exploita-tion:assuranceautomobile
+
+30
+
+Punishmentforbreach
+
+MembershipinFacilityAssociation
+
+Insurers
+
+DutyofFacilityAssociation
+
+Agents
+
+theTerritoriesshallbedeemedtoincludethebenefitssetoutintheScheduleinrespectofanautomobileaccidentoccurringonorafterJanuary1,1988;(b)inanyactioninaprovinceorterritoryagainstthe licensed insurer or its insuredarisingoutofanautomobileaccidentinthatprovinceorterritory,theinsurershallappear and shallnotsetup anydefencetoaclaimunderacontractevidencedbyamotorvehicleliabilitypolicyissuedintheTerritories,includinganydefenceastothe limit or limitsofliabilityunderthecontract,thatmightnotbesetupifthecontractwereevidencedbyamotorvehicleliabilitypolicyissuedinthatprovinceorterritory.
+
+(2)Alicencemaybecancelledwhentheholdercommitsabreachofconditionassetoutinsubsection(1).[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2), [(8)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec8_smooth).
+
+8.(1)EveryinsurercarryingonautomobileinsuranceintheNorthwestTerritoriesshallbeamemberoftheFacilityAssociation.
+
+(2)Everyinsurercarryingonautomobileinsurance in theNorthwest Territoriesisboundbythearticlesofassociation,bylawsandPlanofOperationoftheFacilityAssociation.
+
+(3)TheFacilityAssociationshallensure,throughitsmembers,thatacontractof automobile insuranceisprovidedwithrespecttoeveryapplicationforautomobileinsurancesubmittedunderthePlanofOperationtoaninsurer.
+
+(4)WhereanagentsubmitsanapplicationforautomobileinsuranceunderthePlanofOperationtoan
+
+surlaouleslimitesderesponsabilitéprévuesparlecontrat,quinepourraitêtreinvoqué,siunepolicederesponsabilitéautomobileétabliedanslesTerritoiresduNord-Ouestfaisaitfoiducontrat;lecontratconcluàl’extérieurdesTerritoiresduNord-Ouestestréputécomporterlesavantagesmentionnésàl’annexeàl’égardd’unaccidentd’automobilequisurvientle1erjanvier1988ouaprèscettedate;b)danstouteactionintentéedansuneprovinceoudansunterritoirecontrel’assureurtitulaired’unelicenceousonassurépar suited’unaccidentd’automobilesurvenudanscetteprovinceoudansceterritoire,l’assureurcomparaîtetnepeutinvoqueraucunmoyendedéfensecontreunedemandederèglementfondée suruncontrat dontfaitfoiunepolicederesponsabilitéautomobileétabliedanslesTerritoiresduNord-Ouest,notammenttoutmoyendedéfensefondésurlaouleslimitesderesponsabilité prévuespar le contrat, quinepourraitêtre invoqué,siune police deresponsabilitéautomobiledélivréedanscetteprovince ou dansceterritoirefaisaitfoiducontrat.
+
+(2)Peutêtreannulée la licencedel’assureurquicontrevientàl’unedesconditionsénoncéesauparagraphe(1).LTN-O2011,ch.16,art.12(2),(8)et(9).
+
+8.(1)L’assureurquiexploiteuneentreprised’assuranceautomobiledanslesTerritoiresduNord-Ouestestmembredel’Associationdesassureurs.
+
+(2)L’assureurquiexploiteuneentreprised’assuranceautomobiledanslesTerritoiresduNord-Ouestestliéparlesstatutsconstitutifs,lesrèglementsadministratifsetlerégimed’assurancedel’Associationdesassureurs.
+
+(3)L’Associationdesassureursveille,parl’intermédiairedesesmembres,àcequ’uncontratd’assurance automobilesoitétablià l’égard de chaquepropositiond’assuranceautomobileprésentéeàunassureurenconformitéaveclerégimed’assurance.
+
+(4)L’agentquiremetàunassureurunepropositiond’assuranceautomobileenconformité
+
+Peineencasdecontravention
+
+Associationdesassureurs
+
+Conséquences
+
+Obligationdel’Associationdesassureurs
+
+Agent
+
+31
+
+ActionsbyandagainstFacilityAssociation
+
+Service
+
+Noticeofofficersanddirectors
+
+Recordofinformation
+
+Licensingexemption
+
+Preparationandfilingofrates
+
+Reviewofrates
+
+Commen-cementofrates
+
+insurer,theagent isbound bytheapplicablearticlesofassociationandbylawsoftheFacilityAssociation.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2), [(4)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec4_smooth).
+
+9.(1)TheFacilityAssociationmay,initsname,(a)beprosecutedforanoffenceunderthisAct;and(b)sueandbesued.
+
+(2)AdocumentmaybeservedontheFacilityAssociationbyservingadirectororofficeroftheFacilityAssociation.
+
+(3)TheFacilityAssociationshallnotifytheSuperintendentof the namesandresidentialaddressesoftheofficersanddirectorsoftheFacilityAssociationontheirtakingoffice.
+
+(4)TheSuperintendentshallincludethenamesandaddressesoftheofficersanddirectorsoftheFacilityAssociationintheregisterreferredtoinsubsection259(1).
+
+(5)Notwithstandinganyenactment,theFacilityAssociationis notrequiredtoobtaina licence ortoberegisteredtocarryonbusinessintheNorthwestTerritories.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+10.(1)TheFacilityAssociationshallprepareandpublishratesinrespectofcontractsprovidedunderthePlanofOperationandshallfiletherates,togetherwiththestatisticalevidenceandanyotherinformationrelativetothedeterminationoftherates,withtheSuperintendentatleast60daysbeforetheintroductionoftherates.
+
+(2)TheSuperintendentshall,within60daysafterafilingofratesundersubsection(1),(a)approvetheratesasfiled;or(b)disallowtheratesasfiled,where,intheopinionoftheSuperintendent,theratesarenotinaccordancewithstatisticalevidence,experienceorotherjustifiablefactor.
+
+(3)NorateinrespectofcontractsprovidedunderthePlanof Operationshalltakeeffect unless filedwithandapprovedbytheSuperintendent.
+
+aveclerégimed’assuranceestliéparlesdispositionsapplicablesdesstatutsconstitutifsetdesrèglementsadministratifsdel’Associationdesassureurs.LTN-O2011,ch.16,art.12(2).
+
+9.(1)L’Associationdesassureurspeut,ensonnomPoursuitespropre:
+
+a)êtrepoursuiviepouruneinfractionàlaprésenteloi;b)esterenjustice.
+
+(2)Lasignificationd’undocumentàunadministrateurouàundirigeantdel’Associationdesassureurs vaut signification àl’association elle-même.
+
+(3)L’Associationdesassureursaviselesurintendantdes nomset adresses résidentiellesdesesadministrateursetdesesdirigeantsdèsleurentréeenfonctions.
+
+(4)Le surintendantinscritleursnomsetadressessurleregistreviséauparagraphe259(1).
+
+(5)Pardérogationàtoutautretexte,l’Associationdesassureursn’estpastenued’obtenirunelicenceoud’êtreenregistréepourexercersonentreprisedanslesTerritoiresduNord-Ouest.LTN-O2011,ch.16,art.12(2).
+
+10.(1)L’Associationdesassureursprépareetpublielestauxapplicablesauxcontratsvisésparlerégimed’assuranceetdéposeauprèsdusurintendant,aumoins60joursavantleurentréeenvigueur,lestauxaccompagnésdespreuvesstatistiquesnécessairesetdetoutautrerenseignementconcernantlemodededéterminationdestaux.
+
+(2)Dansles60jourssuivantledépôtdestauxvisésauparagraphe(1),lesurintendant:a)soitapprouvelestauxtelsquels;b)soitrejettelestaux,si,àsonavis,ilsneconcordentpasaveclespreuvesstatistiques,lesstatistiquesouunautrefacteurapplicable.
+
+(3)Lestauxapplicables auxcontratsvisés parlerégimed’assurancenepeuvententrerenvigueurqu’unefoisqu’ilsontétéapprouvésparlesurintendant.
+
+contrel’Association
+
+Signification
+
+Avisausurintendant
+
+Inscriptionsurleregistre
+
+Exemption
+
+Dépôtdestaux
+
+Examendestaux
+
+Entréeenvigueurdestaux
+
+32
+
+Scopeoflifeinsurancelicence
+
+Scopeoffireinsurancelicence
+
+Insuranceofautomobiles
+
+Proofofcompliance
+
+EvidencebyinsurerwhenheadofficeoutsideNorthwestTerritories
+
+Licenceofextra-provincialorterritorialcorporation
+
+11.Everyinsurerlicensedforthetransactionoflifeinsurancemay,undertheauthorityofitslicence,unlessthelicenceexpresslyprovidesotherwise,(a)includeinanypolicyoflifeinsurance,inrespectofthesamelifeorlivesinsuredbythatpolicy,disabilityinsuranceandaccidentaldeathinsurance;and(b)transactannuitiesofallkindsandinsuranceprovidingfortheestablishmentofaccumulationorendowmentfunds.
+
+12.(1)Everyinsurerlicensedtocarryonfireinsurancemay,subjecttoitsActofincorporationandsubjecttotherestrictionsimposedbythelicence,insureorreinsureanypropertyinwhichtheinsuredhasaninsurableinterestagainstlossordamagebyfire,lightningorexplosionandmayinsureorreinsurethesamepropertyagainstlossordamagefromfallingaircraft,earthquake,windstorm,tornado,hail,sprinklerleakage,riot,maliciousdamage,weather,waterdamage,smokedamage,civilcommotionandimpactbyvehiclesandanyoneormoreperilsfallingwithinanyotherclassesofinsurancethatareprescribed.
+
+(2)AninsurerlicensedtocarryonfireinsurancemayinsureanautomobileagainstlossordamageunderapolicyfallingwithinPartIII.
+
+13.(1)AlicenceshallnotbeissuedtoaninsurerexceptonproofthatithascompliedwiththeprovisionsofthisAct andtheregulationsapplicabletoit.
+
+(2)Wheretheheadofficeofanapplicantforalicence under thisActislocatedoutside theNorthwestTerritories,alicenceshallnotbeissuedexceptonproofofitsabilitytoprovideforthepaymentatmaturityofallitscontracts,buttheSuperintendentmayacceptassufficientthefactthatitislicensedbyanyothergovernmentinCanada.
+
+(3)Alicenceshallnotbeissuedtoacorporationthatisincorporatedunderthelawofaprovinceorterritoryunlessitsheadofficeandchiefplaceofbusinessislocatedinthatprovinceorterritory.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2), [(8)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec8_smooth).
+
+11.L’assureurtitulaired’unelicencel’autorisantàexploiteruneentreprised’assurance-viepeut,envertudesalicence,etsaufdisposition expressecontraire decelle-ci:a)introduiredanstouteslespolicesd’assurance-vieuneassurance-invaliditéetuneassuranceencasdedécèsaccidentelauprofitdelaoudesmêmespersonnesdontlavieestassurée;b)constituerdesrentesetdotationsdetoutessortes.
+
+12.(1)L’assureurtitulaired’une licencel’autorisantàexploiter uneentreprised’assurance-incendiepeut,sousréservedesaloiconstitutiveetdesrestrictionsprévuesparla licence, assurer ou réassurerles bienssur lesquelsl’assurépossèdeunintérêtassurablecontrelaperteoulesdommagesparlefeu,lafoudreoulesexplosionsetpeutassurerouréassurercesmêmesbienscontrelaperteoulesdommagesdusauxchutesd’aéronefs,auxtremblementsdeterre,auxouragans,auxtornades,à lagrêle,aucoulagedesextincteursautomatiques,auxémeutes,contreles dommagesparacte de malveillance,parintempéries,pardégâtsdeseaux,parlafumée,parlesmouvementspopulaires,parleschocsdevéhiculesetcontrelesautresdommagesquifontpartied’unecatégorieréglementaire.
+
+(2)L’assureurtitulaired’unelicenced’assurance-incendiepeutassureruneautomobilecontrelaperteoulesdommagesautitredelapoliceprévueàlapartieIII.
+
+13.(1)Unelicencenepeutêtredélivréeàunassureurques’ilfournit lapreuvequ’il s’estconforméauxdispositionsapplicablesdelaprésenteloietdesrèglements.
+
+(2)Unelicencenepeutêtreaccordéeàunassureurdont lesiègesocialestsituéàl’extérieurdesTerritoires duNord-Ouestet quidemandeunelicencesouslerégime delaprésenteloiques’il peut fournirlapreuve,qu’ilestenmesured’honoreràleuréchéancetouslescontratsqu’ilaconclus;toutefois,lesurintendantpeutconsidérercomme preuve suffisantelefaitquel’assureuresttitulaired’unelicencedélivréeparunautregouvernementauCanada.
+
+(3)Unelicencenepeutêtreaccordéeàunepersonnemoralequiestconstituéesous le régimedesloisd’uneprovinceoud’unterritoirequesisonsiègesocialetsonétablissementprincipalsontsituésdanscetteprovinceoudansceterritoire.LTN-O2011,ch.16,art.12(2),(9)et(10).
+
+Licenced’assurance-vie
+
+Licenced’assurance-incendie
+
+Assurancedesautomobiles
+
+Preuve
+
+Siègesocialsituéàl’extérieurdesTerritoiresduNord-Ouest
+
+Sociétéextra-territoriale
+
+33
+
+Noticeofapplicationforlicence
+
+Documentstobefiledbyapplicantsforlicence
+
+Powerofattorney:execution
+
+Powerofattorney:contents
+
+14.TheSuperintendentmayrequirenoticeoftheapplicationforalicencetobegivenbypublicationintheNorthwestTerritoriesGazetteandelsewherethattheSuperintendentconsidersnecessary.
+
+15.(1)Everyinsurershall,whenapplyingforalicence,fileintheofficeoftheSuperintendentthefollowingdocuments:(a)acertifiedcopyofitsActorotherinstrumentofincorporationorassociationandofitsconstitutionandbylawsandregulationsverifiedinamannersatisfactorytotheSuperintendent;(b)acertifiedcopyofitslastbalancesheetandareport of an auditor onthatbalancesheet;(c)iftheheadoffice ofthe insurer isoutsidetheNorthwestTerritories,noticeoftheplacewhere thechiefofficeoftheinsurerintheTerritoriesistobelocated;(d)if theheadoffice ofthe insurer isoutsidetheNorthwestTerritories,anexecutedcopyofapowerofattorneyfromtheinsurertothechiefagentresidentintheTerritories;(e)copiesofallpolicyformsandformsofapplicationforinsuranceproposedtobeusedbytheinsurerintheNorthwestTerritories;(f)anyevidenceordocumentsrequiredbyotherPartsofthisAct.
+
+(2)Apowerofattorneyfiledpursuanttoparagraph(1)(d)mustbeunderthe sealof theinsurer,andmustbesignedbythepresidentandsecretaryorotherproperofficersoftheinsurerinthepresenceofawitnesswhoshallmakeoathastoits dueexecution.
+
+(3)Apowerofattorneyfiledpursuanttoparagraph(1)(d)must(a)declareinwhatplaceintheNorthwestTerritoriesthechiefagencyofthecorporationislocated;and(b)expresslyauthorizethechiefagent(i)toreceiveserviceofprocessinallactionsandproceedingsagainsttheinsurerintheNorthwestTerritoriesforanyliabilityincurredbytheinsurerintheTerritories,and(ii)toreceivefromtheSuperintendentallnoticesthatthelawrequiresto
+
+14.Lesurintendantpeutexigerqu’unavisdelademandedelicence soitdonnépar publication danslaGazettedesTerritoiresduNord-Ouestetailleurss’ill’estimenécessaire.
+
+15.(1)L’assureurquidemandeunelicencedéposeaubureaudusurintendantlesdocumentssuivants:a)une copiecertifiée conformedesa loi ouautredocumentconstitutif,desesstatutsetdutextedesesrèglementsadministratifsetautresattestésd’unefaçonjugéesatisfaisanteparlesurintendant;b)unecopiecertifiée conforme desonbilanleplusrécentetdurapportduvérificateuràcetégard;c)silesiègesocialdel’assureurestsituéàl’extérieurdesTerritoiresduNord-Ouest,uneindicationdulieuoùserasitué,danslesTerritoiresduNord-Ouest,lebureauprincipaldel’assureur;d)silesiègesocialdel’assureurestsituéàl’extérieurdesTerritoiresduNord-Ouest,unecopie signée de laprocurationqu’il aremiseàsonagentprincipaldanslesTerritoiresduNord-Ouest;e)unecopiedetouslesformulairesdepoliceetdepropositiond’assurancequ’ilal’intentiond’utiliserdanslesTerritoiresduNord-Ouest;f)lesautresélémentsdepreuveoudocumentsexigésparlesautrespartiesdelaprésenteloi.
+
+(2)Laprocurationviséeàl’alinéa(1)d)doitêtrerevêtuedusceau de l’assureuretdoitêtre signée parleprésidentetlesecrétaireoulesautresdirigeantscompétentsdel’assureurenprésenced’untémoinquiprêtesermentquantàlaconformitéde la procuration.
+
+(3)Laprocurationviséeàl’alinéa(1)d)doit:a)indiquerenquellieudanslesTerritoiresduNord-Ouestl’agenceprincipaledel’assureurestsituée;b)autoriserexpressémentl’agentprincipalàrecevoirsignificationdesactesdeprocédurequipeuventêtredélivrésdanslecadredesactionsetdesprocéduresintentéescontrel’assureurdanslesTerritoiresduNord-Ouestàl’égarddetouteresponsabilitéqu’ilpeutencourirdanslesTerritoiresduNord-Ouestetàrecevoirdu surintendanttouslesavis que
+
+Avisdelademandedelicence
+
+Documentsàdéposer
+
+Procuration
+
+Contenudelaprocuration
+
+34
+
+Effectofcopyandevidence
+
+Changesinchiefagent
+
+Serviceofprocess
+
+Evidence
+
+Costsofexamination
+
+Dutytofileamendments
+
+begiven,orthatitisthoughtadvisabletogive;and(c)declarethatserviceofprocessfororinrespectoftheliabilityreferredtoinsubparagraph(b)(i)onthechiefagentislegalandbindingontheinsurer.
+
+(4)TheproductionofacopyofthepowerofattorneycertifiedbytheSuperintendentissufficientevidenceforallpurposesofthepower and authorityofthepersonnamedinthe certifiedcopytoactonbehalfoftheinsurerinthemannerandforthepurposessetoutinthecertifiedcopy.
+
+(5)WheretheinsurerchangesitschiefagentintheNorthwestTerritoriesitshall,withinsevendaysaftertheappointmentfilewiththeSuperintendentasimilarpowerofattorneystatingthechangeandcontainingasimilardeclarationastoserviceofprocessandnotices.
+
+(6)Afterthepowerofattorneyisfiled,anyprocess inany action orproceedingagainst theinsurerforliabilityincurredintheNorthwestTerritoriesmaybevalidlyservedontheinsureronitschiefagentbutnothinginthissectionrendersinvalidserviceinanyothermodeinwhichthecorporationmaybelawfullyserved.
+
+(7)AnapplicantforalicenceshallprovideevidencesatisfactorytotheSuperintendentthattherequirementsof this Acthavebeencompliedwithandthattheapplicantisentitledtothelicenceappliedfor.
+
+(8)WhentheSuperintendentconsidersitnecessarytoconductanexaminationoftheaffairsofanapplicantforalicence,theapplicantshallpaythecostsoftheexaminationonreceivingastatementofthecostscertifiedbytheSuperintendent.
+
+(9)EverylicensedinsurershallfileintheofficeoftheSuperintendentcertifiedcopiesofeveryamendment,revisionorconsolidationofitsActorotherinstrumentofincorporationorassociationand ofitsconstitution,bylawsandregulationsverifiedinamannersatisfactorytotheSuperintendentwithin30daysafterthepassingoradoptionoftheamendment,revisionorconsolidation.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2),[(4)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec4_smooth).
+
+laloiordonneausurintendantdeluienvoyerouqu’ilestimesouhaitabledeluiremettre;c)comporterunedéclarationindiquantquelasignificationàl’agentprincipaldesactesdeprocédureàl’égardd’unetelleresponsabilitéviséeàl’alinéab)estconformeàlaloietliel’assureur.
+
+(4)Ledépôtd’unecopiedelaprocurationcertifiéeparlesurintendantconstitueunepreuvesuffisanteentoutétatdecausedupouvoiretdel’autorisationconférésàlapersonnenomméedanslacopiecertifiéeconformed’agirpourlecomptedel’assureurdelafaçonetpourlesfinsmentionnéesdanscettecopie.
+
+(5)L’assureurquichanged’agent principaldanslesTerritoires du Nord-Ouest,danslesseptjoursaprèslanomination,déposeauprèsdusurintendantuneprocurationsemblablefaisantétatduchangementetcontenantunedéclarationsemblableàlapremièreàl’égarddelasignificationdesactesdeprocédureetdesavis.
+
+(6)Unefoislaprocurationdéposée,toutactedeprocéduredansuneactionouuneprocédureintentéecontrel’assureurenraisondesaresponsabilitéengagéedanslesTerritoiresduNord-Ouestpeutêtresignifiévalidementàl’assureurenlesignifiantàsonagentprincipal;toutefois,leprésentarticleneportepasatteinteàlavaliditédetoutautremodedesignificationlégitimeàlapersonnemorale.
+
+(7)Ledemandeurd’unelicenceremetausurintendantlesélémentsdepreuvequecelui-ciestimesatisfaisantsindiquantqu’ils’estconforméauxexigencesdelaprésente loi etqu’iladroit àlalicencequ’ildemande.
+
+(8)Lorsque le surintendantestimenécessairedefaireunexamendesaffairesdudemandeur,celui-cienpaielesfraisdèsqu’ilreçoitunétatdesfraiscertifiéparlesurintendant.
+
+(9)Lesassureurstitulairesd’unelicencedéposentaubureaudusurintendantdescopiescertifiéesdetoutemodification,révisionoucodificationdeleurloiouautredocumentconstitutif,deleursstatutsetdeleursrèglementsadministratifsetautres,attestésd’unefaçonjugéesatisfaisanteparlesurintendant,dansles30jourssuivantl’adoptiondelamodification,delarévisionoudelacodification.LTN-O2011,ch.16,art.12(2).
+
+Effetprobantdelacopie
+
+Changementd’agentprincipal
+
+Significationdesactesdeprocédure
+
+Preuve
+
+Fraisdesexamens
+
+Obligationdedéposerlesmodifications
+
+35
+
+Formoflicence
+
+Termoflicence
+
+Conditionsoflicence
+
+Variationoflicence
+
+Failuretopayclaim
+
+Revivaloflicence
+
+Memberofcompensationassociation
+
+16.(1)Alicence mustbe intheformorforms for thedifferentclassesofinsurersthatmay be determinedbytheSuperintendentandalicencemustspecifythebusinesstobecarriedonbytheinsurer.
+
+(2)Everylicenceexpires onJune30ineachyear,subjecttorenewalbytheSuperintendentonorbeforethatdate.
+
+(3)AlicencemaybeissuedorrenewedsubjecttothelimitationsorconditionsthattheSuperintendentconsidersappropriate.
+
+(4)Notwithstandingsubsections(2)and(3),theSuperintendentmayatanytimeandinrespectofanylicenceofaninsurer,(a)reducethetermforwhichthelicencewasissuedorrenewed;(b)imposeanyconditionsorlimitationsrelating tothecarryingonofthe businessoftheinsurerthattheSuperintendentconsidersappropriate;or(c)vary,amendorrevokeanyconditionorlimitationtowhichthelicenceisthensubject,buttheSuperintendentmaynotexerciseanypowerconferredbythissubsectionuntiltheSuperintendenthasgiventheinsurernoticeofhisorherintentiontoexercisethatpowerandhasaffordedtheinsurerareasonableopportunitytobeheardwithrespecttoit.
+
+17.(1)TheSuperintendentmaysuspendorcancelalicencewherewrittennoticehasbeenservedontheSuperintendentandonproofofanundisputedclaimarisingfromlossinsuredagainstintheNorthwestTerritoriesremainingunpaidfor60daysafterbeingdueorofadisputedclaimafterfinaljudgmentintheregularcourseoflawandtenderofalegal,validdischargebeingunpaid.
+
+(2)Alicencemay be revived andtheinsurermayagaintransactbusinessif,withinsixmonthsafternoticetotheSuperintendentofthefailureoftheinsurertopayanundisputedclaimortheamountofafinaljudgmentasprovidedinthissection,theundisputedclaimorfinaljudgmentonoragainsttheinsurerintheNorthwestTerritoriesispaidandsatisfied.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+18.(1)Subjecttosubsection(6),whereacompensationassociationhasbeendesignatedunderparagraph 19(b)asacompensationassociationforanyofthefollowingclassesofinsurance,namely,
+
+16.(1)Lalicencedoitêtrerédigéeenlaformequedéterminelesurintendant pourchacune des catégoriesd’assureurs; elledoitpréciserlacatégoried’entreprised’assurancequeletitulaireestautoriséàexploiter.
+
+(2)Leslicencesexpirentle30juinchaqueannée,sousréservederenouvellementpar le surintendantauplustardàcettedate.
+
+(3)Leslicencespeuventêtredélivréesourenouvelées,sousréservedesrestrictionsouconditionsquelesurintendantestimeindiquées.
+
+(4)Pardérogationauxparagraphes(2)et(3),lesurintendantpeutàtoutmoment:a)réduireladuréedevaliditéd’unelicence;b)ajouterdesrestrictionsouconditionsàl’égarddel’exploitationparletitulairedesonentreprised’assurance,selonqu’ill’estimeindiqué;c)modifierousupprimeruneconditionouunerestrictionattachéeàlalicence.Toutefois,lesurintendantnepeutexerceraucundespouvoirsvisésauprésentparagraphe,àmoinsd’avoirdonnéàl’assureurunavisdesonintentionetdeluiavoiraccordélapossibilitédeprésentersesobservationsàcesujet.
+
+17.(1)Lesurintendantpeutannuleroususpendreunelicencelorsqu’unavis écritluiaétésignifié àceteffet,accompagnédelapreuvedel’undesfaitssuivants:unedemandederèglementnoncontestéefaisantsuiteàunsinistrecouvertparuneassurancedanslesTerritoiresduNord-Ouestn’estpasencorepayée60joursaprèssonéchéanceouunedemandederèglementcontestéen’estpasencorepayéeaprèsjugementdéfinitifetoffred’unequittancevalable.
+
+(2)Unelicencepeutêtreremiseenvigueuretl’assureurpeutalorsreprendrel’exploitationdesonentreprise,si,danslessixmoissuivantl’avisausurintendantdudéfautd’acquitterlademandederèglementnoncontestéeoulemontantdujugementdéfinitif,commeleprévoitleprésentarticle,lasommedemandéeoucellequifaitl’objetdujugementestacquittée.LTN-O2011,ch.16,art.12(2).
+
+18.(1)Sousréserveduparagraphe(6),lorsqu’uneassociationd’indemnisationaétédésignéesouslerégimedel’alinéa19b)àtitred’associationd’indemnisationpourl’uneoul’autredescatégories
+
+Formedelalicence
+
+Duréedelalicence
+
+Conditionsdeslicences
+
+Modificationdelalicence
+
+Défautd’acquitterlademandederèglement
+
+Remiseenvigueurdeslicences
+
+Membresd’uneassociationd’indem-nisation
+
+36
+
+Othercompensationassociations
+
+Bylaws
+
+Assessmentsandlevies
+
+Failuretopayassessmentsorlevies
+
+(a)automobileinsurance;(b)boilerandmachineryinsurance;(c)fireinsurance;(d)inlandtransportationinsurance;(e)livestockinsurance;(f)plateglassinsurance,(g)propertydamageinsurance;(h)publicliabilityinsurance;(i)sprinklerleakageinsurance;(j)theftinsurance;or(k)aclassofinsurancedesignatedunderparagraph19(c),everyinsurer thatholdsa licencetocarryonthatclassof insurance,andfor183daysafterceasingtoholdthelicence,isamemberofthatcompensationassociation.
+
+(1.1)Subjecttosubsection(6),whereacompensationassociationhasbeendesignatedunderparagraph19(b)asacompensationassociationfor anyofthefollowingclassesofinsurance:(a)accidentinsurance;(b)lifeinsurance;(c)sicknessinsurance;or(d)aclassofinsurancedesignatedbyorderoftheMinister,everyinsurerthatiseligibletobecomeamemberinthecompensationassociationandthatholdsalicencetocarryonthatclassofinsuranceisamemberofthatcompensationassociation.
+
+(2)Everymemberofa compensation associationisboundbythebylawsandmemorandum of operationofthecompensationassociation.
+
+(3)Amemberofacompensationassociationshallpaytothecompensationassociationallassessmentsandleviesmadeagainstthememberbythecompensationassociation.
+
+(4)Whereamemberofacompensationassociationfailstopayanassessmentoralevywithin30daysafterthedaythenoticeoftheassessmentorlevyismailedtothemember,(a)thecompensationassociationmayclaimtheamountoftheassessmentorlevy,withinterest,asadebtduefromthemember;and
+
+d’assurancequisuivent,touslesassureurstitulairesd’unelicencelesautorisantàexploiteruneentreprised’assurancedelacatégorieviséesontmembresdel’associationetledemeurentpendant183joursaprèsceluioùilscessentd’êtretitulairesdelalicence:a)assuranceautomobile;b)assurancedeschaudièresetmachines;c)assurance-incendie;d)assurancedetransportsterrestres;e)assurancedubétail;f)assurancecontrelebrisdesglaces;g)assurancecontreles dommagesmatériels;h)assurance-responsabilitécivile;i)assurancecontrelesfuitesd’extincteursautomatiques;j)assurancecontrelevol;k)unecatégoried’assurancedésignéeenvertudel’alinéa19c).
+
+(1.1)Sousréserveduparagraphe(6),lorsqu’uneassociationd’indemnisationaétédésignée,enconformitéavecl’alinéa19b),àtitred’associationd’indemnisationpourlescatégoriesd’assurancesuivantes:a)assurance-accident;b)assurance-vie;c)assurance-maladie;d)unecatégoried’assurancedésignéepararrêtéduministre,chaqueassureuréligibleàdevenirmembredel’associationd’indemnisationetquiesttitulaired’unelicenceautorisantl’exploitationdecettecatégoried’assuranceestmembredecetteassociationd’indemnisation.
+
+(2)Lesmembresd’uneassociationd’indemnisationsontliésparlesrèglementsadministratifsetl’acteconstitutifdel’association.
+
+(3)Lesmembrespaientàl’associationd’indemnisationlescotisationsetcontributionsqu’elledécidedeprélever.
+
+(4)Lorsqu’unmembrefaitdéfautdepayerunecotisationouunecontributionàl’expirationdudélaide30jourssuivantl’envoiparlapostedel’avisdecotisationoudecontribution:a)l’associationd’indemnisationpeutenréclamerlemontantavecintérêtsàtitredecréancesurcemembre;b)le surintendantpeutannulerlalicence decemembre.
+
+Idem
+
+Règlementsadministratifs
+
+Cotisationsetcontributions
+
+Défautdepaiement
+
+37
+
+Cessationofdebt
+
+Exemptions
+
+Designations
+
+Reportonassetsandcontraventions
+
+Suspensionorcancellationoflicence
+
+(b)theSuperintendentmaycancelthelicenceofthemember.
+
+(5)Thedebtdue underparagraph(4)(a)does notceasetobedueontheterminationofthemembershipoftheinsurerinthecompensationassociation.
+
+(6)Subsections(1)and(1.1)donotapplytoaninsurer(a)designatedunderparagraph19(d);or(b)whosebusinessislimitedtothebusinessofreinsurance.RSNWT1988,c.37(Supp.),s.2,3;c.99(Supp.),s.2;[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec4_smooth)2011,c.16,s.12(4).
+
+19.TheMinistermay,byorder,designate(a)abodycorporateoranunincorporatedassociationasa compensationassociation;(b)acompensationassociationforoneormoreclassesofinsurance;(c)aclassofinsuranceforthepurposesofparagraph18(1)(k)or(1.1)(d);and(d)aninsurerasbeingadequatelycoveredbyaplantocompensateitspolicyholdersandeligibleclaimantsontheinsolvencyoftheinsurerotherthanaplanofcompensationprovidedbyacompensationassociation.RSNWT1988,c.37(Supp.),s.4.
+
+20.(1)IftheSuperintendent,onexamination,orfromannualstatementsoronotherevidence,finds(a)thattheassetsofaninsurerareinsufficienttojustifyitcontinuinginbusinessortoprovidepropersecuritytopersonseffectinginsurancewithitintheNorthwestTerritories;or(b)thataninsurerhasfailedtocomplywithanyprovisionoflaworwithitsActorinstrumentofincorporationorassociation,theSuperintendentshallreportthefindingstotheMinister.
+
+(2)TheMinistermayinstructtheSuperintendenttosuspendorcancelthelicenceofaninsureriftheMinister,afterconsiderationofareportundersubsection(1) and aftergivingtheinsurerareasonableopportunitytobeheard,and onanyfurtherinquiryand
+
+(5)Lefaitqu’unassureurcessed’êtremembredel’associationn’éteintpaslacréanceviséeàl’alinéa(4)a).
+
+(6)Les paragraphes(1)et(1.1)nes’appliquepasàl’assureur qui remplitl’uneoul’autre desconditionssuivantes:a)ilestdésignéenvertudel’alinéa19d);b)sesactivitéscommercialesselimitentàl’entreprisederéassurance.LRTN-O1988,ch.37(Suppl.),art.2et3;ch.99(Suppl.),art.2.
+
+19.Leministrepeut,pararrêté,désigner:a)unepersonnemoraleouuneassociationnonconstituéeen personne morale àtitred’associationd’indemnisation;b)uneassociationd’indemnisationpouruneouplusieurscatégoriesd’assurance;c)unecatégoried’assurancepourl’applicationdel’alinéa18(1)k)ou(1.1)d);d)unassureurcommeadéquatementcouvertparunrégimeautrequeceluiquefournituneassociationd’indemnisation,permettantl’indemnisationdesestitulairesdepoliceetdesautresréclamantsadmissiblesencasd’insolvabilitédesapart.LRTN-O1988,ch.37(Suppl.),art.4.
+
+20.(1)Lesurintendantfaitrapportauministre,s’ilconstateàlasuited’unexamenoud’aprèslesdéclarationsannuellesoutouteautrepreuve:a)quel’actifd’unassureurestinsuffisantpourjustifierlapoursuite desesactivitésoupourfournirunegarantiesuffisanteauxpersonnes quiconcluentdescontratsd’assuranceavecluidanslesTerritoiresduNord-Ouest;b)quel’assureuranégligédeseconformeràl’unedesdispositionsd’uneloi ou desaloiouautredocumentconstitutif,oudesesstatuts.
+
+(2)S’ilapprouvelerapportdusurintendant,leministrepeutdonnerordreausurintendantdesuspendreou d’annuler lalicenced’un assureur,aprèsavoirétésaisidurapportviséauparagraphe(1)etavoiraccordéàl’assureurlapossibilitédeprésenter
+
+Créance
+
+Exemptions
+
+Désignation
+
+Rapportauministre
+
+Suspensionouannulationdelalicence
+
+38
+
+Notice
+
+Modified,limitedorconditionallicence
+
+Furthergroundsforsuspensionorcancellation
+
+Statisticalreturns
+
+Compilationofdata
+
+Auditanddirectionifrecordsnotdulykept
+
+investigationthattheMinisterthinkspropertomake,concurswiththereportoftheSuperintendent.
+
+(3)NoticeofasuspensionorcancellationunderthissectionmustbepublishedintheNorthwestTerritoriesGazetteandelsewhereastheMinisterdirectsandafterthepublicationeverypersontransactingbusinessonbehalfoftheinsurer,exceptforwinding-uppurposes,isguiltyofanoffence.
+
+(4)WheretheSuperintendenthasreportedasprovided in subsection (1),theMinistermaydirecttheissueofsuchmodified,limitedorconditionallicenceasisconsiderednecessaryfortheprotectionofpersonsintheNorthwestTerritorieswhohaveeffectedoreffectcontractsofinsurancewiththeinsurer.
+
+(5)WherethelicenceofaninsurerissuspendedorcancelledelsewhereinCanada,theSuperintendentmaysuspendor cancelthelicenceofthe insurerunderthisAct.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+21.(1)EverylicensedinsurerthatcarriesonintheNorthwestTerritoriesthebusinessofautomobileinsurance,fireinsurance,propertydamageinsuranceorsprinklerleakageinsuranceshallprepareandfile,whenrequired,withtheSuperintendentorwiththestatisticalagencythattheSuperintendentmaydesignate,thestatisticalreturnoftheexperienceofthatbusinessthattheSuperintendentmayrequireandintheformandmannerandaccordingtothesystemofclassificationthattheSuperintendentmayapprove.
+
+(2)TheSuperintendentmayrequireanyagencydesignated under subsection(1) tocompile thedata sofiledintheform thatthe Superintendentmay approve,andtheexpenseofmakingthecompilationshallbeapportionedamongtheinsurerswhosedataiscompiledbytheagencybytheSuperintendentwhoshallcertifyinwritingtheamountduefromeachinsurerandthatamountispayablebytheinsurertotheagencywithoutdelay.
+
+(3)If atanytime it appears tothe Superintendentthataninsurer’srecordofpremium income andclaimspaidarenot kept insuch amannerastoshowcorrectlytheexperienceoftheinsurerforthepurposesofthestatisticalreturn,theSuperintendentmaynominateacompetentaccountanttoproceedunderthedirectionof
+
+sesobservationsetàlasuitedetouteautreenquêtequ’ilestimeappropriée.
+
+(3)Avisdelasuspensionoudel’annulationprononcéesouslerégimeduprésentarticledoitêtrepubliédanslaGazettedesTerritoiresduNord-Ouestetailleursselonque le ministrel’ordonne;aprèscettepublication,commetuneinfractionquiconquefaitaffairepourlecomptedel’assureur,saufauxfinsdeliquidation.
+
+(4)Lorsque le surintendantaprésentéle rapportviséauparagraphe(1),leministrepeutordonnerladélivrancedelalicencemodifiée,limitéeouconditionnellequ’ilestimenécessaireàlaprotectiondes personnes, danslesTerritoiresduNord-Ouest, quiontconcluouconcluentdes contrats d’assuranceavecl’assureur.
+
+(5)Encasdesuspensionoud’annulationdelalicenced’unassureurparunautregouvernementauCanada,lesurintendantpeutsuspendreouannulerlalicencedecetassureurenapplicationdelaprésenteloi.LTN-O2011,ch.16,art.12(2).
+
+21.(1)L’assureurtitulaired’unelicencequiexploitedanslesTerritoiresduNord-Ouestuneentreprised’assuranceautomobile,d’assurance-incendie,d’assurancecontrelesdommagesmatérielsoud’assurancecontrelesfuitesd’extincteursautomatiquesprépareetdéposeauprèsdusurintendantouauprèsdubureaudelastatistiquequecelui-cidésigne,surdemande,lerapportdesesstatistiquesconcernantsonentreprisequelesurintendantexige;lerapportest préparé enconformitéavec les instructionsdusurintendantetaveclesystèmedeclassementqu’ilapprouve.
+
+(2)Lesurintendantpeutdemanderaubureaudelastatistiqueviséauparagraphe(1)decompilerenlaformeapprouvéeparlesurintendantlesdonnéesquiluisontremises;lesfraisquidécoulentdelacompilationsontrépartisparmilesassureursquiremettentlesdonnéesaubureau;lesurintendantcertifieparécritlemontantquechaqueassureurdoitpayeretcemontantestpayableaubureausansdélai.
+
+(3)Silesurintendantestime,àn’importequelmoment,quelesregistresd’unassureurportantsurlerevenudesprimesetsurlesréclamationspayéesnesontpastenusdefaçonàindiquercorrectementlesstatistiquesdel’assureur,lesurintendantpeutdésigneruncomptablequidoitvérifiersoussadirectionles
+
+Avis
+
+Licencemodifiée,limitéeouconditionnelle
+
+Motifssupplémen­tairesdesuspensionoud’annulation
+
+Rapportsstatistiques
+
+Compilationdesdonnées
+
+Vérificationetinstructions
+
+39
+
+Expensesofaudit
+
+Offence
+
+Informationrespectingautomobileinsuranceclaims
+
+Includedinformation
+
+Accesstoinformation
+
+Annualstatement
+
+theSuperintendenttoauditthebooksandrecordsofthe insurer andtogive instructionsthatwillenabletheofficersoftheinsurertokeeptherecordscorrectlyafterthat.
+
+(4)Theexpenseofanauditundersubsection(3)shallbebornebytheinsurerandtheaccountshall,whencertifiedand approvedunderthesignatureoftheSuperintendent,bepaidbytheinsurerwithoutdelay.
+
+(5)EveryinsurerthatcontravenesthissectionandtheprincipalofficerintheNorthwestTerritoriesofanysuch insurerareguiltyofanoffence. [SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+21.1.(1)EverylicensedinsurerthatcarriesonintheNorthwestTerritoriesthebusinessofautomobileinsuranceshallfile,whenrequired,withtheSuperintendentorwiththestatisticalagencythattheSuperintendentmaydesignate,informationthatisrequestedbytheSuperintendentrespecting eachclaimmadebyaninsuredunderacontractforautomobileinsurance.
+
+(2)TheinformationrequestedbytheSuperintendentmay includeinformationthatidentifiestheinsuredandthedriverinvolvedineachaccidentforwhichaclaimwasmade.
+
+(3)Notwithstandingthe[Access](https://www.canlii.org/en/nt/laws/stat/snwt-1994-c-20/latest/snwt-1994-c-20.html)toInformationandProtectionofPrivacyAct,theSuperintendent maymakeinformationaboutaninsuredoraboutanypartytoanapplicationreferredtoinsubparagraph(a)(ii)thatiscollectedundersubsection(1)available,eitherdirectlyorthroughanagencydesignatedbytheSuperintendentandontermsandconditionssatisfactorytotheSuperintendent,to(a)aninsurerthat(i)undertakesoragreesorofferstoundertakecontractsofautomobileinsurance,and(ii)hasawrittenapplicationsignedbytheinsured;(b)auditorsof the statisticalagencyreferredtoinsubsection(1);or(c)theinsured.RSNWT1988,c.99(Supp.),s.3;SNWT1999,c.21,s.7;[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+22.(1)Everylicensedinsurer shallprepareannuallyanddelivertotheSuperintendentonorbeforethelastdayofFebruaryofeachyear,astatementoftheconditionofaffairsoftheinsurerasatDecember31immediatelypreceding.
+
+livresetrelevésdel’assureur,etquidoitdonneràl’assureurlesinstructionsnécessairespourluipermettredetenircorrectementsesrelevésparlasuite.
+
+(4)L’assureurpaiesansdélailesfraisrésultantdelavérificationunefoisqu’ilsontétécertifiésetapprouvésparlasignaturedusurintendant.
+
+(5)Commettentuneinfractionl’assureuretl’agentprincipaldel’assureurdanslesTerritoiresduNord-Ouestquicontreviennentauprésentarticle.LTN-O2011,ch.16,art.12(2).
+
+21.1.(1)L’assureurtitulaired’unelicencequiexploitedanslesTerritoiresduNord-Ouestuneentreprised’assuranceautomobiledépose,surdemande,auprèsdusurintendantouauprèsdubureaudelastatistiquequecelui-cidésigne,lesrenseignementsexigésparlesurintendantrelatifsàchaqueréclamationdéposéeparunassuréauxtermesd’uncontratd’assuranceautomobile.
+
+(2)Lesrenseignementsexigésparlesurintendantpeuventêtrerelatifsàl’identitédel’assuréetduconducteurimpliquédanschacundesaccidentspourlequelunedemandederèglementaétédéposée.
+
+(3)Malgréla[Loi](https://www.canlii.org/en/nt/laws/stat/snwt-1994-c-20/latest/snwt-1994-c-20.html)surl’accèsàl’informationetlaprotectiondelavieprivée,lesrenseignementsrelatifsàunassuréouàunepartieàunedemandeviséeausous-alinéaa)(ii)quisontrecueillisenvertuduparagraphe(1)peuvent,directementouparl’intermédiairedubureaudésignéparlesurintendantet sousréservedesconditionsqu’ilestimeappropriéesêtremis,parlesurintendant,àladisposition:a)d’unassureurqui:(i)souscritouaccepteouoffredesouscrireàuncontratd’assuranceautomobile,(ii)aunedemandeécritesignéeparl’assuré;b)desvérificateursdubureaudelastatistiqueviséauparagraphe(1);c)del’assuré.LRTN-O1988,ch.99(Suppl.),art.3;LTN-O1999,ch.21,art.7;LTN-O2011,ch.16,art.12(2).
+
+22.(1)L’assureurtitulaired’unelicenceprépareannuellementetfaitparvenirausurintendantauplustard ledernierjourdefévrier unedéclaration reflétantlasituationdesesaffairesau31décembreprécédent.
+
+Fraisdelavérification
+
+Infraction
+
+Réclamationsauxtermesd’uncontratd’assuranceautomobile
+
+Rensei­gnements
+
+Accèsàl’information
+
+Déclarationannuelle
+
+40
+
+Formandcontents
+
+Whomayverifystatement
+
+Replytoinquiries
+
+Unearnedpremiums
+
+Reverseliabilityonnon-cancellableaccidentandsicknessinsurance
+
+Statusofaccountsreceivableandunauthorizedinvestments
+
+(2)Thestatementmust(a)beinaformdeterminedbytheSuperintendent;(b)showtheassets,liabilities,receiptsandexpendituresoftheinsurerfortheyearendedonthedatereferredtoinsubsection(1)andtheparticularsofthebusinessdoneintheNorthwestTerritoriesduringthatyear;(c)showanyotherinformationthattheSuperintendentconsidersnecessary;and(d)beverifiedinamannerthatmaybedeterminedbytheSuperintendent.
+
+(3)Inthecaseofacorporation,thestatementshallbeverifiedbythepresident,vice-presidentormanagingdirectororotherdirectorappointedforthatpurposebytheboardofdirectorsandbythesecretaryormanagerofthecorporation.
+
+(4)Aninsurershall,whenrequiredbytheSuperintendent,makepromptandexplicitanswerinreplytoanyinquirydirectedtotheinsurerbytheSuperintendentinrelationtothestatementorinrelationtothetransactionsoftheinsurerintheNorthwestTerritories.
+
+(5)Subjecttosubsection(6),inthecaseofallclassesofinsurance,otherthanlifeinsurance,andinthecaseofallinsurers,thestatementmustshowasaliabilityoftheinsurernotlessthan80%oftheactualportionsofunearned premiums on allbusinessinforceontheDecember31immediatelyprecedingornotlessthan80%of50%ofthepremiumswritteninitspoliciesandreceivedinrespectofcontractshavingoneyearorless torunandprorataonthose for longerperiods.
+
+(6)Inthecaseofnon-cancellableaccidentandsicknessinsurance,thestatementmustshowasaliabilityoftheinsurer,areservecomputed onthebasesandinaccordancewiththemethodsthatwillplaceanadequatevalueontheliabilitiesthereunder,butinnocaseshallthevalueplacedonthebenefitsunderanypolicybelessthanthevalueplacedonthefuturepremiums.
+
+(7)Thestatementshallnot(a)showasassets(i)theunpaidbalancesowingbyagentsorotherinsurersinrespectofbusinesswrittenbeforeOctober1 in
+
+(2)Ladéclarationdoit:a)êtreenlaformedéterminéeparlesurintendant;b)indiquerl’actif,lepassif,lesrecettesetlesdépensesdel’assureurpourl’annéequis’estterminéeàcettedateetdonnerdesrenseignementsdétailléssurlesactivitésaccompliesdanslesTerritoiresduNord-Ouestdurantcetteannée;c)comporterles autresrenseignementsquelesurintendantestimenécessaires;d)avoirétévérifiéedelafaçonquepeutdéterminerlesurintendant.
+
+(3)Danslecasd’unepersonnemorale,ladéclarationestvérifiéeparleprésident,levice-présidentoul’administrateurdéléguéoutoutautreadministrateurnomméàcettefinparleconseild’administration,ainsiqueparlesecrétaireoulegérantdelapersonnemorale.
+
+(4)Lorsquelesurintendantleluidemande,l’assureurrépondpromptementetexplicitementàtoutedemandederenseignementsquecedernierluifaitparveniràl’égard deladéclarationouàl’égardde sesopérationsdanslesTerritoiresduNord-Ouest.
+
+(5)Sousréserveduparagraphe(6),ladéclarationdoit, pourtouteslescatégoriesd’assuranceautresquelesassurances-vie,etpourtouslesassureurs,fairefigureraupassifdel’assureuraumoins80%delaportionréelledesprimesnonacquisessurtouteslesaffairesencoursau31décembreécoulé,ouaumoins80%delamoitiédesprimessouscritesdanssespolicesetperçuesrelativementàdescontratsayantuneannéeoumoinsà couriret auproratapourceuxd’uneduréesupérieure.
+
+(6)Dansle casd’assurance-accidentetd’assurance-maladienonrésiliables,ladéclarationdoitfairefigureraupassifdel’assureuruneréservecalculéeselondesbasesetdesméthodesquipermettentd’évaluerdefaçonappropriéelesengagementscontractés,maislavaleurattribuéeauxprestationsprévuesparunepolicenedoitêtreenaucuncasinférieureàla valeurattribuéeauxprimesàvenir.
+
+(7)Lesdéclarationsnepeuventfairefigureràl’actif:a)soitlessommesduesparlesagentsouautresassureurspourdesaffairesconcluesavantle1eroctobredel’année
+
+Formeetcontenu
+
+Personnesautoriséesàvérifierladéclaration
+
+Demandederensei­gnements
+
+Primesnonacquises
+
+Assurance-accidentetassurance­maladienonrésiliables
+
+Contenudeladéclarationannuelle
+
+41
+
+Valuationofsecurities
+
+Publishedstatements
+
+Statementsoffinancialstanding
+
+Definition:"variableinsurancecontract"
+
+theimmediatelyprecedingyear,(ii)billsreceivableonaccountofthatbusiness,(iii)unpaidcapitalorpremiumonsubscribedsharesofcapitalstock,or(iv)investmentinofficefurnishingsorequipment;or(b)includeasassetsanyinvestmentsnotauthorizedbyanyspecialorgeneralstatutetowhichtheinsurerissubject.
+
+(8)Everylicensedinsurermay,initsstatementorinanyvaluationofitssecuritiesrequiredtobemade,valueallofitssecuritieshavingafixedtermandrateandnotindefaultastoprincipalorinterestaccordingtothefollowingrule,namely,ifpurchasedatpar,attheparvalue,ifpurchasedaboveorbelowpar,onthebasisofthepurchasepriceadjustedsoastobringthevaluetoparatmaturity and soastoyieldmeantimetheeffectiverateofinterestatwhichthepurchasewasmade,butthepurchasepriceshallinnocasebetakenatahigherfigurethantheactualmarketvalueatthetimeofpurchase,andtheSuperintendenthasfulldiscretionindeterminingthemethodofcalculatingvaluesaccordingtothisrule.SNWT1998,c.24,s.12(2);[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+23.NostatementpurportingtoshowthefinancialconditionofaninsurerthatdiffersfromthefinancialconditionshownbythestatementfiledwiththeSuperintendent,andnobalancesheetorotherstatementthatdiffersinformfromtheformapprovedbytheSuperintendentshall be published orcirculated,andevery insurer publishing suchastatementisguiltyofanoffence.SNWT1998,c.24,s.12(3).
+
+24.Everypersonwhorepresentsorallyorinwritingthat the issueof a licencetoan issuerorthe printing orpublicationofanannualstatementinanyreportorpublicationoftheSuperintendentoranyothercircumstanceofthesupervisionorregulationofthebusinessof theinsurerbylaw or the Superintendentisa warrantyor guaranteeofthefinancial standing oftheinsurerorofitsabilitytoprovideforthepaymentofitscontractsatmaturityisguiltyofanoffence.
+
+25.Insections26to29and38,"variableinsurancecontract"meansanannuityorlifeinsurancecontractforwhichallorapartofitsreservesvaryinamountwiththemarketvalueofaspecifiedgroupofassetsheldinaseparateanddistinctfundandincludesa
+
+précédente,leseffetsàvaloirsurcessommes,lecapitaloulesprimesnonverséessurdesactionssouscritesaucapital-actions,ouunplacementenmeublesoumatérieldebureau;b)soittoutplacementinterditparuneloid’applicationgénéraleouparticulièreàlaquellel’assureurestassujetti.
+
+(8)L’assureurtitulaired’unelicencepeut,danssadéclarationoulorsd’une évaluation obligatoiredesesvaleurs,évaluerl’ensemblede sesvaleursàtermeetàtauxfixesnonenretarddepaiementsurlecapitaloul’intérêt,dela façon suivante :si elles ontétéachetéesau pair, àlavaleurau pair, si ellesont étéachetéesau-dessusouau-dessousdelavaleuraupair,surlabaseduprixd’achatajustédefaçonàramener la valeuraupairàl’échéanceetàporterdansl’intervalleletauxd’intérêtréelauquell’achata été effectué, maisle prixd’achatnedoitjamaisêtreunchiffresupérieuràlavaleurmarchanderéelleaumomentdel’achat,lesurintendantayanttoutediscrétiondanslechoixdesméthodesdecalculdesvaleursd’aprèscetterègle.LTN-O1998,ch.24,art.12(2);LTN-O2011,ch.16,art.12(2).
+
+23.Ilestinterditàunassureurdepublieroudedistribuerundocument,présentécommereflétantsasituationfinancière,différentde la déclarationquiestdéposéeauprèsdusurintendant,ouunbilanouautrecompterendudeformedifférentedecelleapprouvéeparlesurintendant;commetuneinfractionl’assureurquicontrevientauprésentarticle.LTN-O1998,ch.24,art.12(3).
+
+24.Commetuneinfractionquiconqueaffirmeoralementouparécritquela délivranced’unelicenceàunassureur,l’impressionoulapublicationd’unedéclarationannuelledansunrapportoutouteautrepublicationdusurintendant,outouteautresurveillanceouréglementationdesaffairesparlaloiouparlesurintendantestunepreuveouunegarantiedelasituationfinancièredel’assureuroudesacapacitédepourvoiraupaiementdesescontratsàéchéance.
+
+25.Auxarticles26à29 et àl’article38,l’expression«contratd’assurancevariable»s’entendd’unerente oud’uncontratd’assurance-vietelsquelemontantdesréservesprévuvarieselonlavaleurmarchanded’ungroupespécifiéd’élémentsd’actifsgardésdansune
+
+Évaluationdesvaleurs
+
+Infraction
+
+Infraction
+
+Définition:«contratd’assurancevariable»
+
+42
+
+Prohibition
+
+Forms
+
+Contentsofinformationfolder
+
+Deliverytoapplicant
+
+Newinformationfolders
+
+provisioninalifeinsurancecontractunderwhichpolicydividendsorpolicyproceedsmayberetainedforinvestmentinsuchafund.
+
+26.(1)NoinsurershallissueoroffertoenterintoavariableinsurancecontractintheNorthwestTerritoriesuntil(a)therehasbeenfiledwiththeSuperintendent(i)aspecimenformofthevariableinsurancecontract,(ii)aninformation folderrelating tothevariableinsurancecontract,and(iii)anyothermaterialthatmayberequiredundertheregulations;and(b)areceiptevidencingthefilinghasbeenobtainedfromtheSuperintendent.
+
+(2)Theformof avariable insurance contractandaninformationfoldermustcomplywiththerequirementsofPartIVandtheregulations.
+
+(3)Theinformationfoldermustcontain(a)abriefandcleardisclosureofallmaterialfactsrelatingtothevariableinsurancecontract;and(b)acertificatethatallmaterialfactshavebeendisclosedsignedbythechiefexecutiveofficerandthechieffinancialofficeroftheinsurerorotherpersonsthatmaybeprescribed.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+27.NoinsurershallacceptanapplicationforavariableinsurancecontractuntiltheinsurerhasdeliveredtotheapplicantacopyofthelatestinformationfolderrelatingtothevariableinsurancecontractthatisonfilewiththeSuperintendent.
+
+28.Aninsurerthatissuesavariableinsurancecontractshall(a)immediatelyaftertheoccurrenceofanymaterialchangeinthecontractorinanyotherfactssetoutinthelatestinformationfolderfiled;and
+
+caisseséparéeetdistincte;laprésentedéfinitions’entendégalementd’unedispositiondansuncontratd’assurance-vieenvertudelaquelleles dividendesoulessommesduesautitredelapolicepeuventêtreretenuesdansunetellecaissepourêtreréinvesties.
+
+26.(1)Ilestinterditauxassureursdeconclureoud’offrirdanslesTerritoiresduNord-Ouestuncontratd’assurancevariable,saufsilesconditionssuivantessontremplies:a)lesdocumentssuivantsontétédéposésauprèsdusurintendant:(i)unspécimenduformulaireducontratd’assurancevariable,(ii)undépliantexplicatifportantsurcecontratd’assurancevariable,(iii)lesautresdocumentsdontledépôtpeutêtreexigéparlesrèglements;b)unreçu faisantétatdu dépôta été délivréparlesurintendant.
+
+(2)Leformulaire ducontratd’assurancevariableetdudépliantexplicatifdoitêtreconformeauxexigencesdelapartieIVetdesrèglements.
+
+(3)Ledépliantexplicatifdoitcomporterlesrenseignementssuivants:a)lacommunicationdefaçonbrèveetclairedetouslesfaitsimportantsayanttraitauxcontratsd’assurancevariable;b)uncertificatattestantquetouslesfaitsimportantsontétécommuniqués,signéparlepremierdirigeantetledirecteurdesservicesfinanciersdel’assureuroutouteautrepersonnedésignéeparrèglement.LTN-O2011,ch.16,art.12(2).
+
+27.Ilestinterditàunassureurd’accepterunepropositiondecontratd’assurancevariable,àmoinsd’avoir remis ausignataire de lapropositionunecopiedudernierdépliantexplicatifportantsurlecontratd’assurancevariablequiaétédéposéauprèsdusurintendant.
+
+28.L’assureurquiconclutuncontratd’assurancevariabledéposeauprèsdusurintendantunnouveaudépliantexplicatifportantsurcecontrat:a)dèsqueseproduitunemodificationimportanteducontratoudel’undes faitsimportantsmentionnésdansledernierdépliantexplicatifquiaétédéposé;
+
+Interdiction
+
+Formulaires
+
+Contenududépliantexplicatif
+
+Remisedudépliant
+
+Nouveaudépliant
+
+43
+
+ReporttoMinister
+
+Prohibitionorder
+
+Separateaccounts
+
+Insurancewithunlicensedinsurers
+
+(b)within13monthsafterthedateoffilingofthelatestinformationfolder,orotherperiodoftimethatmaybeprescribed,filewiththeSuperintendentanewinformationfolderinrespectofthevariableinsurancecontract.
+
+29.(1)WhereitappearstotheSuperintendentthat(a)aninformationfolderoranyotherdocumentfiledwiththeSuperintendentbyaninsurer,withrespecttoavariableinsurancecontract;(i)failstocomplyinanysubstantialrespectwiththerequirementsofthisActortheregulations,(ii)containsanypromise,estimate,illustrationorforecastthatismisleading,falseordeceptive,or(iii)concealsoromitstostateanymaterialfactnecessaryinordertomakeanystatementcontainedinitnotmisleadinginthelightofthecircumstancesinwhich itwasmade;or(b)thefinancialconditionoftheinsureroritsmethodofoperationinconnectionwiththeissuanceofitsvariableinsurancecontractswillnotaffordsufficientprotectiontoprospectivepurchasersofitsvariableinsurancecontractsintheNorthwestTerritories,theSuperintendentshallreportittotheMinister.
+
+(2)The Minister, iftheMinisterconcurs withthereportandafter affording theinsureranopportunitytobeheard, mayorderthe Superintendenttoprohibit theinsurerfromcontinuingtoissuesuchvariableinsurancecontractsintheNorthwestTerritories.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+30.Everyinsurerlicensedtotransactlifeinsuranceshallkeepseparateanddistinctaccountsofparticipatingandnon-participatingbusiness.
+
+INSURANCEWITHUNLICENSEDINSURERS
+
+31.NotwithstandinganythinginthisAct,anypersonmayinsurepropertysituatedintheNorthwestTerritoriesagainst firewithanunlicensedinsurer,andany propertyinsuredortobeinsuredunderthissectionmaybeinspectedandanylossincurredinrespectofthatpropertyadjusted,ifthatinsuranceiseffected
+
+b)dans les 13moissuivantladatedudépôtdudernierdépliantexplicatifouavantl’expirationdudélairéglementaire.
+
+29.(1)Lesurintendantfaitrapportauministrelorsqu’ilestd’avisque:a)ledépliantexplicatifoutoutautredocumentquiaétédéposéauprèsdeluiparunassureuretportantsuruncontratd’assurancevariable:(i)soitcontrevientàuneexigenceimportantede la présenteloioudesrèglements,(ii)soitcontientunepromesse,uneestimation,desprévisionsouunexemplefauxoutrompeurs,(iii)soitcacheouometunfait importantdontl’absencerendtrompeurledocumentenquestioncomptetenudescirconstances;b)lasituationfinancièredel’assureurousesmodesd’opérationenmatièredecontratd’assurance variablen’accorderontpasuneprotectionsuffisanteaux acheteurs éventuelsde cescontratsdanslesTerritoiresduNord-Ouest.
+
+(2)Leministrepeut,s’ilsouscritaurapportetàlaconditiond’avoiraccordéàl’assureur la possibilitéd’êtreentendu,ordonnerausurintendantd’interdireàl’assureurdecontinueràconcluredescontratsd’assurancevariabledanslesTerritoiresduNord-Ouest.LTN-O2011,ch.16,art.12(2).
+
+30.Lesassureurstitulairesd’unelicencelesautorisantàexploiteruneentreprised’assurance-vietiennentdescomptesdistinctsetséparésdesassurancesàparticipationetdesassurancessansparticipation.
+
+ASSURANCESAUPRÈSD’ASSUREURSNONTITULAIRESD’UNELICENCE
+
+31.Pardérogationauxautresdispositionsdelaprésenteloi,toutepersonnepeutassurerdesbienssituésdanslesTerritoiresduNord-Ouestcontrelesrisquesd’incendieauprèsd’unassureurnontitulaired’unelicence, etles biens assurés ouqui doiventl’êtresouslerégimeduprésentarticlepeuventfairel’objet
+
+Rapportauministre
+
+Ordonnanced’interdiction
+
+Comptesséparés
+
+Assuranceauprèsd’unassureurnontitulaired’unelicence
+
+44
+
+Traffickinginlifeinsurancepolicies
+
+Privilegedinformation
+
+Filingformofpolicy
+
+Prohibitionofcertainpolicies
+
+Effectofcontraventionoflawonclaimforindemnity
+
+outsidetheTerritoriesandwithoutanysolicitationdirectlyorindirectlyonthepartoftheinsurer.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+GENERAL
+
+32.Everyperson,otherthananinsureroritsdulyauthorizedagent,whoadvertisesorholdshimselforherselfoutasapurchaseroflifeinsurancepoliciesorofbenefitsunderlifeinsurancepolicies,orwhotrafficksortradesinlifeinsurancepoliciesforthepurposeofprocuringthesale,surrender,transfer,assignment,pledgeorhypothecationoflifeinsurancepoliciestohimselforherselforanyotherperson,isguiltyofanoffence.
+
+33.Anyinformation,document,record,statementorthingmadeordisclosedtotheSuperintendentconcerningapersonlicensedorapplyingforalicenceunderthisActis absolutely privilegedand shall not beusedasevidenceinanyactionorproceedinginanycourtbroughtbyoronbehalfofthatperson.
+
+34.(1)The Superintendentmayrequirean insurertofilewiththeSuperintendentacopyofanyformofpolicyoroftheformofapplicationforanypolicyissuedorusedbytheinsurer.
+
+(2)TheSuperintendentshallreporttotheMinisteranycasewhereaninsurerissuesapolicyorusesanapplicationthat,intheopinionoftheSuperintendent,isunfair,fraudulentornotinthepublicinterestand,afterhearingtheinsurer,theMinistermay,iftheMinisterconcurswiththereport,ordertheSuperintendenttoprohibittheinsurerfromissuing orusing thatform of policyor application,andeveryinsurerthatissuesthatpolicyorusesthatapplicationafterbeingsoprohibitedisguiltyofanoffence.
+
+35.Unlessthecontractotherwiseprovides,acontraventionofanycriminalorotherlawinforceintheNorthwestTerritoriesorelsewheredoesnotofitselfrenderunenforceableaclaimforindemnityunderacontractofinsuranceexcept where thecontraventioniscommittedbytheinsured, orbyanother person withtheconsentoftheinsured,withintenttobringaboutlossordamagebutinthecaseofacontractoflifeinsurancethissectionappliesonlytodisabilityinsuranceundertakenaspartofthecontract.
+
+d’uneinspectionetunsinistrefairel’objetd’unrèglement,sicetteassuranceestcontractéeendehorsdesTerritoiresduNord-Ouestetsansaucunesollicitationdirecteouindirectedelapartdel’assureur.LTN-O2011,ch.16,art.12(2).
+
+DISPOSITIONSGÉNÉRALES
+
+32.Commetuneinfractionquiconque,sansêtreunassureurousonagentautorisé,seprésenteàtitred’acheteurdepolicesd’assurance-vieoudesindemnitésquiendécoulent,ounégociedespolicesd’assurance-viedanslebutd’enobtenirlavente,laremise,letransfert,lacessionoulamiseengarantieàsonbénéficeouàceluid’uneautrepersonne.
+
+33.Lesrenseignements,documents,dossiers,déclarationsremis ou confiésausurintendantàl’égarddutitulaired’unelicenceoudelapersonnequiendemandeunesouslerégimedelaprésenteloisontprotégésetnepeuventservird’élémentsdepreuvedanstouteactionouautreprocédurejudiciaireintentéeparcettepersonneoupoursoncompte.
+
+34.(1)Lesurintendantpeutexigerd’unassureurqu’ildéposeauprèsdeluiunecopiedesformulairesdepoliceoudepropositiondepolicequ’ilutilise.
+
+(2)Lesurintendantfaitrapportauministredetoutesituationoùunassureurétablitunepoliceouutiliseunepropositionqui,del’avisdusurintendant,estinjuste,frauduleuseoucontraireàl’intérêtpublic;aprèsavoirentendul’assureur,leministrepeut,s’ilsouscritaurapport,ordonnerausurintendantd’interdireàl’assureurd’établiroud’utiliserceformulairedepoliceoudeproposition,selonlecas;commetuneinfractionl’assureurquineseconformepasàcetteinterdiction.
+
+35.Saufdispositioncontraireducontrat,laperpétrationd’uneinfractioncriminelleoud’uneinfractionprévueparuneautreloienvigueurdanslesTerritoiresduNord-Ouestouailleursnerendpasautomatiquementinexigibleunedemanded’indemnisationprévueparuncontratd’assurance,sauf si l’infraction estperpétrée parl’assuré lui-mêmeouparuneautrepersonneavecsonconsentement,dansl’intentiondecauseruneperteoudesdommages;toutefois,danslecasd’uncontratd’assurance-vie,le
+
+Achatdepolicesd’assurance-vie
+
+Renseigne-mentsprotégés
+
+Dépôtdesformulaires
+
+Formulairesinterdits
+
+Conséquenced’uneinfraction
+
+45
+
+Insurerwithholdingpayment
+
+Generaloffenceandpunishment
+
+Increasedpunishmentforinsurer
+
+Suspensionoflicence
+
+Punishmentforcarryingonbusinesswithoutlicence
+
+[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+36.Whereaninsurerwrongfullywithholdspaymentofanysumofmoneyduetoaninsuredunderacontractofinsurance,theinsurerisliabletopaytotheinsuredinterestonthatsumfromthedateitbecamedueandpayableattheprescribedrate.
+
+OFFENCEANDPUNISHMENT
+
+37.(1)Unlessotherwiseprovided,everypersonwhoknowingly,(a)providesfalseinformationinanapplicationunderthisActorinastatement,returnoranswerrequiredtobeprovidedunderthisActortheregulations;(b)failstocomply withanorder,directionorotherrequirementmadeunderthisAct;or(c)contravenesthisActortheregulations,andeverydirectororofficerofaninsurerwhoknowinglyconcursinthatproviding,failureorcontraventionisguiltyofanoffenceandliableonsummaryconvictiontoafinenotexceeding$2,000ortoimprisonmentforatermnotexceedingoneyearortoboth.
+
+(2)Whereaninsurerisconvictedofanoffenceundersubsection(1),themaximumpunishmentthatmaybeimposedontheinsureris$25,000andnotasprovidedinsubsection(1).
+
+(3)Inadditiontothepunishmentsetoutinsubsection(2),whereaninsurercontravenestheprohibitionsorfailstocomplywiththerequirementsofthisAct,theSuperintendentmaysuspendorcancelthelicenceoftheinsurer.
+
+(4)Everypersonwho(a)undertakesinsuranceorcarriesonbusinessasaninsurerintheNorthwestTerritories;(b)actsonbehalfofaninsurerintheNorthwestTerritories;or(c)doesorperformsanyoneormoreoftheactsconstitutingthebusinessof
+
+présentarticles’appliqueseulementàl’assurance-invaliditéquifaitpartieducontrat.LTN-O2011,ch.16,art.12(2).
+
+36.L’assureurquiretientillégalementleversementd’unesommequ’ildoitàl’assuréenconformitéavecun contratd’assuranceesttenudeluiverserl’intérêtautauxréglementairesurcettesommeàcompterdesonexigibilité.
+
+INFRACTIONETPEINE
+
+37.(1)Saufdispositioncontrairedelaprésenteloi,commetuneinfractionetestpassible,surdéclarationdeculpabilité parprocéduresommaire,d’uneamendemaximale de2000 $ etd’unemprisonnement maximald’unan,oudel’unedecespeines,quiconquesciemment:a)remetdesfauxrenseignementsdansunedemandeprévueparlaprésenteloioudansunedéclaration,unrapportouuneréponsequ’ildoitfournirsouslerégimedelaprésenteloioudesrèglements;b)faitdéfautdeseconformeràuneordonnance,à une directiveou à un ordrequiluiestremissouslerégimedelaprésenteloi;c)contrevientàlaprésenteloiouauxrèglements.Lesadministrateursoudirigeantsd’unassureurquisciemmentparticipentàlaperpétration de l’infractionsontconsidéréscommedescoauteursdel’infractionetsontpassiblesdelamêmepeine.
+
+(2)L’assureurquiestdéclarécoupabled’uneinfractionprévueauparagraphe(1)estpassibled’uneamendemaximalede25000$etnondecellequiestprévueàceparagraphe.
+
+(3)Enplusdela peineprévueauparagraphe (2),lesurintendant peut suspendreouannulerlalicencedel’assureurquicontrevientauxinterdictionsdelaprésenteloiouneseconformepasàsesexigences.
+
+(4)Commetuneinfractionetestpassible,surdéclarationdeculpabilitéparprocéduresommaire,d’uneamendemaximalede25000$quiconque,sansêtretitulairedelalicencenécessaire,selonlecas:a)faitdesopérationsd’assuranceouexploiteuneentrepriseàtitred’assureurdanslesTerritoiresduNord-Ouest;b)représenteunassureurdansles
+
+Intérêt
+
+Infractionetpeinegénérales
+
+Exception
+
+Suspensiondelalicence
+
+Exploitationd’uneentreprised’assurancesanslicence
+
+46
+
+Punishmentfordefaultinmakingreturns
+
+Burdenofproofoflicence
+
+Recoveryanddispositionoffines
+
+Regulations
+
+insurance,inrelationtoanyclassofinsurancewithoutbeinglicensedforthatclass,isguiltyofan offenceandliableonsummaryconvictiontoafinenotexceeding$25,000.
+
+(5)Incaseofdefault inmakingareturnrequiredbythisActtobemadewithinalimitedtime,theinsurerorthepersonrequiredbythisActtomakethereturnshall,inadditiontothefineprovidedbysubsection(1),incurafurtherfineof$100foreverymonthorpartofamonthduringwhichtheinsurerorpersonneglectstofilethereturn.
+
+(6)InanyprosecutionunderthisAct,wheneveritappearsthattheaccusedhasdoneanactorbeenguiltyofanomissioninrespectofwhichtheaccusedwouldbeliabletoapunishmentunderthisActortheregulations,unlesstheaccusedisdulylicensed,theburden is ontheaccused to prove that heorsheis dulylicensed.
+
+(7)ThefinesimposedunderthisActarerecoverableundersummaryconvictionproceedingsandwhenrecoveredshallbedepositedto the creditoftheGovernmentoftheNorthwestTerritories.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+REGULATIONS
+
+38.TheCommissioner, on the recommendation oftheMinister,maymakeregulations(a)determininganddefiningclassesofinsuranceandclassesoflicencesforthepurposesofthisAct;(b)respectingtheformandcontentofvariableinsurancecontracts;(c)respectingtheform,content,timeoffilinganddeliveryofinformationfolders,thepersonstowhominformationfoldersmustbedeliveredandthepersonswhomaysignthecertificatecontainedinaninformationfolder;(d)requiringtheprovidingofinformationbyaninsureroritsagenttoprospectivepurchasersofvariableinsurancecontracts;(e)respectingthedocuments,reports,statements,agreementsandotherinformationrequiredtobefiled,providedordeliveredundersections26to28andtheformandcontentofthem;(f)requiringthepaymentoffeesforlicences
+
+TerritoiresduNord-Ouest;c)accomplitdesgestesquiconstituentdesopérationsd’assurance.
+
+(5)L’assureuroulapersonnequidoitfaireunrapportenapplicationdelaprésenteloietquinelefaitpasavantl’expirationdudélaifixé,enplusdetouteautreamendeprévueparleparagraphe(1),verseuneamendesupplémentaire de 100$pourchaquemoisderetard,unepartied’unmoisétantassimiléeàunmoiscomplet.
+
+(6)Danslecadredetoutepoursuiteintentéesouslerégimedelaprésenteloi,leprévenualachargedeprouverqu’ilesttitulaired’unelicencelorsqu’ilestaccuséd’avoiraccompliungeste,acteouomission,queseuluntitulairedelicencepeutaccomplirsansêtrepassibled’unepeineprévueparlaprésenteloioulesrèglements.
+
+(7)Lesamendesprévuesparlaprésenteloisontrecouvrablesparprocéduresommaire;ellessontensuitedéposéesaucréditdugouvernementdesTerritoiresduNord-Ouest.LTN-O2011,ch.16,art.12(2).
+
+RÈGLEMENTS
+
+38.Surrecommandationduministre,lecommissairepeut,parrèglement:a)déterminerlescatégoriesd’assuranceetlescatégoriesdelicencespourl’applicationdelaprésenteloi;b)prévoirlesformulairesdecontratsd’assurancevariableetleurcontenu;c)prévoirlaformeetlecontenudesdépliantsexplicatifs,lemomentdeleurdépôtetceluideleurremise,lespersonnesàquiilsdoiventêtreremisetcellesquipeuventsignerlecertificatqu’ilscontiennent;d)exigerd’unassureuroudesonagentqu’ilremettecertainsrenseignementsauxacheteurs éventuelsdecontratsd’assurancevariable;e)déterminerlesdocuments,rapports,déclarations,ententesetlesautresrenseignementsqui doiventêtredéposés,fournisouremisenvertudesarticles26à28,ainsiqueleur forme etleurcontenu;f)prévoirleversementdedroitspourla
+
+Amendesupplément-aireencasdedéfaut
+
+Chargedelapreuve
+
+Recouvrementetdépôtdesamendes
+
+Règlements
+
+47
+
+Application
+
+andrenewalsoflicensesandinrespectofanyfunctionperformedbytheSuperintendentunderthisActandprescribingtheamountsofthosefees;(g)extendingtheprovisionsofthisActoranyofthemtoasystemorclassofinsurancenotparticularlymentionedinthisAct;(h)governinggroupinsurancecontractsorschemes,oranyclassofgroupinsurancecontractsorschemes,includingprovidingforandregulatingtheirtermsandconditions,qualificationsformembershipin groupsandregulatingthemarketingofgroupinsurancecontractsorschemes;(i)governingtheadvertisingofinsurancecontracts,oranyclassofinsurancecontracts,includingprovidingforandregulatingtheformandcontentofadvertisementsand requiring theirfiling;(j)amendingoralteringtheterms,conditions,provisions,exclusionsandlimitssetoutintheSchedule;(k)respectingtheformofthestatement,balancesheetandotherstatementsreferredtoinsection23;(l)prescribingtherateofinterestreferredtoinsection36;and(m)generallyforthe betteradministrationofthisAct.SNWT1998,c.24,s.12(4),(5).
+
+PARTIICONTRACTSOFINSURANCEINNORTHWESTTERRITORIES
+
+CONTRACTSOFINSURANCE
+
+39.Exceptwhereotherwiseprovidedandwherenotinconsistentwith other provisions ofthis Act, thisPartappliestoeverycontractofinsurancemadeintheNorthwestTerritories,otherthancontractsof(a)accidentandsicknessinsurance;(b)lifeinsurance;(c)marineinsurance;and(d)workers’compensationinsurance.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+délivranceoulerenouvellementd’unelicence,ouàl’égard de toutautre servicerenduparlesurintendantsouslerégimedelaprésenteloi,etenfixer le montant;g)étendrelaportéedesdispositionsdelaprésenteloioudel’uned’ellesàunsystèmeouàunecatégoried’assurancenonexpressémentmentionnédanslaprésenteloi;h)prévoir les plansoucontratsd’assurancecollective,ouunecatégoried’entreeux,notammentfixeretréglementerleursmodalités,lesconditionsd’admissibilitéetleurcommercialisation;i)prévoirlapublicitédescontratsd’assuranceoud’unecatégoried’entreeux,notammentfixeretréglementerlaformeetlecontenudesannonces,etexigerleurdépôt;j)modifierlestermes,conditions,dispositions,exclusionsetlimitesénumérésàl’annexe;k)fixerla formedeladéclaration,dubilanetdesautresdocumentsmentionnésàl’article23;l)fixerletauxd’intérêtviséàl’article36;m)defaçongénérale,prendrelesautresmesuresd’ordreréglementairenécessairesàlabonneapplicationdelaprésenteloi.LTN-O1998,ch.24,art.12(5).
+
+PARTIEIICONTRATSD’ASSURANCEDANSLESTERRITOIRESDUNORD-OUEST
+
+CONTRATSD’ASSURANCE
+
+39.Sous réservedesautresdispositionsdelaprésenteloietdanslamesureoùelleneleurestpasincompatible,laprésenteparties’appliqueàtouslescontratsd’assuranceconclusdanslesTerritoiresduNord-Ouest,sauflescontrats:a)d’assurance-accidentoud’assurance-maladie;b)d’assurance-vie;c)d’assurancemaritime;d)d’assurance-indemnisationdestravailleurs.[LTN-O](https://www.canlii.org/en/nt/laws/stat/snwt-2007-c-21/latest/snwt-2007-c-21.html)2007,ch.21,ann.,art.5(4);LTN-O2011,ch.16,art.12(2).
+
+Champd’application
+
+48
+
+ContractsdeemedtobemadeinNorthwestTerritories
+
+Application
+
+Termsandconditionsofcontract
+
+Exemption
+
+Contentsofrenewalreceipt
+
+Whatregardtobegiventoproposal
+
+Erroneousstatementinapplicationforcontract
+
+40.WherethesubjectmatterofacontractofinsuranceispropertyintheNorthwestTerritoriesoraninsurableinterestofapersonresidentintheTerritories,thecontractof insurance,ifsigned,countersigned,issuedor deliveredintheTerritoriesorcommittedtothe postofficeortoanycarrier,messengeroragenttobedeliveredorhandedovertotheinsured,hisorherassignoragentintheTerritoriesshallbedeemedtoevidenceacontractmadeintheTerritories,andthecontractshall beconstruedaccordingto the lawof theTerritories,andallmoneypayableunderthecontractshallbepaidattheofficeofthechiefofficeroragentintheTerritoriesoftheinsurerinlawfulmoneyofCanada.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2), [(6)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec6_smooth), [(11)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec11_smooth).
+
+41.(1)Thissectiondoesnotapplytocontractsoffireorautomobileinsurance.
+
+(2)Alltheterms and conditionsofthecontractofinsurancemustbesetoutinfullinthepolicyorbywritingsecurelyattachedtoitwhenissued,and, unlesssosetout,notermofthecontractorcondition,stipulation,warrantyorprovisomodifyingorimpairingitseffectisvalidoradmissibleinevidencetotheprejudiceoftheinsuredorbeneficiary.
+
+(3)Subsection (2)does not applytoanalterationormodification of thecontract agreedonin writing bytheinsurerandtheinsured aftertheissueofthepolicy.
+
+(4)Whetherthecontractdoesordoesnotprovideforitsrenewal,butitisrenewedbyarenewalreceipt,itisasufficientcompliancewithsubsection(2)ifthetermsandconditionsofthecontractaresetoutasprovidedbythatsubsectionandtherenewalreceiptreferstothecontractbyitsnumberordate.
+
+(5)Theproposalorapplicationoftheinsuredshallnotasagainsttheinsuredbedeemedapartoforbeconsideredwiththecontractofinsuranceexceptinsofarasthecourtdeterminesthatitcontainsamaterialmisrepresentationbywhichtheinsurerwasinducedtoenterintothecontract.
+
+(6)Nocontractofinsuranceshallcontainorhaveendorsedonit,orbemadesubjectto,anyterm,condition,stipulation,warrantyorprovisoprovidingthatthecontractshallbeavoidedbyreasonofanystatementintheapplicationforthecontract,or
+
+40.Lorsquel’objetd’uncontratd’assuranceportesurdesbienssituésdanslesTerritoiresduNord-Ouestousurl’intérêtassurabled’unepersonnequirésidedanslesTerritoiresduNord-Ouest,lecontrat,s’ilestsigné,contresigné,établiouremisdanslesTerritoiresduNord-Ouestouconfiéàlaposteouàunautretransporteur,messagerouagentpourremiseàl’assuré,àsonayantdroitouàsonreprésentantdanslesTerritoiresduNord-Ouest,estréputéconstateruncontrat concludanslesTerritoiresduNord-Ouestetestinterprétéselonlaloiquiyestenvigueur;touteslessommesexigiblesauxtermesdececontratsontpayéesausiègesocialouàl’agenceprincipaledel’assureurdanslesTerritoires duNord-Ouesten monnaie légaleduCanada.LTN-O2011,ch.16,art.12(2).
+
+41.(1)Leprésentarticlenes’appliquepasauxcontratsd’assurance-incendieoud’assuranceautomobile.
+
+(2)Touteslesmodalitésducontratd’assurancedoiventêtreindiquéesintégralementdanslapoliceousurunécritsolidementannexéàcelle-ciaumomentdesonétablissementet,àmoinsd’êtreainsiindiquée,aucunemodalitéducontratoucondition,stipulation,garantie,clauseconditionnellemodifiantoudiminuantsoneffetn’estvalideouadmissibleenpreuveaupréjudicedel’assuréoudubénéficiaire.
+
+(3)Leparagraphe(2)nes’appliquepasàunemodificationapportéeaucontratdontl’assureuretl’assuréconviennentparécritaprèsl’établissementdelapolice.
+
+(4)Lorsquelecontrat,qu’ilprévoieounonsonrenouvellement,estrenouveléparunequittancederenouvellement,ilestsuffisantpourseconformerauparagraphe(2)quelesmodalitésducontratsoientindiquéesdanslecontratetquelaquittancederenouvellement s’yréfèreaumoyende son numérooudesadate.
+
+(5)Lapropositiondel’assurénepeut,danslamesureoùcelapourraitluinuire,êtreconsidéréecommefaisantpartieducontratd’assuranceouêtreconsidéréeaveccecontrat,saufdanslamesureoùletribunalestimequ’ellecontientuneassertioninexacteessentiellequi ainduitl’assureurà conclure lecontrat.
+
+(6)Aucuncontratd’assurancenedoitcontenirnimentionnerdesmodalités,conditions,stipulations,garantiesouclausesconditionnellesprévoyantl’annulationducontratenraisondetoutedéclarationdanslapropositiond’assuranceouinduisantl’assureur
+
+Présomption
+
+Non-application
+
+Modalitésducontrat
+
+Exception
+
+Renouvelle-ment
+
+Valeurdelaproposition
+
+Inexactitudesdanslaproposition
+
+49
+
+Materiality
+
+Copyofproposal
+
+InconsistencywithAct
+
+Rightsofinsured
+
+Contentsofpolicy
+
+Exemption
+
+inducingtheenteringintoofthecontractbytheinsurer,unlesstheterm,condition,stipulation,warrantyor proviso isandis expressed to belimitedtocasesinwhichthestatementismaterialtothecontract,andnocontractshallbeavoidedbyreasonoftheinaccuracyofanysuchstatementunlessitismaterialtothecontract.
+
+(7)Thequestionofmaterialityinacontractofinsuranceisaquestionoffactforthejury,orforthecourtifthereisnojury,andnoadmission,term,condition,stipulation,warrantyorprovisotothecontrarycontainedintheapplicationorproposalforinsurance,orintheinstrumentofcontractorinanyagreementordocumentrelatingto it, hasanyforce orvalidity.
+
+42.Aninsurershallonrequestprovidetheinsuredwithatruecopyofhisorherapplicationorproposalforinsurance.
+
+43.(1)No insurer shallmakea contractofinsuranceinconsistentwiththisAct.
+
+(2)AnactoromissionoftheinsurerresultinginimperfectcompliancewiththisActdoesnotrenderacontractinvalidasagainsttheinsured.
+
+44.(1)Everypolicymustcontainthefollowing:(a)thenameoftheinsurer;(b)thenameoftheinsured;(c)thenameofthepersonorpersonstowhomtheinsurancemoneyispayable;(d)theamount,orthe method ofdeterminingtheamount,ofthepremiumfortheinsurance;(e)thesubjectmatteroftheinsurance;(f)theindemnityforwhichtheinsurermaybecomeliable;(g)theeventonthehappeningofwhichtheliabilityistoaccrue;(h)thedateonwhichtheinsurancetakeseffect;(i)thedateonwhichtheinsuranceterminatesorthemethodbywhichthatdateisfixedortobefixed.
+
+(2)Subsection(1)doesnotapplytocontractsofguaranteeinsurance.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec11_smooth)2011,c.16,s.12(11).
+
+àconclurelecontrat,niyêtreassujetti,àmoinsquecesmodalités,conditions,stipulations,garantiesouclausesnesoientlimitéesouexpriméesdansdestermesleslimitantauxcasoùladéclarationmodifieessentiellementl’appréciationdurisque;aucuncontratne doitêtre annuléenraisonde l’inexactitudede toutedéclaration,àmoinsqu’ellenemodifieessentiellementl’appréciationdurisque.
+
+(7)Danstoutcontratd’assurance, la questiondemodificationessentielledel’appréciation du risqueestunequestiondefaitlaisséeàl’appréciationdu jury ou,àdéfautdejury,dutribunal;aucunereconnaissance,modalité,condition,stipulation,garantieouclauseconditionnelleàl’effetcontrairecontenuedanslapropositiond’assurance,danslapolice,danstouteconventionoudanstoutautredocumentquis’yrapporten’estvalable.
+
+42.L’assureurremetsurdemandeàl’assuréunecopiecertifiéeconformedesapropositiond’assurance.
+
+43.(1)Ilestinterditàunassureurdeconclureuncontratd’assuranceincompatibleavec la présenteloi.
+
+(2)Lorsque,parsuited’ungeste—acteouomission—del’assureur,l’unedesdispositionsde laprésenteloin’estpasparfaitementrespectée,l’invaliditéducontratnepeutêtreopposéeàl’assuré.
+
+44.(1)Unepolicedoitcontenirlesrenseignementssuivants:a)lenomdel’assureur;b)lenomdel’assuré;c)lenom de laou des personnesauxquelleslessommesassuréessontpayables;d)lemontantdelaprimed’assuranceousonmodedecalcul;e)l’objetdel’assurance;f)l’indemnitéàlaquellel’assureurpeutêtretenu;g)l’événementdontlasurvenancefaitnaîtrel’obligation;h)ladated’entréeenvigueurdel’assurance;i)ladateàlaquelleelleexpireoulamanièreselonlaquellecettedateestfixéeoudoitl’être.
+
+(2)Leparagraphe(1)nes’appliquepasauxcontratsd’assurance-cautionnement.
+
+Appréciationducaractèreessentiel
+
+Copiedelaproposition
+
+Incompatibi­litéaveclaloi
+
+Droitsdel’assuré
+
+Contenudelapolice
+
+Exception
+
+50
+
+Application
+
+Appraisals
+
+Mattersindisagreement
+
+Costs
+
+AppointmentbySupremeCourtjudge
+
+Relieffromforfeiture
+
+Howpolicypayable
+
+45.(1)Thissectionappliestoacontractcontainingacondition,statutoryorotherwise,providingforanappraisaltodeterminespecifiedmattersintheeventofadisagreementbetweentheinsuredandtheinsurer.
+
+(2)The insuredandtheinsurershalleachappointanappraiser,andthetwoappraisersshallappointanumpire.
+
+(3)Theappraisersshalldeterminethemattersindisagreementand,iftheyfailtoagree,theyshallsubmittheirdifferencestothe umpire,andthe findinginwritingofanytwodeterminesthematters.
+
+(4)Eachpartytotheappraisalshallpaytheappraiserappointedbythatpartyandshallbearequallytheexpenseoftheappraisalandtheumpire.
+
+(5)Where(a)apartyfailstoappointanappraiserwithinsevencleardaysafterbeingservedwithwrittennoticetodoso;(b)theappraisersfailtoagreeonanumpirewithin 15daysaftertheirappointment;or(c)anappraiserorumpirerefusesto act orisincapableofactingordies;ajudgeoftheSupremeCourtmayappointanappraiseror umpire, asthecasemaybe, on theapplicationoftheinsuredoroftheinsurer.
+
+46.Where(a)therehasbeenimperfectcompliancewithastatutoryconditionastotheproofoflosstobegivenbytheinsuredorothermatterorthingrequiredtobedoneoromitted bytheinsuredwith respecttothelossandaconsequentforfeitureoravoidanceofthe insurance inwholeorinpart;and(b)thecourtconsiders it inequitablethattheinsuranceshouldbeforfeitedoravoidedonthatground,thecourtmayrelieveagainsttheforfeitureoravoidanceonthetermsthatitconsidersjust.
+
+47.InsurancemoneyispayableintheNorthwestTerritoriesinlawful moneyofCanada.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+45.(1)Leprésentarticles’appliqueàuncontratrenfermantunecondition,légaleouautre,quiprévoituneestimationpourréglercertainesquestionsencasdedésaccordentrel’assuréetl’assureur.
+
+(2)L’assuréetl’assureurnommentchacununestimateuretles deux estimateursnommentunarbitre.
+
+(3)Lesestimateursrèglentlespointsdedésaccordet,s’ilsnepeuvents’entendre,soumettentleursdifférendsàl’arbitre;ladécisionécritededeuxd’entreeuxconstituelerèglementdecespoints.
+
+(4)Chaquepartiepaiel’estimateurqu’elleanomméetsupporteàpartégalelesfraisdel’estimationetdel’arbitre.
+
+(5)UnjugedelaCoursuprêmepeutnommerunestimateurouunarbitre,selonlecas, àlademandedel’assuréoudel’assureurlorsque:a)unepartiefaitdéfautdenommersonestimateurdansundélaideseptjoursfrancsaprèsqu’elleareçusignificationd’unavisécritàceteffet;b)les estimateurs nepeuvents’entendresurlechoixd’unarbitredansles15jourssuivantleurnomination;c)unestimateuroul’arbitrerefused’agir,enestincapableoudécède.
+
+46.Lorsque:a)d’unepart, l’assuré nes’estqu’imparfaitementconforméàuneconditionlégaleportantsur la preuvedusinistreàapporterousuruneautrequestionouchosequ’ilal’obligationdefaireoudenepasfaireàl’égarddusinistrecouvert,etqu’ils’ensuitunedéchéanceouuneannulationdel’assurance,totaleoupartielle;b)d’autrepart,letribunalestimeinjustequel’assurancesoitdéchueouannuléepourcemotif,letribunalpeutremédieràladéchéanceouàl’annulationauxconditionsqu’ilestimejustes.
+
+47.LessommesassuréessontpayablesdanslesTerritoiresduNord-OuestenmonnaielégaleduCanada.LTN-O2011,ch.16,art.12(2).
+
+Champd’application
+
+Nominations
+
+Désaccord
+
+Frais
+
+NominationparunjugedelaCoursuprême
+
+Annulationdeladéchéance
+
+Paiement
+
+51
+
+Waiveroftermorcondition
+
+Certainactsnotconstitutingwaiver
+
+Rightofclaimantagainstinsurerwhereexecutionagainstinsuredreturnedunsatisfied
+
+Exemption
+
+Consolidationofactions
+
+Whereminorsareentitledtoinsurancemoney
+
+Apportion-mentofsumsdirectedtobepaid
+
+48.(1)Notermorconditionofacontractshallbedeemedtobewaivedbytheinsurer in whole or inpartunlessthewaiverisstatedinwritingandsignedbyapersonauthorizedforthatpurposebytheinsurer.
+
+(2)Neithertheinsurernortheinsuredshallbedeemedtohavewaivedanytermorconditionofacontractbyanyactrelatingtotheappraisaloftheamountoflossortothedeliveryandcompletionofproofsortotheinvestigationoradjustmentofanyclaimunderthecontract.
+
+49.(1)Whereaperson(a)incursaliabilityforinjuryordamagetothepersonorpropertyofanother;(b)isinsuredagainstthatliability;and(c)failstosatisfyajudgmentawardingdamagesagainsthimorherinrespectofhisorherliability,andanexecutionagainstthepersoninrespectofthatjudgmentisreturnedunsatisfied,thepersonentitledtothe damagesmayrecoverbyactionagainst the insurertheamountofthejudgmentuptothe facevalueofthepolicy,butsubjecttothesameequitiesastheinsurerwouldhaveifthejudgmenthadbeensatisfied.
+
+(2)Subsection(1)doesnotapplytomotorvehicleliabilitypolicies.
+
+50.(1)Whereseveralactionsarebroughtfortherecoveryofmoneypayableunderacontractorcontractsofinsurance,thecourtmayconsolidateorotherwisedealwiththeactionssothatthereisonlyoneactionforandinrespectofalltheclaimsmadeintheactions.
+
+(2)Whereanactionisbroughttorecovertheshareofoneormoreminors,alltheotherminorsentitled,orthetrustees,executorsorguardiansentitledtoreceivepaymentofthesharesoftheotherminors,shall bemadepartiesto theaction,and therightsof alltheminorsshallbedeterminedinoneaction.
+
+(3)Inallactionswhereseveralpersonsareinterestedintheinsurancemoney,thecourtorjudgemayapportionamongthepersonsentitledanysumdirectedtobepaid,andmaygiveallnecessarydirectionsandrelief.
+
+48.(1)L’assureurn’estréputéavoirrenoncéentoutouenpartieàunedispositionouàuneconditionducontratquesilarenonciationestfaiteparécritetsignéeparlapersonnequ’ilautoriseàcettefin.
+
+(2)Ni l’assureur ni l’assurénesont réputésavoirrenoncéàunedispositionouàuneconditiond’uncontratdufaitdetoutactese rapportantàl’estimationdumontantdusinistre,àlaremiseouàlaréalisationdespreuves,ouàl’examenouaurèglementdetoutedemandederèglementprévueparlecontrat.
+
+49.(1)Unepersonnepeutintenteruneactioncontreunassureurenvuederecouvrer,jusqu’àconcurrencedelavaleurnominaledelapolice, unesommeégaleaumontantdujugementqu’ellea obtenucontre une autrepersonnequi:a)estresponsabledesblessuresoudedommagesmatérielssubisparlapremièrepersonne;b)estassuréecontrecetteresponsabilité;c)nepaiepaslemontantprévudansunjugementrenducontreelleàl’égarddecetteresponsabilité.L’actionnepeutêtreintentéequesiunbrefd’exécutiondujugementn’apuêtreexécutéetestlimitéeparlesmêmesdroitsquel’assureurauraitsi lejugementavaitétéacquitté.
+
+(2)Leparagraphe(1)nes’appliquepasauxpolicesderesponsabilitéautomobile.
+
+50.(1)Lorsqueplusieursactionssontintentéesenrecouvrementdesommes payablesenvertud’un ou deplusieurscontratsd’assurance,letribunalpeutlesjoindreouendisposer autrementde façonqu’iln’yaitqu’uneseuleactionpourtouteslesdemandesderèglementviséesdanscesactions.
+
+(2)Lorsqu’uneactionestintentéeenrecouvrementde la partd’unoude plusieursmineurs,tous les autresayantsdroit mineurs,ou les fiduciaires,exécuteurstestamentairesoututeursayantledroitderecevoirlepaiementdespartsdecesautresmineurs,sontmisencauseetles droits detousles mineurssontdéterminésdansuneseuleaction.
+
+(3)Danstouteslesactionsoùplusieurspersonnesontunintérêtsurdessommesassurées,letribunaloulejugepeut répartirentre lesayantsdroittoutesommedontlepaiementestordonné,etdonnerlesdirectivesetprendrelesmesuresderedressementnécessaires.
+
+Renonciationdel’assureur
+
+Idem
+
+Actioncontrel’assureur
+
+Exception
+
+Réuniond’actions
+
+Droitsdesmineurs
+
+Répartition
+
+52
+
+Foreigndomicileorresidence
+
+Effectofdeliveryofpolicy
+
+Unpaidpremium
+
+Noteorchequeforpremiumnothonoured
+
+Formsprovidedbyinsurer
+
+Offence
+
+Effectofprovidingforms
+
+Whenactionmaybecommencedundercontract
+
+(4)Wherethepersonentitledtoreceivemoneydueandpayableunderacontractofinsurance,exceptinsuranceoftheperson,isdomiciledorresidesinaforeignjurisdictionandpayment,validaccordingtothelawofthatjurisdiction,ismadetotheperson,thepaymentisvalidandeffectualforallpurposes.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2014-c-31/latest/snwt-2014-c-31.html#sec5subsec2_smooth)2014,c.31,s.5(2).
+
+51.(1)Whereapolicyhasbeendelivered,thecontractisasbindingontheinsurerasif thepremiumhadbeenpaid,althoughithasnotinfactbeenpaid,andalthoughdeliveredbyanofficeroragentoftheinsurerwhodidnothavetheauthoritytodeliverit.
+
+(2)Aninsurermaysueforanunpaidpremiumandmaydeducttheamountoftheunpaidpremiumfromtheamountforwhichtheinsurerisliableunderthecontractofinsurance.
+
+(3)Whereacheque,billofexchangeorpromissorynoteisgiven,whetheroriginallyorbywayofrenewal,forthewhole or partofapremiumandthecheque,billofexchangeorpromissorynoteisnothonouredaccordingtoitstenor,theinsurermayterminatethecontractongivingwrittennoticebyregisteredmailtotheinsured.
+
+52.(1)Aninsurer,immediatelyonreceiptofarequest,andinanyeventnotlaterthan60daysafterreceiptofnoticeof loss,shall provide totheinsuredorpersontowhomtheinsurancemoneyispayablewithformsonwhichtomaketheproofoflossrequiredunderthecontract.
+
+(2)Everyinsurerwhoneglectsorrefusestocomplywith subsection (1) is guilty ofan offence, andsection53isnotavailabletotheinsurerasadefencetoanactionbrought,aftertheneglectorrefusal,fortherecoveryofmoneyallegedtobepayableunderthecontractofinsurance.
+
+(3)Theprovidingbyaninsurerof formstomakeproofoflossshallnotbetakentoconstituteanadmissionbytheinsurerthatavalidcontractisinforceorthatthelossinquestionfallswithintheinsuranceprovidedbythecontract.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec6_smooth)2011,c.16,s.12(6).
+
+53.Anactionfortherecoveryofmoneypayableunderacontractofinsurancemaynotbecommenceduntiltheexpirationof60daysafterproof,inaccordancewiththeprovisionsofthecontract,(a)oftheloss;or(b)ofthehappeningoftheeventonwhich
+
+(4)Estvalablelepaiementeffectuéenconformitéavecla loi d’unterritoireétranger,faitàunepersonnequiyestdomiciliéeouquiyréside et quia ledroitderecevoirdessommesduesetexigiblesaux termesd’uncontratd’assurance;leprésentparagraphenes’appliquetoutefoispasauxassurancesdepersonne.
+
+51.(1)Lorsquelapoliceaétéremise,lecontratliel’assureur comme silaprimeavaitétépayée, mêmesi,defait,ellenel’apasétéetmêmesilapoliceaétéremiseparundirigeantouunagentdel’assureurquin’yétaitpasautorisé.
+
+(2)L’assureurpeutintenteruneactionenrecouvrementd’uneprimenonacquittéeetdéduirelemontantdecetteprimedessommesauxquellesilesttenuenvertuducontratd’assurance.
+
+(3)Lorsqu’un chèque, unelettre de changeouunbillet àordre est remis lorsdelaconclusiondu contratoudesonrenouvellementenpaiementtotaloupartieldelaprimeetqu’iln’estpashonoréenconformitéavecsestermes,l’assureurpeutrésilierlecontratenpostant,enrecommandé,unavisécritàl’assuré.
+
+52.(1)Dèsqu’ilenreçoitlademandeetdanstouslescasauplustard60joursaprèsavoirreçuunavisdesinistre,l’assureurremetàl’assuréouàlapersonneàlaquellelessommesassuréessontpayableslesformulairesnécessairesàl’établissementde lapreuvedusinistreexigéeparlecontrat.
+
+(2)Commetuneinfractionl’assureurquineseconformepasauparagraphe(1);deplus,ilnepeutinvoquerl’article53poursedéfendrecontreuneactionintentéeparlasuiteenrecouvrementdessommesprésentéescommeétantexigiblesauxtermesducontratd’assurance.
+
+(3)La remise desformulairesneconstituepas unaveudelapartdel’assureurqu’uncontratvalideestenvigueurouquelesinistreenquestionestcouvertparl’assuranceprévueparlecontrat.
+
+53.Aucuneactionenrecouvrementdessommesexigiblesauxtermesd’uncontratd’assurancenepeutêtreintroduiteavantl’expirationd’undélaide 60 jourssuivantlaprésentation,enconformitéaveclesdispositionsducontrat,delapreuve:a)soitdusinistre;
+
+Résidentsàl’étranger
+
+Conséquencedelaremisedelapolice
+
+Primesnonacquittées
+
+Résiliationencasdenon-paiementd’unelettredechange
+
+Formulaires
+
+Infraction
+
+Conséquencedelaremise
+
+Délaipréalableàl’actionenrecouvrement
+
+53
+
+Receiptascommission
+
+Paymentofcommission
+
+Offence
+
+Righttorefundofpremiumonterminationofcontract
+
+Statementinnotice
+
+theinsurancemoneyistobecomepayable,orofashorterperiodthatisfixedbythecontractofinsurance.
+
+INSURANCEASCOLLATERALSECURITY
+
+54.(1)Nomortgageeshallacceptorbeentitledtoreceiveeitherdirectlyorthroughhisorheragentoremployee,andnoofficeroremployeeofamortgageeshallacceptorreceive,anycommissionorotherremunerationor benefit in consideration of effectingacontractofinsuranceorrenewalofacontractofinsurance, under whichcontractloss,ifany, ispayabletohimorherasmortgagee.
+
+(2)Noinsurer or agentorbrokershallpay,alloworgiveanycommissionorotherremunerationorbenefittoamortgageeortoanypersoninhisorheremployoronhisorherbehalfinconsiderationofeffectingacontractofinsuranceorrenewalofacontractofinsurance,underwhichcontractloss,ifany,ispayabletohimorherasmortgagee.
+
+(3)Everyinsurerorotherpersoncontravenesthissectionisguiltyofanoffence.
+
+who
+
+55.(1)Where(a)aninsuredassignstherighttorefundofpremiumthatmayaccruebyreasonofthecancellationorterminationofacontractofinsuranceunderthetermsofthecontractofinsurance;and(b)noticeoftheassignmentisgivenbytheassigneetotheinsurer,theinsurershallpayanysuchrefundtotheassigneenotwithstanding any conditioninthecontract,whetherprescribedunderthisActornot,requiringtherefundto be paidtotheinsured ortoaccompanyany noticeofcancellationorterminationtotheinsured.
+
+(2)Wheretheconditioninthecontractdealingwithcancellationorterminationbytheinsurerprovides thatthe refund shall accompanythe noticeofcancellationortermination,theinsurershallincludeinthenoticeastatementthatinplaceofpaymentoftherefundinaccordancewiththeconditiontherefundisbeingpaidtotheassigneeunderthissection.
+
+b)soitdelasurvenancedel’événementquirendlessommesassuréesexigibles,ouavant l’expirationdu délaiplus court que prévoitlecontrat.
+
+ASSURANCEÀTITREDEGARANTIESUBSIDIAIRE
+
+54.(1)Ilestinterditaucréancierhypothécaired’accepterouderecevoir,directementouparl’intermédiairedesonreprésentantouemployé,unecommissionouautrerémunérationouavantageencontrepartiedelaconclusionoudurenouvellementd’uncontratd’assuranceauxtermesduquellessommesassuréesluisontpayablesentantquecréancierhypothécaireencasdesurvenancedusinistre;l’interdictionprévueauprésentparagraphes’appliqueaussiauxdirigeantsetemployésducréancierhypothécaire.
+
+(2)Il est interdità un assureur, àunagentouàuncourtierdepayer,d’accorderoudedonnerunecommissionouautrerémunérationouavantageàuncréancierhypothécaireouàl’undesesemployésoureprésentantsencontrepartiedelaconclusionoudurenouvellementd’uncontratd’assuranceauxtermesduquellessommesassuréessontpayablesaucréancierhypothécaireencasdesurvenancedusinistre.
+
+(3)Commetuneinfractionquiconquecontrevientauprésentarticle.
+
+55.(1)Lorsque,enconformité avecles modalitésducontratd’assurance:a)l’assurécèdesondroitauremboursementdelaprimeencasd’annulationouderésiliationducontrat;b)lecessionnairedonne avis de lacessionàl’assureur,celui-ciesttenudeverserceremboursementaucessionnairepardérogationàtouteautreconditionprévueparlecontrat,exigéeounonparlaprésenteloi,selonlaquelleleremboursementdoitêtreverséàl’assuréouaccompagnerl’avisd’annulationouderésiliationquiluiestdonné.
+
+(2)Lorsquelaconditionprévueaucontratausujetdel’annulationoudelarésiliation parl’assureurprévoitqueleremboursementaccompagnel’avisd’annulationouderésiliation,l’assureurinclutdansl’avisune déclarationindiquantqueleremboursementestverséaucessionnaireenapplicationduprésent
+
+Commissionverséeaucréancierhypothécaire
+
+Idem
+
+Infraction
+
+Cessiondudroitaurembourse-mentdelaprime
+
+Notedansl’avis
+
+54
+
+Contractsoftitleinsurance
+
+Limitationsandconditions
+
+Racialorreligiousdiscrimination
+
+Paymentintocourt
+
+Dischargetoinsurer
+
+ApplicationofPart
+
+CONTRACTSOFTITLEINSURANCE
+
+56.(1)Everycontractoftitleinsurancemustbeinwritingand,inadditiontotheotherrequirementsimposedbythisAct,mustexpresslylimittheliabilityoftheinsurertoasumstatedinthecontract.
+
+(2)EverycontractoftitleinsuranceissubjecttothelimitationsandconditionsthatnopolicyoftitleinsuranceshallbeissuedunlesstheinsurerhasfirstobtainedaconcurrentcertificateoftitletothepropertytobeinsuredfromasolicitorthenentitledtopractiseintheNorthwestTerritorieswhoisnotatthattimeintheemployoftheinsurer.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+GENERAL
+
+57.EverylicensedinsurerthatdiscriminatesunfairlybetweenrisksintheNorthwestTerritoriesbecauseoftheraceorreligionoftheinsuredisguiltyofanoffence.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+58.(1)Whereaninsurercannotobtainasufficientdischargeforinsurancemoneyforwhichitadmitsliability,theinsurermayapplytotheSupremeCourtexparteforanorderforthepaymentofitintocourt,andtheSupremeCourtmayorderthepaymentintocourtto be madeonthe terms astocostsandotherwisethatthe Supreme Courtmaydirect,andmayprovidetowhatfundornametheamountshallbecredited.
+
+(2)ThereceiptoftheproperofficeroftheSupremeCourtissufficientdischargetotheinsurerfortheinsurancemoneypaidintocourtpursuanttosubsection(1),and theinsurancemoneyshallbedealtwithaccordingtotheordersoftheSupremeCourt.
+
+PARTIIIFIREINSURANCE
+
+59.(1)ThisPartappliestoinsuranceagainstlossofordamagetopropertyarisingfromtheperiloffireinanycontractmadeintheNorthwestTerritoriesexcept,(a)insurancefallingwithintheclassesofaircraft,automobile, boilerand
+
+articleaulieud’êtreverséeenconformitéavecàlaconditionprévueaucontrat.
+
+CONTRATSD’ASSURANCE-TITRE
+
+56.(1)Lescontratsd’assurance-titredoiventêtreparécritetcomporter,enplusdesautresexigencesdelaprésenteloi,unedispositionexpresseprécisantque laresponsabilitédel’assureurestlimitéeaumontantprévuparlecontrat.
+
+(2)Lescontratsd’assurance-titreprévoientqu’aucunepoliced’assurance-titrenepeut êtreétablieavantquel’assureurn’aitreçuuncertificatconformedetitreportantsurlesbiensassurés;cecertificatestpréparé parunavocatautoriséàexercersaprofessiondanslesTerritoiresduNord-Ouestetquin’estpas,àcemoment,auservicedel’assureur.LTN-O2011,ch.16,art.12(2).
+
+DISPOSITIONSGÉNÉRALES
+
+57.Commetuneinfractionl’assureurtitulaired’unelicencequi,dufaitdelaraceoudelareligiondel’assuré,établitdesdiscriminationsinjustesentredifférentsrisquesdanslesTerritoiresduNord-Ouest.LTN-O2011,ch.16,art.12(2).
+
+58.(1)L’assureurquinepeutobtenirunelibérationsuffisanteàl’égarddessommesassuréesdontilsereconnaîtdébiteurpeutdemanderexparteàlaCoursuprêmederendreuneordonnanceportantconsignationdecessommesautribunal;laCoursuprêmepeutordonnerquecetteconsignation sefasseselonlesmodalitésqu’elleordonneàl’égard desfraisoudetouteautrequestionetindiqueràquelfondsouàquelnomlemontantdoitêtreporté.
+
+(2)Le récépissédufonctionnairecompétentdelaCoursuprêmeconstitue,àl’égarddel’assureur,unelibérationsuffisantepourlessommesassuréesconsignéesenconformitéavecleparagraphe(1); cessommessontaffectéesenconformitéaveclesordonnancesdelaCoursuprême.
+
+PARTIEIIIASSURANCE-INCENDIE
+
+59.(1)Laprésenteparties’appliqueauxassurancescontrelespertesoudommagesmatérielsdusauxrisquesd’incendiedanstoutcontratconcludanslesTerritoiresduNord-Ouest,saufdanslescassuivants:
+
+Contratsd’assurance-titre
+
+Conditions
+
+Discriminationfondéesurlaraceoulareligion
+
+Consignation
+
+Libérationdel’assureur
+
+Champd’application
+
+55
+
+Automobiles
+
+Extentofcoveragebycontract
+
+machinery,inlandtransportation,marine,plateglass,sprinklerleakageandtheftinsurance;(b)wherethesubject matterof the insuranceisrents,chargesorlossofprofits;(c)wheretheperiloffireisanincidentalperiltothecoverageprovided;or(d)wherethesubjectmatterofthe insuranceispropertythatisinsuredbyaninsurerora groupof insurers primarily as a nuclearriskunderapolicycoveringagainstlossofordamagetothepropertyresultingfromnuclearreactionornuclearradiationandfromotherperils.
+
+(2)Notwithstandingsubsection(1),thisPartappliestoinsuranceofanautomobileasprovidedinsubsection12(2).[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2), [(11)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec11_smooth).
+
+60.(1)Subjecttosubsection(4)andparagraph67(a),inanycontracttowhich thisPartapplies,thecontractshallbedeemedtocovertheinsuredproperty,(a)againstfire,whetherresultingfromexplosionorotherwise,notoccasionedbyorhappeningthrough,(i)inthecaseofgoods,theirundergoinganyprocessinvolvingtheapplicationofheat,or(ii)riot,civilcommotion,war,invasion,actofforeignenemy,hostilities,whetherwarbedeclaredornot,civilwar,rebellion,revolution,insurrectionormilitarypower;(b)againstlightning,butexcludingdestructionorlosstoelectricaldevicesorappliancescausedbylightningorotherelectricalcurrentsunlessfireoriginatesoutsidethearticleitselfandonlyforthedestructionordamageas occursfromthefire;and(c)againstexplosionnotoccasionedbyorhappeningthroughanyoftheperilsspecifiedinsubparagraph(a)(ii)ofnatural,coalormanufacturedgasinabuilding notformingpartofagasworks,
+
+a)lorsqu’ils’agitd’uneassurancedel’unedescatégoriessuivantes:assurance-aéronef,assuranceautomobile,assurancedeschaudièresetmachines, assurance detransportsterrestres,assurancemaritime,assurancecontrelebrisdesglaces,assurancecontrelesfuitesd’extincteursautomatiquesetassurancecontrelevol;b)lorsquel’objetdel’assuranceestunloyer,unechargeouunepertedebénéfice;c)lorsque lerisqued’incendieconstitueunrisqueaccessoireàlacouverturefournie;d)lorsquel’objetdel’assuranceportesurdes biensassurésparl’assureurouparungrouped’assureurs,principalementàtitrederisquenucléaire,parunepolicelescouvrantnotammentcontrelespertesoudommagesmatérielsrésultantdesréactionsoudesrayonnementsnucléaires.
+
+(2)Pardérogationauparagraphe(1),la présenteparties’appliqueàl’assuranced’uneautomobileprévueauparagraphe12(2).LTN-O2011,ch.16,art.12(2).
+
+60.(1)Sousréserveduparagraphe(4)etdel’alinéa7a),dans tout contrat auquella présente parties’applique,lecontratestréputécouvrirlesbiensassurés:a)contreunincendie,qu’ilsoitdûàuneexplosionouàuneautrecause,nonoccasionnéouprovoquépar:(i)le fait, danslecas demarchandises,deleurfairesubiruntraitementfaisantintervenirlachaleur,(ii)uneémeute,unmouvementpopulaire,uneguerre, uneinvasion,desactesd’ennemisétrangers,deshostilitésavecousansdéclarationdeguerre,uneguerrecivile,unerébellion,unerévolution,uneinsurrectionouuncoupd’étatmilitaire;b)contrelafoudre,àl’exceptiondeladestructionoudel’endommagementdedispositifsoud’appareilsélectriquesparlafoudreoud’autrescourantsélectriques,àmoinsquel’incendienesedéclareendehors del’objetlui-même,etseulementpourladestructionoulesdégâtsprovoquésparcetincendie;
+
+Automobile
+
+Couverture
+
+56
+
+Radioactivecontamination
+
+Coveragewherepropertyremoved
+
+Extendedinsurance
+
+Powertoextendmeaningof"lightning"inlivestockcontracts
+
+Formofcontract
+
+whetherfireensues from theexplosionornot.
+
+(2)UnlessacontracttowhichthisPartappliesotherwisespecificallyprovides,itdoesnotcovertheinsuredpropertyagainstlossordamagecausedbycontaminationbyradioactivematerialdirectlyorindirectlyresultingfromfire,lightningorexplosionwithinthemeaningofsubsection(1).
+
+(3)Wherepropertyinsuredunderacontractcoveringataspecifiedlocationisnecessarilyremovedtopreventlossordamageorfurther loss ordamagetotheproperty,thatpartoftheinsuranceunderthecontractthatexceedstheamountoftheinsurer’sliabilityforanylossincurredcovers,forsevendaysonlyorfortheunexpiredtermofthecontractiflessthansevendays,thepropertyremovedandanypropertyremainingintheoriginallocationintheproportionsthatthevalueofthepropertyineach oftherespectivelocationsbearstothevalueofthepropertyinthemall.
+
+(4)Nothinginsubsection(1)precludesaninsurergivingmoreextendedinsuranceagainsttheperilsmentionedinthatsubsection,butinthatcasethisPartdoesnotapplytotheextendedinsurance.
+
+(5)Aninsurerlicensed tocarryonfireinsurancemayincludeinitsinsurancecontractsaclauseorendorsementprovidingthat,inthecaseoflivestockinsuredagainstdeathorinjurycausedbyfireorlightning,theword"lightning"shallbedeemedtoincludeotherelectricalcurrents.
+
+61.Afteranapplicationforinsuranceismade,ifitisinwriting,anypolicysenttotheinsuredshallbedeemedtobeintendedtobeinaccordancewiththetermsoftheapplication,unlesstheinsurerpointsoutinwritingtheparticularsinwhichrespectitdiffersfromtheapplication,inwhichcasetheinsuredmay,withintwoweeksafterthereceiptofthenotification,rejectthepolicy.
+
+c)contrel’explosion,nonprovoquéeouoccasionnéeparl’undesrisquesmentionnésausous-alinéaa)(ii),degaznaturel,degazdehouilleoudegazmanufacturédansunbâtimentquinefaitpaspartied’uneusineàgaz,qu’unincendies’ensuiveounon.
+
+(2)Àmoinsqu’uncontratauquellaprésenteparties’appliquen’endisposeautrementdefaçonexpresse,cecontratnecouvrepaslesbiensassuréscontrelespertesoulesdommagesdusàlacontaminationparunematièreradioactive,provenantdirectementouindirectementd’unincendie,delafoudreoud’uneexplosionausensduparagraphe(1).
+
+(3)Lorsquedesbiensassurésparuncontratlescouvrantàunendroit spécifique doiventêtredéplacéspourempêcherqu’ilssubissentuneperteoudesdommagesouuneperteoudesdommagessupplémentaires,lapartiedel’assurancecontractéequiexcèdelemontantdesobligationsdel’assureurpourtouteperteencouruecouvre,pendantseptjoursseulementoupendantladuréerestantàcourirducontrat,sielleestinférieureàseptjours,lesbiensdéplacésettousbiensrestantàl’endroitoriginaldanslaproportionexistant entre la valeur desbienssituésàchacundesendroitsrespectifsetlavaleurtotaledesbiens.
+
+(4)Leparagraphe(1) n’empêchepasunassureurdefournirunegarantie plusétenduecontre les risquesqui ysontmentionnés, auquel cas la présente partienes’appliquepasàl’assuranceétendue.
+
+(5)Lesassureurstitulairesd’unelicencelesautorisantàexploiteruneentreprised’assurance-incendiepeuventincluredansleurscontratsd’assuranceuneclauseouunavenantprévoyantque,danslecasdebétailassurécontrelamortoulesblessurescauséesparunincendieoulafoudre, le mot«foudre»s’entendégalementdesautrescourantsélectriques.
+
+61.Aprèsqu’unepropositiond’assuranceestfaite,siellel’estparécrit,toutepoliceenvoyéeàl’assuréestréputéeêtrevoulueconformeauxmodalitésdelaproposition,àmoinsquel’assureurn’indique parécritlespointssurlesquelsellediffèredelaproposition,auquelcasl’assurépeut, danslesdeuxsemainesdelaréceptiondelanotification,refuserlapolice.
+
+Contaminationradioactive
+
+Biensdéplacés
+
+Assuranceétendue
+
+Extensiondumot«foudre»(assurancedubétail)
+
+Formeducontrat
+
+57
+
+Renewal
+
+62.Acontractmayberenewedbythedeliverytotheinsureroragentofarenewalreceiptidentifyingthepolicybynumber,dateorotherwise.
+
+Noticetoother63.(1)Wheretheloss,ifany,underacontracthas,personswiththeconsentoftheinsurer,beenmadepayabletoapersonotherthantheinsured,theinsurershallnotcanceloralterthepolicytotheprejudiceofthatpersonwithoutnoticetothatperson.
+
+Formofnotice
+
+Definition:"policy"
+
+Statutoryconditions
+
+Misrepresen-tation
+
+Propertyofothers
+
+Changeofinterest
+
+(2)Thelengthoftimeforandmannerofgivingthenotice under subsection(1) isthesameasnoticeofterminationtotheinsuredunderthestatutoryconditionsinthecontract.
+
+64.(1)Inthissection,"policy"doesnotincludeinterimreceiptsorbinders.
+
+(2)Theconditionssetoutin thissectionshallbedeemedtobepartofeverycontractinforceintheNorthwestTerritoriesandshallbeprintedoneverypolicy withtheheading"StatutoryConditions" andnovariationoromissionoforadditiontoanystatutoryconditionisbindingontheinsured.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+STATUTORYCONDITIONS
+
+1.Ifapersonapplyingforinsurancefalselydescribesthepropertytotheprejudiceoftheinsurer,ormisrepresentsorfraudulentlyomitstocommunicateanycircumstancethatis materialtobemadeknowntotheinsurerinordertoenableittojudgeoftherisktobeundertaken,thecontractisvoidastoanypropertyin relationtowhich themisrepresentationoromissionismaterial.
+
+2.Unlessotherwisespecificallystatedinthecontract,theinsurerisnot liableforlossordamagetopropertyownedbyanypersonotherthantheinsured,unlesstheinterestoftheinsured therein is stated inthecontract.
+
+3.Theinsurerisliableforlossordamageoccurringafteranauthorizedassignmentunderthe[Bankruptcy](https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-b-3/latest/rsc-1985-c-b-3.html)andInsolvencyAct(Canada)orchangeoftitlebysuccession,byoperationoflaw,orbydeath.
+
+62.Uncontratpeutêtrerenouveléparlaremiseàl’assureurouàsonagentd’unequittancederenouvellement,identifiantlapolicenotammentparsonnuméroetsadate.
+
+63.(1)Lorsquelasommeassuréeautitred’unsinistre,s’ilyalieu,couvertparuncontrataétérenduepayable,avec le consentementdel’assureur,àunepersonneautrequel’assuré,l’assureurnepeutannuleroumodifierlapoliceaupréjudicedecettepersonnesansl’enaviser.
+
+(2)Ledélaietlemodedesignificationdel’avisprévuauparagraphe(1)sontlesmêmesqueceuxdel’avisd’annulationenvoyéàl’assuréenconformitéaveclesconditionslégalesducontrat.
+
+64.(1)Auprésentarticle,«police»nes’entendpasdesreçusintérimairesoudespolicesprovisoires.
+
+(2)Lesconditionsprévuesau présentarticlesontréputéesfairepartie detoutcontraten vigueurdans lesTerritoiresduNord-Ouestetdoiventêtreimpriméessurchaquepolicesousletitre«Conditionslégales»;aucunemodification,omissionouadjonctionàl’unedeces conditions n’engagel’assuré.LTN-O2011,ch.16,art.12(2).
+
+CONDITIONSLÉGALES
+
+Renouvelle-ment
+
+Avisdel’assureur
+
+Formedel’avis
+
+Définition:«police»
+
+Conditionslégales
+
+1.Lorsqu’unproposantdonneunefaussedescriptionAssertionsdesbiensaupréjudicedel’assureur,représentefaussementouometfrauduleusementdedéclarerunecirconstancequ’ilestessentieldeporteràlaconnaissancedel’assureurpourluipermettred’apprécierlerisquequ’ilprendàsacharge,lecontratestnulquantauxbiensquifontl’objetdel’assertioninexacteoudel’omission.
+
+inexactes
+
+2.Saufstipulationcontraireducontrat,l’assureurneBiensd’autruirépondpasdespertesoudesdommagescausésàdesbiensn’appartenantpasàl’assuré,àmoinsquelecontratnefassementiondel’intérêtdel’assurédanscesbiens.
+
+3.L’assureurréponddelaperteoudesdommagessurvenantaprèsunecessionautorisée parla[Loi](https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-b-3/latest/rsc-1985-c-b-3.html)surlafailliteetl’insolvabilité (Canada) ouaprès untransfertdetitreparsuccession,parl’applicationdelaloiouparsuited’undécès.
+
+Cessiondel’assurance
+
+58
+
+Materialchanges
+
+Termination
+
+4.Anychangematerialtotheriskandwithinthecontrolandknowledgeoftheinsuredavoidsthecontractastothepartaffectedthereby,unlessthechangeis promptlynotifiedinwritingto theinsurer oritslocalagent,andtheinsurerwhensonotifiedmayreturntheunearnedportion,ifany,ofthepremiumpaidandcancelthecontract,or maynotify the insuredin writingthat, if hedesires thecontracttocontinueinforce,hemust,within fifteen daysof thereceipt ofthenotice,paytotheinsureranadditionalpremium,andindefaultof suchpaymentthecontractisnolongerinforceandtheinsurershallreturnthe unearned portion,ifany,ofthepremiumpaid.
+
+5.(1)Thiscontractmaybeterminated,(a)bytheinsurergivingtotheinsuredfifteendays’noticeofterminationbyregisteredmailorfivedays’writtennoticeofterminationpersonallydelivered;(b)bytheinsuredatanytimeonrequest.
+
+(2)Wherethiscontractisterminatedbytheinsurer,(a)theinsurershallrefundtheexcessofpremiumactuallypaidbytheinsuredovertheproratapremiumfortheexpiredtime,but,innoevent,shalltheproratapremiumfor theexpiredtime bedeemedtobelessthananyminimumretainedpremiumspecified;and(b)therefundshallaccompanythenoticeunlessthepremiumissubjecttoadjustmentordeterminationastoamount,inwhichcasetherefund shall bemadeassoonaspracticable.
+
+(3)Wherethiscontractisterminatedbytheinsured,the insurer shallrefund assoonaspracticabletheexcessofpremiumactuallypaidbytheinsuredover the short ratepremium for theexpiredtimebutinnoeventshalltheshortratepremiumfortheexpiredtimebedeemedtobelessthananyminimumretainedpremiumspecified.
+
+(4)Therefundmaybemadebymoney, postalorexpresscompanymoneyorder,chequepayable at parorelectronicfundstransfer.
+
+(5)Thefifteendaysmentionedinclause(a)ofsubcondition(1)ofthisconditioncommencestorun
+
+4.ToutchangementdanslescirconstancesChangementsconstitutivesdurisquequivientàlaconnaissancedel’assuréetquidépenddesavolontéestunecausedenullitédelapartieducontratqu’ilvise,àmoinsquel’assureurousonagentlocaln’ensoitpromptementaviséparécrit.L’assureurpeutalorsrésilierlecontratet,le caséchéant, rembourserlapartie nonacquisedelaprimeacquittéeparl’assuré,ouaviserl’assuréparécritqu’ildoit,s’ildésirequelecontratdemeureenvigueur,acquitterdansles15jourssuivantréceptiondel’avisuneprimesupplémentairesouspeinederésiliationducontrat,auquelcasl’assureurluirembourse,lecaséchéant,laportionnonacquisedelaprimequ’ilapayée.
+
+5.(1)Leprésentcontratpeutêtrerésilié:a)parl’assureur,moyennantunpréavisde15joursposté,enrecommandé,àl’assuré,oudecinqjours,s’illuiestremisenmainpropre;b)parl’assuré,àtoutmoment,surdemande.
+
+(2)Encasderésiliationparl’assureur:a)celui-ciremboursel’excédentdelaprimeacquittéesurlaprimeacquisecalculéepourlapériodeécoulée,sousréservedelaretenuedelaprimeminimalestipuléeparlecontrat;b)leremboursementaccompagnel’avis,saufsi la primeestsujetteàrajustement,auquelcasleremboursementestfaitdèsquepossible.
+
+(3)Encasderésiliationparl’assuré,l’assureurremboursedèsquepossiblel’excédentdelaprimeacquittéesurlaprimeacquisecalculéeautauxàcourttermepourlapériodeécoulée,sousréservedelaretenuedelaprimeminimalestipuléeparlecontrat.
+
+(4)Leremboursementpeutsefaireenespèces,parmandat-posteoumandatdecompagniedemessagerie,parchèqueencaissableaupairouparuntransfertélectroniquedefonds.
+
+(5)Les15joursdepréavismentionnésàl’alinéa(1)a)commencentàcourirlejoursuivantla
+
+danslescirconstancesconstitutivesdurisque
+
+Résiliation
+
+59
+
+RequirementAfterLoss
+
+onthedayfollowingthereceipt of theregisteredletteratthepostofficetowhichitisaddressed.
+
+6.(1)Upontheoccurrenceofanylossofordamagetotheinsuredproperty,theinsuredshall,ifthelossordamageiscoveredbythecontract,inadditiontoobservingtherequirementsofconditions9,10and11,(a)forthwithgivenoticethereofinwritingtotheinsurer;(b)deliverassoonaspracticabletotheinsureraproofoflossverifiedbyastatutorydeclaration,(i)givingacompleteinventoryofthedestroyedanddamagedpropertyandshowingindetailquantities,costs,actualcashvalueandparticularsofamountoflossclaimed,(ii)statingwhenandhowthelossoccurred,andifcausedbyfireorexplosionduetoignition,howthefire orexplosionoriginated,sofarastheinsuredknowsorbelieves,(iii)statingthatthelossdidnotoccurthroughanywilfulactorneglectortheprocurement, meansorconnivanceoftheinsured,(iv)showingtheamountofotherinsurancesandthenamesofotherinsurers,(v)showingtheinterestoftheinsuredandofallothersinthepropertywithparticularsofallliens, encumbrancesandotherchargesupontheproperty,(vi)showinganychangesintitle,use,occupation,location,possessionorexposuresofthepropertysincetheissueofthecontract,(vii)showingtheplacewherethepropertyinsuredwasatthetimeofloss;(c)ifrequired,giveacompleteinventoryofundamagedpropertyand showing indetailquantities,costandactualcashvalue;(d)ifrequiredandifpracticable,producebooksofaccount,warehousereceiptsandstocklists,andfurnishinvoicesandothervouchersverifiedbystatutorydeclarationandfurnishacopyofthewrittenportionofanyothercontract.
+
+(2)The evidencefurnishedunder clauses (c)and(d)ofsubparagraph(1)ofthisconditionshallnotbe
+
+réceptiondelalettrerecommandéeaubureaude postedesadestination.
+
+6.(1)En cas desinistrecouvertatteignant lesbiensObligationsenassurés,l’assuré,enplusd’observerlesformalitésstipuléesauxconditionslégales9,10et11:a)enaviseaussitôtl’assureurparécrit;b)remetdèsquepossibleàl’assureurunétatdesinistreappuyéd’unedéclarationsolennelle:(i)dressantl’inventairecompletdesbiensatteints,etexposantendétaillaquantité, lecoût,la valeuraujourdusinistreetlesélémentsdumontantréclamé,(ii)énonçant,aumieuxdesaconnaissance,l’endroitet lescirconstances du sinistre, et,danslecasd’unincendieoud’uneexplosion,quelleenestlacause,(iii)attestantque lesinistren’aétécauséparaucunfaitintentionneldel’assuréniparsanégligence,àsonincitation,par sonentremiseniavecsacomplicité,(iv)énonçanttoutesautresassurancesconcurrentesetlesassureurscorrespondants,(v)énonçantl’intérêtdel’assuréetdetoutesautrespersonnesdanslesbiensatteintsettoutesleschargesgrevantcesderniers,(vi)énonçanttoutchangementdetitre,d’usage,d’occupation,desituation,depossessionoutoutchangementsurvenudanslanaturedurisquedepuisl’établissementducontrat,(vii)indiquantl’emplacementdesbiensassurésaumomentdusinistre;c)fournit,àlademandedel’assureur,l’inventairecompletdesbiensnonatteints,enindiquantlenombre,lecoûtetlavaleuraujourdusinistre;d)fournit,àlademandedel’assureuretdanslamesuredupossible,leslivresdecompte,récépissésd’entrepôtetlistesd’inventaires,ainsiquelesreçusetautrespiècesjustificativesappuyésd’unedéclarationsolennelle,demêmequ’unecopiedetoutautrecontrat.
+
+(2)Lespreuvesfourniesenconformitéaveclesalinéas(1)c)etd)neconstituentpasunepreuvede
+
+casdesinistre
+
+60
+
+Fraud
+
+Whomaygivenoticeandproof
+
+Salvage
+
+Entry,Control,Abandonment
+
+Appraisal
+
+consideredproofsoflosswithinthemeaningofconditions12and13.
+
+7.Any fraud orwilfullyfalsestatementinastatutorydeclarationinrelationtoanyoftheaboveparticulars,vitiatestheclaimofthepersonmakingthedeclaration.
+
+8.Notice of loss maybegivenandproofof lossmaybemadebytheagentoftheinsurednamedinthecontractincaseofabsenceorinabilityoftheinsuredtogivenoticeormaketheproof,andabsenceorinabilitybeingsatisfactorilyaccountedfor,orinthelike case,oriftheinsuredrefusestodoso,by a persontowhomanypartoftheinsurancemoneyispayable.
+
+9.(1)Theinsured,intheeventofanylossordamagetoanypropertyinsuredunderthecontract,shalltakeallreasonablestepstopreventfurtherdamagetosuchpropertysodamagedandtopreventdamage tootherpropertyinsuredhereunderincluding,ifnecessary,itsremovaltopreventdamageorfurtherdamagethereo.
+
+(2)The insurershallcontributepro ratatowardsanyreasonableandproperexpensesinconnectionwithstepstakenbytheinsuredandrequiredundersubparagraph(1)ofthisconditionaccordingtotherespectiveinterestsoftheparties.
+
+10.Afterlossordamagetoinsuredproperty,theinsurerhasanimmediaterightofaccessandentrybyaccreditedagentssufficienttoenablethemtosurveyandexaminetheproperty,andtomakeanestimateofthelossordamage,and,aftertheinsuredhassecuredtheproperty,afurtherrightofaccessandentrysufficienttoenablethemtomakeappraisementorparticularestimateofthelossordamage,buttheinsurerisnotentitledtothecontrolorpossessionoftheinsuredproperty,andwithouttheconsentoftheinsurertherecanbenoabandonmenttoitofinsuredproperty.
+
+11.In theeventofdisagreementastothevalueof thepropertyinsured,thepropertysavedortheamountoftheloss,thosequestionsshallbedeterminedbyappraisalasprovidedundertheInsuranceActbeforetherecanbeanyrecoveryunderthiscontractwhethertherighttorecoveronthecontractisdisputedornot,andindependentlyofallotherquestions.Thereshallbenorighttoanappraisaluntilaspecificdemandthereforismadein writing anduntilafterproof oflosshasbeendelivered.
+
+sinistreausensdesconditionslégales12et13.
+
+7.Toutefraudeoufaussedéclarationintentionnelledansunedéclarationsolennellerelativeàundétailmentionnéci-dessusentraînelanullitédelaréclamationdel’auteurdeladéclaration.
+
+8.L’avisdusinistrepeutêtredonnéetlapreuvedesinistreétablieparlereprésentantdel’assurénommédans lecontrat,s’ilestdémontré de façonsatisfaisantequel’assuréestabsentouincapablededonnerl’avisoud’établirlapreuve,ou,enpareilcasouencasderefusdesapart,partoutepersonneayantdroitàtoutoupartiedel’indemnité.
+
+Fraude
+
+Personnesautoriséesàproduirel’avisdusinistreetlapreuvedesinistre
+
+9.(1)Ilincombeàl’assuréàlasuited’unsinistredeMesuresprendretouteslesmesuresraisonnablesafinquelesdommagescausésauxbiensassurésnes’aggravent etqued’autresbiensassurésparlecontratnesoientendommagés, ycompris,sinécessaire,leurenlèvementdeslieux.
+
+(2)L’assureurassumeunepart,proportionnelleauxintérêtsrespectifsdesparties,desdépensesjustifiéesetraisonnablesengagéeslorsdesmesuresprisesparl’assuréetexigéesenvertuduparagraphe(1).
+
+10.Encasdesinistre,l’assureuretsesmandatairesautorisésontàtoutmomentledroitd’inspecterlesbiensassurésetd’estimerl’étenduedesdommages;toutefois,l’assureurn’apasledroitdeprendreenchargeouensapossessionlesbiensassurés,etlesbiensassurésnepeuventêtredélaissésàl’assureursanssonconsentement.
+
+11.Encasdedésaccordsurlavaleurdesbiensassurés,desbiensnonatteintsoudumontantdelaperte,uneévaluationconformeauxdispositionsdelaLoisurlesassurancesalieuavanttouteindemnisationautitreducontrat,quelavaliditéducontratsoitounoncontestéeetindépendammentdetouteautrequestion.Ledroitàl’évaluationn’existequesurdemandeécriteexpresseunefoisprésentéelapreuvedesinistre.
+
+conservatoires
+
+Accès,priseencharge,délaissement
+
+Évaluation
+
+61
+
+WhenLossPayable
+
+Replacement
+
+Action
+
+Notice
+
+Limitationofliabilityclause
+
+Rateablecontribution
+
+12.Thelossispayablewithinsixtydaysaftercompletionoftheproofofloss,unlessthecontractprovidesforashorterperiod.
+
+13.(1)The insurer, insteadofmakingpayment,mayrepair,rebuild,orreplacethepropertydamagedorlost,givingwrittennoticeofitsintentionsotodowithinthirtydaysafterreceiptoftheproofsofloss.
+
+(2)Inthateventtheinsurershallcommencetosorepair,rebuild,orreplacethepropertywithinforty-fivedaysafterreceiptoftheproofsofloss,andshallthereafterproceedwithallduediligencetothecompletionthereof.
+
+14.Everyactionor proceedingagainstthe insurerfortherecoveryofaclaimunderorbyvirtueofthiscontractisabsolutelybarredunlesscommencedwithintwoyearsnextafterthelossordamageoccurs.
+
+15.Anywrittennoticetotheinsurermay be deliveredat,orsentbyregisteredmailto,thechiefagencyorheadofficeof the insurerin theNorthwestTerritories.Writtennoticemaybegiventotheinsurednamedinthecontractbyletter personally delivered tohimorbyregisteredmailaddressedtohimathislatestpostofficeaddressasnotifiedtotheinsurer.Inthiscondition,theexpression"registered"meansregisteredinoroutsideCanada.SNWT1995,c.11,s.25;[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2);[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2017-c-20/latest/snwt-2017-c-20.html#sec2subsec2_smooth)2017,c.20,s.2(2).
+
+65.Acontractcontaining(a)adeductibleclause;(b)aco-insurance,averageorsimilarclause;or(c)aclauselimitingrecoverybytheinsuredtoaspecifiedpercentageofthevalueofanypropertyinsuredatthetimeofloss,whetherornotthatclauseisconditionalorunconditional,shallhaveprintedorstampedonitsfaceinboldprintnotlessthan12pointsinsizeorredinkthewords"Thispolicycontainsaclausethatmaylimittheamountpayable",failingwhichtheclauseisnotbindingontheinsured.SNWT1991-92,c.31,s.2.
+
+66.(1)Whereonthehappening ofanyloss ordamagetopropertyinsuredthereisinforcemorethanonecontractcoveringthesameinterest, eachoftheinsurersunder the respectivecontracts is liabletotheinsuredfor
+
+12.L’indemnitéest versée dans les 60 joursaprès quelapreuvedesinistreaétécomplétée,àmoinsquelecontratneprévoieundélaipluscourt.
+
+13.(1)Aulieudeverserl’indemnitéenespèces,l’assureurpeutréparer,reconstruireouremplacerlesbiens sinistrés, auquel cas ildonneunavisécritdesonintentiondans les30 joursdelaréceptiondela preuvedesinistre.
+
+(2)Danscecas,l’assureurentreprendlaréparation,lareconstructionouleremplacementdesbienssinistrésdansles45joursdelaréceptiondelapreuvedesinistre,etparlasuitefaitpreuvede toute ladiligencevouluepourterminerlestravaux.
+
+14.Lesactionsenrecouvrementd’indemnitéintentéescontrel’assureursouslerégimeduprésentcontratseprescriventpardeuxansàcompterdelasurvenancedusinistre.
+
+15.Lesavisécritsdestinésàl’assureurpeuventêtreremis oupostés,en recommandé,àl’agenceprincipaleouausiègesocialdel’assureurdansles Territoires duNord-Ouest.Lesavisécritsdestinésàl’assurépeuventluiêtreremisenmainpropreouluiêtrepostés,enrecommandé,àladernièreadressequ’iladonnéeàl’assureur.Danslaprésentecondition légale, leterme«recommandé»signifierecommandéauCanadaouàl’étranger.LTN-O1995,ch.11,art.25;LTN-O2011,ch.16,art.12(2);LTN-O2017,ch.20,art.2(2).
+
+65.Lecontratquicontient,selonlecas:a)uneclausedefranchise;b)uneclausedeparticipationdel’assuréàl’assurance,derègleproportionnelleouuneclausedumêmeordre;c)uneclauselimitantlasommerecouvréeparl’assuréàunpourcentagefixedelavaleurdetousbiensassurésaumomentdusinistre,quecetteclausesoitconditionnelleounon,porte aurecto, imprimée encaractèresgrasd’au moins12pointsouàl’encrerouge,laphrasesuivante : «Laprésentepolicecontientuneclausequipeutlimiterlemontant exigible»; à défautdequoilaclauseneliepasl’assuré.LTN-O1991-1992,ch.31,art.2.
+
+66.(1)Si,lorsquedesbiensassuréssontsinistrés,ilexisteplusd’uncontratenvigueurcouvrantlemêmeintérêt,lesassureurssontchacuntenusenversl’assuré,d’aprèsleurcontratrespectif,enproportiondeleur
+
+Délaiderèglement
+
+Remplacement
+
+Prescription
+
+Avis
+
+Clauselimitative
+
+Responsabilitéproportion­nelle
+
+62
+
+Postponementofeffectofpolicy
+
+Certainrestrictionsvalid
+
+Ascertainmentofprorataproportions
+
+Construction
+
+Insuranceonidentifiedarticles
+
+Specialstipulations
+
+itsrateableproportionoftheloss,unlessitisotherwiseexpresslyagreedinwritingbetweentheinsurers.
+
+(2)Forthepurposeofsubsection(1),acontractshallbedeemedtobeinforcenotwithstandinganytermofthecontractthatthepolicywillnotcover,comeintoforce,attachorbecomeinsurancewithrespecttothepropertyuntilafterfullorpartialpaymentofanylossunderanyotherpolicy.
+
+(3)Nothinginsubsection(1)affectsthevalidityof any divisionsofthesuminsuredintoseparateitems,or any limitsofinsuranceonspecifiedproperty,or anyclausereferredtoinsection65oranycontractcondition limiting orprohibitingthehavingor placingofotherinsurance.
+
+(4)Nothinginsubsection(1)affectstheoperationofanydeductibleclauseand,(a)whereonecontractcontainsadeductible,theprorataproportionoftheinsurerunderthatcontractshallbefirstascertainedwithoutregardtotheclauseandthentheclauseshallbeappliedonlytoaffecttheamountofrecoveryunderthatcontract;and(b)wheremorethanonecontractcontainsadeductible,theprorataproportionoftheinsurersunderthosecontractsshallbefirstascertainedwithoutregardtothedeductibleclausesandthenthehighestdeductibleshallbeproratedamongtheinsurerswithdeductiblesandtheseprorated amountsshallaffecttheamountofrecoveryunderthosecontracts.
+
+(5)Nothinginsubsection(4)shallbeconstruedtohavetheeffectofincreasingtheproratacontributionofaninsurerunderacontractthatisnotsubjecttoadeductibleclause.
+
+(6)Notwithstandingsubsection(1), insuranceonidentified articles is a firstloss insurance as against allotherinsurance.
+
+67.Whereacontract,(a)excludesanylossthatwouldotherwisefallwithinthecoverageset out in section60;or
+
+garantiedusinistre,àmoinsquelesassureursn’enaientexpressémentconvenuautrementparécrit.
+
+(2)Pourl’applicationduparagraphe(1),uncontratestréputéenvigueurmêmes’ilcomporteuneclauseportantquelapolicenecouvrira,n’entreraenvigueur,neprendraeffetouneconstituerauneassurancerelativementauxbiensqu’aprèsquetoutsinistrecouvertparuneautrepoliceauraétérégléentoutouenpartie.
+
+(3)Leparagraphe(1)neportepasatteinteàlavaliditédetoutedivisiondelasommeassuréeenarticlesdistincts,de toutelimitation del’assurancesurdesbiensparticuliers,detouteclauseviséeàl’article65oudetouteconditioncontractuellerestreignantouinterdisantlapossessionoulasouscriptiond’autresassurances.
+
+(4)Le paragraphe(1)netouchepasl’applicationdetouteclausedefranchiseet:a)lorsquel’undescontratscontientunefranchise,lapartproportionnelledel’assureurprévueparsoncontratestd’aborddéterminéesanstenircomptedelaclause,etlaclausenepeutalorsêtreappliquéequ’aumontantdelasommerecouvréeenvertuducontrat;b)lorsqueplusieurscontratscontiennentunefranchise,lapartproportionnelledesassureursprévueparleurscontratsestd’aborddéterminéesanstenircomptedesclausesdefranchise,puislafranchiselaplus élevéeestréparti eproportionnellemententrelesassureursbénéficiantd’unefranchise;cesmontantsproportionnelssontalorsappliquésaumontantdela sommerecouvréeenvertudecescontrats.
+
+(5)Leparagraphe(4)nepeuts’interpréterdefaçonàaugmenterlacontributionproportionnelled’unassureurliéparuncontratnecontenantpasdeclausedefranchise.
+
+(6)Pardérogationauparagraphe(1),uneassurancecouvrantdesarticlesindividualisésconstitueuneassuranceaupremierrisqueparrapportàtouteslesautresassurances.
+
+67.Lorsqu’uncontrat:a)oubienexcluttoutsinistrequiseraitautrementcomprisdanslagarantieprescriteparl’article60;
+
+Interprétation
+
+Validitédecertainesrestrictions
+
+Déterminationdelapartpro-portionnelle
+
+Interprétation
+
+Assuranced’articlesindividualisés
+
+Stipulationsspéciales
+
+63
+
+Subrogation
+
+Amountrecoveredinsufficienttoindemnify
+
+Definitions
+
+(b)containsastipulation,conditionorwarranty thatis or maybematerialtotheriskincluding,butnotrestrictedto,aprovisioninrespecttotheuse,condition,locationormaintenanceoftheinsuredproperty,the exclusion,stipulation, conditionor warrantyisnotbindingontheinsuredifitisheldtobeunjustorunreasonablebythecourtbeforewhichaquestionrelatingtoitistried.
+
+68.(1)Theinsurer,onmakingapaymentorassumingliabilityforapaymentunderacontractoffireinsurance,issubrogatedtoallrightsofrecoveryoftheinsuredagainstanyperson,andmaybringanactioninthenameoftheinsuredtoenforcethoserights.
+
+(2)Wherethenetamountrecoveredundersubsection(1),afterdeductingthecostsofrecovery,isnotsufficienttoprovideacompleteindemnityforthelossordamagesuffered,thatamountshallbedividedbetweentheinsurerandtheinsuredinthe proportionsinwhichthelossordamagehasbeenbornebythemrespectively.
+
+PARTIVLIFEINSURANCE
+
+INTERPRETATION
+
+69.InthisPart,"application" meansanapplicationforinsuranceorforthereinstatementofinsurance;(proposition)
+
+"beneficiary" meansaperson,otherthantheinsuredorhisorherpersonalrepresentative,towhomorforwhosebenefitinsurancemoneyismadepayableinacontractorbyadeclaration;(bénéficiaire)
+
+"contract"means acontractoflifeinsurance;(contrat)"Court"meanstheSupremeCourtorajudgeoftheSupremeCourt;(tribunal)
+
+"creditor’s group insurance"meansinsurance effectedbyacreditorinrespectofthelivesofhisorherdebtorsbywhichthelivesofthedebtorsareinsuredseverallyunderasinglecontract;(assurancecollectivedecréancier)
+
+b)oubiencontientunestipulation,uneconditionouune garantiequiestoupeutêtreessentielleàl’appréciationdurisque,notammentunedispositionrelativeàl’usage,àl’état,àl’emplacementouàl’entretiendesbiensassurés,l’exclusion,lastipulation,laconditionoulagarantieneliepasl’assuré, si letribunalsaisilajuge injuste oudéraisonnable.
+
+68.(1)L’assureur,aprèsavoireffectuéunpaiementouassumésaresponsabilitéàl’égardd’unpaiementprévupar uncontratd’assurance-incendie,estsubrogédanstouslesdroitsderecouvrementquepossèdel’assurécontredestiersetpeutintenteruneactionaunomdel’assurépourfairevaloircesdroits.
+
+(2)Lorsquelemontantnetrecouvréautitreduparagraphe(1),aprèsdéductiondesfraisderecouvrement,neconstituepasuneindemnisationcomplète,cemontantestdiviséentrel’assureuretl’assuré d’après lesproportionsdusinistrequechacunsupporte.
+
+PARTIEIVASSURANCE-VIE
+
+DÉFINITIONS
+
+69.Lesdéfinitionsquisuivents’appliquentàlaprésentepartie.
+
+«acte juridique»S’entend notammentd’untestament.(instrument)
+
+«assurance»Assurance-vie.(insurance)«assurance collective»Assuranceenvertudelaquellelesviesd’uncertainnombredepersonnessontassuréesindividuellementparuncontratuniqueentreunassureur et unemployeurouuneautrepersonne; laprésentedéfinitionnevise toutefois paslesassurancescollectivesdecréanciernilesassurancesfamiliales.(groupinsurance)
+
+«assurancecollectivedecréancier»Assurancesouscrite parun créanciersur la vie de ses débiteursetenvertudelaquellelesdébiteurssontassurésindividuellementsurlavieparuncontratunique.(creditor’sgroupinsurance)
+
+Subrogation
+
+Répartitionproportion-nelle
+
+Définitions
+
+64
+
+"declaration"meansaninstrumentsignedbytheinsured(a)withrespecttowhichanendorsementismadeonthepolicy,(b)thatidentifiesthecontract,or(c)thatdescribestheinsuranceorinsurancefundorapartofit,inwhichtheinsureddesignates,oraltersorrevokesthedesignationof,hisorherpersonalrepresentativeorabeneficiaryasonetowhomorforwhosebenefitinsurancemoneyistobepayable;(déclaration)
+
+"familyinsurance"meansinsurancebywhichthelivesoftheinsuredandoneormorepersonsrelatedtotheinsuredbyblood,marriageoradoptionareinsuredunderasinglecontractbetweenaninsurerandtheinsured;(assurancefamiliale)
+
+"groupinsurance"meansinsurance,otherthancreditor’sgroupinsuranceandfamilyinsurance,bywhichthelivesofanumberofpersonsareinsuredseverallyunderasinglecontractbetweenaninsurerandanemployerorotherperson;(assurancecollective)
+
+"grouplifeinsured"meansapersonwhoselifeisinsuredbyacontractofgroupinsurancebutdoesnotincludeapersonwhoselifeisinsuredunderthecontractas apersondependentonorrelatedtohimorher;(personneassuréeparuneassurancecollectivesurlavie)
+
+"instrument"includesawill;(actejuridique)"insurance"meanslifeinsurance;(assurance)"insured"means(a)inthecaseofgroupinsurance,intheprovisionsofthisPartrelatingtothedesignationofbeneficiariesandtherightsandstatusofbeneficiaries,thegrouplifeinsured,and(b)inallothercases,thepersonwhomakesacontractwithaninsurer;(assuré)
+
+"lifeinsurance"includesdisabilityinsuranceandaccidentaldeathinsurance;(assurance-vie)
+
+"will"includescodicil.(testament)
+
+«assurancefamiliale»Assuranceenvertudelaquellelesviesdel’assuréet d’uneouplusieurspersonnesdesafamilleparlesliensdusang,dumariageoudel’adoptionsontassuréesparuncontratuniqueentreunassureuretl’assuré.(familyinsurance)
+
+«assurance-vie»S’entendnotammentdel’assurance-invaliditéetdel’assuranceencas dedécès accidentel.(lifeinsurance)
+
+«assuré»
+
+a)Danslecasd’uneassurancecollective,désigne,danslesdispositionsdelaprésentepartiequivisentladésignationdesbénéficiairesetlesdroitsetlestatutdecesderniers,lapersonneassuréeparuneassurancecollectivesurlavie;b)danstouslesautrescas,lapersonnequisouscrituncontratavecunassureur.(insured)
+
+«bénéficiaire»Personneautrequel’assuréousonreprésentantpersonnel,àlaquelleouaubénéficedelaquellelessommesassuréessontpayables aux termesd’uncontratoud’unedéclaration.(beneficiary)
+
+«contrat»Contratd’assurance-vie.(contract)«déclaration»Actejuridiquesignéparl’assuréetparlequelildésignesonreprésentantpersonnelouunbénéficiairecommeunepersonneaubénéficedelaquellelessommesassuréesdoiventêtreversées,oumodifie ou révoquecettedésignation;cetacte,selonlecas:a)estvisé parunavenantajouté àla police;b)identifielecontrat;c)décritl’assuranceoule fondsd’assurance,ouunedeleursparties.(declaration)
+
+«personneassuréeparuneassurancecollectivesurlavie»Personnedontlavieestassuréeparuncontratd’assurancecollective;laprésentedéfinitionnevisetoutefoispaslespersonnesdontlavieestassuréeparle contratàtitredepersonneàchargeoudeparentdel’assuré.(grouplifeinsured)
+
+«proposition»Propositiond’assuranceoudemandederemiseenvigueurd’uneassurance.(application)
+
+«testament»S’entendnotammentd’uncodicille.(will)
+
+65
+
+Application
+
+Beneficiaryforvalue
+
+Preferredbeneficiary
+
+Groupinsurance
+
+APPLICATIONOFPART
+
+70.(1)Notwithstanding any agreement, condition orstipulationtothecontrary,thisPartappliestoacontractmadeintheNorthwestTerritoriesonorafterJuly1,1966,andsubjecttosubsections(2)and(3),appliestoacontractmadeintheTerritoriesbeforethatday.
+
+(2)TherightsandinterestsofabeneficiaryforvalueunderacontractthatwasinforceimmediatelybeforeJuly1,1966,arethoseprovidedinPartIVoftheInsuranceOrdinance,R.O.N.W.T.1956,c.51,asitexistedimmediatelybeforethatday.
+
+(3)Wherethepersonwhowouldhavebeenentitledtothepaymentofinsurancemoney,ifthemoneyhadbecomepayableimmediatelybeforeJuly1,1966,wasapreferredbeneficiarywithinthemeaningofPartIVoftheInsuranceOrdinance,R.O.N.W.T.1956,c.51,asitexistedimmediatelybeforethatday,theinsuredmaynot,exceptinaccordancewiththatPart,(a)alterorrevokethedesignationofabeneficiary;or(b)assign,exerciserights underorinrespectof,surrenderorotherwisedealwiththecontract,butthissubsection doesnotapply aftera time atwhichtheinsurance money,ifitwerethenpayable,would bepayablewhollytoapersonotherthanapreferredbeneficiarywithinthemeaningofthatPart.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+71.InthecaseofacontractofgroupinsurancemadewithaninsurerauthorizedtotransactinsuranceintheNorthwestTerritoriesatthetimethecontractwasmade,thisPartappliesindetermining(a)therightsandstatusofbeneficiariesifthegrouplifeinsuredwasresidentintheTerritoriesatthetimeheorshebecameinsured;and(b)therightsandobligationsofthegrouplifeinsuredifthegrouplifeinsuredwasresidentintheTerritoriesatthetimeheorshebecameinsured.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+«tribunal»LaCoursuprêmeouunjugedelaCoursuprême.(Court)
+
+APPLICATIONDELAPRÉSENTEPARTIE
+
+70.(1)Pardérogationàtouteconvention,conditionouChampstipulationcontraire,laprésenteparties’appliqueàund’applicationcontrat concludansles TerritoiresduNord-Ouestle1erjuillet1966ouaprèscettedateet,sousréservedesparagraphes(2)et(3),s’appliqueàuncontratconcludanslesTerritoiresduNord-Ouestavantcettedate.
+
+(2)Lesdroitsetintérêtsd’unbénéficiairemoyennantcontrepartieenvertud’uncontratquiétaitenvigueurlaveilledu1erjuillet1966sontceuxquiétaientprévusdanslapartieIVdel’InsuranceOrdinance,R.O.N.W.T.1956,c.51,alorsenvigueur.
+
+(3)Lorsquelapersonnequiauraiteudroitaupaiementdessommesassuréessicessommesétaientdevenuespayableslaveilledu1erjuillet1966était unbénéficiaireprivilégiéausensdelapartieIVdel’InsuranceOrdinance, R.O.N.W.T.1956,c.51,alorsenvigueur,l’assurénepeut,saufenconformitéaveccettepartie:a)soitmodifierourévoquerladésignationdebénéficiaire;b)soitcéder,racheterouautrementnégocierlecontrat ni exercer sesdroitsàl’égarddececontrat.Toutefois,leprésentparagraphenes’appliquepasaprèsunedateàlaquellelessommesassurées,siellesétaientalorsexigibles,seraientpayablesdansleurtotalitéàunepersonneautrequ’unbénéficiaireprivilégiéausensdecettepartie.LTN-O2011,ch.16,art.12(2).
+
+71.Danslecasd’uncontratd’assurancecollectiveconcluauprèsd’unassureurautoriséàfairedesopérationsd’assurancedanslesTerritoiresduNord-Ouestaumomentdelaconclusionducontrat,laprésenteparties’appliqueafindedéterminer:a)lesdroitsetlestatutdesbénéficiaires,silapersonneassuréeparl’assurancecollectivesurlavierésidaitdanslesTerritoiresduNord-Ouestaumoment oùelleestdevenueassurée;b)lesdroitsetobligationsdelapersonneassuréeparl’assurancecollectivesurlavie,siellerésidaitdanslesTerritoiresduNord-Ouestaumomentoùelleestdevenueassurée.LTN-O2011,ch.16,art.12(2).
+
+Bénéficiairemoyennantcontrepartie
+
+Bénéficiaireprivilégié
+
+Assurancecollective
+
+66
+
+Issuingpolicy
+
+Documentsformingcontract
+
+Contractoffraternalsociety
+
+Copyofapplication
+
+Application
+
+Contentsofpolicy
+
+ISSUANCEANDCONTENTSOFPOLICY
+
+72.(1)An insurerenteringintoa contractshallissueapolicy.
+
+(2)Subjecttosubsection(3),theprovisionsinthefollowingconstitutetheentirecontract:(a)theapplication;(b)thepolicy;(c)anydocumentattachedtothepolicywhenissued;and(d)anyamendmenttothecontractagreeduponinwritingafterthe policyis issued.
+
+(3)Inthecaseofacontractmadebyafraternalsociety,thefollowingconstitutestheentirecontract:(a)thepolicy;(b)theActorinstrumentofincorporationofthefraternalsociety;(c)theconstitution,bylawsandrules,andtheamendmentsmadetothem,ofafraternalsociety;(d)theapplicationforthecontract;and(e)themedicalstatementoftheapplicant.
+
+(4)Aninsurershall,onrequest,providetheinsuredora claimantunderthecontractwith a copyoftheapplication.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec4_smooth)2011,c.16,s.12(4).
+
+73.(1)Subsection(2)doesnotapplytoacontract(a)ofgroupinsurance;(b)ofcreditor’sgroupinsurance;or(c)madebyafraternalsociety.
+
+(2)Aninsurershallsetoutthefollowingparticularsinthepolicy:(a)thenameorasufficientdescriptionoftheinsuredandofthepersonwhoselifeisinsured;(b)theamount or the methodof determiningtheamountoftheinsurancemoneypayable,andtheconditionsunderwhichitbecomespayable;(c)theamountor themethodof determiningtheamountofthepremiumandtheperiodofgrace,ifany,withinwhichitmaybepaid;
+
+ÉTABLISSEMENTETCONTENUDELAPOLICE
+
+72.(1)L’assureurquiconclutuncontratétablitunepolice.
+
+(2)Sousréserveduparagraphe (3),le contratestconstituédesélémentssuivants:a)laproposition;b)lapolice;c)lesdocumentsannexésàlapolicelors desonétablissement;d)lesmodificationsapportéesaucontrat,convenuesparécritaprèsl’établissementdelapolice.
+
+(3)Danslecasd’uncontratconcluparunesociétédesecoursmutuel,lecontratestconstituédesélémentssuivants:a)lapolice;b)la loiouautredocumentconstitutifdelasociété;c)lesstatuts,lesrèglesetrèglementsadministratifs,ainsiqueleursmodifications;d)laproposition;e)lerapportmédicalduproposant.
+
+(4)L’assureur,surdemande,remetunecopiedelaproposition àl’assuréou àtoutepersonnequienfaitlademandeenvertuducontrat.
+
+73.(1)Leparagraphe(2)nes’appliquepasauxcontratssuivants:a)uncontratd’assurancecollective;b)uncontratd’assurancecollectivedecréancier;c)uncontratconcluparunesociétédesecoursmutuel.
+
+(2)L’assureurinclutdanslapolicelesrenseignementssuivants:a)lenomouunedescriptionsuffisantedel’assuréetdelapersonnedontlavieestassurée;b)lemontantoulemodededéterminationdu montantdessommesassuréesquisontpayablesainsiquelesconditionsquilesrendentexigibles;c)lemontantoulemodededéterminationdumontantdelaprimeetledélaidegrâce,s’ilyalieu,applicableauxversementsdelaprime;
+
+Établissementdelapolice
+
+Élémentsducontrat
+
+Sociétédesecoursmutuel
+
+Copiedelaproposition
+
+Exceptions
+
+Contenudelapolice
+
+67
+
+Contentsofgrouppolicy
+
+Contentsofgroupcertificate
+
+(d)whetherthecontractprovidesforparticipationinadistributionofsurplusorprofitsthatmaybedeclaredbytheinsurer;(e)theconditionsonwhichthe contractmaybereinstatedifitlapses;(f)theoptions,ifany,(i)ofsurrenderingthecontractforcash,(ii)ofobtainingaloanoranadvancepaymentoftheinsurancemoney,and(iii)ofobtainingpaid-uporextendedinsurance.
+
+74.Inthecaseofacontractofgroupinsuranceorofcreditor’sgroupinsurance,aninsurershallsetoutthefollowingparticularsinthepolicy:(a)the name orasufficientdescriptionoftheinsured;(b)themethodofdeterminingthepersonswhoselivesareinsured;(c)theamountor the methodofdeterminingtheamountoftheinsurancemoneypayableandtheconditionsunderwhichitbecomespayable;(d)theperiodofgrace,ifany,withinwhichthepremiummaybepaid;(e)whetherthecontractprovidesforparticipationinadistributionofsurplusorprofitsthatmaybedeclaredbytheinsurer.
+
+75.Inthecaseofacontractofgroupinsurance,aninsurershallissue,fordeliverybytheinsuredtoeachgrouplifeinsured,acertificateorotherdocumentinwhicharesetoutthefollowingparticulars:(a)thenameoftheinsurerandanidentificationofthecontract;(b)theamountor themethodof determiningtheamount ofinsuranceonthegroup lifeinsuredandonanypersonwhoselifeisinsuredunderthecontractasapersondependentonorrelatedtohimorher;(c)thecircumstancesin which theinsuranceterminatesandtherights,ifany,onsuchtermination,ofthegrouplifeinsuredorof any personwhoselife isinsured underthecontractasapersondependentonorrelatedtohimorher.
+
+d)laparticipationéventuelleàladistributiondesexcédentsoudesprofitsquel’assureurpeutdéclarer;e)lesconditionsauxquelleslecontratpeutêtreremisenvigueurs’ilestfrappédedéchéance;f)lesoptions,s’ilyalieu:(i)derachataucomptant du contratparl’assureur,(ii)d’obtentiond’unprêtoud’unpaiementanticipédessommesassurées,(iii)d’obtentiond’uneassurancelibéréeouprolongée.
+
+74.Danslecasd’uncontrat d’assurancecollectiveoud’assurancecollectivedecréancier,l’assureurinclutdanslapolicelesrenseignementssuivants:a)lenomouunedescriptionsuffisantedel’assuré;b)lemodededéterminationdespersonnesdontlavieestassurée;c)lemontantoulemodededéterminationdu montantdessommesassuréesquisontpayablesainsiquelesconditionsquilesrendentexigibles;d)ledélaidegrâce,s’ilyalieu,applicableauxversementsdelaprime;e)la participationéventuelleàladistributiondesexcédentsoudesprofitsquel’assureurpeutdéclarer.
+
+75.Danslecasd’uncontratd’assurancecollective,l’assureuresttenudedélivreruncertificatouautredocumentquel’assuréremet à chaquepersonneassuréeparl’assurancecollectivesurlavie;cedocumentcomportelesrenseignementssuivants:a)lenomdel’assureuretuneidentificationducontrat;b)lemontantoulemodededéterminationdumontantdel’assurancesurlaviedelapersonneassuréeparlecontratetsur celledetoutepersonneassuréeàtitredepersonneàchargeoudeparentdelapersonneassurée;c)lescirconstancesquimettentfinàl’assuranceetlesdroits,s’ilyalieu,quiendécoulentpourlapersonneassuréeparl’assurancecollectivesurlavieetpourtoutepersonnedontlavieestassuréeparlecontratàtitredepersonneàchargeoudeparentdelapersonneassurée.
+
+Contenudelapoliced’assurancecollective
+
+Certificatd’assurancecollective
+
+68
+
+Insurableinterest
+
+Exceptions
+
+Consentofpersonunder16years
+
+Definition:"insurableinterest"
+
+Contracttakingeffect
+
+Deliverytoagent
+
+CONDITIONSGOVERNINGFORMATIONOFCONTRACT
+
+76.(1)Subjecttosubsection(2),where at thetimeacontract would otherwisetakeeffecttheinsuredhas noinsurableinterest,thecontractisvoid.
+
+(2)Acontractisnotvoidforlackofinsurableinterest(a)ifitisacontractofgroupinsurance;or(b)ifthepersonwhoselifeisinsuredhasconsentedinwritingtotheinsurancebeingplacedonhisorherlife.
+
+(3)Wherethepersonwhoselifeisinsuredisunder16yearsofage,consenttoinsurancebeingplacedonthelifeofthatpersonmaybegivenbyoneof the parents ofthatperson orbyapersonstandingintheplaceofaparentforthatperson.SNWT1998,c.17,s.15;[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2014-c-31/latest/snwt-2014-c-31.html#sec5subsec3_smooth)2014,c.31,s.5(3).
+
+77.Without restrictingthemeaningoftheexpression"insurableinterest",apersonhasaninsurableinterestinhisorherownlifeandinthelifeof(a)hisorherchildorgrandchild;(b)hisorherspouse;(c)anypersononwhomheorsheiswhollyorinpartdependentfororfromwhomheorsheisreceivingsupportoreducation;(d)hisorheremployee;and(e)anypersoninthedurationofwhoselifeheorshehasapecuniaryinterest.
+
+78.(1)Subjecttoanyprovisiontothecontraryintheapplicationorthepolicy,acontractdoesnottakeeffectunless(a)thepolicyisdeliveredtoaninsured,hisor her assign or agent or toa beneficiary;(b)paymentofthefirstpremiumismadetotheinsureroritsauthorizedagent;and(c)nochangehastakenplaceintheinsurabilityofthelifetobeinsuredbetweenthetimetheapplicationwascompletedandthetimethepolicywasdelivered.
+
+(2)Where apolicyis issuedon the terms appliedforandisdeliveredtoanagentoftheinsurerforunconditionaldeliverytoapersonreferredtoinparagraph(1)(a),itshallbedeemed,butnottotheprejudiceof theinsured,tohavebeendeliveredtotheinsured.
+
+CONDITIONSRÉGISSANTLAFORMATIONDUCONTRAT
+
+76.(1)Sousréserveduparagraphe(2),lecontratestnullorsquel’assurén’aaucunintérêtassurableaumoment oùlecontratdevraitnormalementprendreeffet.
+
+(2)Uncontratn’estpasnulpourdéfautd’intérêtassurabledanslescassuivants:a)ils’agitd’uncontratd’assurancecollective;b)lapersonnedontlavieestassuréeaconsentiparécritàcequ’ellelesoit.
+
+(3)Lorsquelapersonnedontlavieestassuréeestâgéedemoinsde16ans,sonpèreousamère,ouunepersonnequientientlieu,peuventconsentiràcequesaviesoitassurée.
+
+77.Sansqu’ilsoitportéatteinteàlagénéralitédel’expression«intérêtassurable»,unepersonneaunintérêtassurablesursaproprevieetsurlaviedespersonnessuivantes:a)sonenfantoupetit-enfant;b)sonconjoint;c)toutepersonnedontelledépend,entotalitéouenpartie,poursonéducationousasubsistance,oudequiellereçoituneéducationousasubsistance;d)sonemployé;e)lapersonnedontladuréedeviereprésentepourelleunintérêtpécuniaire.
+
+78.(1)Sousréservedes dispositions contraires delapropositionoudelapolice,uncontratn’entreenvigueurquelorsquelesconditionssuivantessontréunies:a)lapoliceestremiseàl’assuré,sonayantdroitoumandataire,ouàunbénéficiaire;b)lapremièreprimeaétéverséeàl’assureurouàsonagentautorisé;c)iln’yaeuaucunchangementdansl’assurabilitédelavieàassurerentrelemomentoùlapropositionaétésignée etceluidelaremisedelapolice.
+
+(2)Lorsqu’unepoliceestétablieenconformitéaveclestermesdela proposition etremiseàun agent del’assureurpourqu’illaremetteinconditionnellementàunepersonneviséeàl’alinéa(1)a),elleestréputéeavoirétéremiseàl’assuré,saufsicetteprésomptionporteatteinteauxintérêtsdecedernier.
+
+Intérêtassurable
+
+Exceptions
+
+Consentementdespersonnesâgéesdemoinsde16ans
+
+Définition:«intérêtassurable»
+
+Entréeenvigueurducontrat
+
+Remiseàl’agent
+
+69
+
+Deathbeforedeliveryofpolicy
+
+Defaultinpayingpremium
+
+Paymentbyregisteredmail
+
+Whomaypaypremium
+
+Periodofgrace
+
+Statusofcontractduringperiodofgrace
+
+Dutytodisclose
+
+(3)Notwithstandingsubsection(1),whereaninsureddiesafterpaymentofthefirstpremiumbutbeforedeliveryofthepolicy,thepolicyshallbedeemedtobeineffectif fullinformationon thelifetobeinsuredhasbeensuppliedandonthebasisofthisinformationaprudentinsurerwouldhaveissuedthepolicy.
+
+79.(1)Whereachequeorotherbillofexchange,orapromissorynoteorotherwrittenpromisetopay,isgivenforthewholeor part ofapremiumandpaymentis not madeaccordingtoitstenor, the premiumorpartofthepremiumshall be deemednottohavebeenpaid.
+
+(2)Wherearemittancefororonaccountofapremiumissentinaregisteredlettertoaninsurerandisreceivedbyit,theremittanceshallbedeemedtohavebeenreceivedatthetime oftheregistrationoftheletter.
+
+80.(1)Exceptinthecaseofgroupinsurance,anassigneeofa contract,abeneficiary ora person actingonbehalfofoneofthemorof theinsuredmaypayanypremiumthattheinsuredisentitledtopay.
+
+(2)Whereapremiumotherthantheinitialpremiumisnotpaidatthetimeitisdue,thepremiummaybepaidwithinaperiodofgraceof(a)30daysor,inthecaseofanindustrialcontract,28daysafterandexcludingthedayonwhichthepremiumisdue;or(b)thenumberofdays,ifany,specifiedinthecontractforpaymentofanoverduepremium;whicheveristhelongerperiod.
+
+(3)Wherethehappeningoftheeventonwhichtheinsurancemoneybecomespayableoccursduringthe period of grace andbeforetheoverduepremiumispaid,thecontractshallbedeemedtobeineffectasifthepremiumhadbeenpaidatthetimeitwasdue,buttheamountofthepremium,togetherwithinterestattheratespecifiedinthecontract,butnotexceeding6%peryear,andthebalance,ifany,ofthecurrentyear’spremium,may be deductedfromtheinsurancemoney.
+
+81.(1)Anapplicantforinsuranceandapersonwhoselifeistobeinsuredshalleachdisclosetotheinsurerintheapplication,onamedicalexamination,ifany,and in any writtenstatementsoranswersprovided
+
+(3)Pardérogationauparagraphe(1),lorsquel’assurémeurtaprèsleversementdelapremièreprime,maisavantlaremisedelapolice,celle-ciestréputéeavoirétéenvigueur,silesrenseignementscompletsconcernantlavieàassureravaient été fournisetsi,àlalumièredecesrenseignements,unassureurprudentauraitétablilapolice.
+
+79.(1)Lorsqu’unchèqueouautrelettredechange,ouunbilletàordreouautrepromesseécritedepayersontdonnésenpaiementtotaloupartield’uneprimeetque le paiementn’estpaseffectuéenconformitéavecleurteneur,laprimeoulafractiondecelle-ciestréputéenepasavoirétépayée.
+
+(2)Lorsqu’unversementdeprimeouunacomptesuruneprimeestenvoyé parlaposte,enrecommandé,àl’assureuretquecelui-cilereçoit,leversementestréputéavoirétéreçuaumomentdelarecommandationdel’envoi.
+
+80.(1)Saufdanslecasd’uneassurancecollective,lecessionnaired’uncontrat,unbénéficiaireouunepersonneagissantpourl’und’euxoupourl’assurépeuventacquittertouteprimequel’assuréaqualitépourpayer.
+
+(2)Laprimeautrequelaprimeinitialequin’estpasacquittéeàsonéchéancepeutl’êtredansledélaidegrâcesuivant:a)30joursou,danslecasd’uncontratd’assurancepopulaire,28joursàl’exclusiondujourdel’échéance;b)lenombresupérieurdejours,s’ilyalieu,prévuparlecontratpourlepaiementd’uneprimearriérée.
+
+(3)Lorsquel’événementdontlasurvenancerendlessommesassurées exigibles seproduitdurantledélaidegrâceetavantquelaprimearriéréenesoit acquittée,lecontratestréputéêtreenvigueurcommesilaprimeavaitétéacquittéeàl’échéance;toutefois,peuventêtredéduitsdessommesassuréeslemontantdelaprime,majorédel’intérêtautauxspécifiédanslecontrat,enaucuncascependantsupérieurà6%paran,etlesolde,s’ilyalieu,delaprimedel’annéeencours.
+
+81.(1)Leproposantetlapersonnedontlaviedoitêtreassuréerévèlentchacunàl’assureurdanslaproposition,lorsdel’examenmédical,s’ilyalieu,etdans lesdéclarations écritesoulesréponsesdonnéesà
+
+Décèsavantlaremisedelapolice
+
+Défautdepaiement
+
+Paiementparlaposte,enrecommandé
+
+Personnesautoriséesàverserlaprime
+
+Délaidegrâce
+
+Validitéducontratpendantlapériodedegrâce
+
+Obligationdecommuniquertouslesfaits
+
+70
+
+Failuretodisclose
+
+Application
+
+Uncontest-ability
+
+Uncontest-abilityingroupinsurance
+
+Non-disclosurebyinsurer
+
+Application
+
+Misstatementofage
+
+Limitationofinsurableage
+
+as evidence of insurability, every factwithinhisorherknowledgethatismaterialtotheinsuranceandisnotsodisclosedbytheother.
+
+(2)Subjecttosection82,afailuretodiscloseoramisrepresentationofsuchafactrendersthecontractvoidablebytheinsurer.
+
+82.(1)This sectiondoesnot applytoa misstatementofageortodisabilityinsurance.
+
+(2)Subjecttosubsection(3),whereacontracthasbeenineffectfortwoyearsduringthelifetimeofthepersonwhoselifeisinsured,afailuretodiscloseoramisrepresentation of afactrequiredtobedisclosedbysection 81 doesnot,intheabsenceof fraud,render thecontractvoidable.
+
+(3)In thecase of a contract ofgroup insurance, afailuretodiscloseora misrepresentation ofsuch afactinrespectofapersonwhoselifeisinsuredunderthecontractdoesnotrenderthecontractvoidable,but,ifevidenceofinsurabilityisspecificallyrequestedbytheinsurer,theinsuranceinrespectofthatpersonisvoidablebytheinsurerunlessithasbeenineffectfortwoyearsduringthelifetimeofthatperson,inwhicheventitisnot,intheabsenceoffraud,voidable.
+
+83.Whereaninsurerfailstodiscloseormisrepresentsafactmaterialtotheinsurance,thecontractisvoidablebytheinsuredbutintheabsenceoffraudthecontractisnotbyreasonofsuchfailureormisrepresentationvoidableafterthecontracthasbeenineffectfortwoyears.
+
+84.(1)Thissectiondoesnotapplytoacontractofgroupinsuranceorofcreditor’sgroupinsurance.
+
+(2)Subjecttosubsection(3), wheretheageofapersonwhoselifeis insured is misstatedtotheinsurer,theinsurancemoneyprovidedbythecontractshallbeincreasedordecreasedtotheamountthatwouldhavebeenprovidedforthe same premium atthecorrectage.
+
+(3)Whereacontractlimits the insurableageandthecorrectageofthepersonwhoselifeisinsuredatthedateoftheapplicationexceedstheagesolimited,thecontractis,duringthelifetimeofthatpersonbutnotlaterthanfiveyearsafterthedatethecontracttakes
+
+titredepreuve d’assurabilité, tous les faitsdontilsontconnaissance etquisontessentielsàl’appréciationdurisqueetquinesontpasdéclarésparl’autre.
+
+(2)Sousréservedel’article82,l’omissiondedéclareruntelfaitouuneassertioninexacteàsonégardrendlecontratannulableparl’assureur.
+
+82.(1)Leprésentarticlenes’appliquepasàunedéclarationinexacteconcernantl’âgeouàl’assurance-invalidité.
+
+(2)Sousréserveduparagraphe(3),lorsqu’uncontrat aétéenvigueurpendantdeux ansdurant la viedelapersonneassurée,l’omissiondedéclarerunfaitdontl’article81exigeladéclarationouuneassertioninexacteàpropos de ce faitne rend pas,sauf encasdefraude,lecontratannulable.
+
+(3)Danslecasd’uncontratd’assurancecollective,l’omissiondedéclareruntelfaitoul’assertioninexacteàsonproposausujetd’unepersonnedontlecontratassurelavienerendpaslecontratannulable;toutefois,siunepreuved’assurabilité est expressémentrequiseparl’assureur,l’assuranceportantsurcettepersonneestannulableparl’assureur,à moins qu’ellen’aitété envigueurpendantdeuxansdurantlaviedecettepersonne,auquelcasellen’estpasannulable,saufencasdefraude.
+
+83.Lorsqu’unassureurometdedéclarerunfaitessentielàl’appréciationdurisqueoufaituneassertion inexacte àce propos,le contratestannulableparl’assuré;toutefois,àdéfautdefraude,lecontratn’estpasannulabledufaitdecetteomissionoudecetteassertioninexacteaprèsquelecontrataétéenvigueurpendantdeuxans.
+
+84.(1)Leprésentarticlenes’appliquepasàuncontratd’assurancecollectiveoud’assurancecollectivedecréancier.
+
+(2)Sousréserveduparagraphe(3),encasdedéclarationinexacteconcernantl’âgedelapersonnedontlavieestassurée,lessommesassuréesprévuesparlecontratsontaugmentéesoudiminuéesjusqu’aumontantcorrespondantàceluiquerapporteraitlamêmeprimepourl’âgeexact.
+
+(3)Lorsqu’uncontratlimitel’âgeassurableetquel’âgeexactdelapersonnedontlavieestassuréeestsupérieur à cetâgelimite à ladatedelaproposition,lecontratestannulableparl’assureurdansles60joursquisuiventladécouvertedel’erreur,durantlaviede
+
+Omission
+
+Exceptions
+
+Incontesta­bilité
+
+Incontesta­bilitélorsqu’ils’agitd’uneassurancecollective
+
+Omissiondelapartdel’assureur
+
+Exception
+
+Déclarationinexactesurl’âge
+
+Âgelimite
+
+71
+
+Misstatementofageingroupinsurance
+
+Effectofsuicide
+
+Suicideandreinstatement
+
+Application
+
+Reinstatement
+
+Exceptions
+
+Applicationofothersections
+
+effect,voidablebytheinsurerwithin60daysafteritdiscoverstheerror.
+
+85.Inthecaseofacontractofgroupinsuranceorofcreditor’sgroupinsurance,amisstatementtotheinsureroftheageofapersonwhoselifeisinsureddoesnotofitselfrenderthecontractvoidableandtheprovisions,ifany,ofthecontractwithrespecttoageormisstatementofageapply.
+
+86.(1)Whereacontractcontainsanundertakingexpressorimpliedthatinsurancemoneywillbepaidifapersonwhoselifeisinsuredcommitssuicide,theundertakingislawfulandenforceable.
+
+(2)Whereacontractprovidesthatincaseapersonwhoselifeisinsuredcommitssuicidewithinacertainperiodoftimethecontractisvoidortheamountpayableunderitisreduced,ifthecontractlapsesandissubsequentlyreinstatedononeormoreoccasions,theperiodoftimecommencestorunfromthedateofthelatestreinstatement.
+
+87.(1)Thissectiondoesnotapplytoacontractofgroupinsuranceortoacontractmadebyafraternalsociety.
+
+(2)Whereacontractlapsesandtheinsuredwithintwoyearsappliesforreinstatementofthecontract,ifwithinthattimetheinsured(a)paystheoverduepremiumsandotherindebtednessunderthecontracttotheinsurer,togetherwithinterestattheratespecifiedinthecontract,butnotexceeding6%peryear,compoundedannually;and(b)produces(i)evidencesatisfactorytotheinsurerofthegoodhealth,and(ii)otherevidencesatisfactorytotheinsureroftheinsurability,ofthepersonwhoselifewasinsured,theinsurershallreinstatethecontract.
+
+(3)Subsection(2)does notapplywhere the cashsurrendervaluehasbeenpaidoranoptionoftakingpaid-uporextendedinsurancehasbeenexercised.
+
+(4)Sections81and82applywithsuchmodificationsasthecircumstancesrequiretoreinstatementofacontract.
+
+cettepersonne,maisauplustardàl’expiration du délaidecinqanssuivantladated’entréeenvigueurducontrat.
+
+85.Danslecasd’uncontrat d’assurancecollectiveoud’assurancecollectivedecréancier,unedéclarationinexacteàl’assureurdel’âgedelapersonnedontlavieestassuréenerendpaslecontratannulabledeceseulfaitetlesdispositionsducontrat,s’ilyalieu,serapportant àl’âgeouà ladéclaration inexactede l’âgesontapplicables.
+
+86.(1)Estlégaletaforceexécutoirel’engagementexpliciteouimpliciteprévudansuncontratselonlequellessommesassuréesserontverséessilapersonnedontlavieestassuréesesuicide.
+
+(2)Lorsqu’uncontratprévoitsonannulationoularéductiondelasommeexigibleselonsestermesdanslecasoùlapersonnedontlavieestassuréesesuicide dans uncertaindélai, silecontratestfrappé dedéchéanceetestremisenvigueurpar lasuiteàuneouplusieursoccasions,ledélaicommenceàcouriràpartirdeladatedeladernièreremiseenvigueur.
+
+87.(1)Le présentarticlenes’appliqueniàuncontratd’assurancecollectiveniàuncontratconcluparunesociétédesecoursmutuel.
+
+(2)L’assureurremetenvigueurlecontratfrappédedéchéance,sil’assuré le luidemandedansundélaidedeuxansetsi,durantcedélai:a)ilverseàl’assureurlesprimesarriéréesetautresdettesprévuesparlecontrat,accompagnéesdesintérêtscomposésautauxindiquédanslecontrat,calculésannuellement,letauxd’intérêtnepouvanttoutefoisêtresupérieurà6%;b)ilfournitàl’assureurlespreuvesquecelui-ciestimesatisfaisantesde la bonnesantéetdel’assurabilitédelapersonnedontlavieétaitassurée.
+
+(3)Leparagraphe(2)nes’appliquepaslorsquelavaleurderachataétéverséeouqu’uneoptiondeprised’uneassurancelibéréeouprolongéeaétéexercée.
+
+(4)Lesarticles81et82s’appliquent,comptetenudesadaptationsdecirconstance,àlaremiseenvigueurd’uncontrat.
+
+Déclarationinexactedansuncontratd’assurancecollective
+
+Suicide
+
+Suicideetremiseenvigueurducontrat
+
+Exception
+
+Remiseenvigueur
+
+Exception
+
+Applicationdesarticles81et82
+
+72
+
+Designation
+
+Changeindesignation
+
+Deemingprovision
+
+DESIGNATIONOFBENEFICIARIESANDPERSONALREPRESENTATIVES
+
+88.(1)Aninsuredmayinacontractorbyadeclarationdesignatehisorherpersonalrepresentativeorabeneficiarytoreceiveinsurancemoney.
+
+(2)Subjecttosection89,theinsuredmayfromtimetotimealterorrevokeadesignationbyadeclaration.
+
+(3)Adesignationinfavourofthe"heirs","nextofkin"or"estate"oftheinsured,ortheuseofwordsofsimilarimportinadesignation,shallbedeemedtobeadesignationofthepersonalrepresentativeoftheinsured.
+
+Designationof89.(1)Aninsuredmayinacontractorbyabeneficiarydeclarationotherthanadeclarationthatispartofairrevocablywill,filedwiththeinsureratitsheadorprincipalofficeinCanadaduringthelifetimeofthepersonwhoselifeisinsured,designateabeneficiaryirrevocably,andinthateventtheinsured,whilethebeneficiaryisliving,maynotalterorrevokethedesignationwithouttheconsentofthebeneficiaryandtheinsurancemoneyisnotsubjecttothecontrolof the insuredorof creditorsoftheinsuredanddoesnotformpartoftheestateoftheinsured.
+
+Attempteddesignation
+
+Designationininvalidwill
+
+Priorities
+
+Revocationofdesignationinwill
+
+Revocationofdesignationinpurportedwill
+
+(2)Wheretheinsuredpurportstodesignateabeneficiaryirrevocablyinawillorinadeclarationthatisnotfiledasprovidedinsubsection(1),thedesignationhasthesameeffectasiftheinsuredhadnotpurportedtomakeitirrevocable.
+
+90.(1)Adesignationinaninstrumentpurportingtobeawillisnotineffectivebyreasononlyofthefactthattheinstrumentisinvalidasawillorthatthedesignationisinvalidasabequestunderthewill.
+
+(2)Notwithstandingthe[Wills](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-w-5/latest/rsnwt-1988-c-w-5.html)Act,adesignationinawillisofnoeffectagainstadesignationmadelaterthanthemakingofthewill.
+
+(3)Whereadesignationiscontainedinawill,ifthewillissubsequentlyrevokedbyoperationoflaworotherwise,thedesignationisrevokedasaresultofthat.
+
+(4)Whereadesignationiscontainedinaninstrumentthatpurportstobeawill,ifsubsequentlytheinstrumentifvalidasawillwouldberevokedbyoperationoflaworotherwise,thedesignationisrevokedasaresultofthat.
+
+DÉSIGNATIONDESBÉNÉFICIAIRESETDESREPRÉSENTANTSPERSONNELS
+
+88.(1)L’assurépeutdansuncontratouparunedéclarationdésignersonreprésentantpersonneloulebénéficiairequirecevralessommesassurées.
+
+(2)Sousréservedel’article89,l’assurépeutmodifierourévoquerladésignationparunedéclaration.
+
+(3)Ladésignationfaite enfaveurdes«héritiers»,du«parentleplusproche»oudela«succession»del’assuré,oul’emploidansladésignationdetermesayantlemêmesenssontréputésconstituerunedésignationdureprésentantpersonneldel’assuré.
+
+89.(1)L’assurépeut,danslecontratouparunedéclarationautrequ’unedéclarationquifaitpartied’untestament,déposéeausiègesocialouaubureauprincipalauCanadadel’assureurduvivantdelapersonnedontlavieestassurée,désignerunbénéficiairedefaçonirrévocable; dans cecas,l’assurénepeut,tant quelebénéficiaireest vivant, modifier ourévoquerladésignationsansle consentement decelui-cietlessommesassuréesnesontpasassujettiesaucontrôle del’assuré oudeses créanciers etnefontpaspartiedesasuccession.
+
+(2)Constitueunedésignationquin’estpasirrévocablecellequel’assuréfait dansuntestament ouunedéclarationquin’estpasdéposéeenconformitéavecleparagraphe(1),mêmes’ilavaitl’intentiondelarendreirrévocable.
+
+90.(1)Ladésignationcontenuedansunactejuridiqueprésentcommeuntestamentn’estpasnulleduseulfaitque l’acte n’estpasuntestamentvalideouqueladésignationneconstituepasunlegsvalideenvertudutestament.
+
+(2)Pardérogationàla[Loi](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-w-5/latest/rsnwt-1988-c-w-5.html)surlestestaments,unedésignationpartestamentestrenduecaduqueparunedésignationpostérieureautestament.
+
+(3)Ladésignationcontenuedansuntestamentquiestannulé,notammentparl’effetdelaloi,estannuléedecefait.
+
+(4)Estaussiannuléedelamêmefaçonladésignation contenue dans un actejuridiquecenséêtreuntestamentquiseraitannulé,notammentparl’effetdelaloi,parlasuite,s’ilétaitvalideàtitredetestament.
+
+Désignation
+
+Changementdedésignation
+
+Présomption
+
+Désignationirrévocabled’unbénéficiaire
+
+Désignationnonirrévocable
+
+Désignationdansuntestamentinvalide
+
+Désignationpostérieure
+
+Annulationdeladésignation
+
+Idem
+
+73
+
+Trusteeforbeneficiary
+
+Paymenttotrustee
+
+Beneficiarypredeceasinglifeinsured
+
+Severalbeneficiaries
+
+Righttoinsurancemoney
+
+Insurancemoneyfreefromcreditors
+
+Executionandseizure
+
+91.(1)Aninsuredmayinacontractorbyadeclaration appoint atrusteeforabeneficiaryandmayalterorrevoketheappointmentbyadeclaration.
+
+(2)Apaymentmadebyan insurertoatrusteeforabeneficiary dischargestheinsurertotheextent ofthepayment.
+
+92.(1)Whereabeneficiarypredeceasesthepersonwhoselifeisinsured,andnodispositionoftheshareofthedeceasedbeneficiaryintheinsurancemoneyisprovidedinthecontractorbyadeclaration,theshareispayable(a)tothesurvivingbeneficiary;(b)ifthereismorethanonesurvivingbeneficiary,tothesurvivingbeneficiariesinequalshares;or(c)if there isno survivingbeneficiary,to theinsuredorhisorherpersonalrepresentative.
+
+(2)Wheretwoormorebeneficiariesaredesignatedotherwisethanalternatively,butnodivisionoftheinsurancemoneyismade,theinsurancemoneyispayabletotheminequalshares.
+
+93.Abeneficiarymayenforceforhisorherownbenefit,andatrusteeappointedundersubsection91(1)mayenforceastrustee,thepaymentofinsurancemoneymadepayableto the beneficiaryinthecontractorbyadeclarationandinaccordancewiththeprovisions ofit,buttheinsurermay setupany defencethatitcouldhavesetupagainsttheinsuredorthepersonalrepresentativeoftheinsured.
+
+94.(1)Whereabeneficiaryisdesignated,theinsurancemoney,fromthetimeofthehappeningoftheeventonwhichtheinsurancemoneybecomespayable,isnotpartoftheestateoftheinsuredandisnotsubjecttotheclaims ofthecreditorsoftheinsured.
+
+(2)Whileadesignationinfavourofaspouse,child,grandchildorparentofapersonwhoselifeisinsured,oranyofthem,isineffect,therightsandinterestsoftheinsuredintheinsurancemoneyandinthecontractareexemptfromexecutionorseizure.
+
+91.(1)L’assurépeut,danslecontratouparunedéclaration,nommer unfiduciairepourun bénéficiaireet,parunedéclaration,modifierourévoquercettenomination.
+
+(2)Lepaiementeffectuéàunfiduciaired’unbénéficiaireparunassureurestlibératoirejusqu’àconcurrencedelasommepayée.
+
+92.(1)Lorsqu’unbénéficiairedécèdeavantlapersonnedontlavieestassuréeetquelecontratouunedéclarationnecontientaucunedispositionconcernantl’affectationdelapartiedessommesassuréesquiluirevenait,cettepartieestpayable:a)aubénéficiairesurvivant;b)s’ilexisteplusd’unbénéficiairesurvivant,àceux-ciàpartségales;c)s’iln’existeaucunbénéficiairesurvivant,àl’assuréouàsonreprésentantpersonnel.
+
+(2)Lessommesassuréessontpayablesàpartségalesauxbénéficiairess’ilsontétédésignésautrementqueparsubstitutionsl’unàl’autreetsiaucunerépartitiondessommesassuréesn’estprévue.
+
+93.Unbénéficiaire,àsonprofit,etunfiduciairenomméconformémentauparagraphe91(1),ensaqualitédefiduciaire,peuventexigerlepaiementdessommesassuréesquileursontduesselonlesmodalitésducontratoudeladéclaration;l’assureurpeutcependantleuropposertoutmoyendedéfensequ’ilauraitpuopposeràl’assuréouàsonreprésentantpersonnel.
+
+94.(1)Lorsqu’unbénéficiaireestdésigné,lessommesassuréesne font paspartiedelasuccession del’assuréetnepeuventêtreréclaméesparsescréanciersàcompterdela datedelasurvenancedel’événementquirendlessommesassuréespayables.
+
+(2)Tantqu’unedésignationenfaveurduconjoint,d’unenfant,d’unpetit-enfantoudupèreoudelamèredelapersonne dontlavieest assurée,oudel’und’eux,estenvigueur,lessommesassuréesetlesdroitsetintérêtsdel’assurésurcelles-cietsurlecontratsontinsaisissables.
+
+Nominationd’unfiduciaire
+
+Paiementaufiduciaire
+
+Prédécèsdubénéficiaire
+
+Pluralitédebénéficiaires
+
+Droitdubénéficiaireetdufiduciaire
+
+Exclusiondelasuccession
+
+Insaisissabilité
+
+74
+
+Insureddealingwithcontract
+
+Insuredentitledtodividends
+
+Insurermayusedividends
+
+Transferofrightsandinterestsofinsured
+
+Wheretwoormorepersonsnamed
+
+Saving
+
+DEALINGSWITHCONTRACTDURINGLIFETIMEOFINSURED
+
+95.Whereabeneficiary(a)isnotdesignatedirrevocably;or(b)isdesignatedirrevocablybuthasattained19yearsofageandconsents,theinsuredmayassign,exerciserightsunderorinrespectof,surrenderorotherwisedealwiththecontract as providedinthecontractorinthisPartorasmaybeagreeduponwiththeinsurer.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2014-c-31/latest/snwt-2014-c-31.html#sec5subsec4_smooth)2014,c.31,s.5(4).
+
+96.(1)Notwithstandingthedesignationofabeneficiaryirrevocably,theinsuredisentitledwhilelivingtothedividendsorbonusesdeclaredonacontract,unlessthecontractotherwiseprovides.
+
+(2)Unlesstheinsuredotherwisedirects,theinsurermayapplythedividendsorbonusesdeclaredonthecontract for thepurposeof keeping thecontractinforce.
+
+97.(1)Notwithstandingthe[Wills](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-w-5/latest/rsnwt-1988-c-w-5.html)Act,whereinacontractorinanagreementinwritingbetweenaninsurerandaninsureditisprovidedthatapersonnamedinthecontractorintheagreementhas,onthedeathoftheinsured,therightsandinterestsoftheinsuredinthecontract,(a)therightsandinterestsoftheinsuredinthecontractdonot,onthedeathoftheinsured,formpartoftheestateoftheinsured;and(b)onthedeathoftheinsured,thepersonnamedinthecontractorintheagreementhastherightsandinterestsgiventotheinsuredbythecontractandbythisPartandshallbedeemedtobetheinsured.
+
+(2)Wherethecontractoragreementprovidesthattwoormorepersonsnamedinthecontractorintheagreementshall,onthedeathoftheinsured,havesuccessively,onthedeathofeachofthem,therightsandinterestsofthe insuredinthecontract, thissectionappliessuccessively,withsuchmodificationsasthecircumstances require,toeachofthosepersonsandtohisorherrightsandinterestsinthecontract.
+
+(3)Notwithstandinganynominationmadepursuanttothis section,theinsuredmay,beforehisorherdeath,assign,exerciserightsunderorinrespectof,surrenderorotherwisedealwiththecontractasifthe
+
+OPÉRATIONSSURLECONTRATPENDANTLAVIEDEL’ASSURÉ
+
+95.Lorsqu’unbénéficiaire:a)n’estpasdésignédefaçonirrévocable;b)danslecascontraire,estâgéd’aumoins19ansetdonnesonconsentement,l’assurépeutcéderlecontrat,exercerlesdroitsqu’ilpossèdeenvertuouàl’égarddececontrat,lerétrocéderàl’assureuroulenégocierdetouteautrefaçon,enconformitéaveclecontratouaveclaprésentepartie,oudelafaçonconvenueavecl’assureur.
+
+96.(1)Mêmesiunbénéficiaireaétédésignédefaçonirrévocable,l’assuréadroit,tantqu’ilvit,auxdividendes et auxbonisquisontdéclarésàl’égardducontrat,saufdispositioncontrairedecelui-ci.
+
+(2)Sousréservedesinstructionscontrairesdel’assuré,l’assureurpeutaffecterlesdividendesetbonisdéclarésàl’égardducontrat aumaintienenvigueurdecelui-ci.
+
+97.(1)Pardérogationàla[Loi](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-w-5/latest/rsnwt-1988-c-w-5.html)surlestestaments,lorsqu’ilest stipulé dansun contratouuneconventionécriteentreunassureuretunassuréqu’unepersonnenommémentdésignéedanslecontratoudanslaconventionacquerra,audécèsde l’assuré,lesdroitsetintérêtsdecelui-cisurlecontrat:a)lesdroitsetintérêtsdel’assurésurlecontratnefontpaspartiedesasuccessionaumomentdesondécès;b)audécèsdel’assuré,lapersonnenommémentdésignéedanslecontratoudanslaconventionpossèdelesdroitsetintérêtsquelecontratetlaprésentepartieaccordentàl’assuréetestassimiléeàl’assuré.
+
+(2)Lorsquelecontratoulaconventionstipulequedeuxouplusieurspersonnesnommémentdésignéesdans lecontratoulaconventionpossèdent,audécèsdel’assuré,successivement,audécèsdechacund’eux,lesdroitsetintérêtsdel’assurésurlecontrat,leprésentarticles’appliquesuccessivement,comptetenudesadaptationsdecirconstance,àchacunedecespersonnesetauxdroitsetintérêtsqu’ellespossèdentenvertuducontrat.
+
+(3)Pardérogationàtoutenominationfaiteenvertuduprésent article,l’assurépeut,avant sondécès,céderlecontrat,exercerlesdroitsqu’ilpossèdeenvertuouàl’égarddececontrat,lerétrocéderà
+
+Opérationsurlecontrat
+
+Droitdel’assurésurlesdividendes
+
+Affectationdesdividendesparl’assureur
+
+Transfert
+
+Pluralitédespersonnesdésignées
+
+Réserve
+
+75
+
+Interestofassignee
+
+Effectonrightsofbeneficiary
+
+Unconditionalassignment
+
+Prohibitionagainstassignment
+
+Grouplifeinsuredenforcingrights
+
+Capacity:minor
+
+Capacity:minorbeneficiary
+
+nominationhadnotbeenmade,andmayalterorrevokethenominationbyagreementinwritingwiththeinsurer.
+
+98.(1)Whereanassigneeofacontractgivesnoticeinwriting oftheassignmenttotheinsureratitsheadorprincipaloffice inCanada, the assignee has priority ofinterestasagainst(a)anyassigneeotherthanonewhogavenoticeearlierinthesamemanner;and(b)abeneficiaryotherthanonedesignatedirrevocablyasprovidedinsection89beforethetimetheassigneegavenoticetotheinsureroftheassignmentinthemannersetoutinthissubsection.
+
+(2)Whereacontractisassignedassecurity,therightsofabeneficiaryunderthecontractareaffectedonlytotheextentnecessarytogiveeffecttotherightsandinterestsoftheassignee.
+
+(3)Whereacontractisassignedunconditionallyandotherwisethanassecurity,the assigneehasalltherightsandinterests given totheinsured bythecontractandbythis Partandshallbedeemedtobetheinsured.
+
+(4)Aprovision inacontract to the effectthattherightsorinterestsoftheinsured,orinthecaseofgroupinsurance,thegrouplifeinsured,arenotassignableisvalid.
+
+99.Agrouplifeinsuredmayinhisorherownnameenforcearightgiventhegrouplifeinsuredunderacontract,subjecttoanydefenceavailabletotheinsureragainstthegrouplifeinsuredoragainsttheinsured.
+
+MINORS
+
+100.Exceptinrespectofhisorherrightsasbeneficiary, apersonwhohas attained 16yearsofagehasthecapacityofapersonwhohasattained19yearsofage(a)tomakeanenforceablecontract;and(b)inrespectofacontract.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2014-c-31/latest/snwt-2014-c-31.html#sec5subsec5_smooth)2014,c.31,s.5(5).
+
+101.Abeneficiarywhohasattained18yearsofagehasthecapacityofapersonwhohasattained19yearsofagetoreceiveinsurancemoneypayabletothebeneficiaryandtogiveadischargetotheinsurerforthatmoney.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2014-c-31/latest/snwt-2014-c-31.html#sec5subsec6_smooth)2014,c.31,s.5(6).
+
+l’assureurou le négocierdetouteautrefaçon,commesiaucunenominationn’avaitétéfaite;ilpeutégalementmodifierourévoquerlanominationparconventionécriteavecl’assureur.
+
+98.(1)Lorsquelecessionnaired’uncontratdonneunavisécritdelacessionàl’assureuràsonsiègesocial ouàsonbureauprincipalauCanada,sesdroitssontprioritaires par rapportàceuxdespersonnessuivantes:a)toutautrecessionnairequin’apasdonnéunavissemblableavantlesien;b)toutbénéficiaire,autrequ’unbénéficiaireirrévocable,désignédelafaçonprévueàl’article89avantlemomentoùlecessionnairearemisàl’assureurl’avisdelacessiondelafaçonprévueauprésentparagraphe.
+
+(2)Lorsqu’uncontratestcédéengarantie,iln’estportéatteinteauxdroitsdubénéficiaireprévusparlecontratquedanslamesurenécessairepourdonnereffetauxdroitsducessionnaire.
+
+(3)Lorsqu’uncontratestcédésansconditionetautrementqu’àtitredegarantie,lecessionnairepossèdetouslesdroitsquelecontratetlaprésentepartieaccordentàl’assuréetestassimiléàcelui-ci.
+
+(4)Estvalideladispositiond’uncontratprévoyantquesontincessibleslesdroitsou intérêts del’assuré ou,danslecasd’uneassurancecollective,delapersonneassuréeparl’assurancecollectivesurlavie.
+
+99.Lapersonneassuréeparuneassurancecollectivesurlaviepeut,ensonnompropre,fairevaloirundroitprévuparlecontrat,sousréservedetoutmoyendedéfensequel’assureurpeutluiopposerouopposeràl’assuré.
+
+MINEURS
+
+100.Sauf à l’égardde sesdroitsà titredebénéficiaire,lemineurâgéd’aumoins16ansalacapacitéd’unepersonnede19ans:a)àl’égarddelaconclusiond’uncontratexécutoire;b)àl’égardd’uncontrat.
+
+101.Lebénéficiaireâgéd’aumoins18ansalacapacitéd’unepersonnede19anspourrecevoirdessommesassuréesquiluisontpayablesetpourendonnerquittance.
+
+Droitsducessionnaire
+
+Conséquencesurlesdroitsdubénéficiaire
+
+Cessionincondition­nelle
+
+Incessibilité
+
+Assurancecollectivesurlavie
+
+Capacité:mineurs
+
+Capacité:bénéficiairesmineurs
+
+76
+
+Proofofclaim
+
+Placeofpayment
+
+Dollars
+
+PaymentoutsideNorthwestTerritories
+
+Exceptionforgroupinsurance
+
+ActioninNorthwestTerritories
+
+Limitationperiod
+
+PROCEEDINGSUNDERCONTRACT
+
+102.Whereaninsurerreceivessufficientevidenceof(a)thehappeningoftheeventonwhichinsurancemoneybecomespayable;(b)theageofthepersonwhoselifeisinsured;(c)therightoftheclaimanttoreceivepayment;and(d)thenameandageofthebeneficiary,ifthereisabeneficiary,itshall,within30daysafterreceivingtheevidence,paytheinsurancemoneytothepersonentitledtoit.
+
+103.(1)Subjecttosubsection(4),insurancemoneyispayableintheNorthwestTerritories.
+
+(2)Unlessacontractotherwiseprovides,areferenceinacontracttodollarsmeansCanadiandollars.
+
+(3)WhereapersonentitledtoreceiveinsurancemoneyisnotdomiciledintheNorthwestTerritories,theinsurermay pay theinsurancemoneytothatpersonortoanyotherpersonwhoisentitledtoreceiveitonbehalfofthatpersonbythelawofthedomicileofthepayee.
+
+(4)Inthecaseofacontractofgroupinsurance,insurancemoneyispayableintheprovinceorterritoryinwhichthe group lifeinsuredwasresidentatthetimeheorshebecameinsured.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2), [(12)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec12_smooth).
+
+104.Notwithstandingwhereacontractwasmade,anactiononitmaybebroughtinacourtbyaresidentoftheNorthwestTerritoriesiftheinsurer was authorizedtotransactinsuranceintheTerritoriesatthetimethecontractwasmadeor at the time the actionisbrought.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+105.(1)Subjecttosubsection(2),anactionorproceedingagainstaninsurerfortherecoveryofinsurancemoneymaynotbecommencedaftertheexpiryoftheearlierof(a)twoyearsafterprovidingtheevidencerequiredbysection102;or(b)sixyearsafterthehappeningof the eventonwhichtheinsurancemoneybecomespayable.
+
+PROCÉDURESRELATIVESÀUNCONTRAT
+
+102.L’assureurverselessommesassuréesàlapersonnequiyadroitdansles30jourssuivantlaréceptiondespreuvessuffisantesconcernantcequisuit:a)lasurvenancedel’événementquirendlessommesassuréespayables;b)l’âgedelapersonnedontlavieestassurée;c)ledroitdudemandeurderecevoirlepaiement;d)lenometl’âgedubénéficiaire,s’ilenexisteun.
+
+103.(1)Sousréserveduparagraphe(4),lessommesassuréessontpayablesdanslesTerritoiresduNord-Ouest.
+
+(2)Sousréservedesautresclausesducontrat,«dollars»s’entenddesdollarscanadiens.
+
+(3)Lorsquelapersonnequiadroitauxsommesassuréesn’estpasdomiciliéedanslesTerritoiresduNord-Ouest,l’assureurpeutlesverseràcettepersonneouàtouteautrepersonnequia le droitdelesaccepterpoursoncompteenconformité avec laloidu domiciledupreneur.
+
+(4)Danslecasd’uncontratd’assurancecollective,lessommesassuréessontpayablesdanslaprovinceouleterritoire où résidaitlapersonneassuréepar l’assurancecollectivesurlavieaumomentoù elleest devenueassurée.LTN-O 2011, ch.16,art.12(12).
+
+104.Indépendammentdulieuoùlecontrataétéconclu,uneactionfondéesurcelui-cipeutêtreintentéedevantuntribunalparunrésidentdesTerritoiresduNord-Ouest,sil’assureurétaitautoriséàfairedesopérationsd’assurancedanslesTerritoiresduNord-Ouestaumomentdelaconclusionducontratoudel’introductiondel’action.LTN-O2011,ch.16,art.12(2).
+
+Preuvedelaréclamation
+
+Lieudupaiement
+
+Dollars
+
+Paiementàl’extérieurdesTerritoiresduNord-Ouest
+
+Exceptiondanslecasdesassurancescollectives
+
+ActionintentéedanslesTerritoiresduNord-Ouest
+
+105.(1)Sousréserveduparagraphe(2),l’action oulaPrescriptionprocédureintentéecontreunassureurenrecouvrementdessommesassuréesseprescritparceluidesdélaisci-dessousquiexpirelepremier:a)deuxansaprèslaremisedespreuvesviséesàl’article102;b)sixansaprèslasurvenancedel’événementquirendlessommesassuréespayables.
+
+77
+
+Exception
+
+Documentsaffectingtitle
+
+Saving
+
+Declarationastosufficiencyofproof
+
+PowerofCourt
+
+Declarationastopresumptionofdeath
+
+(2)Whereadeclarationhasbeenmadeundersubsection107(2),anactionorproceedingtowhichreferenceismadeinsubsection(1)maynotbecommencedmorethantwoyearsafterthedateofthedeclaration.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2022-c-4/latest/snwt-2022-c-4.html#sec11subsec2_smooth)2022,c.4,s.11(2), [(3)](https://www.canlii.org/en/nt/laws/astat/snwt-2022-c-4/latest/snwt-2022-c-4.html#sec11subsec3_smooth).
+
+106.(1)UntilaninsurerreceivesatitsheadorprincipalofficeinCanadaaninstrumentoran order ofacourtaffecting the righttoreceiveinsurancemoney,oranotarialcopy,oracopyverifiedbystatutorydeclaration,ofthatinstrumentororder,itmaymakepaymentoftheinsurancemoneyandshallbeasfullydischargedtotheextentoftheamountpaidasiftherewerenosuchinstrumentororder.
+
+(2)Subsection(1)doesnotaffecttherightsorinterestsofanypersonotherthantheinsurer.
+
+107.(1)Where(a)aninsureradmitsthevalidityoftheinsurance,butdoesnotadmitthesufficiencyoftheevidencerequiredbysection102;and(b)thereisnootherquestioninissueexceptaquestionundersection108,theinsurerortheclaimantmay,beforeorafteranactionisbroughtandonatleast30daysnotice,applytotheCourtforadeclarationastothesufficiencyoftheevidenceprovided.
+
+(2)Onanapplicationundersubsection(1),theCourtmaymakeadeclarationordirectwhatfurtherevidenceshall be providedandontheprovidingof theevidence,maymakeadeclarationor,inspecialcircumstances,maydispensewithfurtherevidence.
+
+108.Where(a)aclaimantallegesthatthepersonwhoselifeisinsuredshouldbepresumedtobedeadbyreasonofthatpersonnothavingbeenheardofforsevenyears,and(b)thereisnootherquestioninissueexceptaquestionundersection107,theinsurerortheclaimantmay,beforeorafteranactionisbroughtandon atleast30daysnotice,applytotheCourtforadeclarationastopresumptionofthedeathandtheCourtmaymakethedeclaration.
+
+(2)Lorsqu’unedéclarationaétéfaiteenconformitéavecleparagraphe107(2),l’actionoulaprocédureviséeauparagraphe(1)nepeutêtreintroduiteaprèsl’expirationd’undélaidedeuxansàcompterdeladatedeladéclaration.LTN-O2022,ch.4,art.11(2).
+
+106.(1)L’assureurpeut, jusqu’àcequ’ilreçoiveàsonsiègesocialouàsonbureauprincipalauCanadaunactejuridique ouuneordonnancejudiciaire modifiantledroitderecevoirdessommesassurées,ouunecopienotariéeouunecopiecertifiéeconformepardéclarationsolennelled’untelacte juridiqueoud’unetelleordonnance,payerlessommesassurées;ilestalorsentièrementlibéréjusqu’àconcurrencedumontantversé,commesicetacteoucetteordonnancen’existaitpas.
+
+(2)Leparagraphe(1)neportepasatteinteauxdroitsouauxintérêtsdetoutepersonneautrequel’assureur.
+
+107.(1)Lorsque:a)l’assureurreconnaîtlavaliditédel’assurance,maisdéclareinsuffisanteslespreuvesrequisesparl’article102;b)aucunequestionenlitigen’existe,àl’exceptiondelaquestionviséeàl’article108,l’assureurouleréclamantpeut,avantouaprèsl’introductiond’uneactionetsurpréavisd’aumoins30jours,demanderautribunaldestatuersurlasuffisancedespreuvesfournies.
+
+(2)Letribunalsaisidelademandeviséeauparagraphe(1)peutfaireunedéclarationconcernantlasuffisancedespreuvesfournies,indiquerquellessontlespreuvessupplémentairesquidoiventêtreremiseset,unefoiscelles-ciremises,faireunedéclarationou,dansdescasspéciaux,dispenserdetoutepreuvesupplémentaire.
+
+108.Lorsque:a)leréclamantprétendquelapersonnedontlavieestassuréedevraitêtreprésuméedécédéedufaitqu’onn’enaplusaucunenouvelledepuisseptans;b)iln’existeaucuneautrequestionenlitige,àl’exceptiond’unequestionviséeàl’article107,l’assureurouleréclamantpeut,avantouaprèsl’introductiond’uneactionetsurpréavisd’aumoins30jours,demanderautribunaldefaire une déclaration
+
+Exception
+
+Documentsconcernantledroitauxsommesassurées
+
+Réserve
+
+Déclarationd’insuffisancedepreuves
+
+Pouvoirsdutribunal
+
+Déclarationconcernantlaprésomptiondedécès
+
+78
+
+Order
+
+Paymentunderorder
+
+Stayofproceedings
+
+Appeal
+
+PowerofCourt
+
+Paymentintocourt
+
+109.(1)Onmakingadeclarationundersubsection 107(2)orsection 108,the Courtmaymakeanorderrespectingthepaymentoftheinsurancemoneyandrespectingcoststhatitconsidersjustand,subjecttosection111,adeclarationordirectionorordermadeunderthissubsectionisbindingontheapplicantandonallpersonstowhomnoticeoftheapplicationhasbeengiven.
+
+(2)Apaymentmadeunderanordermadeundersubsection(1)dischargestheinsurertotheextentoftheamountpaid.
+
+110. Unless the Courtotherwise orders,an applicationmadeundersubsection107(1)or section108 operatesasastayofanypendingactionwithrespecttotheinsurancemoney.
+
+111.AnappealliestotheCourtofAppealfromanydeclaration,directionorordermadeundersubsection107(2),section108orsubsection109(1).
+
+112.Wherethe Court findsthattheevidence providedundersection102isnotsufficientorthatapresumptionofdeathisnotestablished,itmayorderthatthemattersinissuebedecidedinanactionbroughtorto be brought,ormaymakeany other orderthatitconsidersjustrespectingfurtherevidencetobeprovided bythe claimant,publicationofadvertisements,furtherinquiryoranyothermatterorrespectingcosts.
+
+113.Whereaninsureradmitsliabilityforinsurancemoneyanditappearstotheinsurerthat(a)thereareadverseclaimants,(b)thewhereaboutsofapersonentitledtotheinsurancemoneyisunknown,or(c)thereisnopersoncapableofgivingandauthorizedtogiveavaliddischargetherefor,whoiswillingtodoso,theinsurer may, atanytimeafter 30 days fromthedateofthehappeningoftheeventonwhichtheinsurancemoneybecomespayable,applytotheCourtexparteforanorderforpaymentofthemoneyintocourt,andtheCourtmayonsuchnotice,ifany,asitthinksnecessary,makeanorderaccordingly.
+
+concernantlaprésomptiondedécès;letribunalestalorsautoriséàfaireunetelledéclaration.
+
+109.(1)Aprèsavoirfaitunedéclarationsouslerégimeduparagraphe107(2)oudel’article108,letribunalpeutrendrel’ordonnancerelativeaupaiementdessommesassuréesetauxdépensqu’ilestimejusteet,sousréservedel’article111,ladéclaration,ladirectiveoul’ordonnancerenduesouslerégimeduprésentparagraphelielerequérantettouteslespersonnesquiontreçuavisdelademande.
+
+(2)Lepaiementeffectuéenvertud’uneordonnancerenduesouslerégimeduparagraphe(1)libèrel’assureurjusqu’àconcurrencedumontantversé.
+
+110.Saufordonnancecontrairedutribunal,lademandeprésentéeenvertuduparagraphe107(1)oudel’article108suspendtouteactioneninstanceconcernantlessommesassurées.
+
+111.Ilpeut êtreinterjeté appel devantlaCour d’appeldetoutedéclaration,directiveouordonnancerenduesouslerégimeduparagraphe107(2),del’article108ouduparagraphe109(1).
+
+112.S’ilconstatequelespreuvesfourniesenconformitéavecl’article102sontinsuffisantesouquelaprésomptiondedécèsn’estpasétablie,letribunalpeutordonner que lesquestionsenlitigesoientrégléesdansuneactionintentéeouàintenter,ourendretouteautreordonnancequ’ilestimejusteconcernantlaproductionpar ledemandeurdepreuvessupplémentaires,lapublicationd’annonces,uneenquêtesupplémentaireoutouteautrequestion,ouencequiconcernelesdépens.
+
+113.L’assureurquisereconnaîtdébiteurdessommesassuréespeut,àtoutmomentaprèsl’expirationdudélaide 30 jourssuivantla survenance de l’événementquirendlessommesassuréespayables,demanderexparteautribunalderendreuneordonnancedeconsignationdecessommesautribunal,s’ilestimequel’unedessituationssuivantesexiste:a)ilexistedesopposants;b)l’endroitoùsetrouveunayantdroitestinconnu;c)aucunepersonnecapablededonnerunequittancevalable,ouautoriséeà lefaire,n’estprêteàlefaire.Le tribunalpeut,aprèsavoirdonné l’avis, s’ilya lieu,
+
+Ordonnance
+
+Libérationdel’assureur
+
+Suspension
+
+Appel
+
+Pouvoirsdutribunal
+
+Consignation
+
+79
+
+Simultaneousdeaths
+
+Definition:"instalments"
+
+Insurancemoneypayableininstalments
+
+Commutationbybeneficiary
+
+Commutationafterdeathofbeneficiary
+
+114.Unlessacontractoradeclarationotherwiseprovides,wherethepersonwhoselife isinsuredandabeneficiarydieatthesametimeorincircumstancesrenderingituncertainwhichofthemsurvivedtheother,theinsurancemoneyispayableinaccordancewithsubsection92(1)asifthebeneficiaryhadpredeceasedthepersonwhoselifeisinsured.
+
+115.(1)Inthissection,"instalments"includesinsurance money heldbytheinsurerundersection116.
+
+(2)Subjecttosubsections(3)and(4),where(a)insurancemoneyispayableininstalments,and(b)a contract,oraninstrument signedbytheinsuredanddeliveredtotheinsurer,providesthata beneficiary does nothavetherighttocommutetheinstalmentsortoalienateor assign his orherinterestintheinstalments,theinsurershallnot,unlesstheinsuredsubsequentlydirectsotherwiseinwriting,commutetheinstalmentsorpaythemtoanypersonotherthanthebeneficiary,andtheinstalmentsarenotinthehandsof theinsurer,subjectto any legalprocessexceptanactiontorecoverthevalueofnecessariessuppliedtothebeneficiaryorhisorherminorchildren.
+
+(3)ACourtmay,ontheapplicationofabeneficiaryandonat least 10daysnotice,declare thatinviewofspecialcircumstances(a)theinsurermay,withtheconsentofthebeneficiary,commuteinstalmentsofinsurancemoney;or(b)thebeneficiarymayalienateor assignhisorherinterestintheinsurancemoney.
+
+(4)Afterthedeathofthebeneficiary,thepersonalrepresentativeofthebeneficiary may, withtheconsentoftheinsurer,commuteanyinstalmentsofinsurancemoneypayabletothebeneficiary.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2014-c-31/latest/snwt-2014-c-31.html#sec5subsec7_smooth)2014,c.31,s.5(7).
+
+qu’ilestimenécessaire,rendreuneordonnanceàceteffet.
+
+114.Saufdispositioncontraired’uncontratoud’unedéclaration, lorsquela personne dontlavieest assuréeetunbénéficiairedécèdentenmêmetempsoudansdescirconstancestellesqu’onnepeutdétermineraveccertitudelequelasurvécuàl’autre,lessommesassuréessontpayablesenconformitéavecleparagraphe92(1),commesilebénéficiaireétaitdécédéavantlapersonnedontlavieestassurée.
+
+115.(1)Auprésentarticle,«versements»s’entendnotammentdessommesassuréesdétenuesparl’assureurenapplicationdel’article116.
+
+(2)Sousréservedesparagraphes(3)et(4),lorsque:a)dessommesassuréessontpayablesparversements;b)uncontrat ouunautreacte juridiquesignéparl’assuréetremisàl’assureurprévoitquelebénéficiairen’apasledroitd’escompterlesversementsoud’aliéneroudecéderlesdroitsqu’ilpossèdesurceux-ci,l’assureurnepeut,àmoinsquel’assurén’enordonneautrementparlasuiteparécrit,escompterlesversementsoulesverseràtouteautrepersonnequelebénéficiaire;lesversementsnepeuvent,tantqu’ilssontenlapossessiondel’assureur,fairel’objetd’aucuneprocédurejudiciaireautrequ’uneactionenrecouvrementdelavaleurdesobjetsdepremièrenécessitéfournisaubénéficiaireouàsesenfantsmineurs.
+
+(3)Letribunalpeut,àlademanded’unbénéficiaireetàlaconditiondedonnerun préavisd’aumoins10jours,déclarer qu’en raison decirconstancesspéciales:a)l’assureurpeut,avecleconsentementdubénéficiaire,escompterlesversementsdessommesassurées;b)lebénéficiairepeutaliéneroucédersonintérêtsurlessommesassurées.
+
+(4)Aprèsledécèsdubénéficiaire,sonreprésentantpersonnelpeut,avecleconsentementdel’assureur,escompterlesversementsdessommesassuréespayablesaubénéficiaire.
+
+Codécès
+
+Définition:«versements»
+
+Sommesassuréespayablesparversements
+
+Modificationapportéeàlademandedubénéficiaire
+
+Escompteaprèslamortdubénéficiaire
+
+80
+
+Insurerholdinginsurancemoney
+
+Exception
+
+Orderforpayment
+
+Discharge
+
+Costs
+
+Wherebeneficiaryaminor
+
+Costs
+
+116.(1)Aninsurermayholdinsurancemoney(a)subjecttotheorderofaninsuredorabeneficiary,or(b)ontrustsorotheragreementsforthebenefitoftheinsuredorthebeneficiary,as providedinthecontract,byanagreementin writingtowhichitisapartyorbyadeclaration,withinterestatarateagreeduponinthecontract,agreementordeclarationor, where norateisagreed upon,attheratedeclaredfromtimetotimebytheinsurerinrespectofinsurancemoneysoheldbyit.
+
+(2)Theinsurerisnotboundtoholdinsurancemoneyasprovidedinsubsection(1)underthetermsofadeclarationtowhichithasnotagreedinwriting.
+
+117.(1)Whereaninsurerdoesnotwithin 30daysafterreceiptoftheevidencerequiredbysection102paytheinsurancemoneytoapersoncompetenttoreceiveitorintocourt,theCourtmay,onapplicationofanyperson,orderthattheinsurancemoneyoranypartoftheinsurancemoneybepaidintocourt,ormaymakeanyother order as tothe distribution of themoney thatitconsidersjust.
+
+(2)Paymentmadeinaccordancewithanordermadeundersubsection(1)dischargestheinsurertotheextentoftheamountpaid.
+
+118.TheCourtmayfixwithouttaxationthecostsincurredinconnectionwithanapplicationorordermade undersection 113 orsubsection117(1),andmayorderthemto be paidoutoftheinsurance moneyorbytheinsurerortheapplicantor otherwise asit considersjust.
+
+119.(1)Whereaninsureradmitsliabilityforinsurancemoneypayabletoaminorandthereisnopersoncapableofgivingandauthorizedtogiveadischargethereforwhois willing todoso,theinsurermayatanytimeafter30daysfromthedateofthehappeningoftheeventonwhichtheinsurancemoneybecomespayablepaythemoney,lesstheapplicablecostsmentionedinsubsection(2)intocourttothecreditoftheminor.
+
+(2)Theinsurermayretainoutoftheinsurancemoneyforcostsincurredonpaymentintocourtundersubsection (1),$10wheretheamountdoes not exceed
+
+116.(1)L’assureurpeutdétenirles sommes assurées:a)soitenconformitéaveclesdirectivesdel’assuréoudubénéficiaire;b)soitenfiducieouenvertudetouteautreconvention,àl’intentiondel’assuréoudubénéficiaire,delafaçonprévuedans le contrat,enconformitéavecuneconventionécriteàlaquelleilestpartieouunedéclaration,autauxd’intérêtquiyestconvenu,oulorsqu’aucuntauxn’estconvenu,autauxquefixepériodiquementl’assureurpourlessommesassuréesqu’ildétientdecettefaçon.
+
+(2)L’assureurn’estpastenudedétenirdessommesassuréesdelamanièreprévueauparagraphe(1)enconformitéaveclesdispositionsd’unedéclarationqu’iln’apasacceptéesparécrit.
+
+117.(1)Lorsqu’unassureurneprocèdepas,dansles30joursquisuiventlaréceptiondespreuvesviséesàl’article102,aupaiementdessommesassuréesàunepersonnequiesthabileàlesrecevoirouàlaconsignationdecessommesautribunal,letribunalpeut,àlademandedetoutepersonne,ordonnerquetoutoupartiedecessommessoit consignéau tribunalourendrel’ordonnancederépartitionqu’ilestimejuste.
+
+(2)Lepaiementeffectuéenconformitéavecl’ordonnancerenduesouslerégimeduparagraphe (1)libèrel’assureurjusqu’àconcurrencedumontantversé.
+
+118.Letribunalpeutfixer,sanstaxation,lesfraisoccasionnéspar la requêteprésentéeoul’ordonnancerendueenapplicationdel’article113ouduparagraphe117(1)etpeutordonnerqu’ilssoientpayésparimputation surlessommesassurées,par l’assureurouparlerequérant,oudetouteautrefaçonqu’ilestimejuste.
+
+119.(1)Lorsqu’ilsereconnaîtdébiteurdessommesassuréespayablesàunmineuretqu’aucunepersonneayantlacapacitéetl’autorisationd’endonnerquittancen’acceptedelefaire,l’assureurpeut,aprèsl’expirationd’undélai de30jours suivantladate de lasurvenancedel’événementquirendlessommesassuréespayables,consignercessommes,moinslesfraisapplicablesvisésauparagraphe(2),auprèsdutribunalaucréditdumineur.
+
+(2)L’assureurpeutretenirsurlessommesassuréespourcouvrirlesfraisdeconsignationauprèsdutribunalen applicationdu paragraphe (1) lasomme
+
+Sommesassuréesenpossession
+
+Exception
+
+Ordonnancededistribution
+
+Libérationdel’assureur
+
+Frais
+
+Bénéficiairemineur
+
+Frais
+
+81
+
+Procedure
+
+Beneficiaryunderdisability
+
+Presumptionagainstagency
+
+Insurergivinginformation
+
+Definitions
+
+$1,000,and$15inothercases,andpaymentoftheremainderofthemoneyintocourtdischargestheinsurer.
+
+(3)Noorderisnecessaryforpaymentintocourtundersubsection(1),buttheproperofficeroftheCourtshallreceivethemoneyupontheinsurerfilingwiththeofficialanaffidavitshowingtheamountpayableandthename,dateofbirthandresidenceoftheminor,and,onthatpaymentbeingmade,theinsurershallwithoutdelaynotifythePublicTrusteeanddelivertothePublicTrusteeacopyoftheaffidavit.
+
+120.Whereitappearsthatarepresentativeofabeneficiarywhoisunderdisabilitymayunderthelawofthedomicileof thebeneficiaryacceptpaymentsonbehalfofthebeneficiary,theinsurermaymakepaymenttotherepresentativeandanysuchpaymentdischarges theinsurertotheextent oftheamountpaid.
+
+MISCELLANEOUSPROVISIONS
+
+121.Noofficer,agentoremployeeofaninsurerandno personsolicitinginsurance,whetherornotheorsheisanagentoftheinsurer,shall,totheprejudiceoftheinsured,bedeemedtobetheagentoftheinsuredinrespectofanyquestionarisingoutofacontract.
+
+122.Aninsurerdoesnotincuranyliabilityforanydefault,errororomissioningivingorwithholdinginformationastoanynoticeorinstrumentthatithasreceivedandthataffectstheinsurancemoney.
+
+PARTVAUTOMOBILEINSURANCE
+
+INTERPRETATION
+
+123.InthisPart,"contract"meansacontractofautomobileinsurance;(contrat)
+
+"insured"meansapersoninsuredbyacontractwhethernamedornotandincludesanypersonwhoisstatedinacontracttobeentitledtobenefitspayableundertheinsurancementionedinsection156,subsection157(1)or158(1)whetherornotdescribedinthecontractasaninsuredperson.(assuré)
+
+de10$,lorsque le montantnedépassepas1000$,etlasommede15$danslesautrescas;laconsignationdusoldeauprèsdutribunallibèrel’assureur.
+
+(3)Aucuneordonnancen’estnécessairepourpermettreuneconsignationsouslerégimeduparagraphe(1),maislefonctionnairecompétentdutribunalesttenud’accepterlessommesaprèsquel’assureuradéposéauprèsdelui un affidavitindiquantlemontantpayable,lenom,ladatedenaissanceetlelieuderésidencedumineur;unefoislepaiementeffectué,l’assureurenavisesansdélailecurateurpublicetluiremetunecopiedel’affidavit.
+
+120.Lorsqu’ilsemblequelereprésentantd’unbénéficiairefrappéd’incapacitépeut, en vertudelaloidudomiciledubénéficiaire,recevoirdespaiementspourlecomptede celui-ci, l’assureurpeuteffectuer lepaiementàcereprésentant;cepaiementlibèrel’assureurjusqu’àconcurrencedumontantversé.
+
+DISPOSITIONSDIVERSES
+
+121.Aucun dirigeant,agent ou employéd’unassureur,niaucunepersonnesollicitantlasouscriptiond’assurance,qu’ellesoitounonl’agentdel’assureur,n’estréputé,aupréjudicedel’assuré,êtrel’agentdecelui-ciàl’égarddetoutequestionquidécouled’uncontrat.
+
+122.L’assureurn’engagepassaresponsabilitéàl’égarddetoutmanquement,erreurouomissionqu’ilcommetendonnantouennerévélantpasunrenseignementàl’égarddetoutavisouactejuridiquequ’ilareçuetquiconcernelessommesassurées.
+
+PARTIEVASSURANCEAUTOMOBILE
+
+DÉFINITIONS
+
+123.Lesdéfinitionsquisuivents’appliquentàlaprésentepartie.
+
+«assuré»Personneassuréepar un contrat, qu’elle soitnomméeounon;laprésentedéfinitionviseégalementtoutepersonnedésignéedansuncontratcommeayantdroitauxindemnitéspayablesenvertudel’assurancementionnéeà l’article156,aux paragraphes157(1) ou158(1),qu’elleysoitdésignéeounonàtitredepersonneassurée.(insured)
+
+«contrat»Contratd’assuranceautomobile.(contract)
+
+Procédure
+
+Bénéficiaireincapable
+
+Présomption
+
+Renseigne-mentsdonnésparl’assureur
+
+Définitions
+
+82
+
+ApplicationofPart
+
+Exemption
+
+Unregisteredautomobiles
+
+Liensandsecurityinterests
+
+ApprovalofformsbySuperint-endent
+
+Insurerrequiringadditionalinformation
+
+Approvalofpoliciesinspecialcases
+
+APPLICATIONOFPART
+
+124.(1)ThisPartappliestocontractsprovidingautomobileinsurancemadeorrenewedintheNorthwestTerritoriesonorafterApril1,1976.
+
+(2)ThisPartdoes not applyto contracts insuringonlyagainst(a)loss ofordamagetoanautomobilewhileinorondescribedpremises;(b)lossofordamagetopropertycarriedinoronanautomobile;or(c)liabilityforlossofordamagetopropertycarriedinoronanautomobile.
+
+(3)ThisPartdoesnotapplytoacontractprovidinginsuranceinrespectofanautomobilenotrequiredtoberegisteredunder the[Motor](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-m-16/latest/rsnwt-1988-c-m-16.html)VehiclesActorthe[All-terrain](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-a-3/latest/rsnwt-1988-c-a-3.html)VehiclesActunlessitisinsuredunderacontractevidencedbyaformofpolicyapprovedunderthisPart.
+
+(4)ThisPartdoes notapplytoacontractinsuringsolely theinterest of a person whohasalien on, or hasasecuritylegaltitleto,anautomobileandwhodoesnothavepossessionoftheautomobile.RSNWT1988,c.1(Supp.),s.13;[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+APPROVALOFFORMS
+
+125.(1)Noinsurershalluseaformofapplication,policy,endorsementorrenewalorcontinuationcertificateinrespectofautomobileinsuranceotherthanaformapprovedbytheSuperintendent.
+
+(2)An insurer mayrequireadditionalinformationinanapprovedapplicationform,butthatadditionalinformationdoesnotconstitutepartof the applicationforthepurposesofsection128.
+
+(3)Where,intheopinionoftheSuperintendent,anyprovisionofthisPart,includinganystatutorycondition,iswhollyorpartlyinappropriatetotherequirementsof acontractoris inapplicablebyreason
+
+CHAMPD’APPLICATION
+
+124.(1)Laprésenteparties’appliqueauxcontratsd’assuranceautomobileconclusourenouvelésdanslesTerritoiresduNord-Ouestle1eravril1976ouaprèscettedate.
+
+(2)Laprésentepartienes’appliquepasauxcontratsassurantseulementcontre:a)laperted’uneautomobileoulesdommagesquiluisontcausésàunendroitspécifié;b)lapertedebienstransportésdansousuruneautomobile,oulesdommagesquileursontcausés;c)laresponsabilitédécoulantdelapertedebienstransportésdansousuruneautomobile,oulesdommagesquileursontcausés.
+
+(3)Laprésentepartienes’appliquepasàuncontratassurantuneautomobiledontl’immatriculationn’estpasobligatoireauxtermesdela[Loi](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-m-16/latest/rsnwt-1988-c-m-16.html)surlesvéhiculesautomobilesoudela[Loi](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-a-3/latest/rsnwt-1988-c-a-3.html)surlesvéhiculestout-terrain, àmoinsqu’ellenesoitassuréeaumoyend’uncontratconstatéparunmodèledepoliceapprouvéesouslerégimedelaprésentepartie.
+
+(4)Laprésentepartienes’appliquepasàuncontrat assurantseulementle droit d’unepersonne quidétientunprivilègeoupossèdeàtitredegarantieletitredepropriété reconnuendroit suruneautomobile,maisn’apaslapossessiondel’automobile.LRTN-O1988,ch.1(Suppl.),s.13;LTN-O2011,ch.16,art.12(2).
+
+APPROBATIONDESFORMULAIRES
+
+125.(1)Ilestinterditauxassureursd’utiliser,danslecasd’uneassuranceautomobile,unformulairedeproposition,depolice,d’avenant,decertificatderenouvellementoudeprolongationquin’apasétéapprouvéparlesurintendant.
+
+(2)L’assureurpeutexigerdesrenseignementssupplémentairesdansunformulaireapprouvédeproposition,maiscesrenseignementssupplémentairesnefontpaspartiedelapropositionpourl’applicationdel’article128.
+
+(3)S’ilestd’avisqu’unedispositiondelaprésentepartie,notammentuneconditionlégale,nerépondpasentoutouenpartieauxbesoinsd’uncontratouestinapplicableenraisondesdispositions
+
+Applicationdelapartie
+
+Exceptions
+
+Idem
+
+Idem
+
+Approbationdesformulairesparlesurintendant
+
+Renseigne-mentssup-plémentaires
+
+Casspéciaux
+
+83
+
+Approvalofextensions
+
+Standardowner’spolicy
+
+Revocationofapproval
+
+Reasonfordecision
+
+Insurancecard
+
+Misrepresen-tation
+
+oftherequirementsofanyAct,theSuperintendentmayapproveaformof policy, or partofit, orendorsementevidencingacontractsufficientorappropriatetoinsuretherisksrequiredorproposedtobeinsured, andthecontractevidencedbythepolicyorendorsementintheformsoapprovediseffectiveandbindingaccordingtoitstermsnotwithstandingthatthosetermsareinconsistentwith,vary,omitoraddtoanyprovisionorstatutoryconditionofthisPart.
+
+(4)Exceptastomattersreferredtoinparagraphs138(a)and(c),theSuperintendentmay,iftheSuperintendentconsidersittobeinthepublicinterest,approveaformofmotorvehicleliabilitypolicyorendorsementtoitthatextendstheinsurancebeyondwhatisestablishedbythisPart.
+
+(5)TheSuperintendentmayapproveaformofowner’spolicycontaininginsuringagreementsandprovisionsinconformitywiththisPartforusebyinsurersingeneral,andwhich,forthepurposesofsection127shallbethestandardowner’spolicy.
+
+(6)TheSuperintendentmayrevokeanapprovalgivenunderthissection,and,onnotificationoftherevocationinwriting,noinsurershallafterthatuse ordeliveraformthatcontravenesthenotification.
+
+(7)TheSuperintendentshall,onrequestofanyinterestedinsurer, specify in writinghis orher reasonsforgranting,refusingorrevokinganapprovalofaform.
+
+(8)Aninsurerthatissuesordeliversanowner’spolicyintheNorthwestTerritories,oranyrenewalofit,oranyevidenceofthecontinuationofthepolicy,shallissuetotheinsuredacardevidencingtheinsurance,andthecardshall be inaformapprovedbytheSuperintendent.
+
+(9)Noinsurershallmisrepresenttheparticularsofanowner’spolicyonacardreferredtoinsubsection(8).[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+d’uneloi,lesurintendantpeutapprouverun formulairedepolice,ouunepartiedelapolice,ouunavenantconstatantuncontratsuffisantouappropriépourassurerlesrisquesquidoiventl’êtreoudontl’assuranceestproposée;lecontratconstatéparlapoliceoul’avenantenlaformeainsiapprouvéeestvalideetlielespartiesenconformitéavecsesmodalités,mêmesicelles-cisontincompatiblesavecunedispositionouuneconditionlégaleénoncéedanslaprésentepartie,ouconstituentunemodification,uneomissionouuneadjonctionàcesdispositionsouconditions.
+
+(4)Saufàl’égarddesquestionsviséesauxalinéas138a)etc),lesurintendantpeut,s’ill’estimedansl’intérêtpublic,approuverunformulairedepolicederesponsabilitéautomobileoud’avenantàcettepolicequiétendlagarantieau-delàdecelleprévueparlaprésentepartie.
+
+(5)Lesurintendantpeutapprouver unformulairedepolicedepropriétaire contenantdesconventionsetdesdispositionsd’assuranceconformesàlaprésentepartiequipeutêtreutilisépartouslesassureurs et quiconstitue,pourl’applicationdel’article127,lapolicetypedepropriétaire.
+
+(6)Lesurintendantpeutrévoqueruneapprobationdonnéesouslerégimeduprésentarticle;aprèsqu’ilareçunotificationécritedecetterévocation,unassureurnepeututiliserouremettreunformulairequicontrevientàlanotification.
+
+(7)Àlademanded’unassureurintéressé,lesurintendantpréciseparécritlesmotifsd’approbation,derefusd’approbationouderévocationdel’approbationd’unformulaire.
+
+(8)L’assureurquiétablitouremetunepolicedepropriétairedansles TerritoiresduNord-Ouest,ouunrenouvellementdecelle-ci,ouundocumentfaisantétatdumaintienenvigueurdelapolice,délivreàl’assuréunecarteconstatantl’assurance;cettecarteestconformeaumodèleapprouvéparlesurintendant.
+
+(9)Ilestinterditauxassureursdefaireunedéclarationinexacteconcernantlapolicedepropriétairesurlacarteviséeauparagraphe(8). LTN-O2011,ch.16,art.12(2).
+
+Approbationdusurintendant
+
+Policetypedepropriétaire
+
+Révocationdesapprobations
+
+Motifs
+
+Carted’assurance
+
+Déclarationinexacte
+
+84
+
+Personsforbiddentoactasagent
+
+Copyofapplicationinpolicy
+
+Policyissuedwherenosignedapplication
+
+Policy:copy
+
+Policy:form
+
+Certificateofpolicy
+
+APPLICATIONANDPOLICY
+
+126.Nopersoncarryingonthebusinessoffinancingthesaleorpurchaseofautomobiles andnoautomobiledealer,insuranceagentorbrokerandnoofficeroremployeeofsuchaperson,dealer,agentorbrokershall act asthe agent of an applicant for the purpose ofsigninganapplicationforautomobileinsurance.
+
+127.(1)Acopyofthewrittenapplication,signedbytheinsuredorhisorheragent,or,ifnosignedapplicationismade,acopyofthepurportedapplication,ora copy ofsuch partoftheapplicationorpurportedapplicationasismaterialtothecontract,shallbeembodiedin,endorsedonorattachedtothepolicywhenissuedbytheinsurer.
+
+(2)Ifnosignedwrittenapplicationisreceived bytheinsurerbeforetheissueofthepolicy,theinsurershalldeliverormailtotheinsurednamedinthepolicy,or to theagentfordelivery or mailingto the insured,aformofapplicationtobecompletedandsignedbytheinsuredandreturnedtotheinsurer.
+
+(3)Subjecttosubsection(5),theinsurershalldeliveror mailtotheinsurednamedinthepolicy,ortotheagentfordeliveryormailingtotheinsured,thepolicyoratruecopyofitandeveryendorsementorotheramendmenttothecontract.
+
+(4)Whereawrittenapplicationsignedbytheinsuredorhisorheragentismadeforacontract,thepolicyevidencingthecontractshallbe deemed tobeinaccordancewiththeapplicationunlesstheinsurerpointsoutin writingtotheinsured namedinthepolicyinwhat respectthe policydiffersfromtheapplication,and, in thatevent, theinsuredshallbedeemedtohaveacceptedthepolicyunlesswithinsevendaysafterthereceiptofthenotification,theinsuredinformstheinsurerinwritingthatheorsherejectsthepolicy.
+
+(5)Whereaninsureradoptsthestandardowner’spolicy,itmay,insteadofissuingthepolicy,issueacertificateinaformapprovedbytheSuperintendent,whichwhenissuedis ofthe sameforceand effectasifitwasinfactthestandardowner’spolicy,subjecttothelimitsand coverages shownonitbytheinsurer andanyendorsementsissuedconcurrentlywithitoraftertheissueofthecertificatebut,attherequestofan
+
+PROPOSITIONETPOLICE
+
+126.Ilest interdit àceux quiexploitentune entreprisedefinancementd’achatoudevented’automobiles,auxvendeursd’automobiles,auxagentsoucourtiersd’assurancedemêmequ’àleursdirigeantsouemployésd’agirenqualitédereprésentantd’unproposantetdesigneràcetitreunepropositiond’assuranceautomobile.
+
+127.(1)Une copiedelapropositionécrite,signéeparl’assuréousonreprésentant, ou,siaucunepropositionsignéen’aétéfaite,unecopiedudocumentquiestprésentécommetel,ouunecopiedelapartiedelapropositionoudecedocumentquiestessentielleaucontrat,estincorporéeàlapolice,mentionnéeàsonversoouluiestannexéelorsquelapoliceestétablieparl’assureur.
+
+(2)S’ilnereçoitaucune propositionécriteavantl’établissementdelapolice,l’assureuresttenuderemettreoudeposteràl’assurénommémentdésignédanslapolice,ouàl’agentpourqu’illeluiremetteoule luiposte,unformulairedepropositionquel’assuréremplit,signeetrenvoieàl’assureur.
+
+(3)Sousréserveduparagraphe(5),l’assureurremetouposteà l’assurénommémentdésignédanslapolice,ouàl’agentpourqu’illaluiremetteoulaluiposte,lapoliceouunecopiecertifiéeconformedecelle-ci,ainsiquetoutavenantouautremodificationapportéeaucontrat.
+
+(4)Lorsqu’unepropositionécritesignéeparl’assuréouparsonreprésentantestrédigéeenvued’uncontrat,lapolicequiconstatececontratestréputéeconformeàlaproposition,saufsil’assureursignaleparécritàl’assurénommédanslapolicelesdifférencesentrecelle-cietlaproposition;danscecas,l’assuréestréputéavoiraccepté lapolice,saufsi, danslasemainequisuitlaréceptiondelanotification,ilinformeparécritl’assureurqu’illarefuse.
+
+(5)L’assureurquiadoptelapolicetypedepropriétairepeut,aulieud’établirlapolice,délivreruncertificatenlaformeapprouvéeparlesurintendantqui,unefoisdélivré,alamêmevaleuretlemêmeeffetques’ilétaitenfaitlapolice typede propriétaire,sousréserve des limiteset garanties quiysont mentionnéesparl’assureuretdesavenantsétablisenmêmetempsquelecertificatouparlasuite;àlademandede
+
+Interdiction
+
+Adjonctiond’unecopiedela propositionàlapolice
+
+Remised’unformulairedepropositionàl’assuré
+
+Police:remise
+
+Police:forme
+
+Certificatdepolice
+
+85
+
+Applicationofotherprovisions
+
+Proofoftermsofpolicy
+
+Endorsementonforms
+
+Misrepresen-tationorcontraventionofconditions
+
+Useofapplicationasdefence
+
+Proofofstatement
+
+insuredatany time,theinsurershallprovide acopy ofthestandardowner’spolicywordingasapprovedbytheSuperintendent.
+
+(6)Whereacertificateisissuedundersubsection(5),subsection(8)andsection154applywithsuchmodificationsasthecircumstancesrequire.
+
+(7)Whereaninsurerissuesacertificateundersubsection(5),proofof the terms of the policymaybegivenbyproductionofacopyoftheformofstandardowner’spolicyapprovedbytheSuperintendent.
+
+(8)Acopyofsubsection128(1)mustbeprintedorstampedinconspicuoustypeoneveryapplicationformandpolicy.
+
+128.(1)Where(a)anapplicantforacontract,(i)givesfalseparticularsofthedescribedautomobiletobeinsuredtotheprejudiceoftheinsurer,or(ii)knowinglymisrepresentsorfailstodiscloseintheapplicationanyfactrequiredtobestatedintheapplication,(b)theinsuredcontravenesatermofthecontractorcommitsafraud;or(c)theinsuredwilfullymakesafalsestatementinrespectofaclaimunderthecontract,aclaimbytheinsuredisinvalidandtherightoftheinsuredtorecoverindemnityisforfeited.
+
+(2)Nostatementofanapplicantshallbeusedindefenceofaclaimunderthecontractunlessitiscontainedinthesignedwrittenapplicationforthecontract,or,wherenosignedwrittenapplicationismade, inthepurported application, or part ofit,thatisembodiedin,endorsedonorattachedtothepolicy.
+
+(3)Nostatementcontainedinapurportedcopyofanapplicationforacontract,orpartofanapplicationforacontract,otherthanastatementdescribingtheriskandtheextentoftheinsurance,shallbeusedindefenceofaclaimunderthecontractunlesstheinsurerprovesthattheapplicantmadethestatementattributed
+
+l’assuré,l’assureurestcependanttenudefournirunecopiedutextedelapolicetypedepropriétaireapprouvéeparlesurintendant.
+
+(6)Lorsqu’uncertificatestdélivréenvertuduparagraphe(5),leparagraphe(8)etl’article154s’appliquent,comptetenudesadaptationsdecirconstance.
+
+(7)Lorsqu’unassureurdélivreuncertificatenvertuduparagraphe(5),lapreuvedesmodalitésde lapolicepeutsefairepardépôtd’unecopieduformulairedelapolicetypedepropriétaireapprouvéparlesurintendant.
+
+(8)Unecopieduparagraphe128(1)doitêtreimpriméeencaractèresquiattirentl’attentionsurchaqueformulaire de propositionetsurchaquepolice.
+
+128.(1)Lademandederèglementprésentéeparl’assuréestinvalideetl’assuréestdéchudesondroitàl’indemnitélorsque,selonlecas:a)unproposant:(i)soitdonnedefauxrenseignementsaupréjudicedel’assureurendécrivantl’automobilequidoitfairel’objetdel’assurance,(ii)soitfaitsciemmentuneassertioninexacte ou omet dedéclarerdanslapropositionunfaitquidoityêtredéclaré;b)l’assurécontrevientàunemodalitéducontratouserendcoupabledefraude;c)l’assuréfaitintentionnellementunefaussedéclarationdansunedemandederèglementprésentéeenvertuducontrat.
+
+(2)Ilestinterditd’utiliserunedéclarationduproposantpours’opposerà une demande derèglementprésentéeenvertuducontrat,saufsielleestcontenuedanslapropositionécriteetsignéedececontratou,s’iln’yapaseudepropositionécritesignée,dansledocumentprésentécommeteloulapartiedecelui-ciquiestincorporédanslapolice,mentionnéàsonversoouyannexé.
+
+(3)Ilestinterditd’utiliserunedéclarationquifiguredansun document présentécommeunecopiedelapropositionoud’unepartiedecelle-ciautrequ’unedéclarationdécrivantlerisqueetlagarantiepours’opposeràunedemandederèglementprésentéeenvertuducontrat,saufsil’assureurprouvequele
+
+Applicationdesautresdispositions
+
+Preuvedesmodalitésdelapolice
+
+Texteduparagraphe128(1)
+
+Assertioninexacteoucontravention
+
+Utilisationdesdéclarationsendéfense
+
+Idem
+
+86
+
+Definition:"policy"
+
+Statutoryconditions
+
+MaterialChangeinRisk
+
+totheapplicant inthepurportedapplication,orpart oftheapplication.
+
+129.(1)Inthissection,"policy"doesnotincludeaninterimreceiptorbinder.
+
+(2)Subjecttosubsection125(3)andsections130and154,(a)theconditionssetoutinthissectionarestatutoryconditionsandshall bedeemedtobepartofeverycontractandshallbeprintedineverypolicywiththeheading"StatutoryConditions";and(b)no variationor omission oforaddition toastatutoryconditionisbindingontheinsured.
+
+STATUTORYCONDITIONSInthesestatutoryconditions,unlessthecontextotherwise requires,theword"insured"meansapersoninsuredbythiscontractwhethernamedor notandthewords"insuredperson"meananinsuredandincludeanypersontowhombenefitsmaybepayableunder"SECTIONB-ACCIDENTBENEFITS"setoutintheScheduletotheInsuranceAct.
+
+1.(1)Theinsurednamedinthiscontractshallpromptly notifythe insureroritslocal agentin writingofanychangeintheriskmaterialtothecontractandwithinhisknowledge.
+
+(2)Withoutrestrictingthegeneralityoftheforegoing,the words "changeintheriskmaterialtothecontract"include:(a)anychangeintheinsurableinterestoftheinsurednamedinthiscontractintheautomobilebysale,assignmentorotherwise,exceptthroughchangeof titlebysuccession,deathorproceedingsunderthe[Bankruptcy](https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-b-3/latest/rsc-1985-c-b-3.html)andInsolvencyAct(Canada);andinrespectofinsuranceagainstlossofordamagetotheautomobile,(b)anymortgage,lienorencumbranceaffectingtheautomobileaftertheapplicationforthiscontract;(c)anyotherinsuranceofthesameinterest,
+
+proposantafaitladéclarationquiluiestattribuéedansledocumentprésentécommeunepropositionoucommeunepartiedecelui-ci.
+
+129.(1)Auprésentarticle,«police»nes’entendpasd’unequittanceoud’unenotedecouvertureprovisoire.
+
+(2)Sousréserveduparagraphe125(3)etdesarticles130et154:a)lesconditionsénoncéesdansleprésentarticlesontdesconditionslégalesréputéesfairepartiedetoutcontratetdoiventêtreimpriméessurchaquepolicesousletitre«Conditionslégales»;b)aucunemodification,omissionniadjonctionàl’unedecesconditionsn’engagel’assuré.
+
+CONDITIONSLÉGALESDanslesprésentesconditions,saufindicationcontraireducontexte,lemot«assuré»s’entenddelapersonneassuréeparleprésentcontrat,qu’ellesoitnommémentdésignéeounon,etl’expression«personneassurée»s’entenddel’assuréetviseégalementtoutepersonneàquil’indemnitéestpayableenconformitéavec la«SECTIONB-INDEMNITÉSD’ACCIDENTS»énoncée à l’annexedelaLoisurlesassurances.
+
+Définition:«police»
+
+Conditionslégales
+
+1.(1)L’assuré nommément désignédans leprésentChangementcontratesttenud’aviserpromptementparécritl’assureurousonagentlocaldetoutchangementdanslescirconstancesconstitutivesdurisquevenantàsaconnaissance.
+
+(2)Sansqu’ilsoitportéatteinteàlaportéegénéraleduparagraphe (1),l’expression «changementdanslescirconstancesconstitutivesdurisque»s’entendnotamment:a)delaventedel’automobileoudetouteautrealiénationoucessiondenatureàmodifiersonintérêtassurable,exceptionfaitedeschangementsamenéspardroitdesuccession,pardécèsouparprocédureenvertudela[Loi](https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-b-3/latest/rsc-1985-c-b-3.html)surlafailliteetl’insolvabilité(Canada);etdanslecasd’uneassurancecontrelaperted’uneautomobileoulesdommagesquipeuventluiêtrecausés:b)d’unehypothèque,d’unprivilègeoud’unechargegrevantl’automobileaprès
+
+danslescirconstancesconstitutivesdurisque
+
+87
+
+ProhibitedusebyInsured
+
+Prohibitedusebyothers
+
+whethervalidornot,coveringlossordamageinsuredbythiscontractoranyportionthereof.
+
+2.(1)Theinsuredshallnotdriveoroperatetheautomobile,(a)unlessheisforthetimebeingeitherauthorizedbylaworqualifiedto drive oroperatetheautomobile;or(b)whilehislicencetodriveoroperateanautomobileissuspendedorwhilehisrighttoobtainalicenceissuspendedorwhileheisprohibitedunderorderof anycourtfromdrivingoroperatinganautomobile;or(c)whileheisundersixteenyearsofageorundersuchotherageasisprescribedbythelawoftheprovinceorterritoryinwhichheresides at thetimethiscontractismadeasbeingtheminimumageatwhichalicenceorpermittodriveanautomobilemaybeissuedtohim;or(d)foranyillicitorprohibitedtradeortransportation;or(e)inanyraceorspeedtest.
+
+(2)Theinsuredshallnotpermit,suffer,alloworconniveattheuseoftheautomobile,(a)byanyperson,(i)unlessthatpersonisforthetimebeingeitherauthorizedbylaworqualifiedtodriveoroperatetheautomobile,or(ii)whilethatpersonisundersixteenyearsof age orundersuchother ageasisprescribedbythelawoftheprovinceorterritoryinwhichheresidesatthetimethiscontractismadeasbeingtheminimumageatwhichalicenceorpermittodriveanautomobilemaybeissuedtohim;or(b)byanypersonwhoisamemberofthehouseholdoftheinsuredwhilehislicenceto drive or operate anautomobileissuspendedorwhilehisrighttoobtainalicenceissuspendedorwhileheisprohibitedunderorderof anycourtfromdrivingoroperatinganautomobile;or(c)foranyillicitorprohibitedtradeortransportation;or(d)inanyraceorspeedtest.
+
+lapropositionrelativeauprésentcontrat;c)detouteautreassurancedumêmeintérêt,qu’ellesoitvalideounon,couvrantlespertes oudommages déjàcouvertspar leprésent contrat,ouunepartiedecelui-ci.
+
+2.(1)Ilestinterditàl’assurédeconduirel’automobileassurée:a)sansêtresoitautorisépar la loi,soitapteàconduirel’automobile;b)pendantlapériodedesuspensiondesonpermisdeconduireoudesondroitd’obtenirunpermis,oulorsqu’uneordonnancejudiciaireluiinterditdeconduireuneautomobile;c)sansavoiratteintsoit16ans,soitl’âgequelaloidelaprovinceouduterritoireoùilréside,àladateoùleprésentcontratestconclufixecommel’âgeminimalauquelunelicenceouunpermisdeconduireuneautomobilepeutluiêtredélivré;d)auxfinsd’uncommerceoud’untransportillicitesouinterdits;e)dansunecourseouuneépreuvedevitesse.
+
+(2)Ilestinterditàl’assurédepermettrel’utilisationdel’automobile:a)parunepersonne:(i)qui,àcemoment-là,n’estniautoriséeparlaloi,niapteàconduirel’automobile,(ii)n’ayantpasatteintsoit16ans,soitl’âge quela loi delaprovinceouduterritoireoùelleréside,à la dateoùleprésentcontratestconclufixecommel’âgeminimalauquelunelicenceouunpermisdeconduireuneautomobilepeutluiêtredélivré;b)parunepersonnevivantsousletoitdel’assurépendantlapériodedesuspensiondesonpermisdeconduireoudesondroitd’obtenirunpermis,oulorsqu’uneordonnancejudiciaireluiinterditdeconduireuneautomobile;c)auxfinsd’uncommerceoud’untransportillicitesouinterdits;d)dansunecourseouuneépreuvedevitesse.
+
+Interdictionss’appliquantàl’assuré
+
+Interdictionss’appliquantàuntiers
+
+88
+
+RequirementsWhereLossorDamagetoPersonsorProperty
+
+RequirementsWhereLossorDamagetoAutomobile
+
+3.(1)Theinsuredshall,(a)promptlygivetotheinsurerwrittennotice,withallavailableparticulars,ofanyaccidentinvolvingloss or damagetopersonsorpropertyandofanyclaimmadeonaccountoftheaccident;(b)verifybystatutorydeclaration,ifrequiredby the insurer,thatthe claimarose out oftheuseoroperationoftheautomobileandthatthepersonoperatingorresponsiblefortheoperationoftheautomobileatthetimeoftheaccidentisapersoninsuredunderthiscontract;and(c)forwardimmediatelyto theinsurer everyletter,document,adviceorwritreceivedbyhimfromoron behalf of theclaimant.
+
+(2)Theinsuredshallnot,(a)voluntarilyassumeanyliabilityorsettleanyclaimexceptathisowncost;or(b)interfereinanynegotiationsforsettlementorinanylegalproceeding.
+
+(3)Theinsured shall, wheneverrequestedbytheinsurer,aidinsecuringinformationandevidenceandtheattendanceofanywitnessandshallco-operatewiththeinsurer,exceptinapecuniaryway,inthedefenceofanyactionorproceedingorintheprosecutionofanyappeal.
+
+4.(1)Wherelossofordamagetotheautomobileoccurs,theinsuredshall,ifthelossordamageiscoveredbythiscontract,(a)promptly givenoticethereofinwritingtotheinsurerwiththefullestinformationobtainableatthetime;(b)attheexpense oftheinsurer,andasfarasreasonablypossible, protect theautomobilefromfurtherlossordamage;and(c)delivertotheinsurerwithinninetydaysafterthedateofthelossordamageastatutorydeclarationstating,tothebestofhisknowledgeandbelief,theplace,time,causeandamountofthelossordamage,theinterestoftheinsuredandofallotherstherein,theencumbrancesthereon,allotherinsurance,whethervalidornot,coveringtheautomobile andthatthelossordamagedidnotoccur
+
+3.(1)L’assuré:a)donneàl’assureur,parécritetdanslesmeilleurs délais,unavis circonstancié detoutsinistrecouvertayantoccasionnédesdommagesàdestiersainsiquedetouteréclamationendécoulant;b)àlademandedel’assureur,attestedansunedéclarationsolennellequelaréclamationdécouledel’utilisationdel’automobileassuréeetquelapersonnequil’utilisaitouquiétaitresponsabledesonutilisationaumomentdusinistreestunepersonneassuréeauxtermesducontrat;c)transmetsansdélaiàl’assureurleslettres,avis,documentsetbrefsqu’ilreçoitd’unréclamantoupoursoncompte.
+
+(2)Ilestinterditàl’assuré:a)d’admettrevolontairementsaresponsabilitéouderégleruneréclamation,saufàsespropresfrais;b)des’immiscerdansunetransactionouuneprocédurejudiciaire.
+
+(3)Àlademandedel’assureur,l’assuréapportesonaideàl’obtentionderenseignementsetdepreuves,etàlacomparutiondestémoins;deplus,ilcollaboreavecl’assureur,saufpécuniairement,àladéfensedetouteactionouprocédureainsiqu’àlapoursuitedetoutappel.
+
+4.(1)Encasdesinistrecouvertatteignantl’automobileassurée,l’assuré:a)enaviseimmédiatementl’assureurparécritavectouslesrenseignementsqu’illuiestalorspossibledeseprocurer;b)secharge,dans lamesuredupossible, etauxfraisdel’assureur,deprotégerl’automobileassuréecontretoutdangerde perte oudedommagessupplémentaires;c)remetàl’assureur,dansles90joursdusinistre,unedéclarationsolennelleénonçant,aumieuxdesaconnaissance,lesrenseignementssuivants:(i)l’endroit,lemoment,lacauseetl’étenduedusinistre,(ii)l’intérêtdel’assuréetdetoutesautrespersonnessurlesbiensatteints,(iii)leschargesgrevantcesderniers,
+
+Obligationsencasdesinistreatteignantdestiers
+
+Obligationsencasdesinistreatteignantl’automobileassurée
+
+89
+
+Examinationofinsured
+
+InsurerLiableforCashValueofAutomobile
+
+Repairorreplacement
+
+throughanywilfulactorneglect,procurement,meansorconnivanceoftheinsured.
+
+(2)Anyfurtherlossordamageaccruingtotheautomobiledirectlyorindirectlyfromafailuretoprotectitasrequiredundersubcondition(1)ofthisconditionisnotrecoverableunderthiscontract.
+
+(3)Norepairs,otherthanthosethatareimmediatelynecessaryfortheprotectionoftheautomobilefromfurtherlossordamage,shallbeundertakenandnophysicalevidenceofthelossordamageshallberemoved,(a)withoutthewrittenconsentoftheinsurer;or(b)untiltheinsurerhashadareasonabletimetomaketheexaminationforwhichprovisionismadeinstatutorycondition5.
+
+(4)Theinsuredshallsubmittoexaminationunderoath,andshallproduceforexaminationatsuchreasonableplaceandtimeasisdesignatedbytheinsureroritsrepresentativealldocumentsinhispossessionorcontrolthatrelatetothemattersinquestion,andheshallpermitextractsandcopiesthereoftobemade.
+
+(5)Theinsurershallnotbeliableformorethanthe actualcash valueof the automobileat the timeanylossordamageoccurs,and the lossordamageshallbeascertainedorestimatedaccordingtothatactualcashvaluewithproperdeductionfordepreciation, howevercaused,andshallnotexceedtheamountthatitwouldcosttorepairorreplacetheautomobile,oranypartthereof,withmaterialoflikekindandquality,but,ifanypartofthe automobile isobsoleteandoutofstock,theliabilityoftheinsurerinrespectthereofshallbelimitedtothevalueofthatpartatthetimeoflossordamage,notexceedingthemaker’slatestlistprice.
+
+(6)Except whereanappraisalhasbeenmade,theinsurer,insteadofmakingpayment,may,withinareasonabletime,repair,rebuildorreplacethepropertydamagedorlostwithotheroflikekindandqualityif,withinsevendaysafter the receipt of the proofof loss,itgiveswrittennoticeofitsintentiontodoso.
+
+(iv)lesautresassurances,validesounon, couvrant l’automobileassurée,(v)uneattestationselonlaquellelesinistren’apasétécauséparunfaitintentionnelniparlanégligence,àl’incitation,parl’entremiseniaveclacomplicitédel’assuré.
+
+(2)Lesdommagessupplémentairesàl’automobile assurée imputablesdansquelquemesurequecesoitaudéfautdel’assurédelaprotégerconformémentauparagraphe(1)delaprésenteconditionsontsupportésparl’assuré.
+
+(3)Àmoinsquelaprotection de l’automobile nel’exige,aucuneréparationnedoitêtreentrepriseetaucunélémentutile à l’appréciation des dommagesnepeutêtreenlevé:a)sansleconsentementécritdel’assureur;b)sansquel’assureurn’aiteuletempsnécessairedeprocéderàl’examendel’automobileprévuàlacondition5.
+
+(4)L’assurésesoumetàuninterrogatoiresoussermentet produitpourexamenauxlieu,dateetheurequefixel’assureurousonreprésentanttouslesdocumentspertinentsensapossessionousoussaresponsabilté,etpermetquedescopiesouextraitsensoienttirés.
+
+(5)Sousréservedelavaleurréelledel’automobileaujourdusinistreetcomptetenudeladépréciation de quelque naturequ’ellesoit,lagarantieselimiteaucoûtduremplacementoude la réparationàl’aidedematériauxdemêmenatureetdemêmequalité;toutefois,encasdedésuétudeoud’indisponibilitédetoutepiècedel’automobile,l’assureur n’est alors tenuqu’àlavaleurdecettepièceàladatedusinistresansquecettevaleur nepuisseêtresupérieureaudernierprixcourantdufabricant.
+
+(6)Saufs’ilyaarbitrage,l’assureur,aulieudeverserlesindemnitésenespèces,peut,dansundélairaisonnable,réparer,reconstruire ou remplacerlesbienssinistrésaumoyend’autresbiensdemêmenatureetqualité,moyennantavisécritdesonintentiondanslesseptjoursdelaréceptiondelapreuvedesinistre.
+
+Interrogatoiredel’assuré
+
+Limitationdelaresponsabilitédel’assureur
+
+Réparationsouremplacement
+
+90
+
+Noabandonment;salvage
+
+Incaseofdisagreement
+
+InspectionofAutomobile
+
+TimeandMannerofPaymentofInsuranceMoney
+
+WhenActionMaybeBrought
+
+LimitationofActions
+
+(7)Thereshallbenoabandonmentoftheautomobiletotheinsurerwithouttheinsurer’sconsent.Iftheinsurerexercisestheoptiontoreplacetheautomobileorpaystheactualcashvalueoftheautomobile,thesalvage,ifany,shallvestintheinsurer.
+
+(8)Intheeventofdisagreementastothenatureandextent oftherepairsand replacements required,orastotheiradequacy,ifeffected,orastotheamountpayableinrespectofanylossordamage,thosequestionsshallbedeterminedbyappraisalasprovidedundertheInsuranceActbeforetherecanberecoveryunderthiscontract,whetherthe righttorecoveron thecontractisdisputedornot,andindependentlyofallotherquestions.Thereshallbenorighttoanappraisaluntilaspecificdemandthereforismadein writinganduntilafterproofoflosshasbeendelivered.
+
+5.Theinsuredshallpermittheinsureratallreasonabletimestoinspecttheautomobileanditsequipment.
+
+6.(1)Theinsurershall pay theinsurance moneyforwhichitisliableunderthiscontractwithinsixtydaysaftertheproofoflosshasbeenreceivedbyitor,whereanappraisalismadeundersubcondition(8)ofstatutorycondition4,withinfifteendaysaftertheawardisrenderedbytheappraisers.
+
+(2)Theinsuredshallnotbringanactiontorecovertheamountofaclaimunderthiscontractunlessthe requirementsofstatutoryconditions3and4arecompliedwithnoruntiltheamountof thelosshasbeenascertained as thereinprovided orbyajudgmentagainsttheinsuredaftertrialoftheissueorbyagreementbetweenthepartieswiththewrittenconsentoftheinsurer.
+
+(3)Everyactionorproceedingagainsttheinsurerunderthiscontractinrespectoflossordamagetotheautomobileshallbecommencedwithintwoyearsnextafterthehappeningof the lossandnot afterwards,andinrespectoflossordamagetopersonsorpropertyshallbecommencedwithintwoyearsnextafterthecauseofactionaroseandnotafterwards.
+
+WhoMayGive7.Noticeof claimmaybegivenandproofsofclaimNoticeandmaybemadebytheagent of the insurednamed in thisProofsofClaimcontractincaseofabsenceorinabilityoftheinsuredtogivethenoticeortomaketheproof,suchabsenceorinabilitybeingsatisfactorily accountedforor,inthe
+
+(7)L’automobilenepeutêtredélaisséeàl’assureursanssonconsentement.Sil’assureurchoisitderemplacerl’automobileoud’enpayerlavaleurréelle,l’assureuradroit auproduitde la récupération.
+
+(8)Encas dedésaccordsur l’indemnitéousurlanature,l’étendueoulasuffisancedesréparations ouduremplacementrequis,unarbitrageconformeauxdispositionsdelaLoisurlesassurancesalieuavanttouteindemnisationautitreducontrat,quela validitéducontratsoit ou non contestéeetindépendammentdetouteautrequestion.Ledroitàl’arbitragen’existequesurdemandeécriteexpresseunefoisproduitelapreuvedesinistre.
+
+5.L’assureuraledroitd’examinerl’automobileassuréeetsesaccessoiresàtoutmomentconvenable.
+
+Délaissement;récupération
+
+Arbitrage
+
+Examendel’automobile
+
+6.(1)Lerèglementdel’indemnitéesteffectuédansDélaietundélaide60joursàcompterdelaremisedelapreuvedesinistreou,lecaséchéant,de15joursàcompterdeladécisiondesarbitres.
+
+(2)Aucuneactionenrecouvrementd’indemnitésautitreduprésentcontratnepeutêtreintroduiteparl’assurétant queles conditions légales3et4n’ontpasétéremplies,ouavantl’établissementdesdommagespararbitrage,parunjugementrenducontrel’assuré ouparententeconclue,avecleconsentementécritdel’assureur,entrelesparties.
+
+(3)Lesactionsintentéescontrel’assureurautitreduprésentcontratseprescrivent:a)encequiconcernelesdommagesàl’automobileassurée,pardeuxansàcompterdusinistre;b)encequiconcernelesdommagessubisparlestiers,pardeuxansàcompterdumomentoùledroitd’actionaprisnaissance.
+
+7.L’avisdusinistrepeutêtredonnéetlapreuvedesinistrepeutêtreétablieparunreprésentantdel’assuré,s’ilestétabliquecedernierestabsent,ouincapablededonnerl’avisoud’établirlapreuve,sicetteabsenceoucetempêchementestsuffisamment
+
+modalitésderèglement
+
+Poursuites
+
+Prescription
+
+Personnesautoriséesàproduirel’avisdusinistre etlapreuvedesinistre
+
+91
+
+Termination
+
+Notice
+
+likecase or if the insuredrefusestodoso,byapersontowhomanypartoftheinsurancemoneyispayable.
+
+8.(1)Thiscontractmaybeterminated,(a)bytheinsurergivingtotheinsuredfifteendays’noticeofterminationbyregisteredmailorfivedays’writtennoticeofterminationpersonallydelivered;or(b)bytheinsuredatanytimeonrequest.
+
+(2)Wherethiscontractisterminatedbytheinsurer,(a)theinsurershallrefundtheexcessofpremiumactuallypaidbytheinsuredovertheproratapremiumfortheexpiredtime,butinno eventshalltheproratapremiumfortheexpiredtimebedeemedtobelessthananyminimumretainedpremiumspecified;and(b)therefundshallaccompanythenoticeunlessthepremiumissubjecttoadjustmentordeterminationastotheamount,inwhichcasethe refundshall bemadeassoonaspracticable.
+
+(3)Wherethiscontractisterminatedbytheinsured,the insurershallrefundassoon as practicabletheexcessofpremiumactuallypaidbytheinsuredovertheshortratepremiumfortheexpiredtime,butinnoeventshalltheshortratepremiumfortheexpiredtimebedeemedtobelessthananyminimumretainedpremiumspecified.
+
+(4)The refund maybemadebymoney, postalorexpresscompanymoneyorder,chequepayable at parorelectronicfundstransfer.
+
+(5)Thefifteendaysmentionedinclause(a)ofsubcondition1ofthisconditioncommencestorunonthedayfollowingthereceiptof theregisteredletter atthepostofficetowhichitisaddressed.
+
+9.Anywrittennoticetotheinsurermay bedeliveredat,orsentbyregisteredmailto,thechiefagencyorheadofficeof the insurerin theNorthwestTerritories.Writtennoticemaybegiventotheinsurednamedinthiscontractbyletterpersonallydeliveredtohimorbyregisteredmailaddressedtohimathislatestpostofficeaddressasnotifiedtotheinsurer.Inthiscondition,theexpression"registered"meansregistered
+
+justifié,ou,enpareilcasouencasderefusdesapart,partoutepersonneayantdroitàl’indemnité,entotalitéouenpartie.
+
+8.(1)Leprésentcontratpeutêtrerésilié:a)parl’assureur,moyennantunpréavisde15joursposté,enrecommandé,àl’assuré,oudecinqjours,s’illuiestremisenmainpropre;b)parl’assuré,àtoutmoment,surdemande.
+
+(2)Encasderésiliationparl’assureur:a)celui-ciremboursel’excédentdelaprimeacquittéesurlaprimeacquisecalculéepourlapériodeécoulée,sousréservedelaretenuedelaprimeminimalestipuléeparlecontrat;b)leremboursementdoitaccompagnerl’avis,saufsilaprimeestsujetteàrajustement,auquelcasleremboursementdoitêtrefaitdèsquepossible.
+
+(3)Encasderésiliationparl’assuré,l’assureurremboursedèsquepossiblel’excédentdelaprimeacquittée sur la primeacquisecalculéeautauxàcourttermepourlapériodeécoulée,sousréservedelaretenuedelaprimeminimalestipuléeparlecontrat.
+
+(4)Leremboursementpeutsefaireenespèces,parmandat-posteoumandatdecompagniedemessagerie,parchèqueencaissableaupairouparuntransfertélectroniquedefonds.
+
+(5)Les15joursdepréavismentionnésàl’alinéa(1)a)commencentàcourirlejoursuivantlaréceptiondelalettrerecommandéeaubureaude postedesadestination.
+
+9.Lesavisécritsdestinésàl’assureurpeuventêtreremisoupostésenrecommandéàl’agenceprincipaleouausiège socialdel’assureurdansles TerritoiresduNord-Ouest.Lesavisdestinésàl’assurédésignépeuventluiêtre remis enmainpropreouêtrepostésenrecommandéàladernièreadressequ’iladonnéeàl’assureur.Danslaprésentecondition,lemot«recommandé»signifierecommandéauCanadaouà
+
+Résiliation
+
+Avis
+
+92
+
+Exceptionsrespectingstatutoryconditions
+
+Omission:statutorycondition3
+
+Omission:statutorycondition4
+
+Coverage:owner’spolicy,specificautomobile
+
+Coverage:owner’spolicy,otherautomobile
+
+Deathofpersonnamedinowner’spolicy
+
+inoroutsideCanada.SNWT1995,c.11,s.25;[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2), [(13)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec13_smooth), [(14)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec14_smooth);[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2017-c-20/latest/snwt-2017-c-20.html#sec2subsec3_smooth)2017,c.20,s.2(3).
+
+130.(1)Exceptasotherwiseprovidedinthecontract,thestatutoryconditionssetoutinsection129donotapplytoinsurancecomingwithinsection156,157or158.
+
+(2)Whereacontractdoesnotinsureagainstliabilityforlossordamagetopersonsandproperty,statutorycondition3 in section 129 isnotapartof thepolicyandmaybeomittedfromtheprintingoftheconditionsinthepolicy.
+
+(3)Whereacontract does notinsureagainstlossofordamagetotheautomobile,statutorycondition4insection129isnotapartofthepolicyandmaybeomittedfromtheprintingoftheconditionsinthepolicy.
+
+MOTORVEHICLELIABILITYPOLICIES
+
+131.(1)Everycontractevidencedbyanowner’spolicyinsuresthepersonnamedinthecontractandeveryotherpersonwhowithhisorherconsentpersonallydrivesanautomobileownedby the insurednamedinthecontractandwithinthedescriptionordefinitionoftheautomobileinthecontract,againstliabilityimposedbylawontheinsurednamedinthecontractorthatotherpersonforlossordamage,(a)arisingfromtheownership,useoroperationofanysuchautomobile;and(b)resultingfrombodilyinjurytoorthedeathofanypersonanddamagetoproperty.
+
+(2)Wherethecontractevidencedbyanowner’spolicyalsoprovidesinsuranceagainstliabilityinrespectofanautomobilenotownedbytheinsurednamedinthecontract,aninsurermaystipulateinthecontractthattheinsuranceisrestrictedtothepersonsthatarespecifiedinthecontract.
+
+(3)Wheretheinsurednamedinanowner’spolicydies,thefollowingpersonsshallbedeemedtobetheinsuredunderthepolicy:(a)thespouseofthedeceasedinsuredifresidinginthesamedwellingpremisesatthetimeofhisorherdeath;(b)inrespectofthedescribedautomobile,a
+
+l’étranger.LTN-O1995,ch.11,art.25;LTN-O2011,ch.16,art.12(2),(13)et(14);LTN-O2017,ch.20,art.2(3).
+
+130.(1)Sousréservedes autres clausesducontrat,lesconditionslégalesénoncéesàl’article129nes’appliquentpasauxassurancesviséesparlesarticles156,157ou158.
+
+(2)Lorsquelecontratnegarantitpascontrelaresponsabilitédécoulantdespertesoudesdommagescausésàdespersonnesouàdesbiens,laconditionlégale3énoncéeàl’article129nefaitpas partiede lapoliceetpeutnepasêtreimpriméesurcelle-ci.
+
+(3)Lorsquelecontratnecouvrepaslapertedel’automobileoulesdommagesqu’ellepeutsubir,laconditionlégale4énoncéeàl’article129nefaitpaspartiedelapoliceetpeutnepasêtreimpriméesurcelle-ci.
+
+POLICESDERESPONSABILITÉAUTOMOBILE
+
+131.(1)Lecontratconstatéparunepolicedepropriétaireassurelapersonneynomméeainsiquetouteautrepersonnequi,avecsapermission,conduitelle-mêmeuneautomobileappartenantàl’assurénommé dans lecontratet, dans leslimites qu’endonneladescriptionouladéfinitionfigurantaucontrat,contrelaresponsabilitéquelaloiimposeàl’assurénommédanslecontratouàcetteautrepersonnepourlespertesoulesdommages:a)découlantde la propriété, de l’utilisationoudelaconduited’unetelleautomobile;b)résultantdeslésionscorporellessubiesparunepersonneoudesondécèsainsiquedesdommagesmatériels.
+
+(2)Lorsquelecontratconstatéparunepolicedepropriétaireprévoitégalementune assurance contrelaresponsabilitéàl’égardd’uneautomobilequin’appartientpasàl’assurénommédanslecontrat,l’assureurpeutstipulerdansle contratque l’assuranceestlimitéeauxpersonnesnomméesdanslecontrat.
+
+(3)Lorsquel’assurénommédansunepolicedepropriétaire décède,lespersonnesénuméréesci-aprèssontréputéesêtreassuréesparlapolice:a)leconjointdel’assurédécédé,s’ilrésidaitsous le mêmetoitaumomentdudécès;b)àl’égarddel’automobiledécrite,d’une
+
+Exceptions
+
+Idem
+
+Idem
+
+Garantie:lapolice;automobiledésignée
+
+Autreautomobile
+
+Décèsdel’assuré
+
+93
+
+Coverageofnon-owner’spolicy
+
+Personsdeemednotowners
+
+Territoriallimits
+
+Rightsofunnamedinsured
+
+newly-acquiredautomobilethatwasacquiredbythedeceasedinsuredbeforehis or herdeathor atemporarysubstituteautomobile,allasdefinedbythepolicy,(i)anypersonhavingpropertemporarycustodyoftheautomobileuntilgrantofprobateoradministrationtothepersonalrepresentativeofthedeceasedinsured,and(ii)thepersonalrepresentativeofthedeceasedinsured.
+
+132.Everycontractevidencedbyanon-owner’spolicyinsuresthepersonnamedinthecontract,and anyotherpersonthatisspecifiedinthepolicy,againstliabilityimposedbylawontheinsurednamedinthecontractorthatotherpersonforlossordamage,(a)arisingfromtheuseoroperationofanautomobilewithinthedefinitionoftheautomobileinthepolicy,otherthananautomobileownedbyhimorherorregisteredinhisorhername;and(b)resultingfrombodilyinjurytoorthedeathofanypersonanddamagetoproperty.
+
+133.ForthepurposesofthisPart, apersonshallnotbedeemedtobetheownerofanautomobileforthereasononlythattheperson(a)hasalienontheautomobile;or(b)haslegaltitletotheautomobileassecurity.
+
+134.Insuranceundersections131and132appliestotheownership,useoroperationoftheinsuredautomobilewithinCanadaandtheUnitedStatesandonavesselplyingbetweenportsofthosecountries.
+
+135.Anypersoninsuredbybutnotnamedinacontracttowhichsection131or132appliesmayrecoverindemnityinthesamemannerandtothesameextentasifnamedinthecontractastheinsured,andforthatpurposeshallbedeemedtobeapartytothecontractandtohavegivenconsiderationtherefor.
+
+automobilenouvellementacquiseparl’assuréavantsondécèsetd’uneautomobilederemplacementtemporaireausensdelapolice:(i)lapersonnee na yanttemporairementlagardelégalejusqu’àcequeletestamentsoithomologuéouquedeslettresd’administrationsoientaccordéesaureprésentantpersonneldel’assurédécédé,(ii)lereprésentantpersonneldel’assurédécédé.
+
+132.Lecontratconstatéparunepolicedeconducteurassurelapersonneynomméeainsiquetouteslespersonnesspécifiéesdans lapolice,s’ilyalieu,contrelaresponsabilitéimposéeparlaloiàl’assurénomméouàcesautrespersonnespourlespertesoudommages:a)découlantdel’utilisationoudelaconduited’uneautomobileselonladéfinitionqu’endonnelapolice,autrequ’uneautomobilequiluiappartientouquiestimmatriculéeàsonnom;b)résultantdelésionscorporellessubiesparunepersonneoudesondécèsainsiquededommagesmatériels.
+
+133.Pourl’applicationdelaprésentepartie,unepersonnen’estpasréputéepropriétaired’uneautomobileduseulfait:a)soitqu’elledétientunprivilègesurl’automobile;b)soit qu’ellepossèdeàtitredegarantieuntitredepropriétéreconnuendroitsurcelle-ci.
+
+134.Lesassurancesmentionnéesauxarticles131et132couvrentlapropriété,l’utilisationoulaconduiteduvéhiculeassurésurleterritoireduCanadaetdesÉtats-Unis,ainsiquesurunnavireassurantleserviceentredesportsdecespays.
+
+135.Toutepersonnequiestassurée,maisquin’estpasnomméedansuncontratauquellesarticles 131 ou 132s’appliquentpeutsefaireindemniserdelamêmemanièreetpourlemêmemontantquesielleyétaitdésignéeàtitred’assuré;àcettefin,elleestréputéeêtrepartieaucontratetavoirfourniàceteffetunecontrepartie.
+
+Policedeconducteur
+
+Présomption
+
+Limitesterritoriales
+
+Droitsdesassurésnonnommés
+
+94
+
+Additionalagreements
+
+Liabilityfromownership
+
+Exceptionsfromliability
+
+136.Everycontractevidencedbyamotorvehicleliabilitypolicyshallprovidethat,whereapersoninsuredbythecontractisinvolvedinanaccidentresultingfromtheownership,useoroperationofanautomobileinrespectofwhichinsuranceisprovidedunderthecontractandresultinginlossordamagetopersonsorproperty,theinsurershall,(a)onreceiptofnoticeoflossordamagecausedtopersonsorproperty,maketheinvestigations,conductthenegotiationswiththeclaimantandeffectasettlementofanyresultingclaimsthataredeemedexpedientbytheinsurer;(b)defendinthenameandonbehalfoftheinsuredandatthecostoftheinsureranycivilactionthatisatanytimebroughtagainsttheinsuredonaccountoflossordamagetopersonsorproperty;(c)payallcoststaxedagainsttheinsuredinanycivilactiondefendedbytheinsurerandanyinterestaccruingafterentryofjudgmentonthatpartofthejudgmentthatiswithinthelimitsoftheliabilityoftheinsurer;and(d)where theinjuryistoaperson,reimbursethe insuredforoutlayforthemedical aidthat isimmediatelynecessary at thetime.
+
+137.Liabilityarisingfromcontaminationofpropertycarriedinanautomobileshallnotbedeemedtobeliabilityarisingfromtheownership,useoroperationofthatautomobile.
+
+138.Theinsurerisnotliableunderacontractevidencedbyamotorvehicleliabilitypolicyforanyliability(a)imposedbyanyworkers’compensationlawonanypersoninsuredbythecontract;(b)resultingfrombodilyinjurytoorthedeathof,(i)thedaughter,sonorspouseofanypersoninsuredbythecontractwhilebeing carried in or onorenteringorgettingontooralightingfromtheautomobile,or(ii)anypersoninsuredbythecontract;or
+
+136.Lecontratconstatéparune policederesponsabilitéautomobilestipule quelorsqu’unepersonneassurée parlecontratestencausedansunaccidentdécoulantdelapropriété,del’utilisationoudelaconduited’uneautomobilecouverteparlecontratetcausantdespertesoudesdommagesàdespersonnesouàdesbiens,l’assureur:a)surréceptiond’unavisl’informantdespertesoudesdommagescausésauxpersonnesouauxbiens,faitlesenquêtes,procèdeauxtransactionsavecleréclamanteteffectuelerèglementdetouteréclamationquis’ensuitselonqu’ill’estimeindiqué;b)sechargeàsesfraisdeladéfense,pour lecomptedel’accusé,danstouteactioncivileintentéecontrel’assuréetfondéesurdespertesoudesdommagescausésàdespersonnesouàdesbiens;c)paielesdépenstaxéscontrel’assurédanstouteactioncivilepriseenchargeparluiainsiquel’intérêt couru,aprèsl’enregistrementdu jugement,surlapartiedecelui-ciquiestcouverteparlaresponsabilitédel’assureur;d)en casdelésionscorporelles, rembourseàl’assuréles dépensespoursoinsmédicauximmédiatementnécessairesàcemoment.
+
+137.Laresponsabilitéquidécouledelacontaminationdebienstransportésdansuneautomobileestréputéenepasconstitueruneresponsabilitédécoulantdelapropriété,del’utilisationoudelaconduitedecetteautomobile.
+
+138.Dansun contratd’assuranceautomobileconstatéparunepolicederesponsabilitéautomobile,l’assureurn’estpasresponsabledanslescassuivants:a)laresponsabilitéestimposéeàunepersonneassuréeparuneloisurlesaccidentsdutravail;b)laresponsabilitérésultedeslésionscorporelles subiespar unedespersonnessuivantesoudeleurdécès:(i)l’enfantouleconjointd’unepersonneassuréeparlecontrataumomentoùellemontedansl’automobile,ouendescend,ous’ytrouveàtitredepassager,(ii)unepersonneassurée parlecontrat;
+
+Ententessupplémen­taires
+
+Restriction
+
+Exceptions
+
+95
+
+Limitationtoexceptionfromliability
+
+Familyexclusionclauses
+
+Exception
+
+Exceptionsfromliability
+
+Exceptioninendorsementtocontract
+
+(c)resultingfrombodilyinjurytoorthedeathofanyemployeeofanypersoninsuredbythecontractwhileengagedintheoperationorrepairoftheautomobile.
+
+139.Paragraph 138(b)does notapplywherethecauseofactionarisesonorafterApril17,1985.
+
+140.(1)Subjecttosubsection(2),aprovisioninacontractevidencedbyamotorvehicleliabilitypolicyprovidingthattheinsurerisnotliabletoindemnifyapersoninsuredbythecontractforanyliabilityresulting frombodilyinjurytoorthe death of apersondescribedinsubparagraph138(b)(i)or (ii) isvoid.
+
+(2)Aprovisioninacontractevidencedbyamotorvehicleliabilitypolicydescribedinsubsection (1) shall haveeffectwithrespecttoacauseofactionarisingbeforeApril17,1985.
+
+141.Aninsurermayprovideunderacontractevidencedbyamotorvehicleliabilitypolicy,ineitherorboth ofthe followingcases,thatitshallnot be liable(a)toindemnifyanypersonengagedinthebusinessofselling,repairing,maintaining,servicing,storingorparkingautomobilesforanylossordamagesustainedwhileengagedintheuseoroperationoforwhileworkingontheautomobileinthecourseofthatbusinessunlessthepersonistheowneroftheautomobileorishisorheremployee;(b)forlossofordamagetopropertycarriedinorontheautomobileortoanypropertyownedorrentedbyorinthecare,custodyorcontroloftheinsured.
+
+142.Subjecttothelimitationsandexclusionsoftheendorsement,theinsurermay provide byendorsementtoacontractevidencedbyamotorvehicleliabilitypolicythatitshallnotbeliableforlossordamageresultingfromtheownership,useoroperationofanymachineryorapparatus,includingitsequipment,
+
+c)laresponsabilitérésultedeslésionscorporellesoudu décèsd’unemployédetoutepersonneassuréeparlecontratpendantqu’ilconduitouréparel’automobile.
+
+139.L’alinéa 138b) nes’appliquepaslorsquela caused’actionaprisnaissancele17avril1985ouaprèscettedate.
+
+140.(1)Sousréserveduparagraphe(2),estnullelaclauseducontratconstatéparunepolicederesponsabilitéautomobilequiprévoitquel’assureurn’estpastenud’indemniserunepersonneassuréeparlecontratàl’égarddetouteresponsabilitérésultantdeslésionscorporellesoududécèsd’unepersonneviséeausous-alinéa138b)(i)ou(ii).
+
+(2)Ladispositiond’uncontratconstatéparunepolicederesponsabilitéautomobileviséeauparagraphe(1)estopéranteàl’égardd’unecaused’actionquiaprisnaissanceavantle17avril1985.
+
+141.L’assureurpeutstipulerdansuncontratconstatépar unepolice de responsabilité automobile qu’il n’estpasresponsabledanslescassuivantsoudansl’unoul’autredescassuivants:a)l’indemnisationdespertesoudesdommagessubisparunepersonnequiexploiteuneentreprisedevente,deréparation,d’entretien,deservice,d’entreposageoudestationnementd’automobiles,pendantqu’elleutilise,conduitourépareuneautomobiledansl’exercicedesonactivitécommercialenormale,saufsicettepersonneestlepropriétairedel’automobileousonemployé;b)lespertesoudommagessubispardesbiens transportésdansousurl’automobile,oupardesbiensquepossèdeoulouel’assuré,oudontilalagarde,lasurveillanceoularesponsabilité.
+
+142.Sousréservedeslimitationsetdesexclusionsénoncéesdansl’avenant,l’assureurpeutstipulerparunavenantannexéà un contrat constaté parunepolice deresponsabilitéautomobilequesaresponsabiliténecouvre pas les pertesoulesdommagesdécoulantdelapropriété,del’utilisationoudelaconduitedetoute
+
+Réserve
+
+Claused’exclusion
+
+Exception
+
+Exceptions
+
+Exceptions
+
+96
+
+Definition:"radioactivematerial"
+
+Exceptionsfromliability
+
+Exception
+
+mountedonorattachedtotheautomobilewhiletheautomobileis at thesiteoftheuseoroperationofthatmachineryorapparatus.
+
+143.(1)Inparagraph(2)(b),"radioactivematerial"means(a)spentnuclearfuelrodsthathavebeenexposedto radiationin anuclearreactor;(b)radioactivewastematerial;(c)unusedenrichednuclearfuelrods;or(d)anyotherradioactivematerialofsuchquantityandqualityastobeharmfultopersonsorpropertyifitscontainerweredestroyedordamaged.
+
+(2)Theinsurermayprovideunderacontractevidencedbyamotorvehicleliability policy, inoneormoreofthefollowingcases,thatitshallnotbeliablewhile(a)theautomobileisrentedorleasedtoanotherperson;(b)theautomobileisusedtocarryexplosivesortocarryradioactivematerialforresearch,educational,developmentorindustrialpurposesorforpurposesincidentaltothat;(c)theautomobileisusedasataxi,publicbus,livery,jitneyorsightseeingconveyanceorforcarryingpassengersforcompensationorhire;(d)wheretheinsuredvehicleisanautomobileotherthanatrailer,itisusedfortowingatrailerownedbythe insuredunlesslikeindemnityisalsoprovidedbytheinsurerinrespectofthetrailer;or(e)wherethe insuredvehicleisatrailer,it istowedbyanautomobileownedbytheinsuredunlesslikeindemnityisalsoprovidedbytheinsurerinrespectoftheautomobile.
+
+(3)Paragraph(2)(a)doesnotincludetheusebyanemployeeof theautomobileof theemployeeon thebusinessofhisorheremployerandforwhichtheemployeeispaid.
+
+machineoudetoutappareil,ycomprisleursaccessoires,montésoufixés sur l’automobilependantquecetteautomobilesetrouveàl’endroitoùlamachineoul’appareilsontutilisésoufonctionnent.
+
+143.(1)Àl’alinéa(2)b),l’expression«substancesradioactives»s’entend:a)desbarresdecombustiblenucléaireutiliséquiontétésoumisesauxrayonnementsdansunepilenucléaire;b)desdéchetsradioactifs;c)desbarresdecombustiblenucléaireenrichinonutilisées;d)detouteautresubstanceradioactivedequantitéetd’intensitétellesqueladestructionou l’endommagement deleurcontenantmettraitendangerdespersonnesoudesbiens.
+
+(2)L’assureurpeutstipulerdansuncontratconstatéparunepolicederesponsabilitéautomobilequesaresponsabiliténecouvrepasl’unouplusieursdescassuivants:a)l’automobileestlouéeàuneautrepersonne;b)l’automobileestutiliséepourletransportd’explosifsoudesubstancesradioactivesàdesfinséducatives,industrielles,d’aménagementouderecherche,ouàdesfinsconnexes;c)l’automobilesertdetaxi,d’autobus,devéhicule detransportpublic,detransportencommunoud’excursiontouristique,ouautransportdepassagers,contrerémunération;d)lorsquelevéhiculeassuréestuneautomobile,maisnonuneremorque,ilsertàlatractiond’uneremorqueappartenantàl’assuré,àmoinsquelaremorquenesoitégalementcouvertedefaçonidentiqueparl’assureur;e)lorsquelevéhiculeassuréestuneremorque,ilesttractéparuneautomobileappartenantàl’assuré,àmoinsquel’automobilenesoitégalementcouvertedefaçonidentiqueparl’assureur.
+
+(3)L’alinéa(2)a)nes’entendpasdel’utilisationparunemployédesapropreautomobileauprofitdesonemployeurcontredédommagement.
+
+Définition:«substancesradioactives»
+
+Exceptions
+
+Exception
+
+97
+
+Certainrulesexcepted
+
+Minimumliabilityunderpolicy
+
+Priorities
+
+Minimumlimitswhereseparatelimitsdesignated
+
+(4)Paragraph(2)(c)doesnotinclude(a)theusebyapersonofhisorherautomobileforthecarriageofanotherpersoninreturnforhisorhercarriageintheautomobileofthatotherperson;(b)theoccasionalandinfrequentusebyapersonofhisorherautomobileforthecarriageofanotherpersonwhosharesthecostofthetrip;(c)theusebyapersonofhisorherautomobileforthecarriageofatemporaryorpermanentdomesticworkeroftheinsuredorhisorherspouse;(d)theusebyapersonofhisorherautomobileforthecarriageofaclientorcustomeroraprospectiveclientorcustomer;or(e)theoccasionalandinfrequentusebytheinsuredofhisorherautomobileforthetransportationofschoolchildrentoorfromschoolorschoolactivitiesconductedwithinaneducationalprogram.
+
+144.(1)Everycontractevidencedbyamotorvehicleliabilitypolicyinsures,inrespectof anyone accident,tothelimitofnotlessthan$200,000,exclusiveofinterestandcosts,againstliabilityresultingfrombodilyinjurytoorthedeathofoneormorepersonsandthelossofordamagetoproperty.
+
+(2)Thecontractshallbeinterpretedtomean thatwhere,byreasonofanyoneaccident,liabilityresultsfrom bodily injuryordeath andfromlossofor damagetoproperty,(a)claimsagainsttheinsuredarisingoutofbodilyinjuryordeathhaveprioritytotheextentof$190,000overclaimsarisingoutoflossofordamagetoproperty;and(b)claimsagainsttheinsuredarisingoutoflossofordamagetopropertyhaveprioritytotheextentof$10,000overclaimsarisingoutofbodilyinjuryordeath.
+
+(3)Theinsurermay,instead of specifyinga limitinthepolicyforaninclusiveamount,specifyalimitofliabilityofat least$200,000,exclusiveofinterestandcosts,againstliabilityresultingfrombodilyinjurytoorthedeathofoneormorepersons andalimitofliabilityofatleast$200,000,exclusiveofinterestandcosts,againstliabilityforlossofordamagetoproperty.
+
+(4)L’alinéa(2)c)nes’entendpasde:a)l’utilisationparunepersonnedesonautomobilepour letransportd’uneautrepersonneenéchangedesontransportdansl’automobiledecettedernière;b)l’utilisationoccasionnelleetpeufréquenteparunepersonnedesonautomobilepour letransportd’uneautrepersonnequipartagelecoûtduvoyage;c)l’utilisationparunepersonnedesonautomobilepourletransportd’undomestiquepermanentoutemporairedel’assuréoudesonconjoint;d)l’utilisationparunepersonnedesonautomobilepourletransportd’unclientoud’unclientéventuel;e)l’utilisationoccasionnelleetpeufréquentedesonautomobilepar l’assuréafind’amenerdesenfantsàl’écoleouàdesactivitésentrantdanslecadreduprogrammeéducatifoupourlesenramener.
+
+144.(1)Lecontratconstatéparunepolicederesponsabilitéautomobileassure,pourtoutaccident,pourlasommedontlalimitenepeutêtreinférieureà200000$,intérêtetfraisnoncompris,contrelaresponsabilité découlantdeslésionscorporelles oududécès d’uneoudeplusieurspersonneset des pertesoudesdommagesmatériels.
+
+(2)Lorsquelaresponsabilitédel’assuréestengagéeàcaused’unaccidentdufaitdelésionscorporellesoud’undécèsetdepertesoudedommagesmatériels,lecontrats’interprètecommesuit:a)lesréclamationspour lésions corporellesoudécès ont prioritésurles réclamationspourpertesoudommagesmatérielsjusqu’àconcurrencede190000$;b)lesréclamationspourpertesoudommagesmatérielsontprioritésurlesréclamationspourlésionscorporellesoudécèsjusqu’àconcurrencede10000$.
+
+(3)Aulieudestipulerdans la policeunmontantmaximalglobal, l’assureurpeut stipulerqu’illimitesaresponsabilitéàunmontantminimalde200000$,intérêtetfraisnoncompris,pourlaresponsabilitédécoulantdeslésionscorporellessubiesparuneouplusieurspersonnesoudeleurdécès,etàunmontantminimalde200000$,intérêtetfraisnoncompris,
+
+Exceptionsdecertainesrègles
+
+Responsabilitéminimale
+
+Priorité
+
+Montantsminimauxdistincts
+
+98
+
+Variationoflimits
+
+Stipulationinmotorvehicleliabilitypolicy
+
+Bindingprovision
+
+Excessinsurance
+
+Terminationofexcessinsurance
+
+(4)NothinginthisPartprecludesaninsurer,withrespecttoalimitorlimitsinexcessofthosespecifiedinsubsection(1)or(3) from increasingorreducingthelimitorlimitsspecifiedinthecontractwithrespecttotheuseoroperationoftheautomobilebyanamedperson,butnoreductioniseffectiveforalimitlessthanthatrequiredundersubsection(1)or(3).
+
+145.(1)EverymotorvehicleliabilitypolicyissuedintheNorthwestTerritories mustprovidethat,inthecaseofliabilityarisingoutoftheownership,useoroperationoftheautomobileinaprovinceorterritory,(a)theinsurerisliableuptotheminimumlimitsestablishedfortheprovinceorterritoryifthoselimitsarehigherthanthelimitsestablishedbythepolicy;(b)the insurershall not setupany defence toaclaimthatmightnotbesetupifthepolicywereamotorvehicleliabilitypolicyissued in theprovince orterritory;and(c)theinsured,byacceptanceofthepolicy,constitutesandappointstheinsurerhisorherirrevocableattorneytoappearanddefendinanyprovinceorterritoryinwhichanaction,arisingoutoftheownership,useoroperationoftheautomobile,isbroughtagainsttheinsured.
+
+(2)Aprovisioninamotorvehicleliabilitypolicyinaccordancewithparagraph(1)(c)isbindingontheinsured.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2), [(8)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec8_smooth), [(15)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec15_smooth)
+
+146.(1)Nothingin this Partprecludesan insurerfromprovidinginsuranceunderacontractevidencedbyamotorvehicleliabilitypolicyrestrictedtoalimitinexcess ofthat providedbyanother designatedcontractevidencedbyamotorvehicleliability policy, whetherthedesignatedcontractisafirstlossinsuranceoranexcessinsurance.
+
+(2)Wherethecontractdesignatedintheexcesscontractterminatesoristerminated,theexcesscontractisalsoautomaticallyterminated.
+
+pour laresponsabilité découlant desdommagesou despertesmatériels.
+
+(4)Laprésentepartien’interditpas àunassureurdemodifierlesmontantsmaximauxprévusparlecontratàl’égarddel’utilisationoudelaconduitedel’automobileparunepersonnedésignée;toutefois,aucuneréductionn’estvalidesielleabaisselalimitesousleoulesmontantsvisésauxparagraphes(1)ou(3).LTN-O2017,ch.20,art.2(4).
+
+145.(1)TouteslespolicesderesponsabilitéautomobileétabliesdanslesTerritoiresduNord-Ouestdoiventstipulerqu’encasderesponsabilitédécoulantdelapropriété,del’utilisationoudelaconduitedel’automobiledansuneprovinceoudansunterritoire:a)l’assureurestresponsablejusqu’àconcurrencedeslimitesminimalesfixéesdanscetteprovinceoudansceterritoire,sicelles-cisontsupérieuresàcellesfixéesparlapolice;b)l’assureurnepeutopposeràunedemandederèglementaucunmoyendedéfensequ’ilnepourraitopposersilapoliceétaitunepolicederesponsabilitéautomobileétabliedanscetteprovinceoudansceterritoire;c)l’assuré,enacceptantlapolice,constitueetnommeirrévocablementl’assureursonfondédepouvoiretlechargedecomparaîtreàsaplaceetdeprésenterunedéfensedanstouteprovinceoutoutterritoireoùuneactiondécoulantdelapropriété,del’utilisationoudelaconduitedel’automobileestintentéecontrelui.
+
+(2)Ladispositionconformeàl’alinéa (1)c)dansunepolicederesponsabilitéautomobileliel’assuré.LTN-O2011,ch.16,art.12(2),(8),(9)et(15).
+
+146.(1)Laprésente partie n’empêche pasun assureurdefourniruneassuranceauxtermesd’uncontratconstatéparunepolicederesponsabilitéautomobileayantunelimitesupérieureàcellegarantiepar unautrecontratdésignéconstatéparunepolicederesponsabilitéautomobile,quelecontratdésignésoituneassuranceaupremierrisqueouuneassurancecomplémentaire.
+
+(2)Lorsquelecontratdésignédanslecontratcomplémentaireexpireouestrésilié,lecontratcomplémentaireprendfinautomatiquement.
+
+Modificationdesmontantsminimaux
+
+Dispositionsobligatoires
+
+Obligationdel’assuré
+
+Assurancecomplémen­taire
+
+Findel’assurancecomplémen­taire
+
+99
+
+Agreementforpartialpaymentofclaimbyinsured
+
+Definition:"nuclearenergyhazard"
+
+Liabilitywhennuclearenergycontractalsoinforce
+
+147.NothinginthisPartprecludesaninsurerfromenteringintoanagreementwithitsinsuredunderacontractevidencedbyamotorvehicleliabilitypolicyproviding thattheinsured willreimbursetheinsurerinanagreedamountinrespectofanyclaimbyorjudgmentinfavourofathird partyagainst the insured,andtheagreementmaybeenforcedagainsttheinsuredaccordingtoitstenor.
+
+148.(1)Inthissection,"nuclearenergyhazard"meanstheradioactive,toxic,explosiveorotherhazardouspropertiesofprescribedsubstancesundertheAtomicEnergyControlAct(Canada).
+
+(2)Whereaninsurediscovered,whethernamedinthecontractornot,underacontractevidencedbyamotorvehicleliabilitypolicyforlossordamageresultingfrombodilyinjurytoorthedeathofanypersonordamagetopropertyarisingdirectlyorindirectlyoutofanuclearenergyhazardandisalsocovered, whethernamed in thecontract ornot,againstsuchlossordamageunderacontractevidencedbyapolicyofnuclearenergyhazardliabilityinsuranceissuedbya group ofinsurersandinforceatthetimeoftheeventgivingrisetothelossordamage,(a)themotorvehicleliabilityinsuranceisexcesstothenuclearenergyhazardliabilityinsurance,andtheinsurerunderthecontractofmotorvehicleliabilityinsuranceisnotliabletopaybeyondtheminimumlimitsestablishedbysection144;and(b)theunnamedinsuredunderthecontractofnuclearenergyliabilityinsurancemay,inrespectofsuchlossordamage,recoverindemnityunderthatcontractinthesamemannerandtothesameextentasifnamedinthe contract astheinsured,andforthatpurposeheorsheshallbedeemedtobeapartytothecontractandtohavegivenconsiderationtherefor.
+
+147.Laprésentepartien’empêchepasunassureurdeconclureaveclapersonnequ’ilassure aux termesd’uncontratconstatéparunepolicederesponsabilitéautomobileuneconventionprévoyantquel’assurédevrarembourseràl’assureurunmontantconvenu,siuntiersfaitunedemandederèglementouobtientunjugementcontrel’assuré;laconventionpeutêtreexécutéecontrel’assuréenconformitéavecsesdispositions.
+
+148.(1) Au présentarticle,«risquenucléaire»s’entenddurisquedécoulantdespropriétésradioactives,toxiquesouexplosives,oudesautrespropriétésdangereusesdes substances réglementéesau sensdelaLoisurlecontrôledel’énergieatomique(Canada).
+
+(2)Lorsqu’unassuré,nomméounondanslecontrat,estcouvertparuncontratconstatéparunepolicederesponsabilitéautomobilecontrelespertesoulesdommagesrésultantdelésionscorporellesoududécèsdetoutepersonne,oudedommagesmatérielscausés,directementouindirectement,parunrisquenucléaireetquecetassuré,nomméounondanslecontrat,estégalementcouvertcontredetellespertesoudetelsdommagesparunepoliced’assurancecontrelaresponsabilitédécoulantderisquesnucléaires,établieparungrouped’assureursetenvigueuràladatedel’événementprovoquantlaperteoulesdommages:a)l’assurancede responsabilitéautomobileestcomplémentaireàl’assurancecontrelaresponsabilitédécoulantderisquesnucléaireset l’assureurn’estpas tenu,envertudececontratd’assurancederesponsabilitéautomobile,depayerau-delàdeslimitesminimalesprévuesparl’article144;b)l’assuréquin’estpasnommédanslecontratd’assurancecontrelaresponsabilitédécoulantderisquesnucléairespeut, relativementà cespertesouàcesdommages,sefaireindemniserenvertuducontratdelamêmemanièreetpourunmêmemontantques’ilétaitdésignéàtitred’assuré;àcettefin,ilestréputéêtrepartieaucontratetavoirfourniunecontrepartieàceteffet.
+
+Conventionprévoyantlerembourse-ment
+
+Définition:«risquenucléaire»
+
+Responsabilitédécoulantderisquesnucléaires
+
+100
+
+Whencontractdeemedinforce
+
+Advancepaymentsandreleasebyclaimant
+
+Conditionprecedent
+
+Payment
+
+Intention
+
+(3)Forthepurposeofthissection,acontractofnuclearenergyhazardliabilityinsuranceshallbedeemedtobeinforceatthetimeoftheeventgivingrisetothelossordamage,notwithstandingthatthelimitsofliabilityunderithavebeenexhausted.
+
+149.(1)Whereaninsurermakesapaymentonbehalfofaninsuredunderacontractevidencedbyamotorvehicleliabilitypolicytoapersonwhoisorallegeshimselforherselftobeentitledtorecoverfromtheinsuredcoveredbythepolicy,the payment constitutes,tothe extent of thepayment, a releasebythepersonorhisor her personal representativeof anyclaimthat thepersonorhisorherpersonalrepresentativeoranypersonclaimingthroughorunderhimorherorbyvirtue ofthe [Fatal](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-f-3/latest/rsnwt-1988-c-f-3.html)AccidentsActmayhaveagainst theinsuredortheinsurer.
+
+(2)Nothinginthissectionprecludestheinsurermakingthepaymentfromdemanding,asaconditionprecedenttothe payment,areleasefromthe personorthepersonalrepresentativeofthepersonoranyotherpersontotheextentofthepayment.
+
+(3)Wherethepersoncommencesanaction,thecourtshalladjudicateonthematterfirstwithoutreferencetothepaymentbutingivingjudgmentthepaymentshallbetakenintoaccountandthepersonshallonlybeentitledtojudgmentforthenetamount,ifany.
+
+(4)Theintentionofthissectionistopermitpaymentstoaclaimantwithoutprejudicetothedefendantorhisorherinsurer,eitherasanadmissionofliabilityorotherwise,andthefactofanypaymentshallnotbedisclosedtothejudgeorjuryuntilafterjudgmentbutbeforeformalentryofthejudgment.
+
+Defencewhere150.(1)Wheremorethanone(a)apersonisinsuredundermorethanonecontractcontractevidencedbyamotorvehicleliabilitypolicy,whethertheinsuranceisfirstlossinsuranceorexcess;and(b)a questionarisesunderparagraph136(b)betweenaninsurerandtheinsuredorbetweentheinsurersastowhichinsurershallundertaketheobligationtodefendinthenameandonbehalfoftheinsured,whetherornot any insurerdeniesliabilityunderitscontract,
+
+(3)Pourl’applicationduprésentarticle,uncontratd’assurancecontre la responsabilitédécoulantderisquesnucléairesestréputéêtreenvigueuràladatedel’événementquiprovoquelaperteouledommage,mêmesileslimitesderesponsabilitéprévuesontétédépassées.
+
+149.(1)Lorsqu’unassureureffectue,pourlecompted’unassurécouvertparuncontratconstatéparunepolicederesponsabilitéautomobile,unpaiementàunepersonnequiaouprétendavoirledroitderecouvrerunesommedel’assurécouvertparlapolice,lepaiementconstitue,jusqu’àconcurrencedumontantversé,unequittanceparcettepersonneousonreprésentantpersonneldetouteréclamationquepourraitavoircontrel’assurécettepersonneousonreprésentant,outoutayantdroitoudemandeurprésentantuneréclamationenvertudela[Loi](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-f-3/latest/rsnwt-1988-c-f-3.html)surlesaccidentsmortels.
+
+(2)Leprésentarticlen’empêchepasl’assureurquieffectuelepaiementd’exiger,àtitredeconditionpréalable,quelapersonne, son représentantpersonneloutouteautrepersonneluiremetteunequittance pourlemontantdupaiement.
+
+(3)Lorsquelapersonneintenteuneaction,letribunalstatued’abordsurl’affairesanstenircomptedupaiementeffectué,maisenrendantlejugement,iltientcomptedupaiement et n’accordeaupoursuivantquelemontantnet,s’ilyalieu.
+
+(4)L’objetduprésentarticleestdepermettrequ’uneindemnitésoitverséeàundemandeursansqu’ilenrésulteunpréjudicepour le défendeurousonassureur,quecesoitàtitredereconnaissancederesponsabilitéoudetouteautrefaçon;lepaiementnepeutêtreportéàlaconnaissancedujugeoudujuryqu’aprèslejugement,maisavantsoninscriptionofficielle.
+
+150.(1)Danslecasoù:a)unepersonneestassuréeparplusieurscontratsd’assuranceconstatéschacunparunepolicederesponsabilitéautomobile,qu’ils’agissed’uneassuranceaupremierrisqueoucomplémentaire;b)laquestionseposerelativementàl’alinéa136b),entreunassureuretl’assuréouentreplusieursassureurs,desavoirquelestl’assureurquidoitassumerladéfensedel’assuré,qu’unassureurnieounonêtreliéparson
+
+Présomption
+
+Paiementparl’assureuretquittance
+
+Conditionpréalable
+
+Paiement
+
+Intention
+
+Défensedel’assuré;pluralitéd’assureurs
+
+101
+
+Hearing
+
+Order
+
+Contribution
+
+Applicationofinsurancemoneyundermotorvehicleliabilitypolicy
+
+Limitationperiod
+
+theinsuredoranyinsurermayapplytotheSupremeCourt,andtheSupremeCourtshallgivedirectionsthatappearproperwithrespecttotheperformanceoftheobligation.
+
+(2)Onanapplicationundersubsection(1),theonly parties entitledtonoticeofthe applicationandtobeheardontheapplicationaretheinsuredandhisorherinsurers,andnomaterialorevidence used ortakenonanapplication is admissibleonthetrialofanactionbroughtagainsttheinsuredforlossordamagetopersonsor propertyarisingoutoftheuseoroperationoftheautomobileinrespectofwhichtheinsuranceisprovided.
+
+(3)Anorder undersubsection (1)does not affecttherightsandobligationsoftheinsurersinrespectofpaymentofanyindemnityundertheirrespectivepolicies.
+
+(4)Whereindemnityisprovidedtotheinsuredundertwoormorecontractsandoneormoreofthemareexcessinsurance,theinsurersshall,asbetweenthemselves,contributetothepaymentofexpenses,costsandreimbursementforwhichprovisionismadeinsection136inaccordancewiththeirrespectiveliabilitiesfordamagesawardedagainsttheinsured.
+
+151.(1)Anypersonwhohasaclaimagainstaninsuredforwhichindemnityisprovidedbyacontractevidencedbyamotorvehicleliabilitypolicy,notwithstandingthatthepersonisnotapartytothecontract,may,onrecoveringajudgmentforthatpurposeinaprovinceorterritoryagainsttheinsured,havetheinsurancemoneypayableunderthecontractappliedinortowards satisfactionof thejudgmentandofanyotherjudgmentsorclaimsagainsttheinsuredcoveredbythecontractandmay,onbehalfof himselforherselfandallpersonshavingsuchjudgmentsorclaims,maintainanactionagainsttheinsurertohavetheinsurancemoneysoapplied.
+
+(2)Anactionmaynotbebroughtagainstaninsurerundersubsection(1)morethantwoyearsafterthefinaldeterminationoftheactionagainsttheinsured,includingappealsifany.
+
+contrat,l’assuréouundesassureurspeutprésenterunedemandeàlaCoursuprêmeetcelle-ciesttenuededonnerlesinstructionsquiluisemblentindiquéesàl’égarddel’exécutiondel’obligation.
+
+(2)Lorsqu’unedemandeestprésentéesouslerégimeduparagraphe(1),seulsl’assuréetsesassureursontledroitd’enêtreavisésetd’êtreentendus;aucunepièceniaucunélémentdepreuveutiliséoureçuàl’occasiondecettedemanden’estadmissiblependantl’instructiond’uneactionintentéecontrel’assurépourdespertesoudesdommagescausésàdespersonnesouàdesbiensdécoulantdel’utilisationoude la conduitedel’automobilequifaitl’objetducontratd’assurance.
+
+(3)L’ordonnancerenduesouslerégimeduparagraphe(1)neportepasatteinteauxdroitsetobligationsdesassureursàl’égarddupaiementdetouteindemnitéautitredeleurpolicerespective.
+
+(4)Lorsquedeuxouplusieurscontratsindemnisentl’assuréetquel’und’entreeuxaumoinsestuncontratd’assurancecomplémentaire,lesassureurspartagententreeuxlesdépenses,fraisetremboursementsprévusàl’article136selonlapartdesdommages-intérêtspayablesparl’assuréqu’ilsassumentrespectivement.
+
+151.(1)Lapersonnequiformule contre unassuré unedemandepourlaquelleuneindemnitéestprévueparuncontratqueconstateunepolicederesponsabilitéautomobilepeut,bienqu’ellenesoitpaspartieaucontrat,lorsqu’elleobtientunjugementàl’égarddesaréclamationcontrel’accusédans uneprovinceoudansunterritoire,faireaffecterlessommesassuréespayablesauxtermesducontratàlasatisfactiondujugementrenduainsiquedetouslesautresjugementsouréclamationscontrel’assuré;ellepeutaussi,pourelle-mêmeetpourle comptedetouteslespersonnesenfaveurdesquellesdesjugementssemblablesontétérendusouquisonttitulairesderéclamationssemblables,intentercontrel’assureuruneactionenvuedefaireaffecterainsilessommesassurées.
+
+(2)L’actionviséeauparagraphe(1)seprescritpardeuxansàcompterdeladécisiondéfinitiverendueàl’égarddel’actionintentéecontrel’assuré,comptetenudesappels,s’ilyalieu.
+
+Audience
+
+Ordonnance
+
+Contributiondechaqueassureur
+
+Affectationdessommesassurées
+
+Prescription
+
+102
+
+Othercreditorexcluded
+
+Righttohaveinsurancemoneyapplied
+
+Purportedpolicy
+
+Contributionamonginsurers
+
+Paymentintocourt
+
+(3)Acreditoroftheinsuredisnotentitledtoshareintheinsurancemoneypayableunderanycontractunlesstheclaimofthecreditorisoneforwhichindemnityisprovidedforbythatcontract.
+
+(4)Therightofapersonwhoisentitledundersubsection (1)tohave insurance moneyappliedonhisorherjudgmentorclaimisnotprejudicedby(a)anassignment,waiver,surrender,cancellation or dischargeofthecontract,orofanyinterestinitoroftheproceedsofit,madebytheinsuredafterthehappeningoftheeventgivingrisetoaclaimunderthecontract;(b)anyactordefaultoftheinsured before orafterthateventincontraventionofthisPartorofthetermsofthecontract;or(c)anycontraventionofthe[Criminal](https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-c-46/latest/rsc-1985-c-c-46.html)CodeorastatuteofaprovinceorterritoryorofanystateortheDistrictofColumbiaoftheUnitedStatesbytheownerordriveroftheautomobile,andnothingmentionedinparagraphs(a)to(c)isavailabletotheinsurerasadefenceinanactionbroughtundersubsection(1).
+
+(5)Itisnotadefencetoanactionunderthissectionthataninstrumentissuedasamotorvehicleliabilitypolicybyapersonengagedinthebusinessofaninsurerandallegedbyapartytotheactiontobesuchapolicyisnotamotorvehicleliabilitypolicy,andthissectionapplies,withsuchmodificationsasthecircumstancesrequire,totheinstrument.
+
+(6)Theinsurermayrequireanyotherinsurersliabletoindemnifytheinsuredinwholeorinpartinrespectofjudgmentsorclaimstowhichreferenceismadeinsubsection(1)tobemadepartiestothe actionandcontributeaccordingtotheirrespectiveliabilities,whetherthecontributionisrateableorbywayoffirstlossorexcessinsurance,asthecasemaybe,andtheinsuredshallondemandprovidetheinsurerwithparticularsofallotherinsurancecoveringthesubjectmatterofthecontract.
+
+(7)Whereanypersonhasrecoveredajudgmentagainsttheinsuredandisentitledtobring actionundersubsection(1)andtheinsureradmitsliabilitytopay
+
+(3)Uncréancierdel’assurén’apasdroitàunepartdessommesassuréespayablesauxtermesducontrat,àmoinsquesaréclamationnefassepartied’unecatégoriepourlaquellelecontratprévoituneindemnité.
+
+(4)Le droitd’unepersonnedefaireacceptersouslerégimeduparagraphe(1)unepartiedessommesassuréesàlasatisfactiondujugementquiaétérenduensafaveuroudesaréclamationn’estpasaffectépar:a)lacession,l’abandon,lerachat,l’annulationoul’exécutionducontrat,d’unintérêtsurcelui-ciousursonproduit,effectuésparl’assuréaprèslasurvenancedel’événementdonnantlieuàlaréclamationautitreducontrat;b)toutacteoudéfautdel’assuréavantouaprèscetévénementenviolationdelaprésentepartieoudesmodalitésducontrat;c)touteinfractionau[Code](https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-c-46/latest/rsc-1985-c-c-46.html)criminelouauxloisd’uneprovince,d’unterritoire,d’unÉtatdesÉtats-UnisoududistrictdeColumbia,commiseparlepropriétaireouleconducteurdel’automobile.L’assureurnepeutseprévaloirdespointsmentionnésauxalinéasa),b)ouc)commemoyendedéfensedansuneactionintentéeenvertuduparagraphe(1).
+
+(5)Nulnepeutopposerendéfenseàuneactionintentéeenvertuduprésentarticlelefaitqu’undocumentétabliàtitredepolicederesponsabilitéautomobileparunepersonnequiexercel’activitéd’assureuretprésentépar une partie à l’actioncommeunetellepolicen’ensoitpasune,etleprésentarticles’applique,comptetenudesadaptationsdecirconstance,àcedocument.
+
+(6)L’assureurpeutexigerquetouslesautresassureurstenusd’indemniserentotalitéouenpartiel’assuréenraisondesjugementsoudesréclamationsvisésauparagraphe(1)soientmisencauseetcontribuentenfonctiondeleurresponsabilitérespective,quelacontributionsefasseproportionnellementouparvoied’assuranceaupremierrisqueoucomplémentaire,selonlecas;l’assuréesttenu,surdemande,defourniràl’assureurlesrenseignementsqu’ilpossèdesurtouteslesautresassurancescouvrantl’objetducontrat.
+
+(7)Lorsqu’unepersonneobtientunjugementcontrel’assuréeta le droitd’intenterl’actionviséeauparagraphe(1),etquel’assureurreconnaîtson
+
+Exclusiondecertainscréanciers
+
+Protectiondudroitdestiers
+
+Documentcenséêtreunepolice
+
+Contributiondesautresassureurs
+
+Consignation
+
+103
+
+Effectoforder
+
+Defencerespectingexcesslimitsrelatingtosection143coverage
+
+Defencewherecoverageundersection141or142
+
+Defencewhereexcesslimits
+
+Defencewherevehicleusedinbusinessofcarryingpassengers
+
+theinsurancemoneyunderthecontractand theinsurerconsidersthat,(a)thereareormaybeotherclaimants;or(b)thereisnopersoncapableofgivingandauthorizedtogiveavaliddischargeforpaymentwhoiswillingtodoso,theinsurermayapplytotheSupremeCourtexparteforanorderforpaymentofthemoneyintocourt,andtheSupremeCourtmay,onthenotice,ifany,thatitthinksnecessary,makeanorderaccordingly.
+
+(8)ThereceiptoftheproperofficeroftheSupremeCourtissufficientdischargetotheinsurerfortheinsurancemoneypaidintocourtundersubsection(7),and theinsurancemoneyshallbedealtwithasthe Supreme Courtmayorderonapplicationofanypersoninterestedtherein.
+
+(9)Notwithstandinganythingcontainedinittothecontrary,everycontractevidencedbyamotorvehicleliabilitypolicyshall,forthepurposesofthissection,be deemed toprovideallthetypesofcoveragementionedinsection143,buttheinsurerisnotliabletoa claimant withrespecttothatcoveragein excess ofthelimitsmentionedinsection144.
+
+(10)Whereoneormorecontractsprovideforcoverageofatypementionedinsection141or142,theinsurermay,(a)withrespecttothattype ofcoverage;and(b)asagainstaclaimant,availitselfofanydefencethatitisentitledtosetupagainsttheinsured,notwithstandingsubsection(4).
+
+(11)Whereoneormorecontractsprovideforcoverageinexcessofthelimitsmentionedinsection 144, except as provided insubsection(12), theinsurermay,(a)withrespecttothecoverageinexcessofthoselimits,and(b)asagainstaclaimant,availitselfofanydefencethatitisentitledtosetupagainsttheinsured,notwithstandingsubsection(4).
+
+(12)Whereacontractprovidescoverageforlossordamageresultingfrombodilyinjurytoorthedeathofanypersonbeingcarriedinoronorenteringorgettingontooralightingfromanautomobileandtheautomobileisoperatedinthebusinessofcarrying
+
+obligationdeverserlessommesassurées,maisconsidèrecependant:a)soitqu’ilexisteoupeutexisterd’autresdemandeurs;b)soitqu’aucunepersonnecapablededonnerunequittancevalabledupaiementetautoriséeàlefaireneveutlefaire,l’assureurpeutdemanderexparteàlaCoursuprêmederendreuneordonnancedeconsignationdes sommesautribunal;celle-cipeutrendreunetelleordonnanceaprèsavoirdonnél’avis,s’ilyalieu,qu’elleestimenécessaire.
+
+(8)LerécépissésignéparlefonctionnairecompétentdelaCoursuprêmeconstituepourl’assureurunequittancesuffisantepourlessommesassuréesconsignéesautribunalenapplicationduparagraphe(7);cessommessontaffectéesenconformitéavecl’ordonnancequerendlaCoursuprêmesurdemandedesintéressés.
+
+(9)Pardérogationàtoutedisposition contraireducontrat,chaquecontratd’assuranceconstatéparunepolicederesponsabilitéautomobileestréputéfournir,pourl’applicationduprésentarticle,touteslescatégoriesdegarantiementionnéesàl’article143;l’assureurn’esttoutefoispastenud’indemniserunréclamantau-delàdeslimitesmentionnéesàl’article144.
+
+(10)Pardérogationauparagraphe(4),lorsqu’unouplusieurscontratsfournissentunegarantied’unecatégoriementionnéeauxarticles141ou142,l’assureurpeutseprévaloirdesmoyensdedéfensequ’ilaledroitd’opposeràl’assuré:a)àl’égarddecetypedegarantie;b)àl’encontred’unréclamant.
+
+(11)Pardérogationauparagraphe(4),lorsqu’unouplusieurscontratsfournissentunegarantiesupérieureauxlimitesmentionnéesàl’article144,saufdanslecasprévuauparagraphe(12),l’assureurpeutseprévaloirdesmoyensdedéfensequ’ilaledroitd’opposeràl’assuré:a)relativementàlagarantiequidépasseceslimites;b)àl’encontred’unréclamant.
+
+(12)Lorsqu’uncontratcouvrelespertesoulesdommagesquirésultentdeslésionscorporellesoududécèsd’unepersonnequiétaitpassagerdansuneautomobileoupendantqu’ellemontaitdansl’automobileouendescendaitetquecette automobile
+
+Conséquencedel’ordonnance
+
+Garantieobligatoire
+
+Garantieviséeauxarticles141et142
+
+Moyensdedéfenseencasdegarantiesupérieureauxlimites
+
+Moyensdedéfense:transportdespassagers
+
+104
+
+Insured’sliabilitytoreimburseinsurer
+
+Insurermaybemadethirdparty
+
+Rightsofinsurer
+
+Rightsofinsurers
+
+passengersforcompensationor hire andis insured forthatpurpose,theinsurermay,(a)withrespecttothat type of coverage, and(b)asagainstaclaimant,onlyavailitselfofadefencethatitis entitled tosetupagainsttheinsuredinrespectofthatpartofthecoverage,ifany,thatexceeds,(c)thelimitsmentionedinsection144,or(d)theminimumlimitsrequiredforthat typeofcoveragebyorunderanyotherAct,whicheveristhegreater.
+
+(13)Theinsuredshallreimbursetheinsurerondemandintheamountthattheinsurerhaspaidbyreasonofthissectionandthatitwouldnototherwisebeliabletopay.
+
+(14)Whereaninsurerdeniesliabilityunderacontractevidencedbyamotorvehicleliabilitypolicy,it shall, onapplicationtotheSupremeCourt,bemadeathirdpartyinanyactiontowhichtheinsuredisapartyandinwhichaclaimis madeagainsttheinsuredbyanypartytotheactioninwhichitisormightbeassertedthatindemnityisprovidedbythecontract,whetherornottheinsuredentersanappearanceordefenceintheaction.
+
+(15)Onbeingmadeathirdparty,the insurermay(a)contesttheliabilityoftheinsuredtoanypartyclaimingagainsttheinsured,(b)contesttheamountofanyclaimmadeagainsttheinsured,(c)deliveranypleadingsinrespectoftheclaimofanypartyclaimingagainsttheinsured,(d)haveproductionanddiscoveryfromanypartyadverseininterest,and(e)examineandcross-examinewitnessesatthetrial,tothesameextentasifitwereadefendantintheaction.
+
+(16)Aninsurermayavail itselfof subsection (15)notwithstandingthatanotherinsurerisdefendinginthenameandonbehalfoftheinsuredanactiontowhichitsinsuredisaparty.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec8_smooth)2011,c.16,s.12(8),[(11)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec11_smooth);[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2022-c-4/latest/snwt-2022-c-4.html#sec11subsec4_smooth)2022,c.4,s.11(4).
+
+servaitautransportcontre rémunération des passagersetétaitassuréepourcetransport,l’assureurpeut:a)àl’égarddecetypedegarantie;b)àl’encontred’unréclamant,seprévaloiruniquementdesmoyensdedéfensequ’ila le droitd’opposeràl’assuréàl’égarddecette partiede la garantie,s’ilyalieu,quiestsupérieure,selonleplusélevédesdeuxmontants:c)soitauxlimitesmentionnéesàl’article144;d)soitauxlimitesminimalesprévuespourcettecatégorie de garantiesouslerégimed’uneautreloi.
+
+(13)L’assurérembourseàl’assureur,surdemande,lemontantquecedernieradûverserenraisonduprésentarticleetqu’ilneseraitpastenudepayerautrement.
+
+(14)L’assureurquiniesaresponsabilitéauxtermesd’uncontratconstatéparunepolicederesponsabilitéautomobileestmisencause,aprèsavoirprésentéunerequêteàlaCoursuprême,danstouteactionàlaquellel’assuréestpartieetoùuneréclamationestfaitecontrel’assurépartoutepartieàl’actiondanslaquelleilestoupeutêtresoutenuquel’indemnitéestprévueparlecontrat,quel’assurécomparaisseounon,ouprésenteunedéfenseounon.
+
+(15)Après avoirétémisen cause, l’assureurpeut,commes’ilétaitdéfendeuràl’action:a)contesterlaresponsabilitédel’assuréenverstoutepartieprésentantuneréclamationcontrecelui-ci;b)contesterlemontantdetouteréclamationformuléecontrel’assuré;c)présenterdes plaidoiriesécritesàl’égarddetouteréclamationprésentéecontrel’assuré;d)obtenir de lapartie adverselaproductionetlacommunicationdedocuments;e)interrogeretcontre-interrogerlestémoinsauprocès.
+
+(16)Unassureurpeutseprévaloirdesdispositionsduparagraphe(15)mêmesiunautreassureurassumeladéfensedel’assurédansuneactionàlaquellesonassuréestpartie.LTN-O2011,ch.16,art.12(8)et(10).
+
+Responsabilitédel’assuré
+
+Miseencausedel’assureur
+
+Droitsdel’assureur
+
+Idem
+
+105
+
+Noticeofaction
+
+Disclosinginsurance
+
+Stipulationsinphysicaldamagecover
+
+Partialpaymentoflossclause
+
+Insertionofwarning
+
+Adjustingamountofclaim
+
+Exception
+
+152.(1)Everyinsuredagainstwhomanactioniscommenced for damages occasioned by anautomobileshallgivenoticeoftheactioninwritingtotheinsurerwithinfivedaysafterserviceofeverynoticeorprocessintheaction.
+
+(2)Everyinsuredagainstwhomanactioniscommenced for damages occasioned by anautomobileshall,onrecoveryofajudgmentagainsttheinsured,disclosetoajudgmentcreditorentitledtothebenefitofanymotorvehicleliabilitypolicyparticularsofsuchcontractwithin10daysafterwrittendemandforthoseparticulars.
+
+PHYSICALDAMAGECOVER
+
+153.Subjecttosubsection125(1),theinsurermayprovideinacontractexclusionsandlimitations,inrespectoflossofordamagetoor the lossofuseoftheautomobile,thatitconsidersnecessary.
+
+154.(1)Acontractorpartofacontractprovidinginsuranceagainstlossofordamagetoanautomobileandthelossofuseofanautomobilemaycontainaclausetotheeffectthat,intheeventofloss,theinsurershallpayonly(a)anagreedportionof any loss thatmaybesustained,or(b)theamountofthelossafterdeductionofasumspecifiedinthepolicy,andineithercasenotexceedingtheamountoftheinsurance.
+
+(2)Whereaclauseisinsertedin accordance withsubsection (1),thefollowingwordsmustbeprintedorstampedonthe face ofthe policy in conspicuoustype:
+
+Thispolicycontainsapartialpaymentoflossclause.
+
+155.(1)Whereaclaim ismadeunderacontractotherthanacontractevidencedbyamotorvehicleliabilitypolicy,theinsurershall,notwithstandinganyagreement,adjusttheamountoftheclaimwiththeinsurednamedinthecontractaswellaswithanypersonhavinganinterestindicatedinthecontract.
+
+(2)Where noticeisgiven orproofoflossismadebyapersonotherthan theinsured, because theinsuredcannotbelocated or neglectsorrefusesoris unable togivenoticeandmakeclaimunderstatutoryconditions4and7insection129,theinsurermay,
+
+152.(1)L’assuréquiestpoursuivipourdes dommagescausésparuneautomobileenaviseparécritsonassureurdansles5joursdelasignificationdetoutavisouactedeprocédure.
+
+(2)L’assurépoursuivipourdesdommagescausésparuneautomobileetcontrelequelunjugementaétérendurévèleaucréancierenvertudecejugementquiadroitauproduitdetoutepolicederesponsabilitéautomobilelesmodalitésdececontratdansles10joursdelaréceptiondelademandeécriteàceteffet.
+
+COUVERTUREDESDOMMAGESDIRECTS
+
+153.Sousréserveduparagraphe125(1),l’assureurpeutprévoirdansuncontratlesexclusionsetleslimitesqu’iljugenécessairesrelativementàlapertedel’automobile ouauxdommagesquilui sont causés,ouàlaprivationdejouissancedecelle-ci.
+
+154.(1)Lecontratoulapartieducontratquicouvrelaperted’uneautomobileoules dommagesquiluisontcausés,ainsiquelaprivation de jouissance de celle-ci,peutrenfermeruneclauseprévoyantqu’encasdesinistre,l’assureurnepaiera,selonlecas:a)qu’unepartieconvenuedelaperte;b)quelemontantdelaperteaprèsdéduction d’une sommespécifiéedanslapolice.Cesmontantsnepeuventenaucuncasexcéderlemontantdel’assurance.
+
+(2)Lorsqu’uneclauseestinséréeenvertuduparagraphe(1),laphrasequisuitdoitêtre impriméeaurectodelapoliceengroscaractères:
+
+Laprésentepolicecontientuneclaused’indemnisationpartielle.
+
+155.(1)Lorsqu’uneréclamationestprésentéeautitred’uncontratquin’estpasconstatéparunepolicederesponsabilitéautomobile,l’assureur,pardérogationàtouteautreconvention,règlelemontantdelaréclamationavecl’assurénommédanslecontratetavec toutepersonneayantunintérêtmentionnédanslecontrat.
+
+(2)Lorsqu’unavisdusinistre estdonnéouqu’unepreuvedesinistreestprésentéeparunepersonneautrequel’assuré,parcequecelui-ciestintrouvableouqu’ilnéglige,refuseouestempêchédedonnerl’avisoudeproduiresaréclamationenconformitéavecles
+
+Avisàl’assureur
+
+Communica­tionducontenudel’assurance
+
+Couverturedesdommagesdirects
+
+Claused’indemnisa-tionpartielle
+
+Mentionexpresse
+
+Règlementdelaréclamation
+
+Exception
+
+106
+
+Definitions
+
+notwithstandingsubsection(1)butinanyeventnotearlierthan60 daysafterdeliveryoftheproofrequiredunderclause(c)ofsubcondition(1)ofstatutorycondition4,adjustandpaytheclaimtotheotherpersonhavinganinterestindicatedinthecontract.
+
+LIMITEDACCIDENTINSURANCES
+
+156.(1)Inthissection,"insuredautomobile"meanstheautomobileasdefinedordescribedunderthecontract;((automobileassurée)
+
+"personinsuredunderthecontract"means,(a)inrespectofaclaimfordamagetotheinsuredautomobile,theowneroftheautomobile;(b)inrespectofaclaimfordamagetothecontentsoftheinsuredautomobile,theownerofthecontents;and(c)inrespectofaclaimforbodilyinjuryordeath,notwithstandingparagraph138(c),(i)anypersonwhileanoccupantof theinsuredautomobile,(ii)theinsuredand,ifresidinginthesamedwellingpremisesastheinsured,theinsured’sspouseandanydependentrelativeofeither,(A)whileanoccupantofanuninsuredautomobile,or(B)whilenottheoccupantofanautomobileorofrailwayrolling-stockthatrunsonrails,whoisstruckbyanuninsuredorunidentifiedautomobile,and(iii)iftheinsuredisacorporation,unincorporatedassociationorpartnership,anydirector,officer,employeeorpartneroftheinsuredforwhoseregularusetheinsuredautomobileisprovided,and,ifresidinginthesamedwellingpremisesassuchperson,theperson’sspouseandanydependentrelativeofthepersonorthespouse,(A)whileanoccupantofanuninsuredautomobile,or(B)whilenottheoccupantofanautomobileorofrailwayrolling-stockthatrunson rails,whoisstruckbyanuninsured
+
+conditionslégales4et7viséesàl’article129,l’assureurpeut,pardérogationauparagraphe(1),maisdanstouslescasaprèsl’expirationd’un délaiminimalde60joursàcompter delaremisedelapreuveviséeàl’alinéa(1)c)delaconditionlégale4,réglerlaréclamationetverserlemontantàcetteautrepersonnedontl’intérêtestindiquéaucontrat.
+
+ASSURANCE-ACCIDENTLIMITÉE
+
+156.(1)Lesdéfinitionsquisuivents’appliquentauprésentarticle.
+
+«automobileassurée»L’automobiledécriteouviséeaucontrat.(insuredautomobile)
+
+«automobilenonassurée»Automobiledontnilepropriétairenileconducteurnepossèdeuneassurance-responsabilitépourlésionscorporellesoudommagesmatérielsen cours de validitéàl’égarddelapropriété,del’utilisationoudelaconduitedel’automobile;laprésentedéfinitionnes’entendtoutefoispasd’uneautomobilequi appartientà l’assuréou à son conjoint,ouquiestimmatriculéeàleurnom.(uninsuredautomobile)
+
+«automobilenonidentifiée»Automobiledontlepropriétaireouleconducteurnepeutêtreidentifié.(unidentifiedautomobile)
+
+«personneassurée»a)Àl’égardd’uneréclamationpourdommagesàl’automobileassurée,lepropriétairedel’automobile;b)àl’égardd’uneréclamationpourdommagesaucontenudel’automobileassurée,lepropriétaireducontenu;c)àl’égardd’uneréclamationpourlésionscorporellesouencasdedécès,pardérogationàl’alinéa138c):(i)lesoccupantsdel’automobileassurée,(ii)l’assuréet,s’ilsdemeurentsoussontoit,sonconjointetleursparentsàcharge,pendantqu’ilssetrouventdans une automobilenonassurée ous’ilssont frappésparuneautomobilenonassuréeounonidentifiéeaumomentoùilsnesetrouventnidansuneautomobilenidansunvéhiculeferroviaire,(iii)sil’assuréestunepersonnemoraleouuneassociationousociéténon
+
+Définitions
+
+107
+
+Application
+
+Deemingprovision
+
+Uninsuredautomobilecoverage
+
+orunidentifiedautomobile,wheresuchdirector,officer,employeeorpartnerorhisorherspouseisnottheownerofanautomobileinsuredunderacontract;((personneassurée)
+
+"unidentifiedautomobile"meansanautomobilewithrespecttowhichtheidentityofeithertheownerordrivercannotbeascertained;(automobilenonidentifiée)
+
+"uninsuredautomobile"meansanautomobileneithertheownernorthedriverofwhichhasapplicableandcollectablebodilyinjuryliabilityandpropertydamageliabilityinsuranceforitsownership,useoroperation,butdoesnotincludeanautomobileownedbyorregisteredinthenameoftheinsuredortheinsured’sspouse.(automobilenonassurée)
+
+(2)ThissectionappliestoallcontractsevidencedbymotorvehicleliabilitypoliciesmadeorrenewedonorafterJanuary1,1988.
+
+(3)EverycontractevidencedbyamotorvehicleliabilitypolicythatissubsistingonJanuary1,1988,shallbedeemedtoprovideforthepaymentsreferredtoinsubsection(4)inrespectofanaccidentarisingoutof the use or operationofanautomobileoccurringonorafterthatdate.
+
+(4)Everycontractevidencedbyamotorvehicleliabilitypolicyshallprovideforpaymentofallsumsthat(a)apersoninsuredunderthecontractislegallyentitledtorecoverfromtheownerordriverofanuninsuredautomobileorunidentifiedautomobileasdamagesforbodilyinjuryresultingfromanaccidentinvolvinganautomobile;(b)anypersonislegallyentitledtorecoverfrom theownerordriverofanuninsuredautomobileorunidentifiedautomobileasdamagesforbodilyinjurytoorthe deathofapersoninsuredunderthecontractresultingfromanaccidentinvolvinganautomobile;and(c)apersoninsuredunderthecontractislegallyentitledtorecoverfromtheidentifiedownerordriverofanuninsuredautomobileasdamagesforaccidentaldamagetotheinsured
+
+constituéeenpersonnemorale,l’administrateur,ledirigeant,l’employéoul’associédel’assuréquiutilisel’automobileassuréedansl’exercicedesesfonctionset,s’ilsrésidentsouslemêmetoit,sonconjointetleursparentsàcharge,pendantqu’ilssetrouventdansuneautomobilenonassuréeous’ilssontfrappésparuneautomobilenonidentifiéeounonassuréeaumomentoùilsnesetrouventnidansuneautomobilenidansunvéhiculeferroviaire,àlaconditionquel’administrateur,ledirigeant,l’employéoul’associé,ousonconjoint,nesoitpaslepropriétairedel’automobileassurée.(personinsuredunderthecontract)
+
+(2)Leprésentarticles’appliqueàtouslescontratsconstatésparunepolicederesponsabilitéautomobileconclusourenouvelésle1erjanvier1988ouaprèscettedate.
+
+(3)Touslescontratsconstatésparunepolicederesponsabilitéautomobilequisontenvigueurle1erjanvier1988sontréputésprévoirlesindemnisationsviséesauparagraphe(4)àl’égarddesaccidentsd’automobilequisurviennentàcompterdecettedate.
+
+(4)Touslescontratsconstatésparunepolicederesponsabilitéautomobileprévoient,sousréservedesmodalités,dispositions,exclusionset limitesréglementaires,lepaiementdessommessuivantes:a)lessommesqu’unepersonneassuréea ledroitderecouvrerdupropriétaireouduconducteurd’uneautomobilenonassuréeounonidentifiéeàtitrededommages-intérêtspourleslésionscorporellesquiluiontétécauséesdansunaccidentd’automobile;b)les sommesqu’unepersonne aledroit derecouvrerdupropriétaireouduconducteurd’uneautomobilenonassuréeounonidentifiéeàtitrededommages-intérêtspour les lésionscorporellesouledécèsd’unepersonneassuréequidécoulentd’unaccidentd’automobile;c)lessommesqu’unepersonne assurée aledroitderecouvrerdupropriétaireouduconducteuridentifiéd’uneautomobile
+
+Champd’application
+
+Présomption
+
+Garantie:automobilenonassurée
+
+108
+
+Dependentrelative
+
+Subrogation
+
+Release
+
+Regulations
+
+automobileoritscontents,ortoboththeinsuredautomobileanditscontents,resultingfromanaccidentinvolvinganautomobile;subjecttosuchterms,conditions,provisions,exclusionsandlimitsasareprescribed.
+
+(5)Whereadependentrelativereferredtoinsubparagraph(c)(ii)or(iii)ofthedefinitionof"personinsuredunderthecontract"insubsection(1)(a)istheownerofanautomobileinsuredunderacontract;or(b)sustains bodily injury ordies astheresultofanaccidentwhiletheoccupantofhisorherownuninsuredautomobile,thatrelativeshallbedeemednottobeadependentrelativeforthepurposesofthissection.
+
+(6)Whereanamountispaidundersubsection(4),theinsurer(a)issubrogatedtotherightsofthepersontowhomtheamountispaid;and(b)maymaintainanactioninitsnameorinthe name ofsuchpersonagainstanyotherpersonorpersonsresponsiblefor the useoroperationoftheuninsuredorunidentifiedautomobile.
+
+(7)AnypaymentmadeoravailabletoapersonundertheScheduleconstitutes,totheextentofthepayment, a releasebythepersonorhisorher personalrepresentativeoranypersonclaimingthroughorunderhimorherofanyclaimthatheorshemayhaveundersubsection(4),butinnoeventshallthereleaseaffecttheinsurer’srightofsubrogationortomaintainanactionundersubsection(6).
+
+(8)TheCommissioner,ontherecommendationoftheMinister,maymakeregulations(a)prescribingtheterms,conditions,provisions,exclusionsandlimitswithrespecttopaymentsundersubsection(4);(b)deeminganyterm,condition,provision,exclusionorlimitasprescribedbyaregulationmadeunderparagraph(a)tobeincludedinanymotorvehicle liabilitypolicymadeorrenewedonoraftertheeffectivedateoftheregulationandin anymotorvehicleliabilitypolicythatissubsistingontheeffectivedateoftheregulation;and
+
+nonassuréeàtitrededommages-intérêtspourlesdommagesmatérielscausésàl’automobileassuréeouàsoncontenu,ouàlafoisàl’automobileetàsoncontenu,découlantd’unaccidentd’automobile.
+
+(5)Leparentàchargevisé aux sous-alinéasc)(ii)ou(iii)deladéfinitionde«personneassurée»auparagraphe(1)estréputénepasêtre unparentàchargepourl’applicationduprésentarticledanslescassuivants:a)ilestlepropriétaired’uneautomobileassurée;b)ilsubit des lésions corporellesoudécèdeàlasuited’unaccidentaumomentoùilsetrouvedansuneautomobilenonassuréedontilestlepropriétaire.
+
+(6)L’assureurquiverseunesommeenconformitéavecleparagraphe(4):a)estsubrogédanstouslesdroitsdelapersonneàquilessommessontversées;b)peutesterenjusticeensonproprenomouaunomdecettepersonne contre touteautrepersonneresponsabledel’utilisationoudelaconduitedel’automobilenonassuréeounonidentifiée.
+
+(7)Lepaiementfaitouoffertàunepersonneenvertudel’annexeconstitue,jusqu’àconcurrencedumontantversé,unequittance,remiseparcettepersonneousonreprésentantpersonnel,oupartoutautreayantdroit,detouteréclamationqu’ilpourraitavoir au titredu (4);toutefois,laquittanceneportepasatteinteaudroitdesubrogationdel’assureurouàsondroitd’intenteruneactionviséeauparagraphe(6).
+
+(8)Surrecommandationduministre,lecommissairepeut,parrèglement:a)fixerlesmodalités,dispositions,exclusionsetlimitesapplicablesaupaiementviséauparagraphe(4);b)présumerqu’unemodalité,unedisposition,uneexclusionouunelimitefixéeparunrèglementprisenvertudel’alinéaa)estinclusedansunepolicederesponsabilitéautomobileconstatantuncontratconcluourenouvelélejourdel’entréeenvigueur durèglementou aprèscettedateetdanstoutepolicederesponsabilitéautomobilequiesten
+
+Parentàcharge
+
+Subrogation
+
+Quittance
+
+Règlements
+
+109
+
+Medical,rehabilitationandfuneralbenefits
+
+Releasebyclaimant
+
+Demandbyinsurer
+
+Firstlossandexcessinsurance
+
+Excessinsurance
+
+Idem
+
+(c)requiringthatterms,conditions,provisions,exclusionsandlimits,asprescribedbyaregulationmadeunderparagraph(a),beattachedtoorincludedineverymotorvehicleliabilitypolicyasascheduleinortothepolicy.
+
+157.(1)Everycontractevidencedbyamotorvehicleliabilitypolicyshallprovidethebenefitssetoutinsubsection1oftheSchedulesubjecttothelimits,termsandconditionssetoutintheSchedule.
+
+(2)Whereaninsurermakesapaymentunderacontractof insurancereferredtoinsubsection(1),thepaymentconstitutes,totheextentofthepayment,areleasebytheinsuredpersonorhisorherpersonalrepresentativeofanyclaimthattheinsuredpersonorhisorherpersonalrepresentativeoranypersonclaimingthroughorunderhimorherorbyvirtueofthe[Fatal](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-f-3/latest/rsnwt-1988-c-f-3.html)AccidentsActmayhaveagainsttheinsurerandanyotherpersonwhomaybeliabletotheinsuredpersonorhisorherpersonalrepresentativeifthatotherpersonisinsuredunderacontractofthesametypeasisspecifiedinsubsection(1).
+
+(3)Nothinginsubsection(2)precludesaninsurerfromdemanding,asacondition precedenttopayment,areleasetotheextentofthepaymentfromthepersoninsuredorhisorherpersonalrepresentativeoranyotherperson.
+
+(4)Theinsurancementionedinsubsection(1)isafirstlossinsurance,andanyotherautomobileinsuranceofthesametypeavailabletotheinjuredpersonorinrespectofadeceasedpersonisexcessinsuranceonly.
+
+(5)Theinsurancementionedinsubsection(1)isexcessinsurancetoanyotherinsurancenotbeingautomobileinsuranceofthesametypeindemnifyingtheinjuredpersonorinrespectofadeceasedpersonfortheexpenses.
+
+(6)Theinsurancementionedinsubsection(1)isexcessinsurancetoanyotherinsuranceindemnifyingtheinjuredpersonorinrespectofadeceasedpersonfortheexpenses.
+
+vigueuràcettedate;c)ordonnerquelesmodalités,dispositions,exclusionsetlimitesfixéesparunrèglementprisenvertudel’alinéaa)soientinclusesdanslespolicesderesponsabilitéautomobileouysoientannexées.
+
+157.(1)Touslescontratsconstatésparunepolicederesponsabilitéautomobileprévoientlesindemnitésmentionnéesàladivision1del’annexe,sousréservedeslimitesetmodalitésénoncéesdanscelle-ci.
+
+(2)Lorsqu’unassureureffectueunrèglementenvertud’uncontratd’assuranceviséauparagraphe(1),celui-ciconstitue,jusqu’àconcurrencedumontantversé,unequittancedelapartdelapersonneassuréeoudesonreprésentantpersonnelde toutedemandederèglementquelapersonne assuréeou son représentantpersonnel,outoutautreayantdroitoudemandeurprésentantuneréclamationenvertudela[Loi](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-f-3/latest/rsnwt-1988-c-f-3.html)surlesaccidentsmortelspeuventformuleràl’encontredel’assureuretdetoutepersonnesusceptibled’êtreresponsableenverslapersonneassuréeousonreprésentantpersonnel,sicetteautrepersonneestassuréeparuncontratd’unecatégoriesemblableàcellementionnéeauparagraphe(1).
+
+(3)Leparagraphe(2)n’empêchepasl’assureurd’exiger,commeconditionpréalableaurèglement,quelapersonneassuréeousonreprésentantpersonneloutouteautrepersonneluiremetteunequittancedumontantversé.
+
+(4)L’assurancementionnéeauparagraphe(1)constitueuneassuranceaupremierrisqueettouteautreassuranceautomobiledelamêmecatégorieapplicabledanslecasd’unepersonneblesséeoud’unepersonnedécédéeneconstituequ’uneassurancecomplémentaire.
+
+(5)L’assurancementionnéeauparagraphe(1)constitueuneassurancecomplémentaireàl’égarddetouteautreassurancequin’estpasuneassuranceautomobiledelamêmecatégoriegarantissantuneindemnitéàlapersonneblesséeouleremboursementdesfraisengagéspourunepersonnedécédée.
+
+(6)L’assurancementionnéeauparagraphe(1)constitueuneassurancecomplémentaireàl’égarddetouteautreassurancegarantissantuneindemnitéàlapersonneblesséeouleremboursementdesfraisengagéspourunepersonnedécédée.
+
+Fraismédicaux,etc.
+
+Quittance
+
+Idem
+
+Assuranceaupremierrisqueetassurancecomplémen­taire
+
+Assurancecomplémen­taire
+
+Idem
+
+110
+
+Deemingprovision
+
+Deathanddisabilitybenefits
+
+Releasebyclaimant
+
+Demandbyinsurer
+
+Deemingprovision
+
+Demandforparticularsofinsurance
+
+(7)AllcontractsevidencedbymotorvehicleliabilitypoliciesmadeorrenewedbeforeandsubsistingonJanuary1,1988,shallbedeemedtocontainthebenefits,limits,termsandconditionssetoutintheSchedule,butinrespectonlyofmotorvehicleaccidentsoccurringonorafterthatdate.
+
+158.(1)Everycontractevidencedbyamotorvehicleliabilitypolicyshallprovidethedeathandtotaldisabilitybenefitssetoutinsubsection 2 oftheScheduleintheterms,conditions,provisionsandexclusionsandsubjecttothelimitsassetoutintheSchedule.
+
+(2)Whereaninsurermakesapaymentunderacontractof insurancereferredtoinsubsection(1),thepaymentconstitutes,totheextentofthepayment,areleasebytheinsuredpersonorhisorherpersonalrepresentativeofanyclaimthattheinsuredpersonorhisorherpersonalrepresentativeoranypersonclaimingthroughorunderhimorherorbyvirtueofthe[Fatal](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-f-3/latest/rsnwt-1988-c-f-3.html)AccidentsActmayhaveagainsttheinsurerandanyotherpersonwhomaybeliable to the insuredpersonorhisorherpersonalrepresentativeifthatotherpersonisinsuredunderacontractofthesametypeasisspecifiedinsubsection(1).
+
+(3)Nothinginsubsection(2)precludesaninsurerfromdemanding,asacondition precedenttopayment,areleasetotheextentofthepaymentfromthepersoninsuredorhisorherpersonalrepresentativeoranyotherperson.
+
+(4)AllcontractsevidencedbymotorvehicleliabilitypoliciesmadeorrenewedbeforeandsubsistingonJanuary1,1988,shallbedeemedtocontainthebenefits,limits,termsandconditionssetoutintheSchedule,butinrespectonlyofmotorvehicleaccidentsoccurringonorafterthatdate.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2014-c-31/latest/snwt-2014-c-31.html#sec5subsec8_smooth)2014,c.31,s.5(8).
+
+159.(1)WhereapersonisinjuredorkilledinanaccidentintheNorthwestTerritoriesinvolvinganautomobile,thatpersonorhisorherpersonalrepresentativemayserve(a)ademandbyregisteredmailontheowneroftheautomobile,or(b)ademandbyregisteredmailontheinsureroftheowneroftheautomobile,
+
+(7)Touslescontratsconstatésparunepolicederesponsabilitéautomobileconclusourenouvelésavantle1erjanvier1988etenvigueuràcettedatesontréputésprévoirlesindemnitésviséesàl’annexeetcomporterleslimitesetmodalitésénuméréesdanscelle-ci,cesdispositionsn’étanttoutefoisapplicablesqu’auxaccidentsd’automobilequisurviennentàcompterdecettedate.
+
+158.(1)Touslescontratsconstatésparunepolicederesponsabilité automobileprévoientlesindemnitésdedécèsetd’incapacitétotaleviséesàladivision2del’annexe,sousréservedesmodalités,dispositions,exclusionsetlimitesénuméréesdanscelle-ci.
+
+(2)Lorsqu’unassureureffectueunrèglementenvertud’uncontratd’assuranceviséauparagraphe(1),celui-ciconstitue,jusqu’àconcurrencedumontantversé,unequittancedelapartdelapersonneassuréeoudesonreprésentantpersonnelde toutedemandederèglementquela personneassuréeou son représentantpersonnel outoutayantdroit ou demandeur présentantuneréclamationenvertudela[Loi](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-f-3/latest/rsnwt-1988-c-f-3.html)surlesaccidentsmortelspeuventformuleràl’encontredel’assureur etdetoutepersonnesusceptibled’êtreresponsableenverslapersonneassuréeousonreprésentantpersonnel,sicetteautrepersonneestassuréeparuncontratd’unecatégoriesemblableàcellementionnéeauparagraphe(1).
+
+(3)Leparagraphe(2)n’empêchepasl’assureurd’exiger,commeconditionpréalableaurèglement,quelapersonneassuréeousonreprésentantpersonnel,outouteautrepersonne,luiremetteunequittancedumontantversé.
+
+(4)Touslescontratsconstatésparunepolicederesponsabilitéautomobileconclusourenouvelésavantle1erjanvier1988etenvigueuràcettedatesontréputésprévoirlesindemnitésviséesàl’annexeetcomporterleslimitesetmodalitésénuméréesdanscelle-ci,cesdispositionsn’étanttoutefoisapplicablesqu’auxaccidentsd’automobilequisurviennentàcompterdecettedate.
+
+159.(1)Lapersonnequiestblesséedansunaccidentd’automobiledans les TerritoiresduNord-Ouestoulereprésentantpersonneld’unepersonnequidécèdedansunpareilaccidentpeutsignifierunemiseendemeureparcourrierrecommandé:a)soitaupropriétairedel’automobile;b)soitàl’assureurdupropriétairedel’automobile.
+
+Présomption
+
+Indemnitésdedécèsetd’incapacité
+
+Quittance
+
+Idem
+
+Présomption
+
+Miseendemeure
+
+111
+
+Offence
+
+Rightsofunnamedinsured
+
+Firstliability
+
+Exception
+
+Paymentintocourt
+
+requiringtheownerorinsurer,asthecasemaybe,tostateinwritingtothepersonmakingthedemandwhetherornotthatownerhasinsuranceofthetypementionedinsections157and158,oreitherofthem,and,wherethedemandismadeunderparagraph(a),requiringtheowner,iftheowner has that insurance,tostatethenameoftheinsurer.
+
+(2)Everyownerorinsurerwhodoesnot,within10daysafterreceivingademandmadeundersubsection(1)complywiththedemandisguiltyofanoffence.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+160.Anypersoninsuredbybutnotnamedinacontracttowhichsection 156,157 or158applies mayrecoverunderthecontractinthesamemannerandtothesameextentasifnamedinthecontractastheinsured,andforthatpurposeshallbedeemedtobeapartytothecontractandtohavegivenconsiderationtherefor.
+
+161.(1)Whereapersonentitledtobenefitsprovidedbyinsuranceundersections157and158,oreitherofthem,(a)isanoccupantofamotorvehicleinvolved inanaccident,theinsureroftheownerof themotorvehicleis,inthefirstinstance,liableforpaymentofthebenefitsprovidedbytheinsurance;or(b)isanpedestrianandisstruckbyamotorvehicle,theinsureroftheownerofthemotorvehicleis,inthefirstinstance,liableforthepaymentofthebenefitsprovidedbytheinsurance.
+
+(2)Nothinginthissectionaffectstheoperationofsubsections157(2)to(6)andsubsections158(2)and(3).
+
+162.(1)Whereaninsureradmitsliabilityforinsurancemoneypayableundersection156,157or158anditappearsthat(a)thereareadverseclaimants;(b)thewhereaboutsofaninsuredpersonentitledisunknown;or(c)thereisnopersoncapableofgivingandauthorizedtogiveavaliddischargethereforwhoiswillingtodoso,theinsurermay,atanytime after30daysafterthedateonwhichtheinsurance money becomespayable,applytotheSupreme Courtexparteforanorderfor paymentofthemoneyintocourt,andtheSupremeCourtmay
+
+Cettemiseendemeureordonneàsondestinatairededéclarerparécritàl’auteurdelamiseendemeuresilepropriétairedel’automobiledétientdesassurancesdelacatégorie mentionnée auxarticles157et158,oudel’undeceux-ci,et,danslecasdelamiseendemeureviséeàl’alinéaa),ordonneaupropriétairedétenteurd’unetelleassurancededéclarerlenomdesonassureur.
+
+(2)Commetuneinfractionlepropriétaireoul’assureurqui,dansles10joursdelaréceptiondelamiseendemeure,necommuniquepaslesrenseignementsdemandés.LTN-O2011,ch.16,art.12(2).
+
+Infraction
+
+160.LapersonneassuréeparuncontratauquellesDroitsdearticles156,157ou158s’appliquent,maisnonl’assurénondésignédésignéedanscecontrat,aledroitderecouvrerl’indemnitéprévuepar le contratdelamêmemanièreetdans lamême mesurequesi elleyétait désignéecommel’assuré,etàcettefin,elleestréputéeêtrepartieaucontratetavoirfourniunecontrepartieàceteffet.
+
+161.(1)Lorsquelapersonneayantdroitàuneindemnitéprévueparuneassuranceviséeauxarticles157et158oudel’und’eux:a)estl’occupantd’unvéhiculeautomobileencausedansunaccident,l’assureurdupropriétaireduvéhiculeest,enpremierlieu,tenuaupaiementdel’indemnitéprévueparl’assurance;b)estunpiétonetestheurtéeparunvéhiculeautomobile,l’assureurdupropriétairedecevéhiculeest,enpremierlieu,tenuaupaiementdel’indemnitéprévueparl’assurance.
+
+(2)Leprésentarticleneportepasatteinteàl’applicationdesparagraphes157(2)à(6)et158(2)et(3).
+
+162.(1)L’assureurquisereconnaîtdébiteurdessommesassuréespayablesenapplicationdesarticles156,157ou158peut,àtoutmomentaprèsl’expirationd’undélaide30jourssuivantladateàlaquellelessommesassuréesdeviennentpayables,demanderexparteàlaCoursuprêmederendreuneordonnancedeconsignationdecessommesautribunal,lorsquel’unedescirconstancessuivantesseprésente:a)ilexisted’autresopposants;b)onneconnaîtpasl’endroitoùsetrouveunepersonneassuréeayantdroitauxsommesassurées;
+
+Responsabilitépremière
+
+Idem
+
+Consignation
+
+112
+
+Dischargeofinsurer
+
+Limitationperiod
+
+Claimant’sobligationtoinform
+
+ReleasebyclaimantofbenefitsunderSchedule
+
+Definition:"rateableproportion"
+
+onnotice,ifany,thatitthinksnecessary,makeanorderaccordingly.
+
+(2)ThereceiptoftheproperofficeroftheSupremeCourtissufficientdischargetotheinsurerfortheinsurancemoneypaid intocourt,andthe insurancemoneyshallbedealtwithastheSupremeCourtorders.
+
+163.Everyactionorproceedingagainstaninsurerunderacontractinrespectofinsuranceprovidedundersection156,157or158 must becommencedwithinthelimitationperiodspecifiedinthecontract,butinnoeventshall the limitation period beless thantwoyearsafterthehappeningoftheaccident.
+
+164.(1)Wherea personmakes a claim for damagesinrespectofbodilyinjuryordeathsustainedbythepersonoranyotherpersonwhiledrivingorbeingcarried inoronor entering or getting ontoor alightingfrom orasaresultofbeingstruckbyanautomobile,heorsheshallprovide thepersonagainstwhomtheclaimismadewithfullparticularsofallinsuranceavailabletotheclaimantundercontractsfallingwithinthescopeofsection157or158.
+
+(2)WhereaclaimantisentitledtothebenefitofinsuranceasprovidedintheSchedulethis,totheextentofpaymentsmadeoravailabletotheclaimantundertheSchedule,constitutesareleasebytheclaimantofanyclaimagainstthepersonliabletotheclaimantortheinsureroftheclaimant.
+
+OTHERINSURANCE
+
+165.(1)Insubsection(3),"rateableproportion"means,(a)iftherearetwoinsurersliableandeachhasthesamepolicylimits,eachoftheinsurersshallshareequallyinanyliability,expense,lossordamage;(b)iftherearetwoinsurersliablewithdifferentpolicylimits,theinsurersshallshareequallyuptothelimitofthesmallerpolicylimit;and(c)if there aremorethantwoinsurersliable,
+
+c)aucunepersonnecapablededonnerunequittancevalableàcet effetetautorisée àladonnerneveutlefaire.LaCoursuprêmepeutrendreuneordonnanceàcettefin,aprèsavoirdonnél’avis,s’ilyalieu,qu’elleestimenécessaire.
+
+(2)Le récépissédufonctionnairecompétentdelaCoursuprêmeconstituepourl’assureurunequittancesuffisantepourlessommesassuréesconsignéesautribunal;ilestdisposédecessommesdelafaçonprévueparordonnancedelaCoursuprême.
+
+163.Ledélaideprescriptionapplicableàl’actionouàlaprocédure intentée contrel’assureurenvertud’uncontratàl’égardd’uneassuranceprévueauxarticles156,157ou158estceluiquiestprévuparlecontrat;toutefois,cedélaideprescriptionnepeutenaucuncasêtreinférieuràdeuxanssuivantl’accident.
+
+164.(1)Lapersonnequifaitunedemandeendommages-intérêtspourdeslésionscorporellesqu’elleasubiesou pour des lésions corporellessubiesparuneautrepersonneoupourledécèsdecettedernière,pendantqu’elleconduisaituneautomobile,s’ytrouvaitàtitredepassager,ymontaitouendescendait,oudufaitqu’elleaétéheurtéeparuneautomobile,fournitàlapersonneàquielleréclamedesdommages-intérêtstouslesrenseignementsportantsurlesassurancesdelacatégoriementionnéeauxarticles157ou158dontellepeutseprévaloir.
+
+(2)Lefaitqu’unréclamantaitdroitàl’indemnitédel’assuranceprévueàl’annexeconstitue,danslamesureoùlespaiementssonteffectuésouluisontoffertsenconformitéavecl’annexe,unequittancedesapartàl’égarddetouteréclamationcontrelapersonneresponsableenversluioucontrel’assureurdecettepersonne.
+
+AUTREASSURANCE
+
+165.(1)Ladéterminationdelaquotitéviséeauparagraphe(3)sefaitselonlesrèglessuivantes:a)sideuxassureurssonttenuspardescontratsdontlespolicesontdeslimitesidentiques,chaqueassureurprendàsachargeàpartégalelaresponsabilité,lesfrais,lespertesoulesdommages;b)sideuxassureurssonttenuspardescontratsdontlespolicesontdeslimitesdifférentes,ilsprennentàleurcharge unepartégalejusqu’àconcurrencedela
+
+Quittance
+
+Prescription
+
+Obligationduréclamant
+
+Quittance
+
+Déterminationdelaquotité
+
+113
+
+Otherinsurance
+
+Insurerliableforrateableportion
+
+Subrogation
+
+Pro-ratingrecovery
+
+Actionwhensection154applies
+
+paragraphs(a)and(b)applywithsuchmodificationsasthecircumstancesrequire.
+
+(2)Subjecttosection148,insuranceunderacontractevidencedbyavalidowner’spolicyofthekindmentionedinthedefinitionof"owner’spolicy"insubsection1(1)is in respectofliabilityarisingfromoroccurringinconnectionwiththeownership,useoroperationofanautomobileownedbytheinsurednamedinthecontractandwithinthedescriptionordefinitionoftheautomobileinthepolicy,afirstlossinsuranceandinsuranceattachingunderanyothervalidmotorvehicle liability policy is excess insuranceonly.
+
+(3)Subjecttosubsection(2)andsections148,157and158,if theinsurednamedinacontracthasorplacesanyothervalidinsurance,whetheragainstliabilityfortheownership,useoroperationoforagainstlossofordamagetoanautomobileorotherwise, ofhis orherinterestinthesubject matterofthecontractoranypartofit,theinsurerisliableonlyforitsrateableproportionofanyliability,expense,lossordamage.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec11_smooth)2011,c.16,s.12(11).
+
+SUBROGATION
+
+166.(1)Aninsurerwhomakesapaymentorassumesliabilitythereforunderacontractissubrogatedtoallrightsofrecoveryoftheinsuredagainstanypersonandmaybringanactioninthenameoftheinsuredtoenforcethoserights.
+
+(2)Wherethenetamountrecoveredwhetherbyactionoronsettlementis,afterdeductionofthecostsoftherecovery,notsufficienttoprovidecompleteindemnityforthelossor damage suffered, the amountremaining shallbe dividedbetweentheinsurerandtheinsuredintheproportioninwhichthelossordamagehasbeenbornebythem.
+
+(3)Wheretheinterestofaninsuredinanyrecoveryislimitedtotheamountprovidedunderaclauseinthecontracttowhich section 154applies,theinsurershallhavecontroloftheaction.
+
+limitelaplusbasse;c)siplusdedeuxassureurssonttenuspardescontrats,lesalinéasa)etb)s’appliquent,comptetenudesadaptationsdecirconstance.
+
+(2)Sousréservedel’article148,uneassurancecontrelaresponsabilitéencouruedufait,oudanslecadre dela propriété, del’utilisationoudelaconduited’uneautomobileappartenantàl’assurénommédanslecontratetcomprisedansladescriptionouladéfinitionqu’endonnelapoliceconstitue,sielles’effectueaumoyend’uncontratconstatéparunepolicedepropriétairevalide,delacatégoriementionnéedansladéfinitionde«policedepropriétaire»duparagraphe1(1),uneassuranceaupremierrisque;l’assuranceconstatéepartouteautrepolicevalidederesponsabilitéautomobilen’estqu’uneassurancecomplémentaire.
+
+(3)Sousréserveduparagraphe(2)etdesarticles148,157et158,sil’assurénommédansuncontratpossèdeousouscrittouteautreassurancevalidecouvrantentoutouenpartiel’intérêtqu’ilpossèdedansl’objetducontrat,soitcontrelaresponsabilitédécoulantdelapropriété,del’utilisationoudelaconduited’uneautomobile,soitcontrelapertedecetteautomobileoulesdommagesquipeuventluiêtrecausés,l’assureurn’esttenuqu’àlaquotitédelaresponsabilité,desfrais,despertesoudesdommagesqu’ilprendàsacharge.
+
+SUBROGATION
+
+166.(1)L’assureurquieffectueunpaiementouassumeuneresponsabilitéàceteffetenvertud’uncontratestsubrogédanstouslesdroitsderecouvrementquel’assurépossèdecontrelestiersetpeutintenteruneactionaunomdel’assurépourfairevaloircesdroits.
+
+(2)Lorsquelemontantnetrecouvrésoitparaction,soitparrèglement,estinsuffisant,aprèsdéductiondesfraisderecouvrement,pourindemnisercomplètementdelaperteoudesdommagessubis,lemontantrestantestdiviséentrel’assureuretl’assuréselonlaproportiondanslaquelleilssupportentlaperteoulesdommages.
+
+(3)Lorsquel’intérêtquepossèdeunassurédanstoutrecouvrementest limitéaumontantprévuparuneclauseducontratàlaquelles’appliquel’article154,l’assureuraladirectiondespoursuites.
+
+Assurancecomplémen­taire
+
+Idem
+
+Subrogation
+
+Répartitionproportion­nelle
+
+Applicationdel’article154
+
+114
+
+ApplicationtoSupremeCourt
+
+Partiesonapplication
+
+Concurrenceinsettlementorrelease
+
+Definitions
+
+(4)Wheretheinterestofaninsuredinanyrecovery exceedsthatreferredtoin subsection (3) andtheinsuredandtheinsurercannotagreeasto,(a)thesolicitorstobe instructed tobringtheactioninthenameoftheinsured;(b)theconductandcarriageoftheactionoranymatterspertainingto it;(c)anofferofsettlementortheapportionmentofanofferofsettlement,whetheractionhasbeencommencedornot;(d)theacceptanceofmoneypaidintocourtortheapportionmentofmoneypaidintocourt;(e)theapportionmentofcosts;or(f)thelaunchingorprosecutionofanappeal,eitherpartymayapplytotheSupremeCourtforthedeterminationofthemattersinquestion,andtheSupremeCourtshallmakeanorderthatitconsidersreasonablehavingregardtotheinterestsoftheinsuredandtheinsurerinanyrecoveryintheactionorproposedactionorinanyofferofsettlement.
+
+(5)Onanapplicationundersubsection(4)theonlypartiesentitledtonoticeandtobeheardontheapplicationaretheinsuredandtheinsurer,andnomaterialorevidenceusedortakenontheapplicationisadmissibleonthetrialofanactionbroughtbyoragainsttheinsuredortheinsurer.
+
+(6)Asettlementorreleasegivenbeforeorafteranactionisbroughtdoesnotbartherightsoftheinsuredortheinsurer,asthecasemaybe,unlesstheyhaveconcurredtherein.
+
+PARTVIACCIDENTANDSICKNESSINSURANCE
+
+INTERPRETATION
+
+167.InthisPart,"application"meansawrittenapplicationforinsuranceorforthereinstatementofinsurance;(proposition)
+
+"beneficiary" meansapersondesignatedor appointedin acontract orby a declaration, otherthan theinsuredorhisorherpersonalrepresentative,towhomorforwhosebenefitinsurancemoneypayableintheeventofdeathbyaccidentistobepaid;(bénéficiaire)
+
+(4)Lorsquel’intérêtquepossèdeunassurédanstoutrecouvrementestsupérieuràceluiviséauparagraphe(3) etquel’assuréetl’assureurnepeuvents’entendresurl’unedesquestionsquisuivent,l’unoul’autrepeutdemanderàla Cour suprême derendreunedécisionsurcettequestion:a)lesavocatsquidoiventêtrechargésd’intenterl’actionaunomdel’assuré;b)laconduitedel’actionoutoutequestionsubsidiaire;c)uneoffrederèglementoularépartitiondecerèglement,qu’uneactionaitétéintentéeounon;d)l’acceptationdetoutesommeconsignéeautribunaloularépartitiondecettesomme;e)larépartitiondesfrais;f)lepourvoienappeloulapoursuite.LaCoursuprêmeesttenuederendrel’ordonnancequ’elleestimeraisonnable,comptetenudesintérêtsdel’assuréetdel’assureursurtoutesommerecouvréeàl’égarddel’actionintentéeouenvisagée,ousurtouteoffrederèglement.
+
+(5)Seulsl’assuréet l’assureuront le droitd’êtreavisésetd’êtreentendusàlasuited’unedemandeprésentéeenvertuduparagraphe(4);aucunepièceouaucunepreuve utiliséeoureçuelorsdecette demanden’estadmissiblelorsdel’instructiond’uneactionàlaquellel’assuréoul’assureursontparties.
+
+(6)Unrèglementouunequittanceantérieursoupostérieursàl’institutiondel’actionnefontpasobstacleauxdroitsdel’assuréoudel’assureur,selonlecas,saufs’ilsl’ontaccepté.
+
+PARTIEVIASSURANCE-ACCIDENTETASSURANCEMALADIE
+
+DÉFINITIONS
+
+167.Lesdéfinitionsquisuivents’appliquentàlaprésentepartie.
+
+«acte juridique»S’entendnotammentd’un testament.(instrument)
+
+«assurance»Assurance-accident,assurance-maladieoulesdeux.(insurance)
+
+«assurancecollective»Assurance,autrequ’uneassurancecollectivedecréancieretuneassurance
+
+DemandeàlaCoursuprême
+
+Partiesàlademande
+
+Acceptationdelaquittanceoudurèglement
+
+Définitions
+
+115
+
+"blanketinsurance"meansthatclassofgroupinsurancethatcoverslossarisingfromspecifichazardsincidenttoordefinedbyreferencetoaparticularactivityoractivities;(assuranceglobale)
+
+"contract"meansacontractofinsurance;(contrat)"Court"meanstheSupremeCourtorajudgeoftheSupremeCourt;(tribunal)
+
+"creditor’s group insurance"meansinsurance effectedbyacreditorbywhichthelivesorwell-being,orthelives andwell-being,of anumberofhis or her debtorsareinsuredseverallyunderasinglecontract;(assurancecollectivedecréancier)
+
+"declaration"meansaninstrumentsignedbytheinsured(a)withrespecttowhichanendorsementismadeonthepolicy;(b)thatidentifiesthecontract;or(c)thatdescribestheinsuranceorinsurancefundorapartofit,inwhichtheinsureddesignatesoraltersorrevokesthedesignationofhisorherpersonalrepresentativeorabeneficiaryasonetowhomorforwhosebenefitshallbepaidtheinsurancemoneythatispayableintheeventofdeathbyaccident;(déclaration)
+
+"familyinsurance"meansinsurancebywhichthelivesorwell-being,orthelivesandwell-being,oftheinsuredandoneormorepersons related to theinsuredbyblood,marriageoradoptionareinsuredunderasinglecontractbetweenaninsurerandtheinsured;(assurancefamiliale)
+
+"groupinsurance"meansinsurance,otherthancreditor’sgroupinsuranceandfamilyinsurance,bywhichthelivesorwell-being,orthelivesandwell-being,ofanumberofpersonsareinsuredseverallyunderasinglecontractbetweenaninsurerandanemployerorotherperson;(assurancecollective)
+
+"group personinsured"means aperson whois insuredunderacontractofgroupinsuranceandonwhomarightis conferredbythecontract, butdoesnotincludeapersonwhoisinsuredunderthecontractasapersondependentonorrelatedtothatperson;(personneassurée par uneassurancecollective)
+
+"instrument"includesawill;(actejuridique)
+
+familiale,parlaquellelavieoulebien-être,oulavieetlebien-êtred’uncertainnombredepersonnessontassurésindividuellementparuncontratuniqueentreunassureuretunemployeurouuneautrepersonne.(groupinsurance)
+
+«assurancecollectivedecréancier»Assurancesouscriteparuncréancierparlaquellelavieoulebien-être,oulavieetlebien-êtred’ungroupedesesdébiteurssontassurésindividuellementpar uncontratunique.(creditor’sgroupinsurance)
+
+«assurancefamiliale»Assuranceparlaquellelavie oulebien-être,oulavieetlebien-êtredel’assuréetd’uneoude plusieurs personnesquiluisontalliéesparlesang,lemariageoul’adoptionsontassurésaumoyend’uncontratuniqueentreunassureuretl’assuré.(familyinsurance)
+
+«assuranceglobale»Lacatégoried’assurancecollectivequicouvrelespertesduesàdesrisquesspécifiquesquisontdéterminésparrapportàuneouplusieursactivités,ouquileursontaccessoires.(blanketinsurance)
+
+«assuré»
+
+a)Danslecasd’uneassurancecollective,s’entend,danslesdispositionsdelaprésentepartiequitraitentdeladésignationdesbénéficiairesoudesreprésentantspersonnelsentantquedestinatairesdessommesassuréesainsiquedeleursdroitsetstatuts,d’unepersonneassuréeparuneassurancecollective;b)danstouslesautrescas,delapersonnequiconclutuncontratavecunassureur.(insured)
+
+«bénéficiaire»Personnedésignéeounomméedansuncontratoudansunedéclaration,autrequel’assuréousonreprésentantpersonnel,àlaquelleouauprofitdelaquelle lessommesassurées payablesen cas de décèsaccidenteldoiventêtreversées.(beneficiary)
+
+«contrat»Contratd’assurance.(contract)«déclaration»Actejuridiquesignéparl’assuréqui,selonlecas:a)faitl’objetd’unavenantajoutéàlapolice;b)identifielecontrat;c)décritl’assuranceoule fonds
+
+116
+
+"insurance"meansaccidentinsurance,sicknessinsurance,oraccidentinsuranceandsicknessinsurance;(assurance)
+
+"insured",(a)inthecaseofgroupinsurancemeans,intheprovisionsofthisPartrelatingtothedesignationofbeneficiariesorofpersonalrepresentativesasrecipientsofinsurancemoneyandtheirrightsandstatus,thegrouppersoninsured;and(b)inallothercasesmeansthepersonwhomakesacontractwithaninsurer;(assuré)
+
+"personinsured"meansapersoninrespectofanaccidenttowhom,orinrespectofwhosesickness,insurancemoneyispayableunderacontract, butdoesnotincludeagrouppersoninsured;(personneassurée)
+
+"will"includescodicil.(testament)
+
+d’assurance,ouunedeleursparties,et danslequell’assurédésigne,modifieourévoque ladésignationdesonreprésentantpersonneloud’unbénéficiairecommelapersonne àlaquelleouauprofitdelaquelleserontverséeslessommesassuréesquisontpayablesencasdedécèsaccidentel.(declaration)
+
+«personneassurée»Personnequiestvictimedel’accidentoudelamaladiequirendlessommesassuréespayablesenvertuducontrat;laprésentedéfinitionnevisetoutefoispasunepersonneassuréeparuneassurancecollective.(personinsured)
+
+«personneassuréeparuneassurancecollective»Personnequiestassuréeparuncontratd’assurancecollectiveetàlaquellelecontratconfèreundroit;laprésentedéfinitionnevisetoutefoispaslapersonnequiestassuréeparcecontratàtitredepersonneàchargeoudeparentdecetassuré.(grouppersoninsured)
+
+«proposition»Propositionécrited’assuranceouderemiseenvigueurd’uneassurance.(application)
+
+«testament»S’entendnotammentd’uncodicille.(will)
+
+«tribunal»LaCoursuprêmeouunjugedelaCoursuprême.(Court)
+
+ContractsmadeonorafterApril1,1976
+
+ContractsmadebeforeApril1,1976
+
+Exemptions
+
+APPLICATIONOFPART
+
+168.(1)Notwithstandinganyagreement,conditionorstipulationtothecontrary,thisPartappliestocontractsmadeintheNorthwestTerritoriesonorafterApril1,1976.
+
+(2)InthecaseofcontractsmadebeforeandineffectonApril1,1976,(a)thissectionandsections167,169,170,179,182to184,188andsections190to206apply;and(b)sections143to147,153and156oftheInsuranceOrdinance,R.S.N.W.T.1974,c.I-2,asitexistedimmediatelybeforeApril1,1976,continuetoapply.
+
+(3)ThisPartdoesnotapplyto(a)accidentaldeathinsurance;(b)creditor’sgroupinsurance;(c)disabilityinsurance;or
+
+CHAMPD’APPLICATION
+
+168.(1)Pardérogationàtouteconvention,conditionoustipulationcontraire,laprésenteparties’appliqueauxcontratsconclusdanslesTerritoiresduNord-Ouestle1eravril1976ouaprèscettedate.
+
+1
+
+er
+
+(2)Danslecasdescontratsconclusavantleavril1976etencoursdevaliditéàcettedate:a)leprésentarticleetlesarticles167,169,170,179,182à184,188et190à206s’appliquent;b)lesarticles143à147,153et156del’InsuranceOrdinance,R.S.N.W.T.1974,c.I-2,danssaversionlaveilledu1eravril1976,continuentdes’appliquer.
+
+(3)Laprésentepartienes’appliquepasauxassurancessuivantes:a)l’assuranceencasdedécèsaccidentel;b)l’assurancecollectivedecréancier;
+
+Applicationdelaprésentepartie
+
+Idem
+
+Exceptions
+
+117
+
+Groupinsurance
+
+Issueofpolicy
+
+Exemptions
+
+Contentsofpolicy
+
+(d)insuranceprovidedundersections156to158.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+GENERAL
+
+169.In thecaseof acontractofgroupinsurancemadewithaninsurerauthorizedtotransactinsuranceintheNorthwestTerritoriesatthetimethecontractwasmade,thisPartappliesindetermining(a)therightsandstatusofbeneficiariesandpersonalrepresentativesasrecipientsofinsurancemoney,ifthegrouppersoninsuredwasresidentintheTerritoriesatthetimeheorshebecameinsured;and(b)therightsandobligationsofthegrouppersoninsuredifheorshewasresidentintheTerritoriesatthetimeheorshebecameinsured.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+170.Aninsurerenteringintoacontractshallissueapolicy.
+
+171.(1)Thissectiondoesnotapplyto(a)acontractofgroupinsurance;or(b)acontractmadebyafraternalsociety.
+
+(2)Aninsurershallsetoutthefollowingparticularsinthepolicy:(a)thenameorasufficientdescriptionoftheinsuredandofthepersoninsured;(b)theamountor the methodofdeterminingtheamountoftheinsurancemoneypayableandtheconditionsunderwhichitbecomespayable;(c)theamountor the methodofdeterminingtheamountofthepremiumandtheperiodofgrace,ifany,withinwhichitmaybepaid;(d)theconditions onwhichthecontract maybereinstatedifitlapses;(e)thetermoftheinsuranceorthemethodofdeterminingthedayonwhichtheinsurancecommencesandterminates.
+
+c)l’assurance-invalidité;d)l’assuranceviséeauxarticles156à158.LTN-O2011,ch.16,art.12(2).
+
+DISPOSITIONSGÉNÉRALES
+
+169.Danslecasd’uncontratd’assurancecollectiveconclu avec un assureur autoriséàfairedesopérationsd’assurancedanslesTerritoiresduNord-Ouestaumomentdelaconclusiondu contrat, laprésente parties’appliquepourdéterminer:a)lesdroitsetlestatutdesbénéficiairesetreprésentantspersonnelsauxquelslessommesassuréessontdestinées,silapersonneassuréeparl’assurancecollective résidait danslesTerritoires duNord-Ouestaumomentoùelles’estassurée;b)lesdroitsetobligationsdelapersonneassurée parl’assurancecollective,siellerésidait danslesTerritoiresduNord-Ouestaumomentoùelles’estassurée.LTN-O2011,ch.16,art.12(2).
+
+170.L’assureurquiconclutuncontratesttenud’établirunepolice.
+
+171.(1)Leprésentarticlenes’appliquepasauxcontratssuivants:a)uncontratd’assurancecollective;b)uncontratconcluparunesociétédesecoursmutuel.
+
+(2)L’assureurinclutles renseignements suivantsdanslapolice:a)lenomouunedésignationsuffisantedel’assuréetdelapersonneassurée;b)lemontantdessommesassurées,ousonmodededétermination,ainsiquelesconditionsquilerendentpayable;c)lemontantdelaprime,ousonmodededétermination,etledélaidegrâce,s’ilyalieu,applicableauxpaiements;d)lesconditionsauxquelleslecontratpeutêtreremisenvigueur,s’ilestfrappédedéchéance;e)laduréedel’assuranceoulemodededéterminationdeladateàlaquellel’assurancecommenceetsetermine.
+
+Assurancecollective
+
+Policeobligatoire
+
+Exceptions
+
+Contenudelapolice
+
+118
+
+Confinementclauses
+
+Contentsofgrouppolicy
+
+Definitions
+
+Continuationofinsurancewherecontractterminated
+
+172.WhereacontractofaccidentinsuranceorsicknessinsuranceissuedonorafterApril1,1976,includesaprovisionthatabenefitpayabletoaninsuredonaccountofthedisability of theinsuredandpaymentisconditionalontheconfinementoftheinsured,theprovisiondoesnotbindtheinsured.
+
+173.Inthecaseofacontractofgroupinsurance,aninsurershallsetoutthefollowingparticularsinthepolicy:(a)thenameorasufficientdescriptionoftheinsured;(b)themethodofdeterminingthegrouppersonsinsuredandthepersonsinsured;(c)theamount or themethod of determiningtheamountoftheinsurancemoneypayableandtheconditionsunderwhichitbecomespayable;(d)theperiodofgrace,ifany,withinwhichthepremiummaybepaid;(e)thetermoftheinsuranceorthemethodofdeterminingthedayonwhichtheinsurancecommencesandterminates.
+
+174.(1)Insubsection(3),"othercontract"meansanothercontractofgroupaccidentandsicknessinsurance;(autrecontrat)
+
+"replacingcontract"meansacontractofgroupaccidentandsicknessinsurance.(contratderemplacement)
+
+(2)Whereacontractofgroupaccidentandsicknessinsurance,orabenefitprovisioninthecontract,isterminated,theinsurer(a)continuestobeliabletopaytoorinrespectofanygrouppersoninsuredunderthecontractbenefitsunderthecontractrelatingto(i)lossofincomebecauseofdisability,(ii)death,or(iii)dismemberment,arisingfromanaccidentorsicknessthatoccurredbeforetheterminationofthecontractorbenefitprovisionasthoughthecontractorbenefitprovisionhadremainedinfullforceandeffect;and(b)isnotliabletopayabenefitforlossofincome becauseofdisabilityinrespectoftherecurrenceofdisabilityarisingfromanaccidentorsicknessthatoccurredbeforetheterminationofthecontractor
+
+172.Neliepasl’assuréladispositiond’uncontratd’assurance-accidentoud’assurance-maladieconcluleer1avril1976ouaprèscettedatequisubordonneleversementd’uneindemnitéàl’assuréenraisondesonincapacitéaufaitquel’assurédoitresteràl’hôpital.
+
+173.Danslecasd’uncontratd’assurancecollective,l’assureurinclutlesrenseignementssuivantsdanslapolice:a)lenomouunedésignationsuffisantedel’assuré;b)lemodededéterminationdespersonnesassuréespar l’assurance collectiveet despersonnesassurées;c)lemontantdessommesassurées,ousonmodededétermination,ainsiquelesconditionsquilerendentpayable;d)le délaidegrâce,s’ilyalieu,applicableaupaiementdelaprime;e)laduréedel’assuranceoulemodededéterminationdeladateàlaquelleellecommenceetsetermine.
+
+174.(1)Lesdéfinitionsquisuivents’appliquentauparagraphe(3).
+
+«autrecontrat»Autrecontratd’assurancecollectiveaccidentetmaladie.(othercontract)
+
+«contratderemplacement»Contratd’assurancecollectiveaccidentetmaladie.(replacingcontract)
+
+(2)Lorsqu’uncontratd’assurancecollectiveaccidentetmaladie,ouunedispositiondecelui-ciportantsurlesindemnités,prendfin,l’assureur:a)continued’êtretenudepayeràlapersonneassuréeparl’assurancecollective,ouà son égard, lesindemnitésprévuesparlecontratpourpertederevenusenraisond’uneincapacité,décèsouperted’unmembredécoulantd’unaccidentoud’unemaladiesurvenuavantlafinducontratoudeladispositiondecelui-ciportantsurlesindemnitéscommesilecontratoucettedispositionétaittoujoursenvigueur;b)n’estpastenudepayeruneindemnitépourpertederevenusenraisond’uneincapacitéàl’égard delaréapparition del’incapacitédécoulantdel’accidentoudelamaladiesurvenu avant lafinducontratoudeladispositionenquestion,sila
+
+Nullitédecertainesconditions
+
+Contenudelapoliced’assurancecollective
+
+Définitions
+
+Maintienenvigueurdel’assurance
+
+119
+
+Preservationofrightswherecontractreplaced
+
+Contentsofgroupcertificate
+
+benefitprovisioniftherecurrenceoccursaftertheterminationofthecontractorbenefit provision andafteraperiod of90daysoralongerperiodthatisprovidedinthecontract,duringwhichthegrouppersoninsuredwasnotdisabled.
+
+(3)Whereacontractofgroupaccidentandsicknessinsuranceisenteredintowithin31daysaftertheterminationofanothercontractofgroupaccidentandsicknessinsuranceandinsuresthesamegrouporapartofthegroupinsuredundertheothercontract,(a)thereplacingcontractshallprovideorshallbedeemedtoprovidethatanypersonwhowasinsuredundertheothercontractatthetimeofitsterminationisinsuredunderthereplacingcontractfromandaftertheterminationoftheothercontractif(i)theinsuranceonthatpersonundertheothercontractterminatedsolelybyreasonoftheterminationoftheothercontract,and(ii)thepersonisamemberofaclasseligibleforinsuranceunderthereplacingcontract;(b)everypersonwhowasinsuredundertheothercontractandwhoisinsuredunderthereplacingcontractisentitledtoreceivecreditforsatisfactionofanydeductibleearnedbeforetheeffectivedateofthereplacingcontract;and(c)nopersonwhowasinsuredundertheothercontractshallbeexcludedfromeligibilityunderthereplacingcontractsolelybecauseofnotbeingactivelyatworkontheeffectivedateofthereplacingcontract.
+
+175.(1)Exceptasprovidedinsubsection(2),inthecaseofacontractofgroupinsuranceaninsurershallissuefordeliverybytheinsuredtoeachgrouppersoninsuredacertificateorother document inwhicharesetoutthefollowingparticulars:(a)thenameoftheinsurerandasufficientidentificationofthecontract;(b)the amountor themethodofdeterminingtheamountofinsuranceonthegrouppersoninsuredandonanyperson
+
+réapparitionsurvientaprèslafinducontratoudeladispositionetaprèsunepériodede90jours,oulapériodesupérieurequeprévoitlecontrat,durantlaquellela personneassuréeparl’assurancecollectivenesouffraitd’aucuneincapacité.
+
+(3)Lorsqu’uncontratd’assurancecollectiveaccidentetmaladieestconcludansles31joursdelafind’unautrecontratd’assurancecollectiveaccidentetmaladie et assure le mêmegroupedepersonnesquiétait assuré envertude l’autre contratouunepartiedecegroupe,lesrèglessuivantess’appliquent:a)lecontratderemplacementestréputéprévoirquetoutepersonnequiétaitassuréeauxtermesdel’autrecontrataumomentoùcelui-ciaprisfinestassuréeenvertuducontratderemplacementàcompterdelafindel’autrecontrat,si:(i)l’assurancedecettepersonneprévueparl’autrecontratestterminéeuniquementparcequecetautrecontrataprisfin,(ii)cettepersonnefaitpartiedelacatégoriedepersonnesadmissiblesàl’assuranceprévueparlecontratderemplacement;b)lespersonnesquiétaientassuréesauxtermesdel’autrecontratetquisontassuréesauxtermesducontratderemplacementontle droitderecevoiruncréditcorrespondantàlafranchiseapplicableavantladated’entréeenvigueurducontratderemplacement;c)aucunepersonnequiétaitassuréeauxtermesdel’anciencontratnepeutêtreexclueauxtermesducontratderemplacementuniquementparcequ’ellenetravaillaitpasdefaitlejourdel’entréeenvigueurducontratderemplacement.
+
+175.(1)Saufdanslescasprévusauparagraphe(2),l’assureur,danslecasd’uncontratd’assurancecollective,établituncertificatouautredocumentquel’assuréremetàchaquepersonneassuréeparl’assurancecollectiveetdanslequelsontmentionnéslesrenseignementssuivants:a)lenomdel’assureuretuneidentificationsuffisanteducontrat;b)lemontantoulemodededéterminationdumontantde l’assurance de la personne
+
+Maintienenvigueurdesdroitsencasderempla­cement
+
+Contenuducertificatd’assurancecollective
+
+120
+
+Exemption
+
+Exceptionorreduction
+
+Exceptionorreductionaffectingonlyoneprovision
+
+Exceptionorreductioninendorsement,insertionorrider
+
+Misstatementofage
+
+Exemption
+
+Statutoryconditions
+
+Thecontract
+
+insured;(c)thecircumstancesunderwhichtheinsuranceterminates,andtherights,ifany,onsuchterminationofthegrouppersoninsuredandofany personinsured.
+
+(2)Thissectiondoesnotapplytoacontractofblanketinsuranceortoacontractofgroupinsuranceofanon-renewabletypeissuedforatermofsixmonthsorless.
+
+176.(1)Subjecttosection177andexceptasotherwiseprovidedin thissection,the insurer shallsetoutin thepolicyeveryexceptionorreductionaffectingtheamountpayableunderthecontract,eitherintheprovisionaffectedbytheexceptionorreduction,orunderaheadingsuchas"Exceptions"or"Reductions".
+
+(2)Wheretheexceptionorreductionaffectsonlyoneprovisioninthepolicy,itmustbesetoutinthatprovision.
+
+(3)Wheretheexceptionorreductioniscontainedinanendorsement,insertionorrider,theendorsement,insertionorridermust,unlessitaffectsallamountspayableunderthecontract,makereferencetotheprovisionsinthepolicyaffectedbytheexceptionorreduction.
+
+(4)Theexceptionorreductionmentionedinsection189neednotbesetoutinthepolicy.
+
+(5)Thissectiondoesnotapplytoacontractmadebyafraternalsociety.
+
+177.Subjecttosection178,theconditionssetoutinthissectionshallbedeemedtobepartofeverycontractotherthanacontractofgroupinsurance,andshallbeprintedonorattachedtothepolicyformingpartofsuchcontractwiththeheading"StatutoryConditions".
+
+STATUTORYCONDITIONS
+
+1.(1)Theapplication,thispolicy,anydocumentattachedtothispolicywhenissued,andanyamendment tothecontractagreed upon inwritingafterthepolicyisissued,constitutetheentirecontract,andnoagenthasauthoritytochangethecontractorwaiveanyofitsprovisions.
+
+assuréeparl’assurancecollectiveetdetoutepersonneassurée;c)lescirconstancesdanslesquellesl’assurance prendrafinetlesdroits,s’ilyalieu,qu’ontlapersonneassuréeparl’assurancecollectiveetlespersonnesalorsassurées.
+
+(2)Leprésentarticlenes’appliquepasàuncontratd’assuranceglobaleouàuncontratd’assurancecollectivenonrenouvelableétablipourunepériodemaximaledesixmois.
+
+Exception
+
+176.(1)Sousréserve del’article177etsaufdispositionExclusionoucontraireduprésentarticle,l’assureurindiquedanslaréductionpolicetouteexclusionouréductionserapportantaumontantpayableenvertuducontrat,soitdansladispositionconcernéeparl’exclusionoularéduction,soitsousletitre:«Exclusions»ou«Réductions».
+
+(2)L’exclusionoularéductionquineconcernequ’uneseuledispositiondelapolicedoitêtre indiquéedanscettedisposition.
+
+(3)Lorsquel’exclusionoularéductionestcontenuedansunavenantouunintercalaire,ceux-cidoivent,àmoinsdeserapporteràtouteslessommespayablesenvertuducontrat,renvoyerauxdispositionsdelapoliceviséesparl’exclusionoularéduction.
+
+(4)L’exclusionoularéductionmentionnéeàl’article189peuventnepasêtreindiquéesdanslapolice.
+
+(5)Leprésentarticlenes’appliquepasàuncontratconcluparunesociétédesecoursmutuel.
+
+177.Sousréservedel’article178,lesconditionsénoncéesdansleprésentarticlesontréputéesfairepartiedetoutcontratautrequ’uncontratd’assurancecollectiveetdoiventêtreimpriméessurlapolicefaisantpartiedececontratsouslarubrique«Conditionslégales»ouyêtreannexées.
+
+CONDITIONSLÉGALES
+
+1.(1)Laproposition,laprésentepolice,toutdocumentannexéàlaprésentepolicelorsdesonétablissementainsiquetoutemodificationaucontratconvenuparécritaprèsl’établissementdelapoliceconstituentlecontratintégral,etaucunagentn’estautoriséàlemodifierniàrenonceràunedesesdispositions.
+
+Idem
+
+Idem
+
+Déclarationinexacteconcernantl’âge
+
+Exception
+
+Conditionslégales
+
+Lecontrat
+
+121
+
+Waiver
+
+Copyofapplication
+
+Materialfacts
+
+Changesinoccupation
+
+Relationofearningstoinsurance
+
+(2)Theinsurershallbedeemednottohavewaivedanyconditionofthiscontract,eitherinwholeorinpart,unlessthewaiverisclearlyexpressedinwritingsignedbytheinsurer.
+
+(3)Theinsurer shall,upon request, furnishto theinsuredortoaclaimantunderthecontractacopyoftheapplication.
+
+2.Nostatementmadebytheinsuredorpersoninsuredatthe time ofapplication forthiscontractshallbeusedindefenceofaclaimunderortoavoidthiscontract unlessitiscontainedintheapplication oranyotherwrittenstatementsoranswersfurnishedasevidenceofinsurability.
+
+3.(1)Ifafterthecontractisissuedthepersoninsuredengagesforcompensationinanoccupationthat isclassifiedbytheinsurerasmore hazardous thanthatstatedinthiscontract,theliabilityunderthiscontractislimitedtotheamountthatthepremiumpaidwouldhavepurchasedforthemorehazardousoccupationaccordingtothelimits,classificationofrisksandpremiumratesinusebytheinsureratthetimethepersoninsuredengagedinthe morehazardousoccupation.
+
+(2)Ifthepersoninsuredchangeshisoccupationfromthatstatedinthiscontracttoanoccupationclassifiedbytheinsureraslesshazardousandtheinsurerissoadvised in writing,theinsurershalleither,(a)reducethepremiumrate;or(b)issueapolicyfortheunexpiredtermofthis contractatthe lower rateofpremiumapplicabletothelesshazardousoccupation,accordingtothelimits,classificationofrisks,andpremiumrates usedbytheinsureratthedateofreceiptofadviceofthechangeinoccupation,andshallrefundtotheinsuredtheamountbywhichtheunearnedpremiumonthiscontractexceedsthepremiumatthelowerratefortheunexpiredterm.
+
+4.Wherethebenefitsforlossoftimepayablehereunder,eitheraloneortogetherwithbenefitsforlossoftimeunderanothercontract,includingacontractof group accident insuranceorgroupsicknessinsuranceorofbothandalifeinsurancecontractprovidingdisabilityinsurance,exceedthemoneyvalue
+
+(2)L’assureurestprésumén’avoirrenoncéàaucuneconditionduprésentcontrat,entotalitéouenpartie,saufsilarenonciationestclairementexpriméedansunécritsignéparl’assureur.
+
+(3)Surdemande,l’assureurfournitàl’assuréouàunréclamantenvertuducontratunecopiedelaproposition.
+
+2.Aucunedéclarationfaiteparl’assuréouparunepersonneassuréelorsdelapropositionrelativeauprésentcontratnepeutêtreutiliséecommemoyendedéfenseàl’encontred’uneréclamationprésentéeenvertuduprésentcontratoupourannulerleprésentcontrat,àmoinsqu’ellenefiguredanslapropositionou dans une autredéclarationou réponseécritedonnéecommepreuved’assurabilité.
+
+3.(1)Si,aprèsl’établissementducontrat,lapersonneassuréeexerce,moyennantrémunération,uneprofessionclasséeparl’assureurcommeplusdangereusequecelleindiquéedansleprésentcontrat,l’obligationdécoulantduprésent contratestlimitéeaumontantauquellaprimeverséeauraitdonnédroitpourlaprofessionplusdangereuse,comptetenudeslimites,delaclassificationdesrisquesetdestauxdeprimeappliquésparl’assureuraumomentoùlapersonneassurées’estmiseàexercercetteprofessionplusdangereuse.
+
+(2)Silapersonneassuréeabandonnelaprofessionindiquéedansleprésentcontratpourexerceruneprofessionclasséeparl’assureurcommemoins dangereuseetsil’assureuren est aviséparécrit,celui-ci:a)soitréduitletauxdelaprime;b)soitétablitunepolicepourlapériode nonexpiréeduprésentcontratautauxdeprimeinférieureapplicableàl’activitémoinsdangereuse,comptetenudeslimites,delaclassificationdesrisquesetdestauxdeprimeappliquésparl’assureurà la datederéceptiondel’avisduchangementdeprofession;l’assureurrembourseàl’assuré l’excédentdelaprimenonacquisesurlaprimeautauxinférieurpourlapériodequiresteàcourir.
+
+Renonciation
+
+Copiedelaproposition
+
+Circonstancesconstitutives
+
+Changementdeprofession
+
+4.Lorsqueles indemnités d’arrêtdetravailgarantiesRapportsdesenvertuducontrat,soitseules,soitavecd’autresindemnitésd’arrêtdetravailgarantiesparunautrecontrat,ycomprisuncontratd’assurancecollectivecontrelamaladieoulesaccidents,ouuncontratd’assurance-viecomportantuneassurance-invalidité,
+
+revenusavecl’assurance
+
+122
+
+Terminationbyinsured
+
+Terminationbyinsurer
+
+Noticeandproofofclaim
+
+ofthetimeofthepersoninsured,theinsurerisliableonlyfor that proportionofthe benefits forlossoftimestatedinthispolicy thatthemoney valueofthe time ofthepersoninsuredbearstotheaggregateofthebenefitsforlossoftimepayableunderallsuchcontractsandtheexcesspremium,ifany,paidbytheinsuredshallbereturnedtohimbytheinsurer.
+
+5.TheinsuredmayterminatethiscontractatanytimebygivingwrittennoticeofterminationtotheinsurerbyregisteredmailtoitsheadofficeorchiefagencyintheNorthwestTerritories,orbydeliverythereoftoanauthorizedagentoftheinsurerintheTerritories,andtheinsurershall upon surrenderofthispolicyrefundtheamountofpremiumpaidinexcessoftheshortratepremiumcalculatedtothedateofreceiptofsuchnoticeaccordingtothetableinusebytheinsureratthetimeoftermination.
+
+6.(1)The insurermayterminatethiscontractatanytimebygivingwrittennoticeofterminationtotheinsuredandbyrefundingconcurrentlywiththegivingofnoticetheamountofpremiumpaidinexcessof theproratapremiumfortheexpiredtime.
+
+(2)Thenoticeofterminationmaybedeliveredtotheinsuredoritmaybesentbyregisteredmailtothelatestaddressoftheinsuredontherecordsoftheinsurer.
+
+(3)Wherethenoticeofterminationisdeliveredtotheinsured,fivedaysnoticeofterminationshallbegiven; whereitis mailedtotheinsured,tendaysnoticeofterminationshallbegiven,andthetendaysshallbeginonthedayfollowingthedateofmailingofnotice.
+
+7.(1)Theinsuredorapersoninsured,orabeneficiaryentitledtomakeaclaim,ortheagentofanyofthem,shall,(a)givewrittennoticeofclaimtotheinsurer,(i)bydeliverythereof,orbysendingitby registered mailtothehead officeorchiefagencyoftheinsurerintheNorthwestTerritories,or(ii)bydeliverythereoftoanauthorizedagentoftheinsurerintheTerritories,notlaterthanthirtydaysfromthedateaclaimarisesunderthecontracton
+
+sontsupérieuresauxrevenusdelapersonneassurée,l’assureurn’esttenu qu’àlaproportiondel’indemnitéd’arrêtdetravailgarantiedanslaprésentepolicequiestégaleaurapportentrelerevenudelapersonneassuréeetle montantglobaldesindemnités d’arrêtdetravailgarantiesparcescontrats;l’excédent,lecaséchéant,delaprimeacquittéeparl’assuréluiestremboursé.
+
+5.L’assurépeutàtoutmomentrésilierlecontratendonnantàl’assureurunavisécritderésiliationparcourrierrecommandéadresséàsonsiègesocialouàsonagenceprincipaledanslesTerritoiresduNord-Ouest,ouenleremettantàunagentautorisédel’assureurdanslesTerritoiresduNord-Ouest,auquelcasl’assureurremboursel’excédentdelaprimeacquittéesurlaprimeautauxàcourttermecalculéeselonlatableutiliséeparl’assureuraumomentdelarésiliationen fonctiondelapériode écoulée jusqu’à ladatederéceptiondel’avisderésiliation.
+
+6.(1)L’assureurpeutàtoutmomentrésilierlecontratendonnantàl’assuréun avisécritderésiliationet enluiremboursantenmêmetempsl’excédentdelaprimeacquittéesurlaprimecalculéeauproratadelapériodeécoulée.
+
+(2)L’avis de résiliationpeutêtre remis àl’assuréouenvoyéparcourrierrecommandéàladernièreadressedontilaavisél’assureur.
+
+(3)L’avisestde5jourslorsqu’ilestremisàl’assuré;ilestde10jourslorsqu’ilestenvoyéparcourrieràl’assuré;ledélaide10jourscommenceàcourirlejourdelamiseàlapostedel’avis.
+
+7.(1)L’assuré,unepersonneassurée,unbénéficiaireautorisé àprésenterune réclamation oulereprésentantdel’und’eux:a)aviseparécritl’assureurdesaréclamation:(i)soitenremettantl’avisouenl’envoyantparcourrierrecommandéausiègesocialouàl’agenceprincipaledel’assureurdanslesTerritoiresduNord-Ouest,(ii)soitenleremettantàunagentautorisédel’assureurdanslesTerritoiresduNord-Ouest,auplustard30joursaprèsladateà
+
+Résiliationparl’assuré
+
+Résiliationparl’assureur
+
+Avisetpreuvedesinistre
+
+123
+
+Failuretogivenoticeorproof
+
+Insurertofurnishformsforproofofclaim
+
+Rightsofexamination
+
+accountofanaccident,sicknessordisability;(b)withinninetydaysfromthedateaclaimarises underthecontractonaccountofanaccident,sicknessordisability,furnishtotheinsurersuchproofasisreasonablypossibleinthecircumstancesofthehappeningoftheaccidentorthecommencementofthesicknessordisability,andthelossoccasionedthereby,therightoftheclaimanttoreceivepayment,hisage,andtheageofthebeneficiaryifrelevant;and(c)ifsorequiredbytheinsurer,furnishasatisfactorycertificateastothecauseornatureoftheaccident,sicknessordisabilityforwhichclaimmaybemadeunderthecontractandastothedurationofsuchdisability.
+
+(2)Failuretogivenoticeofclaimorfurnishproofofclaimwithinthetimeprescribedbythisstatutoryconditiondoes notinvalidate theclaimif thenoticeorproofisgivenorfurnishedassoonasreasonablypossible,andinnoeventlaterthanoneyearfromthedateoftheaccidentorthedatea claim arises under thecontractonaccountofsicknessordisabilityifitisshownthatitwasnotreasonablypossibletogivenoticeorfurnishproofwithinthetimesoprescribed.
+
+8.Theinsurershallfurnishformsforproofofclaimwithinfifteendaysafterreceivingnoticeofclaim,butwheretheclaimanthasnotreceivedtheformswithinthattimehemaysubmithisproofofclaim intheformofawrittenstatementofthecauseornatureoftheaccident,sickness ordisabilitygiving rise to the claimandoftheextentoftheloss.
+
+9.Asa condition precedenttorecoveryofinsurancemoneyunderthiscontract,(a)theclaimant shall afford tothe insurer anopportunitytoexaminethepersonof thepersoninsuredwhenandsooftenasitreasonablyrequireswhiletheclaimhereunderispending;and
+
+laquelleundroitderéclamationprendnaissancesouslerégimeducontratenraisond’unaccident,d’unemaladieoud’uneinvalidité;b)dansles90joursaprèsladateàlaquelleprendnaissanceundroitderéclamationsouslerégimeducontratenraisond’unaccident,d’unemaladieoud’uneinvalidité,fournitàl’assureurlespreuvesqui,vulescirconstances,peuventêtrefourniesdel’accidentou ducommencementdelamaladieoudel’invalidité,etdesdommagesquienrésultent,dudroitduréclamantàl’indemnité,desonâgeetdel’âgedubénéficiaire,s’ilyalieu;c)sil’assureurl’exige,fournituncertificatsatisfaisantdela cause oudelanaturedel’accident,dela maladieoudel’invaliditéquifaitl’objetdelaréclamationenvertuducontrat,etdeladuréedel’invalidité.
+
+(2)Ledéfautdedonneravisdusinistreoud’enfournirlapreuvedansledélaiprévuparlaprésenteconditionlégalen’invalidepaslademande,sil’avisestdonnéoula preuvefourniedèsqu’ilestraisonnablementpossibledelefaireet,enaucuncas,aprèsl’expirationd’uneannéesuivantladatedel’accidentouladateàlaquelleledroitderéclameraprisnaissanceenvertuducontratparsuited’unemaladieoud’uneinvalidité,s’ilestdémontréqu’iln’étaitpasraisonnablementpossiblededonnerl’avisoudefournirlapreuvedansledélaiprévu.
+
+8.L’assureurfournitlesformulairesdepreuvedesinistredansles 15 jours suivantlaréceptiondel’avisdusinistre;toutefois,lorsqueleréclamantn’apasreçucesformulairesdanscedélai,ilpeutproduirelapreuvedesinistresouslaformed’unedéclarationécriteénonçantlacauseoulanaturedel’accident,delamaladieoudel’invaliditéquiadonnélieuàlaréclamation,etl’importancedesdommages.
+
+9.Commeconditionpréalableauversementdessommesassuréesprévuparlecontrat:a)leréclamantpermetàl’assureurd’examinerlapersonneassuréeaussisouventqu’illedemande,dansdeslimitesraisonnables,tantque lademanded’indemnitéesteninstancederèglement;
+
+Défautdenotificationoudepreuve
+
+Formulairesdepreuvedesinistre
+
+Droitd’examen
+
+124
+
+Whenmoneyspayableotherthanforlossoftime
+
+Whenlossoftimebenefitspayable
+
+Limitationofactions
+
+Omissionorvariationofstatutoryconditions
+
+Omission:statutoryconditions3,4,9
+
+Omission:statutoryconditions5,6
+
+Variationofcertainstatutoryconditions
+
+(b)inthecaseofdeath ofthepersoninsured,theinsurermayrequireanautopsysubjecttoanylawoftheapplicablejurisdictionrelatingtoautopsies.
+
+10.Allmoneypayableunderthiscontract,otherthanbenefitsforlossoftime,shallbepaidbytheinsurerwithinsixtydaysafterithasreceivedproofofclaim.
+
+11.The initialbenefitsforlossoftimeshallbepaid bytheinsurerwithinthirtydaysafterithasreceivedproofofclaim,andpaymentshallbemadethereafterinaccordancewiththetermsofthecontractbutnotlessfrequentlythanonceineachsucceedingsixtydayswhile theinsurer remainsliable for thepaymentsifthepersoninsuredwhenrequiredtodo sofurnishesbeforepaymentproofofcontinuingdisability.
+
+12.Anactionor proceeding againsttheinsurerfortherecoveryofaclaimunderthiscontractshallnotbecommencedmorethantwoyearsafterthedatetheinsurancemoneybecamepayableorwouldhavebecomepayableifithadbeenavalidclaim.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2), [(6)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec6_smooth).
+
+178.(1)Whereastatutoryconditionisnotapplicabletothebenefitsprovidedbythecontractitmaybeomittedfromthepolicyorvariedsothatitwillbeapplicable.
+
+(2)Statutoryconditions3,4and9maybeomittedfromthepolicyifthecontractdoesnotcontainanyprovisionsrespectingthemattersdealtwithinthosestatutoryconditions.
+
+(3)Statutoryconditions5and6shallbeomittedfromthepolicyifthecontractdoesnotprovidethatitmaybe terminated by the insurerbefore the expirationofanyperiodforwhichapremiumhasbeenaccepted.
+
+(4)Statutoryconditions3to6and 9,andsubjecttotherestrictioninsubsection(5),statutorycondition7,maybevariedbut,ifbyreasonofthevariation the contract islessfavourableto theinsured,apersoninsuredorabeneficiarythanitwouldbeifthestatutoryconditionhadnotbeenvaried,theconditionshallbedeemedtobeincludedinthepolicyintheforminwhichitappearsinsection177.
+
+b)encasdedécèsdelapersonneassurée,l’assureurpeutexigeruneautopsieconformémentauxloisapplicables.
+
+10.Touteslessommespayablesenvertuduprésentcontrat,àl’exceptiondesprestationsdepertederevenus,sontverséesparl’assureurdansles60jourssuivantlaréceptiondelapreuvedesinistre.
+
+11.Lesprestationsinitialespourpertederevenussontverséesparl’assureurdansles30jourssuivantlaréceptiondelapreuvedesinistre;lepaiementestparlasuiteeffectuéen conformité avec les dispositions ducontrat,aumoinsunefoisaucoursdechaquepériodesubséquentede60jours,tantquel’assureurdemeuretenud’effectuerdesversements,silapersonneassurée,surdemande, fournitavantleversementlapreuvequesoninvaliditésubsiste.
+
+12.L’actionoulaprocédureenrecouvrementd’indemnitésauprèsdel’assureurautitreduprésentcontratseprescritpardeuxansàcompterdeladateàlaquellelessommesassuréessontdevenuespayablesouleseraientdevenuessilaréclamationavaitétévalide.LTN-O2011,ch.16,art.12(2).
+
+178.(1)Laconditionlégale quines’appliquepasauxindemnitésprévuesparuncontratpeutêtreomisedelapoliceoumodifiéedefaçonàdevenirapplicable.
+
+(2)Lesconditionslégales3,4et9peuventêtreomisesdelapolicesilecontratnecontientaucunedispositionrelativeauxquestionsquiysonttraitées.
+
+(3)Lesconditionslégales5et6sontomisesdelapolicesile contratnestipulepasqu’ilpeutêtrerésiliéparl’assureuravantl’expirationdelapériodepourlaquelleuneprimeaétéacceptée.
+
+(4)Lesconditionslégales3à6et9et,sousréservedelarestrictionmentionnéeauparagraphe(5),laconditionlégale7peuventêtremodifiées; toutefois,si,enraisondetellesmodifications,lecontratestmoinsfavorableàl’assuré,àunepersonneassuréeouàunbénéficiairequ’ilneleseraitsilaconditionn’avaitpasétémodifiée,elleestréputéeêtreinclusedanslapoliceensaversionprévueàl’article177.
+
+Délaidepaiementdessommesnonliéesauxpertesderevenus
+
+Délaideversementdesindemnitésdepertederevenus
+
+Prescription
+
+Omissionoumodificationdesconditionslégales
+
+Omission:conditionslégales3,4et9
+
+Omission:conditionslégales5et6
+
+Modificationdecertainesconditionslégales
+
+125
+
+Novariationincertaincircumstances
+
+Varyingtimeperiods
+
+Titleofstatutorycondition
+
+Contractbyfraternalsociety
+
+Thecontract
+
+Noticeofstatutoryconditions
+
+Terminationfornon-paymentofinitialorrenewalpremium
+
+(5)Clauses(a)and(b)ofsubcondition(1)ofstatutorycondition7maynotbevariedinpoliciesprovidingbenefitsforlossoftime.
+
+(6)Statutoryconditions 10and11maybe variedbyshorteningtheperiodsoftimementionedinthosestatutoryconditions,andstatutorycondition12 maybevariedbylengtheningtheperiodoftimementionedinthatstatutorycondition.
+
+(7)Thetitleofastatutoryconditionshallbereproducedinthepolicyalongwiththestatutorycondition,butthenumberof a statutory conditionmaybeomitted.
+
+(8)Inthecaseofacontractmadebyafraternalsociety,(a)thefollowingshallbeprintedoneverypolicyinsubstitutionforsubcondition(1)ofstatutorycondition1:
+
+1.(1)Thispolicy,theActorinstrumentofincorporationofthesociety,itsconstitution,bylawsandrules,andthe amendments made from time to timetoanyofthem,the applicationfor the contractandthemedicalstatementoftheapplicant,constitutetheentirecontract,andnoagenthasauthoritytochangethecontractorwaiveanyofitsprovisions.
+
+(b)statutorycondition5shallnotbeprintedonthepolicy.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec4_smooth)2011,c.16,s.12(4).
+
+179.Inthecaseofapolicyofaccidentinsuranceofanon-renewabletypeissuedforatermofsixmonthsorlessorinrelationtoaticketoftravel,thestatutoryconditionsneednotbeprintedonorattachedtothepolicyifthepolicycontainsthefollowingnoticeprintedinconspicuoustype:
+
+Notwithstandinganyotherprovisionofthiscontract,thiscontractissubjecttothestatutoryconditionsintheInsuranceActrespectingcontractsofaccidentinsurance.
+
+180.(1)Whereapolicyevidencingacontractoracertificateevidencingtherenewalofacontractisdeliveredtotheinsuredandtheinitialpremiumor,inthecaseofa renewal certificate,the renewal premium,hasnotbeenfullypaid,(a)thecontractortherenewal ofthecontractevidencedbythecertificateis asbinding
+
+(5)Lesalinéas(1)a)etb) de laconditionlégale7nepeuventêtremodifiésdanslespolicesquiaccordentdesprestationspourpertederevenus.
+
+(6)Lesconditionslégales10et11peuventêtremodifiéesendiminuantlesdélaisquiysontmentionnés;laconditionlégale12peutêtremodifiéeenprorogeantledélaiquiyestprévu.
+
+(7)Letitred’uneconditionlégaleestreproduitdanslapoliceavantlaconditionlégale,maissonnuméropeutêtreomis.
+
+(8)Danslecasd’uncontratconcluparunesociétédesecoursmutuel:a)ladispositionquisuitestimpriméesurchaquepoliceenremplacementduparagraphe(1)delaconditionlégale1:
+
+1.(1)Laprésentepolice,laloiouautredocumentconstitutifdelasociété,sesstatuts,règlesetrèglementsadministratifs,ainsiquelesmodificationsquileursontapportées,lapropositiondecontratetlerapportmédicalduproposantconstituentlecontratintégral,etnulagentn’estautoriséàmodifierlecontratouàrenonceràunedesesdispositions.
+
+b)laconditionlégale5nedoitpasêtreimpriméesurlapolice.
+
+179.Danslecasd’unepoliced’assurancecontrelesaccidentsdutypenonrenouvelableétabliepouruneduréedesixmoisoumoins,ouàl’égardd’untitredetransport,iln’estpasnécessairequelesconditionslégalessoientimpriméessurlapoliceouysoientannexées,silapolicecontientl’avissuivantimpriméengroscaractères:
+
+Pardérogationàtouteautredispositionci-incluse,leprésentcontratestrégiparlesconditionslégalesdelaLoisurlesassurancesconcernantlescontratsd’assurance-accident.
+
+180.(1)Lorsquelapoliceconstatantlecontratoulecertificatderenouvellementducontratestremisàl’assuréetquelaprimeinitialeouderenouvellementn’apasétépayéeenentier:a)lecontratousonrenouvellementliel’assureurcommesilaprimeavaitétépayée,mêmesilaremiseaétéeffectuée
+
+Idem
+
+Idem
+
+Titred’uneconditionlégale
+
+Contratconcluparunesociétédesecoursmutuel
+
+Lecontrat
+
+Avisdesconditionslégales
+
+Finducontratencasdenon­paiement
+
+126
+
+Exemption
+
+Rightwherepremiumunpaid
+
+Wherechequeornoteforpremiumnotpaid
+
+Exemption:contractofgroupinsurance
+
+Exemption:contractmadebyfraternalsociety
+
+Insurableinterest
+
+ontheinsurer as ifthepremiumhadbeenpaidalthoughdeliveredbyanofficeroranagentoftheinsurerwhodidnothaveauthoritytodeliver it; and(b)thecontractmaybeterminatedforthenon-paymentofthepremiumbytheinsureron10daysnoticeofterminationgiveninwritingtotheinsuredandmailedpostageprepaidandregistered to the lastaddressoftheinsuredontherecordsoftheinsurer,andthe10daysshallbeginonthedayfollowingthedateofmailingthenotice.
+
+(2)Thissectiondoesnotapplytoacontractofgroupinsuranceortoacontractmadebyafraternalsociety.
+
+181.(1)Aninsurermay(a)deductunpaidpremiumsfromanamountthatit isliabletopayunderacontract; or(b)suetheinsuredforunpaidpremiums.
+
+(2)Whereachequeorotherbillofexchangeorapromissorynoteorotherwrittenpromisetopayisgivenforthe wholeor partof apremiumandpaymentisnot madeaccordingtoitstenor,the premiumorpartofthepremiumshallbedeemednevertohavebeenpaid.
+
+(3)Paragraph(1)(a)doesnotapplytoacontractofgroupinsurance.
+
+(4)Thissectiondoesnotapplytoacontract madebyafraternalsociety.
+
+182.Withoutrestrictingthemeaningoftheexpression"insurableinterest",apersonhasaninsurableinterestinhis orherownlifeandwell-beingandinthelifeandwell-beingof(a)hisorherchildorgrandchild;(b)hisorherspouse;(c)anypersononwhomheorsheiswhollyorinpartdependentfor,orfromwhomheorsheisreceiving,supportoreducation;(d)hisorherofficeroremployee;and(e)anypersoninwhomheorshehasapecuniaryinterest.
+
+parun dirigeantouunagentdel’assureurquin’yétaitpasautorisé;b)lecontratpeutêtrerésiliéparl’assureurpourdéfautdepaiementdelaprimeaprèsqu’unpréavisderésiliationde10 joursaété donnéparécrit àl’assuréetposté,enrecommandé,àladernièreadressequel’assuréadonnéeàl’assureur,le délaide10jourscommençantàcouriràcompterdujourquisuitladatedelamiseàlapostedel’avis.
+
+(2)Leprésentarticlenes’appliquepasàuncontratd’assurancecollectiveouàuncontratconcluparunesociétédesecoursmutuel.
+
+181.(1)Unassureurpeut:a)déduirelesprimesnonpayéesd’unesomme qu’ilest tenu d’acquitterenvertuducontrat;b)poursuivrel’assuréenrecouvrementdesprimesimpayées.
+
+(2)Lorsqu’unchèqueouautrelettredechange,unbilletàordreouautrepromesseécritedepayerestdonnépourlatotalitéouunepartied’uneprimeetquele paiement n’est paseffectué selonsa teneur,laprimeoulapartiedecelle-ciestréputéen’avoirjamaisétépayée.
+
+(3)L’alinéa(1)a)nes’appliquepasàuncontratd’assurancecollective.
+
+(4)Leprésentarticlenes’appliquepasàuncontratconcluparunesociétédesecoursmutuel.
+
+182.Sansqu’ilsoitportéatteinteàlagénéralitédel’expression«intérêtassurable»,unepersonneaunintérêtassurablesursaproprevieetàl’égarddesonproprebien-êtreainsiquesur lavie et le bien-êtredespersonnessuivantes:a)sonenfantoupetit-enfant;b)sonconjoint;c)toutepersonnedontelledépend,entotalitéouenpartie,poursonéducationousasubsistance,oudequiellereçoituneéducationousasubsistance;d)sondirigeantousonemployé;
+
+Exception
+
+Droitsdel’assureur
+
+Chèquesansprovision
+
+Exception
+
+Idem
+
+Intérêtassurable
+
+127
+
+Lackofinsurableinterest
+
+Exceptions
+
+Consenttoinsurance
+
+Capacity:minor
+
+Capacity:minorbeneficiary
+
+Dutytodisclose
+
+Failuretodisclose
+
+183.(1)Subjecttosubsection(2),whereat thetimeacontract would otherwisetakeeffecttheinsuredhas noinsurableinterest,thecontractisvoid.
+
+(2)Acontractisnotvoidforlackofinsurableinterest(a)ifitisacontractofgroupinsurance;or(b)ifthepersoninsuredhasconsentedinwritingtotheinsurance.
+
+(3)Wherethepersoninsuredisunder 16 yearsofage,consenttotheinsurancemaybegivenbyoneoftheparentsofthepersoninsuredorbyapersonstandingintheplaceofaparent forthepersoninsured.SNWT1998,c.17,s.15;[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2014-c-31/latest/snwt-2014-c-31.html#sec5subsec9_smooth)2014,c.31,s.5(9).
+
+POLICIESONLIVESOFMINORS
+
+184.(1)Exceptinrespectofhisorherrightsasbeneficiary, apersonwhohasattained16yearsofagehasthe capacityofapersonwhohas attained 19yearsofage(a)tomakeanenforceablecontract;and(b)inrespectofacontract.
+
+(2)Abeneficiarywhohasattained18yearsofagehasthecapacityofapersonwhohasattained19years ofageto receiveinsurancemoney payabletothebeneficiaryandtogiveadischargetotheinsurerforthatmoney.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2014-c-31/latest/snwt-2014-c-31.html#sec5subsec10_smooth)2014,c.31,s.5(10), [(11)](https://www.canlii.org/en/nt/laws/astat/snwt-2014-c-31/latest/snwt-2014-c-31.html#sec5subsec11_smooth).
+
+MISREPRESENTATIONANDNON-DISCLOSURE
+
+185.(1)Anapplicantforinsuranceonhisorherownbehalfandonbehalfof eachpersontobeinsured,andeachpersontobeinsured, shalldisclosetotheinsurerinanyapplication,onamedicalexamination,ifany,andinanywrittenstatementsoranswersprovidedasevidenceofinsurability,everyfactwithinhisorherknowledgethatismaterialtotheinsuranceandisnotsodisclosedbytheother.
+
+(2)Subjecttosections186to189,afailuretodiscloseoramisrepresentationofafactreferredtoinsubsection(1)rendersacontractvoidablebytheinsurer.
+
+e)toutepersonneàl’égarddelaquelleellepossèdeunintérêtpécuniaire.
+
+183.(1)Sousréserveduparagraphe(2), le contratestnullorsquel’assurénepossède aucun intérêtassurableà ladateà laquelle le contrat entrerait normalementenvigueur.
+
+(2)Uncontratn’estpasnulpourdéfautd’intérêtassurable:a)s’ils’agitd’uncontratd’assurancecollective;b)sila personne assuréeaconsentiparécritàl’assurance.
+
+(3)Lorsquelapersonneassuréeestâgéedemoinsde16ans,leconsentementàl’assurancepeutêtredonnéparsonpère,samèreouparunepersonnequiluitientlieudepèreoudemère.
+
+POLICESSURLAVIEDESMINEURS
+
+184.(1)Saufàl’égarddesesdroitsàtitredebénéficiaire,lemineurâgéd’aumoins16ansalacapacitéd’unepersonnede19ansàl’égard:a)delaconclusiond’un contrat exécutoire;b)d’uncontrat.
+
+(2)Lebénéficiaireâgéd’aumoins18ansalacapacitéd’unepersonnede19anspourrecevoirdessommesassuréesquiluisontpayablesetpourendonnerquittance.
+
+ASSERTIONSINEXACTESETOMISSIONS
+
+185.(1)Leproposantquiprésenteunepropositiond’assurancepourlui-mêmeetpourlecomptedechaqueassurééventuel,etchaqueassurééventueldéclarentchacunàl’assureurdanslaproposition,lorsdel’examenmédical,lecaséchéant,etdanslesdéclarationsécritesoulesréponsesdonnéesàtitredepreuved’assurabilitétouslesfaitsdontilsontconnaissance etquisontessentielsàl’appréciationdurisqueetnesontpasdéclarésparl’autre.
+
+(2)Sousréservedesarticles186à189,l’omissiondedéclareruntelfaitoul’assertioninexacteàsonégardrendlecontratannulableparl’assureur.
+
+Absenced’intérêtassurable
+
+Exception
+
+Consentement
+
+Capacité:mineurs
+
+Capacité:bénéficiairesmineurs
+
+Déclarationobligatoire
+
+Réticence
+
+128
+
+Groupinsurancefailuretodisclose
+
+Incontest-ability
+
+Exemption
+
+Applicationofincontest-abilitytoreinstatement
+
+Pre-existingconditions
+
+(3)In thecaseof a contract of groupinsurance, afailuretodiscloseoramisrepresentationofafactreferredtoinsubsection(1)withrespecttoagrouppersoninsuredorpersoninsuredunderthecontractdoesnotrenderthecontractvoidable,butifevidenceofinsurabilityisspecificallyrequestedbytheinsurer,theinsuranceinrespectofsuchapersonis,subjecttosection186,voidablebytheinsurer.
+
+186.(1)Subjecttosection189andexcept as providedinsubsection(2),(a)whereacontract,includingrenewalsofit,exceptacontractofgroupinsurance,hasbeenineffectcontinuouslyfortwoyearswithrespecttoapersoninsured,afailuretodiscloseoramisrepresentationofafactwithrespecttothatpersonrequiredbysection185tobediscloseddoesnot,exceptinthecaseoffraud,renderthecontractvoidable;and(b)whereacontractofgroupinsurance,includingrenewalsofthecontract,hasbeen in effectcontinuouslyfortwoyearswithrespecttoagrouppersoninsured orapersoninsured,afailuretodiscloseora misrepresentation of a factwithrespecttothatgrouppersoninsuredorpersoninsuredrequiredbysection185tobediscloseddoesnot,exceptinthecaseoffraud,renderthecontractvoidablewithrespecttothatgrouppersoninsuredorpersoninsured.
+
+(2)Whereaclaimarisesfromalossincurredoradisabilitybeginningbeforeacontract,includingrenewalsofthecontract,hasbeeninforcefortwoyears withrespecttothepersoninrespectofwhomtheclaimismade,subsection(1)doesnotapplytothatclaim.
+
+187.Sections185and186apply,withsuchmodificationsasthecircumstancesrequire,toafailureatthetimeofreinstatementofacontracttodiscloseamisrepresentationatthattime,andtheperiodoftwoyearstowhichreferenceismadeinsubsection186(2)commencestorun,inrespectofareinstatement,fromthedateofreinstatement.
+
+188.Wherea contractcontainsageneralexceptionorreductionwithrespecttopre-existingdiseaseorphysicalconditionsandthepersoninsuredorgrouppersoninsuredsuffersorhassufferedfromadiseaseorphysicalconditionthatexistedbeforethedatethe
+
+(3)Danslecasd’uncontratd’assurancecollective,l’omissionoul’assertioninexacted’untelfait,relatifàunepersonneassuréeparuneassurancecollectiveoud’unepersonneassuréepar lecontratnerendpaslecontratannulable;toutefois,siunepreuved’assurabilitéestexpressémentexigéeparl’assureur,l’assuranceestannulableparcedernier,sousréservedel’article186,àl’égarddecettepersonne.
+
+186.(1)Sousréservedel’article189etduparagraphe(2):a)lorsqu’uncontratoulerenouvellementd’uncontratautrequ’uncontratd’assurancecollectiveaétécontinuellementenvigueurpendantdeuxansàl’égardd’unepersonneassurée,l’omissionoul’assertioninexacteàl’égardd’unfaitrelatifàcettepersonneetdontl’article185exigeladéclarationnerendpaslecontratannulable,saufencasdefraude;b)lorsqu’uncontratd’assurancecollectiveoulerenouvellementd’untelcontrataétécontinuellementenvigueurpendantdeuxansàl’égardd’unepersonneassuréeparuneassurancecollectiveoud’unepersonneassurée,l’omissionoul’assertioninexacteàl’égardd’unfaitrelatifàcettepersonneetdontl’article85exigeladéclarationnerendpaslecontratannulableàleurégard,saufencasdefraude.
+
+(2)Leparagraphe(1)nes’appliquepasàlaréclamationquiestprésentéeàlasuited’unsinistrequisurvientoud’uneinvaliditéquicommenceavantquelecontrat,originalourenouvelé,n’aitétéenvigueurpendantdeuxansàl’égarddelapersonnepourlaquellelaréclamationestprésentée.
+
+187.Lesarticles185et186 s’appliquent, compte tenudesadaptationsdecirconstance,àl’omission,faiteàladatederemiseenvigueurd’uncontrat,dedéclarerl’existenced’uneassertioninexacte,etlapériodededeuxansmentionnée auparagraphe186(2)commenceàcourir,relativementàlaremiseenvigueur,àpartirdeladatedelaremiseenvigueur.
+
+188.Lorsque le contratcontientuneexclusionouuneréductiongénéralevisantunemaladieouunétatphysiquepréexistantetquelapersonneassuréeoulapersonneassuréeparuneassurancecollectivea ou aeuunemaladie,souffreouasouffertd’unétatphysique
+
+Assurancecollective
+
+Incontesta­bilité
+
+Exception
+
+Applicationàlaremiseenvigueur
+
+Conditionpréexistante
+
+129
+
+Misstatementofage
+
+Misstatementofageingroupinsurance
+
+Trueage
+
+Idem
+
+contractcameintoforcewithrespecttothatpersonandthediseaseorphysicalcondition isnotbynameorspecificdescriptionexcludedfromtheinsurancerespectingthatperson,(a)thepriorexistenceofthediseaseorphysicalconditionisnot,exceptinthecaseoffraud,availableasadefenceagainstliabilityinwholeorinpartforalossincurredoradisabilitybeginningafterthecontract,includingrenewalsofthecontract,hasbeeninforcecontinuouslyfortwoyearsimmediatelybeforethedateoflossincurredorcommencementofdisability with respecttothatperson;and(b)theexistenceofthediseaseorphysicalconditionisnot,exceptinthecaseoffraud,availableasadefenceagainstliabilityinwholeorinpartifthediseaseorphysicalcondition wasdisclosedintheapplicationforthecontract.
+
+189.(1)Subjecttosubsections(2)and(3),iftheageof the personinsuredhasbeenmisstatedtotheinsurerthen,attheoptionoftheinsurer,either,(a)thebenefitspayableunderthecontractshallbeincreasedordecreasedtotheamountthatwouldhave been providedforthesamepremiumatthecorrectage;or(b)thepremiummaybeadjustedinaccordancewiththecorrectageasof thedatethepersoninsuredbecameinsured.
+
+(2)Inthecaseof acontractof group insurance, ifthereisamisstatementtotheinsureroftheageofagrouppersoninsuredorpersoninsured,theprovisions,ifany,ofthecontractwithrespecttoageormisstatementofageapply.
+
+(3)Wheretheageofapersonaffectsthecommencementorterminationoftheinsurance,thetrueagegoverns.
+
+(5)Ifadesignationiscontainedinaninstrumentthatpurportstobeawillandsubsequentlytheinstrument,ifithadbeenvalidasawillwouldhavebeenrevokedbyoperationoflaworotherwise,thedesignationisrevokedasaresultofthat.
+
+quiexistaitavantladated’entréeenvigueurducontratvisantcettepersonneetquelamaladieoul’étatphysiquenesont pasexclusnommémentouaumoyend’unedescriptionprécisedel’assurancecouvrantcettepersonne:a)l’existenceantérieuredelamaladie ou del’étatphysiquenepeut,saufencasdefraude,êtreinvoquéeendéfensecontrel’obligationtotaleoupartiellerelativeàlapertequiaétésubieouàl’invaliditéquiacommencéaprèsquelecontrat,originalourenouvelé,aétécontinuellementenvigueurpendantlesdeuxansquiprécèdentimmédiatementladatedelaperteoududébutdel’invaliditérelatifsàcettepersonne;b)l’existencedelamaladieoudel’étatphysiquenepeut,saufencasdefraude,êtreinvoquéeendéfensecontrel’obligationtotaleoupartielle,silamaladieoul’étatphysiqueétaitdéclarédanslapropositiond’assurance.
+
+189.(1)Sousréservedesparagraphes(2)et(3),sil’âgeexactdelapersonneassuréen’apasétécorrectementdéclaréàl’assureur,celui-cipeut:a)soitmajorerouréduirelesprestationspayablesauxtermesducontrataumontantquiauraitétépayablepourunemêmeprimeàl’âgeexact;b)soitrajusterlaprimed’aprèsl’âgeexactàladateàlaquellelapersonneassuréeestdevenueassurée.
+
+(2)Si,dansuncontratd’assurancecollective,l’âgeexactd’unepersonneassuréeparl’assurancecollective oud’unepersonneassurée n’estpasdéclarécorrectementàl’assureur,lesdispositionsducontrat,s’ilyalieu,relativesàl’âgeouàladéclarationd’unâgeinexactsontapplicables.
+
+(3)Lorsquel’âged’unepersonneauneffetsurlecommencementoulafind’uneassurance,l’âgevéritableprévaut.
+
+(5)Lorsqu’unedésignationestcontenuedansunactejuridiqueprésenté commeuntestamentetqueparla suite,sil’acteavaitétévalideàtitredetestamentilauraitétérévoqué,notammentparl’effetdelaloi,ladésignationestrévoquéedecefait.
+
+Déclarationinexacteconcernantl’âge
+
+Déclarationinexactedansuncontratd’assurancecollective
+
+Âgevéritable
+
+Idem
+
+130
+
+BENEFICIARIESDesignationof190.(1)Unlessotherwiseprovidedinthepolicy,anbeneficiaryinsuredmayinacontractorby adeclaration designatehisorherpersonalrepresentativeorabeneficiarytoreceiveinsurancemoneypayable inthe eventofdeathbyaccidentandmayfromtimetotimealterorrevokethedesignationbydeclaration.
+
+Designationininvalidwill
+
+Priorities
+
+Revocationofdesignationinwill
+
+Revocationofdesignationinpurportedwill
+
+Deemingprovision
+
+Deathofbeneficiary
+
+Righttosue
+
+(2)Adesignationinaninstrumentpurportingtobeawillisnotineffectivebyreasononlyofthefactthattheinstrumentisinvalidasawillorthatthedesignationisinvalidasabequestunderthewill.
+
+(3)Adesignationinawillisofnoeffectagainstadesignationmadelaterthanthemakingofthewill.
+
+(4)Ifadesignationiscontainedinawillandsubsequentlythewillisrevokedbyoperationof law orotherwise,thedesignationisrevokedasaresultofthat.
+
+(5)Ifadesignationiscontainedinaninstrumentthatpurportstobeawillandsubsequentlytheinstrument,ifithadbeenvalidasawillwouldhavebeenrevokedbyoperationoflaworotherwise,thedesignationisrevokedasaresultofthat.
+
+191.(1)Adesignationinfavourofthe"heirs","next-of-kin"or"estate",ortheuseofwordsofsimilarimportinadesignationshallbedeemedtobeadesignationofthepersonalrepresentative.
+
+(2)Whereabeneficiarypredeceasesthepersoninsuredorgrouppersoninsured,asthecasemaybe,andnodispositionoftheshareofthedeceasedbeneficiaryintheinsurancemoneyisprovidedinthecontractorbydeclaration,theshareispayable(a)tothesurvivingbeneficiary;(b)ifthereismorethanonesurvivingbeneficiary,tothesurvivingbeneficiariesinequalshares;or(c)ifthereisnosurviving beneficiary,totheinsuredorgrouppersoninsured,asthecasemaybe,orhisorherpersonalrepresentative.
+
+(3)Abeneficiarydesignatedundersection190mayonthedeathbyaccidentofthepersoninsuredorgrouppersoninsuredenforceforhisorherownbenefit,andatrusteeappointedundersection192mayenforceastrustee,thepaymentofinsurancemoneypayabletohimorher,andthepaymenttothe
+
+BÉNÉFICIAIRES190.(1)Saufdispositioncontrairedelapolice,unassurépeut,dansuncontratouparunedéclaration,désignersonreprésentantpersonnelouunbénéficiaireàtitrededestinatairedessommes assuréespayablesencasdedécèsaccidenteletmodifierourévoquerladésignationparunedéclaration.
+
+(2)Ladésignationcontenuedansunactejuridique présenté commeuntestament n’est pasnulleduseulfaitque l’acte n’estpasuntestamentvalideouqueladésignationneconstituepasunlegsvalideenvertudutestament.
+
+(3)La désignationfaitedansuntestamentnepeutêtreopposéeàcellequiluiestpostérieure.
+
+(4)Ladésignationcontenuedansuntestamentquiestannulé,notammentparl’effetdelaloi,estannuléedecefait.
+
+(5)Lorsqu’unedésignationestcontenuedansunacte juridique présenté commeun testament etqueparla suite,sil’acteavaitétévalideàtitredetestamentilauraitétérévoqué,notammentparl’effetdelaloi,ladésignationestrévoquéedecefait.
+
+191.(1)Ladésignation faiteenfaveurdes «héritiers»,du«parentleplusproche»oudela«succession»del’assuré,oul’emploidansladésignationdetermesayantlemêmesenssontréputésconstituerunedésignationdureprésentantpersonneldel’assuré.
+
+(2)Lorsqu’unbénéficiairedécèdeavantlapersonneassuréeouunepersonneassuréeparuneassurancecollective,selonlecas,etquelecontratouuneautredéclarationnecontientaucunedispositionconcernantl’affectationdelapartiedessommesassuréesquiluirevenait,cettepartieestpayable:a)aubénéficiairesurvivant;b)s’ilexisteplusd’unbénéficiairesurvivant,àceux-ciàpartégale;c)s’iln’existeaucunbénéficiairesurvivant,àl’assuréouàlapersonneassuréeparl’assurance-collective,selonlecas,ouàsonreprésentantpersonnel.
+
+(3)Unbénéficiairedésignéenapplicationdel’article190peut,lorsdudécèsaccidenteldelapersonneassuréeoudelapersonneassuréeparl’assurancecollective,àsonprofit,etunfiduciairenomméconformémentàl’article192,ensaqualitédefiduciaire,peuventexigerlepaiementdessommes
+
+Désignationdubénéficiaire
+
+Désignationdansuntestamentinvalide
+
+Priorité
+
+Annulationdeladésignation
+
+Idem
+
+Présomption
+
+Précédèsdubénéficiaire
+
+Droitdubénéficiaireetdufiduciaire
+
+131
+
+Trusteeforbeneficiary
+
+Documentsaffectingtitle
+
+Saving
+
+Interestofassignee
+
+Rightsandinterestsofassignee
+
+Prohibitionagainstassignment
+
+Insurancemoney
+
+beneficiaryortrusteedischargestheinsurertotheextentoftheamountpaid,buttheinsurermaysetupanydefencethatitcouldhavesetupagainsttheinsuredorhisorherpersonalrepresentative.
+
+192.Aninsuredmayincontractorbyadeclarationappointatrusteeforabeneficiary,andmayalterorrevoketheappointmentbyadeclaration.
+
+193.(1)UntilaninsurerreceivesatitsheadorprincipalofficeinCanadaan instrument oranorderofanycourtofcompetentjurisdictionaffectingtherighttoreceiveinsurancemoney,oranotarialcopyoracopyverifiedbystatutorydeclarationofanysuchinstrumentororder,itmaymakepaymentoftheinsurancemoneyandshallbeasfullydischargedtotheextentoftheamountpaidasiftherewerenosuchinstrumentororder.
+
+(2)Subsection(1)doesnotaffecttherightsorinterestsofanypersonotherthantheinsurer.
+
+(3)Whereanassigneeofacontractgivesnoticeinwriting oftheassignmenttotheinsureratitsheadorprincipal office inCanada, theassigneehas priorityofinterestasagainst(a)anyassigneeotherthanonewhogavenoticeearlierinthesamemanner;and(b)abeneficiary.
+
+(4)Whereacontractisassignedunconditionallyandotherwisethanas security, the assigneehasalltherightsandinterestsgivenbythecontractandbythisParttotheinsured,andshallbedeemedtobetheinsured.
+
+(5)Aprovision in acontractto the effectthattherightsorinterestoftheinsured,orinthecaseofacontractofgroupinsurancethegrouppersoninsured,arenotassignableisvalid.
+
+194.(1)Whereabeneficiaryisdesignated,anyinsurancemoneypayabletothebeneficiaryisnot,fromthetimeofthehappeningoftheeventonwhichitbecomespayable,partoftheestateoftheinsuredandisnotsubjecttotheclaimsofthecreditorsoftheinsured.
+
+assuréesquileursontdues;lepaiementlibèrel’assureurjusqu’àconcurrencedumontantversé;l’assureurpeutcependantleuropposertoutmoyendedéfensequ’ilauraitpuopposeràl’assuréouàsonreprésentantpersonnel.
+
+192.L’assurépeut,dansuncontratouparunedéclaration,nommer unfiduciairepourun bénéficiaireetpeut,parunedéclaration,modifier ourévoquercettenomination.
+
+193.(1)L’assureurpeut,jusqu’àcequ’ilreçoiveà sonsiègesocialouàsonbureauprincipalauCanadaunactejuridique ouuneordonnancejudiciaire modifiantledroitde recevoirdessommesassurées,ouune copienotariéeouunecopiecertifiéeconformepardéclarationsolennelled’untelacteoud’unetelleordonnance,payerlessommesassurées;ilestalorsentièrementlibéréjusqu’àconcurrencedumontantversé,commesicetacte ou cetteordonnancen’existaitpas.
+
+(2)Leparagraphe(1)neportepasatteinteauxdroitsouauxintérêtsdetoutepersonneautrequel’assureur.
+
+(3)Lorsquelecessionnaired’uncontratdonneunavisécritdelacessionàl’assureuràsonsiègesocialouàsonbureauprincipalauCanada,sesintérêtssontprioritairesparrapportàceuxdespersonnessuivantes:a)toutautrecessionnaire,saufceluiquiadonnéunavisidentiqueavantlui;b)unbénéficiaire.
+
+(4)Lorsqu’uncontratestcédésansconditionetautrementqu’àtitredegarantie,lecessionnairepossèdetouslesdroitsetlesintérêtsquelecontratetlaprésentepartiedonnentàl’assuréetestassimiléàcelui-ci.
+
+(5)Estvalideladispositionducontratstipulantquesontincessibleslesdroitsetles intérêtsdel’assuréou,danslecasd’uncontratd’assurancecollective,delapersonneassuréeparlecontrat.
+
+194.(1)Lorsqu’unbénéficiaireestdésigné,lessommesassuréesnefont pas partie de lasuccession del’assuréetnepeuventêtreréclaméesparsescréanciersàcompterdeladatedelasurvenancedel’événementquirendlessommesassuréespayables.
+
+Nominationd’unfiduciaire
+
+Droitdeverserlessommesassurées
+
+Réserve
+
+Intérêtducessionnaire
+
+Droitsetintérêtsducessionnaire
+
+Incessibilité
+
+Exclusiondelasuccession
+
+132
+
+Executionandseizure
+
+Grouppersoninsuredenforcingrights
+
+Simultaneousdeaths
+
+Paymentintocourt
+
+Costsofproceedings
+
+(2)Whilethereisineffectadesignationofbeneficiaryinfavourofanyoneormoreofaspouse,child,grandchildorparentofthepersoninsuredorgrouppersoninsured,therightsandinterestsoftheinsuredintheinsurancemoneyandinthecontractsofaraseitherrelatetoaccidentaldeathbenefitsareexemptfromexecutionorseizure.
+
+195.Agrouppersoninsuredmay,inhisorherownname,enforcearightgivenbyacontracttothegrouppersoninsured,ortoapersoninsuredunderthecontractasapersondependentuponorrelatedtothegroup person insured,subjecttoany defence availabletotheinsureragainst the grouppersoninsured or suchpersoninsuredoragainsttheinsured.
+
+196.Unlessacontractoradeclarationotherwiseprovides,whereapersoninsuredorgrouppersoninsuredandabeneficiarydieatthesametimeorincircumstancesrenderingituncertainwhichofthemsurvivedtheother,theinsurancemoneyispayableinaccordancewithsubsection191(2)asifthebeneficiaryhadpredeceasedthepersoninsuredorgrouppersoninsured.
+
+197.(1)Wheretheinsureradmitsliabilityfortheinsurancemoneyoranypartoftheinsurancemoneyanditappearstotheinsurerthat(a)thereareadverseclaimants;(b)thewhereaboutsofthepersonentitledisunknown,or(c)thereisnopersoncapableofgivingorauthorizedtogiveavaliddischargethereforwhoiswillingtodoso,theinsurermayapplyexpartetotheCourtforanorderforpaymentofmoneyintocourt,andtheCourtmayonthenotice,ifany,thatitconsidersnecessary,makeanorderaccordingly.
+
+(2)TheCourtmayfixwithouttaxationthecostsincurredonorinconnectionwithanapplicationorordermadeundersubsection(1),andmayorderthecoststobepaidoutoftheinsurancemoneyorbytheinsurerorotherwiseasitconsidersjust.
+
+(2)Tantqu’unedésignationenfaveurduconjoint,d’unenfant,d’unpetit-enfantoudupèreoudelamèredelapersonneassuréeoudelapersonneassuréeparuneassurancecollective,oudeplusieursd’entreeux,estenvigueur,les droits et lesintérêtsdel’assurésur lessommesassuréesetsur lecontrat sont,danslamesureoùilsportentsurlesindemnitésdedécèsaccidentel,insaisissables.
+
+195.Unepersonneassuréeparuneassurancecollectivepeut,ensonnom,fairevaloirlesdroitsqu’uncontratluiaccordeouaccordeàunepersonneassuréeenvertudecelui-ciàtitredepersonneàchargeoudeparent,sousréservedesmoyendedéfensequel’assureurpeutinvoquercontreelle,contrecettepersonneassuréeoucontrel’assuré.
+
+196.Sousréservedesdispositionscontrairesd’uncontratoud’unedéclaration,lorsqu’unepersonneassuréeouunepersonneassuréeparuneassurancecollectiveetunbénéficiairedécèdentsimultanémentoudansdescirconstancestellesqu’ilestimpossiblededétermineraveccertitudequiasurvécuàl’autre,lessommesassuréessontpayablesenconformitéavecleparagraphe191(2)commesilebénéficiaireétaitdécédéavantlapersonneassuréeoulapersonneassuréeparl’assurancecollective.
+
+197.(1)L’assureurquisereconnaîtdébiteurdessommesassuréesoud’unepartiedecelles-cipeutdemanderexparteautribunalderendreuneordonnancedeconsignationjudiciairedessommesassurées,lorsqu’ilestimequel’unedessituationssuivantesexiste:a)ilexistedesopposants;b)l’endroitoùsetrouvel’ayantdroitestinconnu;c)aucunepersonnecapablededonnerunequittancevalable,ouautoriséeà le faire,n’estprêteàlefaire.Letribunalpeut,aprèsavoirdonnél’avisqu’iljugenécessaire,s’ilyalieu,rendreunetelleordonnance.
+
+(2)Letribunalpeutfixer,sanslestaxer,lesfraissupportésrelativementàlademandefaiteouàl’ordonnancerendueenapplicationduparagraphe(1)etordonnerquelesfraissoientpayésparimputationsur lessommesassuréesouparl’assureur,oudetouteautrefaçonqu’ilestimejuste.
+
+Insaisissabilité
+
+Droitsdespersonnesassuréesparuneassurancecollective
+
+Décèssimultanés
+
+Consignation
+
+Frais
+
+133
+
+Dischargeofinsurer
+
+Wherebeneficiaryaminor
+
+Costs
+
+Procedure
+
+Beneficiaryunderdisability
+
+Paymentsnotexceeding$2,000
+
+(3)Apaymentmadepursuanttoanorderundersubsection(1)dischargestheinsurertotheextentofthepayment.
+
+198.(1)Whereaninsureradmitsliabilityforinsurancemoneypayabletoaminorandthereisnopersoncapableofgivingandauthorizedtogiveavaliddischargethereforwhoiswillingtodoso,theinsurermayatanytimeafter30daysfromthedateofthehappeningoftheeventonwhichtheinsurancemoneybecomespayable,paythemoneylesstheapplicablecostsmentionedinsubsection(2)intocourttothecreditoftheminor.
+
+(2)Theinsurermayretain,outoftheinsurancemoneyforcostsincurredonpaymentintocourtundersubsection(1),$10wheretheamountdoes notexceed$1,000,and$15inothercases,andpaymentoftheremainderofthemoneyintocourtdischargestheinsurer.
+
+(3)Noorderisnecessaryforpaymentintocourtundersubsection(1),buttheaccountantorotherproperofficeroftheCourtshallreceivethemoneyupontheinsurerfilingwiththeofficeranaffidavitshowingtheamountpayableandthename,dateofbirthandresidenceoftheminor,andonthatpaymentbeingmade,theinsurershallwithoutdelaynotifythePublicTrusteeanddelivertothePublicTrusteeacopyoftheaffidavit.
+
+199.Whereitappearsthatarepresentativeofabeneficiarywhoisunderdisabilitymayunderthelawofthedomicileofthebeneficiaryacceptpaymentsonbehalfofthebeneficiary,theinsurermaymakepaymenttotherepresentativeandanysuchpaymentdischarges theinsurertotheextentoftheamountpaid.
+
+200. Notwithstanding thatinsurance money is payabletoaperson,theinsurermayifthecontract soprovides,butsubjecttotherightsofanassignee,payanamountnotexceeding$2,000(a)toarelativebybloodorconnectionbymarriageofaperson insuredorthegrouppersoninsured;or(b)toanypersonappearingtotheinsurertobeequitablyentitledtoitbyreasonofhavingincurredexpenseforthemaintenance,medicalattendanceorburialofapersoninsuredorthegrouppersoninsured,ortohaveaclaimagainsttheestateofapersoninsuredorthe
+
+(3)Lepaiementeffectuéconformémentàuneordonnancerendueenapplicationduparagraphe(1)libèrel’assureurjusqu’àconcurrencedumontantversé.
+
+198.(1)L’assureurquisereconnaîtdébiteurdesommespayablesàunmineurpeut,àtoutmomentaprès l’expiration d’un délaide 30joursdepuisladatede la survenancedel’événementquirendlessommesassuréesexigibles,lesconsignerauprèsdutribunal,aucréditdumineur,aprèsenavoirdéduitlesfraisappropriésvisésauparagraphe(2),lorsqu’aucunepersonnecapabled’endonnerunequittancevalable,ouautoriséeàceteffet,neveutlefaire.
+
+(2)Àtitred’indemnisation pourlesfraisengagéslorsdelaconsignationdessommes,l’assureurpeutretenirsurcelles-cilasommede10$,lorsquelemontantnedépassepas1000$,etlasommede15$danslesautrescas;la consignation judiciaire dusoldelibèrel’assureur.
+
+(3)Aucuneordonnancen’estnécessairepourautoriseruneconsignationenapplicationduparagraphe(1);toutefois,lefonctionnairecompétentdutribunalesttenud’accepterlessommesunefoisquel’assureuradéposéauprèsdeluiun affidavitindiquantlemontantpayable,ainsiquelenom,ladatedenaissance etlelieuderésidencedu mineur;unefois cepaiementeffectué,l’assureuresttenud’enaviseraussitôt le curateurpublicet deluiremettreunecopiedel’affidavit.
+
+199.Lorsqu’ilsemblequelereprésentantd’unbénéficiairefrappéd’incapacitépeut,envertudelaloidudomiciledubénéficiaire,accepterlepaiementaunomdecelui-ci,l’assureurpeuteffectuerlepaiementàcereprésentant;lepaiementlibèrel’assureurjusqu’àconcurrencedumontantversé.
+
+200.Mêmesilessommesassuréessontpayables àunepersonne,l’assureur peut, silecontratleprévoit, maissousréservedesdroitsd’uncessionnaire,verserunmontantmaximalde2000$:a)soitàunparentparlesangouparlemariaged’unepersonneassurée ou d’unepersonneassuréeparuneassurancecollective;b)soitàunepersonnequi,selonl’assureur,paraîtentoute équité yavoirdroitdufaitqu’elleaengagédesfraispourentretenir,soignerou inhumer unepersonneassuréeouunepersonneassuréeparuneassurancecollective,ouavoirune
+
+Paiementlibératoire
+
+Mineurs
+
+Frais
+
+Procédure
+
+Bénéficiairefrappéd’incapacité
+
+Montantmaximalde2000$
+
+134
+
+Placeofpayment
+
+Exceptionforgroupinsurance
+
+Dollars
+
+PaymentoutsideNorthwestTerritories
+
+Paymenttopersonalrepresentative
+
+ActioninNorthwestTerritories
+
+Insurergivinginformation
+
+grouppersoninsuredinrelationtoit,andanysuchpaymentdischargestheinsurertotheextentoftheamountpaid.
+
+201.(1)Subjecttosubsection(2),insurancemoneyispayableintheNorthwestTerritories.
+
+(2)Inthecaseofacontractofgroupinsurance,insurancemoneyispayableintheprovinceorterritoryinwhichthegrouppersoninsuredwasresidentatthetimeheorshebecameinsured.
+
+(3)Unlessthecontractotherwiseprovides,areferenceinacontracttodollarsmeansCanadiandollarswhetherthecontractbyitstermsprovidesforpaymentinCanadaorelsewhere.
+
+(4)WhereapersonentitledtoreceiveinsurancemoneyisnotdomiciledintheNorthwestTerritories,theinsurermaypay theinsurancemoneytothatpersonortoanypersonwhoisentitledtoreceive itonbehalfofthatpersonbythelawofthedomicileofthepayeeandanysuchpaymentdischargestheinsurertotheextentoftheamountpaid.
+
+(5)Where(a)insurancemoneyisbythecontractpayabletoapersonwhohasdiedortohisorherpersonalrepresentative;and(b)thatdeceasedpersonwasnotatthedateofhisorherdeathdomiciledintheNorthwestTerritories.theinsurermaypaytheinsurancemoneytothepersonalrepresentativeofthedeceasedpersonappointedunderthe law ofhisorherdomicile,andanysuchpaymentdischargestheinsurertotheextentoftheamountpaid.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2), [(16)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec16_smooth).
+
+202.Regardlessoftheplacewhereacontractwasmade,aclaimantwhoisaresidentoftheNorthwestTerritories maybringan action intheTerritoriesif theinsurerwasauthorizedtotransactinsuranceintheTerritoriesatthetimethecontractwasmadeoratthetimethe action isbrought.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16, s.12(2).
+
+203.Aninsurerdoesnotincuranyliabilityforanydefault,errororomissioningivingorwithholdinginformationastoanynoticeorinstrumentthatithasreceivedandthataffectstheinsurancemoney.
+
+créancesurlasuccessiondelapersonneassuréeou delapersonneassuréepar uneassurancecollectivepourcesraisons.Lepaiementlibèrel’assureurjusqu’àconcurrencedumontantversé.
+
+201.(1)Sousréserveduparagraphe(2),lessommesassuréessontpayablesdanslesTerritoiresduNord-Ouest.
+
+(2)S’ils’agitd’uncontratd’assurancecollective,lessommesassuréessontpayablesdanslaprovince ouleterritoirederésidencedelapersonneassuréeparl’assurancecollectiveaumomentoùelleestdevenueassurée.
+
+(3)Saufdispositioncontraireducontrat,«dollars» s’entenddesdollarscanadiens,indépendammentdulieuprévuduversement.
+
+(4)Lorsquelapersonnequiadroitauxsommesassuréesn’estpasdomiciliéedanslesTerritoiresduNord-Ouest,l’assureurpeutlesverseràcettepersonneouàtouteautrepersonnequia le droitdelesaccepterpourelleenconformitéaveclaloidudomiciledupreneur;cepaiementlibèrel’assureurjusqu’àconcurrencedumontantversé.
+
+(5)Lorsquelecontratprévoitque:a)lessommesassuréessontpayablesàunepersonnequiestdécédéeouàsonreprésentantpersonnel;b)cettepersonnedécédéen’étaitpasdomiciliéedanslesTerritoiresduNord-Ouestlorsdesondécès,l’assureurpeutverserlessommesassuréesaureprésentantpersonneldecettepersonne,nomméenvertudelaloidesondomicile;cepaiementlibèrel’assureurjusqu’àconcurrencedumontantversé.LTN-O2011,ch.16,art.12(2)et(16).
+
+202.Indépendammentdulieudelaconclusionducontrat,leréclamantquiréside danslesTerritoiresduNord-Ouestpeutyintenteruneaction,sil’assureurétaitautoriséàyfairedesopérationsd’assurancelorsdelaconclusionducontratoudel’introductiondel’action.LTN-O2011,ch.16,art.12(2).
+
+203.L’assureurn’engagepassaresponsabilitéparsuited’undéfautdecommunication,d’uneerreuroud’uneomissionrelativementàdesrenseignements
+
+Lieudupaiement
+
+Exceptiondanslecasdesassurancescollectives
+
+Dollars
+
+Paiementàl’extérieurdesTerritoiresduNord-Ouest
+
+Paiementaureprésentantpersonnel
+
+ActiondanslesTerritoiresduNord-Ouest
+
+Renseigne-mentsdonnésparl’assureur
+
+135
+
+Undueprominence
+
+Relieffromforfeiture
+
+Presumptionagainstagency
+
+ApplicationofPart
+
+Propertythatmaybeinsured
+
+204.Theinsurershallnotinthepolicygiveundueprominencetoanyprovisionorstatutoryconditionascomparedtootherprovisionsorstatutoryconditions,unlesstheeffectofthatprovisionorstatutoryconditionistoincreasethepremiumordecreasethebenefitsotherwiseprovidedforinthepolicy.
+
+205.Where(a)therehasbeenimperfectcompliancewithastatutoryconditionastoanymatterorthingtobedoneoromittedbytheinsured,personinsuredorclaimantwithrespecttothelossinsuredagainstandaconsequentforfeitureoravoidanceoftheinsuranceinwholeorinpart;and(b)anyCourtbeforewhichaquestionrelatingtothatistriedconsidersitinequitablethattheinsuranceshouldbeforfeitedoravoidedonthatground,theCourtmayrelieveagainsttheforfeitureoravoidanceonthetermsthatitconsidersjust.
+
+206.Noofficer,agent,employeeorservantoftheinsurer,andno person solicitinginsurance,whetherornotthatpersonisanagentoftheinsurer,shalltotheprejudiceoftheinsured,personinsuredorgrouppersoninsured,bedeemedtobetheagentoftheinsuredorofthepersoninsuredorgrouppersoninsuredinrespectofanyquestionarisingoutofthecontract.
+
+PARTVIILIVESTOCKINSURANCE
+
+207.ThisPartappliestolivestockinsuranceandtoanyinsurer carryingonthebusinessoflivestock insuranceintheNorthwestTerritories.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+208.Everyinsurerlicensedforthetransactionoflivestockinsurancemay,withinthelimitsandsubjecttotheconditionsimposed by thelicence,insureagainstlossoflivestock,by fire,lightning,accident,diseaseorothermeans,exceptthatofdesignonthepartoftheinsured,orbytheinvasionofanenemyorbyinsurrection.
+
+portantsurunavisouunactejuridiquequ’ilareçuetquiportesurlessommesassurées.
+
+204.Ilestinterditàl’assureurd’accorderdanslapoliceuneimportanceinjustifiéeàunedispositionoucondition légale auxdépensdesautres, sauf si celle-ciapoureffetd’augmenterlaprimeoudediminuerlesindemnitésqueprévoitlapolice.
+
+205.Letribunalpeutannulerladéchéanceoul’annulationd’unepoliceselonlesmodalitésqu’ilestimeéquitables,lorsquelesconditionssuivantessontréunies:a)uneconditionlégalen’apasétéparfaitementrespectéeencequiconcerneunechosequel’assuré,lapersonneassuréeouleréclamantdevaitfaireounepasfaireàl’égarddusinistrecouvertparl’assuranceetqu’ils’enestsuiviladéchéanceoul’annulationtotaleoupartielledel’assurance;b)letribunalestsaisid’unequestionàcetégardet jugeinjustequel’assurancesoitfrappée de déchéance ouannulée pourcemotif.
+
+206.Ledirigeant, l’agent,l’employéoulepréposédel’assureur,outoutepersonnesollicitantlasouscriptiond’assurance,qu’ellesoitou nonunagentdel’assureur,nepeut,aupréjudicedel’assuré,delapersonneassuréeoudelapersonneassuréeparuneassurancecollective,êtreconsidéré,àl’égarddetoutequestionsoulevéeparlecontrat,commelereprésentantdel’assuré,delapersonneassuréeoudelapersonneassuréeparl’assurancecollective.
+
+PARTIEVIIASSURANCEDUBÉTAIL
+
+207.Laprésenteparties’appliqueàl’assurancedubétailetauxassureursqui,danslesTerritoiresduNord-Ouest,exploitentuneentreprised’assurancedubétail.LTN-O2011,ch.16,art.12(2).
+
+208.Lesassureurstitulairesd’unelicencelesautorisantàexploiteruneentreprised’assurancedubétailpeuvent,sousréservedeslimitesetdesmodalitésdelalicence,assurercontrelespertesdubétailduesauxincendies,àlafoudre,auxaccidents,auxmaladiesouàtouteautrecause,àl’exceptiondecellesquirésultentdelavolontédel’assuré,d’uneinvasionennemieoud’uneinsurrection.
+
+Présentationuniformedesdispositions
+
+Redressement
+
+Présomption
+
+Application
+
+Biensquipeuventêtreassurés
+
+136
+
+Applicationofprovisionsastofireinsurance
+
+Termofcontract
+
+Renewingpolicies
+
+Termofrenewal
+
+Licence
+
+Issuingoflicences
+
+Societiesdeemednottobefraternalsocieties
+
+209.ThefollowingprovisionsofPartIIIapplytolivestockinsurancecontracts:(a)theprovisionsastothe form andcontentsofthepolicy;(b)theprovisionsastotheconditions,includingthestatutoryconditions,exceptwhereinapplicabletothenatureoftherisk.
+
+210.(1)Contractsofinsuranceshallnotinanycaseexceedthetermoftwoyears.
+
+(2)Acontractmadeforoneyearoranyshorterperiodmayberenewedfromtimetotimeatthediscretionofthedirectorsbyrenewalreceiptinsteadofbypolicy,onthe assuredpaying therequired premiumandallpaymentsorrenewalsmustbemadeatorbeforetheendoftheperiodforwhichthepolicywasissuedorrenewed,otherwisethepolicyisvoid.
+
+(3)Norenewalreceiptshallextendthecontractbeyondtwoyearsfromthedateofthepolicy.
+
+PARTVIIIFRATERNALSOCIETIES
+
+211.(1)Nofraternalsocietyshall,withoutalicence,carry on thebusinessoflifeinsuranceintheNorthwestTerritories.
+
+(2)TheSuperintendentmay,onthetermsandconditionsthattheSuperintendentconsidersinthepublicinterest,issuelicencestofraternalsocietiestocarry on thebusinessoflifeinsuranceintheNorthwestTerritories.
+
+(3)ThefollowingshallbedeemednottobefraternalsocietieswithinthemeaningofthisPartandshallnot be required orentitled tobe licensed assuch:(a)acorporationnototherwiseprovidedforinthisActthathasbyorundertheauthorityofanActofCanadacreatedafundforpayingagratuityonthehappeningofdeath,sickness,infirmity,casualty,accident,disabilityoranychangeofphysicalormentalcondition;(b)acorporationnototherwiseprovidedforinthisActthathasbyorundertheauthorityofanActofCanadaaninsuranceandprovidentsocietyor
+
+209.LesdispositionssuivantesdelapartieIIIs’appliquentauxcontratsd’assurancedubétail:a)lesdispositionsconcernantlaformeetlecontenudelapolice;b)lesdispositionsportantsurlesconditions,notammentlesconditionslégales,saufsiellessontinapplicablesenraisondelanaturedurisque.
+
+210.(1)Les contratsd’assurancenepeuventenaucuncasêtreconcluspourunepériodesupérieureàdeuxans.
+
+(2)Lescontratsd’uneduréeinférieureouégaleàunanpeuventêtrerenouvelés,àladiscrétiondesadministrateurs,par voiederécépisséderenouvellementplutôtqueparunepolice,sil’assuréacquittelaprimerequise;touteslesprimesderenouvellementdoiventêtreacquittéesauplustardàladated’échéancedelapoliceétablieourenouvelée,fautedequoilapoliceestnulle.
+
+(3)Unrécépisséderenouvellementnepeutprolongeruncontratau-delàd’unepériodededeuxansàcompterdeladatedelapolice.
+
+PARTIEVIIISOCIÉTÉSDESECOURSMUTUEL
+
+211.(1) Une sociétédesecoursmutuelnepeutexerceruneentreprised’assurance-viequesielleesttitulaired’unelicence.
+
+(2)Lesurintendantpeut,selonlesmodalitésqu’ilestimeêtred’intérêtpublic,délivrerdeslicencesauxsociétés desecoursmutuellesautorisant àexerceruneentreprised’assurance-viedanslesTerritoiresduNord-Ouest.
+
+(3)Lesorganismessuivantssontréputésnepasêtredessociétésdesecoursmutuelausensdelaprésentepartie,etelles n’ontni le droitnil’obligationd’êtretitulairesd’unelicence:a)lapersonnemoralequin’estpasviséeparuneautredispositiondelaprésenteloietqui,souslerégimed’uneloifédérale,aconstitué unfondspermettantleversementd’unegratificationlorsdudécès,delamaladie,d’uneinfirmité,d’unaccident,d’uneinvaliditéoud’unemodification delacondition physique oumentaled’unepersonne;
+
+Applicationdesdispositionsdel’assurance-incendie
+
+Duréeducontrat
+
+Renouvelle-ment
+
+Périodederenouvel­lement
+
+Licenceobligatoire
+
+Délivrancedeslicences
+
+Présomption
+
+137
+
+association, oraninsuranceor guaranteefundinconnectionwiththecorporation;(c)a corporation thatundertakesor offers toundertakecontractsofinsuranceotherthanwithitsownmembersexclusively,orformorethan$5,000payableonthedeathofanyonememberotherthanafuneralbenefit,oranycontractsofinsurancewithitsmembersotherthan(i)lifeinsurance,(ii)contractsforthepaymentofmortuaryorfuneralbenefits,or(iii)oldageinsurance;(d)acorporationin whichtheinsurancefundisusedforthepurposesofamercantileorbusinessenterprise,orformercantileprofit,orasocietyformedonthelodgesystem,whoseinsurancefundisheldotherthan asatrustfundforthemembersinsured;(e)a societyinwhichthe personsinsureddonotexercise,eitherdirectlyorthroughrepresentativeselectedforatermnotexceedingfouryears,effectivecontroloverthe insurancefundof the society,orinwhichtheofficersorotherpersonshavingthedisposition,controlorpossessionoftheinsurancefundareelectedorappointedforalongerperiodthanfouryears;(f)any corporationthatundertakescontractsofinsurancebutisnotformedexclusivelyforthatpurposeandthatdoesnotforthepurposeofsuchcontractskeepdistinctandseparatefunds,securities,booksandvouchers.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+b)lapersonnemoralequin’estpasviséeparuneautredispositiondelaprésenteloietqui,souslerégimed’uneloifédérale,possèdeunesociétéouassociationd’assuranceou deprévoyance,ouunfondsd’assuranceoudegarantieàl’égarddesonactivité;c)lapersonnemoralequiconclutouoffredeconcluredescontratsd’assurance,soitavecquiquecesoitetnonavecsesmembresseulement,soitprévoyantleversementd’unesommesupérieureà5000$lorsdudécèsd’unmembre,lesprestationsfunérairesétantexclues,soitdescontratsd’assuranceconclusavecsesmembres,àl’exclusiondescontratssuivants:(i)lescontratsd’assurance-vie,(ii)lescontratsprévoyantleversementdeprestationsfunéraires,(iii)lescontratsd’assurancevieillesse;d)lapersonnemoraledontlefondsd’assuranceestaffectéàuneentreprisecommercialeou àdesfins commerciales,ouunesociétéconstituéeselonunsystèmedelogesetdontlefondsd’assuranceestdétenuautrementqu’àtitredefondsenfiduciepour le bénéficedesmembresassurés;e)lasociétéàl’intérieurdelaquellelespersonnesassuréesn’exercentpas,soitdirectement,soitparl’intermédiairedereprésentantséluspourunmandatmaximaldequatreans,lecontrôlevéritabledufondsd’assurancedelasociétéouàl’intérieurdelaquellelesdirigeantsoulesautres personnes quiontlecontrôleetlapossessiondufondsd’assurancesontélus ounomméspourunmandatsupérieuràquatreans;f)lapersonnemoralequiconclutdescontratsd’assurance,maisquin’estpasconstituéeexclusivementdanscebutetqui ne garde pasà l’égard deces contratsdes caisses,valeurs, livresdecomptabilitéoujustificatifsdistincts.LTN-O2011,ch.16,art.12(2).
+
+138
+
+Definitions
+
+Contracts
+
+Insurer
+
+Executionofcontract
+
+Courtaction
+
+Nameofexchange
+
+PARTVIII.1RECIPROCALORINTER-INSURANCEEXCHANGES
+
+211.01.InthisPart,"attorney"meansapersonauthorizedbyapowerofattorneytoactforsubscribers;(fondédepouvoir)
+
+"contract"meansareciprocalcontractof indemnityorinter-insurance;(contrat)
+
+"subscribers"meanspersonsexchangingwitheachothercontractsasprovidedinsection211.02.(souscripteurs)RSNWT1988,c.37(Supp.),s.5.
+
+211.02.(1)SubjecttothisPart,apersonmayexchangewithotherpersonsintheNorthwestTerritoriesandelsewherecontractsforanyclassofinsuranceforwhichaninsurancecompanymaybelicensedunderthisActexceptaccidentinsurance,guaranteeinsurance,lifeinsuranceandsicknessinsurance.
+
+(2)Apersonwhoexchanges contractswith otherpersonsunderthisPartisnotan"insurer"asdefinedinthisAct.RSNWT1988,c.37(Supp.),s.5;[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+211.03.Apersonactingasattorneyunderapowerofattorney, where the form of power ofattorneyhasbeenfiledunderparagraph211.07(1)(c),mayexecutecontractsonbehalfofsubscribers.RSNWT1988,c.37(Supp.),s.5.
+
+211.04.Notwithstandinganytermorconditioninapowerofattorneyoracontract,anyactionorproceedinginrespectofthepowerofattorneyorcontractmaybemaintainedin anycourtofcompetentjurisdictionintheNorthwestTerritories.RSNWT1988,c.37(Supp.),s.5;[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+211.05.Noperson shallexecutea contract as part ofareciprocalorinter-insuranceexchangeunlessthenameor designation oftheexchangeis,intheopinionof theSuperintendent,unlikelytoresultinconfusionordeceptionwithanexchangeorinsurerthathasbeenlicensedunderthisAct orelsewhere.RSNWT1988,c.37(Supp.),s.5.
+
+PARTIEVIII.1BOURSESD’ASSURANCERÉCIPROQUE
+
+211.01.Lesdéfinitionsquisuivents’appliquentàlaprésentepartie.
+
+«contrat»Contratréciproqued’indemnisation.(contract)
+
+«fondédepouvoir»Personneautoriséeparprocurationàreprésenterdessouscripteurs.(attorney)
+
+«souscripteurs»Personnesquis’échangentdescontratsenconformitéavecl’article211.02.(subscriber)LRTN-O1988,ch.37(Suppl.), art.5.
+
+211.02.(1)Sousréservedesautresdispositionsdelaprésentepartie,unepersonnepeutéchangeravecd’autrespersonnesdanslesTerritoiresduNord-Ouestetailleursles contratsdetoutescatégoriesd’assurancepourlaquelleunecompagnied’assurancepeutêtretitulaired’unelicencesouslerégimedelaprésenteloi,àl’exceptiondel’assurance-accident,del’assurance-garantie,del’assurance-vieet de l’assurance-maladie.
+
+(2)Lapersonnequiéchangeavecd’autrespersonnesdescontratsautitredelaprésentepartien’estpasun«assureur»ausensdelaprésenteloi.LRTN-O1988,ch.37(Suppl.),art.5;LTN-O2011,ch.16,art.12(2).
+
+211.03.Toutepersonneagissantcommefondédepouvoirenvertud’uneprocurationdontcopieaétédéposéeautitredel’alinéa211.07(1)c),peutpasserdescontratspourlecomptedessouscripteurs.LRTN-O1988,ch.37(Suppl.),art.5.
+
+211.04.Pardérogationauxconditionsouauxstipulationscontenuesdansuneprocurationouuncontrat,uneactionouuneinstancerelativeàcetteprocuration ou àcecontratpeutêtreengagéedevantuntribunalcompétentdesTerritoiresduNord-Ouest.LRTN-O1988,ch.37(Suppl.),art.5;LTN-O2011,ch.16,art.12(2).
+
+211.05.Ilestinterditdepasseruncontratentantquepartieintégranted’uneboursed’assuranceréciproque,àmoinsquelenomouladésignationdelaboursenesoit,del’avisdusurintendant,passusceptibled’entraînerlaconfusionoul’erreuravecunebourseouunassureurtitulaired’unelicenceautitredelaprésenteloiouailleurs.LRTN-O1988,ch.37(Suppl.),art.5.
+
+Définitions
+
+Contrats
+
+Présomption
+
+Passationdescontrats
+
+Actionenjustice
+
+Nomdelabourse
+
+139
+
+Requirementforlicence
+
+Filingrequirements
+
+211.06.UnlessalicenceunderthisParthasbeenissuedandisinforce,nopersonshall(a)actasattorneyorfororonbehalfofanattorney,intheexchangeofreciprocalcontractsofindemnityorinter-insurance,orinactsortransactionsinconnectionwithsuchcontracts;or(b)exchangeacontractwithanyotherperson.RSNWT1988,c.37(Supp.),s.5.
+
+211.07.(1)ApersonwhointendstoexchangecontractswithotherpersonsintheNorthwestTerritoriesandelsewhereshall,throughhisorherattorney,filewiththeSuperintendent(a)anaffidavitsettingout(i)thenameoftheattorney,(ii)thenameordesignationunderwhichthecontractsaretobe issued,(iii)theclassesofinsurancetobeeffectedorexchangedunderthecontracts,and(iv)thelocationoftheofficefromwhichthecontractsaretobeissued;(b)the formofthepolicyunderthecontract;(c)theformofpowerofattorneyunderwhichthecontractsaretobeeffectedorexchanged;(d)afinancialstatementintheformapprovedbytheSuperintendent;(e)evidencesatisfactorytotheSuperintendentthatitisthepracticeofthe exchangetorequire itssubscriberstomaintaininthehandsoftheattorney,asaconditionofmembershipintheexchange,apremiumdepositreasonablysufficientfortheriskassumedbytheexchange;(f)evidencesatisfactorytotheSuperintendentthatthemanagementoftheaffairsoftheexchangeissubjecttothesupervisionofanadvisoryboardorcommitteeofthesubscribersinaccordancewiththetermsofthepowerofattorney;and(g)evidencesatisfactorytotheSuperintendentthattheexchangeislicensedbytheprovince or territory that,
+
+211.06.Àmoinsd’êtretitulaired’unelicenceenvigueurdélivréeautitredelaprésentepartie,nulnepeut:a)êtrefondédepouvoirouagircommetelpourunfondédepouvoirdansdeséchangesdecontratsréciproquesd’indemnisation,oudesactesoutransactionsconnexesàcegenredecontrats;b)échangerdescontratsavecuneautrepersonne.LRTN-O1988,ch.37(Suppl.),art.5.
+
+211.07.(1)Lapersonnequidésireéchangerdescontratsavecd’autrespersonnesdanslesTerritoiresduNord-Ouestetailleursdéposentauprèsdusurintendant,parl’intermédiairedeleurfondédepouvoir,lesdocumentssuivants:a)unaffidavitattestant:(i)lenomdufondédepouvoir,(ii)l’appellationou la désignationsouslaquellelescontratsserontétablis,(iii)lescatégoriesd’assurancesquidoiventêtresouscritesouéchangéesauxtermesdecescontrats,(iv)l’emplacementdubureauquidoitétablircescontrats;b)leformulairedelapoliceétablieauxtermesducontrat;c)leformulairedelaprocurationenvertudelaquellecescontratsserontsouscritsouéchangés;d)unétatfinancierétablienlaformeapprouvéeparlesurintendant;e)unepreuve,jugéesatisfaisanteparlesurintendant,quelabourseapourrègled’exigerdessouscripteurs,commeconditionàleuradhésion,qu’ilsmaintiennentendépôtentre lesmainsdufondédepouvoirune primeraisonnablementsuffisantepourcouvrirlerisquequ’elleassume;f)unepreuve,jugéesatisfaisanteparlesurintendant,quelagestiondesaffairesdelabourse estsoumiseàla surveillanced’unconseiloud’uncomitédesouscripteursenconformitéaveclesmodalitésdelaprocuration;g)unepreuve,jugéesatisfaisanteparlesurintendant,quelabourseesttitulaire
+
+Licence:exigence
+
+Dépôt:exigences
+
+140
+
+Initialapplicationandrenewal
+
+Licence
+
+Applicationofsection16
+
+Service
+
+Liability
+
+Reinsurance
+
+Suspensionorcancellationoflicence
+
+intheopinionoftheSuperintendent,istheprincipalplaceofoperationoftheexchange.
+
+(2)Thefinancialstatementreferredtoinparagraph(1)(d)andtheevidencereferredtoinparagraphs(1)(e)and(f)are,(a)inaninitialapplication,tobeinrelationtotheoperationoftheexchangeoutsidetheNorthwestTerritories;and(b)inanapplicationforarenewalofalicence,toincludeinformationabouttheoperationoftheexchangeintheNorthwestTerritories.RSNWT1988,c.37(Supp.),s.5;[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+211.08.(1)TheSuperintendent shall issue a licencetoanexchangethatcomplieswiththisPartandpaystheprescribedfee.
+
+(2)Section16appliestoalicenceissuedundersubsection(1)andareferenceto"insurer"inthatsectionshallbedeemedtorefertoan"exchange".RSNWT1988,c.37(Supp.),s.5.
+
+211.09.Iftheofficefromwhichthe contracts aretobeissuedisoutsidetheNorthwestTerritories,serviceontheSuperintendentofnoticeorprocessinanyactionorproceedingintheTerritoriesinrespectofcontractseffected byanexchange shallbedeemedtobe serviceonthesubscriberswhoaremembersoftheexchangeatthetimeofservice.RSNWT1988,c.37(Supp.),s.5;[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+211.10.Noexchangeshallundertakeanyliabilityonacontractexceptonbehalfofasubscriber.RSNWT1988,c.37(Supp.),s.5.
+
+211.11.Noattorneyorexchangeshalleffectreinsuranceof any risksundertakenbytheexchangeinanyotherreciprocalorinter-insuranceexchange.RSNWT1988,c.37(Supp.),s.5.
+
+211.12.(1)TheSuperintendentmaysuspendorcancelthelicenceofanexchangewhere(a)theexchange,asubscriberorattorneyoftheexchangefailsorrefusestocomplywithorcontravenesthisAct;or(b)thelicenceoftheexchangeissuspended
+
+d’unelicencedelaprovinceouduterritoirequi,del’avisdesurintendant,estleprincipallieud’exploitationdelabourse.
+
+(2)L’étatfinancierviséàl’alinéa(1)d)etlapreuveviséeauxalinéas(1)e)etf):a)serapportent,dansunedemandeinitiale,à l’exploitationde labourseà l’extérieurdesTerritoiresduNord-Ouest;b)comprennent,dansunedemandederenouvellement de licence,lesrenseignementssurl’exploitationdelabourse danslesTerritoires duNord-Ouest.LRTN-O1988,ch.37(Suppl.),art.5;LTN-O2011,ch.16,art.12(2).
+
+211.08.(1)Le surintendantpeutdélivrerunelicence àune boursequiseconformeàla présentepartieet paieledroitréglementaire.
+
+(2)L’article 16 s’applique auxlicencesdélivréesautitreduparagraphe(1)etlamentiondumot«assureur»danscetarticleestréputéecomprendre une«bourse».LRTN-O1988,ch.37(Suppl.), art.5.
+
+211.09.Silebureauquidoitétablirlescontratsestsituéàl’extérieurdesTerritoiresduNord-Ouest,lasignificationausurintendantdesavisouactesdeprocéduredansuneactionouuneinstancedanslesTerritoiresduNord-Ouestconcernantlescontratssouscritsparunebourseestréputéeconstituerunesignificationauxsouscripteurs qui sont membresdelabourseaumomentdelasignification.LRTN-O1988,ch.37(Suppl.),art.5;LTN-O2011,ch.16,art.12(2)et(17).
+
+211.10.Uneboursenepeutassumerunengagementàl’égardd’uncontrat,sicen’estpourlecompted’unsouscripteur.LRTN-O1988,ch.37(Suppl.), art.5.
+
+211.11.Unfondédepouvoirouuneboursenepeutréassurer desrisquesassuméspar laboursedanstouteautreboursed’assuranceréciproque.LRTN-O1988,ch.37(Suppl.),art.5.
+
+211.12.(1)Le surintendantpeutsuspendreouannulerlalicenced’uneboursedanslescassuivants:a)labourse,unsouscripteurou le fondédepouvoir de labourse faitdéfautourefusedeseconformeràlaprésenteloi,ouycontrevient;
+
+Demandeinitialeetrenouvel­lement
+
+Licence
+
+Applicationdel’article16
+
+Signification
+
+Engagement
+
+Réassurance
+
+Suspensionouannulationdelalicence
+
+141
+
+Effect
+
+Notice
+
+Appeal
+
+Certificateofdecisionandevidence
+
+Procedure
+
+Fireinsurance
+
+Inspectionandrighttoadjust
+
+orcancelledbytheprovinceorterritorythat,intheopinionoftheSuperintendent,istheprincipalplaceofbusinessoftheexchange.
+
+(2)Asuspensionorcancellationundersubsection(1)doesnotaffectthevalidityof(a)a contracteffectedbeforethesuspensionorcancellation;or(b)therightsandobligationsofsubscribersunderthecontract.
+
+(3)TheSuperintendentshallgivenoticeofasuspensionorcancellationundersubsection(1)inatleasttwosuccessiveissuesoftheNorthwestTerritoriesGazetteassoonasreasonablypossibleafterthesuspensionorcancellation.RSNWT1988,c.37(Supp.),s.5.
+
+211.13.(1)An exchange,subscriberorattorneythatisaggrievedbyadecisionoftheSuperintendentmayappealthedecisiontotheSupremeCourt.
+
+(2)Whereadecisionisappealedundersubsection(1),theSuperintendentshallcertifytotheClerkoftheSupremeCourtthedecisionappealedfromtogetherwiththereasonsforthedecisionandtheevidenceonwhichthedecisionwasmade.
+
+(3)Thepracticeandprocedureforanappealunder subsection(1) shall be thesameas for an appealfromajudgmentof aterritorialcourtjudge,underthe[Territorial](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-t-2/latest/rsnwt-1988-c-t-2.html)CourtAct,withsuchmodificationsasthecircumstancesrequire.RSNWT1988,c.37(Supp.),s.5.
+
+211.14.(1)NotwithstandinganythinginthisAct,apersonmayinsure againstfire, property situatedintheNorthwestTerritoriesinanexchangenotlicensedunderthisActiftheinsuranceiseffectedoutsidetheTerritoriesandwithoutanysolicitationintheTerritories directlyorindirectlyby the exchangeoritsattorney.
+
+(2)Propertyinsuredundersubsection(1)maybeinspectedandanylossincurredinrespectofpropertyinsuredundersubsection(1)maybeadjusted.RSNWT1988,c.37(Supp.),s.5;[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+b)lalicencedelabourseestsuspendueouannuléeparlaprovinceouleterritoirequi,del’avisdusurintendant,estleprincipallieud’exploitationdelabourse.
+
+(2)Lasuspensionoul’annulationnetouchepaslavalidité:a)soitd’uncontratsouscritavantlasuspensionoul’annulation;b)soitdesdroitsetdesobligationsdessouscripteursautitredececontrat.
+
+(3)Lesurintendantdonneavisdelasuspensionoudel’annulationdansaumoinsdeuxnumérosconsécutifsdelaGazettedesTerritoiresduNord-Ouestleplustôtpossibleaprèslasuspensionoul’annulation.LRTN-O1988,ch.37(Suppl.),art.5.
+
+211.13.(1)Labourse,lesouscripteuroulefondédepouvoirquiestléséparunedécisiondusurintendantpeutinterjeterappelàlaCoursuprême.
+
+(2)Lesurintendantatteste,àl’intentiondugreffierdelaCoursuprême,ladécisionfrappéed’appel,lesmotifsdeladécisionetlapreuvesurlaquelleelles’appuie.
+
+(3)Lapratiqueetlaprocédurerelatives àl’appelsontlesmêmesquecellesconcernentl’appeldujugementd’unjuged’unecourterritoriale,souslerégimede la [Loi](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-t-2/latest/rsnwt-1988-c-t-2.html) sur laCour territoriale, comptetenudesmodificationsdecirconstance.LRTN-O1988,ch.37(Suppl.),art.5.
+
+211.14.(1)Pardérogationauxautresdispositionsdelaprésenteloi,unepersonnepeutassurercontrel’incendieunbiensituédanslesTerritoiresduNord-Ouestauprèsd’uneboursenontitulaired’unelicence souslerégime de la présenteloi, si l’assuranceestsouscriteàl’extérieurdesTerritoiresduNord-OuestetsansquelabourseousonfondédepouvoirneprocèdeàdelasollicitationdirecteouindirectedanslesTerritoiresduNord-Ouest.
+
+(2)Lebienassuréautitreduparagraphe(1)peutêtreinspectéettoutsinistrequ’ilsubitpeutfairel’objetd’unrèglement.LRTN-O1988,ch.37(Suppl.),art.5;LTN-O2011,ch.16,art.12(2).
+
+Effet
+
+Avis
+
+Appel
+
+Attestationdeladécision
+
+Pratiqueetprocédure
+
+Assurance-incendie
+
+Inspection
+
+142
+
+Regulations
+
+Licensingagent
+
+Classesoflicences
+
+Issueoflicence
+
+Noticeofappointmentofagent
+
+211.15.TheCommissioner,ontherecommendationoftheMinister,maymakeregulationsprescribingthefeereferredtoinsubsection211.08(1).RSNWT1988,c.37(Supp.),s.5.
+
+PARTIXAGENTS,BROKERSANDADJUSTERSLICENCESOFINSURANCEAGENTS
+
+212.(1)TheSuperintendentmayissuealicenceto anypersonwho hascompliedwiththisActauthorizingthatpersontocarryonbusinessasaninsuranceagentsubject tothis Act, theregulations andthe terms of thelicence.
+
+(2)Licencesissuedundersubsection(1) shallbeofthreeclasses,namely,(a)licencesforlifeinsurance,orlifeandaccidentinsurance,orlifeandaccidentandsicknessinsurance;(b)licencesforaccidentandsicknessinsurance;and(c)licences for all classesofinsuranceotherthanlifeinsurance.
+
+(3)On writtennotice totheSuperintendent that alicensedinsurer hasappointedapersontoact asagentfor the insurer inthe NorthwestTerritories andondueapplicationofthatpersoninaformapprovedbytheSuperintendentandpaymentbythatpersonoftheprescribedfee,theSuperintendentshall,iftheSuperintendantissatisfiedthattheapplicantisasuitablepersontoreceivealicenceandintendstoholdhimselforherselfoutpublicly and carryonbusiness ingoodfaithas aninsuranceagent, issueto theapplicantalicencethatmuststateinsubstancethattheholderis,duringthetermofthelicence,authorizedtocarryonintheTerritoriesthebusinessofaninsuranceagent.
+
+(4)Anoticeofappointmentofanagentbyaninsurermust(a)beinaformapprovedbytheSuperintendent;(b)statethatthepersonappointedhasbeenauthorized in writingbytheinsurertoactasagentinthesolicitingofandnegotiatingforinsurance;and(c)beaccompaniedbyaswornstatementofthepersonappointedinaformapprovedbytheSuperintendentthatsetsout
+
+211.15.Surrecommandationduministre,lecommissaire peut, parrèglement,fixerle droitviséauparagraphe211.08(1).LRTN-O1988,ch.37(Suppl.),art.5.
+
+PARTIEIXAGENTS,COURTIERSETEXPERTSLICENCESD’AGENTSD’ASSURANCE
+
+212.(1)Lesurintendantpeutdélivrerunelicenceàlapersonnequis’estconforméeauxexigencesdelaprésenteloil’autorisantàexercerlaprofessiond’agentd’assurance,sousréservedelaprésenteloi,desrèglementsetdesmodalitésdelalicence.
+
+(2)Leslicencesviséesauparagraphe(1)sontdiviséesentroiscatégories:a)licencesd’assurance-vie,d’assurance-vieetd’assurance-accident,oud’assurancevie,accidentetmaladie;b)licencesd’assuranceaccidentetmaladie;c)licencespourtoutecatégoried’assurance,saufl’assurance-vie.
+
+(3)Surréceptiond’unavisécritl’informantqu’unassureurtitulaired’unelicenceanomméunepersonneàtitred’agentpourlereprésenterdanslesTerritoires duNord-Ouestetaprèsquecette personneluiaprésentéunedemanderédigéesurleformulaireapprouvéparlesurintendantetpayélesdroitsfixésparrèglement,lesurintendant,s’ilestconvaincuquelerequérantest apte àdevenirtitulaired’unelicence etal’intention d’exercer debonne foiles activitésd’agentd’assurance etdesefaireconnaître commetel,délivreaurequérantunelicencequidoitdéclarerpourl’essentielquesontitulaireestautorisé,tantqu’elleestenvigueur,àexercerlesactivitésd’agentd’assurancedanslesTerritoiresduNord-Ouest.
+
+(4)L’avisdenominationd’unagentenvoyéparl’assureurdoit:a)êtrerédigésurleformulaireapprouvéparlesurintendant;b)énoncerquel’assureuraautoriséparécritlapersonnedésignéeàagirenqualitéd’agentafindesolliciteretdenégocierdesassurances;c)êtreaccompagnédeladéclarationsoussermentdelapersonnenommée,rédigéesurleformulaireapprouvéparle
+
+Règlement
+
+Licence
+
+Catégoriesdelicences
+
+Délivrancedelalicence
+
+Avisdenominationd’unagent
+
+143
+
+Limitationsoflicence
+
+Noticeofterminationofagency
+
+Failuretogivenotice
+
+(i)thename,age,residenceandpresentoccupationoftheperson appointed,(ii)theoccupationofthepersonappointedforthefiveyearsimmediatelyprecedingthedateofthenotice,(iii)particularsofanyotheremploymentinwhichthepersonappointedisengaged,and(iv)anyotherinformationthattheSuperintendentmayrequire.
+
+(5)Wheretheapplicant is theappointedagentofaninsurercarryingonintheNorthwestTerritories(a)thebusinessof lifeinsurance,orlife andaccidentinsurance,orlifeandaccidentandsicknessinsurance,thelicenceshallexpresslylimittheauthorizationoftheagenttotheclassofinsuranceforwhichtheinsurerislicensed;and(b)anyclassorclassesofinsurance businessotherthanlifeinsurance,thelicenceshallexpresslyexcludethebusinessoflifeinsurance,butnothinginthisActpreventstheissuetothesameapplicantoftwolicencesincludingallclassesofinsuranceifdueapplicationhasbeenmadefortwolicences.
+
+(6)Wheretheagency,onnoticeofwhichalicenceisissued,isterminated,noticeinwritingmustbegivenwithoutdelaybytheinsurertotheSuperintendentoftheterminationwiththereasonforthetermination,anduponthat,thelicenceissuspended,butitmayberevivedsubjecttotheapprovaloftheSuperintendenton(a)filingofnoticeofanewagencyappointment;and(b)paymentoftheprescribedfee.
+
+(7)AninsurerwhofailstonotifytheSuperintendentwithin30daysafter theterminationofanagencyappointmentasrequired bysubsection(6)isguiltyofanoffence.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2);[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2017-c-20/latest/snwt-2017-c-20.html#sec2subsec5_smooth)2017,c.20,s.2(5), [(6)](https://www.canlii.org/en/nt/laws/astat/snwt-2017-c-20/latest/snwt-2017-c-20.html#sec2subsec6_smooth).
+
+Disentitlement213.(1)Anagentwhoselicenceisrevokedisnottolicenceeligible fora newlicence fora period of one year aftertherevocation.
+
+surintendant,etfaisantétatdesrenseignementssuivants:(i)lenom,l’âge, lelieu de résidenceetlaprofessionactuelledelapersonnenommée,(ii)laprofessionqu’elleaexercéeaucoursdescinqannéesprécédantladatedel’avis,(iii)unedescriptiondétailléedesautresemploisqu’elleoccupe,(iv)toutautrerenseignementquelesurintendantpeutexiger.
+
+(5)Lorsquelerequérantestl’agentdésignédel’assureur traitantdans lesTerritoiresduNord-Ouest:a)desopérationsd’assurance-vie,d’assurancevie etaccidentoud’assurancevie,accidentetmaladie,lalicencelimiteexpressémentl’autorisationdel’agentàlacatégoried’assurancepourlaquellel’assureurestlui-mêmetitulaired’unelicence;b)desopérationsd’assurancedansuneouplusieurscatégoriesautresquel’assurance-vie,lalicenceexclutexpressémentl’assurance-vie.Toutefois,laprésenteloin’apaspoureffetd’empêcherladélivranceaumêmerequérantdedeuxlicencesconcernanttouteslescatégoriesd’assurance,siunedemandeconformerespectantlesconditionsrequisesaétéfaitepourchacune.
+
+(6)Lorsqu’ilestmisfinàlarelationd’agenceviséeparunelicence,l’assureurdoitendonnerimmédiatement un avisécritmotivéausurintendant;lalicenceestalorsautomatiquementsuspendue;ellepeutêtreremiseenvigueur,avecl’approbationdusurintendant:a)surdépôtd’unnouvelavisdenomination;b)surversementdudroitréglementaire.
+
+(7)Commetuneinfraction l’assureur qui n’avisepaslesurintendantdansles30jourssuivantlafind’unerelationd’agence,enconformitéavecleparagraphe(6).LTN-O2011,ch.16,art.12(2);LTN-O2017,ch.20,art.2(5)et(6).
+
+213.(1)L’agent dontlalicence aété révoquée nepeutenrecevoirunenouvellependantl’annéesuivantlarévocation.
+
+Restrictions
+
+Findelarelationd’agence;avisausurintendant
+
+Infraction
+
+Inadmissibilité
+
+144
+
+Expirationoflicence
+
+Renewal
+
+Authority:agents
+
+Authority:lifeinsuranceagent
+
+Collectors
+
+(2)Alicenceissuedundersection212or218expiresattheprescribedtime,unlesssoonersuspendedorrevoked.
+
+(3)Subjecttosubsection(1),alicencemay,inthediscretionoftheSuperintendent,berenewedforanothertermon(a)dueapplicationinaformapprovedbytheSuperintendentgivingtheinformationthattheSuperintendentmayrequire,accompaniedbyacertificateofappointmentofagentofalicensedinsurer;and(b)paymentoftheprescribedfee,withoutrequiringthesubmissionofthedetailedinformationspecifiedin subsection212(4).[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2017-c-20/latest/snwt-2017-c-20.html#sec2subsec7_smooth)2017,c.20,s.2(7).
+
+214.(1) The holderofalicenceundersection212, 213or218asagentforinsuranceotherthan life insurancemay,duringthetermandvalidity ofthelicence,actasagentforanylicensedinsurerwithinthelimitsimposedbythelicence,andmayactasaninsurancebrokerindealingwithlicensedinsurerswithoutotheroradditionallicences.
+
+(2)Alifeinsuranceagentmaybelicensedtoactasagentformorethanoneinsurertransactinglifeinsurance,andthenameofeachinsurershallbespecifiedin thelicence,butwherethatagentisunabletonegotiateinsuranceonbehalfofanapplicantforinsurancewiththeinsurersforwhichthatagentistheauthorizedagent,thatagenthastherighttoprocurethat insurancefromanotherinsurer iftheother insurerobtainsineachcasetheconsentinwritingoftheinsurersforwhichthatagentistheauthorizedagent,andfilesacopyoftheconsentwiththeSuperintendent.
+
+215.Acollectorofinsurancepremiumswhodoesnotsolicit applicationfororthe renewalorcontinuanceofinsurancecontractsoractoraidinnegotiatingsuchcontractsortherenewalofthemmaycarryonthatbusinesswithout a licence foritifhis or her collectionfeedoesnotexceed5%ofanyamountcollected.
+
+(2)Unelicencedélivréesouslerégimedel’article212ou218expireaumomentfixéparrèglement,saufsielleestsuspendueourévoquéeauparavant.
+
+(3)Sousréserveduparagraphe(1), lesurintendantpeutrenouvelerunelicencepouruneautrepériodesansquetouslesrenseignementsdétaillésvisésauparagraphe212(4)neluisoientremisànouveau:a)s’ilreçoitàcetégardunedemandeconforme,rédigée sur leformulairequ’ilaapprouvéetfaisantétatdesrenseignementsqu’ilexige,lademandeétantaccompagnéeducertificatdenominationquel’assureur titulaired’unelicencearemisàl’agent;b)cettedemandeétantaccompagnéedudroitréglementaire.LTN-O2017,ch.20,art.2(7).
+
+214.(1)Letitulaired’unelicence d’agentd’assurancedélivréeenvertudesarticles212,213ou218pourtoutecatégoried’assurance,saufl’assurance-vie,peut,tantquesalicenceestenvigueur,représentertoutautreassureurtitulaired’unelicence,comptetenudesmodalitésprévuesparlasienne;ilpeutaussiagiràtitredecourtier d’assurancedansses rapports aveclesassureurstitulairesd’unelicencesansavoirbesoind’unelicencesupplémentaire.
+
+(2)L’agentd’assurance-viepeutêtreautoriséàreprésenterplusd’unassureur-vie,àlaconditionquelenomouladénominationsocialedechacunsoitinscritsursalicence;sitoutefoisl’agentestincapabledenégocieruneassurancepourlecompted’unproposantauprèsdesassureursqu’ilreprésente,ilestautoriséàseprocurercetteassuranceauprèsd’unautreassureur,àlaconditionquecedernierobtienne,danschaquecas,leconsentementécritdeceuxquel’agentreprésenteetendéposeunecopieauprèsdusurintendant.
+
+215.Unpercepteurdeprimesd’assurancequinesollicitepasdepropositions,derenouvellements ou deprolongationsdecontratsd’assurance,nineparticipeoun’apportesonconcoursàlanégociationdetelscontratsouàleurrenouvellement,peut,sansêtretitulaired’unelicence,exercersaprofession,sisondroitdeperceptionn’estpassupérieurà5%detoutmontantperçu.
+
+Expiration
+
+Renouvelle-ment
+
+Pouvoirs:agents
+
+Pouvoirs:agentd’assurance-vie
+
+Percepteurs
+
+145
+
+Officersoffraternalsocieties
+
+Membersoffraternalsocieties
+
+Salariedofficersandemployeesactingwithoutlicence
+
+Licensingoftransportationticketagents
+
+216.(1)Anofficeror asalariedemployeeof theheadofficeof a duly licensedfraternalsocietywhodoes notreceivecommissionmay,withoutalicence,solicitinsurancecontractsonbehalfofthesociety.
+
+(2)Anymemberwho is notanofficer or salariedemployeedescribedinsubsection(1)may,withoutalicence,solicitinsurancecontractsonbehalfofthefraternalsociety,unlessthatmember(a)devotesorintendstodevotemorethanone-halfofhisorhertimetosolicitingsuchcontracts;or(b)hasinthepreviouslicenceyearsolicitedandprocuredlifeinsurancecontractsonbehalfofthesocietyinanamountinexcessof$20,000.
+
+217.UnlesstheSuperintendentotherwisedirects,anofficerorsalariedemployeeofalicensedinsurerwhodoesnot receivecommissions,may,without a licence,actforthatinsurerinthenegotiationofanycontractsofinsuranceorinthenegotiationofthe continuance orrenewalofanycontractsthattheinsurermaylawfullyundertake,but(a)officersoremployees whose applicationsforlicencesasinsuranceagentsorsalespersonshavebeenrefused orwhoselicenceshavebeenrevokedor suspendedmaynotsoactwithoutthewrittenapprovaloftheSuperintendent;and(b)inthecasesofinsurersauthorizedtoundertakelifeinsurance,onlytheofficersandsalariedemployeesoftheheadofficewhodonotreceivecommissionsmaysoactwithoutalicence.
+
+218.NotwithstandinganythinginthisAct,theSuperintendentmayissuealicencetoa transportationcompanyauthorizingit,byitsemployeesintheNorthwest Territories, toactas anagentforalicensedinsurerwithrespecttoaccidentinsuranceandanyotherclassesofinsurancethattheSuperintendentapproves.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+216.(1)Ledirigeantoulesalariétravaillantsanscommissionausiègesociald’unesociétédesecoursmutueltitulaired’unelicencepeut,sansêtretitulairelui-mêmed’unelicence,solliciterlasouscriptiondecontratsd’assurancepourlecomptedelasociété.
+
+(2)Lemembrequin’estniundirigeantniunsalariéviséauparagraphe(1)peut,sansêtretitulaired’unelicence,solliciterdescontratsd’assurancepourlecomptedelasociété,saufsi,selonlecas:a)ilconsacreoual’intentiondeconsacrerplusdelamoitiédesontempsàcetteactivité;b)ilaaucoursdel’exerciceprécédent,sanslicence,sollicitéetconclupourlecomptedelasociétédescontratsd’assurance-vied’unmontantsupérieurà20000$.
+
+217.Saufdécisioncontrairedusurintendant,ledirigeantoulesalariéd’unassureurtitulaired’unelicencequinereçoitpas decommissionpeut, sansêtrelui-mêmetitulaired’unelicence,représenterl’assureurdanslecadredelanégociationd’uncontratd’assurancequel’assureurpeutlégitimementconclure,oudesaprolongationoudesonrenouvellement,sousréservedesdispositionssuivantes:a)lesdirigeantsoulessalariésdontlademandedelicenceàtitred’agentd’assuranceoudevendeurd’assuranceaétérejetéeoudontlalicenceaétérévoquéeoususpenduenepeuventexercercetteactivitésansl’autorisationécritedusurintendant;b)danslecasdesassureursautorisésàexercerdesactivitésd’assureur-vie,seulsles dirigeantsetlessalariéstravaillantausiègesocialquinereçoiventaucunecommissionpeuventreprésenterl’assureursansêtretitulairesd’unelicence.
+
+218.Pardérogationauxautresdispositionsdelaprésenteloi,lesurintendantpeutdélivrerunelicenceàunecompagniedetransportl’autorisantàreprésenter,parl’intermédiairedesesemployésdanslesTerritoiresduNord-Ouest,àtitred’agent,unassureurtitulaired’unelicenceàl’égarddesassurances-accidentet desautrescatégoriesd’assuranceautoriséespar lesurintendant.LTN-O2011,ch.16,art.12(2).
+
+Dirigeantsetsalariésdessociétésdesecoursmutuel
+
+Membresdesociétésdesecoursmutuel
+
+Dirigeantsetsalariésdesassureurs
+
+Licenceauxpréposésauxbilletsdescompagniesdetransport
+
+146
+
+Offence:actingasagentwithoutlicence
+
+Offence:actingasinsurancebrokerwithoutlicence
+
+Regulations
+
+Scopeofregulations
+
+219.(1)Everypersonwhoactsasanagentwithoutalicence,orwhilehisorherlicenceissuspended,isguiltyofanoffence.
+
+(2)Everypersonwho,withoutalicenceissuedundersection212or218orrenewedundersubsection213(3)orwhilehisorherlicenceissuspended,carriesonthebusinessofaninsurancebrokerwithlicensedinsurers,isguiltyofanoffence.
+
+220.(1)TheCommissioner,ontherecommendationoftheMinister,maymakeregulations(a)prescribingrequirements,qualificationsandconditionsfortheissuingorrenewaloflicences;(b)providingfortheholdingofexaminationsforapplicantsforlicences or renewalsoflicences;(c)classifyingapplicantsforlicencesandrestrictingorprohibitingthelicensingofanyclassofapplicant;(d)prescribingthegroundsonwhichalicence mayberevoked,suspendedornotrenewed;(e)regulatingthemethodofhandlingpremiumscollectedandrequiringandregulatingaccountsandrecordstobemaintainedbyagents;(f)requiringagentstosupplyinformationandmakereturnstotheSuperintendent;(g)requiringanagenttoprovideabondorothersecurityandfixingtheamount,form,requirementsandtermsof it;(h)respectingformsandprovidingfortheiruse;(i)prescribingthetimewhenalicenceissuedundersection212or218expires;and(j)respectinganymatternecessaryoradvisabletocarryouteffectivelytheintentandpurposeofsections212to219.
+
+(2)Regulationsmadeundersubsection(1)areinadditiontotheprovisionsofsections212to219notwithstandingthattheregulationsconcernamatterprovidedforinthesesections.SNWT1998,c.24,s.12(4).
+
+219.(1)Commetuneinfractiontoutepersonnequiexercedesactivitésd’agentd’assurancesansêtretitulaired’unelicenceoupendantquesalicenceestsuspendue.
+
+(2)Commetuneinfractiontoutepersonnequi,sansêtretitulaired’unelicencedélivréeenvertudel’article212ou218,ourenouveléeenvertuduparagraphe213(3),oupendantquesalicenceestsuspendue,exercedesactivitésdecourtierd’assuranceauprèsdesassureurstitulairesd’unelicence.
+
+220.(1)Surrecommandationduministre,leCommissairepeut,parrèglement:a)prévoirlesconditionspréalablesàladélivranceouaurenouvellementdeslicencesetlesexigencesàsatisfaire;b)régirlatenue desexamensdes personnesquidemandentunelicenceouunrenouvellementdelicence;c)déterminerlescatégoriesderequérantsetrestreindreouinterdireladélivranced’unelicenceàunecatégorieenparticulier;d)fixerlesmotifsderévocation,desuspensionoudenon-renouvellementd’unelicence;e)régirlemodedeperceptiondesprimes,exigerdesagentsqu’ilstiennentdeslivresdecomptesetdesdossiers,etréglementerlatenuedeceslivresetdecesdossiers;f)exigerdesagentsqu’ilsfournissentdesrenseignementsetfassentdesrapportsausurintendant;g)exigerdesagentsqu’ilsdéposentuncautionnementoutouteautreformedegarantieetendéterminerlemontant,laformeetlesmodalités;h)fixerlesformulairesàutiliseretdéterminerleurmoded’utilisation;i)fixerladated’expirationd’unelicencedélivréeenvertudel’article212ou218;j)prendre touteautremesure nécessaireouutileafind’assurer la réalisation efficacedel’intentiondesarticles212à219.
+
+(2)Lesexigencesréglementairesprévuesauparagraphe(1)s’ajoutentauxdispositionsdesarticles 212 à 219 mêmesiellestraitentd’unequestiondéjàcouverteparl’undecesarticles.
+
+Infraction
+
+Idem
+
+Règlements
+
+Portéedesrèglements
+
+147
+
+Licences
+
+Typeofinsurance
+
+Issueoflicence
+
+Noticeofappointment
+
+LICENCESOFINSURANCESALESPERSONS
+
+221.(1)TheSuperintendentmayissue,toanypersonwhohascompliedwiththisAct,alicenceauthorizingthatpersontoactasasalespersononbehalfofalicensedinsuranceagentinnegotiatingcontractsofinsuranceorinthenegotiationofthecontinuanceorrenewalofanycontractsthattheagentmaylawfullyundertake.
+
+(2)Licencesissuedundersubsection(1) shallbeforanyclassesofinsurance,otherthanlifeinsurance.
+
+(3)OnwrittennoticetotheSuperintendent thatalicensedinsuranceagenthasappointedapersonasasalespersontoactonbehalfoftheagentandondueapplicationofthatpersoninaformapprovedbytheSuperintendentandpaymentbythatpersonoftheprescribedfee,theSuperintendentshall,iftheSuperintendentissatisfiedthattheapplicant(a)isasuitablepersontoreceivealicence;and(b)hasnotbeenrefusedalicenceasaninsuranceagentorhadsuchalicencesuspendedorrevoked,issuetotheapplicantalicencestatinginsubstancethattheholderis,duringthetermofthelicence,authorizedtoactintheNorthwestTerritoriesasasalespersonoftheagent.
+
+(4)Anoticeofappointmentbyalicensedagent,otherthanalifeinsuranceagent,must(a)beinaformapprovedbytheSuperintendent;(b)statethatthepersonappointedhasbeenauthorizedinwritingbytheagenttoactasasalespersoninthesolicitingofandnegotiatingforinsurance;and(c)beaccompaniedbyaswornstatementofthepersonappointedinaformapprovedbytheSuperintendentthatsetsout(i)thename,ageandresidenceofthepersonappointed,(ii)theamountofmonthlysalarythepersonappointedistoreceiveforsuchemployment,(iii)thepresentoccupationandoccupationforthefiveyearsimmediatelyprecedingthedateofnoticeofthepersonappointed,
+
+LICENCESDEVENDEURSD’ASSURANCE
+
+221.(1)Lesurintendantpeutdélivreràlapersonnequis’estconforméeauxexigencesdelaprésenteloiunelicencel’autorisantàexercer,pourlecompted’unagent d’assurancetitulaired’unelicence,laprofessiondevendeurd’assurancedanslecadredelanégociation,de la prolongationoudurenouvellementdescontratsd’assurancequel’agentpeutlégitimementconclure.
+
+(2)Leslicencesdélivréesenvertuduparagraphe(1)peuventvisertouteslescatégoriesd’assurance,saufl’assurance-vie.
+
+(3)Surréceptiond’unavisécritl’informantqu’unagentd’assurancetitulaired’unelicenceanomméunepersonneàtitredevendeurpourlereprésenteretaprèsquecettepersonneluiaprésentéunedemanderédigéesurleformulairequ’ilaapprouvéetpayéledroitréglementaire,lesurintendant,s’ilestconvaincu:a)quelapersonneestapteàdevenirtitulaired’unelicence;b)qu’unelicenced’agentd’assuranceneluiapas déjàétérefusée,ousielleadéjà ététitulaired’unelicence,quecelle-cin’apasétérévoquéeoususpendue,délivreaurequérantunelicencel’autorisant,tantqu’elleestenvigueur,àexercer,danslesTerritoiresduNord-Ouest,lesactivitésdevendeurd’assurancepourcetagent.
+
+(4)L’avisdenominationenvoyéparl’agentd’assurancetitulaired’unelicence,saufunagentd’assurance-vie,doit:a)êtrerédigésurleformulaireapprouvéparlesurintendant;b)énoncer quel’agentaautoriséparécritlapersonnedésignéeàagirenqualitédevendeurafindesolliciteretdenégocierdesassurances;c)êtreaccompagnédeladéclarationsoussermentdelapersonnenommée,rédigéesurleformulaireapprouvéparlesurintendant,etfaisantétatdesrenseignementssuivants:(i)le nom,l’âgeetlelieuderésidencedelapersonnenommée,(ii)lesalairemensuelqu’ellerecevrapourcetemploi,(iii)laprofessionactuelleetcellequ’elleaexercéeaucoursdescinqannées
+
+Licences
+
+Catégoriesdelicences
+
+Délivrancedelalicence
+
+Nominationd’unagent
+
+148
+
+Lifeinsurance
+
+Noticeofterminationofemployment
+
+Failuretogivenotice
+
+Expirationoflicence
+
+Renewal
+
+Forwhomsalespersonmayact
+
+(iv)particularsofanyotheremploymentinwhichthepersonappointedisengaged,and(v)anyotherinformationthattheSuperintendentmayrequire.
+
+(5)Thelicenceshallexpresslyexcludethebusinessoflifeinsurance,butnothinginthisActpreventstheissuancetothesame applicantofalicenceasalife insuranceagent, ifdueapplicationis madeonwrittennoticeofappointmentbyalicensedinsurer.
+
+(6)Wherealicensedsalespersonceasestobeemployedbytheappointingagent,noticeinwritingshallwithoutdelaybegivenbytheagenttotheSuperintendentoftheterminationof employment withthe reasonforthe termination, andon the noticebeinggiventotheSuperintendent,thelicenceissuspended,butthe licencemayberevivedsubjecttotheapprovaloftheSuperintendenton(a)filinganoticeoftheappointmentofthesalespersonbyanotheragent;and(b)paymentoftheprescribedfee.
+
+(7)EveryagentwhofailstonotifytheSuperintendentwithin30daysafter theterminationoftheappointmentofthesalespersonasrequiredbysubsection(6)isguiltyofanoffence.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2);[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2017-c-20/latest/snwt-2017-c-20.html#sec2subsec8_smooth)2017,c.20,s.2(8), [(9)](https://www.canlii.org/en/nt/laws/astat/snwt-2017-c-20/latest/snwt-2017-c-20.html#sec2subsec9_smooth).
+
+222.(1)Alicence issuedundersection221expiresonadayfixedbytheSuperintendent,unlesssoonersuspendedorrevoked.
+
+(2)Alicenceissuedundersection221may,inthediscretionoftheSuperintendent,berenewedforanothertermon(a)dueapplicationinaformapprovedbytheSuperintendentgivingtheinformationthattheSuperintendentmayrequire,accompaniedbyacertificateofalicensedagentrespectingtheappointmentofthesalesperson,and(b)paymentoftheprescribedfee,withoutrequiringthesubmissionofthedetailedinformationspecifiedinsubsection221(4).
+
+(3)Theholderofalicenceissuedundersection221may,duringthetermandvalidityofthelicence, act as salespersononlyfortheagentbywhomheorsheisappointedandwithinthelimitsofthelicenceofthatagent forclassesofinsuranceotherthanlifeinsurance.
+
+précédantladatedel’avis,(iv)unedescriptiondétailléedesautresemploisqu’elleoccupe,(v)toutautrerenseignementquelesurintendantpeutexiger.
+
+(5)Lalicenceexclutexpressémentlesactivitésd’assurance-vie;la présenteloin’atoutefoispaspoureffetd’empêcherladélivranceaumêmerequérantd’unelicenced’assurance-vie,siunedemandeconformeestprésentéeàlasuited’unavisécritdenominationfaitparunassureurtitulairedelicence.
+
+(6)Lorsquelevendeur cessed’êtreauservicedel’agentquil’adésigné,celui-ciendonneimmédiatement un avisécritmotivéausurintendant;lalicenceestalorsautomatiquementsuspendue;ellepeutêtreremiseenvigueur,avecl’approbationdusurintendant:a)surdépôtd’unnouvelavisdenomination;b)surversementdudroitréglementaire.
+
+(7)Commetuneinfractionl’agentquin’avisepaslesurintendantdansles30jourssuivantlacessationd’emploi,enconformitéavecleparagraphe(6). LTN-O2011,ch.16,art.12(2);LTN-O2017,ch.20,art.2(8)et(9).
+
+222.(1)Unelicencedélivréesouslerégimedel’article221expireau moment fixéparlesurintendant,saufsielleestsuspendueourévoquéeauparavant.
+
+(2)Lesurintendantpeutrenouvelerunelicencedélivréesouslerégimedel’article221pouruneautrepériodesansquetouslesrenseignementsdétaillésvisésauparagraphe221(4)neluisoientremisànouveaus’ilreçoitàcetégard:a)unedemandeconforme,rédigéesurleformulairequ’ilaapprouvéetfaisantétatdesrenseignementsqu’ilexige,lademandeétantaccompagnéeducertificatdenominationduvendeursignéparl’agent;b)lepaiementdudroitréglementaire.
+
+(3)Letitulaire d’une licencedélivréeenvertudel’article221peut,pendantqu’elleestenvigueur,agiràtitredevendeuruniquementpourl’agentquil’anomméetenconformitéaveclesmodalitésdelalicencequiaétédélivréeàcetagentàl’égarddescatégoriesd’assuranceautresquel’assurance-vie.
+
+Assurance-vie
+
+Findel’emploi;avisausurintendant
+
+Défautdedonneravis
+
+Expiration
+
+Renouvelle-ment
+
+Pouvoirsduvendeur
+
+149
+
+Offence:actingassalespersonwithoutlicence
+
+Licencetobroker
+
+Application
+
+Issuanceoflicence
+
+Expirationoflicence
+
+Renewaloflicence
+
+Statusofbroker
+
+(4)Everypersonwhoactsasasalespersonofaninsuranceagentwithoutalicence,orwhilehisorherlicenceissuspended,isguiltyofanoffence.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2017-c-20/latest/snwt-2017-c-20.html#sec2subsec10_smooth)2017,c.20,s.2(10).
+
+LICENCESOFINSURANCEBROKERS
+
+223.(1)TheSuperintendentmay,onthepaymentoftheprescribedfee,issuetoanyperson,whoislicensedasanagent,alicencetoactasabrokertonegotiate,continueorrenewcontractsofinsuranceintheNorthwestTerritorieswithinsurersnotauthorizedtotransactbusinessintheTerritories.
+
+(2)Theapplicantforabroker’slicenceshallfilewiththeSuperintendentawritten applicationin a formapprovedbytheSuperintendent.
+
+(3)IftheSuperintendentissatisfiedwiththestatementandinformationrequiredbysubsection(2),theSuperintentshallissuealicencetoactasabrokertotheapplicant.
+
+(4)Alicence issuedunder subsection(3) expiresontheprescribeddate,unlesssoonersuspendedorrevoked.
+
+(5)TheSuperintendentmayrenewalicenceissuedundersubsection(3)foranothertermon(a)thepaymentoftheprescribedfee;(b)thesubmissionofawrittenapplicationinaformapprovedbytheSuperintendent;and(c)thesubmissionofawrittenreport,inaformacceptabletotheSuperintendent,onallbusinessplacedbythebrokerwithunlicensedinsurersduringthepreviouslicenceperiod.
+
+(6)Every personshall,before receivingalicenceissuedunder subsection(3),executeanddeliver to theSuperintendentsecuritytothesatisfactionoftheSuperintendent,inthesumofnotlessthan$2,000,thatthelicenceholderwillcomplywithalltherequirementsofthisActandtheregulations.
+
+(7)Subjecttosection225,abrokershallnotbepresumedtobetheagentoftheinsurer or theagentoftheinsuredbyreasonoftheissuetothebrokerofalicenceunderthissection.
+
+(4)Commetuneinfractiontoutepersonnequiexercedesactivitésdevendeurd’assurancesansêtretitulaired’unelicenceoupendantquesalicenceestsuspendue.LTN-O2017,ch.20,art.2(10).
+
+LICENCESDESCOURTIERSD’ASSURANCE
+
+223.(1)Lesurintendantpeut,surréceptiondudroitréglementaire,délivreràunepersonnequiestdéjàtitulaired’unelicenced’agentunelicencedecourtierl’autorisantànégocierlaconclusion,laprolongationou le renouvellementdecontratsd’assurancedanslesTerritoiresduNord-Ouestavecdesassureursquinesontpasautorisésàyexploiterleurentreprise.
+
+(2)Lapersonnequidemandeunelicencedecourtierdéposeauprèsdusurintendantunedemandeécriterédigéesurleformulairequ’ilaapprouvé.
+
+(3)Lesurintendantdélivreunelicencedecourtieràlapersonnequiluiremetlesrenseignementsetdéclarationsvisésau(2)delafaçonqu’iljugesatisfaisante.
+
+(4)Lalicenceexpireaujourfixéparrèglement,saufsielleaétésuspendueourévoquéeauparavant.
+
+(5)Lesurintendantpeutrenouvelerunelicencedélivréeenvertuduparagraphe(3)pouruneautrepériode,silesconditionssuivantessontréunies:a)ledroitréglementaireestpayé;b)unedemandeécriterédigéesurleformulairequ’ilaapprouvé;c)unrapport écritestprésenté,enuneformequ’ilestimeacceptable,àl’égarddetouteslesopérationscommercialeseffectuéesparlecourtieravecdesassureursnontitulairesd’unelicencependantladernièrepériodedevaliditédesalicence.
+
+(6)Avantqu’unelicenceneluisoitdélivréeenvertuduparagraphe(3),letitulaireéventuelremetausurintendantuncautionnement,quecelui-ciestimesatisfaisant,d’unmontantminimalde2000$,selonlequelletitulairerespecteralesexigencesdelaprésenteloietdesrèglements.
+
+(7)Sousréservedel’article225,uncourtiern’estpasréputéêtrel’agentdel’assureuroudel’assuréparcequ’unelicenceluiaétédélivréesouslerégimeduprésentarticle.
+
+Infraction
+
+Licencedecourtier
+
+Demandeécrite
+
+Délivrancedelalicence
+
+Expirationdelalicence
+
+Renouvelle-ment
+
+Cautionne-ment
+
+Qualitéducourtier
+
+150
+
+Offence
+
+Dealingwithunlicensedinsurers
+
+Statementofinsured
+
+SubmissiontoSuperinten-dent
+
+Booksofaccount
+
+(8)Everypersonwho,withoutalicenceissuedunderthissectionorwhilehisorherlicenceissuspended,carriesonthebusinessofaninsurancebrokerwithinsurersnotauthorizedtotransactbusinessintheNorthwestTerritoriesisguiltyofanoffence.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html)2011,c.16,s.12(2);[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2017-c-20/latest/snwt-2017-c-20.html#sec2subsec11_smooth)2017,c.20,s.2(11), [(12)](https://www.canlii.org/en/nt/laws/astat/snwt-2017-c-20/latest/snwt-2017-c-20.html#sec2subsec12_smooth), [(13)](https://www.canlii.org/en/nt/laws/astat/snwt-2017-c-20/latest/snwt-2017-c-20.html#sec2subsec13_smooth).
+
+224.(1) Ifsufficientinsuranceinrespectofany matterorthingintheNorthwestTerritoriescannotbeobtainedfrominsurerslicensedtodobusinessintheTerritories,anylicensedbrokermayplaceinsurancewithunlicensedinsurers.
+
+(2)Beforeplacinginsurancewithanunlicensedinsurer, abrokershall obtainfromtheinsuredasignedanddatedstatement(a)describingfullythenatureoftheinsuranceandtheamountofinsurancerequired;(b)statingthattheinsurancecannotbeobtainedfromlicensedinsurers;and(c)statingthatapplicationfortheinsurancewaspreviouslymadetoandrefusedbynamedinsurerslicensedintheNorthwestTerritories.
+
+(3)Abrokershall,within10daysaftertheplacingoftheinsurancewithanunlicensedinsurer,submittotheSuperintendent(a)astatementsettingout(i)thenameoftheinsured,(ii)thenatureoftheinsurance,(iii)thefullnamesoftheunlicensedinsurers,and(iv)theamountofinsuranceplacedwitheachandtherateandamountofpremiumpaidtoeach;and(b)thestatementreferredtoinsubsection(2).
+
+(4)Abrokershallkeepaseparateaccountofinsurance placedbythebrokerunderhis orherlicenceandkeeptheaccountsopentoinspectionbytheSuperintendentoranypersonauthorizedbytheSuperintendent.
+
+(8)Commetuneinfractionquiconqueexerce,sansêtretitulaired’unelicencedélivréeenvertuduprésentarticleoupendantquesalicenceestsuspendue,laprofessiondecourtierd’assuranceauprèsd’assureursquinesontpasautorisésàexploiterleurentreprisedanslesTerritoiresduNord-Ouest.LTN-O2011,ch.16,art.12(2);LTN-O2017,ch.20,art.2(11),(12)et(13).
+
+224.(1) Un courtiertitulaired’unelicencepeutconclureuncontratd’assuranceavecunassureurnontitulaired’unelicence,s’ilestimpossibled’obtenirauprèsd’assureurstitulairesd’unelicencelesautorisantàexploiterleurentreprisedanslesTerritoiresduNord-OuestuneassurancesuffisanteconcernantunobjetouuneaffairedanslesTerritoiresduNord-Ouest.
+
+(2)Avantdeconclureuncontratd’assuranceavecunassureur non titulaired’unelicence,lecourtierobtientdelapartdel’assuréunedéclarationsignée etdatéecomportantlesrenseignementssuivants:a)unedescriptioncomplètede la naturedel’assurancedemandéeetdeson montant;b)lefaitquecetteassurancenepeutêtreobtenueauprèsdesassureurstitulairesd’unelicence;c)lefaitqu’unepropositiond’assuranceadéjàété faiteauprèsdecertainsassureursnommémentdésignésettitulairesd’unelicencedanslesTerritoires duNord-Ouestetqueceux-cil’ontrejetée.
+
+(3)Dansles10jourssuivantlaconclusiond’uncontratd’assuranceavecunassureurnontitulaired’unelicence,lecourtierremetausurintendant:a)unedéclarationcomportantlesrenseignementssuivants:(i)lenomdel’assuré,(ii)lanaturedel’assurance,(iii)lesnomsoudésignationssocialescompletsdesassureursnontitulairesd’unelicence,(iv)lesmontantsdescontratsd’assuranceconclusavecchacun,ainsiqueletauxetlemontantdesprimesversées;b)ladéclarationviséeauparagraphe(2).
+
+(4)Lecourtierconservedesregistresdistinctsportantsurlescontratsd’assurancequ’ilaconclussouslerégimedesalicenceetenpermetl’examen parlesurintendantoulespersonnesquecelui-cidésigne.
+
+Infraction
+
+Assureursnontitulairesd’unelicence
+
+Déclarationdel’assuré
+
+Rapportausurintendant
+
+Registrescomptables
+
+151
+
+Monthlyreturn
+
+Taxonpremiums
+
+Releaseofsecurity
+
+Forfeitureoflicence,offence
+
+Agentorbrokerreceivingpremiums
+
+Exemption
+
+Fraudulentrepresentations
+
+Personalliabilityofagentforunlawfulcontracts
+
+Licencesofinsuranceadjusters
+
+(5)Within10daysafter theend ofeachmonth,abrokershallmakeareturnunderoathtotheSuperintendentintheformand mannerrequiredbytheSuperintendent, containingparticularsofall insuranceplacedundersubsection(1)bythebrokerduringthemonth.
+
+(6)Inrespectofallpremiumsoninsuranceplacedundersubsection(1),abrokershallpaytotheSuperintendent,atthetimeofmakingamonthlyreturn,thetaxesthatwouldbepayableifthepremiumshadbeenreceivedbyalicensedinsurer.
+
+(7)OnitbeingshowntothesatisfactionoftheSuperintendentthatallinsuranceplacedundersubsection(1)byabrokerisnolongerinforceorhasbeenreinsured,thebrokerisentitledtoareleaseorcancellationofhisorhersecurity.
+
+(8)Everybrokerwhocontravenesthissectionforfeitshisorherlicenceandisguiltyofanoffence.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+PROVISIONSRELATINGTOAGENTSANDBROKERSGENERALLY
+
+225.(1)Anagentorbrokershall,forthepurposeofreceivinganypremiumforacontractofinsurance,bedeemedtobetheagentoftheinsurernotwithstandinganyconditionsorstipulationstothecontrary.
+
+(2)Subsection(1)doesnotapplytolifeinsurance.
+
+226.Everyagentorbrokerwhoknowinglyprocures,byfraudulentrepresentations,paymentortheobligationforpaymentofanypremiumonanyinsurancepolicyisguiltyofanoffence.
+
+227.Anagentorbrokerispersonallyliabletotheinsuredonallcontractsofinsuranceunlawfullymadebyorthroughhimorherdirectlyorindirectly with anyinsurernotlicensedtoundertakeinsuranceintheNorthwestTerritoriesinthesamemannerasiftheagentorbrokerweretheinsurer.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+LICENCESOFINSURANCEADJUSTERS
+
+228.(1)TheSuperintendentmay,onthepaymentoftheprescribedfee,issuetoanysuitablepersonalicencetoactasanadjuster,butapersonlicensedas
+
+(5)Dansles10premiersjoursdechaquemois,lecourtierremetausurintendantunrapportsous sermentétablidelafaçonprévueparcedernier;cerapportcontientdesrenseignementsdétaillésconcernanttouslescontratsd’assuranceconclusparlecourtierenvertuduparagraphe(1)durantlemoisprécédent.
+
+(6)Lecourtierverseausurintendantaumomentoùilluiprésentesonrapportmensuel,lemontantdestaxessurlesprimesd’assurancequiauraientétépayables à l’égarddescontrats d’assurance conclus envertuduparagraphe(1)siceux-cil’avaientétéauprèsd’unassureurtitulaired’unelicence.
+
+(7)Lecautionnementquelecourtieraremisausurintendantluiestretournéouestannulé,silecourtierprouveausurintendantquetouslescontratsd’assuranceconclusenvertuduparagraphe(1)sontexpirésouontfaitl’objetd’uneréassurance.
+
+(8)Commetuneinfractionetperdsalicencelecourtierquicontrevientauxdispositionsduprésentarticle.LTN-O2011,ch.16,art.12(2).
+
+DISPOSITIONSGÉNÉRALESCONCERNANTLESAGENTSETLESCOURTIERS
+
+225.(1)L’agentoulecourtierquireçoitunversementdeprimesd’assuranceestassimiléàl’agentdel’assureurmalgrétouteautreconditionoudispositioncontraire.
+
+(2)Leparagraphe(1)nes’appliquepasàl’assurance-vie.
+
+226.Commetuneinfractionl’agentoulecourtierquisciemmentobtientpardesassertionsfrauduleuseslepaiementd’uneprimed’assuranceouunengagementàcetégard.
+
+227.L’agentoulecourtierestpersonnellementresponsableenversl’assurédetouslescontratsd’assuranceillégalementconclusparluiouparsonentremise,directementouindirectement,avectoutassureurnontitulaired’unelicencel’autorisantàexploitersonentreprisedanslesTerritoiresduNord-Ouestcommesil’agentoulecourtierétaitlui-mêmel’assureur.LTN-O2011,ch.16,art.12(2).
+
+LICENCESD’EXPERTSENSINISTRES
+
+228.(1)Surpaiementdudroitréglementaire,lesurintendantpeutdélivreràtoutepersonnequiestapteàexercercetteprofessionunelicenced’experten
+
+Rapportmensuel
+
+Taxes
+
+Remiseducautionnement
+
+Infraction
+
+Versementdesprimesàl’agent
+
+Exception
+
+Assertionsfrauduleuses
+
+Responsabilitépersonnelle
+
+Licencesd’expertensinistres
+
+152
+
+Filingapplication
+
+Issueandexpirationoflicence
+
+Renewaloflicence
+
+Offence:actingasadjusterwithoutlicence
+
+Prohibitionagainstpublicadjustersofmotoraccidentclaims
+
+aninsuranceagentorbrokerunderthisPartshallnotreceivealicencetoactasaninsuranceadjuster.
+
+(2)Theapplicantforalicencetoactasanadjustershall(a)filewiththeSuperintendentawrittenapplicationunderoathinaformapproved bytheSuperintendent inwhichtheapplicantmuststate(i)hisorhername,age,residenceandoccupationforthefiveyearsimmediatelyprecedingthedateoftheapplication,and(ii)anyotherinformationthattheSuperintendentmayrequire;and(b)provideastatementastohisorhertrustworthinessandcompetencysignedbyatleastthreereputablepersonsresidentintheNorthwestTerritories.
+
+(3)IftheSuperintendentissatisfiedwiththestatements andinformationrequired,theSuperintendentshallissuethelicence,whichexpiresonadayfixedbytheSuperintendentineachyearunlesssoonerrevokedorsuspended.
+
+(4)Alicencemay,inthediscretionoftheSuperintendent,berenewedforanothertermonwrittenapplicationinaformapprovedbytheSuperintendentandonpaymentoftheprescribedfee,withoutagainrequiringthedetailedinformationspecifiedinsubsection(2).
+
+(5)Everypersonwhoactsas anadjusterwithoutalicenceorduringasuspensionof hisorher licence isguiltyofanoffence.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2);[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2017-c-20/latest/snwt-2017-c-20.html#sec2subsec14_smooth)2017,c.20,s.2(14), [(15)](https://www.canlii.org/en/nt/laws/astat/snwt-2017-c-20/latest/snwt-2017-c-20.html#sec2subsec15_smooth).
+
+229.(1)Subjecttosubsection(2), nopersonshall,onbehalf ofhimselforherself oranother person,directlyorindirectly,(a)solicittherighttonegotiate,ornegotiateorattempttonegotiate,forcompensation,thesettlementofaclaimforlossordamagearisingoutofamotorvehicleaccidentresultingfrombodilyinjurytoordeathofanypersonordamagetopropertyonbehalfofaclaimant;or
+
+sinistres;toutefois,unetellelicencenepeutêtredélivréeàunagent ou àuncourtierd’assurancequiestdéjàtitulaired’unelicencesouslerégimedelaprésentepartie.
+
+(2)Lapersonnequidemandeunelicenced’expertensinistres:a)déposeauprèsdusurintendantunedemandeécritesoussermentrédigéesurleformulaireapprouvéparcedernieretsurlequelledemandeurainscritlesrenseignementssuivants:(i)sonnom,sonâge,lelieudesarésidenceetlaprofessionqu’ilaexercéedurantlescinqannéesprécédantladatedelademande,(ii)lesautresrenseignementsquelesurintendantexige;(b)fournitunedéclarationdesafiabilitéetdesacompétence,signéeparaumoinstroispersonnesdebonneréputationrésidantdanslesTerritoiresduNord-Ouest.
+
+(3)Lesurintendantdélivre la licence, s’il estimequelesrenseignementsetladéclarationmentionnésdansla demande sontsatisfaisants;lalicenceexpireaujourfixépar le surintendantchaqueannée,saufsielleestrévoquéeoususpendueauparavant.
+
+(4)Lesurintendantpeut,surréceptiond’unedemanderédigéesurle formulairequ’ilaapprouvéetsurpaiementdudroitréglementaire,renouvelerunelicencepouruneautrepériode,sansquelesrenseignementsdétaillésprévusauparagraphe(2)neluisoientremischaquefois.
+
+(5)Commetuneinfractionlapersonnequiexercelaprofessiond’expertensinistressansêtretitulaired’unelicenceoupendantquesalicenceestsuspendue.LTN-O2011,ch.16,art.12(2);LTN-O2017,ch.20,art.2(14)et(15).
+
+229.(1)Sousréserveduparagraphe(2),nulnepeut,pourlui-mêmeoupourlecompted’autrui,mêmeindirectement:a)solliciterledroitdenégocier,ounégocieroutenterdenégocier,contrerémunération,pourlecompteduréclamant,lerèglementd’uneréclamationpourperteoudommagesdécoulantd’unaccidentd’automobileayantcausédes lésionscorporelles àune
+
+Demandeécrite
+
+Délivranceetexpirationdelalicence
+
+Renouvel­lement
+
+Infraction
+
+Interdiction
+
+153
+
+Exemption
+
+Offence:actingasagent,brokeroradjusterwithoutauthority
+
+Agentorbrokerholdingmoneyintrust
+
+(b)hold himself orherselfoutas anadjuster,investigator,consultantorotherwiseasanadviser,onbehalfofanypersonhavingaclaimagainstaninsuredforwhichindemnityisprovidedbyamotorvehicleliabilitypolicy.
+
+(2)Thissectiondoesnotapplytoabarristerorsolicitoractingintheusualcourseofthatprofession.
+
+PROVISIONSRELATINGTOAGENTS,BROKERSANDADJUSTERSGENERALLY
+
+230.(1)Everypersonisguiltyofanoffencewho(a)notbeingdulylicensedasanagent,brokeroradjuster,representsorholdshimselforherselfouttothepublicasbeingsuchanagent,brokeroradjuster,orasbeingengagedintheinsurancebusinessbymeansofadvertisements,cards,circulars,letterheads,signsorothermethods;or(b)beingdulylicensedasanagent,brokeroradjuster,advertisesasdescribedinparagraph(a),orcarriesonsuchbusinessinanyothernamethanthatstatedinthelicence.
+
+(2)Anagentorbrokerwho(a)actsinnegotiating,renewingorcontinuingacontractofinsurancewithalicensedinsurer,and(b)receivesanymoneyorsubstituteformoneyforpaymentto apersoninrespectofthecontractofinsurance,shallbedeemedtoholdthatmoneyintrustfortheperson entitledtoit,and,if theagentorbroker failstopaythemoneyover tothatpersonwithin15daysafterwrittendemandmadeontheagentorbrokerforthemoneylesshisorhercommissionandanydeductionstowhichtheagentorbrokerisentitled,thatfailureis,intheabsenceofevidencetothecontrary,proofthattheagentorbrokerhasusedorappliedthemoneyforapurposeotherthanpayingitovertothepersonentitled.
+
+personne,ledécès d’unepersonneou desdommagesmatériels;b)seprésentercommeexpertensinistres,enquêteur, consultant ou conseilleràtoutautretitrepourle compte d’une personnetitulaired’uneréclamationcontreunassurédanslescasoùl’indemnitéestprévueparunepolicederesponsabilitéautomobile.
+
+(2)Leprésentarticlenes’appliquepasauxavocatsagissantdanslecadrede l’exercicenormaldeleursactivitésprofessionnelles.
+
+DISPOSITIONSGÉNÉRALESCONCERNANTLESAGENTS,LESCOURTIERSETLESEXPERTSENSINISTRES
+
+230.(1)Commetuneinfractionquiconque:a)sansêtretitulairedelalicenceappropriée,seprésenteousefaitconnaîtrepubliquementcommeagent,courtierouexpert ensinistres,oucommetravaillantdanslesassurances,notammentaumoyendelapublicité,decartes,decirculaires,d’en-têtesdelettres,d’enseignes;b)étanttitulairedelalicenceappropriée,faitdelapublicitédelamanièreprécitéeoufaitaffairessousunnomdifférentdeceluiquiestindiquédanssalicence.
+
+(2)L’agentoulecourtierqui:a)participeàlanégociation,aurenouvellementou àlaprolongationd’uncontratd’assuranceavecunassureurtitulaired’unelicence;b)reçoitunesommeouautrecontrepartieavecinstructionsdelesverseràuneautrepersonnedanslecadreducontrat,estréputédétenircettesommeenfiduciepourlebénéficiaire; s’ilfaitdéfautderemettrecette sommeàsonbénéficiairedansles15jourssuivantceluioùlademande écrite lui enest présentée,déductionfaite,lecaséchéant,desacommissionetdesautressommesauxquellesiladroit,cedéfautconstitue,saufpreuvecontraire,lapreuvequ’ilautilisél’argentàd’autresfins.
+
+Exception
+
+Infraction
+
+Fiducie
+
+154
+
+Agentorbrokerholdingpremiumintrust
+
+Paymentofcompensation,offence
+
+Agreementastopremiumotherthanasinpolicy,offence
+
+Exceptions
+
+(3)Anagentorbrokerwho(a)actsinnegotiating,renewingorcontinuingacontractofinsurance,otherthanlifeinsurance,withalicensedinsurer,and(b)receivesanymoneyorsubstituteformoneyasapremiumforthecontractofinsurancefromtheinsured,shallbedeemedtoholdthepremiumintrustfortheinsurer,and,iftheagentorbrokerfailstopaythepremiumovertotheinsurerwithin15daysafterwrittendemandmadeontheagentorbrokerforthepremium,lesshisorhercommissionandanydeductionstowhich,bythewrittenconsentofthecompany, theagentorbrokerisentitled,thatfailureis,intheabsenceofevidencetothecontrary,proofthattheagentorbrokerhasusedorappliedthepremiumforapurposeotherthanpayingitovertotheinsurer.
+
+231.(1)Noinsurer,andno officer, employeeor agentofan insurer,andnobroker,shalldirectlyorindirectlypay orallow,oragreetopayorallow,compensationoranythingofvaluetoanypersonforplacingornegotiatinginsuranceonlives,propertyorinterestsintheNorthwestTerritories,ornegotiatingthecontinuanceorrenewalofthatinsurance,orforattemptingtodoso,who,atthedateofplacingornegotiatingtheinsurance,isnotadulylicensedinsuranceagentorbrokerorapersonactingundersubsection217andeverypersonwhoknowinglycontravenesthissubsectionisguiltyofanoffence.
+
+(2)Noinsurer,andnoofficer,employeeoragentofaninsurer,andnobrokershall directly or indirectlymakeorattempttomakeanagreementastothepremiumtobepaid for apolicyother than assetoutinthepolicy,orpay,alloworgive,orofferoragreetopay,alloworgive,arebateof thewholeorpartofthepremiumstipulatedbythepolicy,oranyotherconsiderationorthingofvalueintendedtobeinthenatureofarebateofpremium,toany personinsuredorapplyingforinsuranceinrespectoflife,personorpropertyintheNorthwestTerritories,andeveryinsurerorotherpersonwhocontravenesthissubsectionisguiltyofanoffence.
+
+(3)Nothinginthissectionaffectsanypaymentbywayofdividend,bonus,profitorsavingsthatisprovidedforbythepolicy,orshallbeconstruedsoastopreventaninsurercompensatingabonafidesalaried
+
+(3)L’agentoulecourtierqui:a)participeàlanégociation,aurenouvellementou àlaprolongationd’uncontratd’assurance,exceptionfaitedel’assurance-vie,avecunassureurtitulaired’unelicence;b)reçoitdel’assuréunesommeouautrecontrepartieàtitredeprime,estréputédétenircetteprimeenfiduciepourlebénéficedel’assureur;s’ilfaitdéfautdelaremettreàl’assureurdansles15jourssuivantceluioùlademande écrite luienest présentée, déductionfaitedesacommissionetdesautressommesauxquellesiladroit,avecleconsentementécritdelacompagnie,cedéfautconstitue, saufpreuvecontraire,lapreuvequ’ilautilisél’argentàd’autresfins.
+
+231.(1)Ilestinterditauxassureursainsiqu’àleursdirigeants,employésouagentsetauxcourtiersdepayer,mêmeindirectement,oudepermettreoud’accepterdepayerouderemettreunerémunérationoutoutautreobjetdevaleuràunepersonneenraisondesaparticipationàlaconclusionouà la négociationd’uncontratd’assurancesurlavie,surdesbiens ousurdesintérêtsdanslesTerritoiresduNord-Ouest,oudelaprolongationoudurenouvellementdecetteassurance,oupouravoirtentédelefaire,siauxmomentspertinentscettepersonnen’étaitpasunagentouuncourtiertitulaired’unelicence,ousiellen’étaitpasunepersonneviséeparl’article217;commetuneinfractionquiconquecontrevientsciemmentauprésentparagraphe.
+
+(2)Ilestinterditauxassureurs,àleurdirigeants,employésouagentsetauxcourtiersdeconclure,mêmeindirectement,oudetenterdeconclureuneententedemodificationdelaprimementionnéedansunepoliceoudeverser,d’offriroud’accepterdeverseroud’offrirunrabaisdelaprimeprévueparlapoliceoutouteautrecontrepartied’unenaturesemblableàunassuréouàunproposantàl’égardd’uncontratd’assurance portant surlavie, surdesbiensousur despersonnesdanslesTerritoiresduNord-Ouest; commetuneinfractionquiconquecontrevientauprésentparagraphe.
+
+(3)Leprésentarticleneportepasatteinteauxversements,sousformededividendes,bonis,bénéficesouépargnes,danslamesureoùilssontprévusparlapolice et nepeuts’interpréterdefaçonàempêcherun
+
+Idem
+
+Interdiction
+
+Interdictiond’offrirdesrabais
+
+Exceptions
+
+155
+
+Offence:inducinginsuredwithrespecttolifeinsurance
+
+Offence:misleadingstatements,comparisonsorcoercion
+
+ReturnstoSuperinten-dent
+
+employeeof its headoffice or branchoffice inrespectofinsuranceissued bytheemployinginsureronthelifeofthatemployeeoronthepropertyorinterestsintheNorthwestTerritoriesofthatemployeeorsoastorequirethatsuchemployeeshallbelicensedasanagentunderthisActtoaffectthatinsurance.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+232.(1)Everypersonwhoinducesorattemptstoinduce,directlyorindirectly,aninsuredto(a)lapse,(b)surrenderforcashpaiduporextendedinsurance,orothervaluableconsideration,or(c)subjecttosubstantialborrowingwhetherinasingleloanoroveraperiodoftime,anycontractwithoneinsureroflifeinsurancethatcontainsprovisionforcashsurrenderandpaid-upvaluesforthepurposesofeffectingacontractoflifeinsurancewithanotherinsurerisguiltyofanoffence.
+
+(2)Everypersonlicensedasanagentforlifeinsuranceisguiltyofanoffencewho(a)makesafalseandmisleadingstatementorrepresentationinthesolicitationorregistrationofinsurance;(b)makesordeliversanyincompletecomparisonofanypolicyorcontractofinsurancewiththatofany otherinsurerinthesolicitationorregistrationofinsurance;or(c)coercesorproposes,directlyorindirectly,tocoerceaprospectivebuyeroflifeinsurancethrough the influenceofaprofessionalorabusinessrelationshiporotherwisetogiveapreferencewithrespecttothepolicy oflife insurancethatwouldnototherwisebegivenontheeffectingofalifeinsurancecontract.
+
+233.Everylicensedinsurershallmakeareturnunderoathtothe Superintendent intheformandatthetimesthattheSuperintendentrequiresshowingallpersons,partnershipsandcorporationstowhomithas,withintheperiodthattheformofreturnrequires,paidorallowedoragreedtopayorallow,directlyorindirectly,compensationforplacingornegotiatinginsuranceonlives,propertyorinterestsintheNorthwestTerritories,ornegotiatingthecontinuance
+
+assureurdedédommagerunvéritableemployé salariédesonsiègesocialoud’unesuccursalerelativementàuneassuranceconclueentrel’assureur-employeursurlavie de cetemployéousursesbiensouintérêtssituésdanslesTerritoiresduNord-Ouest,oudefaçonàexigerquecetemployésoittitulaired’unelicenced’agentdélivréesouslerégimedelaprésenteloil’autorisantàeffectuerunetelleassurance.LTN-O2011,ch.16,art.12(2).
+
+232.(1)Commetuneinfractionquiconqueinciteoutented’inciter,mêmeindirectement,unassuré:a)soitàlaissertomberendéchéance;b)soitàfaireracheterparl’assureur,moyennantunesommeouuneassurancelibéréeouprolongéeoutouteautrecontrepartievalable;c)soitàassujettiràunempruntimportant,d’unseulcoupoupendantunepériode,lecontratd’assurance-viequ’ilasouscritaveccetassureuretquicontientunedispositionderachatenargentoud’assurancelibérée,dans le butdeconclureuncontratd’assurance-vieavecunautreassureur.
+
+(2)Commetuneinfractionletitulaired’unelicenced’assurance-viequi,selonlecas:a)faitunedéclarationouuneassertionfausseettrompeusedanslecadredelasollicitationoudelanégociationd’uncontratd’assurance;b)faitunecomparaisonincomplèteentrelespolicesoulescontratsd’assurancedeplusieursassureursdanslecadredelasollicitationoudelanégociationd’uncontratd’assurance;c)contraintoupropose,mêmeindirectement,decontraindreunéventuelacheteurd’assurance-vie,notammentparl’influencederelationsd’affairesouderelationsprofessionnelles,àdonner,àl’égardducontratd’assurance-vie,unepréférencequineseraitpasnormalementdonnéeparlaconclusiond’untelcontrat.
+
+233.L’assureurtitulaired’unelicencefaitunrapportsoussermentausurintendantenlaformeetauxmomentsdéterminésparcelui-ci;cerapportdonnelalistedespersonnes,dessociétésennomcollectifetdespersonnesmoralesauxquellesila,durantlapériodeviséeparlerapport,payéouversé,ouacceptédepayeroudeverser,mêmeindirectement,unerémunérationpouravoirconcluounégocié,ouavoirtentédelefaire,descontratsd’assuranceportantsurla
+
+Interdiction
+
+Déclarationsoucomparaisonstrompeuses
+
+Rapportsausurintendant
+
+156
+
+Revocationorsuspension
+
+Notice
+
+Application
+
+Advisoryboard
+
+Compositionofadvisoryboard
+
+Hearingandreport
+
+Presidingmember
+
+orrenewalofthatinsurance,orforattemptingto do so.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+234.(1)TheSuperintendentmayafterahearing,revokethelicenceofanagent,salesperson,brokeroradjuster,suspenditforaperiodnotexceedingitsunexpiredterm or revokeitwhilesosuspendedwheretheSuperintendentdeterminesthatthelicenceholder(a)contravenedthisActortheregulations;(b)madeamaterialmisstatementintheapplicationforthelicence;(c)isguiltyofafraudulentpractice;or(d)hasdemonstratedincompetenceoruntrustworthinesstotransactthebusinessforwhichthelicencewasissued.
+
+(2)TheSuperintendentshallnotifythelicenceholderinwritingofanyrevocationorsuspensionandmaypublishanoticeofsuchrevocation or suspensioninthemannerthattheSuperintendentconsidersnecessaryfortheprotectionofthepublic.
+
+235.(1)Thissectionappliesinrespectoflicencesforagents,brokersandadjusters.
+
+(2)TheSuperintendentmay,andshallwhensorequestedinwritingbyanapplicant or licenceholder,appointthreepersonstoactasanadvisoryboardforthepurposeofassistingtheSuperintendentindecidingwhethertoissue,renew,revokeorsuspendalicence.
+
+(3)Theadvisoryboardshallbecomposedof(a)arepresentativeofinsurers;(b)arepresentativeofagents,brokersoradjusters,asthecasemaybe;and(c)arepresentativeoftheSuperintendent.
+
+(4)TheadvisoryboardshallholdahearingandreportitsfindingstotheSuperintendenttogetherwithrecommendationsonthematterthatitseesfit.
+
+(5)TherepresentativeoftheSuperintendentshallpreside over theadvisoryboardandforthe purposeofthehearing,hasallthepowersoftheSuperintendentundersection255.
+
+vie,desbiensoudesintérêtsdanslesTerritoiresduNord-Ouest,oupourenavoirnégociéouavoirtentédenégocierlaprolongationoulerenouvellement.LTN-O1994,ch.7,ann;LTN-O2011,ch.16,art.12(2).
+
+234.(1)Lesurintendantpeut,aprèslatenued’uneaudience,révoquerlalicenced’unagent,d’unvendeur,d’uncourtieroud’unexpertensinistres,lasuspendrepourlerestedesapériodedevaliditéoupourunepériodeinférieure,oularévoquerpendantqu’elleestsuspendue,s’ilconclutqueletitulaire:a)acontrevenuàlaprésenteloiouauxrèglements;b)afaitunefaussedéclarationimportantedanssademandedelicence;c)estcoupabledemanoeuvresfrauduleuses;d)adémontréqu’iln’étaitpascompétentoudignedeconfiancepourexercerlaprofessionviséeparsalicence.
+
+(2)Lesurintendantaviseparécritletitulairedelalicenceencasderévocationoudesuspensionetpeutenoutreenpublierunavisdelafaçonqu’ilestimenécessaireàlaprotectiondupublic.
+
+235.(1)Leprésentarticles’appliqueauxlicencesd’agent,decourtieretd’expertensinistres.
+
+(2)Lesurintendantpeutnommeretnomme,lorsquele titulairedelalicenceoulapersonnequiendemandeunele luidemandepar écrit, troispersonnesàtitredeconseilconsultatifchargédel’aideràdéciderdeladélivrance,durenouvellement,delarévocationoudelasuspensiond’unelicence.
+
+(3)Leconseilconsultatifestcomposédespersonnessuivantes:a)unreprésentantdesassureurs;b)unreprésentantdesagents,descourtiersoudesexpertsensinistres,selonlecas;c)unreprésentantdusurintendant.
+
+(4)Leconseilconsultatiftientuneaudienceetremetausurintendantunrapportfaisantétatdesesconclusionsetdesrecommandationsqu’ilestimeindiquées.
+
+(5)Lereprésentantdusurintendantestleprésidentduconseilconsultatifet,lorsdesaudiences,estinvestidespouvoirsdusurintendantvisésàl’article255.
+
+Révocationoususpension
+
+Avis
+
+Application
+
+Conseilconsultatif
+
+Compositionduconseilconsultatif
+
+Audienceetrapport
+
+Président
+
+157
+
+Appeal
+
+Effectofdecisionpendingappeal
+
+Limitedorconditionallicence
+
+Regulations
+
+Definitions
+
+236.(1)WheretheSuperintendentrefusestoissuealicenceappliedforbyaninsurer,agent,salesperson,brokeroradjuster,theSuperintendentshallstatethereasonsfor thedecisioninwritingandany person whoconsidershimselfor herselfaggrievedbythedecisionoftheSuperintendentmayappealittotheMinister.
+
+(2)Whereanappealismade,thedecisionoftheSuperintendentdoesnottakeeffectuntilafterthehearinganddispositionbytheMinister.
+
+237.TheSuperintendentmayissuealicencetoanagent,salesperson,brokeroradjustersubjecttoanylimitationsandconditionsthattheSuperintendentmaydetermine.
+
+REGULATIONS
+
+238.TheCommissioner,ontherecommendationoftheMinister,maymakeregulations(a)regulating the replacementofanexistinglifeinsurancecontractbyanothercontractoflifeinsurance;(b)respectingthedutiesofinsurersandagentsinconnection withreplacementoflifeinsurancecontracts;(c)prescribingthefeestobeprescribedforthepurposesofthisPart;and(d)prescribingthedateonwhichalicenceissuedundersubsection223(3)expires.SNWT1998,c.24,s.12(4).
+
+PARTXUNFAIRANDDECEPTIVEACTSANDPRACTICESINTHEBUSINESSOFINSURANCE
+
+239.InthisPart,"person"meansapersonengagedinthebusinessofinsuranceandincludestheFacilityAssociationandanyindividual,corporation,association,partnership,memberofthesocietyknownasLloyds,fraternalsociety,agent,brokeroradjuster;(personne)
+
+"unfairordeceptiveactsorpracticesinthe businessofinsurance"includes(a)thecommissionofanyactprohibitedunderthisActortheregulations;(b)anyunfairdiscriminationbetweenindividualsofthesameclassandofthesameexpectationoflife,theamountor
+
+236.(1)S’ilrefuseladélivranced’unelicencedemandéeparunassureur,unagent,unvendeur,uncourtierouunexpertensinistres,lesurintendantmotiveparécritsadécision;toutepersonnequis’estimeléséeparcettedécisionpeutenappelerauministre.
+
+(2)Encasd’appel,l’exécutionde ladécisiondusurintendantestsuspenduejusqu’àcequeleministreaitprisunedécisionsurl’appel.
+
+237.Lesurintendantpeutassortirdesmodalitésqu’ilestimeindiquéeslalicencequ’ildélivreàunagent,àunvendeur,àuncourtierouàunexpertensinistres.
+
+RÈGLEMENTS
+
+238.Surrecommandationdu ministre, lecommissairepeut,parrèglement:a)régirleremplacementd’uncontratd’assurance-vieencoursdevaliditéparunautre;b)déterminerlesobligationsdesassureursetdesagentsdanslecadreduremplacementd’uncontratd’assurance-vie;c)déterminerlesdroitsàpayerpourl’applicationdelaprésentepartie;d)fixerladated’expirationdeslicencesdélivrées envertuduparagraphe223(3).
+
+PARTIEXACTESETPRATIQUESMALHONNÊTESETTROMPEURSDANSLECOMMERCEDESASSURANCES
+
+239.Lesdéfinitionsquisuivents’appliquentàlaprésentepartie.
+
+«actesoupratiquesmalhonnêtesoutrompeursdanslecommercedesassurances»S’entendnotamment:a)dela commission d’un acteinterditparlaprésenteloioulesrèglements;b)detoutediscriminationinjustifiéeentredespersonnesdumêmegroupeetayantlamêmeespérancedevie,encequiconcerne,lemontant,lepaiement,ouleremboursementdesprimes,les tarifsdescontrats d’assurance-vieouderentes,lesdividendesoud’autresprestationsendécoulantouprévuesparlesmodalités
+
+Appel
+
+Suspensiondel’exécution
+
+Licencelimitéeouconditionnelle
+
+Règlements
+
+Définitions
+
+158
+
+paymentorreturnofpremiums,orrateschargedbyitforcontractsoflifeinsuranceorannuitycontracts,orinthedividendsorotherbenefitspayablethereonorinthetermsandconditionsthereof;(c)anyunfairdiscriminationinanyrateorscheduleofratesbetweenrisksintheNorthwestTerritoriesofessentiallythesamephysicalhazardsinthesameterritorialclassification;(d)anyillustration,circular,memorandumorstatementthatmisrepresents,orbyomissionissoincompletethatitmisrepresents,theterms,benefitsoradvantagesofanypolicyorcontractofinsuranceissuedortobeissued;(e)anyfalseormisleadingstatementastotheterms,benefitsoradvantagesofanycontractorpolicyofinsuranceissuedortobeissued;(f)any incompletecomparisonofany policyorcontractofinsurancewiththatofanyother insurer forthepurposeof inducing,orintendingtoinduce,aninsuredtolapse,forfeitorsurrenderapolicyorcontract;(g)anypayment,allowanceorgift,oranyoffertopay,alloworgive,directlyorindirectly, any moneyorthingofvalueasaninducementtoanyprospectiveinsuredtoinsure;(h)anychargebyapersonforapremiumallowanceorfeeotherthanasstipulatedinacontractofinsuranceonwhichasalescommissionispayabletothatperson;and(i)anyconsistentpracticeorconductthatresultsinunreasonabledelayorresistancetothefairadjustmentandsettlement ofclaims.(actesoupratiquesmalhonnêtesoutrompeursdanslecommercedesassurances)[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2), [(18)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec18_smooth).
+
+ducontrat;c)detoutediscriminationinjusteprévueparuntauxouuntarifapplicableàdesrisquesdanslesTerritoires duNord-Ouestayantlemêmetauxdefréquencepourlamêmerépartitionterritoriale;d)detouteillustration,circulaire,noteoudéclarationquireprésentefaussement,ouquicomporteuneomissiontellequ’elleendevienttrompeuse,lesmodalités,lesindemnitésoulesbénéficesprévusparunepoliceouuncontratd’assuranceétabliouquidoitl’être;e)de toute déclarationfausseoutrompeuseconcernantlesmodalités,lesindemnitésoulesbénéficesprévusparun contratouunepoliced’assuranceétabliouquidoitl’être;f)detoutecomparaisonincomplèteentreunepoliceouuncontratd’assuranced’unassureuravecceuxd’unautreafind’inciteroudetenterd’inciterunassuréàlaissertomberendéchéance,àrésilierouàdénoncerdefaçonprématuréeunepoliceouuncontrat;g)detoutpaiement,allocationoudon,oudetoutepromessedepaiement,d’allocation ou dedon,direct ou indirect,d’unesommeoud’unobjetdevaleurpourinciterunassurééventuelàconclureuneassurance;h)detousfraisversésparunepersonnepour obteniruneprimeouundroit autresqueceuxquisontstipulésparuncontratd’assurancesurlesquels une commissionestpayableàcettepersonne;i)detoutepratiqueouconduiteadoptéedefaçonconstanteayantpoureffetdesoumettreàdesretardsexcessifsle justerèglementd’uneréclamationoud’yopposeruneattitudederésistance.(unfairordeceptiveactsorpracticesinthebusinessofinsurance)
+
+«personne»Personneexploitantuneentreprised’assurance,ets’entendnotammentdel’Associationdesassureursetdetoutepersonnephysique,personnemorale,association,sociétéennomcollectif,d’unmembre de lasociété appelée Lloyds, d’une société desecoursmutuel,d’unagent,d’uncourtierainsiqued’unexpertensinistres.(person)
+
+159
+
+Prohibition
+
+InvestigationbySuperinten-dent
+
+OrderofSuperinten-dent
+
+Terms,conditionsandrevocationoforder
+
+Hearing
+
+Serviceandeffectoforder
+
+Offenceandpunishment
+
+240.No personshallengageinanyunfairordeceptiveactorpracticeinthebusinessofinsurance.
+
+241.TheSuperintendentmayexamineandinvestigatetheaffairsofeverypersonengagedinthebusinessofinsuranceintheNorthwestTerritoriesinordertodeterminewhetherthe personhasbeen,oris,engagedinanyunfairordeceptiveactorpractice.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+242.(1)WhereitappearstotheSuperintendentthatapersonisengaginginanyunfairordeceptiveactorpracticeinthebusinessofinsurance,theSuperintendentmayorderthatthepersonceaseengaginginhisorherbusinessoranypartofthatbusinessnamedintheorder.
+
+(2)Anorderundersubsection(1)maybemadesubjecttothetermsandconditionsthattheSuperintendentmay specify intheorder,andtheordermayberevokedwhentheSuperintendentissatisfiedthattheunfairanddeceptiveactsorpracticesarecorrectedandnotlikelytorecur.
+
+(3)Noordershallbemadeundersubsection(1)withoutahearingunlessintheopinionoftheSuperintendentthelengthoftimerequiredforahearingcouldbeprejudicialtothepublicinterest,inwhicheventatemporaryordermaybemadewhichshallexpire15daysafterthedateofthemakingofitoralongertimethatisconsentedtobythepersonentitledtothehearing.
+
+(4)AnoticeofeveryordermadeunderthisPartmustbeservedoneverypersonnamedintheorderandon any otherpersonsthattheSuperintendentconsidersappropriateand,uponthat,nopersonshallengageinthat partofthe businessofinsurancethatis thesubjectoftheorder.
+
+243.EverypersonwhocontravenesanorderoftheSuperintendentmadeunderthisPartis,inadditiontoanyotherconsequenceorremedyprovidedbylaw,guiltyofanoffencepunishableinthesamemannerasifthepersonwereundertakinginsuranceorcarryingonbusinessintheNorthwestTerritorieswithoutholdingalicencetodoso.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+LTN-O1994,ch.7,ann;LTN-O2011,ch.16,art.12(2)et(18).
+
+240.Ilestinterditàtoutepersonnedeselivreràunacteouà unepratiquemalhonnêteou trompeur dans lecommercedesassurances.
+
+241.Lesurintendantpeutsoumettreàdesétudesetàdesenquêteslesactivitésprofessionnellesdetoutepersonne quiexploiteuneentreprise d’assurancedanslesTerritoiresduNord-Ouestafindedéterminersicettepersonnes’estlivréeouselivreàdesactesoupratiquesmalhonnêtesoutrompeurs.LTN-O2011,ch.16,art.12(2).
+
+242.(1)S’ilestd’avisqu’unepersonneselivreàdesactesoupratiquesmalhonnêtesoutrompeursdanslecommercedesassurances,lesurintendantpeutluiordonnerd’ymettrefindanslecadredetellesdesesactivitésprofessionnellesmentionnéesdansl’ordonnance.
+
+(2)L’ordonnancepeutêtrerenduesousréservedesmodalitésquelesurintendantyindique;ellepeutêtrerévoquéelorsquelesurintendantestconvaincuqu’ilaétémisfinauxpratiquesmalhonnêtesoutrompeusesetqu’ellesnesontpassusceptiblesdesereproduire.
+
+(3)L’ordonnancenepeutêtrerenduesansuneaudience,saufsilesurintendantestd’avisquelesdélaisnécessairesseraientpréjudiciablesàl’intérêtpublic;danscecas,uneordonnancetemporairepeutêtrerendue;elleexpire15joursplustardouàladatepluséloignéeàlaquelleconsentlapersonne qui adroitàl’audience.
+
+(4)Unavisdel’ordonnancerendueenvertudelaprésente partie doitêtre signifiéà toutes les personnesquiysontnomméesainsiqu’àtoutescellesquelesurintendantcroitdevoirenêtreinformées;àcompterdecemoment,nulnepeutexercerlesopérationsd’assuranceviséesparl’ordonnance.
+
+243.Quiconquecontrevientàl’ordonnancequerendlesurintendantenvertudelaprésentepartiecommetuneinfractionet,enplusdetoutautrerecoursprévuparlaloi,estpassibledelamêmepeinequipourraitluiêtreinfligées’ilexerçaituneentreprised’assuranceoufaisaitdesopérationsd’assurancedanslesTerritoiresduNord-Ouestsansêtretitulairedelalicencepertinente.LTN-O2011,ch.16,art.12(2).
+
+Interdiction
+
+Enquêtesparlesurintendant
+
+Ordonnancedusurintendant
+
+Modalités
+
+Audience
+
+Signification
+
+Infractionetpeine
+
+160
+
+Definitions
+
+Definition:"businesstransactedintheNorthwestTerritories"
+
+Amountoftax
+
+PARTXIINSURANCEPREMIUMTAX
+
+244.InthisPart,"annuitycontract"meansacontractthatprovidesforthepaymentofanincomefora specified periodorforlifeandunderthetermsofwhichthesolebenefitstatedtobepayablebyreasonofdeathdoesnotexceedthesumoftheamountspaidasconsiderationforthecontracttogetherwithinterest;(contratderente)
+
+"insurancecompany"meansapersonorcorporationcarryingonintheNorthwestTerritoriesthebusinessofinsurancewithinthemeaningofthis Act, and includesareciprocalorinter-insuranceexchange,syndicatesorunderwritersoperating on theplanknownas"Lloyds",butdoesnotincludeafraternalsociety;(compagnied’assurance))
+
+"taxationyear"meansthe yearinwhichpremiums arereceivableinrespectofbusinesstransactedintheNorthwestTerritories.(annéed’imposition)RSNWT1988,c.37(Supp.),s.6;[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2), [(19)](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec19_smooth).
+
+245.(1)Insubsection(2), "businesstransactedintheNorthwestTerritories"means(a)inthecaseofpropertyinsurance,allcontractsonwhichpremiumsarereceivable from,orinrespectof,personswhosepropertywassituatedintheTerritoriesatthetimetheirpremiumsbecamepayable;and(b)inthecaseofotherinsurance,allcontractsonwhichpremiumsarereceivable from,orinrespectof,personswho wereresidentintheTerritoriesatthetimetheirpremiumsbecamepayable.
+
+(2)EveryinsurancecompanyshallpaytotheGovernmentoftheNorthwestTerritoriesataxequalto3%ofthegrosspremiumsreceivablebyitduringthetaxationyearinrespectofbusinesstransactedintheNorthwestTerritoriesbythe company, afterdeducting
+
+PARTIEXITAXESURLESPRIMESD’ASSURANCE
+
+244.Lesdéfinitionsquisuivents’appliquentàlaprésentepartie.
+
+«annéed’imposition»L’annéedurantlaquellelesprimessontpayablesàl’égarddesopérationseffectuéesdanslesTerritoiresduNord-Ouest.(taxationyear)
+
+«compagnied’assurance»Personne,physiqueoumorale,quiexploiteuneentreprised’assuranceausensdelaprésenteloidanslesTerritoiresduNord-Ouest;laprésente définition s’entend notammentdes boursesd’assuranceréciproqueetlessouscripteurs ou groupesdesouscripteursquisontmembresdelasociétéappeléelaLloyds,maisnevisepaslessociétésdesecoursmutuel.(insurancecompany)
+
+«contratderente»Contratquiprévoitleversementd’unrevenupendantunepériodedéterminéeoupendantlaviedubénéficiaireetenvertuduquell’indemnitéuniquepayableenraisondudécèsdubénéficiairen’estpassupérieureàl’ensembledesmontantsversésàtitredecontrepartiepourlecontratetdesintérêts.(annuitycontract)LRTN-O1988,ch.37(Suppl.),art.6;LTN-O2011,ch.16,art.12(2)et(19).
+
+245.(1)Auparagraphe(2),l’expression«opérationseffectuéesdanslesTerritoiresduNord-Ouest»s’entend:a)danslecas d’uneassurancesur les biens,descontratssurlesquelslesprimessontpayablespardespersonnesdontlesbiensétaientsituésdanslesTerritoiresduNord-Ouestaumomentoùellessontdevenuesexigibles,ouàl’égarddecespersonnes;b)danslecasdesautresassurances,descontratssurlesquelslesprimessontpayablespardespersonnesquiétaientdesrésidentsdesTerritoiresduNord-Ouestaumomentoùellessontdevenuesexigibles,ouàl’égarddecespersonnes.
+
+(2)Lescompagniesd’assurancesonttenuesdeverseraugouvernementdesTerritoiresduNord-Ouestunetaxeégaleà3%dumontantbrutdesprimesquileursontpayablesdurantl’annéed’impositionàl’égarddesopérationsqu’ellesonteffectuéesdansles
+
+Définitions
+
+Définition:«opérationseffectuéesdanslesTerritoiresduNord-Ouest»
+
+Montantdelataxe
+
+161
+
+Exceptions
+
+Levyoninsurancecompanies
+
+Whentaxpayable
+
+Verificationofreturn
+
+fromthegrosspremiums(a)anamountequaltothecashvalueofdividendspaidandcreditedtoitspolicyholdersinthattaxationyear;and(b)anamountequaltothepremiumsreturnedinthattaxationyear.
+
+(3)Thetaximposedunderthissectionisnotpayable(a)byacompanytransactinglifeinsurance,onamountsreceivableasconsiderationforanannuitycontract;(b)inrespectofpremiumsreceivableunderacontractofmarineinsurance;or(c)byareinsurerinrespectofreinsurancepremiumsandorcreditedtoitbyaninsurer.SNWT1991-92,c.31,s.3;[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+246.EveryinsurancecompanytransactingthebusinessoffireinsurancewithinthemeaningofthisAct,shall,inadditiontotaxesrequiredtobepaidundersubsection245(2),paytotheSuperintendenteachyearasumequalto1%ofthegrosspremiumsreceivable byitduringthetaxation year,excludingreturnpremiumsandcancellationscalculatedonitsfireinsurancebusinessintheNorthwestTerritoriesasreportedtotheSuperintendent.SNWT1991-92, c.31,s.4;[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+247.(1)AninsurancecompanythatisliabletopayataxunderthisActshall,onorbeforeMarch15intheyearfollowingthetaxationyear,(a)fileareturn,inaformapprovedbytheSuperintendentshowingtheamountoftaxpayablebythe companyin respectofthetaxationyear;and(b)remittotheSuperintendenttheamount ofthetax,ifany,payableby it inrespectofthetaxationyear.
+
+(2)Thereturnrequiredundersubsection(1) mustbeverifiedbytheoathoraffirmation of thepresident,manager,secretaryorchiefagentoftheinsurancecompanyinCanada.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2017-c-20/latest/snwt-2017-c-20.html#sec2subsec16_smooth)2017,c.20,s.2(16).
+
+TerritoiresduNord-Ouest,aprèsdéductiondesmontantssuivants:a)unmontantégalàlavaleurdesdividendesversésetportésaucréditdeleursdétenteursdepolicedurantcetteannéed’imposition;b)unmontantégalauxprimesqu’ellesontrembourséesdurantcetteannée.
+
+(3)Lataxeviséeauprésentarticlen’estpaspayable:a)parunecompagniequifaitdesopérationsd’assurance-vie, sur les montantsqu’ellereçoitàtitredecontrepartieàl’égardd’uncontratderente;b)àl’égarddesprimesverséesenconformitéavecuncontratd’assurancemaritime;c)parunréassureur àl’égarddes primesderéassurance.LTN-O1991-92,ch.31,art.3;LTN-O2011,ch.16,art.12(2).
+
+246.Lescompagniesd’assurancequifontdesopérationsd’assurance-incendieausensdelaprésenteloi,enplusdestaxesviséesauparagraphe245(2),paientausurintendantchaqueannéeunesommeégaleà1%dumontantbrutdesprimesquileursontpayablesdurantl’annéed’imposition,àl’exclusiondesprimesrembourséesetdesannulations,calculéesurleursopérationsd’assurance-incendiedanslesTerritoiresduNord-Ouesténoncéesdanslerapportqu’ellesremettentausurintendant.LTN-O1991-92,ch.31,art.4;LTN-O2011,ch.16,art.12(2).
+
+247.(1)Unecompagnied’assurancequiesttenuedepayerunetaxesouslerégimedelaprésenteloi,auplustardle15marsdel’annéesuivantl’annéed’imposition:a)déposeunrapport,rédigésurleformulaireapprouvépar le surintendant,faisantétatdumontantde lataxequ’elledoitpayeràl’égarddel’annéed’imposition;b)paieausurintendantlemontantdelataxe,s’ilyalieu,qu’elledoitàl’égarddecetteannéed’imposition.
+
+(2)Lerapportdoitêtreaccompagnédusermentoudeladéclarationsolennelledu président,dugérant,dusecrétaireoudel’agentprincipaldelacompagnied’assuranceauCanadaattestantdelavéracitédurapport.LTN-O2017,ch.20,art.2(16).
+
+Exceptions
+
+Contributiondescompagniesd’assurance
+
+Versement
+
+Attestationdurapport
+
+162
+
+Interestonoverduetaxes
+
+Returns
+
+Inspectors
+
+Productionofbooks
+
+Examination
+
+Offenceandpunishment
+
+Cancellationoflicence
+
+248.Whereanytax payableunderthisActisnotpaidinfullonthedateonwhichpaymentisdue,theinsurancecompanyshallpaytotheSuperintendenttheamountdue,togetherwithinterestattherateprescribedunder[paragraph](https://www.canlii.org/en/nt/laws/stat/snwt-2015-c-13/latest/snwt-2015-c-13.html#sec145_smooth)145(j)ofthe[Financial](https://www.canlii.org/en/nt/laws/stat/snwt-2015-c-13/latest/snwt-2015-c-13.html)AdministrationAct.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2019-c-30/latest/snwt-2019-c-30.html#sec1_smooth)2019,c.30,s.1.
+
+249.WheretheSuperintendent(a)sowishesinordertoenabletheSuperintendenttodeterminethecorrectnessofany returnmade under thisAct;or(b)wishesfurtherinformationconcerningareturn,theSuperintendent may requirethepresident,manager,secretaryoragentoftheinsurancecompanytofileafurtherstatementunderoathwithin30days.
+
+250.(1)TheSuperintendentmayappointinspectorstoexamineintothebusiness,affairs,booksandpapersofaninsurancecompanyinsofarastheyrelatetoanybusinesstransactionsinconsequenceofwhichthecompanymaybeliabletotaxationunderthisAct.
+
+(2)Theinsurancecompanyandtheofficers,employeesoragentsoftheinsurancecompanyshallproducetotheinspectorsforinspectionbythemallbooks,papers,lettersanddocuments,relatingtoanybusinesstransactionsinconsequenceofwhichthecompanymaybeliabletotaxationunderthisAct.
+
+(3)Aninspectormayexamineunderoathanyofficer,employee,oragentofaninsurancecompanyrespectinganybusinesstransactionsreferredtoinsubsection(1)andmayadministertheoathaccordingly.
+
+(4)Everyofficer,employeeoragentofaninsurancecompanywhorefuses,neglectsoromitstoproduceasrequiredundersubsection(2)anybooks,papers,letters ordocuments,orwho refuses toansweraquestionputtohimorherundersubsection(3),isguiltyof anoffenceand liable onsummaryconvictionto a fine notexceeding $200inrespectofeach offenceand,in defaultofpayment,toimprisonmentfor a termnotexceedingsixmonths.
+
+251.Ifanyinsurancecompany(a)neglectsorrefusestomakeareturnwithinthetimefixedbythisAct;(b)neglectsorrefusestoprovidetothe
+
+248.Silemontantdestaxespayablesenvertudelaprésenteloin’estpasverséenentieràladateprévue,lacompagnied’assuranceverseausurintendant,enplusdumontantdelataxe,unintérêtautauxdéterminéparrèglementenvertudel’ [alinéa](https://www.canlii.org/en/nt/laws/stat/snwt-2015-c-13/latest/snwt-2015-c-13.html#sec145paraj_smooth)145j)dela[Loi](https://www.canlii.org/en/nt/laws/stat/snwt-2015-c-13/latest/snwt-2015-c-13.html)surlagestiondesfinancespubliques.LTN-O2019,ch.30,art.1.
+
+249.Lesurintendantpeutexigerduprésident,dugérant,dusecrétaireoudel’agentdelacompagnied’assurancedeluifaireparvenirunedéclarationsupplémentaire sous sermentdans les30jours, dans lecasoù:a)ill’estimenécessairepourdéterminerl’exactituded’unrapportquiluiaétéremisenconformitéaveclaprésenteloi;b)ilestimequedesrenseignementssupplémentairessontnécessaires.
+
+250.(1)Lesurintendantpeutnommerdesinspecteurschargésd’examinerlesactivités,notammentcommerciales,lesregistresetlivrescomptablesetlesdocumentsd’unecompagnied’assurancequiserapportentauxopérationscommercialesdecettecompagniesusceptiblesdedonnerlieuauversementdelataxeprévueparlaprésenteloi.
+
+(2)Lacompagnied’assurance,sesdirigeants,employésetagentsaccordentauxinspecteursl’accèsauxdocuments,lettres,livresetregistresquileurpermettrontd’effectuerl’examenprévuauparagraphe(1).
+
+(3)L’inspecteurpeutinterroger sous sermentlesdirigeants,employésouagentsd’unecompagnied’assuranceconcernantlesopérationscommercialesviséesauparagraphe(1)etpeut,àcettefin,leurfaireprêterserment.
+
+(4)Commetuneinfractionetestpassiblesurdéclarationdeculpabilitéparprocéduresommaired’uneamendemaximalede200$pourchaqueinfractionou,àdéfaut,d’un emprisonnementmaximaldesixmois,ledirigeant,l’employéoul’agentd’unecompagnied’assurancequirefuseoufaitdéfautderemettrelesdocumentsqui lui sont demandésenvertuduparagraphe(2),ourefusederépondreàtoutequestionquiluiestposéeenvertuduparagraphe(3).
+
+251.Le surintendantpeut,en plus detouteautrepeinequipeutêtreinfligéeàlacompagnied’assuranceenvertudelaprésenteloi,ordonnerl’annulationdelalicenceouducertificat d’enregistrement quil’autorise
+
+Intérêtsurlesoldenonpayé
+
+Rensei-gnementssup­plémentaires
+
+Inspecteurs
+
+Accèsauxdocuments
+
+Interrogatoiresousserment
+
+Infractionetpeine
+
+Annulationdelalicence
+
+163
+
+Offencesandpunishment
+
+Actoromissionofcompany
+
+Statusofunpaidtaxes
+
+Regulations
+
+Superintendentanyfurtherstatementorotherinformationrequiredaftermakingthereturn;or(c)makesareturnandprovidesthefurtherstatementorotherinformationreferredtoinparagraph(b),butitisfoundbytheSuperintendentthatthereturnorstatementmadebytheinsurancecompanyisglaringlyinaccurate,andthattheamountonwhichthetaxshouldbepaidhasbeenwilfullyunderstated,theSuperintendentmay,inadditiontosubjectingtheinsurancecompanytothe punishmentprovided inthisAct,orderthe cancellationofthe licenceorcertificateofregistrationunderwhichtheinsurancecompanytransactsbusinessintheNorthwestTerritories,uponwhichthelicence,certificateofregistrationisabsolutelyrevoked andbecomesvoidforallpurposes.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+252.(1)EveryinsurancecompanyliabletotaxationunderthisActthatrefusesorneglectsorwhosechiefagentorattorney,asthecasemaybe,refusesorneglectstomakeanyreturn orstatementorpaythetaxasrequiredbythisActortheregulations isguiltyofanoffence andliableonsummaryconviction to afinenotexceeding$50foreach day duringwhich therefusalorneglectcontinuesand,inaddition,shallpaythetaxrequiredtobepaidunderthisAct.
+
+(2)Inconstruingandenforcingthissection,theact,omission,neglectorfailureofanofficer,employee,agentorattorneyof,oranyotherpersonactingfor,aninsurancecompanyliabletotaxationunderthisAct shallbedeemedtobetheact, omission,neglectorfailureoftheinsurancecompanyiftheofficer, employee,agent orotherpersonsoactingwasactingwithinthescopeofhisorheremploymentorinstructions.
+
+(3)UnpaidtaxesareadebtduetotheGovernmentoftheNorthwestTerritoriesandmaybesuedforinacourtofcompetentjurisdiction.
+
+253.OntherecommendationoftheMinister,theCommissionermay makeregulationsthatarenecessaryforthepurposeofcarryingouttheprovisionsofthisPartand,withoutrestrictingthegeneralityofthispowertomakeregulations,maymakeregulations(a)respectingtheformandcontentofallreturns,reportsandstatementsrequired
+
+àexploitersonentreprisedanslesTerritoiresduNord-Ouestdanslescasoùlacompagnied’assurance:a)négligeou refusedefaireunrapport danslesdélaisprévusparlaprésenteloi;b)négligeourefusedeluifournirlesdéclarationsourenseignementssupplémentairesqu’ildemandeaprèslaremisedurapport;c)faitunrapportouremetdesrenseignementsoudéclarationsvisésàl’alinéab)qui,selonsesconclusions,sontmanifestementinexactsetdémontrentquelemontantdelataxeaétévolontairementsous-estimé.Lalicenceoulecertificatd’enregistrementestalorsrévoqué.LTN-O2011,ch.16,art.12(2).
+
+252.(1)Commetune infractionet,enplusd’êtretenuauversementdelataxeprévueparlaprésenteloi,estpassible,surdéclarationdeculpabilitéparprocéduresommaire,d’uneamendemaximalede50$pourchacundesjoursaucoursdesquelssecommetousecontinuel’infraction, la compagnied’assurancetenueauversementde la taxeprévuepar la présenteloi,quirefuseounéglige, ou dontl’agentprincipaloulefondédepouvoir,selon le cas,refuseounéglige,de faireunrapportouune déclarationprévuparla présente loioulesrèglements,oudepayerlataxeprévue.
+
+(2)Danslecadredel’applicationetdel’interprétationduprésentarticle,l’acte,l’omission,lanégligenceou le défautdudirigeant,del’employé,del’agentoudufondédepouvoir,oudetoutautrereprésentantdelacompagnied’assurancetenuedepayerlataxe prévue parlaprésenteloi,sontceuxde lacompagniedanslamesureoùcettepersonneagissaitdansl’exercicedesesfonctions.
+
+(3)LestaxesimpayéesconstituentunecréancedugouvernementdesTerritoiresduNord-Ouest,recouvrabledevanttouttribunalcompétent.
+
+253.Surrecommandationdu ministre, lecommissairepeutprendrelesrèglementsquisontnécessairesafindemettreenoeuvrelesdispositionsdelaprésentepartieet,sanspréjudicedelaportéegénéraledupouvoirréglementaire,peut,parrèglement,prendredesmesuresconcernant:a)laformeetlecontenudesrapportset
+
+Infractionsetpeine
+
+Présomption
+
+Créancesdugouvernement
+
+Règlements
+
+164
+
+Superinten-dent
+
+DutiesofSuperinten-dent
+
+ActingSuperinten-dent
+
+Approvalofforms
+
+PowersofSuperinten-dentrespectingevidence
+
+bytheSuperintendentforthedueadministrationofthisPart;(b)respectingtheformsandcontentsofanydocumentsrequiredforuseunderthisPart;and(c)respecting the definitionoftermsusedinthisPartandnotdefinedinthisPart.
+
+PARTXIIADMINISTRATION
+
+254.(1)TheMinistershallappointaSuperintendentofInsurance.
+
+(2)TheSuperintendentshall(a)act undertheinstructionsoftheMinister;(b)exercisethepowersandperformthedutiesimposedontheSuperintendentunderthisoranyotherAct;(c)havethegeneralsupervisionofthebusinessofinsuranceintheNorthwestTerritories;and(d)ensurethatthelawsrelatingtotheconductofinsuranceintheNorthwestTerritoriesareenforcedandobeyed.
+
+(3)TheSuperintendent may designateapersoninhisorherofficetoactasSuperintendentduringtheabsenceorinabilityoftheSuperintendent.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+254.1.TheSuperintendentmayapproveformsforthepurposesofthisActandtheregulations.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2017-c-20/latest/snwt-2017-c-20.html#sec2subsec17_smooth)2017,c.20,s.2(17).
+
+255.ForthepurposesofperformingthedutiesofSuperintendentandintheexerciseofthepowersofSuperintendentunderthisActorunderanyotherActrelatingtoinsurance,theSuperintendent(a)mayrequiretobemadeandmaytake andreceiveaffidavits,statutorydeclarationsanddepositions;(b)mayexaminewitnessesonoath;and(c)hasthesamepowertosummonpersonstoattendaswitnesses,andtoenforcetheirattendance,andtocompelthemtoproducebooks,documentsandthings,andtogiveevidenceasanycourthasincivilcases.
+
+déclarationsqu’exigelesurintendantpourlabonneapplicationdelaprésentepartie;b)laformeetlecontenudesdocumentsàutiliserdanslecadredel’applicationdelaprésentepartie;c)ladéfinitiondesexpressionsutiliséesdanslaprésentepartiequinesontpasdéjàdéfinies.
+
+PARTIEXIIADMINISTRATION
+
+254.(1)Leministrenommelesurintendantdesassurances.
+
+(2)Lesurintendant:a)exercesesfonctionsenconformitéaveclesdirectivesduministre;b)exercelesattributionsquiluisontconféréessouslerégimedelaprésenteoudetouteautreloi;c)estresponsabledelasurveillancegénéraledusecteurdesassurancesdanslesTerritoiresduNord-Ouest;d)est responsablede l’application, danslesTerritoiresduNord-Ouest,delalégislationconcernantlesecteurdesassurances.
+
+(3)Encasd’absenceoud’empêchementdusurintendant,celui-cidésigneunepersonnedesonbureaupourleremplacer.LTN-O2011,ch.16,art.12(2).
+
+254.1.Lesurintendantpeutapprouverles formulairespourl’applicationdelaprésenteloietdesesrèglements.LTN-O2017,ch.20,art.2(17).
+
+255.Dansl’exercicedesattributionsqueluiconfère,enmatièred’assurance,laprésenteloioutouteautreloi,lesurintendant:a)peutexigeretrecueillirdesaffidavits,déclarationssolennellesetdépositions;b)peutinterrogerdestémoinssousserment;c)possèdeunpouvoiridentiqueàceluid’untribunalenmatièrecivilepourciterdestémoinsàcomparaître,lesobligeràcomparaître,àproduiredeslivres,documents,comptes,dossiersetautresobjets,etàtémoigner.
+
+Surintendant
+
+Obligationsdusurintendant
+
+Suppléant
+
+Approbationdesformulaires
+
+Pouvoirsdusurintendant
+
+165
+
+Oaths
+
+256.AnoathrequiredbythisActtobetakenmaybeadministeredand certifiedtobythe SuperintendentorbyanypersonauthorizedtoadministeroathsintheNorthwestTerritories.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+Holdingshares257.NeithertheSuperintendentnoranypersoninhisorherofficeshallbeinterestedasashareholder,directly or indirectly, inany insurance companydoingbusinessintheNorthwestTerritories.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+ActionagainstSuperinten-dent
+
+PowerofSuperinten-denttobringaction
+
+Leave
+
+Recordkeeping
+
+258.(1)Nopersonshall,withoutthewrittenpermissionoftheMinister,bringanactionorcommenceanyproceedingagainstthe SuperintendentforanythingdoneoromittedtobedoneintheperformanceorintendedperformanceofadutyoftheSuperintendentunderthisActoranyotherActthatimposesadutyontheSuperintendent.
+
+(2)TheSuperintendentmaybringactionsandcommenceproceedingsinhis orhernameofofficefortheenforcement ofthisActor for therecovery of a feeorpenaltypayableunderthisAct.
+
+(3)NoactionorproceedingfortherecoveryofanyfeeorpenaltypayableunderthisActshallbecommencedwithouttheleaveoftheSuperintendent.
+
+259.(1)TheSuperintendentshallkeep(a)aregisterofalllicensedinsurers,inwhichshallappear(i)thenameoftheinsurer,(ii)theaddressoftheheadoffice,(iii)the addressoftheprincipalofficeinCanada,(iv)thenameandaddressofthechiefagentintheNorthwestTerritories,(v)the numberoftheissuedlicence andparticularsoftheclassesofinsuranceforwhichtheinsurerislicensed,and(vi)anyotherinformationthattheSuperintendentconsidersnecessary;(b)arecordofallagents,brokers,salespersonsandadjusterslicensedunderthisAct;and(c)arecordoftheinformationrequiredbysubsection9(4).
+
+256.Le surintendantoutouteautre personne autoriséeàfaireprêterdessermentsdanslesTerritoiresduNord-Ouestpeutfaireprêterlesermentdontlaprésenteloiexige la prestation.LTN-O2011,ch.16,art.12(2).
+
+257.Ilestinterditausurintendantetàsonpersonneldedétenirunintérêtàtitred’actionnaire,mêmeindirectement,dansunecompagnied’assuranceautoriséeàexploitersonentreprisedanslesTerritoiresduNord-Ouest.LTN-O2011,ch.16,art.12(2).
+
+258.(1)Ilestinterdit,sansl’autorisationécriteduministre,d’intenteruneactionoutouteautreprocédurecontrelesurintendantenraisond’ungeste,acteouomission,accomplidansl’exercice,réelouprésumé,desattributionsqueluiconfèrentlaprésenteoutouteautreloi.
+
+(2)Lesurintendantpeutintenterdesactionsouautresprocédures,àtitreofficiel,danslecadredel’applicationdelaprésenteloioudurecouvrementd’undroitoud’unepénalitépayableenvertudecelle-ci.
+
+(3)Ilestinterditd’intenteruneactionoutouteautreprocédureenrecouvrementd’undroitoud’unepénalitéqueprévoit la présenteloisansl’autorisationdusurintendant.
+
+259.(1)Lesurintendantconservelesregistressuivants:a)leregistredesassureurstitulairesd’unelicence,comportantdanschaquecas:(i)lenomouladénominationsocialedel’assureur,(ii)l’adressedusiègesocial,(iii)l’adressedubureauprincipalauCanada,(iv)lenometl’adressedel’agentprincipaldanslesTerritoiresduNord-Ouest,(v)lenumérodesalicenceetunedescriptiondétailléedescatégoriesd’assuranceviséesparcelle-ci,(vi)lesautresrenseignementsquelesurintendantestimenécessaires;b)leregistredesagents,courtiers,vendeursetexpertsensinistrestitulairesd’unelicenceenvertudelaprésenteloi;c)leregistredesrenseignementsvisésauparagraphe9(4).
+
+Serments
+
+Interdiction
+
+Actioncontrelesurintendant
+
+Pouvoirdusurintendantd’intenteruneaction
+
+Permission
+
+Registres
+
+166
+
+Inspectionofrecords
+
+PublicationinNorthwestTerritoriesGazette
+
+Evidenceoflicencestatus
+
+Evidenceoffilingofdocuments
+
+DecisionofSuperinten-dent
+
+Copyofdecision
+
+Stenographicreport
+
+Appeal
+
+Certificationofdecisionandevidence
+
+(2)Theregisterandrecordsreferredtoinsubsection (1)mustbe opentopublicinspection at thetimesandonthepaymentofthefeesthatareprescribed.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+260.(1)TheSuperintendentmaycausetobepublishedannuallyintheNorthwestTerritoriesGazettealist oftheinsurerslicensedatthedateofthelist,andmayfromtimetotimecausenoticeofthelicenceofaninsurernotbefore licensedandnoticeofsuspensionorcancellationorrevivoroflicencetobegivenbypublicationintheNorthwestTerritoriesGazette.
+
+(2)AcertificateunderthesignatureandsealofofficeoftheSuperintendentstatingthat(a)onastateddayanamedinsurerwasorwasnotlicensedunderthisAct,(b)aninsurerwasoriginallyissuedalicence;or(c)thelicenceofaninsurerwasrenewed,suspended,revived,revokedorcancelledonastatedday;isadmissibleinevidenceasproof,intheabsenceofevidencetothecontrary,ofthefactsstatedinthecertificate.
+
+(3)AcertificateofthefilingofanydocumentintheofficeoftheSuperintendentisadmissibleinevidenceasproof,intheabsenceofevidencetothecontrary,ofthefilingifsignedorpurportingtobesignedbytheSuperintendent.
+
+261.(1)EverydecisionoftheSuperintendentonanapplicationforalicencemustbeinwritingandnoticeofthedecisionmustbegiventotheinsurerwithoutdelay.
+
+(2)Theinsureroranypersoninterestedisentitledonpaymentoftheprescribedfee,toacertified copy ofadecisionoftheSuperintendent.
+
+(3)TheevidenceandproceedingsinanymatterbeforetheSuperintendentmaybereportedbyastenographerswornbeforetheSuperintendenttofaithfullyreporttheevidenceandproceedings.
+
+262.(1)Subjecttosubsection(4),aninsurer,theFacilityAssociation,anagent,asalesperson,abrokeroranadjusterthatisaggrievedbyadecisionoftheSuperintendentmayappealthedecisiontotheSupremeCourt.
+
+(2)TheSuperintendentshallcertify,to the ClerkoftheSupremeCourt,thedecisionappealedfrom
+
+(2)Lesregistresvisésauparagraphe(1)doiventêtreaccessiblesaupublicauxheuresfixéesparrèglementetmoyennantlepaiementdesdroitsréglementaires.LTN-O2011,ch.16,art.12(2).
+
+260.(1)LesurintendantpeutfairepublierchaqueannéedanslaGazettedesTerritoiresduNord-Ouestlalistedesassureurstitulairesd’unelicenceàladatede l’établissementdelaliste;il peut parlasuiteyfairepublierdesavisdeladélivranced’unelicenceàunassureuroudelasuspension,delarévocationoudurétablissementd’unetellelicence.
+
+(2)Estadmissibleenpreuveet,saufpreuvecontraire,faitfoi de soncontenu,lecertificat signéparlesurintendantetsurlequelilaapposésonsceau,attestantque,selonlecas:a)àunedatedonnéeunassureurdéterminéétaitou n’étaitpastitulaired’unelicencesouslerégimedelaprésenteloi;b)unelicenceadéjàétéaccordéeàunassureur;c)lalicenced’unassureuraétérenouvelée,suspendue,rétablie,révoquéeouannuléeàunedatedonnée.
+
+(3)Estadmissibleenpreuveet,saufpreuvecontraire, faitfoidesoncontenu,le certificatsignéouapparemmentsignéparlesurintendant,attestantqu’undocumentaétédéposéàsonbureau.
+
+261.(1)Lesdécisionsdusurintendantconcernantunedemandedelicencedoiventêtrerenduesparécritetavisdoitenêtredonnéàl’assureursansdélai.
+
+(2)L’assureurettoutintéressépeuventobtenir,surpaiementdudroitréglementaire,letextecertifiéconformed’unedécisiondusurintendant.
+
+(3)Laprocédure,notammentlestémoignages,danstoutequestiondontestsaisiele surintendantpeutêtrepriseparécritparunsténographeassermentéàcettefinparlesurintendant.
+
+262.(1)Sousréserveduparagraphe(4), unassureur,l’Associationdesassureurs,unagent,unvendeur,uncourtierouunexpertensinistresquiestléséparunedécisiondusurintendantpeutenappeleràlaCoursuprême.
+
+(2)LesurintendantfaitparveniraugreffierdelaCoursuprêmeletexte certifiéconformedela décision
+
+Examendesregistres
+
+PublicationdanslaGazette
+
+Preuve
+
+Preuvedudépôtdedocuments
+
+Décisiondusurintendant
+
+Texted’unedécision
+
+Notessténo­graphiques
+
+Appel
+
+Textecertifiéconformedeladécision
+
+167
+
+Practiceandprocedure
+
+Limitationonappeal
+
+InquiriesbySuperinten-dent
+
+Accesstobooks
+
+Dutytoprovideinformationonrequest
+
+Inspection
+
+Accesstobooks
+
+Inspectionofinsurers
+
+togetherwiththereasonsforthedecisionandtheevidenceonwhichthedecisionwasmade.
+
+(3)Thepracticeandprocedureforanappealshallbethesameasforanappealfromajudgmentofaterritorialcourtjudge,pursuanttothe[Territorial](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-t-2/latest/rsnwt-1988-c-t-2.html)CourtAct,withsuchmodificationsasthecircumstancesrequire.
+
+(4)Subsection (1) does notapplyto adecision oftheSuperintendentreferredtoinsubsection236(1).
+
+263.TheSuperintendentmaydirecttoaninsureranyinquirytouchingthecontractsorfinancialaffairsoftheinsurer,andtheinsurershallmakepromptand explicitanswertoanysuchinquiry,and,incaseofrefusalorneglecttoanswer,isguiltyofanoffence.
+
+264.TheSuperintendentoranypersonauthorizedunderthesignatureoftheSuperintendentorsealofoffice, shall, at all reasonabletimes,haveaccesstoallbooks, securitiesanddocumentsofaninsurer,agentorbrokerthatrelatetocontractsofinsurance,andeveryofficerorpersonincharge,possession,custodyorcontrolofsuchbooks,securitiesordocumentswhorefuses orneglectstoafford suchaccess isguilty of anoffence.
+
+265.(1)Itisthedutyoftheofficersandagentsofalicensedinsurer,andofpersonslicensedunderthisAct,and of any insured, toprovidethe SuperintendentontherequestoftheSuperintendentwithfullinformationrelatingtoanycontractofinsuranceissuedbytheinsurerortotheinsuredorrelativetoanysettlementoradjustmentunderanysuchcontract.
+
+to
+
+(2)TheMinistermayinstructtheSuperintendent(a)visitthehead office or chief agencyfromwhichthecontractreferredtoinsubsection(1)wasissued orthe officeoftheadjuster;and(b)inquireintothecontract,settlementoradjustmentreferredtoinsubsection(1).
+
+(3)Theprovisionsofsection264applytoaninquiryundersubsection(2),withsuchmodificationsasthecircumstancesrequire.
+
+266.(1) TheSuperintendent,oranypersonauthorizedbytheSuperintendent,may(a)visitthehead office orchiefofficeofany
+
+quifaitl’objetdel’appel,accompagnédes motifsdeladécisionetdesélémentsdepreuveàl’appui.
+
+(3)Lesrèglesdepratiqueetdeprocédureapplicablesàunappelsontlesmêmesquis’appliquentàl’appeldujugementd’unjugede la courterritorialeen vertudela[Loi](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-t-2/latest/rsnwt-1988-c-t-2.html)surlaCourterritoriale,comptetenudesadaptationsdecirconstance.
+
+(4)Leparagraphe(1)nes’appliquepasàunedécisiondusurintendant,viséeauparagraphe236(1).
+
+263.Lesurintendantpeutposeràunassureurquelquequestionquecesoitconcernantsescontratsousasituationfinancière;l’assureurfournitalorsuneréponserapideetexplicite;encasderefusoudenégligencedesapart,ilcommetuneinfraction.
+
+264.Lesurintendantettoutepersonne autoriséeparsasignatureouson sceauofficielont accès, àtoute heureraisonnable, aux livrescomptables,valeursmobilièresetdocumentsd’unassureur,agentoucourtierenrapportavecleurscontratsd’assurance;commetuneinfractionledirigeantoulapersonnequialaresponsabilité,lapossession,lagardeoulasurveillancedeceslivres,valeursmobilièresoudocumentsetquirefuseounégliged’endonneraccèsausurintendantouauxpersonnesautorisées.
+
+265.(1)Lesdirigeantsetlesagentsd’unassureurtitulaired’unelicence,ainsiquetouteslespersonnestitulairesd’unelicenceenvertudelaprésenteloiettouslesassurés,sonttenusdefournirausurintendant,àsademande,desrenseignementscompletsconcernantsoituncontratd’assuranceétabliparl’assureurouàl’égard del’assuré,soitunrèglementfaitenvertu d’uncontrat.
+
+(2)Leministrepeutordonnerausurintendant:a)devisiterlesiègesocialoul’agenceprincipaleoùlecontratviséauparagraphe(1)aétéétabli,oulebureaudel’expertensinistres;b)defaireenquêtesurlecontratoulerèglementviséàceparagraphe.
+
+(3)Lesdispositionsdel’article264s’appliquentàl’enquêteviséeauparagraphe(2),comptetenudesadaptationsdecirconstance.
+
+266.(1)Lesurintendant ou toutepersonnequ’ilautorisepeuvent:a)visiterlesiègesocialoulebureau
+
+Procédure
+
+Restriction
+
+Demandedusurintendant
+
+Accèsauxdocuments
+
+Renseigne-mentsàfournirausurintendant
+
+Inspection
+
+Accèsauxdocuments
+
+Inspectiondesassureurs
+
+168
+
+Dutyofofficersandagents
+
+Productionofbooks
+
+Examinationofaffairsofinsurer
+
+Expensesofexamination
+
+Serviceofnoticeorprocess
+
+licensedinsurer;(b)examinethestatementsoftheconditionandaffairsoftheinsurer;and(c)makesuchinquiriesasarenecessarytoascertain(i)theconditionandabilityoftheinsurertoprovideforthepaymentofitscontractsastheymature,and(ii)whethertheinsurerhascompliedwithalltheprovisionsofthisActapplicabletoitstransactions,andshallreporttotheMinisterall mattersarisingfromtheexaminationandinquiriesrequiringtheattentionanddecisionoftheMinister.
+
+(2)TheofficersandagentsofaninsurershallcausethebooksandrecordsoftheinsurertobeopenedfortheinspectionoftheSuperintendentandshall otherwisefacilitatethe examinationsofarasitisintheirpower.
+
+(3)Inordertofacilitatetheinspectionofthebooksandrecordsoftheinsurer,theSuperintendentmay,withtheapprovaloftheMinister,requiretheinsurertoproducethebooksandrecordsattheheadofficeorchiefofficeoftheinsureroratanyotherconvenientplacethattheSuperintendentdirects,andtheofficerorofficersof theinsurerwhohavecustodyofthebooksandrecordsareentitledtobepaidbytheinsurerfortheexpensesofthatattendance.
+
+(4)TheSuperintendentmay,withtheapprovaloftheMinister,causeabstractstobepreparedofthebooksandvouchersandavaluationtobemadeoftheassetsorliabilitiesofaninsurerandthecostofthepreparationandvaluationshallbepaidbytheinsurerontheissuanceofacertificateoftheSuperintendentapprovedbytheMinister.
+
+(5)WheretheofficeofaninsureratwhichanexaminationismadeunderthissectionisoutsidetheNorthwestTerritories,theinsurershallpaytheaccountinconnectionwiththeexamination,onthe issuance ofacertificateoftheSuperintendentapprovedbytheMinister.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+267.(1)WheretheheadofficeofalicensedinsurerislocatedoutsidetheNorthwestTerritories,noticeorprocessinanactionorproceedingintheTerritories
+
+principald’unassureurtitulaired’unelicence;b)examinerlesdéclarationsconcernantlasituationetlesactivitésdel’assureur;c)fairelesenquêtesquisontnécessairespourdéterminer:(i)lasituationdel’assureuretsacapacité àfaireface àses obligationsautitredesescontratsaufuretàmesurequ’ilsarriventàéchéance,(ii)sil’assureurs’estconforméàtouteslesdispositionsdelaprésenteloiquis’appliquentàsesopérations.Lesurintendantetlapersonneautoriséesonttenusdefairerapportauministredetouteslesquestionsquirésultentdeleurexamenetdeleursenquêtesetquidoiventêtreportéesàsonattentionounécessitentsonintervention.
+
+(2)Lesdirigeants etles agentsdel’assureursonttenusdepermettrel’accèsauxregistresetaux dossiersdel’assureurausurintendantetsonttenusdefaciliterdans toutela mesure dupossibleles examensauxquelscelui-ciselivre.
+
+(3)Pourfaciliter l’inspectiondesregistres etdesdossiersdel’assureur,lesurintendantpeut,avecl’approbationduministre,exigerdel’assureurqu’ilprésentelesdocumentsenquestionàsonsiègesocialoubureauprincipal,ou àtoutautreendroitconvenableindiquéparlesurintendant;ledirigeantdel’assureurquialagardedecesdocumentsadroitauremboursementparl’assureurdesfraisdedéplacementqu’ilexpose.
+
+(4)Lesurintendantpeut,avecl’approbationduministre,faireétablirdesextraitsdesregistresetdespiècesjustificativesetfairefaireuneévaluationdel’actifetdupassifd’unassureur;lesfraisquidécoulentdecesopérationssontpayésparl’assureurlorsdeladélivranced’uncertificatdusurintendantapprouvéparleministre.
+
+(5)Lorsquelebureaud’unassureurviséparunexamenestsituéàl’extérieurdesTerritoiresduNord-Ouest,l’assureuresttenudepayerlesfraisquidécoulentdel’examenlorsdeladélivranced’uncertificatdusurintendantapprouvéparleministre.LTN-O2011,ch.16,art.12(2).
+
+267.(1)Lorsquelesiègesociald’unassureurtitulaired’unelicenceestsituéàl’extérieurdesTerritoiresduNord-Ouest,lesavisouactesdeprocéduredansune
+
+Obligationdesdirigeantsetdesagents
+
+Livresetregistres
+
+Examendelasituationdel’assureur
+
+Fraisd’examen
+
+Significationdesactesdeprocédure
+
+169
+
+Insurertofileaddress
+
+Forwardingnoticeorprocess
+
+PublicationbySuperinten-dent
+
+Annualreport
+
+Publication
+
+Agreements
+
+Regulations
+
+maybeservedon(a)thechiefagentoftheinsurerintheTerritories;or(b)theSuperintendentwherenoappointmentofachiefagentisthenineffect,andthat serviceshall bedeemedserviceontheinsurerinthecaseofacorporationandonmembersoftheinsurerinthecaseofanunincorporatedbodyorassociation.
+
+(2)EverylicensedinsurershallfileintheofficeoftheSuperintendent noticeof apostoffice addresstowhichanynotice orprocessreferred tosubsection(1)maybeforwardedbytheSuperintendentandshallnotify theSuperintendent of anychangeintheaddressfiled.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+268.TheSuperintendentshallwithoutdelayafterthereceiptofanynoticeorprocessreferredtoinsection267forwardittotheinsurerbyregisteredmailaddressedinthemannerlastnotifiedtotheSuperintendentforthispurposebytheinsurer.
+
+269.TheSuperintendentmaypublishfromtimetotimenotices,reports,correspondence,resultsofhearings,decisionsand anyothermatterconsidered bytheSuperintendenttobeinthepublicinterest.
+
+270.(1)TheSuperintendentshallpreparefortheMinisteranannualreportontheconductofinsurancein theNorthwest TerritoriesincludingtheinformationthattheMinisterdirects.
+
+(2)TheMinistermaydirectthattheannualreportoftheSuperintendentbeprintedandpublished.[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec2_smooth)2011,c.16,s.12(2).
+
+271.TheMinistermayenterintoanagreementwithacompensationassociationrespectingaplantocompensatepolicyholdersandeligibleclaimantsofinsolventinsurers.
+
+272.TheCommissioner,ontherecommendationoftheMinister,maymakeregulationsprescribingfeesthataretobeprescribedforthepurposesofthisPart.
+
+actionouautreprocédure intentée dansles TerritoiresduNord-Ouestpeuventêtresignifiés:a)soitàl’agentprincipal de l’assureurdanslesTerritoiresduNord-Ouest;b)soitausurintendant,siaucunagentprincipaln’aéténommé.Cettesignificationvautsignificationàl’assureur,danslecasd’unepersonnemorale,etauxmembresdel’assureur,danslecasd’uneassociationoud’unorganismenonconstituéenpersonnemorale.
+
+(2)L’assureurtitulaired’unelicencedéposeaubureaudusurintendantl’avisd’une adresse postaleoùcelui-cipeutluifaireparvenirlesavisouactesdeprocédurevisésauparagraphe(1);ilaviselesurintendantdetoutchangementd’adresse.LTN-O2011,ch.16,art.12(2).
+
+268. Lesurintendantposte,enrecommandé,sansdélai,lesavisouactesdeprocédurequiluisontsignifiésenvertudel’article267àl’adressementionnéedansl’avisquel’assureurluiaremisàcettefin.
+
+269.Lesurintendantpeutpublierlesavis,lesrapports,lacorrespondance,lerésultatdesaudiences,lesdécisions ettouteautrequestionqu’ilestimed’intérêtpublic.
+
+270.(1)Lesurintendantétablitàl’intentionduministreunrapportannuelsurlapratiquedesopérationsd’assurancedanslesTerritoiresduNord-Ouest;lerapportcontientnotammentlesrenseignementsqueleministredemande.
+
+(2)Leministrepeutordonnerquelerapportannueldusurintendantsoitimpriméetpublié.LTN-O2011,ch.16,art.12(2).
+
+271.Leministrepeutconclureuneententeavecuneassociationd’indemnisationconcernantl’indemnisationdesdétenteursdepoliceetdesréclamantsadmissiblesdesassureursinsolvables.
+
+272.Surrecommandationdu ministre, lecommissairepeut,parrèglement,fixerlesdroitsàprescrirepourl’applicationdelaprésentepartie.
+
+Avisdel’adressepostale
+
+Transmissiondesavisouactesdeprocédure
+
+Publication
+
+Rapportannuel
+
+Publication
+
+Ententes
+
+Règlements
+
+170
+
+SCHEDULE(Paragraphs7(1)(a),38(j),subsections129(2),156(7),157(1),(7),158(1),(4), 164(2))
+
+MANDATORYMEDICALANDREHABILITATIONBENEFITS,ANDACCIDENTBENEFITSINMOTORVEHICLELIABILITYPOLICIES
+
+SECTIONB \- ACCIDENTBENEFITSSubsections1and2aresubjecttothespecialprovisions,definitionsandexclusionssetoutinsubsection3.
+
+The insureragreestopaytoorwithrespecttoeachinsuredperson,asdefined inthissection,whosustainsbodilyinjury or death byanaccident arisingoutof theuseoroperationofanautomobile:
+
+SUBSECTION1 \- MEDICAL,REHABILITATIONANDFUNERALEXPENSES
+
+1.Allreasonableexpensesincurredwithinfouryearsfromthedateoftheaccidentasaresultofsuchinjuryfornecessarymedical,surgical,dental,chiropractic,wherethechiropracticservices arerecommendedby alegallyqualifiedmedicalpractitioner,hospital,professionalnursingandambulanceserviceandforanyotherservicewithinthemeaningofinsuredservices under the[Hospital Insurance](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-t-3/latest/rsnwt-1988-c-t-3.html)and HealthandSocialServicesAdministrationActandforsuchotherservicesandsupplieswhichare,intheopinionofthelegallyqualifiedmedicalpractitioneroftheinsuredperson’schoiceandthatoftheInsurer’smedicaladvisor,essentialforthetreatment,occupationalretrainingorrehabilitationofsaidperson,tothelimitof$25,000perperson.
+
+2.Funeralexpensesincurreduptotheamountof$1,000inrespectofthedeathofanyoneperson.
+
+Theinsurershallnotbeliableunderthissubsectionforthoseportionsofsuchexpensespayable
+
+ANNEXE\[Alinéas7(1)a)et38j),paragraphes129(2),156(7),157(1)et(7), 158(1)et(4), 164(2)\]
+
+INDEMNITÉSOBLIGATOIRESENMATIÈREDESOINSMÉDICAUXETDERÉÉDUCATION,ETINDEMNITÉSD’ACCIDENTSDANSLESPOLICESDERESPONSABILITÉAUTOMOBILE
+
+SECTIONB \- INDEMNITÉSD’ACCIDENTSLesdivisions1et2sontsoumisesauxdispositions,définitionsetexclusionsspécialesénuméréesàladivision3.
+
+L’assureuracceptedepayerlesindemnitésquisuiventàchaquepersonneassurée,ausensdelaprésentsection,quisubitdeslésionscorporellesoudécède dans unaccident d’automobile,ou à l’égard decettepersonne.
+
+DIVISION1-FRAISMÉDICAUX,DERÉÉDUCATIONETD’OBSÈQUES
+
+1.Àconcurrencede25000$parpersonne,laprésentedivisiongarantitleremboursementdesfraisraisonnablementengagésdanslesquatreansdel’accidentlesayantoccasionnéspourdessoinsmédicaux,chirurgicauxoudentaires,d’infirmieroud’infirmièreautorisés ou d’hôpitaux,pourdessoinsdechiropractie,danslamesureoùcessoinssontrecommandésparunmédecindûmentqualifié,pourdes servicesd’ambulanceoupourtous autres soinsouservices,sousréservequ’ilssoientconsidéréscommedesservices assurés au sens de la[Loi](https://www.canlii.org/en/nt/laws/stat/rsnwt-1988-c-t-3/latest/rsnwt-1988-c-t-3.html)surl’assurance-hospitalisationetl’administrationdesservicesdesantéetdesservicessociauxainsiquepourlesserviceset fournituresjugés,tantparl’expertmédicaldel’assureurquepar lemédecindûment qualifié delapersonneassurée,essentielsauxtraitements,àlaformation professionnelleouàlarééducationdecelle-ci.
+
+2.Encasdemortd’unepersonneassurée,lepaiementdesfraisd’obsèquesàconcurrencede1000$.
+
+Estexcluedela présentedivisiontoutepartiedesfraismentionnésplushautcouvertsparunrégime
+
+171
+
+orrecoverableunderanymedical,surgical,dentalorhospitalizationplanorlawor,exceptforsimilarinsuranceprovidedunderanotherautomobileinsurancecontract,underanyother insurance contractorcertificateissuedtoorforthebenefitof,anyinsuredperson.
+
+SUBSECTION2 \- DEATHBENEFITSANDLOSSOFINCOMEPAYMENTS
+
+Part I \- DeathBenefitsA.SubjecttotheprovisionsofthisPart,fordeaththatensueswithin180daysoftheaccidentorwithin104weeksoftheaccidentiftherehasbeencontinuousdisabilityduringthatperiod,anamountbasedonthestatusatthedateoftheaccidentofthedeceasedinahousehold where aspouseor dependantssurvive \- asfollows:
+
+Headofthehousehold... .... ... ..$10,000SpouseoftheHeadoftheHousehold.. ... ... .... ...$10,000Dependantwithinthemeaningofsubparagraphbofsubparagraph3ofparagraphB. ... .... ... ... ...$2,000
+
+Inaddition,withrespecttodeathoftheheadofthehousehold,wheretherearetwoormoresurvivors-spouseordependants-theprincipalsumpayableisincreased$2,500foreachsurvivorotherthanthefirstand where thereisonesurvivor-spouseordependant-theprincipalsumpayableisincreased$1,500.
+
+B.ForthepurposesofthisPart,
+
+(1)"spouseof theheadofthehousehold"meansthespousewith thelesserincomefromemploymentinthetwelvemonthsprecedingthedateoftheaccident.
+
+(2)Repealed,[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2005-c-2/latest/snwt-2005-c-2.html#sec5.1subsec3_smooth)2005,c.2,s.5.1(3).(3)"dependant"means,(a)thespouseoftheheadofthehouseholdwhoresideswiththeheadofthehousehold;(b)aperson,(i)undernineteenyearsofagewho
+
+médical,chirurgical,dentaireoud’hospitalisationprivéouprévuparuneloi,oufaisantl’objetd’uneautreassurance,àmoinsqu’ilnes’agissed’uneassuranceautomobilesemblableàlaprésente.
+
+DIVISION2-INDEMNITÉSDEDÉCÈSETDEPERTEDEREVENU
+
+SubdivisionI -IndemnitésdedécèsA.Sousréservedesautresdispositionsdelaprésentesubdivision,leprésentparagraphegarantit,encasdemortsurvenantdansles180jours del’accidentl’ayantoccasionnée,oudans les 104semainessuivantcelui-cis’ilaentraînéuneinvaliditéininterrompuedurantcettepériode,lepaiement,calculéenfonctiondustatut,lejourdel’accident,delavictimedansunménageoùunconjointoudespesonnesàchargesurvivent,d’uneindemnitéenfonctiondutableausuivant:
+
+Chefdefamille. .... ... ... .... ... .10000$Conjointd’unchefdefamille.... ... ... .... ...10000$Personneàchargeausensdusous-alinéaB(3)b).. ... ....2000$
+
+Enoutre,dans le casd’unchefdefamillelaissantplusd’unsurvivant,conjointou personnesàcharge,unsupplémentde2500$est payableàchaquesurvivant,àl’exceptiondupremier;s’iln’yenaqu’unseul,conjointoupersonneàcharge,lesupplémentestde1500$.
+
+B.
+
+Lesdéfinitionsquisuivents’appliquentàlaprésentesubdivision.
+
+(1)«conjointduchefdefamille»Leconjointdontlerevenuaété le moinsélevédurantles12moisprécédantl’accident.
+
+(2)Aborgé,LTN-O2005,ch.2,art.5.1(3).(3)«personneàcharge»a)Leconjointduchefdefamillequicohabiteaveclui;b)unepersonne:(i)âgéedemoinsde19ansquirésideaveclechefdefamilleouson
+
+172
+
+resideswithandisprincipallydependantupontheheadofthehouseholdor thespouseoftheheadofthehouseholdforfinancialsupport,(ii)nineteenyearsofageoroverwho,becauseofmentalorphysicalinfirmity,isprincipallydependentupontheheadofthehouseholdorthespouseoftheheadofthehouseholdforfinancialsupport,or(iii)nineteenyearsofageoroverwho,becauseoffull-timeattendanceataschool,collegeoruniversity,isprincipallydependentupontheheadofthehouseholdorthespouseoftheheadofthehouseholdforfinancialsupport;or(c)aparentorrelative,(i)oftheheadofthehousehold,or(ii)ofthespouseoftheheadofthehousehold,residinginthesamedwellingpremisesandprincipallydependentupontheheadofthehouseholdorthespouseoftheheadofthehouseholdforfinancialsupport.
+
+(4)Thetotalamountpayableshallbepaidtoapersonwhoistheheadof thehouseholdorthespouseoftheheadofthehousehold,asthecasemaybe,ifthatpersonsurvivesthedeceasedbyatleastthirtydays.
+
+(5)Thetotalamountpayablewithrespecttodeathwherenoheadofthehouseholdorspousesurvivesthedeceasedbyatleastthirtydaysshallbedividedequallyamongthesurvivingdependants.
+
+(6)Noamountispayable on deathunderthisPartifnoheadofthehouseholdordependantsurvivesthedeceasedbyatleastthirtydays.
+
+PartII \- LossofIncomeSubjecttotheprovisionsofthisPart,aweeklypaymentforthelossofincomefromemploymentfortheperiodduringwhichtheinsuredpersonsufferssubstantialinabilitytoperformtheessentialdutiesofhisoccupationoremployment,provided,(a)suchpersonwasemployedatthedateoftheaccident;
+
+conjointetquiendépendprincipalementpoursasubsistance,(ii)âgéede19ansou plus qui, enraisond’uneinfirmitémentaleouphysique,dépendprincipalementpoursasubsistanceduchefdefamilleoudesonconjoint,(iii)âgéede19ansouplusqui,parcequ’ellefréquenteàpleintempsuneécole,uncollègeouuneuniversité,dépendprincipalementpoursasubsistanceduchefdefamilleoudesonconjoint;c)unparent:(i)duchefdefamille,(ii)duconjointduchefdefamille,vivantsouslemêmetoitquelechefdefamilleousonconjointetquiendépendprincipalementpoursasubsistance.
+
+(4)Lesindemnitésnesontpayablesqu’auchefdefamilleou à son conjointayantsurvécuaudéfuntd’aumoins30jours.
+
+(5)Encasdedécèsd’unepersonneàlaquellenilechefdefamillenileconjointnesurvitd’aumoins30jours,lesindemnitéssontpayablesauxpersonnesàchargesurvivantesàpartségales.
+
+(6)Aucuneindemnitédedécèsn’estpayableenvertudelaprésentesubdivisiondanslecasoùnilechefdefamilleniunepersonneàchargenesurvitaudéfuntd’aumoins30jours.
+
+SubdivisionII \- IndemnitésdepertederevenuSous réservedesautresdispositionsdelaprésentesubdivision,encasd’incapacitégraveempêchantlapersonneassuréed’accomplirlestâchesessentiellesàl’exercicedesaprofession,laprésentesubdivisiongarantitlepaiementdel’indemnitéhebdomadairederemplacementdurevenu,sousréservedes restrictionssuivantes:
+
+173
+
+(b)withinthirtydaysfromthedateoftheaccidenttheinsuredpersonsufferssubstantialinabilitytoperformtheessentialdutiesofhisoccupationoremployment;and(c)nopaymentsshallbemadeforthefirstsevendaysofsuchinabilityorforanyperiodinexcessof104 weeksexceptthatif,attheendofthe104weekperiod,ithasbeenestablishedthatsuchinjurycontinuouslypreventssuchpersonfromengaginginanyoccupationoremploymentforwhichheisreasonablysuitedbyeducation,trainingorexperience,theInsureragreestomakesuchweeklypaymentsforthedurationofsuchinabilitytoperformtheessentialduties.
+
+AmountofWeeklyPayment-Theamountofaweeklypaymentshallbethelesserof,(a)$140perweek;or(b)eightypercentoftheinsuredperson’sgrossweeklyincomefromemployment,lessanypaymentsforlossofincomefromemploymentreceivedbyoravailabletosuchpersonunder,(i)thelawsofanyjurisdiction,and(ii)wageorsalarycontinuationplansavailableto thepersonbyreasonofhisemployment,butnodeductionshallbemadeforanyincrease in suchpaymentduetoacost oflivingadjustmentsubsequenttotheinsuredperson’ssubstantialinabilitytoperformtheessentialdutiesofhisoccupationoremployment.
+
+ForthepurposeofthisPart,
+
+(1)thereshallbedeductedfromaninsuredperson’sgrossweeklyincomeanypaymentsreceivedbyoravailabletohimfrompart-timeorotheremploymentoroccupationsubsequenttothedateoftheaccident;
+
+(2)aprincipalunpaidhousekeeperresidinginthehouseholdnototherwiseengagedinoccupationoremploymentforwagesorprofit,ifinjured,shallbedeemeddisabledonlyifcompletelyincapacitatedandunabletoperformanyofhisorherhouseholddutiesand,whilesoincapacitated,shallreceiveabenefitat
+
+a)lavictimeavaitunemploilejourdel’accident;b)l’incapacitégravesemanifestedansles30joursdel’accidentl’ayantoccasionnéedemanièreàempêcherlavictimed’exercerlestâchesessentiellesdesaprofession;c)aucuneindemnitén’estverséeàl’égarddesseptpremiersjoursdecetteincapacitéet l’indemnitéestfonctiond’unelimitationde104semaines,étantpréciséquesiàlafindecettepériodede104semaines,ilestétabliqueleslésionssubiesparcettepersonnel’empêchenttoujoursd’exerceruneprofessioncorrespondantàsesétudes,àsaformationou à sonexpérience,l’indemnitédemeurepayable tantquecetteincapacitépersiste.
+
+Montantdel’indemnitéhebdomadaire-Lemontantdel’indemnitéhebdomadaireestlemoinsélevédesmontantssuivants:a)140$parsemaine;b)80%durevenubrutd’emploihebdomadairedelapersonneassurée,moinslessommespayablesautitred’indemnitésdepertedurevenud’emploienvertu:(i)d’uneloi,(ii)d’unrégimedemaintiendesalaireétablidanslecadred’unemploi.Toutefois,aucunmontantnedoitêtredéduitlorsquecetteindemnitéestmajoréeenraisond’uneindexationaucoûtdelavieultérieureàl’incapacitégraveempêchantl’assuréd’accomplirlestâchesessentiellesàl’exercicedesaprofession.
+
+Lesrèglesquisuivents’appliquentàlaprésentesubdivision.
+
+(1)Sontdéductiblesdurevenubruthebdomadairelespaiementsqu’unepersonneassuréeareçusoupeutrecevoirparsuitedetoutrevenud’emploiàtempspartieloud’uneautreprofession,postérieuràladatedel’accident.
+
+(2)Unepersonneaufoyerprincipalementresponsablede l’entretien decedernier,nonrémunéréeetn’exerçantparailleursaucuneactivitéàbutlucratifn’estréputéeincapable(siellesubitdeslésionscorporelles),quedanslecasoùellesouffred’uneincapacitétotaleetsetrouvetotalementincapable
+
+174
+
+therateof$100perweekfornotmorethantwelveweeks;
+
+(3)apersonshallbedeemedtobeemployed,(a)ifactivelyengagedinanoccupationoremploymentforwagesorprofitatthedateoftheaccident;or(b)ifnineteenyearsofageoroverand undersixty-fiveyearsofage,soengagedforanysixmonthsoutoftheprecedingtwelvemonths;
+
+(4)Apersonreceivingaweeklypaymentwho,withinthirtydaysofresuminghisoccupationoremploymentisunabletocontinuesuchoccupationoremploymentas aresultofsuchinjury,isnot precludedfromreceivingfurtherweeklypayments;and
+
+(5)Wherethepaymentsforlossofincomepayablehereunder,togetherwithpaymentsforlossofincomeunderanothercontractofinsuranceother thanacontractofinsurancerelatingtoanywageorsalarycontinuationplanavailabletoaninsuredpersonbyreasonofhisemployment,exceedtheactuallossofincome ofthe insured person,theInsureris liable onlyforthatproportionofthepaymentsforlossofincomestatedinthispolicythattheactuallossofincomeofthepersoninsuredbearstotheaggregateofthepaymentsforlossofincomepayableunderallsuchcontracts.
+
+SUBSECTION3 \- DEFINITIONS,EXCLUSIONSANDSPECIALPROVISIONSOFTHISSECTION
+
+(1)"Insuredperson"definedInthisSection,thewords"insuredperson"mean,(a)anypersonwhileanoccupantofthedescribedautomobileorofanewlyacquiredortemporarysubstituteautomobileasdefinedinthispolicy;(b)theinsuredand,ifresidinginthesamedwellingpremisesastheinsured,hisorherspouseandanydependentrelativeofeitherwhileanoccupantofanyotherautomobile;providedthat,(i)theinsuredisanindividualorarespouses,(ii)suchpersonisnotengagedinthe
+
+d’accomplirsestâchesménagères,auquelcas,ellereçoituneindemnitéde100$parsemainetantquepersistesonincapacité,pouruneduréemaximalede12semaines.
+
+(3)Unepersonneestréputéeoccuperunemploi:a)sielleselivreeffectivementàuneactivitéàbutlucratiflejourdel’accident;b)si,étantâgéede19ansouplusetdemoinsde65ans,elles’estlivréeàunetelleactivitépendantaumoinssixdes12moisayantprécédél’accident.
+
+(4)Lavictimeayantreprisletravailaprèsavoireudroitàuneindemnitéautitredelaprésentesubdivisionneperdpasdecefaitsesdroitsàindemnisation,si,dansles30joursdesonretourautravail,ellesetrouve,enraisondel’accident,dansl’impossibilitédecontinueràtravailler.
+
+(5)Lorsquelesindemnitésdepertederevenugarantiesparleprésentcontrat,ajoutéesauxindemnitésdepertederevenugarantiesparunautrecontratd’assurancequinerelèvepasd’unrégimedemaintiendesalairedontpeutbénéficierunepersonneassuréeenraisondesonemploi,sontsupérieuresàlapertederevenueffectivementsubieparl’assuré,l’assureurn’esttenuqu’àlaproportiondes indemnitésdepertederevenugarantiesenvertudecettepolicequiestégaleaurapportentrelesrevenuseffectivementperdusparl’assuréetletotaldesindemnitésdepertederevenugarantiesenvertudetouscescontrats.
+
+DIVISION3-DÉFINITIONSEXCLUSIONSETDISPOSITIONSSPÉCIALES
+
+(1)Définitiondel’expression«personneassurée»Àlaprésentesection,«personneassurée»s’entenddespersonnessuivantes:a)l’occupantdel’automobiledésignéeoud’uneautomobilenouvellementacquiseouderemplacement,ausensdesdéfinitionsdelaprésentepolice;b)l’assuréet,s’ilsrésidentsous son toit,sonconjointetlesparentsàchargedel’unoul’autrependantqu’ilssontdesoccupantsdetouteautreautomobile,pourvuque:(i)l’assurésoitunparticulierouuncouple,(ii)lespersonnesenquestionnesoient
+
+175
+
+businessofselling,repairing,maintaining,servicing,storingorparkingautomobilesatthetimeoftheaccident,(iii)suchotherautomobileisnotownedorregularlyorfrequentlyusedbytheinsuredorbyanypersonorpersonsresidinginthesamedwellingpremisesastheinsured,(iv)suchotherautomobile isnotowned,hiredorleasedbyanemployeroftheinsuredorbyanemployerofanypersonorpersonsresidinginthesamedwellingpremisesastheinsured,and(v)suchotherautomobileisnotusedforcarryingpassengersforcompensationorhireorforcommercialdelivery;(c)insubsections(1)and(2)ofthissectiononly,anyperson,nottheoccupantofanautomobileorofrailwayrolling-stockthatrunsonrails,whoisstruck,inCanada,bythedescribedautomobileoranewlyacquired ortemporarysubstituteautomobileasdefinedinthepolicy;(d)insubsections(1)and(2)ofthissectiononly,thenamedinsured,ifanindividualandhisorherspouseandanydependentrelativeresidinginthesamedwellingpremisesasthenamedinsured,nottheoccupantofanautomobileorofrailwayrolling-stockthatrunsonrails,whoisstruckby any otherautomobile;providedthat,(i)suchpersonisnotengagedinthebusinessofselling,repairing,maintaining,servicing,storingorparkingautomobilesatthetimeoftheaccident,(ii)thatautomobileisnotownedorregularlyorfrequentlyusedbytheinsuredorbyanyperson orpersonsresidinginthesamedwellingpremisesasthenamedinsured,(iii)thatautomobileisnotowned,hired,orleasedbyanemployeroftheinsuredorbyanemployerofanypersonorpersonsresidinginthesamedwellingpremisesasthenamedinsured,(e)iftheinsuredisacorporation,unincorporatedassociation,or
+
+pas,aumomentdel’accident,dansl’exerciceprofessionneldela vente,delaréparation,del’entretien,duremisageoudustationnementd’automobiles,(iii)cetteautreautomobilen’avaitpaspourpropriétaires,nipourusagershabituelsoufréquents,nil’assuréniunepersonnerésidantsoussontoit,(iv)cetteautreautomobilen’avaitpaspourpropriétairenipourlocatairel’employeurdel’assuréoud’unepersonnequirésidesoussontoit,(v)cetteautreautomobilen’étaitpasaffectéeautransportdepersonnesàtitreonéreuxniàlalivraisoncommerciale;c)auxparagraphes(1)et(2)delaprésentesectionseulement,toutepersonnequi,sansêtrel’occupantd’uneautomobileoud’unvéhiculeferroviaire,estheurtéeauCanadaparl’automobiledésignéeouparuneautomobilenouvellementacquiseouderemplacementausensdesdéfinitionsdelaprésentepolice;d)auxparagraphes(1)et(2)delaprésentesectionseulement,l’assurédésigné,s’ils’agitd’unparticulieretsonconjointetlesparentsàchargedel’unoudel’autre,lorsque,sansêtrelesoccupantsd’uneautomobileoud’unvéhiculeferroviaire,ilssontheurtésparuneautreautomobile,pourvuque:(i)lespersonnesenquestionnesoientpas,aumomentdel’accident,dansl’exerciceprofessionneldela vente,delaréparation,del’entretien,duremisageoudustationnementd’automobiles,(ii)l’automobilen’aitpaspourpropriétairesnipourusagershabituelsoufréquentsnil’assurédésignéniunepersonnequirésidesoussontoit,(iii)l’automobilen’aitpaspourpropriétairenipourlocatairel’employeurdel’assurédésignéoud’unepersonnerésidantsoussontoit;e)sil’assuréestunepersonnemorale,uneassociationnonconstituéeenpersonnemoraleouunesociétéennomcollectif,lesmembresdupersonneloul’associé
+
+176
+
+partnership,anyemployeeorpartneroftheinsuredforwhoseregularusethedescribedautomobileisfurnished,andhisorherspouseandanydependentrelativeofeither,residinginthesamedwellingpremisesassuchemployeeorpartner,whileanoccupantofanyotherautomobile;and(f)insubsections(1)and(2)ofthissectiononly,anyemployeeorpartneroftheinsured,forwhoseregularusethedescribedautomobileisfurnished,andhisorherspouseandanydependentrelativeofeither,residinginthesamedwellingpremisesassuchemployeeorpartner,whilenottheoccupantofanautomobileorofrailwayrolling-stockthatrunsonrails,whoisstruckbyanyotherautomobile;providedthat,
+
+inrespectof(e)and(f)above,(i)neithersuchemployeenorpartnerorhisorherspouseistheownerofanautomobile,(ii)suchpersonisnotengagedinthebusinessofselling,repairing,maintaining,servicing,storing,orparkingautomobilesatthetimeoftheaccident,(iii)suchotherautomobileisnotownedorregularlyorfrequentlyusedbytheemployeeorpartner,orbyanypersonorpersonsresidinginthesamedwellingpremisesassuchemployeeorpartner,(iv)suchotherautomobileisnotowned,hired, or leased by the insured orbyanemployerofanypersonorpersonsresidinginthesamedwellingpremisesassuchemployeeorpartneroftheinsured,
+
+inrespectof(e)aboveonly,(v)suchotherautomobileisnotusedforcarryingpassengersforcompensationorhireorforcommercialdelivery.
+
+utilisanthabituellementl’automobiledésignéeet,pourvuqu’ilsrésidentsoussontoit,sonconjointetlesparentsàchargedel’unoudel’autre,lorsqu’ilssontdesoccupantsdetouteautreautomobile;f)auxparagraphes(1)et(2)delaprésentesectionseulement,lemembredupersonnel oul’associéutilisanthabituellementl’automobiledésignée,et,pourvuqu’ilsrésidentsoussontoit,sonconjointetlesparentsàchargedel’unoudel’autre,lorsque,sansêtrelesoccupantsd’uneautomobileoud’unvéhiculeferroviaire,ilssontheurtésparuneautreautomobile,pourvuque:encequiconcernelesalinéase)etf):(i)ce membredupersonnel,cet associéousonconjointnesoitpaspropriétaired’uneautomobile,(ii)lespersonnesenquestionnesoientpas,aumomentdel’accident,dansl’exerciceprofessionnelde lavente,delaréparation,del’entretien,duremisageoudustationnementd’automobiles,(iii)l’automobiletransportantlespersonnesenquestionn’aitpourpropriétairesnipourusagershabituelsoufréquentsnicemembredupersonnelniunassocié,niunepersonnequirésidesousletoitdel’unoudel’autre,(iv)l’automobiletransportantlespersonnesenquestionn’aitpourpropriétairesnipourlocatairesnil’assurénil’employeurd’unepersonnequirésidesoussontoitousonassocié,encequiconcerneseulementl’alinéae)ci-dessus:(v)l’automobiletransportantlespersonnesenquestionneserve ni autransportdepersonnesàtitreonéreuxniàlalivraisoncommerciale.
+
+177
+
+(2)Exclusions(a)TheInsurershallnotbeliableunderthisSectionforbodilyinjurytoordeathofanyperson,(i)resultingfromthesuicideofsuchpersonorattemptedsuicide,whethersaneorinsane;or(ii)whoisentitledtoreceivethebenefitsofanyworkers’compensationlaworplan;or(iii)causeddirectlyorindirectlybyradioactivematerial;(b)TheInsurershallnotbeliableundersubsection(1)or Part IIofsubsection(2)ofthissectionforbodilyinjuryordeath,(i)sustainedbyanypersonwhoisconvictedofanoffenceunder[section](https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-c-46/latest/rsc-1985-c-c-46.html#sec255_smooth)255ofthe[Criminal](https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-c-46/latest/rsc-1985-c-c-46.html)Code(Canada)(drivingwhileimpairedbyalcoholoradrugordrivingwithmorethan80mgofalcoholin100mLofblood)occurringatthetimeoftheaccident;or(ii)sustainedbyanypersondrivingtheautomobilewhoisnotforthetimebeingeitherauthorizedbylaworqualifiedtodrivetheautomobile.
+
+(3)NoticeandproofofclaimTheinsuredpersonorhisagent,orthepersonotherwiseentitledtomakeclaimorhisagent,shall,(a)givewrittennoticeofclaim totheInsurerbydeliverythereoforbysendingitbyregisteredmailtothechiefagencyorheadofficeoftheInsurerintheTerritory,withinthirtydaysfromthedateoftheaccidentorassoonaspracticablethereafter;(b)withinninetydaysfromthedateoftheaccidentforwhichtheclaimismade,orassoonaspracticablethereafter,furnishtotheInsurersuchproofofclaimasisreasonablypossibleinthecircumstancesofthehappeningoftheaccidentandthelossoccasionedthereby;and(c)ifsorequiredbytheInsurer,furnishacertificateastothecauseandnatureoftheaccidentforwhichtheclaimismadeandastothedurationofthedisabilitycausedtherebyfromamedical
+
+(2)Exclusionsa)Sontexclusdelaprésentesection,leslésionscorporellesouledécès:(i)subisparl’auteurd’unsuicideoud’unetentativedesuicide,qu’ilsoitsaind’espritounon,(ii)donnantdroitauxavantagesd’uneloioud’unrégimed’indemnisationdesaccidentsdutravail,(iii)imputablesdirectementouindirectementàunematièreradioactive;b)Sontexclusdans lecadrede la division1ainsiquedelasubdivisionIIdeladivision2delaprésentesection,leslésionscorporellesou le décèssubispar :(i)toutepersonnereconnuecoupabled’uneinfractionprévueàl’ [article](https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-c-46/latest/rsc-1985-c-c-46.html#sec255_smooth)255du[Code](https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-c-46/latest/rsc-1985-c-c-46.html)criminel(capacitédeconduireaffaiblieparl’effetdel’alcooloud’unedrogueouconduitealorsquesonalcoolémieestsupérieureà80mgd’alcoolpar100mldesang)etperpétréeaumomentdel’accident,(ii)toutconducteurdel’automobilen’étant ni apteàconduireni autoriséàcettefinparlaloi.
+
+(3)AvisdusinistreetpreuvedesinistreEncasdesinistre,lapersonneassuréeoutoutautrebénéficiairesoitpersonnellement,soitparl’intermédiairedesonreprésentant:a)dansles30jourssuivantladatedusinistreouleplus tôtpossibleparlasuite,donneàl’agenceprincipaleouausiègesocialdel’assureurdanslesTerritoiresduNord-Ouest,unavisdusinistre,remisenmainpropreoupostéenrecommandé;b)présenteàl’assureurdansles90jourssuivantladatedusinistreouleplustôtpossibleparlasuite,àl’appuidesaréclamation,lespreuvesqu’ilpeutraisonnablementfournirdescirconstancesdusinistreetdesdommagesqu’ilasubisàlasuitedusinistre;c)sil’assureurleluidemande,fournituncertificat,signéparunmédecindûmentqualifié,surlacauseetlanaturedusinistreàl’originede laréclamationetsurladuréedel’invaliditéquiendécoule.
+
+178
+
+practitionerlegallyqualifiedtopractise.(4)MedicalreportsTheInsurerhastherightandtheclaimantshallaffordtotheInsurer,anopportunitytophysicallyexaminetheinsuredpersonwhenandasoftenasitreasonablyrequireswhiletheclaimispending,andalso,inthecaseofthedeathoftheinsuredperson,tomakeanautopsysubjecttothelawrelatingtoautopsies.
+
+(5)ReleaseNotwithstandinganyreleaseprovidedforundertherelevantsectionsoftheInsuranceAct,theInsurermaydemand,asaconditionprecedenttopaymentofanyamountunderthissectionofthepolicy,areleaseinfavouroftheinsuredandtheInsurerfromliabilitytotheextentofsuchpaymentfrom theinsuredpersonorhispersonalrepresentativeoranyotherperson.
+
+(6)Whenmoneypayable(a)Allamountspayableunderthissection,otherthanbenefitsunderPartIIofsubsection(2),shallbepaidbytheInsurerwithinthirtydaysafterithasreceivedproofofclaim.TheinitialbenefitsforlossofincomeunderPartIIofsubsection(2)shallbepaidwithinthirtydaysaftertheInsurerhasreceivedproofofclaim,andpaymentsshallbemadethereafterwithineachthirty-dayperiodwhiletheInsurerremainsliableforpaymentsiftheinsuredperson,wheneverrequiredtodoso,furnishespriortopaymentproofofcontinuingdisability;(b)Nopersonshallbringanactiontorecovertheamountofaclaimunderthissectionunlesstherequirementsofprovisions3and4ofthissubsectionarecompliedwith,noruntiltheamountofthelosshasbeen ascertainedas providedinthisSection;(c)EveryactionorproceedingagainsttheInsurerfortherecoveryofaclaimunderthissectionshallbecommencedwithintwoyearsfromthedateonwhichthe
+
+(4)RapportsmédicauxL’assureuraledroit,etleréclamantprendtouteslesmesurespourluienfaciliterl’exercice,defairepasseràlapersonneassuréeunexamenmédicalàunmomentraisonnableetaussisouventqu’ilestraisonnabledeledemandertantqu’uneréclamationestensuspens,et,encasdedécès d’unepersonneassurée,defairepratiqueruneautopsieenconformitéaveclaloiapplicable.
+
+(5)QuittancePardérogationàtoutequittanceprévueparlesdispositionsapplicablesdelaLoisurlesassurances,l’assureurpeutexigerdelapersonneassuréeousonreprésentantpersonnel,outouteautrepersonne, à titredeconditionpréalableauversementd’uneindemnitéprévue àlaprésentesectiondela police,unequittanceenfaveurdel’assuréetdel’assureurdeleurresponsabilitéjusqu’àconcurrencedumontantdeceversement.
+
+(6)Délaisderèglementa)Toutesles sommes payablesenvertudelaprésentesection,àl’exceptiondesindemnitésvisées à lasubdivisionII deladivision2,sontpayablesparl’assureurdansles30jourssuivantceluioù luisontfournieslespreuvesdesinistrerequises.LespremièresindemnitéspourpertederevenuviséesàlasubdivisionIIdeladivision2sontpayéesdansles30jourssuivant celui oùsontfourniesàl’assureurlespreuvesdesinistrerequises,etlespaiementssubséquentss’effectuentàintervallede30jours,tantquel’assureurrestetenudelesfaire,àlaconditionquelapersonneassurée,surdemande,fournisseavantleversementunepreuvedesoninvaliditécontinue;b)Aucuneactionnepeutêtreintentéeenrecouvrementd’une réclamationprévue àlaprésentesection,àmoinsquelesconditions3et4delaprésentedivisionn’aientétérespectéesetquelesdommagesn’aientétéétablisenconformitéaveclesdispositionsdelaprésentesection;c)Touteactionouprocédureintentéecontre
+
+179
+
+causeofactionaroseandnotafterwards.
+
+(7)LimitationonbenefitpayableWhereapersonisentitledtobenefitsundermorethanonecontractprovidinginsuranceofthetypesetforthinsubsection(1)or(2),heorhispersonalrepresentativeoranypersonclaimingthroughorunderhimmayrecoveronlyanamountequaltoonebenefit.
+
+Insofarasapplicable,thegeneralprovisions,exclusionsandstatutoryconditionsofthepolicyalsoapply.SNWT1997,c.12,s.15;[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2005-c-2/latest/snwt-2005-c-2.html#sec5.1subsec3_smooth)2005,c.2,s.5.1(3);[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2011-c-16/latest/snwt-2011-c-16.html#sec12subsec6_smooth)2011,c.16,s.12(6);[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2017-c-20/latest/snwt-2017-c-20.html#sec2subsec18_smooth)2017,c.20,s.2(18);[SNWT](https://www.canlii.org/en/nt/laws/astat/snwt-2022-c-4/latest/snwt-2022-c-4.html#sec11subsec5_smooth)2022,c.4,s.11(5).
+
+©2022TerritorialPrinterYellowknife,N.W.T.
+
+l’assureurenrecouvrementd’uneréclamationprévueàlaprésentesectionseprescriventpardeuxansàcompterdumomentoùlacaused’actionaprisnaissance.
+
+(7)LimitationdesindemnitéspayablesLorsqu’unepersonneadroitàdesindemnitésautitredeplusd’uncontratd’assurancedelacatégorieviséeauxdivisions1ou2,cettepersonne,sonreprésentantpersonneloutoutayantdroitnepeutrecouvrerquel’équivalentd’uneseuleindemnité.
+
+Danslamesureoùellespeuvents’appliquer,lesdispositionsgénérales,exclusionsetconditionslégalesdelapolices’appliquentégalement.LTN-O1994,ch.7,ann.;LTN-O1997,ch.12,art.15;LTN-O2005,ch.2,art.5.1(3);LTN-O2011,ch.16,art.12(2).
+
+©2022l’imprimeurterritorialYellowknife(T.N.-O.)
+
+180
+
+Back to top

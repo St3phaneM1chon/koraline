@@ -3,8 +3,9 @@
 import { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import { useTranslations } from '@/hooks/useTranslations';
+import { PQAP_GLOSSARY, type PqapGlossaryTerm } from '@/lib/lms/pqap-glossary';
 
-// ── Domain types ──
+// ── Domain types (extended with PQAP categories) ──
 type GlossaryDomain =
   | 'conformite'
   | 'ethique'
@@ -14,7 +15,18 @@ type GlossaryDomain =
   | 'epargne'
   | 'invalidite'
   | 'tarification'
-  | 'general';
+  | 'general'
+  | 'assurance_personnes'
+  | 'assurance_collective'
+  | 'rentes_retraite'
+  | 'fiscal'
+  | 'distribution'
+  | 'anti_blanchiment'
+  | 'deontologie'
+  | 'fonds_distincts'
+  | 'invalidite_maladie';
+
+type ManualFilter = 'ALL' | 'F-111' | 'F-311' | 'F-312' | 'F-313' | 'MULTI';
 
 interface GlossaryTerm {
   id: string;
@@ -24,10 +36,11 @@ interface GlossaryTerm {
   domain: GlossaryDomain;
   related: string[];
   legalRef?: string;
+  manual?: string;
 }
 
-// ── Domain colors ──
-const domainColors: Record<GlossaryDomain, string> = {
+// ── Domain colors (extended) ──
+const domainColors: Record<string, string> = {
   conformite: 'bg-blue-100 text-blue-800',
   ethique: 'bg-purple-100 text-purple-800',
   produits: 'bg-green-100 text-green-800',
@@ -37,10 +50,32 @@ const domainColors: Record<GlossaryDomain, string> = {
   invalidite: 'bg-orange-100 text-orange-800',
   tarification: 'bg-indigo-100 text-indigo-800',
   general: 'bg-gray-100 text-gray-800',
+  assurance_personnes: 'bg-green-100 text-green-800',
+  assurance_collective: 'bg-emerald-100 text-emerald-800',
+  rentes_retraite: 'bg-teal-100 text-teal-800',
+  fiscal: 'bg-yellow-100 text-yellow-800',
+  distribution: 'bg-sky-100 text-sky-800',
+  anti_blanchiment: 'bg-rose-100 text-rose-800',
+  deontologie: 'bg-purple-100 text-purple-800',
+  fonds_distincts: 'bg-cyan-100 text-cyan-800',
+  invalidite_maladie: 'bg-orange-100 text-orange-800',
 };
 
-// ── 50+ insurance terms ──
-const glossaryTerms: GlossaryTerm[] = [
+// ── Glossary terms: PQAP module (130+ terms) + legacy hardcoded ──
+// Map PQAP terms to display format
+const pqapMappedTerms: GlossaryTerm[] = PQAP_GLOSSARY.map((t: PqapGlossaryTerm) => ({
+  id: t.id,
+  term: t.term,
+  shortDef: t.definition.split('.').slice(0, 2).join('.') + '.',
+  fullDef: t.definition,
+  domain: t.category as GlossaryDomain,
+  related: t.relatedTerms,
+  legalRef: t.legalReference,
+  manual: t.manual,
+}));
+
+// Legacy hardcoded terms (kept for backward compat, will be deduped)
+const legacyTerms: GlossaryTerm[] = [
   {
     id: 'actuaire',
     term: 'Actuaire',
@@ -467,16 +502,38 @@ const glossaryTerms: GlossaryTerm[] = [
   },
 ];
 
+// Combine PQAP terms + legacy, deduplicate by ID (PQAP takes priority)
+const glossaryTerms: GlossaryTerm[] = (() => {
+  const seen = new Set<string>();
+  const combined: GlossaryTerm[] = [];
+  // PQAP first (priority)
+  for (const t of pqapMappedTerms) {
+    if (!seen.has(t.id)) {
+      seen.add(t.id);
+      combined.push(t);
+    }
+  }
+  // Legacy terms only if not already in PQAP
+  for (const t of legacyTerms) {
+    if (!seen.has(t.id)) {
+      seen.add(t.id);
+      combined.push(t);
+    }
+  }
+  return combined;
+})();
+
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 export default function GlossairePage() {
   const { t } = useTranslations();
   const [search, setSearch] = useState('');
   const [selectedDomain, setSelectedDomain] = useState<GlossaryDomain | 'all'>('all');
+  const [selectedManual, setSelectedManual] = useState<ManualFilter>('ALL');
   const [expandedTermId, setExpandedTermId] = useState<string | null>(null);
   const [activeLetter, setActiveLetter] = useState<string | null>(null);
 
-  // Filter terms based on search and domain
+  // Filter terms based on search, domain, and manual
   const filteredTerms = useMemo(() => {
     let filtered = glossaryTerms;
     if (search.trim()) {
@@ -491,8 +548,11 @@ export default function GlossairePage() {
     if (selectedDomain !== 'all') {
       filtered = filtered.filter((term) => term.domain === selectedDomain);
     }
+    if (selectedManual !== 'ALL') {
+      filtered = filtered.filter((term) => term.manual === selectedManual || term.manual === 'MULTI');
+    }
     return filtered.sort((a, b) => a.term.localeCompare(b.term, 'fr'));
-  }, [search, selectedDomain]);
+  }, [search, selectedDomain, selectedManual]);
 
   // Group terms by first letter
   const groupedTerms = useMemo(() => {
@@ -529,15 +589,33 @@ export default function GlossairePage() {
 
   const domains: { key: GlossaryDomain | 'all'; label: string }[] = [
     { key: 'all', label: t('learn.glossary.allDomains') },
+    { key: 'juridique', label: t('learn.glossary.domainJuridique') },
+    { key: 'assurance_personnes', label: t('learn.glossary.domainAssurancePersonnes') },
+    { key: 'assurance_collective', label: t('learn.glossary.domainAssuranceCollective') },
+    { key: 'rentes_retraite', label: t('learn.glossary.domainRentesRetraite') },
+    { key: 'fiscal', label: t('learn.glossary.domainFiscal') },
+    { key: 'deontologie', label: t('learn.glossary.domainDeontologie') },
+    { key: 'distribution', label: t('learn.glossary.domainDistribution') },
+    { key: 'anti_blanchiment', label: t('learn.glossary.domainAntiBlanchiment') },
+    { key: 'fonds_distincts', label: t('learn.glossary.domainFondsDistincts') },
+    { key: 'invalidite_maladie', label: t('learn.glossary.domainInvaliditeMaladie') },
+    { key: 'organismes', label: t('learn.glossary.domainOrganismes') },
     { key: 'conformite', label: t('learn.glossary.domainConformite') },
     { key: 'ethique', label: t('learn.glossary.domainEthique') },
     { key: 'produits', label: t('learn.glossary.domainProduits') },
-    { key: 'juridique', label: t('learn.glossary.domainJuridique') },
-    { key: 'organismes', label: t('learn.glossary.domainOrganismes') },
     { key: 'epargne', label: t('learn.glossary.domainEpargne') },
     { key: 'invalidite', label: t('learn.glossary.domainInvalidite') },
     { key: 'tarification', label: t('learn.glossary.domainTarification') },
     { key: 'general', label: t('learn.glossary.domainGeneral') },
+  ];
+
+  const manualFilters: { key: ManualFilter; label: string }[] = [
+    { key: 'ALL', label: t('learn.glossary.allManuals') },
+    { key: 'F-111', label: t('learn.glossary.manualF111') },
+    { key: 'F-311', label: t('learn.glossary.manualF311') },
+    { key: 'F-312', label: t('learn.glossary.manualF312') },
+    { key: 'F-313', label: t('learn.glossary.manualF313') },
+    { key: 'MULTI', label: t('learn.glossary.manualMulti') },
   ];
 
   return (
@@ -619,6 +697,24 @@ export default function GlossairePage() {
                 </button>
               );
             })}
+          </div>
+
+          {/* Manual filter */}
+          <div className="flex flex-wrap gap-2 mb-3">
+            <span className="text-xs text-gray-500 font-medium self-center mr-1">{t('learn.glossary.filterByManual')}:</span>
+            {manualFilters.map((m) => (
+              <button
+                key={m.key}
+                onClick={() => setSelectedManual(m.key)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                  selectedManual === m.key
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100'
+                }`}
+              >
+                {m.label}
+              </button>
+            ))}
           </div>
 
           {/* Domain filter */}
