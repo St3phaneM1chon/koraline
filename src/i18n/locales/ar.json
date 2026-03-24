@@ -10880,6 +10880,43 @@
       "statsLearning": "Learning",
       "statsDueNow": "Due now",
       "statsUpcoming": "Upcoming (7d)"
+    },
+    "masteryGraph": {
+      "mastered": "Mastered",
+      "learning": "Learning",
+      "notStarted": "Not Started",
+      "locked": "Locked",
+      "legend": "Legend",
+      "noConcepts": "No concepts available",
+      "levelShort": "Level {level}/{max}",
+      "linkedLessons": "Linked Lessons",
+      "prerequisiteCount": "{count} prerequisites required"
+    },
+    "badges": {
+      "streakDays": "{count} consecutive days",
+      "streakHot": "On fire!",
+      "noBadges": "No badges earned",
+      "noBadgesDesc": "Complete courses and quizzes to unlock badges.",
+      "earned": "Badges earned",
+      "earnedOn": "Earned on"
+    },
+    "studentDashboard": {
+      "title": "My Learning Path",
+      "subtitle": "Track your progress, badges, and deadlines.",
+      "loadError": "Unable to load dashboard",
+      "totalCourses": "Enrolled Courses",
+      "completedCourses": "Completed",
+      "inProgressCourses": "In Progress",
+      "hoursSpent": "Hours Studied",
+      "continueWhere": "Continue where you left off",
+      "lastAccessed": "Last accessed",
+      "activeCourses": "Active Courses",
+      "completedLabel": "Completed Courses",
+      "noCourses": "No courses",
+      "noCoursesDesc": "Enroll in a course to start your training.",
+      "badgesAndStreak": "Badges & Streak",
+      "upcomingDeadlines": "Upcoming Deadlines",
+      "dueBy": "Due:"
     }
   },
   "legal": {
