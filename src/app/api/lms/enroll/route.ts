@@ -11,6 +11,9 @@ import { z } from 'zod';
 import { withUserGuard } from '@/lib/user-api-guard';
 import { enrollUser } from '@/lib/lms/lms-service';
 import { logger } from '@/lib/logger';
+import { sendEmail } from '@/lib/email';
+import { buildEnrollmentConfirmationEmail } from '@/lib/email/templates/lms-emails';
+import { prisma } from '@/lib/db';
 
 const enrollSchema = z.object({
   courseId: z.string().min(1),
@@ -30,6 +33,18 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
 
   try {
     const enrollment = await enrollUser(tenantId, parsed.data.courseId, session.user.id!);
+
+    // Send enrollment confirmation email (non-blocking)
+    const course = await prisma.course.findUnique({ where: { id: parsed.data.courseId }, select: { title: true, slug: true } });
+    if (session.user.email && course) {
+      const email = buildEnrollmentConfirmationEmail({
+        studentName: session.user.name ?? 'Etudiant',
+        courseName: course.title,
+        courseSlug: course.slug,
+      });
+      sendEmail({ to: { email: session.user.email, name: session.user.name ?? undefined }, subject: email.subject, html: email.html, text: email.text }).catch(() => {});
+    }
+
     return NextResponse.json({ enrollment }, { status: 201 });
   } catch (error) {
     // C2-SEC-S-005 FIX: Don't expose raw error.message to clients — log it server-side

@@ -80,6 +80,12 @@ export function Header() {
             >
               {t('nav.supplements')}
             </Link>
+            <Link
+              href="/learn"
+              className="text-gray-600 hover:text-gray-900 font-medium"
+            >
+              {t('nav.formation') || 'Formations'}
+            </Link>
           </div>
 
           {/* Auth Section */}
@@ -233,6 +239,13 @@ export function Header() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('nav.supplements')}
+              </Link>
+              <Link
+                href="/learn"
+                className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t('nav.formation') || 'Formations'}
               </Link>
             </div>
           </div>

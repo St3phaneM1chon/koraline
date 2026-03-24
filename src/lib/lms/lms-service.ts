@@ -1,5 +1,7 @@
 import { prisma } from '@/lib/db';
 import type { Prisma, CourseStatus } from '@prisma/client';
+import { sendEmail } from '@/lib/email';
+import { buildCertificateIssuedEmail } from '@/lib/email/templates/lms-emails';
 
 // ── Courses ──────────────────────────────────────────────────
 
@@ -480,6 +482,19 @@ export async function issueCertificate(
     where: { id: enrollmentId },
     data: { certificateId: certificate.id },
   });
+
+  // Send certificate email (non-blocking)
+  const user = await prisma.user.findUnique({ where: { id: userId }, select: { email: true, name: true } });
+  if (user?.email) {
+    const verificationUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://attitudes.vip'}/learn/certificates/verify/${verificationCode}`;
+    const email = buildCertificateIssuedEmail({
+      studentName: studentName,
+      courseName: course.title,
+      verificationCode,
+      verificationUrl,
+    });
+    sendEmail({ to: { email: user.email, name: user.name ?? undefined }, subject: email.subject, html: email.html, text: email.text }).catch(() => {});
+  }
 
   return certificate;
 }

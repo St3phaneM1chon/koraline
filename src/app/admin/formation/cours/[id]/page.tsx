@@ -93,6 +93,8 @@ interface CourseData {
   maxEnrollments: number | null;
   enrollmentDeadline: string | null;
   passingScore: number;
+  examQuizId: string | null;
+  requireSequentialCompletion: boolean;
   isCompliance: boolean;
   complianceDeadlineDays: number | null;
   tags: string[];
@@ -109,7 +111,7 @@ interface CourseData {
   instructor: InstructorOption | null;
 }
 
-type TabKey = 'info' | 'chapters' | 'quizzes' | 'settings';
+type TabKey = 'info' | 'chapters' | 'quizzes' | 'exam' | 'settings';
 
 const LESSON_TYPE_ICONS: Record<string, typeof BookOpen> = {
   TEXT: FileText,
@@ -174,6 +176,10 @@ export default function CourseEditorPage() {
   const [tagsStr, setTagsStr] = useState('');
   const [passingScore, setPassingScore] = useState('70');
 
+  // Exam tab
+  const [examQuizId, setExamQuizId] = useState('');
+  const [requireSequentialCompletion, setRequireSequentialCompletion] = useState(true);
+
   // Settings tab
   const [maxEnrollments, setMaxEnrollments] = useState('');
   const [enrollmentDeadline, setEnrollmentDeadline] = useState('');
@@ -231,6 +237,8 @@ export default function CourseEditorPage() {
       setTrailerVideoUrl(course.trailerVideoUrl ?? '');
       setTagsStr((course.tags ?? []).join(', '));
       setPassingScore(String(course.passingScore));
+      setExamQuizId(course.examQuizId ?? '');
+      setRequireSequentialCompletion(course.requireSequentialCompletion ?? true);
       setMaxEnrollments(course.maxEnrollments != null ? String(course.maxEnrollments) : '');
       setEnrollmentDeadline(course.enrollmentDeadline ? course.enrollmentDeadline.slice(0, 10) : '');
       setIsCompliance(course.isCompliance);
@@ -319,6 +327,8 @@ export default function CourseEditorPage() {
         maxEnrollments: maxEnrollments ? parseInt(maxEnrollments, 10) : null,
         enrollmentDeadline: enrollmentDeadline || null,
         passingScore: parseInt(passingScore, 10) || 70,
+        examQuizId: examQuizId || null,
+        requireSequentialCompletion,
         isCompliance,
         complianceDeadlineDays: isCompliance && complianceDeadlineDays ? parseInt(complianceDeadlineDays, 10) : null,
         tags,
@@ -553,6 +563,7 @@ export default function CourseEditorPage() {
     { key: 'info', label: t('admin.lms.tabInformation') },
     { key: 'chapters', label: t('admin.lms.tabChapters') },
     { key: 'quizzes', label: t('admin.lms.tabQuizzes') },
+    { key: 'exam', label: 'Examen final' },
     { key: 'settings', label: t('admin.lms.tabSettings') },
   ];
 
@@ -1240,6 +1251,74 @@ export default function CourseEditorPage() {
                 {t('admin.lms.manageAllQuizzes')}
               </Button>
             </Link>
+          </div>
+        </div>
+      )}
+
+      {/* ── Tab: Exam ─────────────────────────────────────────── */}
+      {activeTab === 'exam' && (
+        <div className="space-y-6">
+          <div className="rounded-lg border p-6">
+            <h3 className="text-lg font-semibold mb-4">Configuration de l&apos;examen final</h3>
+            <p className="text-sm text-muted-foreground mb-6">
+              L&apos;examen de qualification n&apos;est accessible qu&apos;apres que l&apos;etudiant ait complete 100% des lecons du cours.
+              Selectionnez un quiz existant comme examen final.
+            </p>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Quiz examen</label>
+                <select
+                  className="w-full rounded-md border px-3 py-2 text-sm"
+                  value={examQuizId}
+                  onChange={(e) => setExamQuizId(e.target.value)}
+                >
+                  <option value="">Aucun examen final</option>
+                  {quizzes.map((q) => (
+                    <option key={q.id} value={q.id}>{q.title}</option>
+                  ))}
+                </select>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Choisissez parmi les quiz crees dans l&apos;onglet Quiz. L&apos;examen sera distinct des quiz de lecons.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">Score minimum (%)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    className="w-full rounded-md border px-3 py-2 text-sm"
+                    value={passingScore}
+                    onChange={(e) => setPassingScore(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Completion sequentielle</label>
+                  <label className="flex items-center gap-2 mt-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={requireSequentialCompletion}
+                      onChange={(e) => setRequireSequentialCompletion(e.target.checked)}
+                      className="rounded"
+                    />
+                    <span className="text-sm">Obliger la completion dans l&apos;ordre</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="flex justify-end">
+                <button
+                  onClick={handleSave}
+                  type="button"
+                  className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+                >
+                  Sauvegarder
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}

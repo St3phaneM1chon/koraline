@@ -8,6 +8,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { auth } from '@/lib/auth-config';
 import { prisma } from '@/lib/db';
+import { isModuleEnabled } from '@/lib/module-flags';
 import { getStaticLocale, createServerTranslator } from '@/i18n/server';
 import type { Locale } from '@/i18n/config';
 
@@ -225,7 +226,63 @@ export default async function CustomerDashboard() {
             )}
           </aside>
         </div>
+
+        {/* Mes Formations (LMS) */}
+        <LmsSection userId={session.user.id} />
       </main>
+    </div>
+  );
+}
+
+// ── LMS Section (conditional on module enabled) ──
+
+async function LmsSection({ userId }: { userId: string }) {
+  const lmsEnabled = await isModuleEnabled('formation');
+  if (!lmsEnabled) return null;
+
+  const enrollments = await prisma.enrollment.findMany({
+    where: { userId, status: { in: ['ACTIVE', 'COMPLETED'] } },
+    orderBy: { updatedAt: 'desc' },
+    take: 5,
+    include: {
+      course: { select: { title: true, slug: true, thumbnailUrl: true } },
+    },
+  });
+
+  if (enrollments.length === 0) return null;
+
+  return (
+    <div className="mt-8">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-bold text-gray-900">Mes formations</h2>
+        <Link href="/learn/dashboard" className="text-sm text-primary-600 hover:underline">
+          Voir tout
+        </Link>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {enrollments.map((enrollment) => (
+          <Link
+            key={enrollment.id}
+            href={`/learn/${enrollment.course.slug}`}
+            className="bg-white rounded-lg border p-4 hover:shadow-md transition-shadow"
+          >
+            <h3 className="font-medium text-gray-900 mb-2 line-clamp-2">{enrollment.course.title}</h3>
+            <div className="flex items-center justify-between">
+              <div className="flex-1 mr-3">
+                <div className="w-full bg-gray-100 rounded-full h-2">
+                  <div
+                    className={`rounded-full h-2 transition-all ${enrollment.status === 'COMPLETED' ? 'bg-green-500' : 'bg-blue-500'}`}
+                    style={{ width: `${Number(enrollment.progress)}%` }}
+                  />
+                </div>
+              </div>
+              <span className={`text-sm font-medium ${enrollment.status === 'COMPLETED' ? 'text-green-600' : 'text-blue-600'}`}>
+                {enrollment.status === 'COMPLETED' ? 'Termine' : `${Number(enrollment.progress).toFixed(0)}%`}
+              </span>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

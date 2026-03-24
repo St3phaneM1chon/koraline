@@ -7,6 +7,8 @@ import { apiSuccess, apiError } from '@/lib/api-response';
 import { ErrorCode } from '@/lib/error-codes';
 import { prisma } from '@/lib/db';
 import { enrollUser, enrollUserInBundle, resolvePricing } from '@/lib/lms/lms-service';
+import { sendEmail } from '@/lib/email';
+import { buildCorporateWelcomeEmail } from '@/lib/email/templates/lms-emails';
 
 const enrollSchema = z.object({
   type: z.enum(['course', 'bundle']),
@@ -125,6 +127,23 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
       where: { id: corporateAccountId },
       data: { budgetUsed: { increment: results.totalCost } },
     });
+  }
+
+  // Send corporate welcome emails (non-blocking)
+  const courseNames = type === 'bundle'
+    ? (await prisma.courseBundle.findUnique({ where: { id: itemId }, include: { items: { include: { course: { select: { title: true } } } } } }))?.items.map(i => i.course.title) ?? []
+    : [(await prisma.course.findUnique({ where: { id: itemId }, select: { title: true } }))?.title ?? ''];
+
+  for (const userId of userIds) {
+    const user = await prisma.user.findUnique({ where: { id: userId }, select: { email: true, name: true } });
+    if (user?.email) {
+      const email = buildCorporateWelcomeEmail({
+        employeeName: user.name ?? 'Employe',
+        companyName: account.companyName,
+        coursesEnrolled: courseNames,
+      });
+      sendEmail({ to: { email: user.email, name: user.name ?? undefined }, subject: email.subject, html: email.html, text: email.text }).catch(() => {});
+    }
   }
 
   return apiSuccess(results, { request, status: 201 });

@@ -13626,7 +13626,8 @@
       "languageSelector": "Sélecteur de langue",
       "selectCurrency": "Sélectionner la devise : {currency}",
       "selectLanguage": "Sélectionner la langue : {language}"
-    }
+    },
+    "formation": "Formations"
   },
   "navigation": {
     "requestDemo": "Demander une démo"
