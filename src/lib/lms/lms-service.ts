@@ -562,3 +562,387 @@ export async function getInstructors(tenantId: string) {
     take: 100,
   });
 }
+
+// ── Sequential Completion Gate ──────────────────────────────────
+
+/**
+ * Checks if a student can access a specific lesson based on sequential completion.
+ * All previous lessons (by chapter sortOrder then lesson sortOrder) must be completed.
+ */
+export async function canAccessLesson(
+  tenantId: string,
+  enrollmentId: string,
+  lessonId: string
+): Promise<{ allowed: boolean; reason?: string; nextRequiredLessonId?: string }> {
+  const enrollment = await prisma.enrollment.findUnique({
+    where: { id: enrollmentId },
+    include: {
+      course: {
+        include: {
+          chapters: {
+            orderBy: { sortOrder: 'asc' },
+            include: {
+              lessons: { orderBy: { sortOrder: 'asc' }, select: { id: true } },
+            },
+          },
+        },
+      },
+      lessonProgress: { select: { lessonId: true, isCompleted: true } },
+    },
+  });
+
+  if (!enrollment || enrollment.tenantId !== tenantId) {
+    return { allowed: false, reason: 'Enrollment not found' };
+  }
+
+  // If sequential completion not required, always allow
+  if (!enrollment.course.requireSequentialCompletion) {
+    return { allowed: true };
+  }
+
+  // Build ordered list of all lesson IDs
+  const orderedLessonIds: string[] = [];
+  for (const chapter of enrollment.course.chapters) {
+    for (const lesson of chapter.lessons) {
+      orderedLessonIds.push(lesson.id);
+    }
+  }
+
+  const targetIndex = orderedLessonIds.indexOf(lessonId);
+  if (targetIndex === -1) {
+    return { allowed: false, reason: 'Lesson not found in this course' };
+  }
+
+  // First lesson is always accessible
+  if (targetIndex === 0) return { allowed: true };
+
+  // Check all previous lessons are completed
+  const completedSet = new Set(
+    enrollment.lessonProgress.filter(p => p.isCompleted).map(p => p.lessonId)
+  );
+
+  for (let i = 0; i < targetIndex; i++) {
+    if (!completedSet.has(orderedLessonIds[i])) {
+      return {
+        allowed: false,
+        reason: 'Previous lessons not completed',
+        nextRequiredLessonId: orderedLessonIds[i],
+      };
+    }
+  }
+
+  return { allowed: true };
+}
+
+/**
+ * Checks if a student can access the final qualifying exam.
+ * Requires 100% lesson completion + all lesson quizzes passed.
+ */
+export async function canAccessExam(
+  tenantId: string,
+  enrollmentId: string
+): Promise<{ allowed: boolean; progress: number; threshold: number; missingLessons: string[] }> {
+  const enrollment = await prisma.enrollment.findUnique({
+    where: { id: enrollmentId },
+    include: {
+      course: {
+        include: {
+          chapters: {
+            include: {
+              lessons: {
+                select: { id: true, title: true, quizId: true },
+                orderBy: { sortOrder: 'asc' },
+              },
+            },
+            orderBy: { sortOrder: 'asc' },
+          },
+        },
+      },
+      lessonProgress: { select: { lessonId: true, isCompleted: true, quizPassed: true } },
+    },
+  });
+
+  if (!enrollment || enrollment.tenantId !== tenantId) {
+    return { allowed: false, progress: 0, threshold: 100, missingLessons: [] };
+  }
+
+  const allLessons = enrollment.course.chapters.flatMap(c => c.lessons);
+  const completedSet = new Set(
+    enrollment.lessonProgress.filter(p => p.isCompleted).map(p => p.lessonId)
+  );
+  const quizPassedSet = new Set(
+    enrollment.lessonProgress.filter(p => p.quizPassed).map(p => p.lessonId)
+  );
+
+  const missingLessons: string[] = [];
+  for (const lesson of allLessons) {
+    if (!completedSet.has(lesson.id)) {
+      missingLessons.push(lesson.title);
+    } else if (lesson.quizId && !quizPassedSet.has(lesson.id)) {
+      missingLessons.push(`${lesson.title} (quiz non reussi)`);
+    }
+  }
+
+  const progress = allLessons.length > 0
+    ? Math.round((completedSet.size / allLessons.length) * 100)
+    : 0;
+
+  return {
+    allowed: missingLessons.length === 0,
+    progress,
+    threshold: 100,
+    missingLessons,
+  };
+}
+
+// ── Bundles (Forfaits) ──────────────────────────────────────────
+
+export async function getBundles(tenantId: string) {
+  return prisma.courseBundle.findMany({
+    where: { tenantId, isActive: true },
+    include: {
+      items: {
+        include: { course: { select: { id: true, title: true, slug: true, thumbnailUrl: true, estimatedHours: true, level: true } } },
+        orderBy: { sortOrder: 'asc' },
+      },
+    },
+    orderBy: { name: 'asc' },
+  });
+}
+
+export async function getBundleBySlug(tenantId: string, slug: string) {
+  return prisma.courseBundle.findUnique({
+    where: { tenantId_slug: { tenantId, slug } },
+    include: {
+      items: {
+        include: {
+          course: {
+            select: {
+              id: true, title: true, slug: true, subtitle: true, thumbnailUrl: true,
+              estimatedHours: true, level: true, price: true, corporatePrice: true,
+              enrollmentCount: true, averageRating: true, passingScore: true,
+              chapters: { select: { id: true, title: true, _count: { select: { lessons: true } } } },
+            },
+          },
+        },
+        orderBy: { sortOrder: 'asc' },
+      },
+    },
+  });
+}
+
+/**
+ * Enrolls a user in all courses of a bundle.
+ * Skips courses where the user is already enrolled.
+ */
+export async function enrollUserInBundle(
+  tenantId: string,
+  bundleId: string,
+  userId: string,
+  options?: {
+    enrolledBy?: string;
+    corporateAccountId?: string;
+    paymentType?: string;
+    bundleOrderId?: string;
+  }
+): Promise<{ enrollmentIds: string[]; skippedCourseIds: string[] }> {
+  const bundle = await prisma.courseBundle.findUnique({
+    where: { id: bundleId },
+    include: { items: { include: { course: true }, orderBy: { sortOrder: 'asc' } } },
+  });
+
+  if (!bundle || bundle.tenantId !== tenantId) {
+    throw new Error('Bundle not found');
+  }
+
+  const enrollmentIds: string[] = [];
+  const skippedCourseIds: string[] = [];
+
+  for (const item of bundle.items) {
+    // Check if already enrolled
+    const existing = await prisma.enrollment.findUnique({
+      where: { tenantId_courseId_userId: { tenantId, courseId: item.courseId, userId } },
+    });
+
+    if (existing) {
+      skippedCourseIds.push(item.courseId);
+      continue;
+    }
+
+    // Count lessons
+    const totalLessons = await prisma.lesson.count({
+      where: { chapter: { courseId: item.courseId }, isPublished: true },
+    });
+
+    const enrollment = await prisma.enrollment.create({
+      data: {
+        tenantId,
+        courseId: item.courseId,
+        userId,
+        totalLessons,
+        enrolledBy: options?.enrolledBy ?? null,
+        enrollmentSource: options?.corporateAccountId ? 'corporate' : 'purchase',
+        corporateAccountId: options?.corporateAccountId ?? null,
+        paymentType: options?.paymentType ?? 'individual',
+        bundleOrderId: options?.bundleOrderId ?? null,
+      },
+    });
+
+    enrollmentIds.push(enrollment.id);
+  }
+
+  // Update bundle enrollment count
+  await prisma.courseBundle.update({
+    where: { id: bundleId },
+    data: { enrollmentCount: { increment: 1 } },
+  });
+
+  return { enrollmentIds, skippedCourseIds };
+}
+
+// ── Corporate Accounts ──────────────────────────────────────────
+
+export async function getCorporateAccounts(tenantId: string) {
+  return prisma.corporateAccount.findMany({
+    where: { tenantId, isActive: true },
+    include: {
+      _count: { select: { employees: true, enrollments: true, bundleOrders: true } },
+    },
+    orderBy: { companyName: 'asc' },
+  });
+}
+
+export async function getCorporateAccountById(tenantId: string, id: string) {
+  return prisma.corporateAccount.findFirst({
+    where: { id, tenantId },
+    include: {
+      employees: { orderBy: { addedAt: 'desc' } },
+      _count: { select: { employees: true, enrollments: true, bundleOrders: true } },
+    },
+  });
+}
+
+/**
+ * Get corporate dashboard stats: completion rates, scores, compliance.
+ */
+export async function getCorporateDashboardStats(tenantId: string, corporateAccountId: string) {
+  const [account, enrollments, employees] = await Promise.all([
+    prisma.corporateAccount.findFirst({ where: { id: corporateAccountId, tenantId } }),
+    prisma.enrollment.findMany({
+      where: { tenantId, corporateAccountId },
+      include: {
+        course: { select: { title: true, slug: true } },
+        lessonProgress: { select: { isCompleted: true, quizScore: true, quizPassed: true } },
+      },
+    }),
+    prisma.corporateEmployee.findMany({
+      where: { corporateAccountId, isActive: true },
+      select: { userId: true, department: true },
+    }),
+  ]);
+
+  if (!account) throw new Error('Corporate account not found');
+
+  const totalEmployees = employees.length;
+  const enrolledEmployeeIds = new Set(enrollments.map(e => e.userId));
+  const completedEnrollments = enrollments.filter(e => e.status === 'COMPLETED');
+  const activeEnrollments = enrollments.filter(e => e.status === 'ACTIVE');
+
+  // Average progress
+  const avgProgress = activeEnrollments.length > 0
+    ? activeEnrollments.reduce((sum, e) => sum + Number(e.progress), 0) / activeEnrollments.length
+    : 0;
+
+  // Average quiz scores
+  const allScores = enrollments.flatMap(e =>
+    e.lessonProgress.filter(p => p.quizScore !== null).map(p => Number(p.quizScore))
+  );
+  const avgQuizScore = allScores.length > 0
+    ? allScores.reduce((a, b) => a + b, 0) / allScores.length
+    : 0;
+
+  // Overdue compliance
+  const overdueCount = enrollments.filter(
+    e => e.complianceDeadline && e.complianceDeadline < new Date() && e.status !== 'COMPLETED'
+  ).length;
+
+  // Per-employee summary
+  const employeeSummaries = employees.map(emp => {
+    const empEnrollments = enrollments.filter(e => e.userId === emp.userId);
+    const completed = empEnrollments.filter(e => e.status === 'COMPLETED').length;
+    const inProgress = empEnrollments.filter(e => e.status === 'ACTIVE').length;
+    return {
+      userId: emp.userId,
+      department: emp.department,
+      coursesEnrolled: empEnrollments.length,
+      coursesCompleted: completed,
+      coursesInProgress: inProgress,
+      averageProgress: empEnrollments.length > 0
+        ? empEnrollments.reduce((s, e) => s + Number(e.progress), 0) / empEnrollments.length
+        : 0,
+    };
+  });
+
+  return {
+    companyName: account.companyName,
+    totalEmployees,
+    enrolledEmployees: enrolledEmployeeIds.size,
+    totalEnrollments: enrollments.length,
+    completedEnrollments: completedEnrollments.length,
+    completionRate: enrollments.length > 0
+      ? Math.round((completedEnrollments.length / enrollments.length) * 100)
+      : 0,
+    averageProgress: Math.round(avgProgress),
+    averageQuizScore: Math.round(avgQuizScore),
+    overdueCompliance: overdueCount,
+    budgetUsed: Number(account.budgetUsed),
+    budgetTotal: account.budgetAmount ? Number(account.budgetAmount) : null,
+    employeeSummaries,
+  };
+}
+
+// ── Pricing Resolution ──────────────────────────────────────────
+
+/**
+ * Resolves the price for a course or bundle based on corporate sponsorship.
+ */
+export async function resolvePricing(
+  item: { price: unknown; corporatePrice: unknown; currency: string },
+  corporateAccountId?: string | null
+): Promise<{ price: number; originalPrice: number; discount: number; isCorporate: boolean }> {
+  const originalPrice = Number(item.price ?? 0);
+
+  if (!corporateAccountId) {
+    return { price: originalPrice, originalPrice, discount: 0, isCorporate: false };
+  }
+
+  // Check for item-level corporate price first
+  const corpPrice = Number(item.corporatePrice ?? 0);
+  if (corpPrice > 0) {
+    return {
+      price: corpPrice,
+      originalPrice,
+      discount: originalPrice - corpPrice,
+      isCorporate: true,
+    };
+  }
+
+  // Fall back to account-level discount
+  const account = await prisma.corporateAccount.findFirst({
+    where: { id: corporateAccountId },
+    select: { discountPercent: true },
+  });
+
+  if (account && Number(account.discountPercent) > 0) {
+    const discountRate = Number(account.discountPercent) / 100;
+    const discountedPrice = Math.round(originalPrice * (1 - discountRate) * 100) / 100;
+    return {
+      price: discountedPrice,
+      originalPrice,
+      discount: originalPrice - discountedPrice,
+      isCorporate: true,
+    };
+  }
+
+  return { price: originalPrice, originalPrice, discount: 0, isCorporate: true };
+}

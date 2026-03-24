@@ -163,9 +163,10 @@ model Course {
   instructor      InstructorProfile? @relation(fields: [instructorId], references: [id], onDelete: SetNull)
 
   // Pricing
-  isFree   Boolean  @default(false)
-  price    Decimal? @db.Decimal(10, 2)
-  currency String   @default("CAD")
+  isFree         Boolean  @default(false)
+  price          Decimal? @db.Decimal(10, 2)
+  corporatePrice Decimal? @db.Decimal(10, 2) // Discounted price for corporate-sponsored students
+  currency       String   @default("CAD")
 
   // Content
   chapters       CourseChapter[]
@@ -173,6 +174,7 @@ model Course {
   reviews        CourseReview[]
   prerequisites  CoursePrerequisite[] @relation("CourseMain")
   prerequisiteOf CoursePrerequisite[] @relation("CoursePrereq")
+  bundleItems    CourseBundleItem[]
 
   // Configuration
   locale                String               @default("fr")
@@ -197,6 +199,10 @@ model Course {
   // Compliance (for corporate mandatory training)
   isCompliance           Boolean @default(false)
   complianceDeadlineDays Int? // Days from enrollment to complete
+
+  // Sequential completion & exam
+  requireSequentialCompletion Boolean @default(true)  // Must complete all lessons in order
+  examQuizId                  String? @unique         // Final qualifying exam (distinct from lesson quizzes)
 
   publishedAt DateTime?
   createdAt   DateTime  @default(now())
@@ -255,6 +261,14 @@ model Lesson {
   videoDuration   Int? // Seconds
   documentUrl     String? // For DOCUMENT type
   scormPackageUrl String? // For SCORM type
+
+  // 4 volets de contenu par notion
+  manualText           String? // Volet 1: texte original du manuel
+  visualAnchorUrl      String? // Volet 2: ancre visuel (infographie/diagramme)
+  visualAnchorAlt      String? // Description alt de l'ancre visuel
+  videoExplainerUrl    String? // Volet 3: video explicative de la notion
+  videoExplainerDuration Int?  // Duree en secondes
+  supplementaryTexts   Json?   // Volet 4: textes complementaires [{title, content, source?}]
 
   // Quiz reference
   quizId String? @unique
@@ -365,7 +379,13 @@ model Enrollment {
 
   // Source
   enrolledBy       String? // userId of admin who enrolled (null = self-enrolled)
-  enrollmentSource String? // "self", "admin", "csv_import", "api"
+  enrollmentSource String? // "self", "admin", "csv_import", "api", "purchase", "corporate"
+
+  // Corporate sponsorship
+  corporateAccountId String?
+  corporateAccount   CorporateAccount? @relation(fields: [corporateAccountId], references: [id], onDelete: SetNull)
+  paymentType        String?           @default("individual") // "individual", "corporate", "free"
+  bundleOrderId      String?           // If enrolled via bundle purchase
 
   lessonProgress LessonProgress[]
 
@@ -377,6 +397,7 @@ model Enrollment {
   @@index([tenantId, courseId, status])
   @@index([tenantId, complianceStatus])
   @@index([tenantId, completedAt])
+  @@index([tenantId, corporateAccountId])
 }
 
 model LessonProgress {
@@ -915,7 +936,8 @@ model CourseOrder {
   refundAmount          Decimal?  @db.Decimal(10, 2)
 
   // Corporate billing
-  corporateAccountId  String? // If paid by employer
+  corporateAccountId  String?
+  corporateAccount    CorporateAccount? @relation(fields: [corporateAccountId], references: [id], onDelete: SetNull)
   purchaseOrderNumber String?
 
   status String @default("pending") // pending, paid, refunded, cancelled
@@ -926,6 +948,7 @@ model CourseOrder {
   @@index([tenantId, userId])
   @@index([tenantId, status])
   @@index([stripePaymentIntentId])
+  @@index([corporateAccountId])
 }
 
 // =============================================================================
@@ -1700,4 +1723,170 @@ model StudyReminder {
 
   @@index([tenantId, userId, scheduledAt])
   @@index([tenantId, status])
+}
+
+// =============================================================================
+// FORFAITS (BUNDLES) DE COURS
+// =============================================================================
+
+model CourseBundle {
+  id              String   @id @default(cuid())
+  tenantId        String
+  slug            String
+  name            String                          // "PQAP Complet", "PQAP Acc. Maladie"
+  description     String?
+  thumbnailUrl    String?
+  isActive        Boolean  @default(true)
+
+  // Pricing
+  price           Decimal? @db.Decimal(10, 2)     // Prix individuel
+  corporatePrice  Decimal? @db.Decimal(10, 2)     // Prix parraine (reduit)
+  currency        String   @default("CAD")
+
+  // Stats
+  courseCount      Int     @default(0)
+  enrollmentCount Int      @default(0)
+
+  // Relations
+  items           CourseBundleItem[]
+  orders          CourseBundleOrder[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([tenantId, slug])
+  @@index([tenantId, isActive])
+}
+
+model CourseBundleItem {
+  id        String       @id @default(cuid())
+  bundleId  String
+  bundle    CourseBundle  @relation(fields: [bundleId], references: [id], onDelete: Cascade)
+  courseId   String
+  course    Course        @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  sortOrder Int           @default(0)
+
+  @@unique([bundleId, courseId])
+  @@index([bundleId, sortOrder])
+  @@index([courseId])
+}
+
+// =============================================================================
+// COMPTES CORPORATIFS (PARRAINAGE)
+// =============================================================================
+
+enum CorporateBillingMethod {
+  STRIPE
+  INVOICE
+  PURCHASE_ORDER
+  PREPAID
+}
+
+model CorporateAccount {
+  id                String   @id @default(cuid())
+  tenantId          String
+  companyName       String                          // "Chubb Insurance", "Industrielle Alliance"
+  companyId         String?                         // Lien optionnel vers Company (ecommerce)
+  slug              String
+  contactEmail      String
+  contactName       String?
+  contactPhone      String?
+
+  // Facturation
+  billingMethod     CorporateBillingMethod @default(INVOICE)
+  stripeCustomerId  String?
+  paymentTermsDays  Int      @default(30)           // Net 30, Net 60, etc.
+  creditLimit       Decimal? @db.Decimal(10, 2)
+
+  // Budget formation
+  budgetAmount      Decimal? @db.Decimal(10, 2)     // Budget annuel formation
+  budgetUsed        Decimal  @default(0) @db.Decimal(10, 2)
+  budgetPeriodStart DateTime?
+  budgetPeriodEnd   DateTime?
+
+  // Rabais
+  discountPercent   Decimal  @default(0) @db.Decimal(5, 2) // Rabais global (ex: 15%)
+
+  isActive          Boolean  @default(true)
+
+  // Relations
+  employees         CorporateEmployee[]
+  enrollments       Enrollment[]
+  bundleOrders      CourseBundleOrder[]
+  courseOrders       CourseOrder[]
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([tenantId, slug])
+  @@index([tenantId, isActive])
+  @@index([companyId])
+}
+
+model CorporateEmployee {
+  id                 String           @id @default(cuid())
+  tenantId           String
+  corporateAccountId String
+  corporateAccount   CorporateAccount @relation(fields: [corporateAccountId], references: [id], onDelete: Cascade)
+  userId             String
+  employeeId         String?          // ID interne de la compagnie
+  department         String?
+  role               String           @default("EMPLOYEE") // ADMIN, MANAGER, EMPLOYEE
+  isActive           Boolean          @default(true)
+
+  addedAt            DateTime         @default(now())
+  addedBy            String?
+
+  @@unique([corporateAccountId, userId])
+  @@index([tenantId, userId])
+  @@index([corporateAccountId, isActive])
+}
+
+// =============================================================================
+// COMMANDES FORFAITS
+// =============================================================================
+
+enum CoursePaymentType {
+  INDIVIDUAL
+  CORPORATE
+  FREE
+}
+
+model CourseBundleOrder {
+  id                    String            @id @default(cuid())
+  tenantId              String
+  userId                String
+  bundleId              String
+  bundle                CourseBundle      @relation(fields: [bundleId], references: [id], onDelete: Restrict)
+
+  // Prix
+  amount                Decimal           @db.Decimal(10, 2)
+  currency              String            @default("CAD")
+  taxAmount             Decimal           @default(0) @db.Decimal(10, 2)
+  totalAmount           Decimal           @db.Decimal(10, 2)
+  discountAmount        Decimal           @default(0) @db.Decimal(10, 2)
+
+  // Paiement
+  paymentType           CoursePaymentType @default(INDIVIDUAL)
+  stripePaymentIntentId String?           @unique
+  paidAt                DateTime?
+
+  // Parrainage corporatif
+  corporateAccountId    String?
+  corporateAccount      CorporateAccount? @relation(fields: [corporateAccountId], references: [id], onDelete: SetNull)
+  purchaseOrderNumber   String?
+  invoiceNumber         String?
+
+  status                String            @default("pending") // pending, paid, refunded, cancelled
+
+  // Enrollments crees
+  enrollmentIds         String[]          @default([])
+
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+
+  @@index([tenantId, userId])
+  @@index([tenantId, status])
+  @@index([corporateAccountId])
+  @@index([stripePaymentIntentId])
 }
