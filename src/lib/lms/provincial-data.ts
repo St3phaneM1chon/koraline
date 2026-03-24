@@ -60,7 +60,16 @@ export const PROVINCES: ProvinceRegulation[] = [
     legalRegime: 'COMMON_LAW',
     insuranceRegulator: { name: 'Alberta Superintendent of Insurance', acronym: 'ASI', website: 'https://www.alberta.ca/superintendent-of-insurance' },
     intermediaryRegulator: { name: 'Alberta Insurance Council', acronym: 'AIC', website: 'https://www.abcouncil.ab.ca' },
-    legislation: ['Insurance Act (Alberta)', 'Fair Practices Regulation'],
+    legislation: [
+      'Insurance Act (Alberta)',
+      'Fair Practices Regulation (Alberta)',
+      'Automobile Insurance Premiums Regulation',
+      'Minor Injury Regulation',
+      'Unfair Practices Regulation',
+      'Accident Insurance Benefits Regulation',
+      'Personal Information Protection Act (PIPA Alberta)',
+      'Employment Pension Plans Act',
+    ],
     preLicensing: { life: 'Life licence qualification program (LLQP) + provincial exam', general: 'General insurance essentials (GIE) + provincial exam' },
     continuingEducation: { hours: 15, period: 'annual', details: '15 CE credits per year, minimum 3 in ethics' },
     autoInsurance: { type: 'PRIVATE', details: 'Private competitive market with government rate caps' },
@@ -80,7 +89,16 @@ export const PROVINCES: ProvinceRegulation[] = [
     legalRegime: 'COMMON_LAW',
     insuranceRegulator: { name: 'BC Financial Services Authority', acronym: 'BCFSA', website: 'https://www.bcfsa.ca' },
     intermediaryRegulator: { name: 'Insurance Council of British Columbia', acronym: 'ICBC-Council', website: 'https://www.insurancecouncilofbc.com' },
-    legislation: ['Financial Institutions Act (BC)', 'Insurance Act (BC)', 'Insurance (Vehicle) Act'],
+    legislation: [
+      'Financial Institutions Act (BC)',
+      'Insurance Act (BC)',
+      'Insurance (Vehicle) Act',
+      'Insurance (Motor Vehicle) Act Regulations',
+      'Insurance Council of British Columbia Act',
+      'Personal Information Protection Act (PIPA BC)',
+      'Pension Benefits Standards Act (BC)',
+      'Wills, Estates and Succession Act (WESA)',
+    ],
     preLicensing: { life: 'LLQP + provincial exam', general: 'Level 1, 2, or 3 general insurance licensing' },
     continuingEducation: { hours: 15, period: 'biennial', details: '15 CE credits per 2-year licensing period' },
     autoInsurance: { type: 'PUBLIC', provider: 'ICBC (Insurance Corporation of British Columbia)', details: 'Enhanced Care coverage (no-fault since May 2021), mandatory basic through ICBC, optional through private' },
@@ -101,7 +119,15 @@ export const PROVINCES: ProvinceRegulation[] = [
     legalRegime: 'COMMON_LAW',
     insuranceRegulator: { name: 'Manitoba Financial Services Agency', acronym: 'MFSA', website: 'https://www.mfsa.ca' },
     intermediaryRegulator: { name: 'Insurance Council of Manitoba', acronym: 'ICM', website: 'https://www.icm.mb.ca' },
-    legislation: ['The Insurance Act (Manitoba)', 'The Insurance Agents and Adjusters Regulation'],
+    legislation: [
+      'The Insurance Act (Manitoba)',
+      'The Insurance Agents and Adjusters Regulation',
+      'Manitoba Public Insurance Corporation Act',
+      'Personal Injury Protection Plan (PIPP) Regulation',
+      'Pension Benefits Act (Manitoba)',
+      'The Workers Compensation Act (Manitoba)',
+      'The Powers of Attorney Act (Manitoba)',
+    ],
     preLicensing: { life: 'LLQP + provincial exam', general: 'General insurance exam through ICM' },
     continuingEducation: { hours: 30, period: 'biennial', details: '30 CE credits per 2-year cycle' },
     autoInsurance: { type: 'PUBLIC', provider: 'Manitoba Public Insurance (MPI)', details: 'Autopac: mandatory basic coverage through MPI, extension products available' },
@@ -121,7 +147,15 @@ export const PROVINCES: ProvinceRegulation[] = [
     legalRegime: 'COMMON_LAW',
     insuranceRegulator: { name: 'Financial and Consumer Services Commission', acronym: 'FCNB', website: 'https://www.fcnb.ca' },
     intermediaryRegulator: { name: 'Financial and Consumer Services Commission', acronym: 'FCNB', website: 'https://www.fcnb.ca' },
-    legislation: ['Insurance Act (New Brunswick)', 'Insurance Intermediaries Act'],
+    legislation: [
+      'Insurance Act (New Brunswick)',
+      'Insurance Intermediaries Act (NB)',
+      'Automobile Insurance Compensation Act (NB)',
+      'Service New Brunswick Act',
+      'Pension Benefits Act (NB)',
+      'Wills Act (NB)',
+      'Family Services Act (NB)',
+    ],
     preLicensing: { life: 'LLQP + provincial exam', general: 'General insurance licensing program + exam' },
     continuingEducation: { hours: 15, period: 'annual', details: '15 CE credits per year' },
     autoInsurance: { type: 'PRIVATE', details: 'Private competitive market, minor injury cap reform' },
@@ -141,7 +175,14 @@ export const PROVINCES: ProvinceRegulation[] = [
     legalRegime: 'COMMON_LAW',
     insuranceRegulator: { name: 'Office of the Superintendent of Insurance', acronym: 'OSI-NL', website: 'https://www.gov.nl.ca/dgsnl' },
     intermediaryRegulator: { name: 'Office of the Superintendent of Insurance', acronym: 'OSI-NL', website: 'https://www.gov.nl.ca/dgsnl' },
-    legislation: ['Insurance Companies Act (NL)', 'Insurance Contracts Act (NL)'],
+    legislation: [
+      'Insurance Companies Act (NL)',
+      'Insurance Contracts Act (NL)',
+      'Automobile Insurance Act (NL)',
+      'Accident and Sickness Insurance Act (NL)',
+      'Pension Benefits Act (NL)',
+      'Workplace Health, Safety and Compensation Act (NL)',
+    ],
     preLicensing: { life: 'LLQP + provincial exam', general: 'General insurance licensing program + exam' },
     continuingEducation: { hours: 15, period: 'annual', details: '15 CE credits per year' },
     autoInsurance: { type: 'PRIVATE', details: 'Private market, no-fault accident benefits (Section B)' },
@@ -160,7 +201,15 @@ export const PROVINCES: ProvinceRegulation[] = [
     legalRegime: 'COMMON_LAW',
     insuranceRegulator: { name: 'Office of the Superintendent of Insurance', acronym: 'OSI-NS', website: 'https://www.novascotia.ca/finance/en/home/insurance.aspx' },
     intermediaryRegulator: { name: 'Insurance Council of Nova Scotia', acronym: 'ICNS', website: 'https://www.icns.ca' },
-    legislation: ['Insurance Act (Nova Scotia)'],
+    legislation: [
+      'Insurance Act (Nova Scotia)',
+      'Insurance Agents and Brokers Licensing Regulations',
+      'Minor Injury Cap Regulations (NS)',
+      'Pension Benefits Act (NS)',
+      'Workers\' Compensation Act (NS)',
+      'Wills Act (NS)',
+      'Testators\' Family Maintenance Act (NS)',
+    ],
     preLicensing: { life: 'LLQP + provincial exam', general: 'General insurance qualifications + exam' },
     continuingEducation: { hours: 15, period: 'annual', details: '15 CE credits per year' },
     autoInsurance: { type: 'PRIVATE', details: 'Private market, Nova Scotia Utility and Review Board reviews rates' },
@@ -179,7 +228,11 @@ export const PROVINCES: ProvinceRegulation[] = [
     legalRegime: 'COMMON_LAW',
     insuranceRegulator: { name: 'Office of the Superintendent of Insurance', acronym: 'OSI-NT', website: 'https://www.fin.gov.nt.ca' },
     intermediaryRegulator: { name: 'Office of the Superintendent of Insurance', acronym: 'OSI-NT', website: 'https://www.fin.gov.nt.ca' },
-    legislation: ['Insurance Act (NWT)'],
+    legislation: [
+      'Insurance Act (NWT)',
+      'Workers\' Compensation Act (NWT & NU)',
+      'Pension Benefits Standards Regulations (NWT)',
+    ],
     preLicensing: { life: 'LLQP or equivalent recognized program', general: 'General insurance licensing or equivalent' },
     continuingEducation: { hours: 0, period: 'N/A', details: 'No mandatory CE requirements currently' },
     autoInsurance: { type: 'PRIVATE', details: 'Private market, limited competition due to small population' },
@@ -198,7 +251,10 @@ export const PROVINCES: ProvinceRegulation[] = [
     legalRegime: 'COMMON_LAW',
     insuranceRegulator: { name: 'Office of the Superintendent of Insurance', acronym: 'OSI-NU', website: 'https://www.gov.nu.ca' },
     intermediaryRegulator: { name: 'Office of the Superintendent of Insurance', acronym: 'OSI-NU', website: 'https://www.gov.nu.ca' },
-    legislation: ['Insurance Act (Nunavut)'],
+    legislation: [
+      'Insurance Act (Nunavut)',
+      'Workers\' Compensation Act (NWT & NU)',
+    ],
     preLicensing: { life: 'LLQP or equivalent recognized program', general: 'General insurance licensing or equivalent' },
     continuingEducation: { hours: 0, period: 'N/A', details: 'No mandatory CE requirements currently' },
     autoInsurance: { type: 'PRIVATE', details: 'Private market, very limited availability' },
@@ -218,7 +274,18 @@ export const PROVINCES: ProvinceRegulation[] = [
     legalRegime: 'COMMON_LAW',
     insuranceRegulator: { name: 'Financial Services Regulatory Authority of Ontario', acronym: 'FSRA', website: 'https://www.fsrao.ca' },
     intermediaryRegulator: { name: 'Registered Insurance Brokers of Ontario', acronym: 'RIBO', website: 'https://www.ribo.com' },
-    legislation: ['Insurance Act (Ontario)', 'Financial Services Regulatory Authority of Ontario Act', 'Statutory Accident Benefits Schedule (SABS)'],
+    legislation: [
+      'Insurance Act (Ontario)',
+      'Financial Services Regulatory Authority of Ontario Act',
+      'Statutory Accident Benefits Schedule (SABS)',
+      'Compulsory Automobile Insurance Act (Ontario)',
+      'Registered Insurance Brokers Act (Ontario)',
+      'Pension Benefits Act (Ontario)',
+      'Workplace Safety and Insurance Act (Ontario)',
+      'Succession Law Reform Act (Ontario)',
+      'Ontario Human Rights Code (insurance provisions)',
+      'Life Insurance Beneficiary Designation Regulations',
+    ],
     preLicensing: { life: 'LLQP + Ontario-specific content + provincial exam', general: 'RIBO licensing program (for brokers) or OTL general insurance agent exam' },
     continuingEducation: { hours: 30, period: 'biennial', details: '30 CE credits per 2-year cycle, minimum 3 in management/ethics for brokers (RIBO)' },
     autoInsurance: { type: 'PRIVATE', details: 'Private competitive market, mandatory no-fault statutory accident benefits (SABS)' },
@@ -241,7 +308,13 @@ export const PROVINCES: ProvinceRegulation[] = [
     legalRegime: 'COMMON_LAW',
     insuranceRegulator: { name: 'Office of the Superintendent of Insurance', acronym: 'OSI-PE', website: 'https://www.princeedwardisland.ca' },
     intermediaryRegulator: { name: 'Office of the Superintendent of Insurance', acronym: 'OSI-PE', website: 'https://www.princeedwardisland.ca' },
-    legislation: ['Insurance Act (PEI)'],
+    legislation: [
+      'Insurance Act (PEI)',
+      'Insurance Agents, Brokers and Adjusters Regulations (PEI)',
+      'Automobile Insurance Contract Regulations (PEI)',
+      'Workers Compensation Act (PEI)',
+      'Pension Benefits Act (PEI)',
+    ],
     preLicensing: { life: 'LLQP + provincial exam', general: 'General insurance licensing program + exam' },
     continuingEducation: { hours: 15, period: 'annual', details: '15 CE credits per year' },
     autoInsurance: { type: 'PRIVATE', details: 'Private market, Island Regulatory and Appeals Commission reviews rates' },
@@ -300,7 +373,15 @@ export const PROVINCES: ProvinceRegulation[] = [
     legalRegime: 'COMMON_LAW',
     insuranceRegulator: { name: 'Financial and Consumer Affairs Authority of Saskatchewan', acronym: 'FCAA', website: 'https://www.fcaa.gov.sk.ca' },
     intermediaryRegulator: { name: 'General Insurance Council of Saskatchewan / Life Insurance Council of Saskatchewan', acronym: 'GICS/LICS', website: 'https://www.skcouncil.sk.ca' },
-    legislation: ['The Saskatchewan Insurance Act', 'The Automobile Accident Insurance Act'],
+    legislation: [
+      'The Saskatchewan Insurance Act',
+      'The Automobile Accident Insurance Act',
+      'The Saskatchewan Government Insurance Act',
+      'The Insurance Premiums Tax Act',
+      'The Pension Benefits Act (SK)',
+      'The Workers\' Compensation Act (SK)',
+      'The Wills Act (SK)',
+    ],
     preLicensing: { life: 'LLQP + provincial exam', general: 'General insurance licensing through GICS' },
     continuingEducation: { hours: 24, period: 'biennial', details: '24 CE credits per 2-year licensing cycle' },
     autoInsurance: { type: 'PUBLIC', provider: 'Saskatchewan Government Insurance (SGI)', details: 'SGI provides mandatory basic auto (no-fault). Extension coverage available through SGI CANADA (private arm).' },
@@ -321,7 +402,11 @@ export const PROVINCES: ProvinceRegulation[] = [
     legalRegime: 'COMMON_LAW',
     insuranceRegulator: { name: 'Office of the Superintendent of Insurance', acronym: 'OSI-YT', website: 'https://yukon.ca/en/doing-business/licensing/insurance' },
     intermediaryRegulator: { name: 'Insurance Council of Yukon', acronym: 'ICY', website: 'https://yukon.ca' },
-    legislation: ['Insurance Act (Yukon)'],
+    legislation: [
+      'Insurance Act (Yukon)',
+      'Motor Vehicles Act (Yukon) — insurance provisions',
+      'Workers\' Compensation Act (Yukon)',
+    ],
     preLicensing: { life: 'LLQP or equivalent recognized program', general: 'General insurance licensing or equivalent' },
     continuingEducation: { hours: 0, period: 'N/A', details: 'No mandatory CE requirements currently' },
     autoInsurance: { type: 'PRIVATE', details: 'Private market, limited competition' },
@@ -642,6 +727,9 @@ export function getApplicableLaws(provinceCode: string, topic?: string): string[
       if (province.autoInsurance.provider) {
         laws.push(`${province.autoInsurance.provider} legislation`);
       }
+      if (province.legalRegime === 'COMMON_LAW') {
+        laws.push('Common law: duty of care, negligence, contributory negligence');
+      }
     }
     if (lower.includes('work') || lower.includes('travail') || lower.includes('injury')) {
       laws.push(`${province.workersComp.name} Act`);
@@ -652,7 +740,35 @@ export function getApplicableLaws(provinceCode: string, topic?: string): string[
         laws.push('Loi sur les regimes complementaires de retraite');
       } else {
         laws.push('Canada Pension Plan Act');
+        laws.push('Pension Benefits Standards Act (federal)');
       }
+    }
+    if (lower.includes('vie') || lower.includes('life') || lower.includes('benefici')) {
+      if (province.legalRegime === 'COMMON_LAW') {
+        laws.push('Common law: insurable interest, utmost good faith (uberrimae fidei)');
+        laws.push('Uniform Life Insurance Act (model legislation)');
+      } else {
+        laws.push('Code civil du Quebec — Titre 3 Assurances (art. 2389-2504)');
+      }
+    }
+    if (lower.includes('succession') || lower.includes('testament') || lower.includes('estate') || lower.includes('will')) {
+      if (province.legalRegime === 'COMMON_LAW') {
+        laws.push('Provincial Wills Act / Succession Law Reform Act');
+        laws.push('Dependants\' Relief legislation');
+      } else {
+        laws.push('Code civil du Quebec — Livre 3 Successions');
+      }
+    }
+    if (lower.includes('contrat') || lower.includes('contract') || lower.includes('obligation')) {
+      if (province.legalRegime === 'COMMON_LAW') {
+        laws.push('Common law of contracts: offer, acceptance, consideration, privity');
+      } else {
+        laws.push('Code civil du Quebec — Livre 5 Obligations');
+      }
+    }
+    if (lower.includes('fraud') || lower.includes('blanchiment') || lower.includes('laundering')) {
+      laws.push('Proceeds of Crime (Money Laundering) and Terrorist Financing Act');
+      laws.push('Criminal Code of Canada — fraud provisions');
     }
   }
 
