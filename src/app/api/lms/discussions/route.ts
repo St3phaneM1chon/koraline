@@ -1,0 +1,88 @@
+export const dynamic = 'force-dynamic';
+
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { withUserGuard } from '@/lib/user-api-guard';
+import { prisma } from '@/lib/db';
+
+const createSchema = z.object({
+  courseId: z.string().min(1),
+  title: z.string().min(3).max(300),
+  content: z.string().min(10).max(10000),
+});
+
+const replySchema = z.object({
+  discussionId: z.string().min(1),
+  content: z.string().min(1).max(10000),
+  parentReplyId: z.string().optional(),
+});
+
+export const GET = withUserGuard(async (request: NextRequest, { session }) => {
+  const tenantId = session.user.tenantId;
+  if (!tenantId) return NextResponse.json({ error: 'No tenant' }, { status: 403 });
+
+  const { searchParams } = new URL(request.url);
+  const courseId = searchParams.get('courseId');
+  if (!courseId) return NextResponse.json({ error: 'courseId required' }, { status: 400 });
+
+  const discussions = await prisma.courseDiscussion.findMany({
+    where: { tenantId, courseId },
+    orderBy: [{ isPinned: 'desc' }, { createdAt: 'desc' }],
+    take: 50,
+    include: {
+      replies: {
+        orderBy: { createdAt: 'asc' },
+        take: 3,
+        select: { id: true, userId: true, content: true, isInstructor: true, upvotes: true, createdAt: true },
+      },
+    },
+  });
+
+  return NextResponse.json({ data: discussions });
+}, { skipCsrf: true });
+
+export const POST = withUserGuard(async (request: NextRequest, { session }) => {
+  const tenantId = session.user.tenantId;
+  if (!tenantId) return NextResponse.json({ error: 'No tenant' }, { status: 403 });
+
+  const body = await request.json();
+
+  // Reply to discussion
+  if (body.discussionId) {
+    const parsed = replySchema.safeParse(body);
+    if (!parsed.success) return NextResponse.json({ error: parsed.error.message }, { status: 400 });
+
+    const reply = await prisma.courseDiscussionReply.create({
+      data: {
+        tenantId,
+        discussionId: parsed.data.discussionId,
+        userId: session.user.id,
+        content: parsed.data.content,
+        parentReplyId: parsed.data.parentReplyId ?? null,
+      },
+    });
+
+    await prisma.courseDiscussion.update({
+      where: { id: parsed.data.discussionId },
+      data: { replyCount: { increment: 1 } },
+    });
+
+    return NextResponse.json({ data: reply }, { status: 201 });
+  }
+
+  // New discussion
+  const parsed = createSchema.safeParse(body);
+  if (!parsed.success) return NextResponse.json({ error: parsed.error.message }, { status: 400 });
+
+  const discussion = await prisma.courseDiscussion.create({
+    data: {
+      tenantId,
+      courseId: parsed.data.courseId,
+      userId: session.user.id,
+      title: parsed.data.title,
+      content: parsed.data.content,
+    },
+  });
+
+  return NextResponse.json({ data: discussion }, { status: 201 });
+});

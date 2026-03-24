@@ -335,6 +335,56 @@ model QuizQuestion {
   @@index([quizId, sortOrder])
 }
 
+// =============================================================================
+// QUESTION BANKS — Shared question pools for quiz randomization
+// =============================================================================
+
+model QuestionBank {
+  id          String   @id @default(cuid())
+  tenantId    String
+  name        String                          // "Banque PQAP Deontologie", "Questions Assurance Vie"
+  description String?
+  domain      String?                         // "deontologie", "assurance_vie", "fonds_distincts"
+  isActive    Boolean  @default(true)
+
+  questions   QuestionBankItem[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([tenantId, isActive])
+  @@index([tenantId, domain])
+}
+
+model QuestionBankItem {
+  id             String       @id @default(cuid())
+  bankId         String
+  bank           QuestionBank @relation(fields: [bankId], references: [id], onDelete: Cascade)
+  type           QuizQuestionType @default(MULTIPLE_CHOICE)
+  question       String
+  explanation    String?
+  points         Int          @default(1)
+  bloomLevel     Int          @default(2) // 1-5 Bloom taxonomy
+  difficulty     String       @default("medium") // easy, medium, hard
+
+  // Options (same format as QuizQuestion)
+  options        Json         @default("[]")
+  correctAnswer  String?
+  caseSensitive  Boolean      @default(false)
+  matchingPairs  Json?
+
+  // Tagging
+  tags           String[]     @default([])
+  conceptId      String?      // Link to LmsConcept for targeted retrieval
+
+  usageCount     Int          @default(0) // How many times used in quizzes
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([bankId])
+  @@index([bloomLevel, difficulty])
+}
+
 model QuizAttempt {
   id           String    @id @default(cuid())
   tenantId     String
@@ -1891,4 +1941,116 @@ model CourseBundleOrder {
   @@index([tenantId, status])
   @@index([corporateAccountId])
   @@index([stripePaymentIntentId])
+}
+
+// =============================================================================
+// SOCIAL LEARNING — Forums, Q&A, Annonces
+// =============================================================================
+
+model CourseDiscussion {
+  id        String   @id @default(cuid())
+  tenantId  String
+  courseId   String
+  userId    String                          // Author
+  title     String
+  content   String
+  isPinned  Boolean  @default(false)
+  isLocked  Boolean  @default(false)        // No more replies allowed
+  replyCount Int     @default(0)
+
+  replies   CourseDiscussionReply[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId, courseId, createdAt])
+  @@index([tenantId, courseId, isPinned])
+}
+
+model CourseDiscussionReply {
+  id           String   @id @default(cuid())
+  tenantId     String
+  discussionId String
+  discussion   CourseDiscussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
+  userId       String                       // Author
+  content      String
+  isInstructor Boolean  @default(false)     // Marked as instructor response
+  upvotes      Int      @default(0)
+  parentReplyId String?                     // Nested replies
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([discussionId, createdAt])
+}
+
+model LessonQA {
+  id        String   @id @default(cuid())
+  tenantId  String
+  lessonId  String
+  userId    String                          // Who asked
+  question  String
+  isResolved Boolean @default(false)
+
+  answers   LessonQAAnswer[]
+  upvotes   Int      @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId, lessonId, createdAt])
+  @@index([tenantId, lessonId, isResolved])
+}
+
+model LessonQAAnswer {
+  id         String   @id @default(cuid())
+  tenantId   String
+  qaId       String
+  qa         LessonQA @relation(fields: [qaId], references: [id], onDelete: Cascade)
+  userId     String
+  content    String
+  isAccepted Boolean  @default(false)       // Marked as best answer
+  isInstructor Boolean @default(false)
+  upvotes    Int      @default(0)
+
+  createdAt  DateTime @default(now())
+
+  @@index([qaId, createdAt])
+}
+
+model CourseAnnouncement {
+  id        String   @id @default(cuid())
+  tenantId  String
+  courseId   String
+  userId    String                          // Admin/instructor who posted
+  title     String
+  content   String
+  isPinned  Boolean  @default(false)
+  isEmail   Boolean  @default(false)        // Also sent via email
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId, courseId, createdAt])
+}
+
+// =============================================================================
+// IN-APP NOTIFICATIONS
+// =============================================================================
+
+model LmsNotification {
+  id        String   @id @default(cuid())
+  tenantId  String
+  userId    String                          // Recipient
+  type      String                          // enrollment, completion, badge, announcement, deadline, qa_answer
+  title     String
+  message   String
+  link      String?                         // Deep link (e.g., /learn/cours-slug)
+  isRead    Boolean  @default(false)
+  readAt    DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([tenantId, userId, isRead, createdAt])
+  @@index([tenantId, userId, createdAt])
 }
