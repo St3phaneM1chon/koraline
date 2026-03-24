@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sauvegardes (Backups) &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 12 — Systeme</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Sauvegardes (Backups)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Systeme > Aurelia > Sauvegardes</p>
+<p><strong>URL</strong>: <code>/admin/backups</code></p>
+<p><strong>Niveau</strong>: Intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Sauvegardes</strong> gere la protection des donnees de BioCycle Peptides contre la perte accidentelle, les pannes techniques ou les incidents de securite. Des sauvegardes regulieres et automatiques garantissent que vous pouvez toujours recuperer vos donnees.</p>
+
+<p><strong>En tant qu'administrateur, vous pouvez :</strong></p>
+<ul>
+<li>Voir l'historique des sauvegardes effectuees</li>
+<li>Lancer une sauvegarde manuelle</li>
+<li>Telecharger une sauvegarde</li>
+<li>Restaurer une sauvegarde precedente</li>
+<li>Configurer la frequence des sauvegardes automatiques</li>
+<li>Verifier l'integrite des sauvegardes</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Pourquoi sauvegarder ?</h3>
+
+<p>Les donnees sont l'actif le plus precieux de votre entreprise. Sans sauvegarde, vous risquez de perdre :</p>
+<ul>
+<li>Toutes vos commandes et l'historique des ventes</li>
+<li>Les fiches contacts et l'historique CRM</li>
+<li>La comptabilite complete</li>
+<li>Les parametres et configurations</li>
+</ul>
+
+<p>Les causes de perte possibles :</p>
+<ul>
+<li><strong>Panne materielle</strong> : disque dur qui tombe en panne</li>
+<li><strong>Erreur humaine</strong> : suppression accidentelle de donnees</li>
+<li><strong>Cyberattaque</strong> : ransomware chiffrant vos donnees</li>
+<li><strong>Bug logiciel</strong> : corruption de la base de donnees</li>
+</ul>
+
+<h3>Regle du 3-2-1</h3>
+
+<p>La bonne pratique universelle :</p>
+<ul>
+<li><strong>3</strong> copies des donnees</li>
+<li><strong>2</strong> supports differents (serveur + cloud)</li>
+<li><strong>1</strong> copie hors site (dans un autre lieu physique)</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Systeme > groupe <strong>Aurelia</strong> > <strong>Sauvegardes</strong></li>
+<li>URL directe : <code>/admin/backups</code></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. L'etat des sauvegardes</h3>
+
+<p>En haut de la page, un resume :</p>
+
+<table>
+<thead>
+    <tr><th>Indicateur</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Derniere sauvegarde</strong></td><td>Date et heure de la derniere sauvegarde reussie</td></tr>
+  <tr><td><strong>Prochaine sauvegarde</strong></td><td>Date et heure de la prochaine sauvegarde planifiee</td></tr>
+  <tr><td><strong>Taille</strong></td><td>Taille de la derniere sauvegarde</td></tr>
+  <tr><td><strong>Statut</strong></td><td>Reussi, en cours, ou echec</td></tr>
+</tbody>
+</table>
+<h3>2. L'historique des sauvegardes</h3>
+
+<table>
+<thead>
+    <tr><th>Colonne</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Date</strong></td><td>Quand la sauvegarde a ete effectuee</td></tr>
+  <tr><td><strong>Type</strong></td><td>Automatique ou manuelle</td></tr>
+  <tr><td><strong>Taille</strong></td><td>Volume de donnees sauvegardees</td></tr>
+  <tr><td><strong>Statut</strong></td><td>Succes ou echec</td></tr>
+  <tr><td><strong>Actions</strong></td><td>Telecharger, restaurer, supprimer</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Sauvegarde automatique</h3>
+
+<p>Le systeme effectue des sauvegardes automatiques selon ce calendrier :</p>
+
+<table>
+<thead>
+    <tr><th>Frequence</th><th>Heure</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Quotidienne</strong></td><td>3h00 AM</td><td>Sauvegarde complete de la base de donnees</td></tr>
+  <tr><td><strong>Bi-quotidienne</strong></td><td>8h00 AM + 8h00 PM</td><td>Sauvegarde de la base de donnees</td></tr>
+  <tr><td><strong>Hebdomadaire</strong></td><td>Dimanche 4h00 AM</td><td>Sauvegarde complete (code + donnees)</td></tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note</strong> : Les sauvegardes s'executent en arriere-plan sans affecter les performances du site.</p>
+</blockquote>
+
+<h3>2. Lancer une sauvegarde manuelle</h3>
+
+<p><strong>Quand</strong> : Avant une operation risquee (mise a jour, migration, modification massive).</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Sauvegarder maintenant</strong></li>
+<li>Selectionnez le type :</li>
+</ol>
+<ul>
+<li><strong>Base de donnees</strong> : uniquement les donnees</li>
+<li><strong>Complete</strong> : donnees + fichiers (images, documents)</li>
+</ul>
+<ol>
+<li>Attendez la fin du processus (barre de progression)</li>
+<li>La sauvegarde apparait dans l'historique</li>
+</ol>
+
+<h3>3. Telecharger une sauvegarde</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Trouvez la sauvegarde souhaitee dans l'historique</li>
+<li>Cliquez sur <strong>Telecharger</strong></li>
+<li>Le fichier est telecharge (format compresse)</li>
+<li>Conservez-le dans un endroit securise (disque externe, cloud)</li>
+</ol>
+
+<h3>4. Restaurer une sauvegarde</h3>
+
+<p><strong>Quand</strong> : En cas de perte de donnees ou de corruption.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Trouvez la sauvegarde a restaurer</li>
+<li>Cliquez sur <strong>Restaurer</strong></li>
+<li>Le systeme affiche un avertissement : la restauration remplace les donnees actuelles</li>
+<li>Confirmez en tapant "RESTAURER"</li>
+<li>Le processus demarre (peut prendre plusieurs minutes)</li>
+<li>Le site sera temporairement indisponible pendant la restauration</li>
+</ol>
+
+<blockquote>
+<p><strong>Attention</strong> : La restauration remplace TOUTES les donnees actuelles par celles de la sauvegarde. Les transactions effectuees entre la sauvegarde et la restauration seront perdues. Faites une sauvegarde des donnees actuelles AVANT de restaurer.</p>
+</blockquote>
+
+<h3>5. Verifier l'integrite</h3>
+
+<p><strong>Objectif</strong> : S'assurer qu'une sauvegarde est lisible et complete.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Verifier</strong> a cote d'une sauvegarde</li>
+<li>Le systeme teste la lisibilite et l'integrite du fichier</li>
+<li>Resultat : OK (sauvegarde valide) ou Erreur (sauvegarde corrompue)</li>
+</ol>
+
+<hr>
+
+<h2>Bonnes pratiques</h2>
+
+<h3>A faire</h3>
+<ul>
+<li>Verifier regulierement que les sauvegardes automatiques fonctionnent</li>
+<li>Telecharger une copie mensuelle sur un support externe</li>
+<li>Tester la restauration au moins une fois par an (sur un environnement de test)</li>
+<li>Sauvegarder manuellement avant toute operation majeure</li>
+</ul>
+
+<h3>A ne pas faire</h3>
+<ul>
+<li>Ne pas compter uniquement sur les sauvegardes automatiques sans verifier</li>
+<li>Ne pas stocker les sauvegardes uniquement sur le meme serveur que l'application</li>
+<li>Ne pas ignorer les alertes de sauvegarde echouee</li>
+</ul>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Combien de sauvegardes sont conservees ?</strong></p>
+<p>R : Par defaut : 7 quotidiennes, 4 hebdomadaires et 3 mensuelles. Les plus anciennes sont supprimees automatiquement.</p>
+
+<p><strong>Q : Les sauvegardes incluent-elles les fichiers uploades (images produits, etc.) ?</strong></p>
+<p>R : Les sauvegardes completes (hebdomadaires) incluent tout. Les sauvegardes quotidiennes incluent uniquement la base de donnees.</p>
+
+<p><strong>Q : La restauration affecte-t-elle les paiements Stripe ?</strong></p>
+<p>R : Non. Stripe garde sa propre copie des paiements. La restauration ne remet pas les paiements Stripe a un etat precedent. Cependant, vous pourriez voir des incoherences temporaires entre Koraline et Stripe.</p>
+
+<p><strong>Q : Puis-je restaurer partiellement (juste un client, juste une commande) ?</strong></p>
+<p>R : Non, la restauration est globale. Pour recuperer des donnees specifiques, exportez-les depuis la sauvegarde et importez-les manuellement.</p>
+
+<hr>
+
+<h2>Strategie expert : Politique de sauvegarde complete pour un e-commerce de peptides</h2>
+
+<h3>Regle 3-2-1 detaillee pour BioCycle Peptides</h3>
+
+<p>La regle 3-2-1 est le standard de l'industrie pour la protection des donnees. Voici son application concrete pour BioCycle Peptides :</p>
+
+<p><strong>3 copies des donnees :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Copie</th><th>Emplacement</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Copie 1 (primaire)</strong></td><td>Azure PostgreSQL Flexible Server</td><td>Base de donnees de production</td><td>La copie active, utilisee par le site en temps reel</td></tr>
+  <tr><td><strong>Copie 2 (locale)</strong></td><td>Serveur de backup Azure Storage (ou AWS S3)</td><td>Dump PostgreSQL chiffre</td><td>Sauvegarde automatique, meme region Azure</td></tr>
+  <tr><td><strong>Copie 3 (hors site)</strong></td><td>Support physique ou cloud secondaire (ex: Google Cloud Storage, disque externe chiffre)</td><td>Copie hors site</td><td>Protection contre la perte du centre de donnees principal</td></tr>
+</tbody>
+</table>
+<p><strong>2 supports differents :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Support</th><th>Exemples</th><th>Avantage</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Support 1</strong></td><td>Stockage cloud (Azure Blob Storage, AWS S3)</td><td>Haute disponibilite, acces rapide, redondance geographique</td></tr>
+  <tr><td><strong>Support 2</strong></td><td>Disque externe chiffre OU cloud secondaire d'un autre fournisseur</td><td>Protection contre la faillite/panne d'un fournisseur unique</td></tr>
+</tbody>
+</table>
+<p><strong>1 copie hors site :</strong></p>
+<p>La copie hors site doit etre dans un lieu physiquement different du datacenter principal. Pour BioCycle heberge sur Azure Canada Central (Toronto), la copie hors site peut etre :</p>
+<ul>
+<li>Azure Canada East (Quebec City)</li>
+<li>Un fournisseur cloud alternatif (AWS Montreal, Google Cloud Montreal)</li>
+<li>Un disque externe chiffre conserve dans un lieu securise hors bureau</li>
+</ul>
+
+<h3>Frequence de sauvegarde recommandee</h3>
+
+<table>
+<thead>
+    <tr><th>Type de donnees</th><th>Frequence</th><th>Heure</th><th>Retention</th><th>Justification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Base de donnees PostgreSQL</strong></td><td>2x par jour</td><td>8h00 + 20h00 EST</td><td>30 jours quotidiennes + 12 mois mensuelles</td><td>Les commandes et transactions arrivent tout au long de la journee</td></tr>
+  <tr><td><strong>Fichiers uploades</strong> (images produits, documents, CoA)</td><td>1x par jour</td><td>3h00 EST</td><td>90 jours</td><td>Changent moins souvent que la BD, mais sont irreplacables</td></tr>
+  <tr><td><strong>Configuration systeme</strong> (schema Prisma, .env, parametres)</td><td>A chaque changement</td><td>Immediate (hook git ou script)</td><td>Illimite (versionne dans git)</td><td>Un changement de config peut casser le site</td></tr>
+  <tr><td><strong>Code source</strong></td><td>Continue (git)</td><td>A chaque commit</td><td>Illimite (historique git complet)</td><td>Deja gere par GitHub</td></tr>
+  <tr><td><strong>Sauvegarde complete</strong> (BD + fichiers + config)</td><td>Hebdomadaire</td><td>Dimanche 4h00 EST</td><td>12 mois</td><td>Pour les restaurations completes</td></tr>
+</tbody>
+</table>
+<h3>Test de restauration mensuel obligatoire</h3>
+
+<p>Une sauvegarde non testee est une sauvegarde qui n'existe pas. Chaque mois, effectuer un test de restauration complet :</p>
+
+<p><strong>Procedure de test mensuel :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Action</th><th>Critere de succes</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>Selectionner la sauvegarde la plus recente</td><td>Le fichier existe et est accessible</td></tr>
+  <tr><td>2</td><td>Verifier l'integrite du fichier (checksum SHA-256)</td><td>Le checksum correspond a celui enregistre lors de la sauvegarde</td></tr>
+  <tr><td>3</td><td>Restaurer sur un environnement de test (pas la production)</td><td>La restauration se termine sans erreur</td></tr>
+  <tr><td>4</td><td>Verifier les donnees : compter les commandes, clients, produits</td><td>Les compteurs correspondent aux valeurs attendues</td></tr>
+  <tr><td>5</td><td>Tester les fonctionnalites critiques : connexion, catalogue, panier</td><td>Le site fonctionne normalement</td></tr>
+  <tr><td>6</td><td>Documenter le resultat dans le registre de test</td><td>Date, duree, resultat, observations</td></tr>
+</tbody>
+</table>
+<p><strong>Frequence des tests :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Type de test</th><th>Frequence</th><th>Duree estimee</th></tr>
+</thead>
+<tbody>
+  <tr><td>Test d'integrite (checksum)</td><td>Hebdomadaire (automatise)</td><td>< 1 minute</td></tr>
+  <tr><td>Restauration partielle (BD seule sur env test)</td><td>Mensuelle</td><td>30-60 minutes</td></tr>
+  <tr><td>Restauration complete (BD + fichiers sur env test)</td><td>Trimestrielle</td><td>2-4 heures</td></tr>
+  <tr><td>Test de reprise apres sinistre (DR drill)</td><td>Annuelle</td><td>1 journee</td></tr>
+</tbody>
+</table>
+<h3>RTO et RPO cibles</h3>
+
+<p>Le RTO (Recovery Time Objective) et le RPO (Recovery Point Objective) definissent les engagements de l'entreprise en cas de sinistre.</p>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Definition</th><th>Cible BioCycle</th><th>Justification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>RPO</strong></td><td>Duree maximale de donnees perdues</td><td>< 1 heure</td><td>Avec 2 sauvegardes BD par jour (8h + 20h), le pire cas est la perte de 12 heures de donnees. Pour atteindre un RPO < 1h, activer la replication continue Azure PostgreSQL (point-in-time recovery).</td></tr>
+  <tr><td><strong>RTO</strong></td><td>Duree maximale d'indisponibilite</td><td>< 4 heures</td><td>Temps pour detecter le probleme (monitoring), decider de restaurer, executer la restauration et verifier.</td></tr>
+</tbody>
+</table>
+<p><strong>Plan d'action par type de sinistre :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Sinistre</th><th>RPO reel</th><th>RTO reel</th><th>Actions</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Erreur humaine</strong> (suppression accidentelle de donnees)</td><td>< 1h (point-in-time recovery Azure)</td><td>< 30 min</td><td>Restauration selective depuis le point-in-time recovery</td></tr>
+  <tr><td><strong>Corruption de base de donnees</strong></td><td>< 12h (derniere sauvegarde)</td><td>< 2h</td><td>Restauration complete depuis la derniere sauvegarde valide</td></tr>
+  <tr><td><strong>Ransomware / cyberattaque</strong></td><td>< 12h</td><td>< 4h</td><td>Isoler le systeme, restaurer depuis la copie hors site, changer tous les mots de passe</td></tr>
+  <tr><td><strong>Panne du datacenter Azure</strong></td><td>0 (replication si activee)</td><td>< 1h (failover automatique)</td><td>Basculement vers la region secondaire</td></tr>
+  <tr><td><strong>Perte totale</strong> (incendie, catastrophe)</td><td>< 24h (copie hors site)</td><td>< 8h</td><td>Reconstruction complete depuis la copie hors site + deploiement GitHub</td></tr>
+</tbody>
+</table>
+<h3>Chiffrement des sauvegardes</h3>
+
+<p>Toutes les sauvegardes doivent etre chiffrees, au repos et en transit :</p>
+
+<table>
+<thead>
+    <tr><th>Element</th><th>Methode de chiffrement</th><th>Cle</th></tr>
+</thead>
+<tbody>
+  <tr><td>Sauvegarde BD en transit</td><td>TLS 1.3 (Azure PostgreSQL force le SSL)</td><td>Certificat Azure</td></tr>
+  <tr><td>Sauvegarde BD au repos (Azure)</td><td>AES-256 (chiffrement transparent Azure)</td><td>Cle geree par Azure (ou cle client via Azure Key Vault)</td></tr>
+  <tr><td>Copie hors site</td><td>AES-256 avec cle symetrique</td><td>Cle stockee separement de la sauvegarde (jamais au meme endroit)</td></tr>
+  <tr><td>Disque externe</td><td>BitLocker (Windows) ou FileVault (macOS)</td><td>Mot de passe + cle de recuperation imprimee et stockee en coffre</td></tr>
+</tbody>
+</table>
+<h3>Alertes et monitoring des sauvegardes</h3>
+
+<p>Ne jamais compter sur la memoire humaine pour verifier les sauvegardes. Configurer des alertes automatiques :</p>
+
+<table>
+<thead>
+    <tr><th>Alerte</th><th>Condition</th><th>Action</th><th>Severite</th></tr>
+</thead>
+<tbody>
+  <tr><td>Sauvegarde echouee</td><td>Le job de sauvegarde retourne une erreur</td><td>Email + SMS au responsable technique</td><td>Critique</td></tr>
+  <tr><td>Sauvegarde manquante</td><td>Aucune sauvegarde depuis > 14h (pour les bi-quotidiennes)</td><td>Email au responsable</td><td>Haute</td></tr>
+  <tr><td>Espace de stockage faible</td><td>< 20% d'espace restant sur le stockage de sauvegardes</td><td>Email au responsable</td><td>Moyenne</td></tr>
+  <tr><td>Taille anormale</td><td>La sauvegarde est 50% plus petite que la precedente (possible corruption)</td><td>Email au responsable</td><td>Haute</td></tr>
+  <tr><td>Test de restauration en retard</td><td>Aucun test depuis > 35 jours</td><td>Email au responsable</td><td>Moyenne</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Sauvegarde</strong></td><td>Copie des donnees a un moment precis</td></tr>
+  <tr><td><strong>Restauration</strong></td><td>Remplacement des donnees actuelles par une sauvegarde</td></tr>
+  <tr><td><strong>Integrite</strong></td><td>Validite et completude d'une sauvegarde</td></tr>
+  <tr><td><strong>Sauvegarde incrementale</strong></td><td>Copie uniquement des changements depuis la derniere sauvegarde</td></tr>
+  <tr><td><strong>Sauvegarde complete</strong></td><td>Copie de toutes les donnees</td></tr>
+  <tr><td><strong>Regle 3-2-1</strong></td><td>3 copies, 2 supports, 1 hors site</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/securite">Securite</a> : Protection des donnees</li>
+<li><a href="/admin/logs">Audit Logs</a> : Tracabilite des actions</li>
+<li><a href="/admin/parametres">Parametres</a> : Configuration generale</li>
+<li><a href="/admin/monitoring">Monitoring</a> : Surveillance du systeme</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

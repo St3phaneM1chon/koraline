@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
  * GET /api/sms/messages — List SMS messages/conversations
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { withMobileGuard } from '@/lib/mobile-guard';
 import { MessagingChannel, type Message } from '@/lib/voip/messaging-channel';
 import { logger } from '@/lib/logger';
@@ -22,7 +22,7 @@ function getMessaging(): MessagingChannel {
 /**
  * GET — List SMS conversations/messages.
  */
-export const GET = withMobileGuard(async (request, { session }) => {
+export const GET = withMobileGuard(async (request, { session: _session }) => {
   try {
     const { searchParams } = new URL(request.url);
     const phoneNumber = searchParams.get('phoneNumber');

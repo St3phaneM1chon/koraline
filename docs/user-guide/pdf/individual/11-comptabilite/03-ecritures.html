@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ecritures de Journal &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 11 — Comptabilite</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Ecritures de Journal</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Comptabilite > Ecritures</p>
+<p><strong>URL</strong>: <code>/admin/comptabilite/ecritures</code>, <code>/admin/comptabilite/saisie-rapide</code>, <code>/admin/comptabilite/recurrentes</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~35 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>Pourquoi cette page est importante</h2>
+
+<p>Les ecritures de journal sont le <strong>mecanisme concret</strong> par lequel les transactions financieres entrent dans votre systeme comptable. Chaque ecriture est composee d'au moins une ligne de debit et une ligne de credit, dont les totaux doivent s'equilibrer parfaitement.</p>
+
+<p><strong>Obligations legales</strong> :</p>
+<ul>
+<li>La Loi de l'impot sur le revenu (article 230) exige que chaque transaction soit documentee par une ecriture comptable avec piece justificative.</li>
+<li>L'ARC exige que les ecritures soient suffisamment detaillees pour permettre la verification de la declaration fiscale.</li>
+<li>Les ecritures d'ajustement de fin de periode sont requises par les NCECF pour refleter fidelement la situation financiere.</li>
+</ul>
+
+<p><strong>Impact concret</strong> : Les ecritures de journal sont les "atomes" de la comptabilite. Chaque rapport, chaque etat financier, chaque declaration de taxes est derive des ecritures. Une ecriture erronee se propage partout : balance de verification fausse, bilan incorrect, impots mal calcules.</p>
+
+<hr>
+
+<h2>Cycle comptable complet -- Ou se situe cette page</h2>
+
+<pre><code>1. Plan comptable (structure des comptes)
+ ↓
+ 2. Journal general (registre chronologique)
+ ↓
+[3. ECRITURES DE JOURNAL] ← VOUS ETES ICI (mecanisme debit/credit)
+ ↓
+ 4. Grand livre et balance de verification
+ ↓
+ 5. Bilan → 6. Etat des resultats
+ ↓
+ 7-12. Factures, depenses, taxes, rapprochement, budget, rapports</code></pre>
+
+<p>Les ecritures sont l'etape 3 du cycle. Le plan comptable definit les comptes, le journal les organise chronologiquement, et les ecritures sont le detail technique de chaque transaction : quels comptes sont debites, quels comptes sont credites, pour quels montants.</p>
+
+<hr>
+
+<h2>Ordre des operations</h2>
+
+<h3>Quand saisir une ecriture manuelle</h3>
+
+<p>La majorite des transactions sont automatisees dans Koraline (ventes, paiements, depenses). Vous ne saisissez manuellement que dans ces situations :</p>
+
+<table>
+<thead>
+    <tr><th>Situation</th><th>Exemple BioCycle</th><th>Frequence</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Correction d'erreur</strong></td><td>Depense enregistree dans le mauvais compte</td><td>Occasionnelle</td></tr>
+  <tr><td><strong>Ajustement fin de mois</strong></td><td>Amortissement de l'equipement de laboratoire</td><td>Mensuelle</td></tr>
+  <tr><td><strong>Provision</strong></td><td>Provision pour creances douteuses (client B2B qui ne paie pas)</td><td>Mensuelle</td></tr>
+  <tr><td><strong>Reclassement</strong></td><td>Deplacement d'un montant d'un compte a un autre</td><td>Occasionnelle</td></tr>
+  <tr><td><strong>Transaction non standard</strong></td><td>Investissement de l'actionnaire, pret interne</td><td>Rare</td></tr>
+  <tr><td><strong>Ecriture de cloture</strong></td><td>Fermeture des revenus/charges vers BNR en fin d'exercice</td><td>Annuelle</td></tr>
+  <tr><td><strong>Charges a payer</strong></td><td>Salaires gagnes mais pas encore payes au 31 du mois</td><td>Mensuelle</td></tr>
+  <tr><td><strong>Revenus non factures</strong></td><td>Services rendus mais pas encore factures</td><td>Mensuelle</td></tr>
+</tbody>
+</table>
+<h3>Sequence pour une ecriture manuelle</h3>
+
+<ol>
+<li>Identifier la transaction a enregistrer</li>
+<li>Determiner quels comptes sont affectes</li>
+<li>Appliquer la regle debit/credit (actifs et charges augmentent au debit, passifs et revenus augmentent au credit)</li>
+<li>Verifier que le total des debits egalise le total des credits</li>
+<li>Saisir l'ecriture dans Koraline</li>
+<li>Joindre la piece justificative</li>
+<li>Publier (ou sauvegarder en brouillon si verification necessaire)</li>
+</ol>
+
+<hr>
+
+<h2>Les mecaniques debit/credit en detail</h2>
+
+<h3>La regle d'or</h3>
+
+<p>Pour chaque transaction, demandez-vous :</p>
+<ol>
+<li><strong>Quels comptes sont affectes ?</strong> (minimum 2)</li>
+<li><strong>Chaque compte augmente-t-il ou diminue-t-il ?</strong></li>
+<li><strong>Selon le type de compte, est-ce un debit ou un credit ?</strong></li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Type de compte</th><th>Pour augmenter</th><th>Pour diminuer</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Actif</strong> (banque, clients, stock)</td><td>DEBIT</td><td>Credit</td></tr>
+  <tr><td><strong>Charge</strong> (salaires, loyer, marketing)</td><td>DEBIT</td><td>Credit</td></tr>
+  <tr><td><strong>Passif</strong> (fournisseurs, emprunts, taxes)</td><td>Credit</td><td>DEBIT</td></tr>
+  <tr><td><strong>Revenu</strong> (ventes, abonnements)</td><td>Credit</td><td>DEBIT</td></tr>
+  <tr><td><strong>Capitaux propres</strong> (capital, BNR)</td><td>Credit</td><td>DEBIT</td></tr>
+</tbody>
+</table>
+<h3>Exemples concrets pour BioCycle Peptides</h3>
+
+<p><strong>Exemple 1 : Vente de peptides a un client B2B (1 000 $ + taxes)</strong></p>
+
+<p>Raisonnement :</p>
+<ul>
+<li>Le client nous doit 1 149,75 $ --> Comptes clients (actif) augmente --> DEBIT</li>
+<li>Nous gagnons 1 000 $ de revenus --> Ventes (revenu) augmente --> CREDIT</li>
+<li>Nous collectons 50 $ de TPS pour le gouvernement --> TPS a remettre (passif) augmente --> CREDIT</li>
+<li>Nous collectons 99,75 $ de TVQ pour le gouvernement --> TVQ a remettre (passif) augmente --> CREDIT</li>
+</ul>
+
+<pre><code>Debit  1100 - Comptes clients        1 149,75 $
+Credit 4010 - Ventes peptides                      1 000,00 $
+Credit 2100 - TPS a remettre                          50,00 $
+Credit 2110 - TVQ a remettre                          99,75 $
+                                     ---------      ---------
+Total                                1 149,75 $     1 149,75 $</code></pre>
+
+<p><strong>Exemple 2 : Amortissement mensuel de l'equipement de laboratoire (500 $)</strong></p>
+
+<p>Raisonnement :</p>
+<ul>
+<li>L'equipement perd 500 $ de valeur ce mois --> Charge d'amortissement (charge) augmente --> DEBIT</li>
+<li>La valeur accumulee de l'amortissement augmente --> Amortissement cumule (contre-actif) augmente --> CREDIT</li>
+</ul>
+
+<pre><code>Debit  5200 - Amortissement              500,00 $
+Credit 1450 - Amort. cumule equip.                    500,00 $</code></pre>
+
+<p><strong>Exemple 3 : Paiement du loyer avec TPS/TVQ (2 000 $ + taxes)</strong></p>
+
+<p>Raisonnement :</p>
+<ul>
+<li>Le loyer est une charge --> Loyer (charge) augmente --> DEBIT</li>
+<li>La TPS payee est recuperable --> TPS intrants (actif) augmente --> DEBIT</li>
+<li>La TVQ payee est recuperable --> TVQ intrants (actif) augmente --> DEBIT</li>
+<li>L'argent sort de la banque --> Banque (actif) diminue --> CREDIT</li>
+</ul>
+
+<pre><code>Debit  5030 - Loyer                    2 000,00 $
+Debit  1150 - TPS intrants              100,00 $
+Debit  1160 - TVQ intrants              199,50 $
+Credit 1010 - Banque TD                              2 299,50 $</code></pre>
+
+<p><strong>Exemple 4 : Provision pour creance douteuse (client B2B qui ne paie pas, 500 $)</strong></p>
+
+<p>Raisonnement :</p>
+<ul>
+<li>On estime perdre 500 $ --> Mauvaises creances (charge) augmente --> DEBIT</li>
+<li>La provision reduit la valeur des comptes clients --> Provision creances douteuses (contre-actif) augmente --> CREDIT</li>
+</ul>
+
+<pre><code>Debit  5400 - Mauvaises creances         500,00 $
+Credit 1109 - Provision creances dout.                500,00 $</code></pre>
+
+<hr>
+
+<h2>Comment entrer les donnees</h2>
+
+<h3>1. Saisir une ecriture manuelle complete</h3>
+
+<p><strong>URL</strong> : <code>/admin/comptabilite/ecritures</code></p>
+
+<p><strong>Etapes detaillees</strong> :</p>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle ecriture</strong></li>
+<li>Remplissez l'en-tete :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Quoi mettre</th><th>Exemple</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Date</strong></td><td>Date de la transaction (pas la date de saisie)</td><td>2026-03-31</td></tr>
+  <tr><td><strong>Description</strong></td><td>Libelle clair et descriptif</td><td>Amortissement equipement labo - Mars 2026</td></tr>
+  <tr><td><strong>Reference</strong></td><td>Numero interne ou externe</td><td>ADJ-2026-03-001</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Ajoutez les lignes (minimum 2) :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Ligne</th><th>Compte</th><th>Debit</th><th>Credit</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>5200 - Amortissement</td><td>500,00 $</td><td></td></tr>
+  <tr><td>2</td><td>1450 - Amort. cumule equip.</td><td></td><td>500,00 $</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Verifiez l'equilibre : le total des debits (500 $) doit egaliser le total des credits (500 $). Koraline affiche une alerte rouge si l'ecriture n'est pas equilibree.</li>
+</ol>
+
+<ol>
+<li>Joignez la piece justificative si applicable (fichier PDF ou image)</li>
+</ol>
+
+<ol>
+<li>Choisissez :</li>
+</ol>
+<ul>
+<li><strong>Sauvegarder</strong> : cree un brouillon (n'affecte pas les rapports)</li>
+<li><strong>Publier</strong> : enregistre definitivement l'ecriture dans les livres</li>
+</ul>
+
+<h3>2. Utiliser la saisie rapide</h3>
+
+<p><strong>URL</strong> : <code>/admin/comptabilite/saisie-rapide</code></p>
+
+<p>La saisie rapide simplifie le processus pour les operations courantes. Vous n'avez pas besoin de connaitre les mecaniques debit/credit.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le <strong>type d'operation</strong> :</li>
+</ol>
+<ul>
+<li>Depense simple</li>
+<li>Virement entre comptes</li>
+<li>Remboursement</li>
+<li>Ajustement de stock</li>
+</ul>
+<ol>
+<li>Le formulaire s'adapte au type selectionne</li>
+<li>Remplissez les champs en langage naturel</li>
+</ol>
+
+<p><strong>Exemple : Saisie rapide d'une depense marketing</strong></p>
+<ol>
+<li>Type : Depense</li>
+<li>Compte de depense : 5041 - Google Ads</li>
+<li>Compte de paiement : 1010 - Banque TD</li>
+<li>Montant HT : 1 500 $</li>
+<li>Description : "Campagne Google Ads BPC-157 mars 2026"</li>
+<li>TPS/TVQ : calcul automatique (cochee par defaut)</li>
+</ol>
+
+<p>Le systeme genere automatiquement :</p>
+<pre><code>Debit  5041 - Google Ads            1 500,00 $
+Debit  1150 - TPS intrants            75,00 $
+Debit  1160 - TVQ intrants           149,63 $
+Credit 1010 - Banque TD                           1 724,63 $</code></pre>
+
+<p>Vous n'avez pas eu besoin de connaitre les comptes de taxes ni les mecaniques debit/credit.</p>
+
+<h3>3. Configurer les ecritures recurrentes</h3>
+
+<p><strong>URL</strong> : <code>/admin/comptabilite/recurrentes</code></p>
+
+<p><strong>Quand</strong> : Pour les charges qui reviennent de maniere identique chaque mois.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouvelle recurrence</strong></li>
+<li>Creez l'ecriture modele (comme une ecriture manuelle)</li>
+<li>Configurez la recurrence :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Options</th><th>Exemple</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Frequence</strong></td><td>Mensuelle, trimestrielle, annuelle</td><td>Mensuelle</td></tr>
+  <tr><td><strong>Jour du mois</strong></td><td>1 a 28 (eviter 29-31 pour les mois courts)</td><td>1er</td></tr>
+  <tr><td><strong>Date de debut</strong></td><td>Premiere occurrence</td><td>2026-01-01</td></tr>
+  <tr><td><strong>Date de fin</strong></td><td>Derniere occurrence (optionnel)</td><td>2026-12-31</td></tr>
+</tbody>
+</table>
+<p><strong>Ecritures recurrentes typiques pour BioCycle</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Ecriture</th><th>Montant mensuel</th><th>Frequence</th></tr>
+</thead>
+<tbody>
+  <tr><td>Loyer bureau</td><td>2 000 $ + taxes</td><td>Mensuelle, le 1er</td></tr>
+  <tr><td>Amortissement equipement labo</td><td>500 $</td><td>Mensuelle, le 31</td></tr>
+  <tr><td>Amortissement materiel informatique</td><td>200 $</td><td>Mensuelle, le 31</td></tr>
+  <tr><td>Assurance responsabilite civile</td><td>400 $ + taxes</td><td>Mensuelle, le 15</td></tr>
+  <tr><td>Abonnement Azure</td><td>~350 $ + taxes</td><td>Mensuelle, le 1er</td></tr>
+</tbody>
+</table>
+<h3>4. Scanner des documents par OCR</h3>
+
+<p><strong>URL</strong> : <code>/admin/comptabilite/ocr</code></p>
+
+<ol>
+<li>Cliquez sur <strong>Scanner un document</strong></li>
+<li>Deposez l'image ou le PDF de la facture/recu</li>
+<li>Le systeme OCR extrait automatiquement :</li>
+</ol>
+<ul>
+<li>Nom du fournisseur</li>
+<li>Montant total et sous-total</li>
+<li>TPS et TVQ separees</li>
+<li>Date du document</li>
+<li>Numero de facture</li>
+</ul>
+<ol>
+<li><strong>Verifiez les donnees extraites</strong> -- l'OCR n'est pas parfait a 100%, surtout sur les recus thermiques decolores</li>
+<li>Selectionnez le compte de depense</li>
+<li>Cliquez sur <strong>Creer l'ecriture</strong></li>
+</ol>
+
+<h3>5. Modifier ou annuler une ecriture</h3>
+
+<p><strong>Modifier</strong> (periode non cloturee uniquement) :</p>
+<ol>
+<li>Trouvez l'ecriture dans la liste</li>
+<li>Cliquez dessus, puis sur <strong>Modifier</strong></li>
+<li>Apportez les corrections</li>
+<li>Sauvegardez</li>
+</ol>
+
+<p><strong>Annuler</strong> (methode recommandee -- contre-passation) :</p>
+<ol>
+<li>Trouvez l'ecriture a annuler</li>
+<li>Cliquez sur <strong>Annuler</strong></li>
+<li>Le systeme cree automatiquement une ecriture inverse : les debits deviennent des credits et vice versa</li>
+<li>Les deux ecritures se neutralisent et la piste d'audit est conservee</li>
+</ol>
+
+<hr>
+
+<h2>Pourquoi entrer ces donnees</h2>
+
+<h3>Les ecritures d'ajustement de fin de mois</h3>
+
+<p>Sans ecritures d'ajustement, vos etats financiers ne refletent pas la realite :</p>
+
+<table>
+<thead>
+    <tr><th>Ajustement</th><th>Pourquoi</th><th>Exemple</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Amortissement</strong></td><td>Repartir le cout de l'equipement sur sa duree de vie utile</td><td>Equipement labo a 30 000 $ amorti sur 5 ans = 500 $/mois</td></tr>
+  <tr><td><strong>Provision creances douteuses</strong></td><td>Refleter le risque que certains clients ne paient pas</td><td>Client B2B avec facture de 90+ jours = provision de 50%</td></tr>
+  <tr><td><strong>Charges a payer</strong></td><td>Enregistrer les charges encourues mais pas encore payees</td><td>Salaires du 16 au 31 mars, payes en avril</td></tr>
+  <tr><td><strong>Revenus non factures</strong></td><td>Enregistrer les revenus gagnes mais pas encore factures</td><td>Services de consulting rendus en mars, factures en avril</td></tr>
+  <tr><td><strong>Charges payees d'avance</strong></td><td>Reporter la portion non consommee d'une charge prepayee</td><td>Assurance annuelle de 4 800 $ payee en janvier = 400 $/mois</td></tr>
+</tbody>
+</table>
+<h3>Les ecritures de cloture annuelle</h3>
+
+<p>En fin d'exercice, les comptes de revenus et de charges doivent etre "fermes" (mis a zero). Leur solde est vire dans les Benefices Non Repartis (BNR). C'est l'ecriture de cloture.</p>
+
+<p><strong>Pourquoi</strong> : Les revenus et les charges sont des comptes "temporaires" qui mesurent la performance d'une periode specifique. Au debut du nouvel exercice, ils doivent repartir a zero. Le BNR est un compte "permanent" qui accumule les profits d'annee en annee.</p>
+
+<p><strong>Exemple simplifie</strong> :</p>
+<pre><code>Ecritures de cloture au 31 decembre 2026
+
+Fermer les revenus (solde crediteur de 1 440 000 $) :
+Debit  4010 - Ventes peptides        1 440 000 $
+Credit 3200 - BNR                                  1 440 000 $
+
+Fermer les charges (solde debiteur de 980 000 $) :
+Debit  3200 - BNR                      980 000 $
+Credit 5000 - Charges (total)                        980 000 $
+
+Resultat net : BNR augmente de 460 000 $ (profit de l'annee)</code></pre>
+
+<hr>
+
+<h2>Erreurs courantes a eviter</h2>
+
+<table>
+<thead>
+    <tr><th>Erreur</th><th>Consequence</th><th>Comment eviter</th></tr>
+</thead>
+<tbody>
+  <tr><td>Ecriture desequilibree</td><td>Impossible de publier (Koraline bloque)</td><td>Toujours verifier debits = credits avant de publier</td></tr>
+  <tr><td>Mauvais compte debite/credite</td><td>Etats financiers faux, declaration fiscale erronee</td><td>Se referer au plan comptable, utiliser la saisie rapide en cas de doute</td></tr>
+  <tr><td>Oublier les ecritures d'ajustement en fin de mois</td><td>Bilan et resultats ne refletent pas la realite</td><td>Creer une checklist mensuelle des ajustements</td></tr>
+  <tr><td>Publier sans piece justificative</td><td>Deduction refusee par l'ARC lors d'une verification</td><td>Joindre systematiquement le recu/facture</td></tr>
+  <tr><td>Modifier une ecriture publiee au lieu de la contre-passer</td><td>Perte de la piste d'audit</td><td>Toujours utiliser la contre-passation</td></tr>
+  <tr><td>Oublier les taxes sur une depense</td><td>Les CTI/RTI ne sont pas reclames, vous perdez 14,975%</td><td>Toujours cocher la case TPS/TVQ dans la saisie rapide</td></tr>
+  <tr><td>Enregistrer une immobilisation comme charge</td><td>Le bilan est faux, l'amortissement manque, deduction fiscale sous-optimale</td><td>Un achat de plus de 500 $ avec duree de vie > 1 an est une immobilisation, pas une charge</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Quand faire cette operation</h2>
+
+<table>
+<thead>
+    <tr><th>Frequence</th><th>Type d'ecriture</th><th>Detail</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Quotidien</strong></td><td>Ecritures courantes</td><td>Depenses, factures, paiements (surtout automatiques)</td></tr>
+  <tr><td><strong>Hebdomadaire</strong></td><td>Corrections et reclassements</td><td>Corriger les erreurs detectees dans la semaine</td></tr>
+  <tr><td><strong>Fin de mois</strong></td><td>Ecritures d'ajustement</td><td>Amortissement, provisions, charges a payer, revenus non factures</td></tr>
+  <tr><td><strong>Fin de trimestre</strong></td><td>Verification complete</td><td>S'assurer que toutes les ecritures du trimestre sont publiees avant la declaration TPS/TVQ</td></tr>
+  <tr><td><strong>Fin d'exercice</strong></td><td>Ecritures de cloture</td><td>Fermer revenus et charges vers BNR, ajustements fiscaux</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Quelle est la difference entre "Sauvegarder" et "Publier" ?</strong></p>
+<p>R : <strong>Sauvegarder</strong> cree un brouillon qui n'affecte pas les rapports financiers ni les soldes des comptes. <strong>Publier</strong> enregistre definitivement l'ecriture dans les livres comptables. Les brouillons sont utiles quand vous voulez qu'un collegue ou votre comptable verifie avant l'enregistrement final.</p>
+
+<p><strong>Q : Puis-je modifier une ecriture publiee ?</strong></p>
+<p>R : Si la periode n'est pas cloturee, oui. Mais la methode recommandee est la contre-passation : annuler l'ecriture originale puis saisir une nouvelle ecriture correcte. Cela conserve la piste d'audit complete.</p>
+
+<p><strong>Q : Les ecritures recurrentes s'ajustent-elles automatiquement si un montant change ?</strong></p>
+<p>R : Non, elles repetent le meme montant a chaque occurrence. Si un montant change (augmentation de loyer, par exemple), mettez a jour le modele de recurrence. L'ancien montant reste dans l'historique.</p>
+
+<p><strong>Q : L'OCR fonctionne-t-il avec les factures en anglais ?</strong></p>
+<p>R : Oui, l'OCR detecte les deux langues officielles (francais et anglais). Il fonctionne aussi avec les factures bilingues courantes au Quebec.</p>
+
+<p><strong>Q : Combien de lignes peut avoir une ecriture ?</strong></p>
+<p>R : Autant que necessaire, mais minimum 2 (un debit, un credit). Une ecriture de paie peut avoir 10+ lignes (salaire brut, impots federal et provincial, RRQ, AE, RQAP, assurance, net). L'important est que le total des debits egalise le total des credits.</p>
+
+<p><strong>Q : Que signifie "contre-actif" ?</strong></p>
+<p>R : Un contre-actif est un compte qui reduit la valeur d'un actif. Exemples : l'amortissement cumule (reduit la valeur de l'equipement), la provision pour creances douteuses (reduit la valeur des comptes clients). Le contre-actif a un solde crediteur, a l'inverse des actifs normaux.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition comptable</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Ecriture de journal</strong></td><td>Enregistrement formel d'une transaction avec date, description, comptes, debits et credits. Minimum 2 lignes, toujours equilibree.</td></tr>
+  <tr><td><strong>Brouillon</strong></td><td>Ecriture sauvegardee mais pas encore publiee. N'affecte pas les rapports. Utile pour validation avant publication.</td></tr>
+  <tr><td><strong>Contre-passation</strong></td><td>Ecriture inverse qui annule exactement une ecriture precedente. Methode standard pour corriger les erreurs sans perdre la piste d'audit.</td></tr>
+  <tr><td><strong>Ecriture recurrente</strong></td><td>Modele d'ecriture repetee automatiquement a intervalle regulier (mensuel, trimestriel, annuel).</td></tr>
+  <tr><td><strong>Ecriture d'ajustement</strong></td><td>Ecriture de fin de periode pour refleter des elements non encore comptabilises (amortissement, provisions, charges a payer).</td></tr>
+  <tr><td><strong>Ecriture de cloture</strong></td><td>Ecriture de fin d'exercice qui ferme les comptes temporaires (revenus, charges) vers le BNR.</td></tr>
+  <tr><td><strong>Contre-actif</strong></td><td>Compte a solde crediteur qui reduit la valeur d'un actif (ex : amortissement cumule, provision creances douteuses).</td></tr>
+  <tr><td><strong>OCR</strong></td><td>Optical Character Recognition. Technologie qui numerise automatiquement le texte d'un document scanne.</td></tr>
+  <tr><td><strong>Piece justificative</strong></td><td>Document original prouvant la transaction : facture, recu, contrat, releve de carte, capture d'ecran Stripe.</td></tr>
+  <tr><td><strong>Piste d'audit</strong></td><td>Ensemble des enregistrements qui permettent de retracer l'historique complet d'une transaction, y compris les modifications et corrections.</td></tr>
+  <tr><td><strong>Charge a payer</strong></td><td>Charge encourue dans la periode en cours mais qui ne sera payee que dans la periode suivante (ex: salaires du 16 au 31 decembre payes en janvier).</td></tr>
+  <tr><td><strong>Charge payee d'avance</strong></td><td>Montant paye d'avance pour un service futur (ex: assurance annuelle). La portion non consommee est un actif, pas une charge.</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="02-journal.md">Journal general</a> : Ou les ecritures apparaissent chronologiquement</li>
+<li><a href="01-plan-comptable.md">Plan comptable</a> : Comptes utilises dans les ecritures</li>
+<li><a href="04-grand-livre.md">Grand livre et balance</a> : Ecritures regroupees par compte, verification de l'equilibre</li>
+<li><a href="07-factures.md">Factures</a> : Ecritures automatiques de vente</li>
+<li><a href="08-depenses.md">Depenses</a> : Saisie simplifiee (genere les ecritures automatiquement)</li>
+<li><a href="10-rapprochement.md">Rapprochement</a> : Verification que les ecritures correspondent au releve bancaire</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

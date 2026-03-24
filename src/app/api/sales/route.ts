@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
  * GET /api/sales — List recent sales/orders
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { withMobileGuard } from '@/lib/mobile-guard';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
@@ -13,13 +13,13 @@ import { logger } from '@/lib/logger';
 /**
  * GET — List recent orders/sales.
  */
-export const GET = withMobileGuard(async (request, { session }) => {
+export const GET = withMobileGuard(async (request, { session: _session }) => {
   try {
     const { searchParams } = new URL(request.url);
     const limit = Math.min(parseInt(searchParams.get('limit') || '50'), 200);
     const offset = parseInt(searchParams.get('offset') || '0');
 
-    const [orders, total] = await Promise.all([
+    const [orders, _total] = await Promise.all([
       prisma.order.findMany({
         include: {
           user: { select: { name: true, email: true } },

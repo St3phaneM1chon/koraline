@@ -1,0 +1,3854 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>02 — Commerce &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 02 — Commerce</span>
+        <span>2026-03-20</span>
+      </div>
+
+<div class="cover" style="min-height: 40vh; padding: 3rem 2rem;">
+  <div class="cover-logo" style="width:80px; height:80px; font-size:1.8rem; border-radius:16px;">K</div>
+  <h1 style="font-size:2rem;">02 — Commerce</h1>
+  <div class="subtitle">Guide Utilisateur &mdash; Suite Koraline</div>
+  <div class="version">
+    7 pages dans cette section<br>
+    2026-03-20
+  </div>
+</div><div class="toc-container" style="margin:1rem 0 2rem;">
+<h2>Contenu de cette section</h2>
+<ul class="toc">
+<ul class="toc-pages">
+<li><a href="#02-commerce--01-commandes"><span>Gestion des Commandes</span><span class="toc-dots"></span></a></li>
+<li><a href="#02-commerce--02-clients"><span>Gestion des Clients (Acheteurs)</span><span class="toc-dots"></span></a></li>
+<li><a href="#02-commerce--03-distributeurs"><span>Gestion des Distributeurs et Utilisateurs (Clients B2B)</span><span class="toc-dots"></span></a></li>
+<li><a href="#02-commerce--04-abonnements"><span>Gestion des Abonnements</span><span class="toc-dots"></span></a></li>
+<li><a href="#02-commerce--05-inventaire"><span>Gestion de l'Inventaire</span><span class="toc-dots"></span></a></li>
+<li><a href="#02-commerce--06-fournisseurs"><span>Gestion des Fournisseurs</span><span class="toc-dots"></span></a></li>
+<li><a href="#02-commerce--07-paiements"><span>Reconciliation des Paiements</span><span class="toc-dots"></span></a></li>
+</ul>
+</ul>
+</div><div id="02-commerce--01-commandes">
+<h1>Gestion des Commandes</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Commerce > Commandes</p>
+<p><strong>URL</strong>: <code>/admin/commandes</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~30 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Commandes</strong> est le coeur de votre activite commerciale. C'est ici que vous suivez, gerez et traitez TOUTES les commandes passees par vos clients sur la boutique BioCycle Peptides.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir toutes les commandes en un coup d'oeil, classees par date</li>
+<li>Filtrer par statut (en attente, en traitement, expediee, livree)</li>
+<li>Rechercher une commande specifique par numero, nom de client ou email</li>
+<li>Consulter le detail complet de chaque commande</li>
+<li>Changer le statut d'une commande au fil de son traitement</li>
+<li>Ajouter un numero de suivi du transporteur</li>
+<li>Rembourser une commande (totalement ou partiellement)</li>
+<li>Reexpedier une commande en cas de probleme</li>
+<li>Annuler une commande</li>
+<li>Exporter la liste des commandes en CSV pour votre comptabilite</li>
+<li>Envoyer un email de confirmation au client</li>
+<li>Ajouter des notes internes pour votre equipe</li>
+<li>Detecter les commandes potentiellement frauduleuses</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Commerce</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong> qui apparait, cliquez sur <strong>Commandes</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Dans la colonne d'icones tout a gauche de l'ecran, cliquez sur l'icone <strong>panier</strong> (2e icone)</li>
+<li>Le panneau "Commerce" s'ouvre avec la liste des sous-pages</li>
+<li>Cliquez sur <strong>Commandes</strong></li>
+</ol>
+
+<h3>Methode 3 : Via le raccourci dans la barre d'outils</h3>
+<ol>
+<li>En haut a droite de l'ecran, il y a une icone de panier avec un lien direct vers les commandes</li>
+<li>Cliquez dessus pour acceder directement a la page</li>
+</ol>
+
+<h3>Methode 4 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche en haut au centre (ou tapez <code>/</code>)</li>
+<li>Tapez "commandes"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong>: La page Commandes est probablement celle que vous visiterez le plus souvent. Mettez-la en favoris dans votre navigateur !</p>
+</blockquote>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Page Commandes]</div>
+
+<p>L'interface est divisee en <strong>5 zones principales</strong> :</p>
+
+<h3>1. La barre de ruban (Ribbon) — en haut</h3>
+<p>C'est la barre d'outils contextuelle qui change selon la page. Pour les commandes, elle contient :</p>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Icone</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouvelle commande</strong></td><td>+ vert</td><td>Creer manuellement une commande (pour les commandes telephoniques ou speciales)</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Poubelle rouge</td><td>Supprimer la commande selectionnee (action irreversible !)</td></tr>
+  <tr><td><strong>Imprimer</strong></td><td>Imprimante</td><td>Imprimer le bon de commande ou le recapitulatif</td></tr>
+  <tr><td><strong>Marquer expedie</strong></td><td>Camion</td><td>Changer le statut de la commande en "Expediee"</td></tr>
+  <tr><td><strong>Rembourser</strong></td><td>Fleche retour</td><td>Ouvrir la fenetre de remboursement</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger</td><td>Exporter les commandes filtrees au format CSV</td></tr>
+</tbody>
+</table>
+<h3>2. Le panneau de navigation (sidebar gauche)</h3>
+<p>Affiche les sous-pages de la section Commerce :</p>
+<ul>
+<li><strong>Commandes</strong> (page actuelle)</li>
+<li><strong>Clients</strong> — les acheteurs individuels</li>
+<li><strong>Distributeurs</strong> — les clients B2B</li>
+<li><strong>Abonnements</strong> — les commandes recurrentes</li>
+<li><strong>Inventaire</strong> — niveaux de stock</li>
+<li><strong>Fournisseurs</strong> — vos fournisseurs</li>
+<li><strong>Reconciliation paiements</strong> — rapprochement bancaire</li>
+</ul>
+
+<h3>3. Les cartes de statistiques</h3>
+<p>5 cartes resumant l'etat de vos commandes :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total</strong></td><td>Nombre total de commandes dans le systeme</td></tr>
+  <tr><td><strong>En attente</strong></td><td>Commandes recues mais pas encore confirmees</td></tr>
+  <tr><td><strong>En traitement</strong></td><td>Commandes confirmees, en cours de preparation</td></tr>
+  <tr><td><strong>Expediees</strong></td><td>Commandes envoyees au transporteur</td></tr>
+  <tr><td><strong>Livrees</strong></td><td>Commandes recues par le client</td></tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Comprendre les statuts</strong>: Une commande suit ce parcours :</p>
+<p><code>En attente</code> → <code>Confirmee</code> → <code>En traitement</code> → <code>Expediee</code> → <code>Livree</code></p>
+<p>A tout moment, elle peut etre <code>Annulee</code>.</p>
+</blockquote>
+
+<h3>4. La liste des commandes (panneau central)</h3>
+<p>C'est la zone principale. Les commandes sont affichees dans une liste avec :</p>
+<ul>
+<li><strong>Onglets de filtrage</strong> : Tous les statuts, En attente, En traitement, Expediee, Livree</li>
+<li><strong>Barre de recherche</strong> : Recherchez par numero de commande, nom du client ou email</li>
+<li><strong>Groupement par date</strong> : Les commandes sont automatiquement groupees en "Aujourd'hui", "Hier", "Cette semaine", "Plus ancien"</li>
+<li><strong>Badge de statut</strong> : Chaque commande affiche son statut colore (jaune = en attente, bleu = en traitement, vert = livree, rouge = annulee)</li>
+<li><strong>Indicateur de fraude</strong> : Un badge colore indique le niveau de risque de fraude detecte automatiquement</li>
+<li><strong>Tags automatiques</strong> : Des etiquettes colorees sont ajoutees automatiquement (ex: "Gros panier", "International", "Promo utilisee")</li>
+</ul>
+
+<h3>5. Le panneau de detail (panneau droit)</h3>
+<p>Quand vous cliquez sur une commande dans la liste, ses details complets s'affichent a droite :</p>
+<ul>
+<li>Informations du client</li>
+<li>Adresse de livraison</li>
+<li>Liste des articles commandes avec quantites et prix</li>
+<li>Resume financier (sous-total, livraison, taxes, remise, total)</li>
+<li>Statut et historique (timeline)</li>
+<li>Notes internes</li>
+<li>Actions disponibles</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Consulter une commande</h3>
+
+<p><strong>Objectif</strong> : Voir tous les details d'une commande specifique.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Dans la liste des commandes, <strong>cliquez sur la commande</strong> que vous souhaitez consulter</li>
+<li>Le panneau de detail s'ouvre a droite de l'ecran</li>
+<li>Vous voyez :</li>
+</ol>
+<ul>
+<li><strong>En-tete</strong> : Numero de commande (ex: <code>ORD-2026-0042</code>), date, statut</li>
+<li><strong>Client</strong> : Nom, email, lien vers sa fiche client</li>
+<li><strong>Adresse</strong> : Adresse de livraison complete</li>
+<li><strong>Articles</strong> : Tableau avec chaque produit, format, quantite, prix unitaire et total</li>
+<li><strong>Resume financier</strong> :</li>
+<li>Sous-total (avant taxes et livraison)</li>
+<li>Frais de livraison</li>
+<li>Remise (si code promo utilise)</li>
+<li>TPS (5%), TVQ (9.975%) ou TVH selon la province</li>
+<li><strong>Total final</strong></li>
+<li><strong>Timeline</strong> : Chronologie visuelle de la commande (creation, paiement, expedition, etc.)</li>
+<li><strong>Notes</strong> : Notes internes de l'equipe</li>
+</ul>
+
+<p><strong>Ce que vous voyez dans le resume financier</strong> :</p>
+<pre><code>Sous-total :          89,95 $CA
+Livraison :           12,00 $CA
+Code promo (BIENVENUE10) : -10,00 $CA
+TPS (5%) :             4,60 $CA
+TVQ (9.975%) :         9,17 $CA
+─────────────────────────────────
+Total :              105,72 $CA</code></pre>
+
+<blockquote>
+<p><strong>Pour les neophytes</strong> : La TPS (Taxe sur les Produits et Services) est une taxe federale canadienne de 5%. La TVQ (Taxe de Vente du Quebec) est de 9.975%. Ensemble, elles totalisent ~14.975% de taxes au Quebec.</p>
+</blockquote>
+
+<hr>
+
+<h3>2. Changer le statut d'une commande</h3>
+
+<p><strong>Objectif</strong> : Faire progresser une commande dans le processus de traitement.</p>
+
+<p><strong>Quand l'utiliser</strong> :</p>
+<ul>
+<li>Vous venez de confirmer le paiement → passez de "En attente" a "Confirmee"</li>
+<li>Vous commencez a preparer le colis → passez a "En traitement"</li>
+<li>Vous avez remis le colis au transporteur → passez a "Expediee"</li>
+<li>Le client a recu son colis → passez a "Livree"</li>
+<li>Le client demande une annulation → passez a "Annulee"</li>
+</ul>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez la commande dans la liste</li>
+<li>Dans le panneau de detail, trouvez la section <strong>Statut</strong></li>
+<li>Cliquez sur le menu deroulant du statut</li>
+<li>Selectionnez le nouveau statut</li>
+<li>Confirmez le changement</li>
+</ol>
+
+<p><strong>Ou via le ruban</strong> :</p>
+<ol>
+<li>Selectionnez la commande</li>
+<li>Cliquez sur <strong>Marquer expedie</strong> dans le ruban pour passer directement au statut "Expediee"</li>
+</ol>
+
+<blockquote>
+<p><strong>Important</strong> : Le changement de statut est enregistre dans la timeline de la commande. Le client peut recevoir une notification automatique (selon vos parametres).</p>
+</blockquote>
+
+<blockquote>
+<p><strong>Attention</strong> : Annuler une commande est une action serieuse. Si le paiement a deja ete encaisse, vous devrez aussi proceder a un remboursement.</p>
+</blockquote>
+
+<hr>
+
+<h3>3. Ajouter un numero de suivi (tracking)</h3>
+
+<p><strong>Objectif</strong> : Associer un numero de suivi du transporteur a une commande expediee, pour que le client puisse suivre son colis.</p>
+
+<p><strong>Quand l'utiliser</strong> : Apres avoir remis le colis au transporteur (Postes Canada, UPS, FedEx, Purolator, etc.)</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez la commande concernee</li>
+<li>Dans le panneau de detail, trouvez la section <strong>Expedition</strong></li>
+<li>Remplissez :</li>
+</ol>
+<ul>
+<li><strong>Transporteur</strong> : Le nom du transporteur (ex: "Postes Canada", "UPS", "FedEx")</li>
+<li><strong>Numero de suivi</strong> : Le numero de tracking fourni par le transporteur (ex: "1Z999AA10123456784")</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<p>Le numero de suivi sera :</p>
+<ul>
+<li>Affiche dans la timeline de la commande</li>
+<li>Visible par le client dans son espace "Mes commandes"</li>
+<li>Inclus dans l'email de notification d'expedition (si configure)</li>
+</ul>
+
+<blockquote>
+<p><strong>Astuce</strong> : Collez le numero de suivi directement depuis le site du transporteur. Evitez les espaces en debut ou fin de texte.</p>
+</blockquote>
+
+<hr>
+
+<h3>4. Rembourser une commande</h3>
+
+<p><strong>Objectif</strong> : Rendre tout ou partie du montant paye par le client.</p>
+
+<p><strong>Quand l'utiliser</strong> :</p>
+<ul>
+<li>Le client n'est pas satisfait et retourne le produit</li>
+<li>Vous avez envoye le mauvais produit</li>
+<li>Le produit est arrive endommage</li>
+<li>Le client a ete facture par erreur</li>
+<li>Annulation apres paiement</li>
+</ul>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez la commande a rembourser</li>
+<li>Cliquez sur <strong>Rembourser</strong> dans le ruban (ou dans le panneau de detail)</li>
+<li>La fenetre de remboursement s'ouvre avec :</li>
+</ol>
+<ul>
+<li><strong>Montant</strong> : Pre-rempli avec le total de la commande. Vous pouvez modifier pour un remboursement partiel.</li>
+<li><strong>Raison</strong> : Obligatoire. Expliquez pourquoi vous remboursez (ex: "Produit defectueux retourne par le client")</li>
+</ul>
+<ol>
+<li>Verifiez les informations</li>
+<li>Cliquez sur <strong>Confirmer le remboursement</strong></li>
+</ol>
+
+<p><strong>Ce qui se passe</strong> :</p>
+<ul>
+<li>Une <strong>note de credit</strong> est automatiquement creee en comptabilite</li>
+<li>Le remboursement est enregistre dans la timeline</li>
+<li>Le statut de paiement passe a "Rembourse" (total) ou "Rembourse partiellement" (partiel)</li>
+<li>Si Stripe est configure, le remboursement est traite automatiquement sur la carte du client</li>
+</ul>
+
+<blockquote>
+<p><strong>Remboursement total vs partiel</strong> :</p>
+<p>- <strong>Total</strong> : Vous remboursez 100% du montant. Utilisez le montant pre-rempli.</p>
+<p>- <strong>Partiel</strong> : Modifiez le montant. Par exemple, remboursez 50$ sur une commande de 100$ si un seul des deux produits est retourne.</p>
+</blockquote>
+
+<blockquote>
+<p><strong>Attention</strong> : Un remboursement ne peut pas etre annule. Verifiez bien le montant avant de confirmer.</p>
+</blockquote>
+
+<hr>
+
+<h3>5. Reexpedier une commande</h3>
+
+<p><strong>Objectif</strong> : Creer une nouvelle expedition pour remplacer une commande problematique.</p>
+
+<p><strong>Quand l'utiliser</strong> :</p>
+<ul>
+<li>Le colis a ete perdu par le transporteur</li>
+<li>Le colis est arrive endommage</li>
+<li>Vous avez envoye le mauvais produit</li>
+<li>Le colis a ete vole apres livraison</li>
+</ul>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez la commande originale</li>
+<li>Cliquez sur le bouton de <strong>Reexpedition</strong> dans le panneau de detail</li>
+<li>Selectionnez la raison parmi :</li>
+</ol>
+<ul>
+<li>Colis perdu pendant le transport</li>
+<li>Colis endommage a la reception</li>
+<li>Mauvais produit envoye</li>
+<li>Colis vole apres livraison</li>
+<li>Autre raison</li>
+</ul>
+<ol>
+<li>Confirmez la reexpedition</li>
+</ol>
+
+<p><strong>Ce qui se passe</strong> :</p>
+<ul>
+<li>Une <strong>nouvelle commande de remplacement</strong> est creee automatiquement</li>
+<li>Elle est liee a la commande originale (visible dans la timeline)</li>
+<li>Le client n'est PAS facture a nouveau</li>
+<li>La commande de remplacement suit son propre cycle de statuts</li>
+</ul>
+
+<hr>
+
+<h3>6. Annuler une commande</h3>
+
+<p><strong>Objectif</strong> : Annuler une commande qui ne doit plus etre traitee.</p>
+
+<p><strong>Quand l'utiliser</strong> :</p>
+<ul>
+<li>Le client demande l'annulation avant l'expedition</li>
+<li>Le produit est en rupture de stock</li>
+<li>Le paiement a echoue ou est suspect</li>
+<li>Commande en double</li>
+</ul>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez la commande a annuler</li>
+<li>Un dialogue de confirmation apparait : "Etes-vous sur de vouloir annuler cette commande ?"</li>
+<li>Confirmez l'annulation</li>
+</ol>
+
+<blockquote>
+<p><strong>Important</strong> : Si le paiement a deja ete encaisse, annuler la commande NE rembourse PAS automatiquement le client. Vous devez aussi faire un remboursement (voir section 4).</p>
+</blockquote>
+
+<hr>
+
+<h3>7. Exporter les commandes en CSV</h3>
+
+<p><strong>Objectif</strong> : Telecharger un fichier CSV de vos commandes pour l'analyser dans Excel, Google Sheets, ou l'importer dans votre logiciel de comptabilite.</p>
+
+<p><strong>Deux options d'export</strong> :</p>
+
+<h4>Option A : Export CSV (navigateur)</h4>
+<ol>
+<li>Appliquez vos filtres si necessaire (par statut, par recherche)</li>
+<li>Cliquez sur <strong>Exporter CSV</strong> en haut a droite</li>
+<li>Le fichier se telecharge automatiquement</li>
+<li>Ouvrez-le avec Excel ou Google Sheets</li>
+</ol>
+
+<p><strong>Colonnes exportees</strong> :</p>
+<table>
+<thead>
+    <tr><th>Colonne</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td>Order #</td><td>Numero de commande</td></tr>
+  <tr><td>Date</td><td>Date de creation</td></tr>
+  <tr><td>Customer</td><td>Nom du client</td></tr>
+  <tr><td>Email</td><td>Adresse email</td></tr>
+  <tr><td>Status</td><td>Statut actuel</td></tr>
+  <tr><td>Payment</td><td>Statut du paiement</td></tr>
+  <tr><td>Subtotal</td><td>Sous-total avant taxes</td></tr>
+  <tr><td>Shipping</td><td>Frais de livraison</td></tr>
+  <tr><td>Discount</td><td>Montant de la remise</td></tr>
+  <tr><td>Tax</td><td>Montant total des taxes</td></tr>
+  <tr><td>Total</td><td>Montant total TTC</td></tr>
+  <tr><td>Currency</td><td>Devise (CAD)</td></tr>
+  <tr><td>Carrier</td><td>Transporteur</td></tr>
+  <tr><td>Tracking</td><td>Numero de suivi</td></tr>
+  <tr><td>Items</td><td>Nombre d'articles</td></tr>
+</tbody>
+</table>
+<h4>Option B : Export serveur</h4>
+<ol>
+<li>Cliquez sur <strong>Exporter (serveur)</strong> en haut a droite</li>
+<li>L'export est genere cote serveur (plus fiable pour les gros volumes)</li>
+<li>Le fichier se telecharge quand il est pret</li>
+</ol>
+
+<blockquote>
+<p><strong>Quelle option choisir ?</strong></p>
+<p>- Moins de 500 commandes → Export CSV (navigateur) suffit</p>
+<p>- Plus de 500 commandes → Utilisez Export serveur</p>
+</blockquote>
+
+<hr>
+
+<h3>8. Envoyer un email de confirmation</h3>
+
+<p><strong>Objectif</strong> : Renvoyer l'email de confirmation de commande au client.</p>
+
+<p><strong>Quand l'utiliser</strong> :</p>
+<ul>
+<li>Le client dit ne pas avoir recu son email de confirmation</li>
+<li>Vous avez modifie des informations et voulez envoyer une mise a jour</li>
+<li>Le premier envoi a echoue</li>
+</ul>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez la commande</li>
+<li>Dans le panneau de detail, cliquez sur l'icone <strong>email</strong> (enveloppe)</li>
+<li>Confirmez l'envoi</li>
+<li>Un message de succes s'affiche : "Email de confirmation envoye"</li>
+</ol>
+
+<hr>
+
+<h3>9. Ajouter une note interne</h3>
+
+<p><strong>Objectif</strong> : Laisser un commentaire visible uniquement par l'equipe admin (invisible pour le client).</p>
+
+<p><strong>Quand l'utiliser</strong> :</p>
+<ul>
+<li>Signaler un probleme avec la commande a un collegue</li>
+<li>Noter une conversation telephonique avec le client</li>
+<li>Documenter une decision prise (ex: "Remise exceptionnelle accordee par la direction")</li>
+</ul>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez la commande</li>
+<li>Cliquez sur le bouton <strong>Ajouter une note</strong></li>
+<li>Tapez votre commentaire</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<p>La note est :</p>
+<ul>
+<li>Horodatee automatiquement (date et heure)</li>
+<li>Visible dans la timeline de la commande</li>
+<li>Persistante (ne peut pas etre supprimee)</li>
+</ul>
+
+<hr>
+
+<h3>10. Rechercher une commande</h3>
+
+<p><strong>Objectif</strong> : Trouver rapidement une commande specifique.</p>
+
+<p><strong>Methodes de recherche</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Vous cherchez par...</th><th>Tapez dans la barre de recherche...</th></tr>
+</thead>
+<tbody>
+  <tr><td>Numero de commande</td><td><code>ORD-2026-0042</code> ou juste <code>0042</code></td></tr>
+  <tr><td>Nom du client</td><td><code>Jean Dupont</code> ou <code>dupont</code></td></tr>
+  <tr><td>Email du client</td><td><code>jean@email.com</code> ou <code>jean</code></td></tr>
+</tbody>
+</table>
+<p>La recherche est <strong>instantanee</strong> (pas besoin d'appuyer sur Entree) et <strong>insensible a la casse</strong> (majuscules/minuscules ignorees).</p>
+
+<hr>
+
+<h3>11. Filtrer par statut</h3>
+
+<p><strong>Objectif</strong> : Voir uniquement les commandes d'un certain statut.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Sous les cartes de statistiques, vous voyez les onglets de filtrage</li>
+<li>Cliquez sur l'onglet souhaite :</li>
+</ol>
+<ul>
+<li><strong>Tous les statuts</strong> : Affiche tout</li>
+<li><strong>En attente</strong> : Commandes en attente de confirmation</li>
+<li><strong>En traitement</strong> : Commandes en cours de preparation</li>
+<li><strong>Expediee</strong> : Commandes envoyees</li>
+<li><strong>Livree</strong> : Commandes recues par le client</li>
+</ul>
+
+<p>Le compteur a cote de chaque onglet indique le nombre de commandes dans ce statut.</p>
+
+<blockquote>
+<p><strong>Workflow quotidien recommande</strong> :</p>
+<p>1. Le matin, filtrez sur <strong>En attente</strong> → Confirmez les nouvelles commandes</p>
+<p>2. Preparez les colis → Passez-les en <strong>En traitement</strong></p>
+<p>3. Apres depot au transporteur → Passez-les en <strong>Expediee</strong> + ajoutez le tracking</p>
+<p>4. Quand le suivi indique "Livre" → Passez en <strong>Livree</strong></p>
+</blockquote>
+
+<hr>
+
+<h3>12. Detection de fraude</h3>
+
+<p><strong>Objectif</strong> : Le systeme detecte automatiquement les commandes suspectes.</p>
+
+<p><strong>Comment ca marche</strong> :</p>
+<p>Le systeme analyse chaque commande et lui attribue un <strong>niveau de risque</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Niveau</th><th>Badge</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Bas</strong></td><td>Vert</td><td>Tout semble normal. Aucune action necessaire.</td></tr>
+  <tr><td><strong>Moyen</strong></td><td>Jaune</td><td>Quelques indicateurs suspects. Verifiez manuellement avant d'expedier.</td></tr>
+  <tr><td><strong>Haut</strong></td><td>Orange</td><td>Plusieurs signaux d'alerte. Verifiez soigneusement : contactez le client, verifiez l'adresse.</td></tr>
+  <tr><td><strong>Critique</strong></td><td>Rouge</td><td>Tres forte probabilite de fraude. NE PAS expedier sans verification approfondie.</td></tr>
+</tbody>
+</table>
+<p><strong>Indicateurs analyses</strong> :</p>
+<ul>
+<li>Montant anormalement eleve</li>
+<li>Adresse de livraison dans un pays a risque</li>
+<li>Email utilisant un domaine jetable</li>
+<li>Premiere commande avec un tres gros montant</li>
+<li>Adresse de livraison et de facturation differentes</li>
+</ul>
+
+<blockquote>
+<p><strong>Que faire en cas de risque eleve ?</strong></p>
+<p>1. Ne pas expedier immediatement</p>
+<p>2. Verifier l'identite du client (appeler au telephone, verifier l'email)</p>
+<p>3. Si la commande est legitime, procedez normalement</p>
+<p>4. Si suspecte, annulez la commande et remboursez</p>
+</blockquote>
+
+<hr>
+
+<h3>13. Tags automatiques</h3>
+
+<p><strong>Objectif</strong> : Les commandes sont automatiquement etiquetees pour faciliter le tri.</p>
+
+<p><strong>Tags possibles</strong> :</p>
+<table>
+<thead>
+    <tr><th>Tag</th><th>Signification</th><th>Critere</th></tr>
+</thead>
+<tbody>
+  <tr><td>Gros panier</td><td>Commande de valeur elevee</td><td>Total > seuil configure</td></tr>
+  <tr><td>International</td><td>Expedition hors Canada</td><td>Pays != CA</td></tr>
+  <tr><td>Promo</td><td>Code promo utilise</td><td>promoCode present</td></tr>
+  <tr><td>1ere commande</td><td>Premier achat du client</td><td>Premiere commande detectee</td></tr>
+  <tr><td>B2B</td><td>Client distributeur</td><td>Type client = B2B</td></tr>
+  <tr><td>Remplacement</td><td>Commande de reexpedition</td><td>Liee a une commande parente</td></tr>
+</tbody>
+</table>
+<p>Les tags sont affiches sous forme de petites etiquettes colorees a cote de chaque commande dans la liste.</p>
+
+<hr>
+
+<h3>14. Timeline de la commande</h3>
+
+<p><strong>Objectif</strong> : Voir l'historique complet d'une commande dans l'ordre chronologique.</p>
+
+<p>La timeline affiche automatiquement tous les evenements :</p>
+<ul>
+<li>Commande creee (date + nombre d'articles)</li>
+<li>Paiement recu (montant + devise)</li>
+<li>Commande en traitement</li>
+<li>Commande expediee (transporteur + numero de suivi)</li>
+<li>Commande livree</li>
+<li>Remboursement (si applicable, avec numero de note de credit)</li>
+<li>Notes internes ajoutees</li>
+<li>Reexpeditions liees</li>
+</ul>
+
+<p>Chaque evenement affiche :</p>
+<ul>
+<li>Une icone representative</li>
+<li>Le titre de l'evenement</li>
+<li>La date et l'heure</li>
+<li>Des details supplementaires si disponibles</li>
+</ul>
+
+<hr>
+
+<h2>Connexions inter-modules</h2>
+
+<p>La page Commandes est connectee a <strong>8 autres modules</strong> de l'application. Quand vous consultez une commande, vous pouvez voir des informations provenant de :</p>
+
+<table>
+<thead>
+    <tr><th>Module</th><th>Ce que vous voyez</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Comptabilite</strong></td><td>Ecritures comptables generees automatiquement par la commande</td></tr>
+  <tr><td><strong>Fidelite</strong></td><td>Points gagnes par le client, niveau actuel, points utilises</td></tr>
+  <tr><td><strong>Marketing</strong></td><td>Code promo utilise, details de la promotion</td></tr>
+  <tr><td><strong>Emails</strong></td><td>Derniers emails envoyes au client pour cette commande</td></tr>
+  <tr><td><strong>Telephonie</strong></td><td>Appels recents lies a ce client</td></tr>
+  <tr><td><strong>CRM</strong></td><td>Deal associe a cette commande</td></tr>
+  <tr><td><strong>Catalogue</strong></td><td>Details actualises des produits commandes (prix actuel, stock)</td></tr>
+  <tr><td><strong>Communaute</strong></td><td>Avis laisses par le client sur les produits commandes</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario A : Traiter une nouvelle commande (de A a Z)</h3>
+
+<ol>
+<li><strong>Matin</strong> : Ouvrez la page Commandes, filtrez sur "En attente"</li>
+<li><strong>Verifiez</strong> la commande : montant coherent, adresse valide, pas de fraude</li>
+<li><strong>Confirmez</strong> : Passez le statut a "Confirmee"</li>
+<li><strong>Preparez</strong> : Rassemblez les produits, passez a "En traitement"</li>
+<li><strong>Emballez</strong> et deposez chez le transporteur</li>
+<li><strong>Expediez</strong> : Passez a "Expediee", ajoutez le tracking</li>
+<li><strong>Envoyez</strong> un email de confirmation avec le tracking</li>
+<li><strong>Attendez</strong> la livraison</li>
+<li><strong>Finalisez</strong> : Quand le suivi confirme la livraison, passez a "Livree"</li>
+</ol>
+
+<h3>Scenario B : Gerer un retour / remboursement</h3>
+
+<ol>
+<li>Le client vous contacte (chat, email, telephone)</li>
+<li>Ouvrez sa commande via la recherche</li>
+<li>Evaluez la situation (ajoutez une note interne)</li>
+<li>Si le retour est justifie :</li>
+</ol>
+<ul>
+<li>Cliquez sur <strong>Rembourser</strong></li>
+<li>Saisissez le montant (total ou partiel)</li>
+<li>Indiquez la raison</li>
+<li>Confirmez</li>
+</ul>
+<ol>
+<li>Si le client souhaite un remplacement :</li>
+</ol>
+<ul>
+<li>Cliquez sur <strong>Reexpedier</strong> plutot que rembourser</li>
+<li>Selectionnez la raison</li>
+</ul>
+
+<h3>Scenario C : Commande suspecte (fraude)</h3>
+
+<ol>
+<li>Vous voyez un badge <strong>rouge</strong> (Critique) ou <strong>orange</strong> (Haut) sur une commande</li>
+<li>NE PAS expedier</li>
+<li>Verifiez l'email du client (domaine reel ? pas un email jetable ?)</li>
+<li>Verifiez l'adresse de livraison (coherente avec la region du client ?)</li>
+<li>Si necessaire, contactez le client par telephone</li>
+<li>Si tout est en ordre : traitez normalement</li>
+<li>Si suspect : annulez la commande et remboursez</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Puis-je modifier les articles d'une commande apres qu'elle a ete passee ?</strong></p>
+<p>R: Non, les articles d'une commande ne peuvent pas etre modifies directement. Si necessaire, annulez la commande et demandez au client d'en passer une nouvelle, ou creez une commande manuelle.</p>
+
+<p><strong>Q: Le client dit qu'il n'a pas recu son email de confirmation. Que faire ?</strong></p>
+<p>R: Selectionnez la commande et cliquez sur l'icone email pour renvoyer la confirmation.</p>
+
+<p><strong>Q: Comment retrouver une commande si je n'ai que le nom du client ?</strong></p>
+<p>R: Tapez le nom (ou une partie) dans la barre de recherche. La recherche fonctionne sur le nom, l'email et le numero de commande.</p>
+
+<p><strong>Q: Que signifie le statut "En attente" ?</strong></p>
+<p>R: La commande a ete passee mais n'a pas encore ete confirmee par l'equipe. C'est le premier statut apres la creation.</p>
+
+<p><strong>Q: Puis-je annuler une commande deja expediee ?</strong></p>
+<p>R: Techniquement oui dans le systeme, mais le colis est deja en route. Vous devrez contacter le transporteur pour tenter de le recuperer, ou attendre le retour et proceder au remboursement.</p>
+
+<p><strong>Q: L'export CSV inclut-il les commandes filtrees ou toutes les commandes ?</strong></p>
+<p>R: Uniquement les commandes visibles avec vos filtres actuels. Si vous voulez tout exporter, assurez-vous que l'onglet "Tous les statuts" est selectionne et que la recherche est vide.</p>
+
+<hr>
+
+<h2>Strategie expert : Workflow de fulfillment complet</h2>
+
+<p>Le fulfillment (traitement et expedition) d'une commande BioCycle Peptides suit un cycle en 6 etapes. Chaque etape doit etre documentee dans la timeline de la commande pour assurer la tracabilite.</p>
+
+<h3>Etape 1 : Reception et validation</h3>
+
+<p>Quand une commande arrive dans le systeme :</p>
+<ol>
+<li>Verifier le paiement (statut Stripe confirme)</li>
+<li>Verifier le risque de fraude (voir section Detection de fraude ci-dessus)</li>
+<li>Verifier la disponibilite du stock dans <strong>Commerce > Inventaire</strong></li>
+<li>Valider l'adresse de livraison (format valide, code postal coherent avec la province/etat)</li>
+<li>Passer le statut a <strong>Confirmee</strong></li>
+</ol>
+
+<p><strong>Temps cible</strong> : moins de 2 heures apres reception pour les commandes recues avant 14h.</p>
+
+<h3>Etape 2 : Picking (preparation)</h3>
+
+<ol>
+<li>Imprimer le bon de commande (bouton <strong>Imprimer</strong> dans le ruban)</li>
+<li>Recuperer chaque produit dans l'entrepot selon le bon</li>
+<li>Verifier le lot et la date d'expiration de chaque peptide</li>
+<li>Scanner ou cocher chaque article pour confirmer la concordance</li>
+<li>Passer le statut a <strong>En traitement</strong></li>
+</ol>
+
+<p><strong>Regle FIFO</strong> : Toujours prelever les lots les plus anciens en premier (First In, First Out). Les peptides lyophilises ont une duree de conservation de 24 mois a partir de la fabrication.</p>
+
+<h3>Etape 3 : Emballage</h3>
+
+<ol>
+<li>Utiliser un emballage isotherme pour les peptides lyophilises si la temperature ambiante depasse 25 degres Celsius</li>
+<li>Inclure un sachet dessiccant pour l'humidite</li>
+<li>Joindre le bon de livraison imprime (sans les prix si le client l'a demande)</li>
+<li>Ajouter un insert marketing (carte de remerciement, code promo pour le prochain achat)</li>
+<li>Sceller et etiqueter le colis</li>
+</ol>
+
+<p><strong>Pour les envois internationaux</strong> : inclure la facture commerciale (commercial invoice) avec la description douaniere des produits, le code SH (Systeme Harmonise) et la valeur declaree en dollars canadiens.</p>
+
+<h3>Etape 4 : Expedition</h3>
+
+<ol>
+<li>Peser le colis et selectionner le service de transport optimal</li>
+<li>Generer l'etiquette d'expedition via le portail du transporteur</li>
+<li>Coller l'etiquette sur le colis</li>
+<li>Deposer chez le transporteur ou programmer un ramassage</li>
+<li>Passer le statut a <strong>Expediee</strong> et saisir le numero de suivi</li>
+</ol>
+
+<h3>Etape 5 : Suivi post-expedition</h3>
+
+<ol>
+<li>Verifier quotidiennement les numeros de suivi en attente de livraison</li>
+<li>Contacter proactivement le client si un colis est bloque en transit depuis plus de 5 jours ouvrables (Canada) ou 10 jours ouvrables (international)</li>
+<li>Pour les envois avec assurance : conserver la preuve d'envoi pendant 90 jours</li>
+</ol>
+
+<h3>Etape 6 : Confirmation de livraison</h3>
+
+<ol>
+<li>Quand le suivi confirme la livraison, passer a <strong>Livree</strong></li>
+<li>Declencher l'email de satisfaction (J+3 apres livraison)</li>
+<li>Demander un avis produit (J+7 apres livraison)</li>
+</ol>
+
+<hr>
+
+<h2>Strategie expert : Gestion des retours et echanges</h2>
+
+<h3>Politique de retour recommandee pour les peptides</h3>
+
+<p>Les peptides de recherche ont des contraintes specifiques qui impactent la politique de retour :</p>
+<ul>
+<li><strong>Produits non ouverts, scelle intact</strong> : retour accepte sous 30 jours, remboursement complet</li>
+<li><strong>Produits ouverts</strong> : retour refuse pour des raisons de controle qualite et d'integrite du produit</li>
+<li><strong>Produits endommages a la reception</strong> : remplacement gratuit avec preuve photographique (dans les 48 heures suivant la reception)</li>
+<li><strong>Erreur de commande (notre faute)</strong> : remplacement gratuit + frais de retour a notre charge</li>
+</ul>
+
+<h3>Processus de retour structure</h3>
+
+<ol>
+<li>Le client contacte le service client (email, telephone, chat)</li>
+<li>Creer une note interne sur la commande avec les details du probleme</li>
+<li>Si le retour est justifie : generer un numero de retour (Return Merchandise Authorization, RMA)</li>
+<li>Envoyer les instructions de retour au client par email</li>
+<li>A la reception du colis retourne : inspecter le produit</li>
+<li>Si conforme : proceder au remboursement ou a l'echange</li>
+<li>Si non conforme : contacter le client pour expliquer le refus</li>
+</ol>
+
+<h3>Echanges</h3>
+
+<p>Pour un echange, utiliser la fonction <strong>Reexpedier</strong> de la commande originale. Cela cree une commande de remplacement liee, sans facturation supplementaire. L'historique complet reste visible dans la timeline.</p>
+
+<hr>
+
+<h2>Strategie expert : Detection de fraude avancee</h2>
+
+<p>Au-dela des indicateurs automatiques du systeme, voici les signaux supplementaires a surveiller manuellement pour une boutique de peptides au Canada.</p>
+
+<h3>Signaux de fraude specifiques au marche des peptides</h3>
+
+<table>
+<thead>
+    <tr><th>Signal</th><th>Niveau de risque</th><th>Action recommandee</th></tr>
+</thead>
+<tbody>
+  <tr><td>Adresse de livraison differente de l'adresse de facturation</td><td>Moyen</td><td>Verifier par telephone</td></tr>
+  <tr><td>Premiere commande superieure a 500 $CA</td><td>Eleve</td><td>Verification manuelle obligatoire</td></tr>
+  <tr><td>Email utilisant un domaine jetable (guerrillamail, tempmail, yopmail)</td><td>Eleve</td><td>Contacter par telephone avant expedition</td></tr>
+  <tr><td>Plusieurs commandes en moins de 24 heures, memes produits</td><td>Critique</td><td>Bloquer et verifier</td></tr>
+  <tr><td>Adresse de livraison vers une boite postale ou un point relais</td><td>Moyen</td><td>Acceptable si le reste est coherent</td></tr>
+  <tr><td>Carte de credit emise dans un pays different de l'adresse de livraison</td><td>Eleve</td><td>Verification 3D Secure obligatoire</td></tr>
+  <tr><td>Client demandant une livraison "urgente" avec changement d'adresse apres commande</td><td>Critique</td><td>Refuser le changement, verifier l'identite</td></tr>
+</tbody>
+</table>
+<h3>Procedure de verification manuelle</h3>
+
+<ol>
+<li>Rechercher l'email du client dans votre base : est-ce un client existant ?</li>
+<li>Verifier la coherence entre le nom sur la carte et le nom du compte</li>
+<li>Appeler le numero de telephone fourni (un numero invalide est un signal critique)</li>
+<li>Verifier l'adresse sur Google Maps (existe-t-elle physiquement ?)</li>
+<li>Si doute persistant : demander une piece d'identite ou annuler la commande</li>
+</ol>
+
+<h3>Cout de la fraude</h3>
+
+<p>Pour une entreprise de la taille de BioCycle Peptides, une seule retrofacturation (chargeback) coute en moyenne :</p>
+<ul>
+<li>Le montant de la commande (perte seche)</li>
+<li>15 $CA a 25 $CA de frais de retrofacturation Stripe</li>
+<li>Le cout des produits expedies (non recuperables)</li>
+<li>Un impact negatif sur le ratio de retrofacturation (si superieur a 1%, Stripe peut suspendre le compte)</li>
+</ul>
+
+<hr>
+
+<h2>Strategie expert : Expedition internationale et frais de douane</h2>
+
+<h3>Delais de livraison typiques depuis le Quebec</h3>
+
+<table>
+<thead>
+    <tr><th>Destination</th><th>Transporteur recommande</th><th>Delai moyen</th><th>Fourchette de prix</th></tr>
+</thead>
+<tbody>
+  <tr><td>Quebec/Ontario</td><td>Postes Canada Expedie</td><td>2-3 jours ouvrables</td><td>12-18 $CA</td></tr>
+  <tr><td>Autres provinces canadiennes</td><td>Postes Canada Expedie</td><td>3-5 jours ouvrables</td><td>15-22 $CA</td></tr>
+  <tr><td>Etats-Unis (zone continentale)</td><td>Postes Canada Petit paquet USA / UPS Standard</td><td>5-8 jours ouvrables</td><td>18-35 $CA</td></tr>
+  <tr><td>Europe (UE)</td><td>Postes Canada Petit paquet international</td><td>10-15 jours ouvrables</td><td>25-45 $CA</td></tr>
+  <tr><td>Australie / Asie</td><td>Postes Canada Petit paquet international</td><td>12-20 jours ouvrables</td><td>30-55 $CA</td></tr>
+  <tr><td>Express international</td><td>FedEx / UPS Express</td><td>3-5 jours ouvrables</td><td>55-120 $CA</td></tr>
+</tbody>
+</table>
+<h3>Calcul des frais de douane pour les peptides</h3>
+
+<p>Les peptides synthetiques pour usage en recherche sont classes sous des codes douaniers specifiques. Les regles varient par pays.</p>
+
+<p><strong>Vers les Etats-Unis</strong> :</p>
+<ul>
+<li>Seuil de minimis : 800 $US (commandes en dessous ne paient pas de droits)</li>
+<li>La plupart des peptides de recherche passent sans droits additionnels</li>
+<li>Declaration douaniere : "Synthetic peptides for research use only, not for human consumption"</li>
+<li>Code SH suggere : 2933.99 (composes heterocycliques) ou 3002.19 (produits de synthese peptidique)</li>
+</ul>
+
+<p><strong>Vers l'Union europeenne</strong> :</p>
+<ul>
+<li>Seuil de minimis : 150 EUR (au-dela, TVA + droits de douane)</li>
+<li>TVA applicable : 20% (France), 19% (Allemagne), 21% (Belgique) selon le pays</li>
+<li>Droits de douane typiques : 0 a 6,5% selon la classification exacte</li>
+</ul>
+
+<p><strong>Vers l'Australie</strong> :</p>
+<ul>
+<li>Seuil de minimis : 1 000 AUD (pas de droits en dessous)</li>
+<li>Attention : l'Australie a des restrictions strictes sur l'importation de certains peptides. Verifier la liste TGA (Therapeutic Goods Administration) avant d'expedier.</li>
+</ul>
+
+<h3>Documents requis pour l'expedition internationale</h3>
+
+<ol>
+<li><strong>Facture commerciale</strong> (commercial invoice) : obligatoire pour tout envoi hors Canada</li>
+<li><strong>Declaration de contenu</strong> : description precise des produits, valeur, pays d'origine</li>
+<li><strong>Certificat d'analyse (COA)</strong> : recommande pour les douanes, prouve la nature du produit</li>
+<li><strong>Mention "For research use only"</strong> : obligatoire sur tous les documents et etiquettes</li>
+</ol>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Commande</strong></td><td>Un achat effectue par un client, comprenant un ou plusieurs produits</td></tr>
+  <tr><td><strong>Statut</strong></td><td>L'etape actuelle de la commande dans le processus de traitement</td></tr>
+  <tr><td><strong>Paiement</strong></td><td>Le reglement financier associe a la commande (par carte de credit via Stripe)</td></tr>
+  <tr><td><strong>Tracking</strong></td><td>Le numero de suivi fourni par le transporteur pour localiser le colis</td></tr>
+  <tr><td><strong>Note de credit</strong></td><td>Un document comptable cree lors d'un remboursement</td></tr>
+  <tr><td><strong>TPS</strong></td><td>Taxe sur les Produits et Services (taxe federale canadienne, 5%)</td></tr>
+  <tr><td><strong>TVQ</strong></td><td>Taxe de Vente du Quebec (taxe provinciale, 9.975%)</td></tr>
+  <tr><td><strong>TVH</strong></td><td>Taxe de Vente Harmonisee (dans certaines provinces, combine TPS + taxe provinciale)</td></tr>
+  <tr><td><strong>CSV</strong></td><td>Comma-Separated Values — format de fichier tabulaire compatible avec Excel</td></tr>
+  <tr><td><strong>Fraude</strong></td><td>Commande passee avec une carte volee ou une identite usurpee</td></tr>
+  <tr><td><strong>Reexpedition</strong></td><td>Renvoi gratuit d'une commande en cas de probleme avec la livraison originale</td></tr>
+  <tr><td><strong>CSRF</strong></td><td>Protection de securite qui empeche les actions non autorisees (transparente pour l'utilisateur)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/customers">Clients (acheteurs)</a> — Voir la fiche complete du client</li>
+<li><a href="/admin/clients">Distributeurs B2B</a> — Clients professionnels</li>
+<li><a href="/admin/inventaire">Inventaire</a> — Verifier les niveaux de stock</li>
+<li><a href="/admin/paiements/reconciliation">Reconciliation des paiements</a> — Rapprochement bancaire</li>
+<li><a href="/admin/comptabilite">Comptabilite</a> — Ecritures comptables generees par les commandes</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="02-commerce--02-clients">
+<h1>Gestion des Clients (Acheteurs)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Commerce > Clients</p>
+<p><strong>URL</strong>: <code>/admin/customers</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Clients</strong> regroupe tous les <strong>acheteurs finaux</strong> — c'est-a-dire toutes les personnes qui ont cree un compte ou passe une commande sur votre boutique BioCycle Peptides.</p>
+
+<blockquote>
+<p><strong>Difference entre Clients et Distributeurs</strong> :</p>
+<p>- <strong>Clients</strong> (cette page) = les consommateurs individuels, le grand public</p>
+<p>- <strong>Distributeurs</strong> (<code>/admin/clients</code>) = les entreprises, revendeurs, partenaires B2B</p>
+</blockquote>
+
+<p><strong>Ce que vous pouvez faire ici</strong> :</p>
+<ul>
+<li>Voir la liste de tous vos clients avec leurs statistiques</li>
+<li>Filtrer par niveau de fidelite (Bronze, Silver, Gold, Platinum, Diamond)</li>
+<li>Rechercher un client par nom ou email</li>
+<li>Consulter la fiche complete d'un client (achats, points, niveau, segmentation)</li>
+<li>Analyser vos clients avec la segmentation RFM (outil marketing avance)</li>
+<li>Voir vos meilleurs clients VIP en un coup d'oeil</li>
+<li>Exporter la liste complete en CSV</li>
+<li>Consulter les statistiques globales de votre base clients</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans la barre de navigation, cliquez sur <strong>Commerce</strong></li>
+<li>Dans le panneau lateral, cliquez sur <strong>Clients</strong></li>
+</ol>
+
+<p>Ou directement via l'URL : <code>/admin/customers</code></p>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Page Clients]</div>
+
+<h3>Les 4 cartes de statistiques</h3>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th><th>Utilite</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total clients</strong></td><td>Nombre total de clients inscrits</td><td>Mesure la taille de votre base clients</td></tr>
+  <tr><td><strong>Revenus totaux</strong></td><td>Somme de tous les achats de tous les clients</td><td>Chiffre d'affaires global genere par vos clients</td></tr>
+  <tr><td><strong>Panier moyen</strong></td><td>Montant moyen depense par client</td><td>Indicateur de la valeur moyenne d'un client</td></tr>
+  <tr><td><strong>VIP (Gold+)</strong></td><td>Nombre de clients Gold, Platinum ou Diamond</td><td>Vos meilleurs clients, ceux qui generent le plus de revenus</td></tr>
+</tbody>
+</table>
+<h3>Les onglets de filtrage par niveau</h3>
+
+<p>Les clients sont classes automatiquement par niveau de fidelite selon leurs achats et leurs points :</p>
+
+<table>
+<thead>
+    <tr><th>Niveau</th><th>Qui sont-ils</th><th>Comment y acceder</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Tous les niveaux</strong></td><td>Tous vos clients</td><td>Onglet par defaut</td></tr>
+  <tr><td><strong>Bronze</strong></td><td>Nouveaux clients ou achats occasionnels (0+ points)</td><td>Clients debutants</td></tr>
+  <tr><td><strong>Silver</strong></td><td>Clients reguliers (500+ points)</td><td>Acheteurs qui reviennent</td></tr>
+  <tr><td><strong>Gold</strong></td><td>Bons clients (2 000+ points)</td><td>Clients fideles</td></tr>
+  <tr><td><strong>Platinum</strong></td><td>Tres bons clients (5 000+ points)</td><td>Clients tres actifs</td></tr>
+  <tr><td><strong>Diamond</strong></td><td>Meilleurs clients (10 000+ points)</td><td>Top clients, VIP absolus</td></tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Pour les neophytes</strong> : Les points de fidelite s'accumulent automatiquement a chaque achat (1 point par dollar depense par defaut). Plus un client achete, plus son niveau monte, et plus il beneficie d'avantages (multiplicateur de points, livraison gratuite, etc.)</p>
+</blockquote>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Consulter la fiche d'un client</h3>
+
+<p><strong>Objectif</strong> : Voir toutes les informations sur un client specifique.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Trouvez le client dans la liste (recherche ou filtrage)</li>
+<li>Cliquez sur son nom</li>
+<li>Le panneau de detail s'ouvre a droite</li>
+</ol>
+
+<p><strong>Informations disponibles</strong> :</p>
+<ul>
+<li><strong>Identite</strong> : Nom, email, telephone</li>
+<li><strong>Niveau fidelite</strong> : Badge colore (Bronze/Silver/Gold/Platinum/Diamond)</li>
+<li><strong>Points</strong> : Points actuels, points a vie, points utilises</li>
+<li><strong>Achats</strong> : Nombre de commandes, montant total depense</li>
+<li><strong>Segmentation RFM</strong> : Score et segment (voir section 4)</li>
+<li><strong>Code de parrainage</strong> : Si le client est ambassadeur</li>
+<li><strong>Date d'inscription</strong> : Depuis quand le client est inscrit</li>
+</ul>
+
+<hr>
+
+<h3>2. Rechercher un client</h3>
+
+<p><strong>Methodes</strong> :</p>
+<ul>
+<li><strong>Par nom</strong> : Tapez "Jean" pour trouver tous les Jean</li>
+<li><strong>Par email</strong> : Tapez "gmail" pour voir tous les clients Gmail</li>
+<li>La recherche est instantanee et insensible a la casse</li>
+</ul>
+
+<hr>
+
+<h3>3. Le panneau VIP</h3>
+
+<p><strong>Objectif</strong> : Voir rapidement vos meilleurs clients classes par chiffre d'affaires.</p>
+
+<p>Le panneau VIP affiche les clients tries par montant total depense, du plus gros au plus petit. Pour chaque client VIP, vous voyez :</p>
+<ul>
+<li>Nom et email</li>
+<li>Montant total depense</li>
+<li>Niveau de fidelite actuel</li>
+<li>Score RFM</li>
+</ul>
+
+<blockquote>
+<p><strong>Pourquoi c'est important</strong> : La regle des 80/20 s'applique souvent — 20% de vos clients generent 80% de vos revenus. Ce panneau identifie ces clients cles pour que vous puissiez les choyer !</p>
+</blockquote>
+
+<hr>
+
+<h3>4. La segmentation RFM (outil marketing avance)</h3>
+
+<p><strong>Qu'est-ce que le RFM ?</strong></p>
+
+<p>RFM est un outil d'analyse marketing utilise par les grandes entreprises pour segmenter leurs clients. Il est base sur 3 criteres :</p>
+
+<table>
+<thead>
+    <tr><th>Lettre</th><th>Signification</th><th>Question posee</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>R</strong> - Recence</td><td>Quand a-t-il achete pour la derniere fois ?</td><td>Plus c'est recent, mieux c'est</td></tr>
+  <tr><td><strong>F</strong> - Frequence</td><td>Combien de fois a-t-il achete ?</td><td>Plus c'est frequent, mieux c'est</td></tr>
+  <tr><td><strong>M</strong> - Montant</td><td>Combien a-t-il depense au total ?</td><td>Plus c'est eleve, mieux c'est</td></tr>
+</tbody>
+</table>
+<p>Chaque critere est note de 1 a 5. Le score final combine les trois notes.</p>
+
+<p><strong>Segments RFM typiques</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Segment</th><th>Description</th><th>Action recommandee</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Champions</strong></td><td>Achetent souvent, depensent beaucoup, recemment</td><td>Les recompenser, programme VIP</td></tr>
+  <tr><td><strong>Clients fideles</strong></td><td>Achetent regulierement</td><td>Offrir des avantages exclusifs</td></tr>
+  <tr><td><strong>Clients potentiels</strong></td><td>Achats recents mais pas encore reguliers</td><td>Encourager la deuxieme commande</td></tr>
+  <tr><td><strong>A risque</strong></td><td>Bons clients qui n'ont pas achete recemment</td><td>Email de reactivation, offre speciale</td></tr>
+  <tr><td><strong>Perdus</strong></td><td>N'ont pas achete depuis longtemps</td><td>Campagne de reconquete ou accepter la perte</td></tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Pour les neophytes</strong> : Vous n'avez rien a configurer ! Le systeme calcule automatiquement le score RFM de chaque client. Utilisez-le pour savoir qui merite une attention particuliere.</p>
+</blockquote>
+
+<hr>
+
+<h3>5. Actions du ruban (barre d'outils)</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th><th>Ce qu'il fait</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau customer</strong></td><td>Creer un client manuellement</td><td>Ouvre un formulaire pour ajouter un client sans qu'il passe par l'inscription en ligne</td></tr>
+  <tr><td><strong>Stats ventes</strong></td><td>Statistiques de ventes</td><td>Affiche un resume: revenu total, nombre d'achats, panier moyen</td></tr>
+  <tr><td><strong>Stats type</strong></td><td>Repartition par niveau</td><td>Montre combien de clients dans chaque niveau (Diamond, Platinum, Gold, etc.)</td></tr>
+  <tr><td><strong>Stats avis</strong></td><td>Top clients par depenses</td><td>Liste les 3 meilleurs clients avec leurs montants</td></tr>
+  <tr><td><strong>Stats ambassadeur</strong></td><td>Statistiques de parrainage</td><td>Nombre de clients avec code de parrainage, total de points, VIP</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Export CSV</td><td>Telecharge un fichier avec toutes les donnees clients</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h3>6. Exporter les donnees clients en CSV</h3>
+
+<p><strong>Objectif</strong> : Obtenir un fichier tabulaire de tous vos clients pour analyse ou import dans un autre outil.</p>
+
+<p><strong>Colonnes exportees</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Colonne</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td>Name</td><td>Nom du client</td></tr>
+  <tr><td>Email</td><td>Adresse email</td></tr>
+  <tr><td>Phone</td><td>Numero de telephone</td></tr>
+  <tr><td>Loyalty Tier</td><td>Niveau de fidelite</td></tr>
+  <tr><td>Loyalty Points</td><td>Points actuels</td></tr>
+  <tr><td>Lifetime Points</td><td>Points a vie (incluant les points utilises)</td></tr>
+  <tr><td>Total Spent</td><td>Montant total depense</td></tr>
+  <tr><td>Purchases</td><td>Nombre d'achats</td></tr>
+  <tr><td>Referral Code</td><td>Code de parrainage (si ambassadeur)</td></tr>
+  <tr><td>Registered</td><td>Date d'inscription</td></tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Astuce</strong> : Exportez regulierement (1x/mois) pour garder un historique de l'evolution de votre base clients.</p>
+</blockquote>
+
+<hr>
+
+<h2>Workflow recommande : Gerer sa base clients</h2>
+
+<h3>Quotidien</h3>
+<ol>
+<li>Ouvrez la page Clients</li>
+<li>Verifiez si de nouveaux clients se sont inscrits</li>
+<li>Consultez le panneau VIP pour identifier les gros acheteurs recents</li>
+</ol>
+
+<h3>Hebdomadaire</h3>
+<ol>
+<li>Filtrez sur <strong>Gold+</strong> pour voir vos VIP</li>
+<li>Verifiez les segments RFM "A risque" — ces bons clients qui n'achetent plus</li>
+<li>Envoyez-leur un email personnalise via la section Marketing > Newsletter</li>
+</ol>
+
+<h3>Mensuel</h3>
+<ol>
+<li>Exportez en CSV pour analyse</li>
+<li>Comparez avec le mois precedent : croissance de la base, evolution du panier moyen</li>
+<li>Identifiez les tendances (plus de Diamond ? Moins de Bronze ?)</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Un client peut-il changer de niveau de fidelite ?</strong></p>
+<p>R: Oui, automatiquement. Quand ses points atteignent le seuil du niveau superieur, il est promu. Les niveaux ne descendent pas.</p>
+
+<p><strong>Q: Comment creer un client manuellement ?</strong></p>
+<p>R: Cliquez sur "Nouveau customer" dans le ruban. Utile pour les commandes telephoniques ou les clients qui ne veulent pas s'inscrire en ligne.</p>
+
+<p><strong>Q: Quelle est la difference entre "Points" et "Points a vie" ?</strong></p>
+<p>R: Les "Points" sont le solde actuel utilisable. Les "Points a vie" incluent tous les points gagnes depuis l'inscription, meme ceux deja echanges contre des recompenses.</p>
+
+<p><strong>Q: Comment savoir si un client est ambassadeur ?</strong></p>
+<p>R: Il aura un "Code de parrainage" dans sa fiche. Cliquez sur "Stats ambassadeur" dans le ruban pour voir le nombre total d'ambassadeurs.</p>
+
+<hr>
+
+<h2>Strategie expert : Segmentation RFM appliquee aux peptides</h2>
+
+<h3>Cycles d'achat typiques dans le marche des peptides</h3>
+
+<p>Le marche des peptides de recherche a des cycles d'achat specifiques qui different des produits de consommation classiques. Comprendre ces cycles permet d'ajuster la segmentation RFM.</p>
+
+<table>
+<thead>
+    <tr><th>Profil client</th><th>Cycle d'achat typique</th><th>Panier moyen</th><th>Comportement</th></tr>
+</thead>
+<tbody>
+  <tr><td>Chercheur debutant</td><td>Premier achat exploratoire, puis retour a 3-6 mois</td><td>50-100 $CA</td><td>Achete 1-2 peptides, explore</td></tr>
+  <tr><td>Chercheur regulier</td><td>Tous les 2-3 mois</td><td>100-200 $CA</td><td>Commande les memes peptides + essaie des nouveaux</td></tr>
+  <tr><td>Chercheur avance</td><td>Tous les 1-2 mois</td><td>200-400 $CA</td><td>Achete en plus grands formats, commande des combinaisons</td></tr>
+  <tr><td>Client professionnel (labo)</td><td>Mensuel ou bimensuel</td><td>400-1 500 $CA</td><td>Commandes regulieres, volumes importants, sensible au prix</td></tr>
+  <tr><td>Revendeur / distributeur</td><td>Hebdomadaire a bimensuel</td><td>1 500+ $CA</td><td>Commandes en gros, negociation de prix, compte B2B</td></tr>
+</tbody>
+</table>
+<h3>Ajustement des seuils RFM pour BioCycle Peptides</h3>
+
+<p>Les seuils RFM par defaut (bases sur le e-commerce general) ne conviennent pas aux peptides. Voici les seuils recommandes :</p>
+
+<p><strong>Recence (R)</strong> : derniere commande</p>
+<table>
+<thead>
+    <tr><th>Score</th><th>E-commerce general</th><th>Peptides BioCycle (recommande)</th></tr>
+</thead>
+<tbody>
+  <tr><td>5</td><td>Moins de 7 jours</td><td>Moins de 30 jours</td></tr>
+  <tr><td>4</td><td>8-30 jours</td><td>31-60 jours</td></tr>
+  <tr><td>3</td><td>31-90 jours</td><td>61-120 jours</td></tr>
+  <tr><td>2</td><td>91-180 jours</td><td>121-240 jours</td></tr>
+  <tr><td>1</td><td>Plus de 180 jours</td><td>Plus de 240 jours</td></tr>
+</tbody>
+</table>
+<p><strong>Frequence (F)</strong> : nombre de commandes sur 12 mois</p>
+<table>
+<thead>
+    <tr><th>Score</th><th>Seuil recommande</th></tr>
+</thead>
+<tbody>
+  <tr><td>5</td><td>8+ commandes</td></tr>
+  <tr><td>4</td><td>5-7 commandes</td></tr>
+  <tr><td>3</td><td>3-4 commandes</td></tr>
+  <tr><td>2</td><td>2 commandes</td></tr>
+  <tr><td>1</td><td>1 commande</td></tr>
+</tbody>
+</table>
+<p><strong>Montant (M)</strong> : depenses totales sur 12 mois</p>
+<table>
+<thead>
+    <tr><th>Score</th><th>Seuil recommande</th></tr>
+</thead>
+<tbody>
+  <tr><td>5</td><td>1 500+ $CA</td></tr>
+  <tr><td>4</td><td>800-1 499 $CA</td></tr>
+  <tr><td>3</td><td>400-799 $CA</td></tr>
+  <tr><td>2</td><td>150-399 $CA</td></tr>
+  <tr><td>1</td><td>Moins de 150 $CA</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Strategie expert : Calcul du CLV (Customer Lifetime Value)</h2>
+
+<h3>Formule de base</h3>
+
+<p>Le CLV mesure la valeur totale qu'un client genere pour votre entreprise sur toute la duree de sa relation avec vous.</p>
+
+<pre><code>CLV = Panier moyen x Frequence annuelle x Duree de vie client (en annees) x Marge brute</code></pre>
+
+<h3>Exemple chiffre pour BioCycle Peptides</h3>
+
+<p>Prenons un client "Chercheur regulier" typique :</p>
+<ul>
+<li><strong>Panier moyen</strong> : 150 $CA</li>
+<li><strong>Frequence annuelle</strong> : 5 commandes par an (tous les 2,5 mois)</li>
+<li><strong>Duree de vie client</strong> : 3 ans (moyenne observee dans le marche des supplements/peptides)</li>
+<li><strong>Marge brute</strong> : 55% (marge typique pour les peptides de recherche)</li>
+</ul>
+
+<pre><code>CLV = 150 x 5 x 3 x 0,55 = 1 237,50 $CA</code></pre>
+
+<p>Cela signifie que chaque client regulier vaut en moyenne <strong>1 237,50 $CA</strong> de marge brute sur sa vie client.</p>
+
+<h3>Implications strategiques du CLV</h3>
+
+<table>
+<thead>
+    <tr><th>CLV estime</th><th>Budget acquisition acceptable</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td>Moins de 200 $CA</td><td>20-40 $CA par client</td><td>Acquisition par contenu SEO et referencement organique</td></tr>
+  <tr><td>200-500 $CA</td><td>40-100 $CA par client</td><td>Google Ads, campagnes Facebook ciblees</td></tr>
+  <tr><td>500-1 500 $CA</td><td>100-300 $CA par client</td><td>Campagnes multicanal, parrainage, offre premiere commande</td></tr>
+  <tr><td>Plus de 1 500 $CA</td><td>300-500 $CA par client</td><td>Compte-cle, service personnalise, commercial dedie</td></tr>
+</tbody>
+</table>
+<p><strong>Regle pratique</strong> : votre cout d'acquisition client (CAC) ne devrait jamais depasser 25-30% du CLV. Si votre CLV moyen est de 1 237 $CA, votre CAC maximum est d'environ 310 $CA.</p>
+
+<hr>
+
+<h2>Strategie expert : Scripts de relance client inactif</h2>
+
+<h3>Strategie de retention post-achat par email</h3>
+
+<p>La retention est plus rentable que l'acquisition. Voici une sequence d'emails automatises adaptee au cycle d'achat des peptides.</p>
+
+<h3>Sequence post-premier-achat (onboarding)</h3>
+
+<table>
+<thead>
+    <tr><th>Jour</th><th>Email</th><th>Objet</th><th>Objectif</th></tr>
+</thead>
+<tbody>
+  <tr><td>J+1</td><td>Confirmation et bienvenue</td><td>"Votre commande est confirmee — bienvenue chez BioCycle"</td><td>Rassurer, presenter la marque</td></tr>
+  <tr><td>J+3</td><td>Expedition + conseil</td><td>"Votre colis est en route + Guide de stockage peptides"</td><td>Eduquer, montrer l'expertise</td></tr>
+  <tr><td>J+10</td><td>Satisfaction</td><td>"Tout va bien avec votre commande ?"</td><td>Detecter les problemes, demander un avis</td></tr>
+  <tr><td>J+30</td><td>Relance educative</td><td>"3 erreurs courantes avec les peptides de recherche"</td><td>Maintenir l'engagement, positionner comme expert</td></tr>
+  <tr><td>J+60</td><td>Offre de fidelite</td><td>"Votre recompense de fidelite vous attend (150 points bonus)"</td><td>Inciter le deuxieme achat</td></tr>
+  <tr><td>J+90</td><td>Relance produit</td><td>"Vos peptides arrivent a leur date optimale — il est temps de renouveler"</td><td>Declencher le reachat</td></tr>
+</tbody>
+</table>
+<h3>Sequence de reactivation (client inactif)</h3>
+
+<p>Un client est considere "inactif" s'il n'a pas commande depuis plus de 120 jours (2 cycles d'achat standard).</p>
+
+<table>
+<thead>
+    <tr><th>Jour</th><th>Email</th><th>Objet</th><th>Offre</th></tr>
+</thead>
+<tbody>
+  <tr><td>J+120</td><td>Premier rappel</td><td>"Vous nous manquez — voici 10% sur votre prochaine commande"</td><td>10% de remise, validite 14 jours</td></tr>
+  <tr><td>J+150</td><td>Deuxieme rappel</td><td>"Nouveautes chez BioCycle + votre remise expire bientot"</td><td>Meme 10%, rappel d'urgence</td></tr>
+  <tr><td>J+180</td><td>Offre speciale</td><td>"Offre exclusive : 15% + livraison gratuite, seulement pour vous"</td><td>15% + livraison gratuite, validite 7 jours</td></tr>
+  <tr><td>J+240</td><td>Dernier essai</td><td>"On se dit au revoir ? Votre derniere offre speciale"</td><td>20% de remise, sondage de depart</td></tr>
+  <tr><td>J+365</td><td>Nettoyage</td><td>(Pas d'email, archivage automatique)</td><td>Retirer des listes actives pour proteger la reputation email</td></tr>
+</tbody>
+</table>
+<h3>Indicateurs cles a surveiller</h3>
+
+<table>
+<thead>
+    <tr><th>Indicateur</th><th>Cible saine</th><th>Signal d'alerte</th></tr>
+</thead>
+<tbody>
+  <tr><td>Taux d'ouverture emails relance</td><td>Plus de 20%</td><td>Moins de 10% : objet a retravailler</td></tr>
+  <tr><td>Taux de clic</td><td>Plus de 3%</td><td>Moins de 1% : offre pas assez attractive</td></tr>
+  <tr><td>Taux de reactivation (J+120 a J+240)</td><td>15-25% des inactifs</td><td>Moins de 10% : revoir la strategie</td></tr>
+  <tr><td>Taux de desabonnement post-relance</td><td>Moins de 1%</td><td>Plus de 2% : frequence trop elevee</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Client</strong></td><td>Personne physique qui a achete ou cree un compte sur la boutique</td></tr>
+  <tr><td><strong>Distributeur</strong></td><td>Entreprise partenaire qui achete en gros (B2B)</td></tr>
+  <tr><td><strong>RFM</strong></td><td>Methode de segmentation marketing (Recence, Frequence, Montant)</td></tr>
+  <tr><td><strong>Niveau de fidelite</strong></td><td>Rang du client dans le programme de recompenses (Bronze→Diamond)</td></tr>
+  <tr><td><strong>Panier moyen</strong></td><td>Montant moyen depense par commande ou par client</td></tr>
+  <tr><td><strong>VIP</strong></td><td>Client de niveau Gold ou superieur</td></tr>
+  <tr><td><strong>Parrainage</strong></td><td>Systeme ou un client existant invite un nouveau client et les deux recoivent une recompense</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/commandes">Commandes</a> — Les commandes passees par ces clients</li>
+<li><a href="/admin/clients">Distributeurs B2B</a> — Les clients professionnels</li>
+<li><a href="/admin/fidelite">Programme de fidelite</a> — Configurer les niveaux et recompenses</li>
+<li><a href="/admin/ambassadeurs">Ambassadeurs</a> — Le programme de parrainage</li>
+<li><a href="/admin/newsletter">Newsletter</a> — Envoyer des campagnes email a vos clients</li>
+</ul>
+
+<hr>
+
+<h2>Bugs connus</h2>
+
+<table>
+<thead>
+    <tr><th>Bug</th><th>Severite</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td>BUG-CUST-01</td><td>Moyenne</td><td>Le bouton ribbon affiche "Nouveau <strong>customer</strong>" au lieu de "Nouveau <strong>client</strong>" (mot anglais non traduit)</td></tr>
+  <tr><td>BUG-CUST-02</td><td>Basse</td><td>Le label sidebar "admin.nav.paymentReconcilia..." est tronque</td></tr>
+</tbody>
+</table>
+</div>
+<div class="page-break"></div>
+<div id="02-commerce--03-distributeurs">
+<h1>Gestion des Distributeurs et Utilisateurs (Clients B2B)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Commerce > Distributeurs</p>
+<p><strong>URL</strong>: <code>/admin/clients</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Distributeurs</strong> (aussi appelee "Clients B2B") est votre <strong>gestionnaire d'utilisateurs complet</strong>. Elle permet de voir et gerer TOUS les comptes de votre application, qu'ils soient acheteurs, clients B2B, employes ou proprietaires.</p>
+
+<blockquote>
+<p><strong>Attention nomenclature</strong> :</p>
+<p>- L'URL est <code>/admin/clients</code> mais la sidebar dit "Distributeurs"</p>
+<p>- Le breadcrumb dit "Clients B2B"</p>
+<p>- Le titre de la page dit "Clients"</p>
+<p>- En realite, cette page gere <strong>tous les types d'utilisateurs</strong></p>
+</blockquote>
+
+<p><strong>Ce que vous pouvez faire ici</strong> :</p>
+<ul>
+<li>Voir tous les utilisateurs de l'application avec leurs roles</li>
+<li>Filtrer par role (Acheteur, Client, Employe, Proprietaire)</li>
+<li>Consulter la fiche detaillee d'un utilisateur</li>
+<li>Changer le role d'un utilisateur (promouvoir un client en employe, etc.)</li>
+<li>Ajuster manuellement les points de fidelite</li>
+<li>Envoyer un email directement a un utilisateur</li>
+<li>Reinitialiser le mot de passe d'un utilisateur</li>
+<li>Suspendre un compte utilisateur</li>
+<li>Voir les commandes d'un utilisateur</li>
+<li>Exporter la liste en CSV</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Cliquez sur <strong>Commerce</strong> dans la barre de navigation</li>
+<li>Cliquez sur <strong>Distributeurs</strong> dans le panneau lateral</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Page Distributeurs]</div>
+
+<h3>Les 4 cartes de statistiques</h3>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total utilisateurs</strong></td><td>Nombre total de comptes dans le systeme</td></tr>
+  <tr><td><strong>Clients</strong></td><td>Utilisateurs avec le role CUSTOMER (acheteurs)</td></tr>
+  <tr><td><strong>Employes</strong></td><td>Utilisateurs avec le role EMPLOYEE (votre equipe)</td></tr>
+  <tr><td><strong>VIP (Gold+)</strong></td><td>Utilisateurs de niveau Gold, Platinum ou Diamond</td></tr>
+</tbody>
+</table>
+<h3>Les onglets de filtrage par role</h3>
+
+<table>
+<thead>
+    <tr><th>Onglet</th><th>Qui sont-ils</th><th>Cas d'usage</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Tous les roles</strong></td><td>Tout le monde</td><td>Vue globale</td></tr>
+  <tr><td><strong>Acheteur</strong></td><td>Clients qui ont passe commande</td><td>Gestion courante</td></tr>
+  <tr><td><strong>Client</strong></td><td>Comptes crees mais pas encore achete</td><td>Prospects, comptes B2B</td></tr>
+  <tr><td><strong>Employe</strong></td><td>Votre equipe interne</td><td>Gestion RH</td></tr>
+  <tr><td><strong>Proprietaire</strong></td><td>Administrateurs du site</td><td>Votre compte et ceux des associes</td></tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Pour les neophytes</strong> :</p>
+<p>- <strong>Acheteur</strong> = quelqu'un qui a fait au moins 1 achat</p>
+<p>- <strong>Client</strong> = quelqu'un qui a un compte mais n'a pas encore achete (ou un partenaire B2B)</p>
+<p>- <strong>Employe</strong> = un membre de votre equipe que vous avez ajoute au systeme</p>
+<p>- <strong>Proprietaire</strong> = vous (le boss) et vos administrateurs avec acces complet</p>
+</blockquote>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Consulter la fiche d'un utilisateur</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur un utilisateur dans la liste</li>
+<li>Le panneau de detail s'ouvre a droite</li>
+</ol>
+
+<p><strong>Informations visibles</strong> :</p>
+<ul>
+<li>Nom, email, telephone</li>
+<li>Role actuel (Acheteur/Client/Employe/Proprietaire)</li>
+<li>Niveau de fidelite + points</li>
+<li>Code de parrainage (si ambassadeur)</li>
+<li>Historique des commandes (lien)</li>
+</ul>
+
+<hr>
+
+<h3>2. Changer le role d'un utilisateur</h3>
+
+<p><strong>Objectif</strong> : Promouvoir ou retrograder un utilisateur.</p>
+
+<p><strong>Cas d'usage typiques</strong> :</p>
+<ul>
+<li>Un client regulier devient partenaire B2B → passer de "Acheteur" a "Client"</li>
+<li>Vous embauchez quelqu'un → passer a "Employe"</li>
+<li>Un employe part → retrograder a "Client"</li>
+</ul>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez l'utilisateur</li>
+<li>Dans la section <strong>Gestion des roles</strong> du panneau de detail</li>
+<li>Selectionnez le nouveau role</li>
+<li>Confirmez</li>
+</ol>
+
+<blockquote>
+<p><strong>Important</strong> : Changer le role d'un utilisateur affecte ses <strong>permissions d'acces</strong>. Un Employe a acces au panneau admin, un Acheteur non.</p>
+</blockquote>
+
+<hr>
+
+<h3>3. Ajuster manuellement les points de fidelite</h3>
+
+<p><strong>Objectif</strong> : Ajouter ou retirer des points de fidelite a un utilisateur.</p>
+
+<p><strong>Quand l'utiliser</strong> :</p>
+<ul>
+<li>Geste commercial (offrir des points bonus)</li>
+<li>Correction d'erreur (points non credites suite a un bug)</li>
+<li>Penalite (retrait de points en cas d'abus)</li>
+<li>Migration (transfert de points depuis un ancien systeme)</li>
+</ul>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez l'utilisateur</li>
+<li>Dans la section <strong>Ajustement de points</strong> du panneau de detail</li>
+<li>Entrez le nombre de points (positif pour ajouter, negatif pour retirer)</li>
+<li>Indiquez la raison</li>
+<li>Confirmez</li>
+</ol>
+
+<hr>
+
+<h3>4. Envoyer un email a un utilisateur</h3>
+
+<p><strong>Objectif</strong> : Communiquer directement avec un client depuis l'admin.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez l'utilisateur</li>
+<li>Cliquez sur le bouton <strong>Envoyer email</strong> (icone enveloppe)</li>
+<li>Saisissez le sujet de l'email</li>
+<li>Saisissez le contenu</li>
+<li>L'email est envoye immediatement</li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong> : Utilisez cette fonction pour les communications individuelles. Pour les envois en masse, utilisez la section <strong>Marketing > Newsletter</strong>.</p>
+</blockquote>
+
+<hr>
+
+<h3>5. Reinitialiser le mot de passe</h3>
+
+<p><strong>Objectif</strong> : Envoyer un lien de reinitialisation de mot de passe au client.</p>
+
+<p><strong>Quand l'utiliser</strong> :</p>
+<ul>
+<li>Le client a oublie son mot de passe et n'arrive pas a utiliser la page "Mot de passe oublie"</li>
+<li>Vous soupconnez une compromission de compte</li>
+<li>Le client vous contacte par telephone et ne peut pas acceder a son email de reset</li>
+</ul>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez l'utilisateur</li>
+<li>Cliquez sur <strong>Reinitialiser mot de passe</strong> (icone cle)</li>
+<li>Un email de reinitialisation est automatiquement envoye au client</li>
+</ol>
+
+<hr>
+
+<h3>6. Suspendre un compte</h3>
+
+<p><strong>Objectif</strong> : Bloquer l'acces d'un utilisateur a son compte.</p>
+
+<p><strong>Quand l'utiliser</strong> :</p>
+<ul>
+<li>Suspicion de fraude confirmee</li>
+<li>Client abusif ou harcelant</li>
+<li>Employe licencie (bloquer l'acces immediatement)</li>
+<li>Demande RGPD/CASL de desactivation de compte</li>
+</ul>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez l'utilisateur</li>
+<li>Cliquez sur <strong>Suspendre</strong> (bouton rouge avec icone d'interdiction)</li>
+<li>Confirmez : "Suspendre [nom du client] ?"</li>
+<li>Le compte est immediatement desactive</li>
+</ol>
+
+<blockquote>
+<p><strong>Attention</strong> : La suspension est immediate. L'utilisateur ne pourra plus se connecter. Ses commandes en cours ne sont PAS annulees automatiquement.</p>
+</blockquote>
+
+<hr>
+
+<h3>7. Voir les commandes d'un utilisateur</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez l'utilisateur</li>
+<li>Cliquez sur <strong>Voir les commandes</strong> (icone panier)</li>
+<li>Vous etes redirige vers la page Commandes, filtree sur ce client</li>
+</ol>
+
+<hr>
+
+<h3>8. Exporter en CSV</h3>
+
+<p>Meme principe que la page Clients (acheteurs). Colonnes : Nom, Email, Telephone, Niveau fidelite, Points, Total depense, Nombre d'achats, Code parrainage, Date inscription.</p>
+
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario : Ajouter un partenaire B2B</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouveau client</strong> dans le ruban</li>
+<li>Remplissez les informations (nom de l'entreprise, email du contact, telephone)</li>
+<li>Une fois cree, changez son role a "Client" (B2B)</li>
+<li>Ajustez ses points de fidelite si necessaire (bonus de bienvenue B2B)</li>
+<li>Envoyez-lui un email de bienvenue avec ses identifiants</li>
+</ol>
+
+<h3>Scenario : Gerer un employe qui part</h3>
+
+<ol>
+<li>Recherchez l'employe par nom ou email</li>
+<li>Cliquez sur <strong>Suspendre</strong> pour bloquer son acces immediatement</li>
+<li>Optionnellement, changez son role de "Employe" a "Client" (au lieu de suspendre)</li>
+<li>Verifiez qu'il n'a pas de taches admin en cours</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Quelle est la difference entre cette page et la page Clients (acheteurs) ?</strong></p>
+<p>R: La page <code>/admin/customers</code> montre uniquement les acheteurs finaux avec une analyse RFM avancee. Cette page <code>/admin/clients</code> montre TOUS les types d'utilisateurs et permet de gerer les roles, les points et les acces.</p>
+
+<p><strong>Q: Un utilisateur suspendu peut-il etre reactive ?</strong></p>
+<p>R: Oui, en modifiant son statut dans sa fiche (meme bouton, action inverse).</p>
+
+<p><strong>Q: Les points de fidelite ajustes manuellement comptent-ils pour le changement de niveau ?</strong></p>
+<p>R: Oui, les points manuels ont la meme valeur que les points gagnes par achat. Si l'ajout fait depasser un seuil de niveau, le client est promu automatiquement.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Role</strong></td><td>Le type de compte : Acheteur, Client, Employe, Proprietaire</td></tr>
+  <tr><td><strong>B2B</strong></td><td>Business-to-Business — vente entre entreprises</td></tr>
+  <tr><td><strong>B2C</strong></td><td>Business-to-Consumer — vente au grand public</td></tr>
+  <tr><td><strong>Suspension</strong></td><td>Blocage temporaire ou permanent de l'acces a un compte</td></tr>
+  <tr><td><strong>CASL/RGPD</strong></td><td>Lois de protection des donnees (Canada/Europe)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/customers">Clients (acheteurs)</a> — Vue specifique aux acheteurs avec RFM</li>
+<li><a href="/admin/commandes">Commandes</a> — Commandes de ces clients</li>
+<li><a href="/admin/fidelite">Programme de fidelite</a> — Configuration des niveaux et points</li>
+<li><a href="/admin/employes">Employes</a> — Gestion des employes (section Systeme)</li>
+<li><a href="/admin/permissions">Permissions</a> — Gestion des droits d'acces</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="02-commerce--04-abonnements">
+<h1>Gestion des Abonnements</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Commerce > Abonnements</p>
+<p><strong>URL</strong>: <code>/admin/abonnements</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Abonnements</strong> vous permet de gerer les commandes recurrentes de vos clients. Un abonnement, c'est un client qui a choisi de recevoir automatiquement un produit a intervalle regulier (tous les 2, 4, 6 ou 12 mois) avec une reduction.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir tous les abonnements en cours, en pause ou annules</li>
+<li>Filtrer par statut (Actif, En pause, Annule)</li>
+<li>Rechercher un abonnement par nom de client, email ou produit</li>
+<li>Consulter le detail complet de chaque abonnement (produit, format, frequence, prix, remise)</li>
+<li>Suspendre temporairement un abonnement (le client garde son compte, mais pas de livraison)</li>
+<li>Reactiver un abonnement en pause</li>
+<li>Annuler definitivement un abonnement</li>
+<li>Modifier les parametres d'un abonnement (frequence, quantite, remise, prochaine livraison)</li>
+<li>Configurer les options globales (remise par defaut, livraison gratuite, rappels, pauses autorisees)</li>
+<li>Voir les statistiques : nombre total, actifs, en pause, revenu mensuel estime (MRR)</li>
+<li>Calculer le MRR et l'ARR (revenu annuel recurrent) via le bouton Stats MRR</li>
+<li>Exporter la liste des abonnements en CSV</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un abonnement ?</h3>
+<p>Un abonnement est un engagement du client a recevoir un produit de facon reguliere. Au lieu de recommander manuellement a chaque fois, le systeme genere automatiquement une commande selon la frequence choisie.</p>
+
+<h3>Les frequences disponibles</h3>
+<table>
+<thead>
+    <tr><th>Frequence</th><th>Description</th><th>Livraisons par an</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Tous les 2 mois</strong></td><td>Frequence la plus courte</td><td>6 livraisons</td></tr>
+  <tr><td><strong>Tous les 4 mois</strong></td><td>Frequence trimestrielle</td><td>3 livraisons</td></tr>
+  <tr><td><strong>Tous les 6 mois</strong></td><td>Frequence semestrielle</td><td>2 livraisons</td></tr>
+  <tr><td><strong>Tous les 12 mois</strong></td><td>Frequence annuelle</td><td>1 livraison</td></tr>
+</tbody>
+</table>
+<h3>Les statuts d'un abonnement</h3>
+<table>
+<thead>
+    <tr><th>Statut</th><th>Couleur</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Actif</strong></td><td>Vert</td><td>L'abonnement fonctionne normalement, les livraisons sont planifiees</td></tr>
+  <tr><td><strong>En pause</strong></td><td>Jaune/Orange</td><td>L'abonnement est temporairement suspendu (pas de livraison prevue)</td></tr>
+  <tr><td><strong>Annule</strong></td><td>Rouge</td><td>L'abonnement est definitivement arrete (irreversible)</td></tr>
+</tbody>
+</table>
+<h3>Qu'est-ce que le MRR ?</h3>
+<p>Le <strong>MRR</strong> (Monthly Recurring Revenue / Revenu Mensuel Recurrent) est le montant total que vous recevez chaque mois grace aux abonnements actifs. C'est un indicateur cle pour mesurer la sante financiere de votre business recurrent.</p>
+
+<p><strong>Exemple</strong> : Un client abonne a un produit a 100$ tous les 2 mois genere un MRR de 50$/mois (100$ / 2 mois).</p>
+
+<p>L'<strong>ARR</strong> (Annual Recurring Revenue) est simplement le MRR x 12.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Commerce</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong> qui apparait, cliquez sur <strong>Abonnements</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Dans la colonne d'icones tout a gauche de l'ecran, cliquez sur l'icone <strong>panier</strong> (Commerce)</li>
+<li>Le panneau "Commerce" s'ouvre avec la liste des sous-pages</li>
+<li>Cliquez sur <strong>Abonnements</strong> (4e element de la liste)</li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche en haut au centre (ou tapez <code>/</code>)</li>
+<li>Tapez "abonnements"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Page Abonnements]</div>
+
+<p>L'interface est divisee en <strong>5 zones principales</strong> :</p>
+
+<h3>1. La barre de ruban (Ribbon) — en haut</h3>
+<p>C'est la barre d'outils contextuelle. Pour les abonnements, elle contient :</p>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Icone</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouvel abonnement</strong></td><td>+ vert</td><td>Informe que les abonnements se creent depuis la boutique (cote client)</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Poubelle rouge</td><td>Annuler definitivement l'abonnement selectionne</td></tr>
+  <tr><td><strong>Suspendre</strong></td><td>Pause</td><td>Mettre en pause l'abonnement selectionne</td></tr>
+  <tr><td><strong>Reactiver</strong></td><td>Play</td><td>Reactiver un abonnement en pause</td></tr>
+  <tr><td><strong>Rembourser</strong></td><td>Fleche retour</td><td>Redirige vers Stripe pour le remboursement</td></tr>
+  <tr><td><strong>Stats MRR</strong></td><td>Graphique</td><td>Affiche un toast avec le MRR, l'ARR et le nombre d'abonnements actifs</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger</td><td>Exporter tous les abonnements au format CSV</td></tr>
+</tbody>
+</table>
+<h3>2. Les cartes de statistiques (4 cartes)</h3>
+<p>En haut de la zone principale, 4 indicateurs cles :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total</strong></td><td>Nombre total d'abonnements (tous statuts confondus)</td></tr>
+  <tr><td><strong>Actifs</strong></td><td>Nombre d'abonnements actuellement actifs (fond vert)</td></tr>
+  <tr><td><strong>En pause</strong></td><td>Nombre d'abonnements temporairement suspendus (fond jaune)</td></tr>
+  <tr><td><strong>Revenu mensuel estime</strong></td><td>MRR calcule en dollars canadiens (fond indigo)</td></tr>
+</tbody>
+</table>
+<h3>3. La section Configuration</h3>
+<p>Un encadre blanc affiche les 4 parametres globaux actuels :</p>
+
+<table>
+<thead>
+    <tr><th>Parametre</th><th>Valeur par defaut</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Reduction abonnes</strong></td><td>15%</td><td>Pourcentage de remise applique a chaque livraison d'abonnement</td></tr>
+  <tr><td><strong>Livraison abonnes</strong></td><td>GRATUITE</td><td>Les abonnes beneficient de la livraison gratuite</td></tr>
+  <tr><td><strong>Rappel avant livraison</strong></td><td>3 jours</td><td>Le client recoit un rappel X jours avant sa prochaine livraison</td></tr>
+  <tr><td><strong>Pause autorisee</strong></td><td>1 pause/an</td><td>Nombre maximum de fois qu'un client peut mettre son abonnement en pause par annee</td></tr>
+</tbody>
+</table>
+<h3>4. Les onglets de filtre + recherche</h3>
+<p>Sous la configuration, une barre avec :</p>
+<ul>
+<li><strong>Onglets</strong> : Tous les statuts | Actif | En pause | Annule (avec compteurs)</li>
+<li><strong>Barre de recherche</strong> : Filtrer par nom, email ou produit</li>
+</ul>
+
+<h3>5. La liste maitre/detail (Outlook style)</h3>
+<p>L'interface est divisee en deux panneaux :</p>
+<ul>
+<li><strong>Panneau gauche</strong> : Liste des abonnements filtres</li>
+<li><strong>Panneau droit</strong> : Detail de l'abonnement selectionne</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>1. Consulter un abonnement</h3>
+
+<ol>
+<li>Cliquez sur un abonnement dans la liste de gauche</li>
+<li>Le panneau de droite affiche toutes les informations :</li>
+</ol>
+<ul>
+<li><strong>Statut</strong> : Badge colore (Actif / En pause / Annule)</li>
+<li><strong>Client</strong> : Nom complet et adresse email</li>
+<li><strong>Produit</strong> : Nom du produit et format (ex: "BPC-157 - 5mg x2")</li>
+<li><strong>Frequence</strong> : Tous les 2/4/6/12 mois</li>
+<li><strong>Prix</strong> : Montant apres remise, avec indication du pourcentage de reduction</li>
+<li><strong>Date de creation</strong> : Quand l'abonnement a ete souscrit</li>
+<li><strong>Prochaine livraison</strong> : Date prevue pour la prochaine expedition (ou "-" si en pause/annule)</li>
+</ul>
+
+<h3>2. Suspendre un abonnement</h3>
+
+<p>Suspendre = mettre en pause temporairement. Le client ne sera pas facture et ne recevra pas de livraison pendant la pause.</p>
+
+<p><strong>Depuis le panneau de detail :</strong></p>
+<ol>
+<li>Selectionnez un abonnement <strong>Actif</strong></li>
+<li>Cliquez sur le bouton <strong>Pause</strong> dans le panneau de detail (en haut a droite)</li>
+<li>Le statut passe a "En pause" (badge jaune)</li>
+</ol>
+
+<p><strong>Depuis le ruban :</strong></p>
+<ol>
+<li>Selectionnez un abonnement <strong>Actif</strong> dans la liste</li>
+<li>Cliquez sur <strong>Suspendre</strong> dans la barre de ruban en haut</li>
+<li>Le statut change immediatement</li>
+</ol>
+
+<blockquote>
+<p><strong>Attention</strong> : Chaque client a un nombre limite de pauses par annee (configurable, 1 par defaut). Au-dela, il devra annuler ou maintenir son abonnement.</p>
+</blockquote>
+
+<h3>3. Reactiver un abonnement</h3>
+
+<ol>
+<li>Selectionnez un abonnement <strong>En pause</strong></li>
+<li>Cliquez sur <strong>Reprendre</strong> dans le panneau de detail, OU <strong>Reactiver</strong> dans le ruban</li>
+<li>Le statut repasse a "Actif"</li>
+</ol>
+
+<blockquote>
+<p><strong>Note</strong> : Un abonnement <strong>Annule</strong> ne peut PAS etre reactive. L'annulation est definitive. Le client devra souscrire un nouvel abonnement depuis la boutique.</p>
+</blockquote>
+
+<h3>4. Annuler un abonnement</h3>
+
+<p>L'annulation est <strong>irreversible</strong>. Utilisez cette action uniquement quand vous etes certain.</p>
+
+<ol>
+<li>Selectionnez l'abonnement a annuler</li>
+<li>Cliquez sur <strong>Annuler</strong> (panneau de detail, bouton rouge) OU <strong>Supprimer</strong> (ruban)</li>
+<li>Une <strong>boite de confirmation</strong> apparait : "Etes-vous sur de vouloir annuler cet abonnement ?"</li>
+<li>Confirmez l'annulation</li>
+<li>Le statut passe a "Annule" (badge rouge)</li>
+</ol>
+
+<h3>5. Modifier un abonnement</h3>
+
+<p>Vous pouvez ajuster les parametres d'un abonnement individuel sans l'annuler.</p>
+
+<ol>
+<li>Selectionnez un abonnement dans la liste</li>
+<li>Cliquez sur le bouton <strong>Modifier</strong> (icone crayon) dans le panneau de detail</li>
+<li>Une fenetre modale s'ouvre avec 4 champs editables :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Description</th><th>Plage</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Frequence</strong></td><td>Changer l'intervalle de livraison</td><td>Tous les 2/4/6/12 mois</td></tr>
+  <tr><td><strong>Quantite</strong></td><td>Ajuster le nombre d'unites par livraison</td><td>1 a 99</td></tr>
+  <tr><td><strong>Remise</strong></td><td>Modifier le pourcentage de reduction</td><td>0% a 100%</td></tr>
+  <tr><td><strong>Prochaine livraison</strong></td><td>Reporter ou avancer la date de la prochaine livraison</td><td>Calendrier</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Modifiez les champs souhaites</li>
+<li>Cliquez sur <strong>Enregistrer</strong></li>
+<li>Les modifications sont appliquees immediatement</li>
+</ol>
+
+<h3>6. Configurer les options globales</h3>
+
+<p>Ces parametres s'appliquent a TOUS les abonnements.</p>
+
+<ol>
+<li>Cliquez sur le bouton <strong>Configurer les options</strong> (en haut a droite, bouton bleu)</li>
+<li>Une fenetre modale s'ouvre avec 4 parametres :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Parametre</th><th>Description</th><th>Defaut</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Reduction par defaut</strong></td><td>Pourcentage de remise pour les nouveaux abonnements</td><td>15%</td></tr>
+  <tr><td><strong>Livraison gratuite</strong></td><td>Activer/desactiver la livraison gratuite pour les abonnes (interrupteur)</td><td>Active</td></tr>
+  <tr><td><strong>Jours de rappel</strong></td><td>Nombre de jours avant la livraison pour envoyer un rappel au client</td><td>3</td></tr>
+  <tr><td><strong>Pauses max par annee</strong></td><td>Nombre de fois qu'un client peut suspendre son abonnement en 12 mois</td><td>1</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Ajustez les valeurs</li>
+<li>Cliquez sur <strong>Enregistrer</strong></li>
+<li>Un message de confirmation apparait</li>
+</ol>
+
+<blockquote>
+<p><strong>Important</strong> : Modifier la reduction par defaut n'affecte PAS les abonnements existants. Seuls les nouveaux abonnements utiliseront le nouveau pourcentage. Pour modifier un abonnement existant, utilisez la fonction "Modifier" individuelle.</p>
+</blockquote>
+
+<h3>7. Voir les statistiques MRR/ARR</h3>
+
+<ol>
+<li>Cliquez sur <strong>Stats MRR</strong> dans la barre de ruban</li>
+<li>Un toast apparait avec :</li>
+</ol>
+<ul>
+<li><strong>MRR</strong> : Revenu mensuel recurrent (somme des prix mensuels de tous les abonnements actifs)</li>
+<li><strong>ARR</strong> : Revenu annuel recurrent (MRR x 12)</li>
+<li><strong>Nombre d'abonnements actifs</strong></li>
+</ul>
+
+<p><strong>Comment le MRR est-il calcule ?</strong></p>
+<p>Pour chaque abonnement actif :</p>
+<ul>
+<li>Prix apres remise = Prix x (1 - Remise/100)</li>
+<li>Contribution mensuelle = Prix apres remise / nombre de mois entre livraisons</li>
+<li>MRR total = somme de toutes les contributions mensuelles</li>
+</ul>
+
+<h3>8. Exporter les abonnements</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter</strong> dans la barre de ruban</li>
+<li>Un fichier CSV est telecharge automatiquement</li>
+<li>Le fichier contient : Client, Email, Produit, Format, Quantite, Frequence, Prix, Remise, Statut, Prochaine livraison, Date de creation</li>
+<li>Le fichier est encode en UTF-8 avec BOM (compatible Excel)</li>
+</ol>
+
+<blockquote>
+<p><strong>Note</strong> : L'export inclut TOUS les abonnements, pas seulement ceux filtres a l'ecran.</p>
+</blockquote>
+
+<hr>
+
+<h2>Workflows complets</h2>
+
+<h3>Scenario 1 : Un client veut mettre en pause son abonnement</h3>
+
+<p><strong>Contexte</strong> : Le client part en voyage et ne sera pas la pour recevoir sa livraison.</p>
+
+<ol>
+<li>Le client vous contacte (email, chat, telephone)</li>
+<li>Allez dans <strong>Commerce > Abonnements</strong></li>
+<li>Recherchez le client par nom ou email</li>
+<li>Selectionnez son abonnement</li>
+<li>Verifiez qu'il n'a pas deja utilise sa pause annuelle</li>
+<li>Cliquez sur <strong>Pause</strong> dans le panneau de detail</li>
+<li>Confirmez au client que son abonnement est suspendu</li>
+<li>Quand le client revient : selectionnez l'abonnement et cliquez sur <strong>Reprendre</strong></li>
+</ol>
+
+<h3>Scenario 2 : Un client veut changer la frequence de son abonnement</h3>
+
+<p><strong>Contexte</strong> : Le client consomme son produit plus vite que prevu et veut recevoir plus souvent.</p>
+
+<ol>
+<li>Allez dans <strong>Commerce > Abonnements</strong></li>
+<li>Trouvez et selectionnez l'abonnement du client</li>
+<li>Cliquez sur <strong>Modifier</strong> (icone crayon)</li>
+<li>Changez la frequence (ex: de "Tous les 4 mois" a "Tous les 2 mois")</li>
+<li>Optionnel : ajustez la date de prochaine livraison si necessaire</li>
+<li>Cliquez sur <strong>Enregistrer</strong></li>
+<li>Confirmez au client</li>
+</ol>
+
+<h3>Scenario 3 : Rapport mensuel des abonnements</h3>
+
+<p><strong>Contexte</strong> : Vous voulez savoir combien rapportent vos abonnements chaque mois.</p>
+
+<ol>
+<li>Allez dans <strong>Commerce > Abonnements</strong></li>
+<li>Regardez la carte <strong>Revenu mensuel estime</strong> en haut</li>
+<li>Pour plus de details, cliquez sur <strong>Stats MRR</strong> dans le ruban</li>
+<li>Pour un rapport complet, cliquez sur <strong>Exporter</strong> et ouvrez le CSV dans Excel</li>
+<li>Dans Excel, filtrez par statut "ACTIVE" et calculez les totaux par produit</li>
+</ol>
+
+<h3>Scenario 4 : Un client veut annuler son abonnement</h3>
+
+<p><strong>Contexte</strong> : Le client ne souhaite plus recevoir le produit.</p>
+
+<ol>
+<li>Allez dans <strong>Commerce > Abonnements</strong></li>
+<li>Trouvez et selectionnez l'abonnement du client</li>
+<li><strong>Avant d'annuler</strong>, considerez : proposer une pause temporaire ou un changement de frequence</li>
+<li>Si le client confirme l'annulation : cliquez sur <strong>Annuler</strong> (bouton rouge)</li>
+<li>Confirmez dans la boite de dialogue</li>
+<li>L'abonnement passe au statut "Annule" — c'est irreversible</li>
+</ol>
+
+<hr>
+
+<h2>FAQ — Questions frequentes</h2>
+
+<h3>Q : Les clients creent-ils leurs abonnements eux-memes ?</h3>
+<p><strong>R</strong> : Oui. Les abonnements sont crees par les clients lors de leur achat sur la boutique en ligne. La page admin ne permet pas de creer un abonnement manuellement (le bouton "Nouvel abonnement" affiche un message informatif).</p>
+
+<h3>Q : Si je change la reduction par defaut de 15% a 20%, les abonnements existants sont-ils affectes ?</h3>
+<p><strong>R</strong> : Non. La modification ne s'applique qu'aux nouveaux abonnements. Pour modifier un abonnement existant, utilisez le bouton "Modifier" sur l'abonnement individuel.</p>
+
+<h3>Q : Un client peut-il reactiver lui-meme un abonnement annule ?</h3>
+<p><strong>R</strong> : Non. L'annulation est definitive. Le client devra creer un nouvel abonnement depuis la boutique.</p>
+
+<h3>Q : Comment fonctionne le remboursement ?</h3>
+<p><strong>R</strong> : Le bouton "Rembourser" dans le ruban vous redirige vers le dashboard Stripe pour effectuer le remboursement. Les remboursements ne sont pas geres directement dans l'interface Koraline.</p>
+
+<h3>Q : Que se passe-t-il quand la prochaine livraison arrive ?</h3>
+<p><strong>R</strong> : Le systeme genere automatiquement une commande, debite le client, et l'ajoute a la file d'expedition. Vous la verrez apparaitre dans <strong>Commerce > Commandes</strong> comme une commande normale.</p>
+
+<h3>Q : Combien de pauses un client peut-il prendre ?</h3>
+<p><strong>R</strong> : Par defaut, 1 pause par annee. Ce nombre est configurable dans <strong>Configurer les options</strong>. Si un client a deja utilise toutes ses pauses, il devra choisir entre maintenir ou annuler son abonnement.</p>
+
+<hr>
+
+<h2>Strategie expert : Pricing des abonnements et optimisation du MRR</h2>
+
+<h3>Remise optimale pour les abonnements</h3>
+
+<p>La remise est le levier principal pour convaincre un client de souscrire un abonnement plutot que de commander ponctuellement. Mais une remise trop elevee erode la marge.</p>
+
+<p><strong>Benchmarks du secteur supplements/peptides</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Remise</th><th>Impact sur la conversion</th><th>Impact sur la marge</th><th>Recommandation</th></tr>
+</thead>
+<tbody>
+  <tr><td>5%</td><td>Faible : insuffisant pour motiver</td><td>Negligeable</td><td>Trop faible, ne pas utiliser</td></tr>
+  <tr><td>10%</td><td>Moyen : attire les clients sensibles au prix</td><td>Acceptable</td><td>Minimum recommande</td></tr>
+  <tr><td>15%</td><td>Fort : bon equilibre conversion/marge</td><td>Modere</td><td>Ideal pour BioCycle (defaut actuel)</td></tr>
+  <tr><td>20%</td><td>Tres fort : maximise les inscriptions</td><td>Significatif</td><td>A reserver aux periodes promotionnelles</td></tr>
+  <tr><td>25%+</td><td>Maximum : diminishing returns</td><td>Critique</td><td>A eviter sauf offre de lancement temporaire</td></tr>
+</tbody>
+</table>
+<p><strong>Recommandation BioCycle</strong> : maintenir la remise par defaut a 15%. Utiliser 20% pour des campagnes d'acquisition limitees dans le temps (ex: "Abonnez-vous en janvier, profitez de 20% les 3 premiers mois").</p>
+
+<h3>Offres de lancement recommandees</h3>
+
+<table>
+<thead>
+    <tr><th>Strategie</th><th>Description</th><th>Duree</th></tr>
+</thead>
+<tbody>
+  <tr><td>Premiere livraison -25%, puis -15%</td><td>Forte incitation initiale, puis marge standard</td><td>Permanent</td></tr>
+  <tr><td>3 mois a -20%, puis -15%</td><td>Engagement initial plus doux</td><td>Campagne trimestrielle</td></tr>
+  <tr><td>Livraison gratuite permanente</td><td>Inclus dans l'abonnement (deja actif par defaut)</td><td>Permanent</td></tr>
+  <tr><td>Cadeau a la 3e livraison</td><td>Eau bacteriostatique gratuite a la 3e livraison</td><td>Permanent</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Strategie expert : Gestion du churn et tactiques anti-churn</h2>
+
+<h3>Taux de churn : reperes par industrie</h3>
+
+<p>Le <strong>churn</strong> (taux d'attrition) est le pourcentage d'abonnes qui annulent chaque mois.</p>
+
+<table>
+<thead>
+    <tr><th>Industrie</th><th>Churn mensuel moyen</th><th>Churn acceptable</th></tr>
+</thead>
+<tbody>
+  <tr><td>SaaS B2B</td><td>3-5%</td><td>Moins de 3%</td></tr>
+  <tr><td>Supplements alimentaires</td><td>8-12%</td><td>Moins de 8%</td></tr>
+  <tr><td>Peptides de recherche</td><td>5-8% (estime)</td><td>Moins de 5%</td></tr>
+  <tr><td>Box mensuelles</td><td>10-15%</td><td>Moins de 10%</td></tr>
+</tbody>
+</table>
+<p><strong>Cible BioCycle</strong> : maintenir le churn mensuel en dessous de 5%. Avec 100 abonnes, cela signifie perdre moins de 5 abonnes par mois.</p>
+
+<h3>Calcul de l'impact du churn sur le MRR</h3>
+
+<pre><code>Perte mensuelle MRR = MRR actuel x Taux de churn
+Mois pour perdre 50% des abonnes = ln(0.5) / ln(1 - taux_churn)</code></pre>
+
+<p><strong>Exemple concret</strong> :</p>
+<ul>
+<li>MRR actuel : 5 000 $CA (100 abonnes a 50 $CA/mois en moyenne)</li>
+<li>Churn 5%/mois : perte de 250 $CA/mois ; il faut 13,5 mois pour perdre la moitie des abonnes</li>
+<li>Churn 10%/mois : perte de 500 $CA/mois ; il faut 6,6 mois pour perdre la moitie</li>
+</ul>
+
+<p>La difference entre 5% et 10% de churn represente <strong>3 000 $CA de MRR</strong> perdu en 12 mois.</p>
+
+<h3>Tactiques anti-churn (a appliquer dans Koraline)</h3>
+
+<h4>1. Proposer la pause avant l'annulation</h4>
+
+<p>Quand un client clique sur "Annuler" sur la boutique, ou quand il vous contacte pour annuler :</p>
+<ul>
+<li><strong>Premiere proposition</strong> : "Voulez-vous plutot mettre en pause votre abonnement ? Vous pouvez reprendre quand vous voulez."</li>
+<li>Augmenter le nombre de pauses autorisees de 1 a 2 par an si le taux de churn est eleve</li>
+</ul>
+
+<h4>2. Proposer un changement de frequence</h4>
+
+<p>Si le client annule parce qu'il a "trop de stock" :</p>
+<ul>
+<li>Proposer de passer a une frequence moins elevee (de 2 mois a 4 mois, par exemple)</li>
+<li>La modification se fait via le bouton <strong>Modifier</strong> dans le panneau de detail</li>
+</ul>
+
+<h4>3. Offrir un upgrade ou un downgrade</h4>
+
+<p>Si le client annule pour des raisons de budget :</p>
+<ul>
+<li>Proposer un format plus petit (5mg au lieu de 10mg) a prix reduit</li>
+<li>Ou proposer un autre peptide moins couteux</li>
+</ul>
+
+<h4>4. Sondage de depart (obligatoire)</h4>
+
+<p>Quand un abonnement est annule, enregistrer la raison dans une note interne. Les raisons typiques :</p>
+<ul>
+<li>Trop cher (solution : offre de remise temporaire)</li>
+<li>Trop de stock accumule (solution : changement de frequence)</li>
+<li>Ne voit pas de resultats (solution : contenu educatif, support)</li>
+<li>Probleme de qualite (solution : investigation immediate, remplacement)</li>
+<li>Raison personnelle / temporaire (solution : pause)</li>
+</ul>
+
+<h3>Suivi mensuel du churn</h3>
+
+<p>Creer un tableau de bord mensuel avec ces indicateurs :</p>
+
+<table>
+<thead>
+    <tr><th>Indicateur</th><th>Formule</th><th>Cible</th></tr>
+</thead>
+<tbody>
+  <tr><td>Taux de churn</td><td>Annulations du mois / Abonnes debut de mois</td><td>Moins de 5%</td></tr>
+  <tr><td>Croissance nette des abonnes</td><td>Nouveaux abonnes - Annulations</td><td>Positif chaque mois</td></tr>
+  <tr><td>Taux de reactivation des pauses</td><td>Pauses reprises / Total des pauses</td><td>Plus de 60%</td></tr>
+  <tr><td>MRR net</td><td>MRR nouveaux - MRR perdus + MRR upgrades</td><td>En croissance</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Abonnement</strong></td><td>Commande recurrente automatique pour un produit, a une frequence et un prix definis</td></tr>
+  <tr><td><strong>MRR</strong></td><td>Monthly Recurring Revenue — revenu mensuel recurrent genere par les abonnements actifs</td></tr>
+  <tr><td><strong>ARR</strong></td><td>Annual Recurring Revenue — revenu annuel recurrent (MRR x 12)</td></tr>
+  <tr><td><strong>Frequence</strong></td><td>Intervalle entre chaque livraison (2, 4, 6 ou 12 mois)</td></tr>
+  <tr><td><strong>Remise</strong></td><td>Pourcentage de reduction applique au prix normal du produit pour les abonnes</td></tr>
+  <tr><td><strong>Pause</strong></td><td>Suspension temporaire d'un abonnement sans l'annuler</td></tr>
+  <tr><td><strong>CSV</strong></td><td>Format de fichier tableur (Comma Separated Values), compatible avec Excel et Google Sheets</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="01-commandes.md">Commandes</a> — Les commandes generees par les abonnements apparaissent ici</li>
+<li><a href="02-clients.md">Clients</a> — Voir le profil complet des clients abonnes</li>
+<li><a href="05-inventaire.md">Inventaire</a> — Verifier que le stock couvre les abonnements a venir</li>
+<li><a href="06-fournisseurs.md">Fournisseurs</a> — Commander les produits necessaires aux abonnements</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="02-commerce--05-inventaire">
+<h1>Gestion de l'Inventaire</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Commerce > Inventaire</p>
+<p><strong>URL</strong>: <code>/admin/inventaire</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~35 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Inventaire</strong> est votre centre de controle pour tout ce qui concerne le stock de vos produits. Elle combine 4 fonctions majeures en une seule page a onglets.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir les niveaux de stock de tous vos produits et formats (quantite, seuil d'alerte, disponibilite)</li>
+<li>Ajouter du stock (reapprovisionnement)</li>
+<li>Ajuster les quantites (correction d'erreurs, retours, pertes)</li>
+<li>Configurer les alertes de stock bas pour chaque produit</li>
+<li>Gerer vos fournisseurs (nom, contact, email, telephone, site web)</li>
+<li>Creer et suivre des bons de commande (Purchase Orders) aupres de vos fournisseurs</li>
+<li>Reconcilier votre stock informatique avec votre stock physique</li>
+<li>Voir les statistiques mensuelles d'inventaire</li>
+<li>Importer des donnees de stock depuis un fichier CSV</li>
+<li>Exporter l'inventaire complet au format CSV</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Qu'est-ce que le stock ?</h3>
+<p>Le stock, c'est la quantite physique de chaque produit que vous avez en entrepot, prete a etre expediee aux clients. Quand un client achete, le stock diminue. Quand vous recevez une livraison de votre fournisseur, le stock augmente.</p>
+
+<h3>Les niveaux de stock</h3>
+<table>
+<thead>
+    <tr><th>Indicateur</th><th>Couleur</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>En stock</strong></td><td>Vert</td><td>Quantite suffisante, au-dessus du seuil d'alerte</td></tr>
+  <tr><td><strong>Stock bas</strong></td><td>Jaune/Orange</td><td>Quantite en dessous du seuil d'alerte — il faut commander bientot</td></tr>
+  <tr><td><strong>Rupture</strong></td><td>Rouge</td><td>Stock a 0 — le produit n'est plus disponible a la vente</td></tr>
+</tbody>
+</table>
+<h3>Le seuil d'alerte (Low Stock Threshold)</h3>
+<p>C'est la quantite minimale que vous definissez pour chaque produit. Quand le stock descend en dessous de ce seuil, le systeme vous alerte. Par exemple, si le seuil est 10, vous serez alerte quand il reste 9 unites ou moins.</p>
+
+<h3>Qu'est-ce qu'un bon de commande (Purchase Order / PO) ?</h3>
+<p>C'est un document qui formalise votre demande d'achat aupres d'un fournisseur. Il liste les produits, quantites, prix unitaires et la date de livraison prevue. Les statuts d'un PO sont : Brouillon, Commande, Partiel, Recu, Annule.</p>
+
+<h3>Qu'est-ce que la reconciliation ?</h3>
+<p>La reconciliation consiste a comparer le stock enregistre dans le systeme avec le stock physique reel dans votre entrepot. Si les chiffres ne correspondent pas (ecarts), vous pouvez ajuster le stock et documenter la raison.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Commerce</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong>, cliquez sur <strong>Inventaire</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation</h3>
+<ol>
+<li>Cliquez sur l'icone <strong>panier</strong> (Commerce) dans la colonne d'icones a gauche</li>
+<li>Cliquez sur <strong>Inventaire</strong> (5e element de la liste)</li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Tapez "inventaire" dans la barre de recherche en haut</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Page Inventaire]</div>
+
+<p>L'interface est organisee en <strong>4 onglets</strong> en haut de la zone principale :</p>
+
+<table>
+<thead>
+    <tr><th>Onglet</th><th>Icone</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Stock</strong></td><td>Paquet</td><td>Vue principale — niveaux de stock de tous les produits</td></tr>
+  <tr><td><strong>Suppliers</strong></td><td>Batiment</td><td>Gestion des fournisseurs</td></tr>
+  <tr><td><strong>Purchase Orders</strong></td><td>Presse-papiers</td><td>Bons de commande fournisseurs</td></tr>
+  <tr><td><strong>Reconciliation</strong></td><td>Balance</td><td>Verification stock informatique vs stock physique</td></tr>
+</tbody>
+</table>
+<h3>La barre de ruban (Ribbon)</h3>
+<p>Les boutons du ruban changent selon l'onglet actif :</p>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Ajouter stock</strong></td><td>Ouvrir le formulaire de reapprovisionnement</td></tr>
+  <tr><td><strong>Reajuster</strong></td><td>Ouvrir le formulaire d'ajustement de stock</td></tr>
+  <tr><td><strong>Stats mensuelles</strong></td><td>Afficher les statistiques de mouvements de stock</td></tr>
+  <tr><td><strong>Liste renouvellement</strong></td><td>Voir les produits qui doivent etre commandes</td></tr>
+  <tr><td><strong>Soumissions</strong></td><td>Acceder aux soumissions fournisseurs</td></tr>
+  <tr><td><strong>Commander en ligne</strong></td><td>Commander directement aupres d'un fournisseur</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger l'inventaire au format CSV</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Onglet 1 : Stock</h2>
+
+<h3>Les cartes de statistiques (5 cartes)</h3>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total produits</strong></td><td>Nombre de references (formats de produits) dans le systeme</td></tr>
+  <tr><td><strong>En stock</strong></td><td>Nombre de produits avec stock > 0</td></tr>
+  <tr><td><strong>Stock bas</strong></td><td>Nombre de produits en dessous de leur seuil d'alerte (fond jaune)</td></tr>
+  <tr><td><strong>Rupture</strong></td><td>Nombre de produits a stock 0</td></tr>
+  <tr><td><strong>Valeur stock</strong></td><td>Valeur totale du stock en dollars canadiens (prix de vente x quantite)</td></tr>
+</tbody>
+</table>
+<h3>Les sous-onglets de filtre</h3>
+<p>Sous les cartes, une barre de filtres :</p>
+<ul>
+<li><strong>Tous les statuts</strong> — Afficher tous les produits</li>
+<li><strong>En stock</strong> — Uniquement les produits disponibles</li>
+<li><strong>Stock bas</strong> — Uniquement les produits sous le seuil d'alerte</li>
+<li><strong>Rupture</strong> — Uniquement les produits en rupture</li>
+</ul>
+
+<h3>La barre de recherche</h3>
+<p>Tapez un nom de produit ou un SKU pour filtrer la liste.</p>
+
+<h3>La liste maitre/detail</h3>
+<ul>
+<li><strong>Panneau gauche</strong> : Liste des produits avec stock, SKU et prix</li>
+<li><strong>Panneau droit</strong> : Detail du produit selectionne</li>
+</ul>
+
+<h3>Actions sur un produit</h3>
+
+<h4>Ajouter du stock (Reapprovisionnement)</h4>
+<ol>
+<li>Selectionnez un produit dans la liste</li>
+<li>Cliquez sur <strong>Reappro</strong> dans les actions rapides du panneau de detail</li>
+<li>Entrez la quantite a ajouter</li>
+<li>Optionnel : ajoutez une note (ex: "Reception fournisseur 2026-03-20")</li>
+<li>Confirmez — le stock est augmente immediatement</li>
+</ol>
+
+<h4>Ajuster le stock</h4>
+<ol>
+<li>Selectionnez un produit</li>
+<li>Cliquez sur <strong>Ajustement</strong> dans les actions rapides</li>
+<li>Entrez la nouvelle quantite corrigee</li>
+<li>Donnez obligatoirement une <strong>raison</strong> (ex: "Inventaire physique - 3 unites cassees")</li>
+<li>Confirmez</li>
+</ol>
+
+<h4>Modifier le seuil d'alerte</h4>
+<ol>
+<li>Selectionnez un produit</li>
+<li>Dans le panneau de detail, cliquez sur l'icone <strong>Modifier</strong> (crayon) a cote du seuil</li>
+<li>Entrez le nouveau seuil</li>
+<li>Enregistrez</li>
+</ol>
+
+<h4>Voir l'historique des mouvements</h4>
+<ol>
+<li>Selectionnez un produit</li>
+<li>Dans le panneau de detail, cliquez sur <strong>Historique</strong></li>
+<li>Une liste chronologique affiche tous les mouvements : ajouts, ventes, ajustements, avec dates et raisons</li>
+</ol>
+
+<h4>Configurer les alertes</h4>
+<ol>
+<li>Cliquez sur le bouton <strong>Alertes</strong> dans les actions rapides</li>
+<li>Verifiez les seuils de chaque produit</li>
+<li>Ajustez si necessaire</li>
+</ol>
+
+<hr>
+
+<h2>Onglet 2 : Suppliers (Fournisseurs)</h2>
+
+<h3>Voir la liste des fournisseurs</h3>
+<p>Un tableau affiche tous vos fournisseurs avec :</p>
+<ul>
+<li><strong>Nom</strong> — Nom de l'entreprise fournisseur</li>
+<li><strong>Contact</strong> — Nom de la personne-contact</li>
+<li><strong>Email</strong> — Lien cliquable pour envoyer un email</li>
+<li><strong>Telephone</strong> — Numero de contact</li>
+<li><strong>Site web</strong> — Lien vers le site du fournisseur</li>
+</ul>
+
+<h3>Ajouter un fournisseur</h3>
+<ol>
+<li>Cliquez sur <strong>Add Supplier</strong> en haut a droite</li>
+<li>Un formulaire apparait avec les champs :</li>
+</ol>
+<ul>
+<li><strong>Nom</strong> (obligatoire)</li>
+<li>Contact, Email, Telephone, Adresse, Site web, Notes (optionnels)</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Create Supplier</strong></li>
+</ol>
+
+<hr>
+
+<h2>Onglet 3 : Purchase Orders (Bons de commande)</h2>
+
+<h3>Voir les bons de commande</h3>
+<p>Un tableau liste tous les PO avec :</p>
+<ul>
+<li><strong>ID</strong> — Identifiant unique du bon</li>
+<li><strong>Fournisseur</strong> — Nom du fournisseur</li>
+<li><strong>Articles</strong> — Nombre de lignes</li>
+<li><strong>Total</strong> — Montant total du bon</li>
+<li><strong>Statut</strong> — Badge colore (DRAFT, ORDERED, PARTIAL, RECEIVED, CANCELLED)</li>
+<li><strong>Date prevue</strong> — Date de livraison esperee</li>
+<li><strong>Date de creation</strong></li>
+</ul>
+
+<h3>Filtrer par statut</h3>
+<p>Des boutons en haut permettent de filtrer : Tous, DRAFT, ORDERED, PARTIAL, RECEIVED, CANCELLED.</p>
+
+<h3>Creer un bon de commande</h3>
+<ol>
+<li>Cliquez sur <strong>New Purchase Order</strong></li>
+<li>Selectionnez un <strong>fournisseur</strong> (obligatoire)</li>
+<li>Entrez la <strong>date de livraison prevue</strong> (optionnel)</li>
+<li>Ajoutez les <strong>lignes d'articles</strong> :</li>
+</ol>
+<ul>
+<li>Product ID (obligatoire)</li>
+<li>Format ID (optionnel)</li>
+<li>Quantite (minimum 1)</li>
+<li>Cout unitaire (doit etre > 0)</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>+ Add Item</strong> pour ajouter d'autres lignes</li>
+<li>Le total se calcule automatiquement</li>
+<li>Cliquez sur <strong>Create PO</strong></li>
+</ol>
+
+<h3>Statuts d'un bon de commande</h3>
+<table>
+<thead>
+    <tr><th>Statut</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>DRAFT</strong></td><td>Brouillon — pas encore envoye au fournisseur</td></tr>
+  <tr><td><strong>ORDERED</strong></td><td>Commande passee au fournisseur</td></tr>
+  <tr><td><strong>PARTIAL</strong></td><td>Livraison partielle recue</td></tr>
+  <tr><td><strong>RECEIVED</strong></td><td>Totalement recu — le stock peut etre mis a jour</td></tr>
+  <tr><td><strong>CANCELLED</strong></td><td>Annule</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Onglet 4 : Reconciliation</h2>
+
+<h3>Qu'est-ce qu'on voit ?</h3>
+<p>Un tableau compare, pour chaque produit/format :</p>
+<ul>
+<li><strong>Stock enregistre</strong> — ce que dit le systeme</li>
+<li><strong>Stock calcule</strong> — base sur les ventes et receptions</li>
+<li><strong>Ecart</strong> — la difference entre les deux</li>
+<li><strong>Statut</strong> — MATCH (aucun ecart) ou DISCREPANCY (ecart detecte)</li>
+</ul>
+
+<h3>Filtrer les ecarts</h3>
+<p>Deux boutons : <strong>Tous</strong> et <strong>Ecarts seulement</strong> pour ne voir que les produits avec des differences.</p>
+
+<h3>Corriger un ecart</h3>
+<ol>
+<li>Identifiez un produit avec le statut <strong>DISCREPANCY</strong></li>
+<li>Cliquez sur <strong>Ajuster</strong> a cote de ce produit</li>
+<li>Entrez la quantite reelle (stock physique)</li>
+<li>Donnez une <strong>raison obligatoire</strong> (ex: "Comptage physique 20 mars", "Produit endommage", "Erreur de saisie")</li>
+<li>Confirmez — le stock est corrige et l'evenement est enregistre</li>
+</ol>
+
+<hr>
+
+<h2>Workflows complets</h2>
+
+<h3>Scenario 1 : Reception d'une livraison fournisseur</h3>
+
+<ol>
+<li>Le colis arrive a l'entrepot</li>
+<li>Verifiez le contenu physique par rapport au bon de commande</li>
+<li>Allez dans <strong>Inventaire > Purchase Orders</strong></li>
+<li>Trouvez le PO correspondant</li>
+<li>Si tout est recu : passez le statut a RECEIVED</li>
+<li>Allez dans l'onglet <strong>Stock</strong></li>
+<li>Pour chaque produit recu, cliquez sur <strong>Reappro</strong> et ajoutez la quantite</li>
+<li>Verifiez que les cartes de statistiques se mettent a jour</li>
+</ol>
+
+<h3>Scenario 2 : Inventaire physique mensuel</h3>
+
+<ol>
+<li>Imprimez la liste de stock (bouton Exporter > ouvrir le CSV)</li>
+<li>Faites le comptage physique dans l'entrepot</li>
+<li>Allez dans <strong>Inventaire > Reconciliation</strong></li>
+<li>Comparez les chiffres systeme vs physique</li>
+<li>Pour chaque ecart, cliquez sur <strong>Ajuster</strong> avec la quantite reelle et la raison</li>
+<li>Exportez le rapport apres reconciliation pour vos archives</li>
+</ol>
+
+<h3>Scenario 3 : Stock bas detecte</h3>
+
+<ol>
+<li>Vous voyez un badge jaune sur la carte <strong>Stock bas</strong> (ou recevez une alerte)</li>
+<li>Cliquez sur l'onglet de filtre <strong>Stock bas</strong></li>
+<li>Identifiez les produits concernes</li>
+<li>Allez dans <strong>Suppliers</strong> — identifiez le fournisseur</li>
+<li>Allez dans <strong>Purchase Orders</strong> > <strong>New Purchase Order</strong></li>
+<li>Selectionnez le fournisseur, ajoutez les produits et quantites</li>
+<li>Creez le PO et envoyez-le au fournisseur</li>
+</ol>
+
+<hr>
+
+<h2>FAQ — Questions frequentes</h2>
+
+<h3>Q : Quelle est la difference entre "Ajouter stock" et "Ajuster" ?</h3>
+<p><strong>R</strong> : "Ajouter stock" ajoute une quantite a la quantite existante (ex: stock 50 + ajout 20 = 70). "Ajuster" remplace la quantite par la nouvelle valeur (ex: stock 50, ajustement a 47 = 47). L'ajustement exige une raison.</p>
+
+<h3>Q : Le stock se met-il a jour automatiquement quand un client achete ?</h3>
+<p><strong>R</strong> : Oui. Chaque commande confirmee diminue automatiquement le stock du produit et format correspondant.</p>
+
+<h3>Q : Peut-on avoir des alertes automatiques quand le stock est bas ?</h3>
+<p><strong>R</strong> : Oui. Definissez un seuil d'alerte (lowStockThreshold) pour chaque produit. Quand le stock descend en dessous, la carte "Stock bas" se met a jour et des notifications sont envoyees.</p>
+
+<h3>Q : Comment exporter le stock pour ma comptabilite ?</h3>
+<p><strong>R</strong> : Cliquez sur <strong>Exporter</strong> dans le ruban. Un fichier CSV avec tous les produits, quantites, prix et valeur est telecharge. Ouvrez-le dans Excel.</p>
+
+<h3>Q : Les bons de commande mettent-ils a jour le stock automatiquement ?</h3>
+<p><strong>R</strong> : Non. Quand un PO passe a RECEIVED, vous devez manuellement ajouter le stock via "Ajouter stock" dans l'onglet Stock. C'est un controle volontaire pour verifier la reception physique.</p>
+
+<hr>
+
+<h2>Strategie expert : Gestion specifique des peptides</h2>
+
+<h3>Conditions de stockage des peptides lyophilises</h3>
+
+<p>Les peptides synthetiques sont des produits sensibles qui necessitent des conditions de stockage rigoureuses pour maintenir leur purete et leur efficacite.</p>
+
+<table>
+<thead>
+    <tr><th>Condition</th><th>Specification</th><th>Consequence si non respecte</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Temperature</strong></td><td>2 a 8 degres Celsius (refrigere) pour le long terme ; temperature ambiante (moins de 25 degres) pour le court terme (moins de 30 jours)</td><td>Degradation acceleree, perte de purete, produit inutilisable</td></tr>
+  <tr><td><strong>Humidite</strong></td><td>Moins de 40% d'humidite relative ; stockage dans un contenant etanche avec dessiccant</td><td>Reconstitution prematuree, contamination, agglutination</td></tr>
+  <tr><td><strong>Lumiere</strong></td><td>A l'abri de la lumiere directe ; stockage dans des contenants opaques ou ambre</td><td>Photo-degradation, perte d'activite biologique</td></tr>
+  <tr><td><strong>Vibrations</strong></td><td>Eviter les manipulations excessives</td><td>Fragmentation des composes lyophilises</td></tr>
+</tbody>
+</table>
+<h3>Duree de conservation</h3>
+
+<table>
+<thead>
+    <tr><th>Type de peptide</th><th>Duree conservation (lyophilise, scelle)</th><th>Duree conservation (reconstitue)</th></tr>
+</thead>
+<tbody>
+  <tr><td>Peptides standards (BPC-157, TB-500)</td><td>24 mois a compter de la fabrication</td><td>30 jours refrigere</td></tr>
+  <tr><td>Peptides complexes (CJC-1295 DAC)</td><td>18-24 mois</td><td>14-21 jours refrigere</td></tr>
+  <tr><td>Melanotane / PT-141</td><td>24 mois</td><td>30 jours refrigere</td></tr>
+</tbody>
+</table>
+<h3>Chaine de froid</h3>
+
+<p>Pour les expeditions, maintenir la chaine de froid en ete ou pour les envois longue distance :</p>
+<ol>
+<li>Utiliser des pochettes isothermes avec gel refrigerant pour les envois de plus de 48 heures en transit</li>
+<li>Expedier en debut de semaine (lundi-mercredi) pour eviter que les colis ne restent en entrepot de tri le week-end</li>
+<li>Eviter les expeditions les vendredis avant jours feries prolonges</li>
+</ol>
+
+<hr>
+
+<h2>Strategie expert : Calcul du point de reorder optimal</h2>
+
+<h3>Formule du point de reorder</h3>
+
+<p>Le point de reorder (ou seuil de reapprovisionnement) est la quantite de stock a laquelle il faut passer une commande fournisseur pour eviter la rupture.</p>
+
+<pre><code>Point de reorder = (Consommation moyenne quotidienne x Delai d'approvisionnement en jours) + Stock de securite</code></pre>
+
+<h3>Calcul du stock de securite</h3>
+
+<p>Le stock de securite absorbe les variations de demande et les retards fournisseurs.</p>
+
+<pre><code>Stock de securite = Facteur de securite x Ecart-type de la demande quotidienne x Racine carree du delai d'approvisionnement</code></pre>
+
+<p><strong>Facteurs de securite courants</strong> :</p>
+<table>
+<thead>
+    <tr><th>Niveau de service cible</th><th>Facteur de securite</th></tr>
+</thead>
+<tbody>
+  <tr><td>90% (acceptable)</td><td>1,28</td></tr>
+  <tr><td>95% (recommande)</td><td>1,65</td></tr>
+  <tr><td>99% (critique)</td><td>2,33</td></tr>
+</tbody>
+</table>
+<h3>Exemple concret pour BioCycle Peptides</h3>
+
+<p>Prenons le BPC-157 5mg :</p>
+<ul>
+<li><strong>Consommation moyenne</strong> : 8 unites par jour (environ 240 par mois)</li>
+<li><strong>Delai d'approvisionnement</strong> : 21 jours (3 semaines pour un fournisseur chinois avec livraison maritime)</li>
+<li><strong>Ecart-type de la demande</strong> : 3 unites par jour</li>
+<li><strong>Facteur de securite</strong> : 1,65 (service 95%)</li>
+</ul>
+
+<pre><code>Stock de securite = 1,65 x 3 x racine(21) = 1,65 x 3 x 4,58 = 22,7 ≈ 23 unites
+Point de reorder = (8 x 21) + 23 = 168 + 23 = 191 unites</code></pre>
+
+<p>Il faut donc configurer le seuil d'alerte a <strong>191 unites</strong> dans Koraline pour ce produit. Quand le stock descend en dessous de 191, lancer immediatement un bon de commande fournisseur.</p>
+
+<h3>Recommandations par produit</h3>
+
+<table>
+<thead>
+    <tr><th>Categorie</th><th>Delai approvisionnement typique</th><th>Stock securite recommande</th></tr>
+</thead>
+<tbody>
+  <tr><td>Peptides populaires (BPC-157, TB-500)</td><td>14-21 jours</td><td>3-4 semaines de stock</td></tr>
+  <tr><td>Peptides specialises (CJC-1295, Ipamorelin)</td><td>21-30 jours</td><td>4-6 semaines de stock</td></tr>
+  <tr><td>Accessoires (seringues, eau bacteriostatique)</td><td>7-14 jours</td><td>2-3 semaines de stock</td></tr>
+  <tr><td>Supplements</td><td>14-21 jours</td><td>3-4 semaines de stock</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Strategie expert : Methode FIFO obligatoire pour les produits perissables</h2>
+
+<h3>Qu'est-ce que FIFO ?</h3>
+
+<p>FIFO signifie "First In, First Out" (premier entre, premier sorti). Cela signifie que les produits recus en premier doivent etre vendus en premier.</p>
+
+<h3>Pourquoi FIFO est obligatoire pour les peptides</h3>
+
+<ol>
+<li><strong>Duree de conservation limitee</strong> : les peptides lyophilises ont une duree de vie de 18-24 mois. Sans FIFO, les lots anciens risquent d'expirer en entrepot.</li>
+<li><strong>Tracabilite des lots</strong> : en cas de probleme qualite, il faut pouvoir identifier rapidement quels clients ont recu un lot specifique.</li>
+<li><strong>Conformite reglementaire</strong> : les bonnes pratiques de distribution (BPD) exigent le suivi des lots et la rotation des stocks.</li>
+</ol>
+
+<h3>Mise en oeuvre pratique dans l'entrepot</h3>
+
+<ol>
+<li><strong>Etiquetage</strong> : chaque lot recu porte une etiquette avec le numero de lot, la date de reception et la date d'expiration</li>
+<li><strong>Organisation physique</strong> : les nouveaux lots sont places derriere les lots existants sur les etageres</li>
+<li><strong>Verification picking</strong> : lors de la preparation des commandes, toujours prelever les lots avec la date d'expiration la plus proche</li>
+<li><strong>Alerte d'expiration</strong> : configurer une alerte a 90 jours avant la date d'expiration pour les lots restants</li>
+</ol>
+
+<h3>Suivi dans Koraline</h3>
+
+<p>A chaque reapprovisionnement dans l'onglet <strong>Stock</strong>, ajouter une note avec :</p>
+<ul>
+<li>Le numero de lot du fournisseur</li>
+<li>La date de fabrication</li>
+<li>La date d'expiration</li>
+<li>La quantite recue</li>
+</ul>
+
+<p>Cela permet de reconstituer l'historique complet lors d'une reconciliation ou d'un rappel de lot.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>SKU</strong></td><td>Stock Keeping Unit — code unique identifiant un produit/format specifique (ex: PP-BPC157-5MG)</td></tr>
+  <tr><td><strong>Seuil d'alerte</strong></td><td>Quantite minimale en dessous de laquelle le produit est considere en "stock bas"</td></tr>
+  <tr><td><strong>Rupture de stock</strong></td><td>Stock = 0, le produit n'est plus vendable</td></tr>
+  <tr><td><strong>PO</strong></td><td>Purchase Order — bon de commande aupres d'un fournisseur</td></tr>
+  <tr><td><strong>Reconciliation</strong></td><td>Processus de comparaison entre le stock informatique et le stock physique</td></tr>
+  <tr><td><strong>MRR</strong></td><td>Voir glossaire de la page <a href="04-abonnements.md">Abonnements</a></td></tr>
+  <tr><td><strong>CSV</strong></td><td>Format de fichier tableur compatible Excel/Google Sheets</td></tr>
+  <tr><td><strong>Reappro</strong></td><td>Reapprovisionnement — ajouter du stock suite a une reception</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="01-commandes.md">Commandes</a> — Les ventes qui diminuent le stock</li>
+<li><a href="04-abonnements.md">Abonnements</a> — Les livraisons recurrentes qui utilisent le stock</li>
+<li><a href="06-fournisseurs.md">Fournisseurs</a> — Page dediee a la gestion complete des fournisseurs</li>
+<li><a href="07-paiements.md">Paiements</a> — Reconciliation financiere des achats fournisseurs</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="02-commerce--06-fournisseurs">
+<h1>Gestion des Fournisseurs</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Commerce > Fournisseurs</p>
+<p><strong>URL</strong>: <code>/admin/fournisseurs</code></p>
+<p><strong>Niveau</strong>: Debutant a intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Fournisseurs</strong> est votre carnet d'adresses professionnel pour toutes les entreprises qui vous fournissent des produits. C'est ici que vous centralisez toutes les informations de contact, les liens utiles (portails de commande, catalogues, suivi) et les personnes-contact par departement.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir la liste de tous vos fournisseurs (actifs et inactifs)</li>
+<li>Ajouter un nouveau fournisseur avec ses coordonnees completes</li>
+<li>Ajouter plusieurs contacts par fournisseur (ventes, comptabilite, support, logistique)</li>
+<li>Ajouter des liens utiles (portail de commande, chat, catalogue, suivi de colis)</li>
+<li>Modifier ou supprimer un fournisseur</li>
+<li>Ouvrir directement le site web d'un fournisseur</li>
+<li>Exporter la liste au format CSV</li>
+<li>Marquer un fournisseur comme actif ou inactif</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un fournisseur ?</h3>
+<p>Un fournisseur est une entreprise qui vous vend les produits que vous revendez a vos clients. Par exemple, le laboratoire qui fabrique vos peptides est un fournisseur.</p>
+
+<h3>Contacts multiples</h3>
+<p>Chaque fournisseur peut avoir plusieurs personnes-contact, chacune dans un departement different :</p>
+<ul>
+<li><strong>Ventes</strong> — pour passer les commandes</li>
+<li><strong>Comptabilite</strong> — pour les factures et paiements</li>
+<li><strong>Support</strong> — pour les problemes techniques</li>
+<li><strong>Logistique</strong> — pour le suivi des livraisons</li>
+</ul>
+
+<p>Un contact peut etre marque comme <strong>principal</strong> (etoile) pour indiquer qui contacter en premier.</p>
+
+<h3>Liens utiles</h3>
+<p>Chaque fournisseur peut avoir des liens vers :</p>
+<table>
+<thead>
+    <tr><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Portail de commande</strong></td><td>Page web pour passer des commandes en ligne</td></tr>
+  <tr><td><strong>Chat</strong></td><td>Messagerie instantanee du fournisseur</td></tr>
+  <tr><td><strong>Portail</strong></td><td>Espace client du fournisseur</td></tr>
+  <tr><td><strong>Catalogue</strong></td><td>PDF ou page web du catalogue produits</td></tr>
+  <tr><td><strong>Suivi</strong></td><td>Page de tracking des colis</td></tr>
+  <tr><td><strong>Autre</strong></td><td>Tout autre lien utile</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans la <strong>barre de navigation horizontale</strong>, cliquez sur <strong>Commerce</strong></li>
+<li>Dans le <strong>panneau lateral</strong>, cliquez sur <strong>Fournisseurs</strong> (6e element)</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Page Fournisseurs]</div>
+
+<h3>La barre de ruban (Ribbon)</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Ajouter fournisseur</strong></td><td>Ouvrir le formulaire de creation</td></tr>
+  <tr><td><strong>Ouvrir site web</strong></td><td>Ouvrir le site web du fournisseur selectionne dans un nouvel onglet</td></tr>
+  <tr><td><strong>Modifier</strong></td><td>Editer les informations du fournisseur selectionne</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer definitivement le fournisseur selectionne</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger la liste des fournisseurs en CSV</td></tr>
+</tbody>
+</table>
+<h3>La liste maitre/detail</h3>
+<ul>
+<li><strong>Panneau gauche</strong> : Liste des fournisseurs avec badges (Actif/Inactif), nombre de contacts</li>
+<li><strong>Panneau droit</strong> : Detail complet du fournisseur selectionne</li>
+</ul>
+
+<h3>Onglets de filtre</h3>
+<ul>
+<li><strong>Actif</strong> — Seulement les fournisseurs actifs</li>
+<li><strong>Actif + Inactif</strong> — Tous les fournisseurs</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>1. Ajouter un fournisseur</h3>
+
+<ol>
+<li>Cliquez sur <strong>Ajouter un fournisseur</strong> (bouton vert dans le ruban, ou bouton bleu en haut a droite)</li>
+<li>Un formulaire complet s'ouvre avec les sections :</li>
+</ol>
+
+<p><strong>Informations generales :</strong></p>
+<table>
+<thead>
+    <tr><th>Champ</th><th>Obligatoire</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td>Nom</td><td>Oui</td><td>Nom de l'entreprise fournisseur</td></tr>
+  <tr><td>Code</td><td>Non</td><td>Code interne (ex: FURN-001)</td></tr>
+  <tr><td>Email</td><td>Non</td><td>Email general du fournisseur</td></tr>
+  <tr><td>Telephone</td><td>Non</td><td>Numero principal</td></tr>
+  <tr><td>Site web</td><td>Non</td><td>URL du site internet</td></tr>
+  <tr><td>Adresse</td><td>Non</td><td>Adresse postale complete</td></tr>
+  <tr><td>Ville</td><td>Non</td><td>Ville</td></tr>
+  <tr><td>Province</td><td>Non</td><td>Province/Etat</td></tr>
+  <tr><td>Code postal</td><td>Non</td><td>Code postal</td></tr>
+  <tr><td>Pays</td><td>Non</td><td>Pays</td></tr>
+  <tr><td>Notes</td><td>Non</td><td>Notes internes (invisible pour le fournisseur)</td></tr>
+  <tr><td>Actif</td><td>Oui</td><td>Interrupteur actif/inactif (defaut: actif)</td></tr>
+</tbody>
+</table>
+<p><strong>Contacts :</strong></p>
+<ul>
+<li>Cliquez sur <strong>Ajouter un contact</strong> pour chaque personne-contact</li>
+<li>Champs : Nom, Departement (Ventes/Comptabilite/Support/Logistique), Email, Telephone, Poste, Titre, Principal (oui/non)</li>
+</ul>
+
+<p><strong>Liens :</strong></p>
+<ul>
+<li>Cliquez sur <strong>Ajouter un lien</strong> pour chaque lien utile</li>
+<li>Champs : Libelle, URL, Type (Portail de commande/Chat/Portail/Catalogue/Suivi/Autre)</li>
+</ul>
+
+<ol>
+<li>Cliquez sur <strong>Enregistrer</strong></li>
+</ol>
+
+<h3>2. Consulter un fournisseur</h3>
+
+<ol>
+<li>Cliquez sur un fournisseur dans la liste de gauche</li>
+<li>Le panneau de detail affiche :</li>
+</ol>
+<ul>
+<li><strong>Nom et code</strong> en en-tete</li>
+<li><strong>Badge</strong> Actif (vert) ou Inactif (gris)</li>
+<li><strong>Coordonnees</strong> : email (cliquable), telephone, adresse complete, site web (lien)</li>
+<li><strong>Contacts</strong> : liste des personnes-contact avec departement, email, telephone</li>
+<li>Le contact principal est marque d'une etoile</li>
+<li><strong>Liens utiles</strong> : liste des liens avec type (badge colore) et URL cliquable</li>
+<li><strong>Notes</strong> : notes internes</li>
+</ul>
+
+<h3>3. Modifier un fournisseur</h3>
+
+<ol>
+<li>Selectionnez le fournisseur dans la liste</li>
+<li>Cliquez sur <strong>Modifier</strong> dans le ruban OU sur le bouton Modifier dans le panneau de detail</li>
+<li>Le meme formulaire que la creation s'ouvre, pre-rempli</li>
+<li>Modifiez les champs souhaites</li>
+<li>Cliquez sur <strong>Enregistrer</strong></li>
+</ol>
+
+<h3>4. Supprimer un fournisseur</h3>
+
+<ol>
+<li>Selectionnez le fournisseur</li>
+<li>Cliquez sur <strong>Supprimer</strong> dans le ruban</li>
+<li>Confirmez la suppression dans la boite de dialogue</li>
+</ol>
+
+<blockquote>
+<p><strong>Attention</strong> : La suppression est definitive. Si le fournisseur a des bons de commande associes, envisagez de le marquer comme "Inactif" plutot que de le supprimer.</p>
+</blockquote>
+
+<h3>5. Exporter la liste</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban</li>
+<li>Un fichier CSV est telecharge avec : Nom, Code, Email, Telephone, Site web, Adresse, Ville, Statut, Nombre de contacts</li>
+<li>Compatible Excel (encodage UTF-8 BOM)</li>
+</ol>
+
+<hr>
+
+<h2>Workflows complets</h2>
+
+<h3>Scenario 1 : Nouveau fournisseur de peptides</h3>
+
+<ol>
+<li>Vous avez identifie un nouveau laboratoire fournisseur</li>
+<li>Allez dans <strong>Commerce > Fournisseurs</strong></li>
+<li>Cliquez sur <strong>Ajouter un fournisseur</strong></li>
+<li>Renseignez : nom, email, telephone, site web, adresse</li>
+<li>Ajoutez les contacts : representant commercial (dept: Ventes, principal: oui) + comptabilite</li>
+<li>Ajoutez les liens : portail de commande, catalogue PDF</li>
+<li>Enregistrez</li>
+<li>Puis allez dans <strong>Inventaire > Purchase Orders</strong> pour creer votre premier bon de commande</li>
+</ol>
+
+<h3>Scenario 2 : Trouver rapidement comment commander</h3>
+
+<ol>
+<li>Vous devez passer une commande urgente</li>
+<li>Allez dans <strong>Commerce > Fournisseurs</strong></li>
+<li>Recherchez le fournisseur par nom</li>
+<li>Dans le panneau de detail, cherchez le lien de type <strong>Portail de commande</strong></li>
+<li>Cliquez dessus — le site du fournisseur s'ouvre</li>
+<li>Ou utilisez le bouton <strong>Ouvrir site web</strong> dans le ruban</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<h3>Q : Puis-je avoir plusieurs contacts pour le meme departement ?</h3>
+<p><strong>R</strong> : Oui, il n'y a pas de limite. Mais un seul peut etre marque comme "principal".</p>
+
+<h3>Q : Desactiver un fournisseur supprime-t-il ses donnees ?</h3>
+<p><strong>R</strong> : Non. Marquer un fournisseur comme "Inactif" le masque de la vue par defaut, mais toutes ses donnees sont conservees. Vous pouvez le reactiver a tout moment.</p>
+
+<h3>Q : Les fournisseurs sont-ils lies aux bons de commande ?</h3>
+<p><strong>R</strong> : Oui. Quand vous creez un bon de commande dans <strong>Inventaire > Purchase Orders</strong>, vous selectionnez un fournisseur de cette liste.</p>
+
+<hr>
+
+<h2>Strategie expert : Evaluation et selection des fournisseurs de peptides</h2>
+
+<h3>Criteres de selection obligatoires</h3>
+
+<p>Choisir un fournisseur de peptides est une decision critique qui impacte directement la qualite de vos produits, votre reputation et la satisfaction de vos clients. Voici les criteres essentiels a evaluer.</p>
+
+<table>
+<thead>
+    <tr><th>Critere</th><th>Niveau minimum requis</th><th>Comment verifier</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Purete des peptides</strong></td><td>Superieure ou egale a 98% (HPLC)</td><td>Exiger le certificat d'analyse (COA) pour chaque lot</td></tr>
+  <tr><td><strong>Certification GMP</strong></td><td>Obligatoire (Good Manufacturing Practices)</td><td>Demander le certificat GMP ; verifier aupres de l'organisme emetteur</td></tr>
+  <tr><td><strong>Certificat d'analyse (COA)</strong></td><td>Fourni avec chaque livraison</td><td>COA doit inclure : identite, purete HPLC, masse moleculaire, contenu en endotoxines, solvants residuels</td></tr>
+  <tr><td><strong>Capacite de production</strong></td><td>Suffisante pour couvrir vos commandes + 30%</td><td>Demander la capacite mensuelle et le carnet de commandes</td></tr>
+  <tr><td><strong>Delai de livraison</strong></td><td>14-30 jours selon l'origine</td><td>Verifier les delais reels sur 3-5 commandes test</td></tr>
+  <tr><td><strong>MOQ (quantite minimale)</strong></td><td>Compatible avec vos volumes</td><td>Negocier un MOQ adapte a votre phase de croissance</td></tr>
+  <tr><td><strong>Stabilite financiere</strong></td><td>Entreprise etablie depuis plus de 3 ans</td><td>Verifier les registres commerciaux, demander des references</td></tr>
+</tbody>
+</table>
+<h3>Grille d'evaluation fournisseur (scorecard)</h3>
+
+<p>Utilisez cette grille pour comparer objectivement vos fournisseurs. Notez chaque critere de 1 a 5.</p>
+
+<table>
+<thead>
+    <tr><th>Critere</th><th>Ponderation</th><th>Fournisseur A</th><th>Fournisseur B</th><th>Fournisseur C</th></tr>
+</thead>
+<tbody>
+  <tr><td>Purete peptides</td><td>25%</td><td>/5</td><td>/5</td><td>/5</td></tr>
+  <tr><td>Prix unitaire</td><td>20%</td><td>/5</td><td>/5</td><td>/5</td></tr>
+  <tr><td>Delai de livraison</td><td>15%</td><td>/5</td><td>/5</td><td>/5</td></tr>
+  <tr><td>Fiabilite (livraison a temps)</td><td>15%</td><td>/5</td><td>/5</td><td>/5</td></tr>
+  <tr><td>Service client / reactivite</td><td>10%</td><td>/5</td><td>/5</td><td>/5</td></tr>
+  <tr><td>Documentation (COA, GMP)</td><td>10%</td><td>/5</td><td>/5</td><td>/5</td></tr>
+  <tr><td>Flexibilite (MOQ, commandes urgentes)</td><td>5%</td><td>/5</td><td>/5</td><td>/5</td></tr>
+  <tr><td><strong>Score total pondere</strong></td><td>100%</td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<p><strong>Seuils</strong> :</p>
+<ul>
+<li>Score superieur a 4,0 : fournisseur prioritaire</li>
+<li>Score entre 3,0 et 4,0 : fournisseur acceptable, points a ameliorer</li>
+<li>Score inferieur a 3,0 : fournisseur a remplacer</li>
+</ul>
+
+<hr>
+
+<h2>Strategie expert : Negociation des termes commerciaux</h2>
+
+<h3>Termes de paiement courants</h3>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Signification</th><th>Avantage pour vous</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Paiement a la commande (CIA)</strong></td><td>Payer 100% avant expedition</td><td>Aucun, mais souvent requis pour les premiers achats</td></tr>
+  <tr><td><strong>Net 30</strong></td><td>Payer dans les 30 jours suivant la facture</td><td>Tresorerie : vous vendez avant de payer le fournisseur</td></tr>
+  <tr><td><strong>Net 60</strong></td><td>Payer dans les 60 jours</td><td>Tresorerie encore meilleure ; reserve aux gros volumes</td></tr>
+  <tr><td><strong>2/10 Net 30</strong></td><td>2% d'escompte si paye en 10 jours, sinon plein prix a 30 jours</td><td>Economie de 2% si votre tresorerie le permet (equivalent a un rendement annuel de 36%)</td></tr>
+  <tr><td><strong>50/50</strong></td><td>50% a la commande, 50% a la livraison</td><td>Compromis courant pour les nouveaux partenariats</td></tr>
+</tbody>
+</table>
+<h3>Strategie de negociation par phase</h3>
+
+<table>
+<thead>
+    <tr><th>Phase de votre entreprise</th><th>Volume mensuel</th><th>Levier de negociation</th></tr>
+</thead>
+<tbody>
+  <tr><td>Lancement (0-6 mois)</td><td>Moins de 5 000 $CA</td><td>Faible. Accepter CIA ou 50/50. Focus : qualite et fiabilite.</td></tr>
+  <tr><td>Croissance (6-18 mois)</td><td>5 000-20 000 $CA</td><td>Moyen. Negocier Net 30, MOQ reduit. Montrer la croissance.</td></tr>
+  <tr><td>Maturite (18+ mois)</td><td>Plus de 20 000 $CA</td><td>Fort. Exiger Net 30, negocier 2/10, volume discounts, exclusivite partielle.</td></tr>
+</tbody>
+</table>
+<h3>Points de negociation cles</h3>
+
+<ol>
+<li><strong>Remise sur volume</strong> : negocier des paliers (ex: -5% au-dessus de 10 000 $CA, -10% au-dessus de 25 000 $CA)</li>
+<li><strong>Livraison gratuite</strong> : au-dela d'un seuil de commande (ex: livraison incluse pour les commandes de plus de 5 000 $CA)</li>
+<li><strong>Echantillons gratuits</strong> : pour tester de nouveaux peptides avant de les ajouter au catalogue</li>
+<li><strong>Priorite en cas de penurie</strong> : clause de priorite d'approvisionnement pour les clients reguliers</li>
+<li><strong>Garantie qualite</strong> : remplacement gratuit si la purete est inferieure au seuil garanti dans le COA</li>
+</ol>
+
+<hr>
+
+<h2>Strategie expert : Gestion multi-fournisseurs pour securiser la chaine</h2>
+
+<h3>Pourquoi avoir plusieurs fournisseurs</h3>
+
+<p>Dependre d'un seul fournisseur de peptides est un risque majeur pour votre entreprise :</p>
+
+<table>
+<thead>
+    <tr><th>Risque</th><th>Probabilite</th><th>Impact</th><th>Mitigation</th></tr>
+</thead>
+<tbody>
+  <tr><td>Rupture de stock chez le fournisseur</td><td>Moyenne</td><td>Critique : vous ne pouvez plus vendre</td><td>Fournisseur de secours qualifie</td></tr>
+  <tr><td>Augmentation soudaine des prix</td><td>Elevee</td><td>Fort : erosion de la marge</td><td>Capacite de basculer vers un autre fournisseur</td></tr>
+  <tr><td>Probleme de qualite sur un lot</td><td>Moyenne</td><td>Critique : rappel de produit, perte de confiance</td><td>Lots de fournisseurs differents en stock</td></tr>
+  <tr><td>Delai douanier ou logistique</td><td>Elevee (pour les fournisseurs internationaux)</td><td>Fort : retards de livraison</td><td>Fournisseur local en complement</td></tr>
+  <tr><td>Fournisseur fait faillite</td><td>Faible</td><td>Critique : perte totale de la source</td><td>Portefeuille diversifie</td></tr>
+</tbody>
+</table>
+<h3>Architecture multi-fournisseurs recommandee</h3>
+
+<table>
+<thead>
+    <tr><th>Role</th><th>Description</th><th>Part des achats</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Fournisseur principal</strong></td><td>Meilleur rapport qualite/prix/fiabilite. Recoit la majorite des commandes.</td><td>60-70%</td></tr>
+  <tr><td><strong>Fournisseur secondaire</strong></td><td>Qualite equivalente, peut prendre le relais en cas de probleme.</td><td>20-30%</td></tr>
+  <tr><td><strong>Fournisseur de secours</strong></td><td>Qualifie et teste, mais utilise uniquement en urgence. Commande test tous les 6 mois pour maintenir la relation.</td><td>5-10%</td></tr>
+</tbody>
+</table>
+<h3>Mise en pratique dans Koraline</h3>
+
+<ol>
+<li>Enregistrer chaque fournisseur dans <strong>Commerce > Fournisseurs</strong> avec le statut <strong>Actif</strong></li>
+<li>Indiquer dans les <strong>Notes</strong> le role de chaque fournisseur (principal, secondaire, secours)</li>
+<li>Ajouter un contact principal dans chaque departement (Ventes, Comptabilite, Logistique)</li>
+<li>Pour les fournisseurs de secours : marquer la date de la derniere commande test dans les notes</li>
+<li>Creer des bons de commande dans <strong>Inventaire > Purchase Orders</strong> en alternant entre fournisseur principal et secondaire selon les volumes</li>
+</ol>
+
+<h3>Audit periodique des fournisseurs</h3>
+
+<p>Tous les 6 mois, reevaluer chaque fournisseur avec la scorecard ci-dessus. Si un fournisseur descend en dessous du seuil de 3,0, entamer le processus de remplacement avant d'atteindre une situation critique.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Fournisseur</strong></td><td>Entreprise qui vous vend des produits</td></tr>
+  <tr><td><strong>Contact principal</strong></td><td>Personne-contact a privilegier pour les communications</td></tr>
+  <tr><td><strong>PO (Purchase Order)</strong></td><td>Bon de commande passe aupres d'un fournisseur</td></tr>
+  <tr><td><strong>Portail fournisseur</strong></td><td>Site web ou espace client du fournisseur</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="05-inventaire.md">Inventaire</a> — Bons de commande lies aux fournisseurs</li>
+<li><a href="01-commandes.md">Commandes</a> — Commandes clients qui consomment le stock fourni</li>
+<li><a href="07-paiements.md">Paiements</a> — Reconciliation des paiements fournisseurs</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="02-commerce--07-paiements">
+<h1>Reconciliation des Paiements</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Commerce > Reconciliation des paiements</p>
+<p><strong>URL</strong>: <code>/admin/paiements/reconciliation</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Reconciliation des paiements</strong> compare les montants de vos commandes dans Koraline avec les paiements reellement recus dans Stripe (votre processeur de paiement). Cela vous permet de detecter les ecarts : commandes payees mais non enregistrees, remboursements non comptabilises, erreurs de paiement, etc.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Generer un rapport de reconciliation pour une periode donnee</li>
+<li>Voir le total des commandes, revenus, remboursements et revenu net</li>
+<li>Identifier les commandes non reconciliees (ecarts entre Koraline et Stripe)</li>
+<li>Voir le nombre d'erreurs de paiement</li>
+<li>Exporter les commandes non reconciliees en CSV pour investigation</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Qu'est-ce que la reconciliation financiere ?</h3>
+<p>La reconciliation, c'est l'acte de verifier que deux systemes ont les memes chiffres. Ici, on compare :</p>
+<ul>
+<li><strong>Koraline</strong> (votre systeme de commandes) — ce que votre boutique a enregistre</li>
+<li><strong>Stripe</strong> (votre processeur de paiement) — ce qui a reellement ete debite/credite</li>
+</ul>
+
+<p>Si les deux correspondent : tout va bien. Sinon, il y a un ecart a investiguer.</p>
+
+<h3>Pourquoi c'est important ?</h3>
+<ul>
+<li>Detecter les fraudes ou erreurs de paiement</li>
+<li>S'assurer que chaque commande a bien ete payee</li>
+<li>Verifier que les remboursements sont bien appliques des deux cotes</li>
+<li>Preparer votre comptabilite avec des chiffres fiables</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans la <strong>barre de navigation horizontale</strong>, cliquez sur <strong>Commerce</strong></li>
+<li>Dans le <strong>panneau lateral</strong>, cliquez sur <strong>Reconciliation des paiements</strong> (dernier element)</li>
+</ol>
+
+<blockquote>
+<p><strong>Note</strong> : Le label dans la sidebar peut apparaitre tronque ("admin.nav.paymentReconcilia...") — c'est un bug d'affichage connu.</p>
+</blockquote>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Page Reconciliation]</div>
+
+<p>L'interface est simple et directe :</p>
+
+<h3>1. Selecteur de periode</h3>
+<p>Deux champs de date :</p>
+<ul>
+<li><strong>From</strong> (Du) : Date de debut de la periode a analyser</li>
+<li><strong>To</strong> (Au) : Date de fin</li>
+<li>Par defaut : les 30 derniers jours</li>
+</ul>
+
+<h3>2. Bouton "Generate Report"</h3>
+<p>Cliquez pour lancer l'analyse. Le systeme compare les commandes Koraline avec les transactions Stripe pour la periode selectionnee.</p>
+
+<h3>3. Rapport (apres generation)</h3>
+<p>Le rapport affiche :</p>
+
+<h4>Cartes de statistiques (5 indicateurs)</h4>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total commandes</strong></td><td>Nombre de commandes dans la periode</td></tr>
+  <tr><td><strong>Revenu total</strong></td><td>Somme de tous les montants commandes</td></tr>
+  <tr><td><strong>Total rembourse</strong></td><td>Montant total des remboursements</td></tr>
+  <tr><td><strong>Revenu net</strong></td><td>Revenu total - Remboursements</td></tr>
+  <tr><td><strong>Erreurs de paiement</strong></td><td>Nombre de transactions ayant echoue</td></tr>
+</tbody>
+</table>
+<h4>Indicateurs de reconciliation</h4>
+
+<table>
+<thead>
+    <tr><th>Indicateur</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Reconciliees avec Stripe</strong></td><td>Nombre de commandes dont le montant correspond a une transaction Stripe</td></tr>
+  <tr><td><strong>Commandes non reconciliees</strong></td><td>Nombre de commandes sans correspondance Stripe (ecarts a investiguer)</td></tr>
+</tbody>
+</table>
+<h4>Tableau des commandes non reconciliees</h4>
+<p>Si des ecarts sont detectes, un tableau les liste avec :</p>
+<ul>
+<li><strong>Numero de commande</strong></li>
+<li><strong>Montant total</strong></li>
+<li><strong>Statut de paiement</strong> (badge colore : PAID, REFUNDED, PARTIALLY_REFUNDED)</li>
+<li><strong>Date</strong></li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>1. Generer un rapport</h3>
+
+<ol>
+<li>Selectionnez la date de debut dans le champ <strong>From</strong></li>
+<li>Selectionnez la date de fin dans le champ <strong>To</strong></li>
+<li>Cliquez sur <strong>Generate Report</strong></li>
+<li>Attendez quelques secondes (le systeme interroge Stripe)</li>
+<li>Le rapport s'affiche avec les statistiques et la liste des ecarts</li>
+</ol>
+
+<h3>2. Investiguer les ecarts</h3>
+
+<p>Quand vous voyez des commandes non reconciliees :</p>
+
+<ol>
+<li>Notez le numero de commande</li>
+<li>Allez dans <strong>Commerce > Commandes</strong> et recherchez cette commande</li>
+<li>Verifiez son statut de paiement</li>
+<li>Connectez-vous a votre dashboard Stripe et recherchez la meme transaction</li>
+<li>Identifiez la cause de l'ecart :</li>
+</ol>
+<ul>
+<li><strong>Paiement en attente</strong> : Le client a paye mais Stripe n'a pas encore confirme (delai bancaire)</li>
+<li><strong>Webhook manque</strong> : Stripe a confirme le paiement mais le webhook n'a pas ete recu par Koraline</li>
+<li><strong>Remboursement partiel</strong> : Un remboursement a ete fait dans Stripe mais pas enregistre dans Koraline</li>
+<li><strong>Erreur de montant</strong> : Le montant dans Koraline ne correspond pas a celui dans Stripe (rare)</li>
+</ul>
+
+<h3>3. Exporter les ecarts</h3>
+
+<ol>
+<li>Apres avoir genere un rapport avec des ecarts</li>
+<li>Cliquez sur <strong>Exporter CSV</strong> (bouton en haut a droite du tableau)</li>
+<li>Un fichier CSV est telecharge avec : Numero de commande, Total, Statut, Date</li>
+<li>Utilisez ce fichier pour votre investigation ou pour votre comptable</li>
+</ol>
+
+<hr>
+
+<h2>Workflows complets</h2>
+
+<h3>Scenario 1 : Reconciliation mensuelle (fin de mois)</h3>
+
+<ol>
+<li>Le dernier jour du mois, allez dans <strong>Paiements > Reconciliation</strong></li>
+<li>Selectionnez les dates du 1er au dernier jour du mois</li>
+<li>Cliquez sur <strong>Generate Report</strong></li>
+<li>Si <strong>0 commandes non reconciliees</strong> : tout est en ordre, archivez le rapport</li>
+<li>Si des ecarts existent :</li>
+</ol>
+<ul>
+<li>Exportez le CSV</li>
+<li>Investigez chaque ecart (voir section "Investiguer les ecarts")</li>
+<li>Corrigez dans Koraline ou Stripe selon le cas</li>
+<li>Regenerez le rapport pour confirmer la resolution</li>
+</ul>
+<ol>
+<li>Transmettez le rapport final a votre comptable</li>
+</ol>
+
+<h3>Scenario 2 : Client dit "j'ai paye mais pas recu ma commande"</h3>
+
+<ol>
+<li>Allez dans <strong>Paiements > Reconciliation</strong></li>
+<li>Selectionnez la periode autour de la date d'achat du client</li>
+<li>Generez le rapport</li>
+<li>Cherchez le numero de commande dans les "non reconciliees"</li>
+<li>Si la commande apparait : verifiez dans Stripe si le paiement a bien ete recu</li>
+<li>Si Stripe confirme le paiement : le probleme est cote Koraline (webhook manque) — marquez manuellement la commande comme payee</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<h3>Q : A quelle frequence devrais-je faire la reconciliation ?</h3>
+<p><strong>R</strong> : Idealement une fois par semaine pour les periodes actives, et obligatoirement une fois par mois pour la cloture comptable.</p>
+
+<h3>Q : Le rapport prend-il en compte les taxes ?</h3>
+<p><strong>R</strong> : Oui, les montants incluent les taxes. Le revenu total correspond au montant total debite au client.</p>
+
+<h3>Q : Que faire si Stripe montre un paiement que Koraline ne connait pas ?</h3>
+<p><strong>R</strong> : C'est probablement un paiement dont le webhook n'a pas ete recu. Verifiez dans Stripe > Developers > Webhooks si des evenements ont echoue. Vous pouvez les renvoyer manuellement.</p>
+
+<h3>Q : Les remboursements partiels sont-ils detectes ?</h3>
+<p><strong>R</strong> : Oui, le statut PARTIALLY_REFUNDED (badge orange) identifie les remboursements partiels.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Reconciliation</strong></td><td>Verification que les chiffres de deux systemes correspondent</td></tr>
+  <tr><td><strong>Stripe</strong></td><td>Processeur de paiement en ligne utilise par BioCycle Peptides</td></tr>
+  <tr><td><strong>Webhook</strong></td><td>Notification automatique envoyee par Stripe a Koraline quand un evenement se produit (paiement, remboursement, etc.)</td></tr>
+  <tr><td><strong>Revenu net</strong></td><td>Revenu total moins les remboursements</td></tr>
+  <tr><td><strong>Ecart</strong></td><td>Difference entre ce que Koraline enregistre et ce que Stripe rapporte</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="01-commandes.md">Commandes</a> — Detail des commandes individuelles</li>
+<li><a href="05-inventaire.md">Inventaire</a> — Reconciliation du stock (different de la reconciliation financiere)</li>
+<li>Section <strong>Comptabilite</strong> — Rapports financiers detailles</li>
+</ul>
+
+</div>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

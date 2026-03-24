@@ -34,7 +34,7 @@ export interface BaseTemplateData {
   companyAddress?: string;
 }
 
-// const LOGO_URL = 'https://biocyclepeptides.com/images/logo-email.png'; // For future use
+// const LOGO_URL = 'https://attitudes.vip/images/logo-email.png'; // For future use
 const BRAND_COLOR = '#CC5500'; // Orange
 const DARK_COLOR = '#1f2937';
 
@@ -119,7 +119,7 @@ export function baseTemplate(data: BaseTemplateData): string {
                       <div style="width: 40px; height: 40px; background-color: ${BRAND_COLOR}; border-radius: 10px; display: inline-block; text-align: center; line-height: 40px;">
                         <span style="color: white; font-weight: bold; font-size: 16px;">BC</span>
                       </div>
-                      <span style="color: white; font-size: 20px; font-weight: bold;">BioCycle Peptides</span>
+                      <span style="color: white; font-size: 20px; font-weight: bold;">${companyName}</span>
                     </div>
                   </td>
                 </tr>
@@ -196,7 +196,7 @@ export const emailComponents = {
   
   orderItem: (name: string, quantity: number, price: string, imageUrl?: string, isFr: boolean = true) => {
     // AUDIT-FIX: Whitelist allowed image domains to prevent tracking pixel injection
-    const ALLOWED_IMAGE_DOMAINS = ['attitudes.vip', 'biocyclepeptides.com', 'cdn.biocyclepeptides.com', 'biocyclepeptides.azurewebsites.net', 'localhost'];
+    const ALLOWED_IMAGE_DOMAINS = ['attitudes.vip', 'cdn.attitudes.vip', 'blob.core.windows.net', 'localhost'];
     let safeImage: string | undefined;
     if (imageUrl && /^https?:\/\//.test(imageUrl)) {
       try {

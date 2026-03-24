@@ -130,7 +130,7 @@ export default function UpsellInterstitialModal({
 
         // Check display rules before showing
         if (data.enabled && data.displayRule !== 'ALWAYS') {
-          const shownKey = `biocycle-upsell-shown`;
+          const shownKey = `attitudes-upsell-shown`;
           const shownData = JSON.parse(sessionStorage.getItem(shownKey) || '{}');
 
           if (data.displayRule === 'ONCE_PER_SESSION' && sessionStorage.getItem(shownKey + '-session') === 'true') {

@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
  * DELETE /api/email/messages/[id] — Delete/archive email
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { withMobileGuard } from '@/lib/mobile-guard';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
@@ -14,7 +14,7 @@ import { logger } from '@/lib/logger';
 /**
  * PUT — Update email conversation (mark as read, star, etc.)
  */
-export const PUT = withMobileGuard(async (request, { session, params }) => {
+export const PUT = withMobileGuard(async (request, { session: _session, params }) => {
   try {
     const id = params?.id;
     if (!id) {
@@ -53,7 +53,7 @@ export const PUT = withMobileGuard(async (request, { session, params }) => {
 /**
  * DELETE — Close/archive an email conversation.
  */
-export const DELETE = withMobileGuard(async (request, { session, params }) => {
+export const DELETE = withMobileGuard(async (_request, { session: _session, params }) => {
   try {
     const id = params?.id;
     if (!id) {

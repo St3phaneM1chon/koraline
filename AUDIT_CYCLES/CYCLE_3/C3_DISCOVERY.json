@@ -1,0 +1,746 @@
+{
+  "cycle": 3,
+  "date": "2026-03-23",
+  "summary": {
+    "description": "Final discovery cycle targeting residual issues missed by C1 (670/689) and C2 (92/105). Focus on security gaps, business logic bugs, performance anti-patterns, missing UX boundaries, hardcoded URLs, and LMS edge cases.",
+    "total_findings": 62,
+    "by_severity": {
+      "P0_critical": 5,
+      "P1_high": 18,
+      "P2_medium": 24,
+      "P3_low": 15
+    },
+    "by_domain": {
+      "SEC_security": 12,
+      "PERF_performance": 11,
+      "BIZ_business_logic": 10,
+      "UX_user_experience": 9,
+      "BRAND_branding": 6,
+      "LMS_learning": 6,
+      "API_consistency": 5,
+      "DEAD_dead_code": 3
+    }
+  },
+  "findings": [
+    {
+      "id": "C3-SEC-S-001",
+      "severity": "P0",
+      "domain": "SEC",
+      "type": "tenant_isolation_bypass",
+      "title": "LMS updateCourse ignores tenantId - cross-tenant course modification",
+      "description": "The updateCourse function in lms-service.ts accepts tenantId as first parameter but prefixes it with underscore (_tenantId) and never uses it. The update query uses only the course id without tenant filtering: prisma.course.update({ where: { id } }). This allows any tenant to modify any other tenant's course if they know the ID.",
+      "file": "src/lib/lms/lms-service.ts",
+      "line": 104,
+      "fix": "Change to: const course = await prisma.course.findFirst({ where: { id, tenantId } }); if (!course) throw new Error('Course not found'); return prisma.course.update({ where: { id }, data });"
+    },
+    {
+      "id": "C3-SEC-S-002",
+      "severity": "P0",
+      "domain": "SEC",
+      "type": "hardcoded_secret",
+      "title": "Aurelia daemon key has hardcoded fallback secret",
+      "description": "Both aurelia/chat/respond and aurelia/chat/pending routes use: const DAEMON_KEY = process.env.AURELIA_DAEMON_KEY || 'aurelia-daemon-secret-2026'. If the env var is not set (e.g., in production), the fallback is a guessable static string. Additionally, the comparison uses simple === instead of timingSafeEqual, making it vulnerable to timing attacks.",
+      "files": [
+        "src/app/api/aurelia/chat/respond/route.ts:14",
+        "src/app/api/aurelia/chat/pending/route.ts:13"
+      ],
+      "fix": "Remove the fallback default. Throw an error if AURELIA_DAEMON_KEY is not set. Use timingSafeEqual from crypto for comparison."
+    },
+    {
+      "id": "C3-SEC-S-003",
+      "severity": "P0",
+      "domain": "SEC",
+      "type": "unauthenticated_admin_route",
+      "title": "Admin tutoriels route has NO authentication",
+      "description": "GET /api/admin/tutoriels/[...slug] serves internal documentation markdown files without any authentication guard. While it reads from the local filesystem (docs/user-guide/), it exposes internal admin documentation to anyone who knows the URL pattern. The path sanitization prevents directory traversal but the lack of auth is a gap for any route under /api/admin/.",
+      "file": "src/app/api/admin/tutoriels/[...slug]/route.ts",
+      "fix": "Wrap with withAdminGuard or at minimum require authentication via auth()."
+    },
+    {
+      "id": "C3-SEC-S-004",
+      "severity": "P0",
+      "domain": "SEC",
+      "type": "error_message_leak",
+      "title": "LMS quiz submission leaks raw error.message to client",
+      "description": "POST /api/lms/quiz catches errors and returns error.message directly to the client (line 55). Unlike the enroll route which was fixed in C2 (C2-SEC-S-005), this route still exposes internal error messages including potential Prisma errors, stack traces, or database details.",
+      "file": "src/app/api/lms/quiz/route.ts",
+      "line": 55,
+      "fix": "Filter through safe message list like the enroll route does. Return generic 'Quiz submission failed' for unknown errors."
+    },
+    {
+      "id": "C3-SEC-S-005",
+      "severity": "P0",
+      "domain": "SEC",
+      "type": "error_message_leak",
+      "title": "LMS progress route leaks raw error.message to client",
+      "description": "POST /api/lms/progress catches errors and returns error.message directly on line 71. This can expose internal implementation details like Prisma unique constraint violations or database field names.",
+      "file": "src/app/api/lms/progress/route.ts",
+      "line": 71,
+      "fix": "Use a safe message whitelist pattern. Only return known business error messages like 'Enrollment not found' or 'Course already completed'."
+    },
+    {
+      "id": "C3-SEC-S-006",
+      "severity": "P1",
+      "domain": "SEC",
+      "type": "user_data_overfetch",
+      "title": "Multiple auth routes fetch entire User model without select clause",
+      "description": "Several auth and account API routes call prisma.user.findUnique/findFirst without a select clause, fetching the entire User model including password hash, mfaSecret, mfaBackupCodes, resetToken. While formatUser strips sensitive fields before response, the data still transits through memory. Routes affected: auth/signup (line 84), auth/register (line 90), auth/forgot-password (line 55), auth/login (line 73), auth/accept-invite (line 63), admin/gdpr (line 102), account/returns (lines 31, 98).",
+      "files": [
+        "src/app/api/auth/signup/route.ts:84",
+        "src/app/api/auth/login/route.ts:73",
+        "src/app/api/auth/forgot-password/route.ts:55",
+        "src/app/api/auth/accept-invite/route.ts:63",
+        "src/app/api/admin/gdpr/route.ts:102",
+        "src/app/api/account/returns/route.ts:31"
+      ],
+      "fix": "Add explicit select clauses to only fetch needed fields. For login: select { id, email, name, role, password, mfaEnabled, mfaSecret, image, locale, accounts }. For forgot-password: select { id, email, name }."
+    },
+    {
+      "id": "C3-SEC-S-007",
+      "severity": "P1",
+      "domain": "SEC",
+      "type": "missing_https_redirect",
+      "title": "No explicit HTTP-to-HTTPS redirect in middleware",
+      "description": "The middleware sets HSTS header and CSP upgrade-insecure-requests in production, but there is no explicit HTTP-to-HTTPS redirect. While Azure App Service may handle this at the infrastructure level, the application itself does not enforce HTTPS. A direct HTTP request that bypasses the load balancer would be served without encryption.",
+      "file": "src/middleware.ts",
+      "fix": "Add: if (process.env.NODE_ENV === 'production' && request.headers.get('x-forwarded-proto') !== 'https') { return NextResponse.redirect(new URL(request.url).toString().replace('http://', 'https://')); }"
+    },
+    {
+      "id": "C3-SEC-S-008",
+      "severity": "P1",
+      "domain": "SEC",
+      "type": "queryRawUnsafe_usage",
+      "title": "tenant-raw-query.ts uses $queryRawUnsafe with string concatenation",
+      "description": "The tenantQueryRaw and tenantExecuteRaw functions in tenant-raw-query.ts use prisma.$queryRawUnsafe. While parameters are passed separately, the SQL template string itself is constructed by injectTenantFilter which performs string manipulation (concatenation of WHERE clauses). If a caller passes a SQL string with user-controlled content in the template (not parameters), this could be exploitable.",
+      "file": "src/lib/tenant-raw-query.ts",
+      "lines": [36, 49, 66, 77],
+      "fix": "Audit all callers of tenantQueryRaw/tenantExecuteRaw to ensure SQL templates are static strings only. Consider adding a static analysis check or moving to Prisma.sql tagged templates where possible."
+    },
+    {
+      "id": "C3-SEC-S-009",
+      "severity": "P2",
+      "domain": "SEC",
+      "type": "community_debug_endpoint",
+      "title": "Community debug endpoint exists in production (returns 404 but route exists)",
+      "description": "GET /api/community/debug is blocked in production (returns 404), but the route file still exists and is deployed. The NODE_ENV check is the only protection. If NODE_ENV were misconfigured or omitted, it would expose Prisma model names, database table structure, and all model names.",
+      "file": "src/app/api/community/debug/route.ts",
+      "fix": "Remove the file entirely from the codebase. Debug endpoints should not be deployed to production at all."
+    },
+    {
+      "id": "C3-SEC-S-010",
+      "severity": "P2",
+      "domain": "SEC",
+      "type": "csrf_on_internal_webhook",
+      "title": "Gift card activate route requires CSRF for a server-to-server endpoint",
+      "description": "POST /api/gift-cards/activate is documented as an internal endpoint called by Stripe/PayPal webhooks, secured by INTERNAL_WEBHOOK_SECRET. However, it also validates CSRF tokens (line 55). Webhooks from Stripe/PayPal will never have CSRF tokens, making this endpoint non-functional for its intended purpose.",
+      "file": "src/app/api/gift-cards/activate/route.ts",
+      "line": 55,
+      "fix": "Remove CSRF validation for this internal webhook endpoint. The x-internal-secret header provides sufficient authentication for server-to-server calls."
+    },
+    {
+      "id": "C3-SEC-S-011",
+      "severity": "P2",
+      "domain": "SEC",
+      "type": "validation_bypass",
+      "title": "Zod validation error details exposed in quiz submission response",
+      "description": "POST /api/lms/quiz returns parsed.error.flatten() in the response body (line 34). While Zod errors are relatively safe, they can reveal internal field naming conventions and validation logic to attackers probing the API.",
+      "file": "src/app/api/lms/quiz/route.ts",
+      "line": 34,
+      "fix": "Return a generic 'Invalid quiz submission data' message instead of the full Zod error details."
+    },
+    {
+      "id": "C3-SEC-S-012",
+      "severity": "P2",
+      "domain": "SEC",
+      "type": "dangerous_sql_regex_bypass",
+      "title": "SQL injection prevention regex in tenant-raw-query can be bypassed",
+      "description": "The DANGEROUS_SQL_PATTERNS regex (/;\\s*(DROP|ALTER|TRUNCATE|CREATE|GRANT|REVOKE)\\b/i) only checks for statements preceded by semicolons. Multi-statement attacks using UNION SELECT, subqueries, or comments (--) are not detected. The regex is defense-in-depth but gives false confidence.",
+      "file": "src/lib/tenant-raw-query.ts",
+      "line": 13,
+      "fix": "Expand the regex to also catch UNION, INTO OUTFILE, LOAD_FILE. Better: enforce that all callers use static SQL templates via linting rules."
+    },
+    {
+      "id": "C3-BIZ-B-001",
+      "severity": "P1",
+      "domain": "BIZ",
+      "type": "quiz_grading_bug",
+      "title": "Quiz grading only counts submitted questions in totalPoints, not all quiz questions",
+      "description": "In submitQuizAttempt (lms-service.ts line 313-324), totalPoints is accumulated only from the questions the student actually answered. If a quiz has 10 questions worth 10 points each (100 total) but a student only submits answers for 3 easy questions and gets them right, score = 30/30 = 100% instead of 30/100 = 30%. Students can game the system by only answering questions they know.",
+      "file": "src/lib/lms/lms-service.ts",
+      "lines": [313, 326],
+      "fix": "Calculate totalPoints from ALL quiz questions (quiz.questions.reduce((sum, q) => sum + q.points, 0)), not from the submitted answers array. Unanswered questions should count as 0 earned points but their total points should still be included in the denominator."
+    },
+    {
+      "id": "C3-BIZ-B-002",
+      "severity": "P1",
+      "domain": "BIZ",
+      "type": "missing_feature",
+      "title": "Certificate issuance function exists but is never called from any route",
+      "description": "The issueCertificate function in lms-service.ts (line 374) is fully implemented but never called from any API route or admin page. There is no endpoint for students to request certificates or for admins to issue them. Course completion triggers status change but never certificate generation.",
+      "file": "src/lib/lms/lms-service.ts",
+      "line": 374,
+      "fix": "Create an admin API route POST /api/admin/lms/certificates/issue that calls issueCertificate. Also add automatic certificate issuance in recalculateEnrollmentProgress when progressPercent >= 100 and the course has a certificateTemplateId."
+    },
+    {
+      "id": "C3-BIZ-B-003",
+      "severity": "P1",
+      "domain": "BIZ",
+      "type": "certificate_no_quiz_check",
+      "title": "Certificate issuance does not verify quiz completion",
+      "description": "The issueCertificate function only checks enrollment.status === 'COMPLETED' and course.certificateTemplateId. It does not verify that the student passed any required quizzes. A course could have mandatory quizzes but certificates would still be issued upon lesson completion alone.",
+      "file": "src/lib/lms/lms-service.ts",
+      "line": 380,
+      "fix": "Before issuing certificate, check if course has quizzes. If so, verify at least one passing QuizAttempt exists for each required quiz."
+    },
+    {
+      "id": "C3-BIZ-B-004",
+      "severity": "P1",
+      "domain": "BIZ",
+      "type": "enrollment_duplicate_risk",
+      "title": "enrollUser has no duplicate enrollment check",
+      "description": "The enrollUser function (lms-service.ts line 120) creates an enrollment without first checking if the user is already enrolled. While Prisma unique constraints may catch this at the DB level, the function doesn't handle the duplicate gracefully and will throw a raw Prisma error instead of a user-friendly message.",
+      "file": "src/lib/lms/lms-service.ts",
+      "line": 120,
+      "fix": "Add: const existing = await prisma.enrollment.findUnique({ where: { tenantId_courseId_userId: { tenantId, courseId, userId } } }); if (existing) throw new Error('Already enrolled');"
+    },
+    {
+      "id": "C3-BIZ-B-005",
+      "severity": "P2",
+      "domain": "BIZ",
+      "type": "race_condition",
+      "title": "Quiz attempt count check is not atomic - race condition for concurrent submissions",
+      "description": "In both the quiz attempt route (line 88) and submitQuizAttempt service (line 305), the maxAttempts check reads the count, then creates a new attempt in a separate operation. Two concurrent submissions could both read attemptCount < maxAttempts and both succeed, exceeding the maximum.",
+      "file": "src/lib/lms/lms-service.ts",
+      "lines": [305, 329],
+      "fix": "Wrap the count check and attempt creation in a prisma.$transaction with serializable isolation, or use a unique constraint on (quizId, userId, attemptNumber) and handle conflict."
+    },
+    {
+      "id": "C3-BIZ-B-006",
+      "severity": "P2",
+      "domain": "BIZ",
+      "type": "missing_validation",
+      "title": "Quiz grading silently ignores answers for non-existent question IDs",
+      "description": "In gradeQuestion mapping (lms-service.ts line 316), if a student submits an answer with a questionId that doesn't exist in the quiz, it returns { isCorrect: false, points: 0 } but doesn't add to totalPoints. This means fake question IDs are silently ignored without error, which could mask frontend bugs or manipulation attempts.",
+      "file": "src/lib/lms/lms-service.ts",
+      "line": 316,
+      "fix": "Validate that ALL submitted questionIds exist in the quiz before grading. Return 400 error if unknown questionIds are found."
+    },
+    {
+      "id": "C3-BIZ-B-007",
+      "severity": "P2",
+      "domain": "BIZ",
+      "type": "incomplete_progress",
+      "title": "Enrollment progress recalculation only triggers on isCompleted=true",
+      "description": "The updateLessonProgress function (line 249) only calls recalculateEnrollmentProgress when data.isCompleted is true. If a student's lesson completion is later revoked (isCompleted set to false by admin), the enrollment progress percentage and completion status are never decremented.",
+      "file": "src/lib/lms/lms-service.ts",
+      "line": 249,
+      "fix": "Trigger recalculateEnrollmentProgress whenever isCompleted changes (both true and false), not only when set to true."
+    },
+    {
+      "id": "C3-BIZ-B-008",
+      "severity": "P2",
+      "domain": "BIZ",
+      "type": "data_leak",
+      "title": "LMS quiz shuffle uses biased Math.random sort",
+      "description": "In quiz attempt route (line 113), question shuffling uses .sort(() => Math.random() - 0.5). This produces a biased shuffle (not uniformly random). Questions at certain positions will appear more frequently in certain slots. While not a security issue, it affects quiz fairness.",
+      "file": "src/app/api/lms/quiz/[quizId]/attempt/route.ts",
+      "line": 113,
+      "fix": "Use Fisher-Yates shuffle algorithm for truly uniform randomization."
+    },
+    {
+      "id": "C3-BIZ-B-009",
+      "severity": "P3",
+      "domain": "BIZ",
+      "type": "missing_validation",
+      "title": "deleteCourse verifies tenant but deletes without cascade check",
+      "description": "deleteCourse (lms-service.ts line 111) verifies the course belongs to the tenant, then deletes it. But it doesn't check if the course has active enrollments, chapters, or quizzes. Prisma cascade rules may handle this, but business logic should prevent deleting courses with active students.",
+      "file": "src/lib/lms/lms-service.ts",
+      "line": 111,
+      "fix": "Check for active enrollments before deletion. Either block deletion or require force flag."
+    },
+    {
+      "id": "C3-BIZ-B-010",
+      "severity": "P3",
+      "domain": "BIZ",
+      "type": "division_by_zero",
+      "title": "recalculateEnrollmentProgress uses totalLessons || 1 but could still divide by zero",
+      "description": "Line 264: const total = enrollment.totalLessons || 1. While || 1 prevents division by zero, it means a course with 0 lessons would show 0% progress for completed=0, but if somehow completed > 0 it would show >100%. The totalLessons should be recalculated from actual course structure, not from the enrollment record which could be stale.",
+      "file": "src/lib/lms/lms-service.ts",
+      "line": 264,
+      "fix": "Recalculate total from course.chapters.lessons.count instead of relying on enrollment.totalLessons which is set at enrollment time and never updated."
+    },
+    {
+      "id": "C3-PERF-P-001",
+      "severity": "P1",
+      "domain": "PERF",
+      "type": "n_plus_1_query",
+      "title": "Email campaign send: 3 Prisma queries per recipient in loop",
+      "description": "The email campaign send route processes each recipient sequentially with 3 DB operations per recipient: (1) prisma.emailLog.create, (2) send email, (3) prisma.emailLog.update. For a campaign with 10,000 recipients, this means 30,000+ database round-trips. Additionally, it queries campaign status every BATCH_SIZE recipients.",
+      "file": "src/app/api/admin/emails/campaigns/[id]/send/route.ts",
+      "lines": [70, 118, 140, 149],
+      "fix": "Batch emailLog creation using createMany before sending. After send results, batch update using a single updateMany with IN clause for successes and failures."
+    },
+    {
+      "id": "C3-PERF-P-002",
+      "severity": "P1",
+      "domain": "PERF",
+      "type": "n_plus_1_query",
+      "title": "Chart-of-accounts GIFI suggest: individual update per account in loop",
+      "description": "The GIFI auto-suggest route updates each chart-of-account record individually in a for-of loop (line 180). For a chart with hundreds of accounts, this creates hundreds of sequential DB calls.",
+      "file": "src/app/api/accounting/chart-of-accounts/gifi-suggest/route.ts",
+      "line": 180,
+      "fix": "Collect all updates and execute as a single prisma.$transaction batch, or use updateMany with CASE/WHEN SQL."
+    },
+    {
+      "id": "C3-PERF-P-003",
+      "severity": "P1",
+      "domain": "PERF",
+      "type": "n_plus_1_query",
+      "title": "CRM prospect list integrate: individual lead creation in loop",
+      "description": "POST /api/admin/crm/lists/[id]/integrate creates individual CRM leads in a for-of loop (line 176), with each iteration doing a prisma.crmLead.create followed by prisma.prospect.update.",
+      "file": "src/app/api/admin/crm/lists/[id]/integrate/route.ts",
+      "lines": [174, 176, 193],
+      "fix": "Use prisma.$transaction with createMany for leads, then updateMany for prospect status."
+    },
+    {
+      "id": "C3-PERF-P-004",
+      "severity": "P1",
+      "domain": "PERF",
+      "type": "n_plus_1_query",
+      "title": "Media upload: individual prisma.media.create per file in loop",
+      "description": "The media upload route creates a media record for each uploaded file individually inside a for loop (line 284). A batch upload of 20 files results in 20 sequential DB inserts.",
+      "file": "src/app/api/admin/medias/route.ts",
+      "line": 284,
+      "fix": "Collect media data objects and use prisma.media.createMany at the end of the loop."
+    },
+    {
+      "id": "C3-PERF-P-005",
+      "severity": "P2",
+      "domain": "PERF",
+      "type": "n_plus_1_query",
+      "title": "Email flow validation: individual template lookup per node in loop",
+      "description": "PUT /api/admin/emails/flows/[id] validates email flow nodes by looking up each emailTemplate individually in a loop (line 325).",
+      "file": "src/app/api/admin/emails/flows/[id]/route.ts",
+      "line": 325,
+      "fix": "Collect all templateIds, fetch with findMany + IN clause, then validate against the result set."
+    },
+    {
+      "id": "C3-PERF-P-006",
+      "severity": "P2",
+      "domain": "PERF",
+      "type": "n_plus_1_query",
+      "title": "Product import: individual create/update per row despite pre-fetch optimization",
+      "description": "While the product import route pre-fetches existing products for lookup (avoiding N+1 reads), it still performs individual prisma.product.create or prisma.product.update for each CSV row (lines 346, 353). A 500-row import = 500 individual DB writes.",
+      "file": "src/app/api/admin/products/import/route.ts",
+      "lines": [346, 353],
+      "fix": "Batch creates with createMany. For updates, collect all update operations and execute in a single $transaction."
+    },
+    {
+      "id": "C3-PERF-P-007",
+      "severity": "P2",
+      "domain": "PERF",
+      "type": "n_plus_1_query",
+      "title": "Cron retry-webhooks: up to 5 prisma.webhookEvent.update calls per webhook in loop",
+      "description": "The retry-webhooks cron processes each failed webhook delivery in a loop with multiple update calls per iteration (lines 169, 182, 198, 208, 220).",
+      "file": "src/app/api/cron/retry-webhooks/route.ts",
+      "lines": [135, 169, 182, 198, 208, 220],
+      "fix": "Group webhooks by outcome, then use updateMany per outcome group."
+    },
+    {
+      "id": "C3-PERF-P-008",
+      "severity": "P2",
+      "domain": "PERF",
+      "type": "n_plus_1_query",
+      "title": "Cron churn-alerts: 2 prisma.emailLog calls per at-risk customer in loop",
+      "description": "The churn alerts cron processes each at-risk customer in a loop with multiple email log operations per customer (lines 211, 250).",
+      "file": "src/app/api/cron/churn-alerts/route.ts",
+      "lines": [161, 211, 250],
+      "fix": "Batch email log creation using createMany."
+    },
+    {
+      "id": "C3-PERF-P-009",
+      "severity": "P2",
+      "domain": "PERF",
+      "type": "missing_select",
+      "title": "25+ API routes use findMany without select or take clause",
+      "description": "Multiple routes (primarily in accounting and admin) use prisma.findMany without select clauses, fetching all columns from models. Without take limits, these can return unbounded result sets. Key examples: accounting/income-statement, accounting/balance-sheet, accounting/aging (2x), admin/currencies, admin/nav-sections, chat/quick-replies.",
+      "files": [
+        "src/app/api/accounting/income-statement/route.ts:45",
+        "src/app/api/accounting/balance-sheet/route.ts:32",
+        "src/app/api/accounting/aging/route.ts:40",
+        "src/app/api/accounting/aging/route.ts:58",
+        "src/app/api/accounting/currencies/route.ts:43",
+        "src/app/api/accounting/fiscal-years/route.ts:35",
+        "src/app/api/admin/currencies/route.ts:24",
+        "src/app/api/admin/nav-sections/route.ts:13",
+        "src/app/api/chat/quick-replies/route.ts:38"
+      ],
+      "fix": "Add explicit select clauses to only fetch needed fields. Add take limits (e.g., take: 1000) to prevent unbounded queries."
+    },
+    {
+      "id": "C3-PERF-P-010",
+      "severity": "P2",
+      "domain": "PERF",
+      "type": "n_plus_1_query",
+      "title": "Employee permissions upsert in loop",
+      "description": "POST /api/admin/employees updates permission overrides by iterating through each permission and calling prisma.userPermissionOverride.upsert individually (line 249).",
+      "file": "src/app/api/admin/employees/route.ts",
+      "line": 249,
+      "fix": "Use prisma.$transaction to batch all upserts."
+    },
+    {
+      "id": "C3-PERF-P-011",
+      "severity": "P3",
+      "domain": "PERF",
+      "type": "n_plus_1_query",
+      "title": "Webinar translations upsert in loop",
+      "description": "PUT /api/admin/webinars/[id] upserts each translation individually in a loop (line 220).",
+      "file": "src/app/api/admin/webinars/[id]/route.ts",
+      "line": 220,
+      "fix": "Use prisma.$transaction to batch translation upserts."
+    },
+    {
+      "id": "C3-UX-U-001",
+      "severity": "P1",
+      "domain": "UX",
+      "type": "missing_error_boundary",
+      "title": "Client portal section missing error.tsx boundary",
+      "description": "The /client route section has no error.tsx at any level. If a React error occurs in the client portal, the user sees the global error page instead of a contextual error within the client layout.",
+      "file": "src/app/client/",
+      "fix": "Add error.tsx to src/app/client/ with a client-portal-appropriate error message."
+    },
+    {
+      "id": "C3-UX-U-002",
+      "severity": "P1",
+      "domain": "UX",
+      "type": "missing_loading_state",
+      "title": "Client portal section missing loading.tsx",
+      "description": "The /client route section has no loading.tsx. Page navigation within the client portal shows no loading indicator.",
+      "file": "src/app/client/",
+      "fix": "Add loading.tsx to src/app/client/ with a skeleton loader."
+    },
+    {
+      "id": "C3-UX-U-003",
+      "severity": "P1",
+      "domain": "UX",
+      "type": "missing_error_boundary",
+      "title": "Owner portal section missing error.tsx boundary",
+      "description": "The /owner route section has no error.tsx at any level.",
+      "file": "src/app/owner/",
+      "fix": "Add error.tsx to src/app/owner/."
+    },
+    {
+      "id": "C3-UX-U-004",
+      "severity": "P1",
+      "domain": "UX",
+      "type": "missing_loading_state",
+      "title": "Owner portal section missing loading.tsx",
+      "description": "The /owner route section has no loading.tsx.",
+      "file": "src/app/owner/",
+      "fix": "Add loading.tsx to src/app/owner/."
+    },
+    {
+      "id": "C3-UX-U-005",
+      "severity": "P2",
+      "domain": "UX",
+      "type": "missing_error_boundary",
+      "title": "Pricing page missing error.tsx",
+      "description": "The /pricing route has no error.tsx boundary. A failure in the pricing page (e.g., Stripe API error) shows the global error.",
+      "file": "src/app/pricing/",
+      "fix": "Add error.tsx with pricing-specific error handling."
+    },
+    {
+      "id": "C3-UX-U-006",
+      "severity": "P2",
+      "domain": "UX",
+      "type": "missing_loading_state",
+      "title": "Pricing page missing loading.tsx",
+      "description": "The /pricing route has no loading.tsx.",
+      "file": "src/app/pricing/",
+      "fix": "Add loading.tsx with skeleton placeholder."
+    },
+    {
+      "id": "C3-UX-U-007",
+      "severity": "P2",
+      "domain": "UX",
+      "type": "missing_error_boundary",
+      "title": "Admin tenant detail page missing error.tsx",
+      "description": "The /admin/platform/tenants/[id] page has no error.tsx boundary. This page loads complex tenant data and is likely to fail if data is inconsistent.",
+      "file": "src/app/admin/platform/tenants/[id]/",
+      "fix": "Add error.tsx to this directory."
+    },
+    {
+      "id": "C3-UX-U-008",
+      "severity": "P2",
+      "domain": "UX",
+      "type": "missing_loading_state",
+      "title": "Admin formation nouveau page missing loading.tsx",
+      "description": "The /admin/formation/cours/nouveau page has no loading.tsx, though the parent admin section has one.",
+      "file": "src/app/admin/formation/cours/nouveau/",
+      "fix": "Acceptable since admin/loading.tsx covers it. Low priority."
+    },
+    {
+      "id": "C3-UX-U-009",
+      "severity": "P2",
+      "domain": "UX",
+      "type": "missing_loading_state",
+      "title": "Platform pages (demo, pricing) missing loading.tsx",
+      "description": "The /platform, /platform/demo, and /platform/pricing pages have no individual loading.tsx (though platform/ has one at root).",
+      "file": "src/app/platform/",
+      "fix": "Low priority since platform/loading.tsx exists. Add individual ones for heavy pages like /platform/demo."
+    },
+    {
+      "id": "C3-BRAND-R-001",
+      "severity": "P1",
+      "domain": "BRAND",
+      "type": "hardcoded_url",
+      "title": "64 hardcoded biocyclepeptides.com references in source code (excluding locales)",
+      "description": "After the Attitudes VIP rebranding, 64 references to biocyclepeptides.com remain in source code files (not counting i18n locale JSON files which have additional references). These are in email templates, legal pages, middleware, PDF generators, invoice templates, contact pages, breach notifications, and API routes.",
+      "files_summary": {
+        "email_templates": 16,
+        "legal_pages_i18n_tsx": 7,
+        "middleware_and_config": 5,
+        "pdf_generators": 6,
+        "api_routes": 12,
+        "ui_pages": 8,
+        "validation_constants": 2,
+        "chat_config": 2,
+        "crm_services": 6
+      },
+      "fix": "Replace all with process.env.NEXT_PUBLIC_SITE_DOMAIN or a centralized SITE_CONFIG.domain constant. For emails, use the email constants file which already has env var fallbacks."
+    },
+    {
+      "id": "C3-BRAND-R-002",
+      "severity": "P1",
+      "domain": "BRAND",
+      "type": "hardcoded_email",
+      "title": "Hardcoded biocyclepeptides.com email addresses scattered across codebase",
+      "description": "Email addresses like support@biocyclepeptides.com, privacy@biocyclepeptides.com, legal@biocyclepeptides.com, admin@biocyclepeptides.com, billing@biocyclepeptides.com are hardcoded in multiple files. While src/lib/email/constants.ts has env var fallbacks, many files bypass the constants and hardcode directly.",
+      "key_files": [
+        "src/lib/breach-notification.ts (5 references)",
+        "src/lib/email/templates/order-emails.ts (10 references)",
+        "src/app/(shop)/account/orders/page.tsx",
+        "src/app/(shop)/account/invoices/page.tsx",
+        "src/app/api/cron/aging-reminders/route.ts",
+        "src/app/api/orders/[id]/invoice/route.ts",
+        "src/app/(auth)/auth/forgot-password/page.tsx"
+      ],
+      "fix": "Import all email addresses from src/lib/email/constants.ts instead of hardcoding. Update constants.ts env var names to match the new Attitudes VIP domain."
+    },
+    {
+      "id": "C3-BRAND-R-003",
+      "severity": "P2",
+      "domain": "BRAND",
+      "type": "hardcoded_url",
+      "title": "biocyclepeptides.com in middleware tenant mapping",
+      "description": "src/middleware.ts line 141 maps biocycle tenant to process.env.NEXT_PUBLIC_APP_URL, and line 156 checks for biocyclepeptides.com hostname. These should use Attitudes VIP domain.",
+      "file": "src/middleware.ts",
+      "lines": [141, 156],
+      "fix": "Update tenant mapping and hostname check to attitudes.vip."
+    },
+    {
+      "id": "C3-BRAND-R-004",
+      "severity": "P2",
+      "domain": "BRAND",
+      "type": "hardcoded_url",
+      "title": "biocyclepeptides.com in allowed image domains for email templates",
+      "description": "src/lib/email/templates/base-template.ts line 199 includes biocyclepeptides.com in ALLOWED_IMAGE_DOMAINS. The commented-out logo URL on line 37 also references biocyclepeptides.com.",
+      "file": "src/lib/email/templates/base-template.ts",
+      "lines": [37, 199],
+      "fix": "Replace with attitudes.vip domain."
+    },
+    {
+      "id": "C3-BRAND-R-005",
+      "severity": "P2",
+      "domain": "BRAND",
+      "type": "hardcoded_url",
+      "title": "biocyclepeptides.com in email sender allowed domains",
+      "description": "src/app/api/email/send/route.ts line 42 allows sending from biocyclepeptides.com domain. The fallback sender email on line 43 is info@biocyclepeptides.com.",
+      "file": "src/app/api/email/send/route.ts",
+      "lines": [42, 43],
+      "fix": "Add attitudes.vip to allowed domains, update fallback to attitudes.vip."
+    },
+    {
+      "id": "C3-BRAND-R-006",
+      "severity": "P3",
+      "domain": "BRAND",
+      "type": "hardcoded_url",
+      "title": "biocyclepeptides.com in account delete anonymization email",
+      "description": "src/app/api/account/delete-request/route.ts line 96 generates anonymized emails as deleted_{hash}@deleted.biocyclepeptides.com.",
+      "file": "src/app/api/account/delete-request/route.ts",
+      "line": 96,
+      "fix": "Use @deleted.anonymized.local or a configurable domain."
+    },
+    {
+      "id": "C3-API-A-001",
+      "severity": "P2",
+      "domain": "API",
+      "type": "response_inconsistency",
+      "title": "Customer notes endpoint returns raw array instead of wrapped object",
+      "description": "GET /api/admin/customers/[id]/notes returns NextResponse.json(notes) - a raw array. Most admin list endpoints return { data: [...], total: N } for pagination consistency. Raw arrays break frontend pagination patterns and make it impossible to add metadata later without a breaking change.",
+      "file": "src/app/api/admin/customers/[id]/notes/route.ts",
+      "line": 25,
+      "fix": "Return NextResponse.json({ data: notes, total: notes.length })."
+    },
+    {
+      "id": "C3-API-A-002",
+      "severity": "P2",
+      "domain": "API",
+      "type": "response_inconsistency",
+      "title": "Video meetings endpoint returns raw array",
+      "description": "GET /api/video/meetings returns NextResponse.json([...]) - a raw array instead of a wrapped object.",
+      "file": "src/app/api/video/meetings/route.ts",
+      "fix": "Return NextResponse.json({ data: meetings })."
+    },
+    {
+      "id": "C3-API-A-003",
+      "severity": "P3",
+      "domain": "API",
+      "type": "response_inconsistency",
+      "title": "TodoMaster tasks endpoint returns raw array",
+      "description": "GET /api/todomaster/tasks returns raw array.",
+      "file": "src/app/api/todomaster/tasks/route.ts",
+      "fix": "Return NextResponse.json({ data: tasks })."
+    },
+    {
+      "id": "C3-API-A-004",
+      "severity": "P3",
+      "domain": "API",
+      "type": "response_inconsistency",
+      "title": "Zapier webhook GET returns raw array for sample data",
+      "description": "GET /api/webhooks/zapier returns NextResponse.json([...]) for Zapier trigger sample data.",
+      "file": "src/app/api/webhooks/zapier/route.ts",
+      "fix": "Consider wrapping: { data: [...] }. Low priority as Zapier may expect raw arrays."
+    },
+    {
+      "id": "C3-API-A-005",
+      "severity": "P2",
+      "domain": "API",
+      "type": "missing_pagination",
+      "title": "Multiple admin GET routes lack pagination support",
+      "description": "Several admin GET routes return all records without pagination parameters (page, limit, offset). Routes like admin/nav-pages, admin/currencies, admin/nav-sections, admin/option-types fetch all records without take limits. While these tables are typically small, it sets a bad precedent.",
+      "files": [
+        "src/app/api/admin/nav-pages/route.ts",
+        "src/app/api/admin/currencies/route.ts",
+        "src/app/api/admin/nav-sections/route.ts",
+        "src/app/api/admin/option-types/route.ts"
+      ],
+      "fix": "Add take: 500 as safety limit even for small reference tables."
+    },
+    {
+      "id": "C3-DEAD-D-001",
+      "severity": "P2",
+      "domain": "DEAD",
+      "type": "dead_code",
+      "title": "issueCertificate function is unreachable dead code",
+      "description": "The issueCertificate function in lms-service.ts is fully implemented (lines 374-410) but never called from any API route, admin page, or cron job. It is dead code that gives the false impression that certificate issuance is functional.",
+      "file": "src/lib/lms/lms-service.ts",
+      "line": 374,
+      "fix": "Either wire it up to an API route (see C3-BIZ-B-002) or remove it to reduce maintenance burden."
+    },
+    {
+      "id": "C3-DEAD-D-002",
+      "severity": "P3",
+      "domain": "DEAD",
+      "type": "debug_endpoint",
+      "title": "Community debug route should be removed from production",
+      "description": "GET /api/community/debug exists as a file but returns 404 in production. The route should be completely removed from the codebase to eliminate the risk of accidental exposure.",
+      "file": "src/app/api/community/debug/route.ts",
+      "fix": "Delete the file entirely."
+    },
+    {
+      "id": "C3-DEAD-D-003",
+      "severity": "P3",
+      "domain": "DEAD",
+      "type": "unreferenced_routes",
+      "title": "Multiple accounting API routes appear unreferenced from frontend",
+      "description": "Several accounting routes under /api/accounting/ are not referenced from any frontend component, page, or lib file. These may be backend-only or admin-widget routes, but their lack of frontend consumers suggests they may be dead or unused: trial-balance, income-statement, periods/year-end, periods/[code]/close, customer-statements, entries/[id]/post, purchase-orders/*, estimates/*, interco/[id], workflows/[id], kpis, ap-aging, ar-aging, quick-entry, fiscal-years.",
+      "fix": "Audit each route to determine if it is (a) called from an admin page via dynamic fetch, (b) used by an external integration, or (c) truly dead. Remove confirmed dead routes."
+    },
+    {
+      "id": "C3-LMS-L-001",
+      "severity": "P1",
+      "domain": "LMS",
+      "type": "missing_feature",
+      "title": "No admin API route to issue certificates",
+      "description": "There is no POST /api/admin/lms/certificates/issue endpoint. The issueCertificate function exists in the service layer but cannot be triggered. Neither manual (admin) nor automatic (on course completion) certificate issuance is wired up.",
+      "fix": "Create admin route + add automatic issuance trigger in recalculateEnrollmentProgress."
+    },
+    {
+      "id": "C3-LMS-L-002",
+      "severity": "P1",
+      "domain": "LMS",
+      "type": "missing_feature",
+      "title": "No quiz results/feedback route for students",
+      "description": "After submitting a quiz (POST /api/lms/quiz), students receive only their score and pass/fail status. There is no endpoint to retrieve detailed feedback (which questions were wrong, correct answers for non-sensitive quizzes). The quiz.showResults flag is returned but never used to serve detailed results.",
+      "fix": "Create GET /api/lms/quiz/[quizId]/results?attemptId=xxx that respects the showResults flag."
+    },
+    {
+      "id": "C3-LMS-L-003",
+      "severity": "P2",
+      "domain": "LMS",
+      "type": "missing_validation",
+      "title": "No time limit enforcement on quiz attempts",
+      "description": "The quiz model has a timeLimit field (returned in the attempt response). However, there is no server-side enforcement of the time limit. A student could receive the questions, wait indefinitely, then submit answers. The startedAt timestamp is never recorded in a QuizAttempt before completion.",
+      "fix": "Create the QuizAttempt record with status IN_PROGRESS at POST /api/lms/quiz/[quizId]/attempt time. On submission, check (now - attempt.startedAt) <= quiz.timeLimit. Reject late submissions."
+    },
+    {
+      "id": "C3-LMS-L-004",
+      "severity": "P2",
+      "domain": "LMS",
+      "type": "missing_validation",
+      "title": "No prerequisite enforcement on enrollment",
+      "description": "The Course model includes prerequisites (fetched in getCourseBySlug). However, the enrollUser function does not check if the student has completed prerequisite courses before allowing enrollment.",
+      "file": "src/lib/lms/lms-service.ts",
+      "line": 120,
+      "fix": "In enrollUser, check if course has prerequisites. For each prerequisite, verify the user has a COMPLETED enrollment."
+    },
+    {
+      "id": "C3-LMS-L-005",
+      "severity": "P2",
+      "domain": "LMS",
+      "type": "missing_feature",
+      "title": "No compliance deadline enforcement",
+      "description": "The enrollment function calculates complianceDeadline (line 136-140) and sets complianceStatus. However, there is no cron job or check that transitions OVERDUE enrollments. The overdueCompliance metric is counted in getLmsDashboardStats but nothing actually sets an enrollment to OVERDUE status.",
+      "fix": "Create a cron job that checks enrollments where complianceStatus = 'NOT_STARTED' or 'IN_PROGRESS' AND complianceDeadline < NOW(), and sets them to 'OVERDUE'."
+    },
+    {
+      "id": "C3-LMS-L-006",
+      "severity": "P3",
+      "domain": "LMS",
+      "type": "missing_validation",
+      "title": "No enrollment source validation when enrolledBy is provided",
+      "description": "The enrollUser function accepts an enrolledBy parameter to indicate admin enrollment, but it does not validate that enrolledBy is a valid user ID or that the caller has admin permissions. The service function trusts its callers.",
+      "file": "src/lib/lms/lms-service.ts",
+      "line": 120,
+      "fix": "Low priority - callers (admin routes) should validate this before calling the service. Add a comment documenting the trust boundary."
+    }
+  ],
+  "statistics": {
+    "api_routes_total": 936,
+    "api_routes_without_any_auth": 105,
+    "api_routes_legitimately_public": 82,
+    "api_routes_missing_auth_concerning": 1,
+    "n_plus_1_patterns_found": 15,
+    "hardcoded_biocycle_refs_source": 64,
+    "hardcoded_biocycle_refs_locales": 141,
+    "pages_without_error_boundary": 4,
+    "pages_without_loading_state": 7,
+    "raw_array_responses": 3,
+    "user_overfetch_routes": 11
+  },
+  "recommended_priority_order": [
+    "C3-SEC-S-001 (P0): Fix updateCourse tenant isolation - immediate security risk",
+    "C3-SEC-S-002 (P0): Remove hardcoded daemon key fallback",
+    "C3-BIZ-B-001 (P1): Fix quiz grading totalPoints calculation",
+    "C3-SEC-S-003 (P0): Add auth to admin tutoriels route",
+    "C3-SEC-S-004 (P0): Fix quiz error message leak",
+    "C3-SEC-S-005 (P0): Fix progress error message leak",
+    "C3-BRAND-R-001 (P1): Replace 64 biocyclepeptides.com references",
+    "C3-PERF-P-001 (P1): Optimize email campaign send N+1",
+    "C3-LMS-L-001 (P1): Wire up certificate issuance",
+    "C3-LMS-L-002 (P1): Add quiz results endpoint",
+    "C3-BIZ-B-002 (P1): Expose issueCertificate via API",
+    "C3-UX-U-001-004 (P1): Add error/loading boundaries to client/owner portals"
+  ]
+}

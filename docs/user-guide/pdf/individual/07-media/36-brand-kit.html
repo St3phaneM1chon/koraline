@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brand Kit &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 07 — Media</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Brand Kit</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Media > Gestion de Contenu > Brand Kit</p>
+<p><strong>URL</strong>: <code>/admin/media/brand-kit</code></p>
+<p><strong>Niveau</strong>: Debutant a intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>Le <strong>Brand Kit</strong> (Kit de Marque) centralise l'identite visuelle de BioCycle Peptides : couleurs, typographies, logo et directives de marque. C'est la reference unique pour tous les supports de communication.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Consulter la palette de couleurs complete avec codes hexadecimaux</li>
+<li>Copier une couleur en un clic pour l'utiliser dans vos designs</li>
+<li>Voir les typographies de marque avec exemples</li>
+<li>Consulter les versions du logo (fond clair et fond sombre)</li>
+<li>Lire les directives d'utilisation du logo</li>
+<li>Modifier les couleurs, polices et directives (mode edition)</li>
+<li>Sauvegarder les modifications</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Brand Kit</strong></td><td>Ensemble des elements visuels definissant l'identite de la marque</td></tr>
+  <tr><td><strong>Palette de couleurs</strong></td><td>Ensemble structure de couleurs utilisees par la marque</td></tr>
+  <tr><td><strong>Code hexadecimal</strong></td><td>Notation technique d'une couleur (ex: #059669 pour le vert emeraude)</td></tr>
+  <tr><td><strong>Typographie</strong></td><td>Choix des polices de caracteres (taille, poids, famille)</td></tr>
+  <tr><td><strong>Directives de marque</strong></td><td>Regles d'utilisation des elements visuels</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Allez dans <strong>Media</strong> dans la barre de navigation</li>
+<li>Cliquez sur <strong>Brand Kit</strong> dans le panneau lateral</li>
+<li>Ou naviguez vers <code>/admin/media/brand-kit</code></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. En-tete</h3>
+<ul>
+<li>Titre <strong>Brand Kit</strong> avec icone palette</li>
+<li>Description courte</li>
+<li>Bouton <strong>Modifier</strong> pour passer en mode edition</li>
+<li>En mode edition : boutons <strong>Annuler</strong> et <strong>Sauvegarder</strong></li>
+</ul>
+
+<h3>2. Editeur (mode edition uniquement)</h3>
+<p>Quand vous cliquez sur Modifier, un panneau bleu apparait avec :</p>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nom de marque</strong></td><td>Le nom commercial (BioCycle Peptides)</td></tr>
+  <tr><td><strong>Couleur primaire</strong></td><td>Selecteur de couleur + champ hexadecimal</td></tr>
+  <tr><td><strong>Couleur d'accent</strong></td><td>Selecteur de couleur + champ hexadecimal</td></tr>
+  <tr><td><strong>Directives</strong></td><td>Zone de texte pour les regles d'utilisation</td></tr>
+</tbody>
+</table>
+<h3>3. Section Couleurs</h3>
+<p>Grille de 10 carres de couleur, chacun cliquable pour copier le code :</p>
+
+<table>
+<thead>
+    <tr><th>Couleur</th><th>Code</th><th>Utilisation</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Primaire</strong></td><td>#059669</td><td>Boutons, liens, CTA principaux</td></tr>
+  <tr><td><strong>Primaire foncee</strong></td><td>#047857</td><td>Survol et etats actifs</td></tr>
+  <tr><td><strong>Secondaire</strong></td><td>#0ea5e9</td><td>Elements informatifs</td></tr>
+  <tr><td><strong>Accent</strong></td><td>#8b5cf6</td><td>Premium et mise en avant</td></tr>
+  <tr><td><strong>Arriere-plan</strong></td><td>#f8fafc</td><td>Fond de page</td></tr>
+  <tr><td><strong>Texte</strong></td><td>#1e293b</td><td>Texte principal</td></tr>
+  <tr><td><strong>Texte mute</strong></td><td>#64748b</td><td>Texte secondaire</td></tr>
+  <tr><td><strong>Erreur</strong></td><td>#ef4444</td><td>Alertes et erreurs</td></tr>
+  <tr><td><strong>Avertissement</strong></td><td>#f59e0b</td><td>Avertissements</td></tr>
+  <tr><td><strong>Succes</strong></td><td>#10b981</td><td>Confirmations</td></tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Astuce</strong> : Cliquez sur un carre de couleur pour copier le code hexadecimal. Un message de confirmation apparait.</p>
+</blockquote>
+
+<h3>4. Section Typographie</h3>
+<p>Trois niveaux de typographie avec exemples visuels :</p>
+
+<table>
+<thead>
+    <tr><th>Style</th><th>Police</th><th>Poids</th><th>Taille</th><th>Exemple</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Titres</strong></td><td>Inter</td><td>700 (Bold)</td><td>24-36px</td><td>"BioCycle Peptides"</td></tr>
+  <tr><td><strong>Corps</strong></td><td>Inter</td><td>400 (Regular)</td><td>14-16px</td><td>"Peptides de recherche de haute qualite"</td></tr>
+  <tr><td><strong>Legende</strong></td><td>Inter</td><td>500 (Medium)</td><td>11-12px</td><td>"CODE PROMO: BIOCYCLE10"</td></tr>
+</tbody>
+</table>
+<h3>5. Section Logo</h3>
+<p>Deux versions du logo affichees cote a cote :</p>
+<ul>
+<li><strong>Version fond clair</strong> : texte vert emeraude sur fond blanc</li>
+<li><strong>Version fond sombre</strong> : texte vert emeraude clair sur fond gris fonce</li>
+<li>Directives d'utilisation du logo en dessous</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>Copier une couleur</h3>
+<ol>
+<li>Survolez un carre de couleur</li>
+<li>L'icone de copie apparait</li>
+<li>Cliquez pour copier le code hexadecimal</li>
+<li>Un message confirme la copie avec le nom de la couleur</li>
+</ol>
+
+<h3>Modifier le Brand Kit</h3>
+<ol>
+<li>Cliquez sur <strong>Modifier</strong> en haut a droite</li>
+<li>Le panneau d'edition s'ouvre</li>
+<li>Modifiez le nom de marque, les couleurs ou les directives</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+<li>Les modifications sont appliquees immediatement</li>
+</ol>
+
+<h3>Annuler les modifications</h3>
+<ol>
+<li>En mode edition, cliquez sur <strong>Annuler</strong></li>
+<li>Les valeurs reviennent a leur etat precedent</li>
+</ol>
+
+<hr>
+
+<h2>Flux de travail recommandes</h2>
+
+<h3>Mise en place initiale</h3>
+<ol>
+<li>Definissez votre couleur primaire (vert emeraude BioCycle par defaut)</li>
+<li>Definissez votre couleur d'accent (violet par defaut)</li>
+<li>Redigez vos directives de marque (utilisation du logo, interdictions)</li>
+<li>Sauvegardez</li>
+</ol>
+
+<h3>Coherence de marque</h3>
+<ul>
+<li>Avant de creer un visuel marketing, consultez le Brand Kit</li>
+<li>Copiez les couleurs exactes pour vos publications sur les reseaux sociaux</li>
+<li>Utilisez les polices specifiees dans vos documents</li>
+<li>Respectez les versions du logo (fond clair/sombre)</li>
+</ul>
+
+<hr>
+
+<h2>Questions frequentes</h2>
+
+<p><strong>Q : Les couleurs du Brand Kit s'appliquent-elles automatiquement au site ?</strong></p>
+<p>R : Les couleurs primaire et d'accent sont utilisees dans le theme du site. Les modifications de couleur dans le Brand Kit sont refletes progressivement dans l'interface.</p>
+
+<p><strong>Q : Puis-je ajouter d'autres polices ?</strong></p>
+<p>R : Les polices affichees ici sont celles configurees dans le theme. Pour changer de police, contactez votre administrateur technique.</p>
+
+<p><strong>Q : Comment telecharger le logo en haute resolution ?</strong></p>
+<p>R : Les logos affiches ici sont des apercu textuels. Pour les fichiers logo (PNG, SVG), consultez la <a href="./35-library.md">Mediatheque</a> et cherchez dans le dossier "general" ou "images".</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>CTA</strong></td><td>Call To Action, bouton incitant a l'action</td></tr>
+  <tr><td><strong>Hex</strong></td><td>Notation hexadecimale d'une couleur (#RRGGBB)</td></tr>
+  <tr><td><strong>Font weight</strong></td><td>Epaisseur de la police (400=normal, 700=gras)</td></tr>
+  <tr><td><strong>Brand guidelines</strong></td><td>Regles d'utilisation de l'identite visuelle</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<table>
+<thead>
+    <tr><th>Page</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><a href="./34-images.md">Images</a></td><td>Visuels et photos de la marque</td></tr>
+  <tr><td><a href="./35-library.md">Mediatheque</a></td><td>Fichiers logos et visuels</td></tr>
+  <tr><td><a href="./37-social-scheduler.md">Planificateur Social</a></td><td>Publication de contenu de marque</td></tr>
+</tbody>
+</table>
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

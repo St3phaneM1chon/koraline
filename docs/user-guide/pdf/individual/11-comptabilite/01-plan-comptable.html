@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan Comptable (Chart of Accounts) &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 11 — Comptabilite</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Plan Comptable (Chart of Accounts)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Comptabilite > Plan comptable</p>
+<p><strong>URL</strong>: <code>/admin/comptabilite/plan-comptable</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~35 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>Pourquoi cette page est importante</h2>
+
+<p>Le plan comptable est le <strong>fondement de toute votre comptabilite</strong>. Chaque transaction financiere de BioCycle Peptides -- chaque vente, chaque achat, chaque paiement de taxe, chaque cheque de paie -- est enregistree dans un compte specifique de ce plan. Sans un plan comptable bien structure, il est impossible de produire des etats financiers fiables, de declarer correctement vos impots ou de comprendre la sante financiere de votre entreprise.</p>
+
+<p><strong>Obligations legales</strong> :</p>
+<ul>
+<li>L'Agence du Revenu du Canada (ARC) exige que toute societe par actions produise une declaration T2 utilisant les codes GIFI (General Index of Financial Information). Votre plan comptable doit etre mappable a ces codes.</li>
+<li>Revenu Quebec exige la declaration CO-17 pour les societes incorporees au Quebec.</li>
+<li>Les Normes Comptables pour les Entreprises a Capital Ferme (NCECF) dictent la structure minimale des etats financiers, et donc des comptes necessaires.</li>
+</ul>
+
+<p><strong>Impact concret</strong> : Si votre plan comptable est mal structure, vous risquez de declarer des montants errones aux gouvernements, de ne pas reclamer tous vos credits de taxes (CTI/RTI), de ne pas deduire toutes vos depenses admissibles, et de ne pas voir les vrais problemes financiers de votre entreprise.</p>
+
+<hr>
+
+<h2>Cycle comptable complet -- Ou se situe cette page</h2>
+
+<pre><code>[1. PLAN COMPTABLE] ← VOUS ETES ICI (etape fondatrice)
+ ↓
+ 2. Journal general (enregistrer les transactions)
+ ↓
+ 3. Ecritures de journal (debits et credits)
+ ↓
+ 4. Grand livre et balance de verification
+ ↓
+ 5. Bilan (photo a une date)
+ ↓
+ 6. Etat des resultats (film d'une periode)
+ ↓
+ 7. Factures (ventes aux clients)
+ ↓
+ 8. Depenses (achats et charges)
+ ↓
+ 9. Taxes TPS/TVQ (declarations fiscales)
+ ↓
+10. Rapprochement bancaire (verification)
+ ↓
+11. Budget (planification)
+ ↓
+12. Rapports financiers (analyse et export)</code></pre>
+
+<p>Le plan comptable est l'etape 1 parce que <strong>tout commence ici</strong>. Vous ne pouvez pas enregistrer une seule transaction sans que les comptes existent d'abord. C'est comme construire une maison : le plan comptable est la fondation. Si elle est solide, tout le reste tient. Si elle est bancale, tout est problematique.</p>
+
+<hr>
+
+<h2>Ordre des operations</h2>
+
+<ol>
+<li><strong>Avant de commencer toute comptabilite</strong> : Definir ou valider votre plan comptable</li>
+<li><strong>Avant de saisir des ecritures</strong> : S'assurer que tous les comptes necessaires existent</li>
+<li><strong>En debut d'exercice</strong> : Revoir le plan comptable, ajouter les comptes necessaires, desactiver les obsoletes</li>
+<li><strong>En cours d'annee</strong> : Ajouter un compte seulement quand une nouvelle categorie de transaction apparait</li>
+<li><strong>En fin d'exercice</strong> : Verifier que tous les comptes sont correctement codes GIFI pour la declaration T2/CO-17</li>
+<li><strong>Ne jamais supprimer</strong> un compte qui contient des ecritures -- le desactiver plutot</li>
+</ol>
+
+<hr>
+
+<h2>Les 5 types de comptes fondamentaux</h2>
+
+<p>La comptabilite en partie double repose sur 5 categories de comptes. Chaque transaction touche au minimum 2 comptes : un debit et un credit. Le total des debits doit toujours egaliser le total des credits.</p>
+
+<h3>L'equation comptable fondamentale</h3>
+
+<pre><code>ACTIFS = PASSIFS + CAPITAUX PROPRES</code></pre>
+
+<p>Cette equation est toujours equilibree. Chaque transaction maintient cet equilibre. Si votre bilan n'est pas equilibre, c'est qu'il y a une erreur quelque part.</p>
+
+<h3>Les 5 categories et leur logique</h3>
+
+<table>
+<thead>
+    <tr><th>#</th><th>Categorie</th><th>Codes GIFI</th><th>Plage Koraline</th><th>Ce qu'elle represente</th><th>Solde normal</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td><strong>Actifs</strong></td><td>1000-2999</td><td>1000-1999</td><td>Ce que l'entreprise possede</td><td>Debiteur</td></tr>
+  <tr><td>2</td><td><strong>Passifs</strong></td><td>3000-3499</td><td>2000-2999</td><td>Ce que l'entreprise doit</td><td>Crediteur</td></tr>
+  <tr><td>3</td><td><strong>Capitaux propres</strong></td><td>3500-3999</td><td>3000-3999</td><td>La valeur nette (actifs - passifs)</td><td>Crediteur</td></tr>
+  <tr><td>4</td><td><strong>Revenus</strong></td><td>8000-8299</td><td>4000-4999</td><td>L'argent gagne par les operations</td><td>Crediteur</td></tr>
+  <tr><td>5</td><td><strong>Charges (depenses)</strong></td><td>8300-9998</td><td>5000-5999</td><td>L'argent depense pour operer</td><td>Debiteur</td></tr>
+</tbody>
+</table>
+<h3>Comprendre les debits et credits</h3>
+
+<p>C'est souvent le point le plus confus pour les non-comptables. Voici la regle simple :</p>
+
+<table>
+<thead>
+    <tr><th>Type de compte</th><th>Un DEBIT...</th><th>Un CREDIT...</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Actif</strong></td><td>Augmente le solde</td><td>Diminue le solde</td></tr>
+  <tr><td><strong>Charge</strong></td><td>Augmente le solde</td><td>Diminue le solde</td></tr>
+  <tr><td><strong>Passif</strong></td><td>Diminue le solde</td><td>Augmente le solde</td></tr>
+  <tr><td><strong>Revenu</strong></td><td>Diminue le solde</td><td>Augmente le solde</td></tr>
+  <tr><td><strong>Capitaux propres</strong></td><td>Diminue le solde</td><td>Augmente le solde</td></tr>
+</tbody>
+</table>
+<p><strong>Pour simplifier</strong> : Si vous etes debutant, Koraline gere automatiquement les debits et credits quand vous saisissez des factures, des depenses ou des ventes. Vous ne touchez aux debits/credits directement que dans les ecritures de journal manuelles.</p>
+
+<hr>
+
+<h2>Comment entrer les donnees</h2>
+
+<h3>Acceder au plan comptable</h3>
+
+<ol>
+<li>Cliquez sur <strong>Comptabilite</strong> dans la navigation horizontale</li>
+<li>Dans le panneau lateral, groupe <strong>Comptes</strong>, cliquez sur <strong>Plan comptable</strong></li>
+<li>URL directe : <code>/admin/comptabilite/plan-comptable</code></li>
+</ol>
+
+<h3>Creer un nouveau compte</h3>
+
+<p><strong>Quand</strong> : Quand une nouvelle categorie de transaction apparait et qu'aucun compte existant ne convient.</p>
+
+<p><strong>Etapes detaillees</strong> :</p>
+
+<ol>
+<li>Cliquez sur <strong>Nouveau compte</strong> dans la barre de ruban</li>
+<li>Remplissez chaque champ :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Quoi mettre</th><th>Exemple</th><th>Pourquoi</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Numero</strong></td><td>Code unique dans la plage de la categorie</td><td>5095</td><td>Identifie le compte dans les rapports et les declarations fiscales</td></tr>
+  <tr><td><strong>Nom</strong></td><td>Libelle clair et descriptif</td><td>Frais de conference et salons</td><td>Permet d'identifier rapidement la nature des transactions</td></tr>
+  <tr><td><strong>Type</strong></td><td>Categorie comptable</td><td>Charge</td><td>Determine le comportement du compte (debit/credit) et son emplacement dans les etats financiers</td></tr>
+  <tr><td><strong>Compte parent</strong></td><td>Le compte de niveau superieur</td><td>5000 - Charges d'exploitation</td><td>Structure la hierarchie pour les sous-totaux dans les rapports</td></tr>
+  <tr><td><strong>Code GIFI</strong></td><td>Code a 4 chiffres pour la declaration T2</td><td>8764</td><td>Obligatoire pour la declaration annuelle d'impot federal</td></tr>
+  <tr><td><strong>Description</strong></td><td>Explication detaillee du contenu</td><td>Frais d'inscription, kiosques, deplacement pour salons professionnels peptides</td><td>Aide les utilisateurs futurs a classer correctement les transactions</td></tr>
+  <tr><td><strong>Devise</strong></td><td>Monnaie du compte</td><td>CAD</td><td>CAD par defaut, USD si compte specifiquement en devises etrangeres</td></tr>
+  <tr><td><strong>Actif</strong></td><td>Statut du compte</td><td>Oui</td><td>Un compte inactif n'apparait plus dans les listes de saisie</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>Modifier un compte existant</h3>
+
+<ol>
+<li>Trouvez le compte dans l'arborescence (utilisez la recherche si necessaire)</li>
+<li>Cliquez dessus pour ouvrir le detail</li>
+<li>Cliquez sur <strong>Modifier</strong></li>
+<li>Changez le nom, la description ou le compte parent</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<p><strong>Attention critique</strong> : Ne changez JAMAIS le numero d'un compte qui contient des ecritures. Les rapports historiques referencent le numero du compte. Changer le numero rompt les liens avec les ecritures passees et peut fausser les comparaisons d'une annee a l'autre.</p>
+
+<h3>Desactiver un compte</h3>
+
+<p><strong>Quand</strong> : Un compte n'est plus utilise mais il contient des ecritures historiques.</p>
+
+<ol>
+<li>Ouvrez le compte</li>
+<li>Basculez le commutateur <strong>Actif</strong> a <strong>Inactif</strong></li>
+<li>Le compte disparait des listes de saisie mais ses ecritures restent accessibles dans les rapports historiques</li>
+</ol>
+
+<hr>
+
+<h2>Pourquoi entrer ces donnees</h2>
+
+<h3>Le numero de compte</h3>
+
+<p>Le numero de compte n'est pas arbitraire. Il determine :</p>
+<ul>
+<li><strong>Ou le montant apparait dans les etats financiers</strong> (bilan ou etat des resultats)</li>
+<li><strong>Comment il est reporte dans la declaration T2/CO-17</strong> via le code GIFI</li>
+<li><strong>Comment les sous-totaux sont calcules</strong> dans les rapports</li>
+</ul>
+
+<h3>Le code GIFI</h3>
+
+<p>Le code GIFI (General Index of Financial Information) est un systeme de codes a 4 chiffres que l'ARC utilise pour la declaration d'impot des societes (formulaire T2). Chaque compte de votre plan comptable doit etre associe au bon code GIFI. Si vous vous trompez, votre declaration sera incorrecte.</p>
+
+<p><strong>Plages GIFI principales</strong> :</p>
+<table>
+<thead>
+    <tr><th>Plage</th><th>Categorie</th></tr>
+</thead>
+<tbody>
+  <tr><td>1000-2999</td><td>Actifs</td></tr>
+  <tr><td>3000-3499</td><td>Passifs</td></tr>
+  <tr><td>3500-3999</td><td>Capitaux propres</td></tr>
+  <tr><td>8000-8299</td><td>Revenus</td></tr>
+  <tr><td>8300-9998</td><td>Charges</td></tr>
+</tbody>
+</table>
+<h3>Le type de compte</h3>
+
+<p>Le type determine le comportement comptable : les actifs et charges augmentent au debit, les passifs, revenus et capitaux propres augmentent au credit. Mettre un compte de depense dans la categorie "Revenu" par erreur produirait des etats financiers completement faux.</p>
+
+<h3>La hierarchie (compte parent)</h3>
+
+<p>La hierarchie permet de produire des rapports avec des sous-totaux. Par exemple, le total de toutes les charges de marketing (Google Ads, Facebook, salons, impression) se calcule automatiquement si ces comptes sont tous sous le meme parent.</p>
+
+<hr>
+
+<h2>Plan comptable recommande pour BioCycle Peptides</h2>
+
+<h3>Actifs (1000-1999)</h3>
+
+<pre><code>1000 - ACTIFS
+  1010 - Banque TD Operations (CAD) ............... GIFI 1001
+  1020 - Banque BMO Operations (USD) .............. GIFI 1001
+  1030 - Petite caisse ............................. GIFI 1001
+  1050 - Placements a court terme .................. GIFI 1180
+  1100 - Comptes clients ........................... GIFI 1060
+    1101 - Clients detail (B2C)
+    1102 - Clients B2B (distributeurs/cliniques)
+    1109 - Provision pour creances douteuses ........ GIFI 1061
+  1150 - TPS payee sur achats (CTI a recevoir) ..... GIFI 1300
+  1160 - TVQ payee sur achats (RTI a recevoir) ..... GIFI 1300
+  1200 - Inventaire
+    1201 - Stock de peptides (produits finis) ....... GIFI 1320
+    1202 - Stock d'emballage ....................... GIFI 1320
+    1203 - Stock en transit ........................ GIFI 1320
+  1300 - Charges payees d'avance ................... GIFI 1480
+  1400 - Equipement de laboratoire ................. GIFI 1740
+  1410 - Mobilier et equipement de bureau .......... GIFI 1740
+  1420 - Materiel informatique ..................... GIFI 1740
+  1450 - Amortissement cumule - Equipement ......... GIFI 1744
+  1460 - Amortissement cumule - Mobilier ........... GIFI 1744
+  1470 - Amortissement cumule - Informatique ....... GIFI 1744</code></pre>
+
+<h3>Passifs (2000-2999)</h3>
+
+<pre><code>2000 - PASSIFS
+  2010 - Comptes fournisseurs ...................... GIFI 3100
+  2100 - TPS a remettre (collectee) ................ GIFI 3480
+  2110 - TVQ a remettre (collectee) ................ GIFI 3480
+  2150 - Retenues salariales a payer
+    2151 - Impot federal retenu .................... GIFI 3480
+    2152 - Impot provincial retenu ................. GIFI 3480
+    2153 - Cotisations RRQ a payer ................. GIFI 3480
+    2154 - Cotisations AE a payer .................. GIFI 3480
+    2155 - Cotisations RQAP a payer ................ GIFI 3480
+  2200 - Salaires et vacances a payer .............. GIFI 3480
+  2300 - Portion courante de la dette a long terme . GIFI 3140
+  2500 - Emprunt bancaire a long terme ............. GIFI 3450
+  2600 - Avances d'actionnaires .................... GIFI 3470</code></pre>
+
+<h3>Capitaux propres (3000-3999)</h3>
+
+<pre><code>3000 - CAPITAUX PROPRES
+  3100 - Capital-actions ........................... GIFI 3500
+  3200 - Benefices non repartis (BNR) .............. GIFI 3600
+  3300 - Dividendes declares ....................... GIFI 3701</code></pre>
+
+<h3>Revenus (4000-4999)</h3>
+
+<pre><code>4000 - REVENUS
+  4010 - Ventes de peptides (detail B2C) ........... GIFI 8000
+  4020 - Ventes B2B (distributeurs/cliniques) ...... GIFI 8000
+  4030 - Revenus d'abonnements ..................... GIFI 8000
+  4040 - Frais de livraison factures ............... GIFI 8000
+  4050 - Escomptes sur ventes (debiteur) ........... GIFI 8141
+  4060 - Retours et remises (debiteur) ............. GIFI 8142
+  4500 - Autres revenus
+    4510 - Interets gagnes ......................... GIFI 8090
+    4520 - Gains de change ......................... GIFI 8230</code></pre>
+
+<h3>Charges (5000-5999)</h3>
+
+<pre><code>5000 - CHARGES
+  5010 - Cout des marchandises vendues (CMV)
+    5011 - Achat de matieres premieres ............. GIFI 8300
+    5012 - Emballage et etiquetage ................. GIFI 8300
+    5013 - Frais de livraison sortants ............. GIFI 8300
+  5020 - Salaires et avantages sociaux
+    5021 - Salaires bruts .......................... GIFI 9060
+    5022 - Cotisations employeur RRQ ............... GIFI 9060
+    5023 - Cotisations employeur AE ................ GIFI 9060
+    5024 - Cotisations employeur RQAP .............. GIFI 9060
+    5025 - Cotisations CNESST ...................... GIFI 9060
+    5026 - Avantages sociaux (assurance collective) . GIFI 9060
+  5030 - Loyer et services publics ................. GIFI 8710
+  5040 - Marketing et publicite
+    5041 - Google Ads .............................. GIFI 8520
+    5042 - Facebook/Meta Ads ....................... GIFI 8520
+    5043 - Marketing de contenu .................... GIFI 8520
+    5044 - Frais de conference et salons ........... GIFI 8520
+  5050 - Frais de livraison (transporteurs) ........ GIFI 8406
+  5060 - Frais bancaires et commissions Stripe ..... GIFI 8710
+  5070 - Assurances ................................ GIFI 8690
+  5075 - Logiciels et hebergement
+    5076 - Azure (hebergement) ..................... GIFI 8710
+    5077 - Licences logicielles .................... GIFI 8710
+  5080 - Fournitures de bureau ..................... GIFI 8811
+  5090 - Honoraires professionnels
+    5091 - Comptable ............................... GIFI 8860
+    5092 - Avocat .................................. GIFI 8860
+    5093 - Consultant .............................. GIFI 8860
+  5095 - Deplacements et representation ............ GIFI 8523
+  5200 - Amortissement ............................. GIFI 8670
+  5300 - Interets et frais financiers .............. GIFI 8710
+  5400 - Mauvaises creances ........................ GIFI 8590
+  5500 - Pertes de change .......................... GIFI 9000
+  5600 - Impots sur le revenu
+    5610 - Impot federal ........................... GIFI 9990
+    5620 - Impot provincial ........................ GIFI 9990</code></pre>
+
+<hr>
+
+<h2>Specificites canadiennes et quebecoises</h2>
+
+<h3>Codes GIFI -- Pourquoi ils sont obligatoires</h3>
+
+<p>Le systeme GIFI permet a l'ARC de recevoir les etats financiers dans un format standardise. Chaque societe par actions doit remplir les annexes 100, 125 et 141 du formulaire T2 en utilisant les codes GIFI. Koraline mappe automatiquement vos comptes aux codes GIFI si vous les avez configures correctement.</p>
+
+<h3>Comptes de taxes -- Structure critique</h3>
+
+<p>La structure des comptes de taxes est fondamentale au Quebec :</p>
+
+<table>
+<thead>
+    <tr><th>Compte</th><th>Role</th><th>Type</th><th>Utilite</th></tr>
+</thead>
+<tbody>
+  <tr><td>1150 - TPS payee sur achats</td><td>CTI a recevoir</td><td>Actif</td><td>Taxes payees que vous recuperez</td></tr>
+  <tr><td>1160 - TVQ payee sur achats</td><td>RTI a recevoir</td><td>Actif</td><td>Taxes payees que vous recuperez</td></tr>
+  <tr><td>2100 - TPS a remettre</td><td>TPS collectee</td><td>Passif</td><td>Taxes collectees pour le gouvernement</td></tr>
+  <tr><td>2110 - TVQ a remettre</td><td>TVQ collectee</td><td>Passif</td><td>Taxes collectees pour le gouvernement</td></tr>
+</tbody>
+</table>
+<p><strong>Le calcul net</strong> :</p>
+<ul>
+<li>TPS nette = 2100 (collectee) - 1150 (payee). Si positif, vous devez de l'argent a l'ARC. Si negatif, l'ARC vous doit un remboursement.</li>
+<li>TVQ nette = 2110 (collectee) - 1160 (payee). Meme principe avec Revenu Quebec.</li>
+</ul>
+
+<h3>Benefices non repartis (BNR) -- Compte 3200</h3>
+
+<p>Le BNR est le compte ou s'accumulent les profits nets d'annee en annee. En fin d'exercice, lors de la cloture annuelle, tous les comptes de revenus et de charges sont fermes (mis a zero) et la difference est viree dans le BNR. C'est un compte crucial car il represente la richesse accumulee de l'entreprise.</p>
+
+<hr>
+
+<h2>Erreurs courantes a eviter</h2>
+
+<table>
+<thead>
+    <tr><th>Erreur</th><th>Consequence</th><th>Comment eviter</th></tr>
+</thead>
+<tbody>
+  <tr><td>Mettre une depense dans un compte d'actif</td><td>La depense n'apparait pas dans l'etat des resultats, les profits sont surevalues, les impots a payer sont trop eleves</td><td>Verifier le type de compte avant de saisir</td></tr>
+  <tr><td>Ne pas separer les comptes de taxes (actif vs passif)</td><td>Impossible de calculer correctement le montant net a remettre</td><td>Utiliser 4 comptes de taxes distincts (1150, 1160, 2100, 2110)</td></tr>
+  <tr><td>Creer trop de comptes</td><td>Les rapports deviennent illisibles, difficile de voir les tendances</td><td>40 a 60 comptes suffisent pour une PME comme BioCycle</td></tr>
+  <tr><td>Creer trop peu de comptes</td><td>Impossible de distinguer les types de depenses, perte d'information pour la prise de decision</td><td>Minimum 30 comptes pour avoir une visibilite utile</td></tr>
+  <tr><td>Oublier les codes GIFI</td><td>La declaration T2 ne peut pas etre produite correctement</td><td>Associer le code GIFI a la creation de chaque compte</td></tr>
+  <tr><td>Changer le numero d'un compte avec des ecritures</td><td>Les rapports historiques referencent l'ancien numero, perte de continuite</td><td>Desactiver l'ancien compte et en creer un nouveau</td></tr>
+  <tr><td>Ne pas provisionner les creances douteuses</td><td>Les comptes clients affichent un montant irrealiste, les profits sont surevalues</td><td>Creer le compte 1109 et y inscrire les creances a risque</td></tr>
+  <tr><td>Melanger personnel et professionnel</td><td>L'ARC peut desavouer des deductions, risque de penalites</td><td>Utiliser un compte "Avance a l'actionnaire" (2600) pour isoler les depenses personnelles</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Quand faire cette operation</h2>
+
+<table>
+<thead>
+    <tr><th>Quand</th><th>Action</th><th>Frequence</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Lancement de l'entreprise</strong></td><td>Creer le plan comptable initial complet</td><td>Une fois</td></tr>
+  <tr><td><strong>Debut d'exercice (1er janvier)</strong></td><td>Revoir le plan, ajouter/desactiver des comptes</td><td>Annuelle</td></tr>
+  <tr><td><strong>Nouvelle categorie de depense</strong></td><td>Ajouter un compte specifique</td><td>Au besoin</td></tr>
+  <tr><td><strong>Nouveau fournisseur ou produit</strong></td><td>Verifier si un compte existe, en creer un si non</td><td>Au besoin</td></tr>
+  <tr><td><strong>Avant la declaration T2/CO-17</strong></td><td>Verifier les codes GIFI de tous les comptes</td><td>Annuelle</td></tr>
+  <tr><td><strong>Changement de comptable</strong></td><td>Exporter le plan comptable et le valider ensemble</td><td>Au besoin</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Dois-je creer le plan comptable moi-meme ?</strong></p>
+<p>R : Non, Koraline inclut un plan comptable pre-configure adapte aux PME canadiennes. Il couvre les cas les plus courants. Vous pouvez le personnaliser en ajoutant des comptes specifiques a votre activite.</p>
+
+<p><strong>Q : Puis-je supprimer un compte ?</strong></p>
+<p>R : Pas s'il contient des ecritures. Vous pouvez le desactiver pour qu'il n'apparaisse plus dans les listes de saisie. Un compte vide (sans aucune ecriture) peut etre supprime.</p>
+
+<p><strong>Q : Combien de niveaux de sous-comptes puis-je creer ?</strong></p>
+<p>R : Jusqu'a 5 niveaux. Mais 2 a 3 niveaux suffisent pour la majorite des entreprises. Trop de niveaux rend le plan comptable difficile a naviguer.</p>
+
+<p><strong>Q : Le plan comptable de Koraline est-il conforme aux normes canadiennes ?</strong></p>
+<p>R : Oui, il suit les Normes Comptables pour les Entreprises a Capital Ferme (NCECF) et est compatible avec les exigences de l'ARC (codes GIFI) et de Revenu Quebec.</p>
+
+<p><strong>Q : Que se passe-t-il si je me trompe de compte en saisissant une ecriture ?</strong></p>
+<p>R : Si la periode n'est pas cloturee, vous pouvez modifier l'ecriture directement. Si la periode est cloturee, vous devez passer une ecriture de correction (contre-passation) dans la periode suivante.</p>
+
+<p><strong>Q : Quelle est la difference entre la numerotation GIFI et la numerotation Koraline ?</strong></p>
+<p>R : Koraline utilise sa propre numerotation (1000-5999) pour organiser vos comptes dans l'application. Les codes GIFI (1000-9998) sont un systeme parallele exige par l'ARC pour la declaration T2. Chaque compte Koraline est associe a un code GIFI correspondant. Les deux systemes coexistent.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition comptable</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Plan comptable</strong></td><td>Liste structuree et hierarchisee de tous les comptes utilises pour enregistrer les transactions d'une entreprise. C'est la colonne vertebrale de la comptabilite.</td></tr>
+  <tr><td><strong>Partie double</strong></td><td>Principe fondamental : chaque transaction affecte au minimum 2 comptes. Le total des debits egalise toujours le total des credits. Invente en 1494 par Luca Pacioli.</td></tr>
+  <tr><td><strong>Debit</strong></td><td>Ecriture inscrite a gauche du journal. Augmente les actifs et les charges, diminue les passifs, les revenus et les capitaux propres.</td></tr>
+  <tr><td><strong>Credit</strong></td><td>Ecriture inscrite a droite du journal. Augmente les passifs, les revenus et les capitaux propres, diminue les actifs et les charges.</td></tr>
+  <tr><td><strong>Solde</strong></td><td>Difference entre la somme des debits et la somme des credits d'un compte. Un actif a normalement un solde debiteur.</td></tr>
+  <tr><td><strong>GIFI</strong></td><td>General Index of Financial Information. Systeme de codes a 4 chiffres utilise par l'ARC pour standardiser les declarations fiscales des societes.</td></tr>
+  <tr><td><strong>NCECF</strong></td><td>Normes Comptables pour les Entreprises a Capital Ferme. Cadre comptable canadien pour les entreprises privees.</td></tr>
+  <tr><td><strong>TPS</strong></td><td>Taxe sur les Produits et Services. Taxe federale de 5% percue par l'ARC.</td></tr>
+  <tr><td><strong>TVQ</strong></td><td>Taxe de Vente du Quebec. Taxe provinciale de 9,975% percue par Revenu Quebec.</td></tr>
+  <tr><td><strong>CTI</strong></td><td>Credit de Taxe sur les Intrants. Montant de TPS paye sur les achats commerciaux que l'entreprise peut recuperer.</td></tr>
+  <tr><td><strong>RTI</strong></td><td>Remboursement de Taxe de Vente du Quebec sur les Intrants. Equivalent provincial du CTI.</td></tr>
+  <tr><td><strong>BNR</strong></td><td>Benefices Non Repartis. Profits accumules de l'entreprise depuis sa creation, moins les dividendes verses.</td></tr>
+  <tr><td><strong>T2</strong></td><td>Declaration de revenus des societes federale. Doit etre produite annuellement avec les codes GIFI.</td></tr>
+  <tr><td><strong>CO-17</strong></td><td>Declaration de revenus des societes du Quebec. Equivalent provincial du T2.</td></tr>
+  <tr><td><strong>Compte parent</strong></td><td>Compte de niveau superieur dans la hierarchie. Permet de regrouper les sous-comptes pour calculer des sous-totaux dans les rapports.</td></tr>
+  <tr><td><strong>Immobilisation</strong></td><td>Actif a long terme (equipement, mobilier, vehicule) dont le cout est reparti sur sa duree de vie utile par l'amortissement.</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="02-journal.md">Journal general</a> : Ou les transactions sont enregistrees chronologiquement</li>
+<li><a href="03-ecritures.md">Ecritures</a> : Saisie des ecritures de journal (debits/credits)</li>
+<li><a href="04-grand-livre.md">Grand livre et balance</a> : Transactions regroupees par compte</li>
+<li><a href="05-bilan.md">Bilan</a> : Etat financier utilisant les comptes d'actifs, passifs et capitaux propres</li>
+<li><a href="06-resultats.md">Etat des resultats</a> : Etat financier utilisant les comptes de revenus et charges</li>
+<li><a href="09-taxes.md">Taxes TPS/TVQ</a> : Gestion des comptes de taxes</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Fournisseurs &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 02 — Commerce</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion des Fournisseurs</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Commerce > Fournisseurs</p>
+<p><strong>URL</strong>: <code>/admin/fournisseurs</code></p>
+<p><strong>Niveau</strong>: Debutant a intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Fournisseurs</strong> est votre carnet d'adresses professionnel pour toutes les entreprises qui vous fournissent des produits. C'est ici que vous centralisez toutes les informations de contact, les liens utiles (portails de commande, catalogues, suivi) et les personnes-contact par departement.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir la liste de tous vos fournisseurs (actifs et inactifs)</li>
+<li>Ajouter un nouveau fournisseur avec ses coordonnees completes</li>
+<li>Ajouter plusieurs contacts par fournisseur (ventes, comptabilite, support, logistique)</li>
+<li>Ajouter des liens utiles (portail de commande, chat, catalogue, suivi de colis)</li>
+<li>Modifier ou supprimer un fournisseur</li>
+<li>Ouvrir directement le site web d'un fournisseur</li>
+<li>Exporter la liste au format CSV</li>
+<li>Marquer un fournisseur comme actif ou inactif</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un fournisseur ?</h3>
+<p>Un fournisseur est une entreprise qui vous vend les produits que vous revendez a vos clients. Par exemple, le laboratoire qui fabrique vos peptides est un fournisseur.</p>
+
+<h3>Contacts multiples</h3>
+<p>Chaque fournisseur peut avoir plusieurs personnes-contact, chacune dans un departement different :</p>
+<ul>
+<li><strong>Ventes</strong> — pour passer les commandes</li>
+<li><strong>Comptabilite</strong> — pour les factures et paiements</li>
+<li><strong>Support</strong> — pour les problemes techniques</li>
+<li><strong>Logistique</strong> — pour le suivi des livraisons</li>
+</ul>
+
+<p>Un contact peut etre marque comme <strong>principal</strong> (etoile) pour indiquer qui contacter en premier.</p>
+
+<h3>Liens utiles</h3>
+<p>Chaque fournisseur peut avoir des liens vers :</p>
+<table>
+<thead>
+    <tr><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Portail de commande</strong></td><td>Page web pour passer des commandes en ligne</td></tr>
+  <tr><td><strong>Chat</strong></td><td>Messagerie instantanee du fournisseur</td></tr>
+  <tr><td><strong>Portail</strong></td><td>Espace client du fournisseur</td></tr>
+  <tr><td><strong>Catalogue</strong></td><td>PDF ou page web du catalogue produits</td></tr>
+  <tr><td><strong>Suivi</strong></td><td>Page de tracking des colis</td></tr>
+  <tr><td><strong>Autre</strong></td><td>Tout autre lien utile</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans la <strong>barre de navigation horizontale</strong>, cliquez sur <strong>Commerce</strong></li>
+<li>Dans le <strong>panneau lateral</strong>, cliquez sur <strong>Fournisseurs</strong> (6e element)</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Page Fournisseurs]</div>
+
+<h3>La barre de ruban (Ribbon)</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Ajouter fournisseur</strong></td><td>Ouvrir le formulaire de creation</td></tr>
+  <tr><td><strong>Ouvrir site web</strong></td><td>Ouvrir le site web du fournisseur selectionne dans un nouvel onglet</td></tr>
+  <tr><td><strong>Modifier</strong></td><td>Editer les informations du fournisseur selectionne</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer definitivement le fournisseur selectionne</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger la liste des fournisseurs en CSV</td></tr>
+</tbody>
+</table>
+<h3>La liste maitre/detail</h3>
+<ul>
+<li><strong>Panneau gauche</strong> : Liste des fournisseurs avec badges (Actif/Inactif), nombre de contacts</li>
+<li><strong>Panneau droit</strong> : Detail complet du fournisseur selectionne</li>
+</ul>
+
+<h3>Onglets de filtre</h3>
+<ul>
+<li><strong>Actif</strong> — Seulement les fournisseurs actifs</li>
+<li><strong>Actif + Inactif</strong> — Tous les fournisseurs</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>1. Ajouter un fournisseur</h3>
+
+<ol>
+<li>Cliquez sur <strong>Ajouter un fournisseur</strong> (bouton vert dans le ruban, ou bouton bleu en haut a droite)</li>
+<li>Un formulaire complet s'ouvre avec les sections :</li>
+</ol>
+
+<p><strong>Informations generales :</strong></p>
+<table>
+<thead>
+    <tr><th>Champ</th><th>Obligatoire</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td>Nom</td><td>Oui</td><td>Nom de l'entreprise fournisseur</td></tr>
+  <tr><td>Code</td><td>Non</td><td>Code interne (ex: FURN-001)</td></tr>
+  <tr><td>Email</td><td>Non</td><td>Email general du fournisseur</td></tr>
+  <tr><td>Telephone</td><td>Non</td><td>Numero principal</td></tr>
+  <tr><td>Site web</td><td>Non</td><td>URL du site internet</td></tr>
+  <tr><td>Adresse</td><td>Non</td><td>Adresse postale complete</td></tr>
+  <tr><td>Ville</td><td>Non</td><td>Ville</td></tr>
+  <tr><td>Province</td><td>Non</td><td>Province/Etat</td></tr>
+  <tr><td>Code postal</td><td>Non</td><td>Code postal</td></tr>
+  <tr><td>Pays</td><td>Non</td><td>Pays</td></tr>
+  <tr><td>Notes</td><td>Non</td><td>Notes internes (invisible pour le fournisseur)</td></tr>
+  <tr><td>Actif</td><td>Oui</td><td>Interrupteur actif/inactif (defaut: actif)</td></tr>
+</tbody>
+</table>
+<p><strong>Contacts :</strong></p>
+<ul>
+<li>Cliquez sur <strong>Ajouter un contact</strong> pour chaque personne-contact</li>
+<li>Champs : Nom, Departement (Ventes/Comptabilite/Support/Logistique), Email, Telephone, Poste, Titre, Principal (oui/non)</li>
+</ul>
+
+<p><strong>Liens :</strong></p>
+<ul>
+<li>Cliquez sur <strong>Ajouter un lien</strong> pour chaque lien utile</li>
+<li>Champs : Libelle, URL, Type (Portail de commande/Chat/Portail/Catalogue/Suivi/Autre)</li>
+</ul>
+
+<ol>
+<li>Cliquez sur <strong>Enregistrer</strong></li>
+</ol>
+
+<h3>2. Consulter un fournisseur</h3>
+
+<ol>
+<li>Cliquez sur un fournisseur dans la liste de gauche</li>
+<li>Le panneau de detail affiche :</li>
+</ol>
+<ul>
+<li><strong>Nom et code</strong> en en-tete</li>
+<li><strong>Badge</strong> Actif (vert) ou Inactif (gris)</li>
+<li><strong>Coordonnees</strong> : email (cliquable), telephone, adresse complete, site web (lien)</li>
+<li><strong>Contacts</strong> : liste des personnes-contact avec departement, email, telephone</li>
+<li>Le contact principal est marque d'une etoile</li>
+<li><strong>Liens utiles</strong> : liste des liens avec type (badge colore) et URL cliquable</li>
+<li><strong>Notes</strong> : notes internes</li>
+</ul>
+
+<h3>3. Modifier un fournisseur</h3>
+
+<ol>
+<li>Selectionnez le fournisseur dans la liste</li>
+<li>Cliquez sur <strong>Modifier</strong> dans le ruban OU sur le bouton Modifier dans le panneau de detail</li>
+<li>Le meme formulaire que la creation s'ouvre, pre-rempli</li>
+<li>Modifiez les champs souhaites</li>
+<li>Cliquez sur <strong>Enregistrer</strong></li>
+</ol>
+
+<h3>4. Supprimer un fournisseur</h3>
+
+<ol>
+<li>Selectionnez le fournisseur</li>
+<li>Cliquez sur <strong>Supprimer</strong> dans le ruban</li>
+<li>Confirmez la suppression dans la boite de dialogue</li>
+</ol>
+
+<blockquote>
+<p><strong>Attention</strong> : La suppression est definitive. Si le fournisseur a des bons de commande associes, envisagez de le marquer comme "Inactif" plutot que de le supprimer.</p>
+</blockquote>
+
+<h3>5. Exporter la liste</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban</li>
+<li>Un fichier CSV est telecharge avec : Nom, Code, Email, Telephone, Site web, Adresse, Ville, Statut, Nombre de contacts</li>
+<li>Compatible Excel (encodage UTF-8 BOM)</li>
+</ol>
+
+<hr>
+
+<h2>Workflows complets</h2>
+
+<h3>Scenario 1 : Nouveau fournisseur de peptides</h3>
+
+<ol>
+<li>Vous avez identifie un nouveau laboratoire fournisseur</li>
+<li>Allez dans <strong>Commerce > Fournisseurs</strong></li>
+<li>Cliquez sur <strong>Ajouter un fournisseur</strong></li>
+<li>Renseignez : nom, email, telephone, site web, adresse</li>
+<li>Ajoutez les contacts : representant commercial (dept: Ventes, principal: oui) + comptabilite</li>
+<li>Ajoutez les liens : portail de commande, catalogue PDF</li>
+<li>Enregistrez</li>
+<li>Puis allez dans <strong>Inventaire > Purchase Orders</strong> pour creer votre premier bon de commande</li>
+</ol>
+
+<h3>Scenario 2 : Trouver rapidement comment commander</h3>
+
+<ol>
+<li>Vous devez passer une commande urgente</li>
+<li>Allez dans <strong>Commerce > Fournisseurs</strong></li>
+<li>Recherchez le fournisseur par nom</li>
+<li>Dans le panneau de detail, cherchez le lien de type <strong>Portail de commande</strong></li>
+<li>Cliquez dessus — le site du fournisseur s'ouvre</li>
+<li>Ou utilisez le bouton <strong>Ouvrir site web</strong> dans le ruban</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<h3>Q : Puis-je avoir plusieurs contacts pour le meme departement ?</h3>
+<p><strong>R</strong> : Oui, il n'y a pas de limite. Mais un seul peut etre marque comme "principal".</p>
+
+<h3>Q : Desactiver un fournisseur supprime-t-il ses donnees ?</h3>
+<p><strong>R</strong> : Non. Marquer un fournisseur comme "Inactif" le masque de la vue par defaut, mais toutes ses donnees sont conservees. Vous pouvez le reactiver a tout moment.</p>
+
+<h3>Q : Les fournisseurs sont-ils lies aux bons de commande ?</h3>
+<p><strong>R</strong> : Oui. Quand vous creez un bon de commande dans <strong>Inventaire > Purchase Orders</strong>, vous selectionnez un fournisseur de cette liste.</p>
+
+<hr>
+
+<h2>Strategie expert : Evaluation et selection des fournisseurs de peptides</h2>
+
+<h3>Criteres de selection obligatoires</h3>
+
+<p>Choisir un fournisseur de peptides est une decision critique qui impacte directement la qualite de vos produits, votre reputation et la satisfaction de vos clients. Voici les criteres essentiels a evaluer.</p>
+
+<table>
+<thead>
+    <tr><th>Critere</th><th>Niveau minimum requis</th><th>Comment verifier</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Purete des peptides</strong></td><td>Superieure ou egale a 98% (HPLC)</td><td>Exiger le certificat d'analyse (COA) pour chaque lot</td></tr>
+  <tr><td><strong>Certification GMP</strong></td><td>Obligatoire (Good Manufacturing Practices)</td><td>Demander le certificat GMP ; verifier aupres de l'organisme emetteur</td></tr>
+  <tr><td><strong>Certificat d'analyse (COA)</strong></td><td>Fourni avec chaque livraison</td><td>COA doit inclure : identite, purete HPLC, masse moleculaire, contenu en endotoxines, solvants residuels</td></tr>
+  <tr><td><strong>Capacite de production</strong></td><td>Suffisante pour couvrir vos commandes + 30%</td><td>Demander la capacite mensuelle et le carnet de commandes</td></tr>
+  <tr><td><strong>Delai de livraison</strong></td><td>14-30 jours selon l'origine</td><td>Verifier les delais reels sur 3-5 commandes test</td></tr>
+  <tr><td><strong>MOQ (quantite minimale)</strong></td><td>Compatible avec vos volumes</td><td>Negocier un MOQ adapte a votre phase de croissance</td></tr>
+  <tr><td><strong>Stabilite financiere</strong></td><td>Entreprise etablie depuis plus de 3 ans</td><td>Verifier les registres commerciaux, demander des references</td></tr>
+</tbody>
+</table>
+<h3>Grille d'evaluation fournisseur (scorecard)</h3>
+
+<p>Utilisez cette grille pour comparer objectivement vos fournisseurs. Notez chaque critere de 1 a 5.</p>
+
+<table>
+<thead>
+    <tr><th>Critere</th><th>Ponderation</th><th>Fournisseur A</th><th>Fournisseur B</th><th>Fournisseur C</th></tr>
+</thead>
+<tbody>
+  <tr><td>Purete peptides</td><td>25%</td><td>/5</td><td>/5</td><td>/5</td></tr>
+  <tr><td>Prix unitaire</td><td>20%</td><td>/5</td><td>/5</td><td>/5</td></tr>
+  <tr><td>Delai de livraison</td><td>15%</td><td>/5</td><td>/5</td><td>/5</td></tr>
+  <tr><td>Fiabilite (livraison a temps)</td><td>15%</td><td>/5</td><td>/5</td><td>/5</td></tr>
+  <tr><td>Service client / reactivite</td><td>10%</td><td>/5</td><td>/5</td><td>/5</td></tr>
+  <tr><td>Documentation (COA, GMP)</td><td>10%</td><td>/5</td><td>/5</td><td>/5</td></tr>
+  <tr><td>Flexibilite (MOQ, commandes urgentes)</td><td>5%</td><td>/5</td><td>/5</td><td>/5</td></tr>
+  <tr><td><strong>Score total pondere</strong></td><td>100%</td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<p><strong>Seuils</strong> :</p>
+<ul>
+<li>Score superieur a 4,0 : fournisseur prioritaire</li>
+<li>Score entre 3,0 et 4,0 : fournisseur acceptable, points a ameliorer</li>
+<li>Score inferieur a 3,0 : fournisseur a remplacer</li>
+</ul>
+
+<hr>
+
+<h2>Strategie expert : Negociation des termes commerciaux</h2>
+
+<h3>Termes de paiement courants</h3>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Signification</th><th>Avantage pour vous</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Paiement a la commande (CIA)</strong></td><td>Payer 100% avant expedition</td><td>Aucun, mais souvent requis pour les premiers achats</td></tr>
+  <tr><td><strong>Net 30</strong></td><td>Payer dans les 30 jours suivant la facture</td><td>Tresorerie : vous vendez avant de payer le fournisseur</td></tr>
+  <tr><td><strong>Net 60</strong></td><td>Payer dans les 60 jours</td><td>Tresorerie encore meilleure ; reserve aux gros volumes</td></tr>
+  <tr><td><strong>2/10 Net 30</strong></td><td>2% d'escompte si paye en 10 jours, sinon plein prix a 30 jours</td><td>Economie de 2% si votre tresorerie le permet (equivalent a un rendement annuel de 36%)</td></tr>
+  <tr><td><strong>50/50</strong></td><td>50% a la commande, 50% a la livraison</td><td>Compromis courant pour les nouveaux partenariats</td></tr>
+</tbody>
+</table>
+<h3>Strategie de negociation par phase</h3>
+
+<table>
+<thead>
+    <tr><th>Phase de votre entreprise</th><th>Volume mensuel</th><th>Levier de negociation</th></tr>
+</thead>
+<tbody>
+  <tr><td>Lancement (0-6 mois)</td><td>Moins de 5 000 $CA</td><td>Faible. Accepter CIA ou 50/50. Focus : qualite et fiabilite.</td></tr>
+  <tr><td>Croissance (6-18 mois)</td><td>5 000-20 000 $CA</td><td>Moyen. Negocier Net 30, MOQ reduit. Montrer la croissance.</td></tr>
+  <tr><td>Maturite (18+ mois)</td><td>Plus de 20 000 $CA</td><td>Fort. Exiger Net 30, negocier 2/10, volume discounts, exclusivite partielle.</td></tr>
+</tbody>
+</table>
+<h3>Points de negociation cles</h3>
+
+<ol>
+<li><strong>Remise sur volume</strong> : negocier des paliers (ex: -5% au-dessus de 10 000 $CA, -10% au-dessus de 25 000 $CA)</li>
+<li><strong>Livraison gratuite</strong> : au-dela d'un seuil de commande (ex: livraison incluse pour les commandes de plus de 5 000 $CA)</li>
+<li><strong>Echantillons gratuits</strong> : pour tester de nouveaux peptides avant de les ajouter au catalogue</li>
+<li><strong>Priorite en cas de penurie</strong> : clause de priorite d'approvisionnement pour les clients reguliers</li>
+<li><strong>Garantie qualite</strong> : remplacement gratuit si la purete est inferieure au seuil garanti dans le COA</li>
+</ol>
+
+<hr>
+
+<h2>Strategie expert : Gestion multi-fournisseurs pour securiser la chaine</h2>
+
+<h3>Pourquoi avoir plusieurs fournisseurs</h3>
+
+<p>Dependre d'un seul fournisseur de peptides est un risque majeur pour votre entreprise :</p>
+
+<table>
+<thead>
+    <tr><th>Risque</th><th>Probabilite</th><th>Impact</th><th>Mitigation</th></tr>
+</thead>
+<tbody>
+  <tr><td>Rupture de stock chez le fournisseur</td><td>Moyenne</td><td>Critique : vous ne pouvez plus vendre</td><td>Fournisseur de secours qualifie</td></tr>
+  <tr><td>Augmentation soudaine des prix</td><td>Elevee</td><td>Fort : erosion de la marge</td><td>Capacite de basculer vers un autre fournisseur</td></tr>
+  <tr><td>Probleme de qualite sur un lot</td><td>Moyenne</td><td>Critique : rappel de produit, perte de confiance</td><td>Lots de fournisseurs differents en stock</td></tr>
+  <tr><td>Delai douanier ou logistique</td><td>Elevee (pour les fournisseurs internationaux)</td><td>Fort : retards de livraison</td><td>Fournisseur local en complement</td></tr>
+  <tr><td>Fournisseur fait faillite</td><td>Faible</td><td>Critique : perte totale de la source</td><td>Portefeuille diversifie</td></tr>
+</tbody>
+</table>
+<h3>Architecture multi-fournisseurs recommandee</h3>
+
+<table>
+<thead>
+    <tr><th>Role</th><th>Description</th><th>Part des achats</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Fournisseur principal</strong></td><td>Meilleur rapport qualite/prix/fiabilite. Recoit la majorite des commandes.</td><td>60-70%</td></tr>
+  <tr><td><strong>Fournisseur secondaire</strong></td><td>Qualite equivalente, peut prendre le relais en cas de probleme.</td><td>20-30%</td></tr>
+  <tr><td><strong>Fournisseur de secours</strong></td><td>Qualifie et teste, mais utilise uniquement en urgence. Commande test tous les 6 mois pour maintenir la relation.</td><td>5-10%</td></tr>
+</tbody>
+</table>
+<h3>Mise en pratique dans Koraline</h3>
+
+<ol>
+<li>Enregistrer chaque fournisseur dans <strong>Commerce > Fournisseurs</strong> avec le statut <strong>Actif</strong></li>
+<li>Indiquer dans les <strong>Notes</strong> le role de chaque fournisseur (principal, secondaire, secours)</li>
+<li>Ajouter un contact principal dans chaque departement (Ventes, Comptabilite, Logistique)</li>
+<li>Pour les fournisseurs de secours : marquer la date de la derniere commande test dans les notes</li>
+<li>Creer des bons de commande dans <strong>Inventaire > Purchase Orders</strong> en alternant entre fournisseur principal et secondaire selon les volumes</li>
+</ol>
+
+<h3>Audit periodique des fournisseurs</h3>
+
+<p>Tous les 6 mois, reevaluer chaque fournisseur avec la scorecard ci-dessus. Si un fournisseur descend en dessous du seuil de 3,0, entamer le processus de remplacement avant d'atteindre une situation critique.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Fournisseur</strong></td><td>Entreprise qui vous vend des produits</td></tr>
+  <tr><td><strong>Contact principal</strong></td><td>Personne-contact a privilegier pour les communications</td></tr>
+  <tr><td><strong>PO (Purchase Order)</strong></td><td>Bon de commande passe aupres d'un fournisseur</td></tr>
+  <tr><td><strong>Portail fournisseur</strong></td><td>Site web ou espace client du fournisseur</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="05-inventaire.md">Inventaire</a> — Bons de commande lies aux fournisseurs</li>
+<li><a href="01-commandes.md">Commandes</a> — Commandes clients qui consomment le stock fourni</li>
+<li><a href="07-paiements.md">Paiements</a> — Reconciliation des paiements fournisseurs</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

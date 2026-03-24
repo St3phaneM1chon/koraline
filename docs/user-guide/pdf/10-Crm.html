@@ -1,0 +1,4700 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10 — CRM &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 10 — CRM</span>
+        <span>2026-03-20</span>
+      </div>
+
+<div class="cover" style="min-height: 40vh; padding: 3rem 2rem;">
+  <div class="cover-logo" style="width:80px; height:80px; font-size:1.8rem; border-radius:16px;">K</div>
+  <h1 style="font-size:2rem;">10 — CRM</h1>
+  <div class="subtitle">Guide Utilisateur &mdash; Suite Koraline</div>
+  <div class="version">
+    13 pages dans cette section<br>
+    2026-03-20
+  </div>
+</div><div class="toc-container" style="margin:1rem 0 2rem;">
+<h2>Contenu de cette section</h2>
+<ul class="toc">
+<ul class="toc-pages">
+<li><a href="#10-crm--01-dashboard"><span>Tableau de Bord CRM</span><span class="toc-dots"></span></a></li>
+<li><a href="#10-crm--02-contacts"><span>Gestion des Contacts</span><span class="toc-dots"></span></a></li>
+<li><a href="#10-crm--03-pipeline"><span>Pipeline des Ventes et Deals</span><span class="toc-dots"></span></a></li>
+<li><a href="#10-crm--04-leads"><span>Gestion des Leads et Lead Scoring</span><span class="toc-dots"></span></a></li>
+<li><a href="#10-crm--05-taches"><span>Gestion des Taches CRM</span><span class="toc-dots"></span></a></li>
+<li><a href="#10-crm--06-entreprises"><span>Gestion des Entreprises</span><span class="toc-dots"></span></a></li>
+<li><a href="#10-crm--07-listes-segments"><span>Listes, Segments et Tags</span><span class="toc-dots"></span></a></li>
+<li><a href="#10-crm--08-automatisations"><span>Automatisations, Workflows et Sequences</span><span class="toc-dots"></span></a></li>
+<li><a href="#10-crm--09-centre-appels"><span>Centre d'Appels, SMS et WhatsApp</span><span class="toc-dots"></span></a></li>
+<li><a href="#10-crm--10-scraper"><span>Scraper Web pour Generation de Leads</span><span class="toc-dots"></span></a></li>
+<li><a href="#10-crm--11-leaderboard"><span>Leaderboard et Gamification des Ventes</span><span class="toc-dots"></span></a></li>
+<li><a href="#10-crm--12-rapports"><span>Rapports et Analytique CRM</span><span class="toc-dots"></span></a></li>
+<li><a href="#10-crm--13-import-export"><span>Import et Export de Donnees CRM</span><span class="toc-dots"></span></a></li>
+</ul>
+</ul>
+</div><div id="10-crm--01-dashboard">
+<h1>Tableau de Bord CRM</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Tableau de bord</p>
+<p><strong>URL</strong>: <code>/admin/crm</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>Le <strong>Tableau de bord CRM</strong> est votre centre de commande pour toute l'activite commerciale de BioCycle Peptides. Il offre une vue synthetique de la relation client, des opportunites de vente et de la performance de votre equipe.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir les indicateurs cles de performance (KPIs) en un coup d'oeil</li>
+<li>Suivre le nombre de contacts, leads et deals actifs</li>
+<li>Consulter le pipeline des ventes en temps reel</li>
+<li>Identifier les opportunites qui progressent et celles qui stagnent</li>
+<li>Visualiser les revenus generes par periode (jour, semaine, mois, trimestre)</li>
+<li>Suivre l'activite de votre equipe (appels, emails, taches completees)</li>
+<li>Acceder rapidement aux actions prioritaires (leads chauds, taches en retard)</li>
+<li>Comparer les performances entre periodes</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un CRM ?</h3>
+
+<p>Un CRM (Customer Relationship Management, ou Gestion de la Relation Client) est un outil qui centralise toutes les interactions entre votre entreprise et ses clients ou prospects. Imaginez un carnet d'adresses ultra-intelligent qui se souvient de chaque conversation, chaque achat, chaque email echange.</p>
+
+<h3>Pourquoi c'est important ?</h3>
+
+<ul>
+<li><strong>Rien ne se perd</strong> : chaque interaction est enregistree</li>
+<li><strong>Suivi structure</strong> : vous savez exactement ou en est chaque prospect</li>
+<li><strong>Meilleure conversion</strong> : en suivant un processus, vous vendez plus</li>
+<li><strong>Vision globale</strong> : la direction voit la sante commerciale en temps reel</li>
+</ul>
+
+<h3>Vocabulaire essentiel</h3>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Contact</strong></td><td>Une personne physique dans votre base (client ou prospect)</td></tr>
+  <tr><td><strong>Lead</strong></td><td>Un contact qui a montre de l'interet mais n'a pas encore achete</td></tr>
+  <tr><td><strong>Deal</strong></td><td>Une opportunite de vente en cours de negociation</td></tr>
+  <tr><td><strong>Pipeline</strong></td><td>L'ensemble des etapes par lesquelles passe un deal, de la decouverte a la conclusion</td></tr>
+  <tr><td><strong>Conversion</strong></td><td>Le passage d'un prospect a un client (il a achete)</td></tr>
+  <tr><td><strong>Churn</strong></td><td>Un client qui cesse d'acheter ou se desabonne</td></tr>
+  <tr><td><strong>CLV</strong></td><td>Customer Lifetime Value : valeur totale qu'un client genere dans sa vie</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>CRM</strong></li>
+<li>Le tableau de bord s'affiche automatiquement (c'est la page par defaut de la section)</li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation</h3>
+<ol>
+<li>Dans la colonne d'icones a gauche, cliquez sur l'icone <strong>CRM</strong> (entonnoir ou cible)</li>
+<li>Le panneau CRM s'ouvre, le tableau de bord est la premiere option</li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche en haut (ou tapez <code>/</code>)</li>
+<li>Tapez "CRM" ou "tableau de bord CRM"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>L'interface du tableau de bord CRM est divisee en <strong>4 zones principales</strong> :</p>
+
+<h3>1. Les cartes de KPIs (en haut)</h3>
+
+<p>Cinq cartes resumant l'etat de votre CRM :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Contacts totaux</strong></td><td>Nombre total de contacts dans votre base</td></tr>
+  <tr><td><strong>Leads actifs</strong></td><td>Nombre de leads en cours de qualification</td></tr>
+  <tr><td><strong>Deals ouverts</strong></td><td>Nombre d'opportunites en cours dans le pipeline</td></tr>
+  <tr><td><strong>Revenu pipeline</strong></td><td>Valeur totale des deals ouverts (en $CA)</td></tr>
+  <tr><td><strong>Taux de conversion</strong></td><td>Pourcentage de leads convertis en clients</td></tr>
+</tbody>
+</table>
+<p>Chaque carte affiche egalement la <strong>variation</strong> par rapport a la periode precedente (fleche verte pour une hausse, rouge pour une baisse).</p>
+
+<h3>2. Le graphique de pipeline (au centre)</h3>
+
+<p>Un graphique en entonnoir ou en barres montrant la repartition des deals par etape :</p>
+<ul>
+<li><strong>Prospection</strong> : premiers contacts, decouverte</li>
+<li><strong>Qualification</strong> : besoin identifie, budget confirme</li>
+<li><strong>Proposition</strong> : offre envoyee</li>
+<li><strong>Negociation</strong> : discussion sur les termes</li>
+<li><strong>Conclusion</strong> : deal gagne ou perdu</li>
+</ul>
+
+<h3>3. Les activites recentes (colonne droite)</h3>
+
+<p>Un fil d'actualite montrant les dernieres actions :</p>
+<ul>
+<li>Nouveaux leads entrants</li>
+<li>Deals qui ont change d'etape</li>
+<li>Taches completees par l'equipe</li>
+<li>Emails envoyes et recus</li>
+<li>Appels effectues</li>
+</ul>
+
+<h3>4. Les listes prioritaires (en bas)</h3>
+
+<ul>
+<li><strong>Leads chauds</strong> : les prospects avec le meilleur score, a contacter en priorite</li>
+<li><strong>Taches en retard</strong> : les actions qui auraient du etre completees</li>
+<li><strong>Deals proches de la cloture</strong> : opportunites a finaliser rapidement</li>
+<li><strong>Relances a faire</strong> : contacts qui n'ont pas ete sollicites depuis un moment</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Filtrer par periode</h3>
+
+<p><strong>Objectif</strong> : Comparer les performances sur differentes periodes.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>En haut a droite du tableau de bord, trouvez le selecteur de periode</li>
+<li>Choisissez parmi : Aujourd'hui, Cette semaine, Ce mois, Ce trimestre, Cette annee, Personnalise</li>
+<li>Les KPIs et graphiques se mettent a jour automatiquement</li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong> : Le mode "Personnalise" permet de definir une plage de dates precise, utile pour comparer des campagnes specifiques.</p>
+</blockquote>
+
+<h3>2. Naviguer rapidement vers une section</h3>
+
+<p><strong>Objectif</strong> : Acceder directement a une sous-section du CRM depuis le tableau de bord.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur le titre de n'importe quelle carte de KPI pour acceder a la page correspondante</li>
+<li>Par exemple, cliquer sur "Leads actifs" vous emmene directement a la page Leads</li>
+<li>Cliquer sur "Deals ouverts" ouvre la page Pipeline</li>
+</ol>
+
+<h3>3. Personnaliser les widgets</h3>
+
+<p><strong>Objectif</strong> : Adapter le tableau de bord a vos besoins.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur le bouton <strong>Personnaliser</strong> (icone engrenage) en haut a droite</li>
+<li>Glissez-deposez les widgets pour reorganiser l'affichage</li>
+<li>Activez ou desactivez les widgets selon vos preferences</li>
+<li>Cliquez sur <strong>Sauvegarder la disposition</strong></li>
+</ol>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Revue matinale des ventes</h3>
+<ol>
+<li>Ouvrez le tableau de bord CRM</li>
+<li>Verifiez les <strong>leads chauds</strong> : y a-t-il de nouveaux prospects a contacter ?</li>
+<li>Consultez les <strong>taches en retard</strong> : quelles actions sont prioritaires ?</li>
+<li>Regardez les <strong>deals proches de la cloture</strong> : quelles ventes peuvent etre finalisees ?</li>
+<li>Parcourez les <strong>activites recentes</strong> : que s'est-il passe hier ?</li>
+</ol>
+
+<h3>Revue hebdomadaire de performance</h3>
+<ol>
+<li>Selectionnez la periode "Cette semaine"</li>
+<li>Comparez le taux de conversion avec la semaine precedente</li>
+<li>Verifiez la valeur du pipeline : est-elle en croissance ?</li>
+<li>Identifiez les deals bloques depuis plus de 7 jours</li>
+<li>Planifiez les actions de la semaine suivante</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Les donnees du tableau de bord sont-elles en temps reel ?</strong></p>
+<p>R : Oui, les KPIs se mettent a jour en temps reel. Les graphiques et rapports se rafraichissent automatiquement toutes les quelques minutes.</p>
+
+<p><strong>Q : Puis-je exporter les donnees du tableau de bord ?</strong></p>
+<p>R : Oui, utilisez le bouton <strong>Exporter</strong> en haut a droite pour telecharger un rapport PDF ou CSV des KPIs affiches.</p>
+
+<p><strong>Q : Le tableau de bord est-il le meme pour tous les utilisateurs ?</strong></p>
+<p>R : Par defaut oui, mais chaque utilisateur peut personnaliser sa disposition. Les administrateurs peuvent aussi creer des tableaux de bord partages via le Dashboard Builder (voir page dediee).</p>
+
+<p><strong>Q : Que signifie un taux de conversion en baisse ?</strong></p>
+<p>R : Cela peut indiquer plusieurs choses : leads de moindre qualite, processus de vente trop long, manque de suivi. Utilisez les rapports detailles pour diagnostiquer la cause.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>KPI</strong></td><td>Key Performance Indicator, indicateur cle de performance</td></tr>
+  <tr><td><strong>Pipeline</strong></td><td>Representation visuelle du parcours d'un deal de la prospection a la conclusion</td></tr>
+  <tr><td><strong>Lead scoring</strong></td><td>Note automatique attribuee a un prospect selon ses actions et son profil</td></tr>
+  <tr><td><strong>Taux de conversion</strong></td><td>Pourcentage de prospects qui deviennent clients</td></tr>
+  <tr><td><strong>Revenu pipeline</strong></td><td>Somme des montants de tous les deals ouverts</td></tr>
+  <tr><td><strong>Churn rate</strong></td><td>Taux d'attrition, pourcentage de clients qui partent</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/contacts">Contacts</a> : Gestion des fiches contacts</li>
+<li><a href="/admin/crm/pipeline">Pipeline</a> : Vue detaillee du pipeline des ventes</li>
+<li><a href="/admin/crm/leads">Leads</a> : Gestion et qualification des prospects</li>
+<li><a href="/admin/crm/tasks">Taches</a> : Suivi des actions a realiser</li>
+<li><a href="/admin/crm/analytics">Rapports CRM</a> : Analyses et rapports detailles</li>
+<li><a href="/admin/crm/dashboard-builder">Dashboard Builder</a> : Creation de tableaux de bord personnalises</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="10-crm--02-contacts">
+<h1>Gestion des Contacts</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Contacts</p>
+<p><strong>URL</strong>: <code>/admin/crm/contacts</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Contacts</strong> est le registre central de toutes les personnes avec lesquelles votre entreprise interagit. Chaque client, prospect, fournisseur ou partenaire de BioCycle Peptides est un contact dans le CRM.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Consulter la liste complete de tous vos contacts</li>
+<li>Ajouter de nouveaux contacts manuellement ou par import</li>
+<li>Modifier les informations d'un contact existant</li>
+<li>Consulter l'historique complet d'un contact (achats, emails, appels, notes)</li>
+<li>Associer un contact a une entreprise (compte B2B)</li>
+<li>Attribuer un contact a un representant commercial</li>
+<li>Ajouter des tags et des segments pour organiser votre base</li>
+<li>Fusionner des contacts en double</li>
+<li>Envoyer un email ou passer un appel directement depuis la fiche</li>
+<li>Exporter les contacts en CSV</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un contact ?</h3>
+
+<p>Un contact est une <strong>fiche individuelle</strong> representant une personne. Contrairement a un simple carnet d'adresses, la fiche contact dans le CRM contient non seulement les coordonnees, mais aussi tout l'historique de la relation : emails echanges, appels passes, commandes effectuees, tickets de support, etc.</p>
+
+<h3>Contact vs Lead vs Client</h3>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Contact</strong></td><td>Toute personne enregistree dans le systeme, quel que soit son statut</td></tr>
+  <tr><td><strong>Lead</strong></td><td>Un contact qui a montre de l'interet mais n'a pas encore achete</td></tr>
+  <tr><td><strong>Client</strong></td><td>Un contact qui a effectue au moins un achat</td></tr>
+  <tr><td><strong>Prospect</strong></td><td>Un contact identifie comme potentiel acheteur, en cours de qualification</td></tr>
+</tbody>
+</table>
+<p>Un meme contact peut etre a la fois un lead et devenir ensuite un client. Son statut evolue au fil de la relation.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu CRM</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Cliquez sur <strong>CRM</strong> dans la navigation horizontale</li>
+<li>Dans le panneau lateral, cliquez sur <strong>Contacts</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation</h3>
+<ol>
+<li>Cliquez sur l'icone CRM dans le rail d'icones a gauche</li>
+<li>Selectionnez <strong>Contacts</strong> dans le panneau qui s'ouvre</li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Tapez <code>/</code> pour ouvrir la recherche rapide</li>
+<li>Tapez "contacts"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>L'interface est organisee en <strong>3 zones</strong> :</p>
+
+<h3>1. La barre de ruban (Ribbon)</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau contact</strong></td><td>Creer une fiche contact vide a remplir</td></tr>
+  <tr><td><strong>Importer</strong></td><td>Importer des contacts depuis un fichier CSV/Excel</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Exporter les contacts filtres au format CSV</td></tr>
+  <tr><td><strong>Fusionner</strong></td><td>Fusionner deux contacts en double</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer le contact selectionne</td></tr>
+  <tr><td><strong>Envoyer email</strong></td><td>Ouvrir la fenetre d'envoi d'email</td></tr>
+  <tr><td><strong>Appeler</strong></td><td>Lancer un appel via le centre d'appels integre</td></tr>
+</tbody>
+</table>
+<h3>2. La liste des contacts (panneau central)</h3>
+
+<ul>
+<li><strong>Barre de recherche</strong> : Recherchez par nom, email, telephone ou entreprise</li>
+<li><strong>Filtres avances</strong> : Filtrez par tag, segment, statut, representant assigne, date de creation</li>
+<li><strong>Tri</strong> : Triez par nom, date de creation, derniere activite, score</li>
+<li><strong>Vue en liste</strong> : Affichage tabulaire avec colonnes personnalisables</li>
+<li><strong>Vue en cartes</strong> : Affichage en fiches visuelles (utile pour un survol rapide)</li>
+<li><strong>Pagination</strong> : Navigation entre les pages de resultats</li>
+</ul>
+
+<h3>3. Le panneau de detail (panneau droit)</h3>
+
+<p>Quand vous selectionnez un contact, ses informations apparaissent a droite :</p>
+
+<p><strong>Informations generales</strong> :</p>
+<ul>
+<li>Nom complet, email, telephone</li>
+<li>Entreprise associee</li>
+<li>Adresse postale</li>
+<li>Source d'acquisition (comment ce contact est arrive)</li>
+<li>Representant assigne</li>
+</ul>
+
+<p><strong>Onglets du detail</strong> :</p>
+<ul>
+<li><strong>Timeline</strong> : Chronologie de toutes les interactions</li>
+<li><strong>Deals</strong> : Opportunites de vente associees</li>
+<li><strong>Activites</strong> : Taches, appels, emails planifies</li>
+<li><strong>Commandes</strong> : Historique des achats sur la boutique</li>
+<li><strong>Notes</strong> : Notes internes de l'equipe</li>
+<li><strong>Fichiers</strong> : Documents joints a la fiche</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer un nouveau contact</h3>
+
+<p><strong>Objectif</strong> : Ajouter manuellement un contact dans le CRM.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau contact</strong> dans le ruban</li>
+<li>Remplissez les champs obligatoires :</li>
+</ol>
+<ul>
+<li><strong>Prenom</strong> et <strong>Nom</strong> (au minimum l'un des deux)</li>
+<li><strong>Email</strong> (recommande)</li>
+</ul>
+<ol>
+<li>Remplissez les champs facultatifs :</li>
+</ol>
+<ul>
+<li>Telephone, adresse, entreprise, poste, source</li>
+</ul>
+<ol>
+<li>Ajoutez des <strong>tags</strong> si necessaire (ex: "VIP", "B2B", "Quebec")</li>
+<li>Assignez un <strong>representant</strong> (ou laissez vide pour l'attribution automatique)</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong> : Le systeme detecte automatiquement les doublons. Si un contact avec le meme email existe deja, vous serez averti avant la creation.</p>
+</blockquote>
+
+<h3>2. Modifier un contact</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Recherchez le contact dans la liste ou utilisez la barre de recherche</li>
+<li>Cliquez sur le contact pour ouvrir le panneau de detail</li>
+<li>Cliquez sur le bouton <strong>Modifier</strong> (icone crayon)</li>
+<li>Apportez vos modifications</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<h3>3. Consulter l'historique d'un contact</h3>
+
+<p><strong>Objectif</strong> : Voir toutes les interactions passees avec un contact.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le contact</li>
+<li>Dans le panneau de detail, cliquez sur l'onglet <strong>Timeline</strong></li>
+<li>Parcourez la chronologie qui affiche :</li>
+</ol>
+<ul>
+<li>Emails envoyes et recus</li>
+<li>Appels effectues (avec duree et notes)</li>
+<li>Commandes passees</li>
+<li>Changements de statut des deals</li>
+<li>Notes ajoutees par l'equipe</li>
+<li>Actions automatisees (ex: email de sequence envoye)</li>
+</ul>
+
+<h3>4. Fusionner des contacts en double</h3>
+
+<p><strong>Objectif</strong> : Quand un meme client a ete enregistre deux fois.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Identifiez les doublons (utilisez la page <strong>Doublons</strong> dans Automatisation)</li>
+<li>Selectionnez le premier contact</li>
+<li>Cliquez sur <strong>Fusionner</strong> dans le ruban</li>
+<li>Recherchez le second contact (le doublon)</li>
+<li>Le systeme vous montre les deux fiches cote a cote</li>
+<li>Pour chaque champ, choisissez quelle valeur conserver</li>
+<li>Cliquez sur <strong>Fusionner</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Important</strong> : La fusion est irreversible. L'historique des deux contacts sera combine sur la fiche resultante. Le contact "doublon" sera supprime.</p>
+</blockquote>
+
+<h3>5. Segmenter et tagger les contacts</h3>
+
+<p><strong>Objectif</strong> : Organiser votre base pour cibler des groupes specifiques.</p>
+
+<p><strong>Tags</strong> :</p>
+<ul>
+<li>Ce sont des etiquettes libres que vous attachez aux contacts</li>
+<li>Exemples : "VIP", "B2B", "Athlete", "Professionnel sante"</li>
+<li>Pour ajouter un tag : ouvrez la fiche, cliquez sur l'icone tag, tapez ou selectionnez</li>
+</ul>
+
+<p><strong>Segments</strong> :</p>
+<ul>
+<li>Ce sont des groupes dynamiques bases sur des criteres (voir page Listes & Segments)</li>
+<li>Exemple : "Clients actifs du Quebec ayant achete plus de 3 fois"</li>
+</ul>
+
+<h3>6. Envoyer un email depuis la fiche contact</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le contact</li>
+<li>Cliquez sur <strong>Envoyer email</strong> dans le ruban (ou l'icone email dans le detail)</li>
+<li>Redigez votre email ou selectionnez un modele</li>
+<li>Cliquez sur <strong>Envoyer</strong></li>
+<li>L'email apparait automatiquement dans la timeline du contact</li>
+</ol>
+
+<h3>7. Passer un appel depuis la fiche contact</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le contact</li>
+<li>Cliquez sur <strong>Appeler</strong> dans le ruban (ou l'icone telephone dans le detail)</li>
+<li>Le systeme d'appels integre se lance (voir page Centre d'appels)</li>
+<li>Apres l'appel, ajoutez des notes de conversation</li>
+<li>L'appel est automatiquement enregistre dans la timeline</li>
+</ol>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Qualification d'un nouveau lead</h3>
+<ol>
+<li>Le lead arrive dans les contacts (import, formulaire web, scraper)</li>
+<li>Ouvrez sa fiche et consultez les informations disponibles</li>
+<li>Ajoutez des tags pertinents ("secteur pharma", "Quebec", etc.)</li>
+<li>Assignez-le a un representant</li>
+<li>Creez une tache de premier appel</li>
+<li>Ajoutez-le a une sequence d'emails automatisee</li>
+</ol>
+
+<h3>Nettoyage periodique de la base</h3>
+<ol>
+<li>Filtrez les contacts sans activite depuis 12 mois</li>
+<li>Exportez cette liste pour reference</li>
+<li>Archivez ou supprimez les contacts obsoletes</li>
+<li>Verifiez les doublons et fusionnez si necessaire</li>
+<li>Mettez a jour les tags et segments</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Quelle est la difference entre un contact et un client dans Koraline ?</strong></p>
+<p>R : Un contact est toute personne enregistree dans le CRM. Un client est un contact qui a un historique d'achats sur la boutique. Tous les clients sont des contacts, mais tous les contacts ne sont pas des clients.</p>
+
+<p><strong>Q : Comment importer mes contacts depuis un autre systeme ?</strong></p>
+<p>R : Utilisez la fonction Import (voir page Import/Export). Koraline accepte les fichiers CSV et Excel. Un assistant de mappage vous aidera a associer les colonnes de votre fichier aux champs du CRM.</p>
+
+<p><strong>Q : Puis-je supprimer un contact qui a des commandes ?</strong></p>
+<p>R : Non, un contact lie a des commandes ne peut pas etre supprime pour des raisons de tracabilite comptable. Vous pouvez l'archiver pour qu'il n'apparaisse plus dans les listes actives.</p>
+
+<p><strong>Q : Les contacts sont-ils synchronises avec la boutique ?</strong></p>
+<p>R : Oui. Quand un client cree un compte sur la boutique en ligne, un contact est automatiquement cree dans le CRM. Et inversement, les modifications dans le CRM se refletent dans la boutique.</p>
+
+<p><strong>Q : Comment attribuer automatiquement les leads aux representants ?</strong></p>
+<p>R : Configurez les regles d'attribution dans Automatisation > Workflows. Vous pouvez distribuer par rotation (round-robin), par territoire ou par expertise.</p>
+
+<hr>
+
+<h2>Strategie expert : gestion relation client pour un e-commerce de peptides</h2>
+
+<h3>Cycle de vie client BioCycle Peptides</h3>
+
+<p>Chaque contact traverse un cycle de vie previsible. Comprendre ce cycle permet d'appliquer les bonnes actions au bon moment.</p>
+
+<pre><code>Visiteur → Inscrit → Prospect → Premier achat → Client recurrent → Ambassadeur
+                                     ↘                    ↘
+                                   Client inactif     Client perdu</code></pre>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Definition</th><th>Actions CRM</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Visiteur</strong></td><td>Navigue sur le site, non identifie</td><td>Popup newsletter, pixel retargeting</td></tr>
+  <tr><td><strong>Inscrit</strong></td><td>A cree un compte ou s'est inscrit a la newsletter</td><td>Flow bienvenue, nurturing educatif</td></tr>
+  <tr><td><strong>Prospect</strong></td><td>A montre un interet concret (panier, demande info, formulaire)</td><td>Lead scoring, assignation representant</td></tr>
+  <tr><td><strong>Premier achat</strong></td><td>A passe sa premiere commande</td><td>Flow post-achat, cross-sell, demande d'avis</td></tr>
+  <tr><td><strong>Client recurrent</strong></td><td>2+ commandes, achete regulierement</td><td>Programme fidelite, offres VIP, suggestions personnalisees</td></tr>
+  <tr><td><strong>Ambassadeur</strong></td><td>Recommande activement BioCycle (referrals, avis publics)</td><td>Programme ambassadeur, recompenses, acces anticipe nouveaux produits</td></tr>
+  <tr><td><strong>Client inactif</strong></td><td>Pas de commande depuis 60+ jours</td><td>Flow reactivation, code promo personnalise</td></tr>
+  <tr><td><strong>Client perdu</strong></td><td>Pas de commande depuis 180+ jours malgre reactivation</td><td>Archivage, 1 email par trimestre maximum</td></tr>
+</tbody>
+</table>
+<h3>Champs personnalises recommandes pour peptides</h3>
+
+<p>En plus des champs standards (nom, email, telephone, adresse), ajoutez ces champs personnalises pour exploiter pleinement le CRM dans le contexte peptides :</p>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Type</th><th>Utilite</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Type de recherche</strong></td><td>Liste deroulante (academique, clinique, personnelle, industrielle)</td><td>Segmenter par profil et adapter le discours</td></tr>
+  <tr><td><strong>Peptides preferes</strong></td><td>Tags multiples (BPC-157, CJC-1295, TB-500, etc.)</td><td>Cross-sell cible, alertes stock, recommandations</td></tr>
+  <tr><td><strong>Volume mensuel estime</strong></td><td>Nombre ($CA)</td><td>Identifier les clients a fort potentiel pour le programme B2B</td></tr>
+  <tr><td><strong>Institution/Universite</strong></td><td>Texte libre</td><td>Regrouper les contacts par institution, offres B2B</td></tr>
+  <tr><td><strong>Source de decouverte</strong></td><td>Liste (Google, Reddit, PubMed, referral, salon, autre)</td><td>Mesurer l'efficacite des canaux d'acquisition</td></tr>
+  <tr><td><strong>Niveau d'experience peptides</strong></td><td>Liste (debutant, intermediaire, avance)</td><td>Adapter le contenu educatif</td></tr>
+  <tr><td><strong>Langue preferee</strong></td><td>Liste (FR, EN)</td><td>Envoyer les communications dans la bonne langue</td></tr>
+  <tr><td><strong>Consentement CASL</strong></td><td>Date + methode</td><td>Conformite legale (preuve de consentement)</td></tr>
+</tbody>
+</table>
+<h3>Valeur client et priorisation</h3>
+
+<p>Tous les clients n'ont pas la meme valeur. Utilisez ces criteres pour prioriser vos efforts :</p>
+
+<table>
+<thead>
+    <tr><th>Segment</th><th>Criteres</th><th>Valeur estimee</th><th>Priorite</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Platinum</strong></td><td>CLV > 2000 $CA ou > 10 commandes</td><td>Tres haute</td><td>Service white-glove, representant dedie</td></tr>
+  <tr><td><strong>Gold</strong></td><td>CLV 500-2000 $CA ou 4-10 commandes</td><td>Haute</td><td>Offres VIP, acces anticipe</td></tr>
+  <tr><td><strong>Silver</strong></td><td>CLV 150-500 $CA ou 2-3 commandes</td><td>Moyenne</td><td>Nurturing fidelite, cross-sell</td></tr>
+  <tr><td><strong>Bronze</strong></td><td>1 commande, CLV < 150 $CA</td><td>Standard</td><td>Flow post-achat, incitation 2e commande</td></tr>
+  <tr><td><strong>Prospect</strong></td><td>0 commande</td><td>A qualifier</td><td>Nurturing educatif, code bienvenue</td></tr>
+</tbody>
+</table>
+<h3>Bonnes pratiques de gestion des contacts pour peptides</h3>
+
+<ol>
+<li><strong>Nettoyer la base regulierement</strong> : Tous les 3 mois, archivez les contacts sans activite depuis 12 mois et fusionnez les doublons</li>
+<li><strong>Enrichir progressivement</strong> : A chaque interaction (appel, email, commande), ajoutez des informations aux champs personnalises</li>
+<li><strong>Respecter la vie privee</strong> : Conformement a la Loi 25 du Quebec, documentez chaque consentement et offrez un acces facile aux preferences de confidentialite</li>
+<li><strong>Segmenter avant de communiquer</strong> : Ne jamais envoyer un email generique a toute la base. Minimum 2-3 segments distincts</li>
+<li><strong>Historiser les interactions</strong> : Chaque appel, email, note doit etre enregistre dans la timeline. Un representant qui reprend un dossier doit pouvoir comprendre toute la relation en 2 minutes</li>
+</ol>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Fiche contact</strong></td><td>L'ensemble des informations et de l'historique d'une personne</td></tr>
+  <tr><td><strong>Source d'acquisition</strong></td><td>Canal par lequel le contact est arrive (site web, salon, referral, etc.)</td></tr>
+  <tr><td><strong>Tag</strong></td><td>Etiquette libre pour categoriser un contact</td></tr>
+  <tr><td><strong>Segment</strong></td><td>Groupe dynamique de contacts repondant a des criteres definis</td></tr>
+  <tr><td><strong>Attribution</strong></td><td>Assignation d'un contact a un representant commercial</td></tr>
+  <tr><td><strong>Doublon</strong></td><td>Deux fiches representant la meme personne dans le systeme</td></tr>
+  <tr><td><strong>Timeline</strong></td><td>Chronologie de toutes les interactions avec un contact</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/pipeline">Pipeline</a> : Vue des deals associes aux contacts</li>
+<li><a href="/admin/crm/leads">Leads</a> : Gestion specifique des prospects</li>
+<li><a href="/admin/crm/companies">Entreprises</a> : Fiches des entreprises associees</li>
+<li><a href="/admin/crm/lists">Listes et Segments</a> : Groupement et segmentation</li>
+<li><a href="/admin/crm/import-export">Import/Export</a> : Outils d'importation et exportation</li>
+<li><a href="/admin/crm/duplicates">Doublons</a> : Detection et fusion des doublons</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="10-crm--03-pipeline">
+<h1>Pipeline des Ventes et Deals</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Pipeline / Deals</p>
+<p><strong>URL</strong>: <code>/admin/crm/pipeline</code>, <code>/admin/crm/pipelines</code>, <code>/admin/crm/deals</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>Le <strong>Pipeline des ventes</strong> est la representation visuelle du parcours de vos opportunites commerciales, de la premiere prise de contact jusqu'a la conclusion de la vente. Les <strong>Deals</strong> sont les opportunites individuelles qui progressent dans ce pipeline.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Visualiser toutes vos opportunites de vente sous forme de colonnes (kanban)</li>
+<li>Creer de nouvelles opportunites (deals) et les faire progresser</li>
+<li>Configurer plusieurs pipelines pour differents processus de vente</li>
+<li>Suivre la valeur monetaire a chaque etape</li>
+<li>Identifier les deals bloques ou en retard</li>
+<li>Prevoir les revenus futurs grace aux probabilites par etape</li>
+<li>Glisser-deposer les deals entre les etapes</li>
+<li>Filtrer par representant, montant, date de cloture prevue</li>
+<li>Consulter les soumissions et contrats associes a un deal</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un pipeline ?</h3>
+
+<p>Imaginez un entonnoir (ou un parcours) avec plusieurs etapes. Chaque nouveau prospect entre en haut, et a mesure qu'il progresse (il montre de l'interet, recoit une proposition, negocie), il descend dans les etapes. A la fin, il sort soit comme un <strong>deal gagne</strong> (il achete), soit comme un <strong>deal perdu</strong> (il renonce).</p>
+
+<h3>Les etapes typiques d'un pipeline</h3>
+
+<pre><code>Prospection → Qualification → Proposition → Negociation → Conclusion
+   (100)         (60)           (30)          (15)          (5)</code></pre>
+
+<p>Les chiffres representent un exemple : sur 100 prospects, environ 5 deviendront clients. C'est normal. Le but du CRM est d'optimiser chaque etape pour augmenter ce chiffre.</p>
+
+<h3>Qu'est-ce qu'un deal ?</h3>
+
+<p>Un <strong>deal</strong> (ou opportunite) est une vente potentielle avec un montant estime et une date de cloture prevue. Exemples :</p>
+<ul>
+<li>"Clinique Sante Plus - Commande initiale peptides collagene - 3 500 $CA"</li>
+<li>"Dr. Martin - Abonnement annuel BPC-157 - 8 400 $CA"</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Page Pipeline (vue kanban)</h3>
+<ol>
+<li>CRM > <strong>Pipeline</strong> dans le panneau lateral</li>
+<li>URL directe : <code>/admin/crm/pipeline</code></li>
+</ol>
+
+<h3>Page Pipelines (configuration des pipelines)</h3>
+<ol>
+<li>CRM > <strong>Pipelines</strong> dans le panneau lateral</li>
+<li>URL directe : <code>/admin/crm/pipelines</code></li>
+</ol>
+
+<h3>Page Deals (vue liste)</h3>
+<ol>
+<li>CRM > <strong>Deals</strong> dans le panneau lateral</li>
+<li>URL directe : <code>/admin/crm/deals</code></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>Vue Pipeline (Kanban)</h3>
+
+<p>L'interface affiche les deals sous forme de <strong>colonnes</strong> correspondant aux etapes :</p>
+
+<table>
+<thead>
+    <tr><th>Colonne</th><th>Description</th><th>Probabilite</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Prospection</strong></td><td>Premier contact etabli</td><td>10%</td></tr>
+  <tr><td><strong>Qualification</strong></td><td>Besoin confirme, budget identifie</td><td>25%</td></tr>
+  <tr><td><strong>Proposition</strong></td><td>Offre envoyee au prospect</td><td>50%</td></tr>
+  <tr><td><strong>Negociation</strong></td><td>Discussion sur les termes, prix, conditions</td><td>75%</td></tr>
+  <tr><td><strong>Gagne</strong></td><td>Vente conclue avec succes</td><td>100%</td></tr>
+  <tr><td><strong>Perdu</strong></td><td>Opportunite abandonee ou refusee</td><td>0%</td></tr>
+</tbody>
+</table>
+<p>Chaque <strong>carte de deal</strong> dans une colonne affiche :</p>
+<ul>
+<li>Nom du deal et contact associe</li>
+<li>Montant estime</li>
+<li>Date de cloture prevue</li>
+<li>Representant assigne</li>
+<li>Tags et indicateurs de priorite</li>
+</ul>
+
+<h3>En-tete du pipeline</h3>
+
+<p>En haut de chaque colonne :</p>
+<ul>
+<li><strong>Nombre de deals</strong> dans l'etape</li>
+<li><strong>Valeur totale</strong> de l'etape (somme des montants)</li>
+<li><strong>Valeur ponderee</strong> (montant x probabilite de l'etape)</li>
+</ul>
+
+<h3>Vue Deals (Liste)</h3>
+
+<p>Une vue tabulaire avec colonnes :</p>
+<ul>
+<li>Nom du deal</li>
+<li>Contact et entreprise</li>
+<li>Montant</li>
+<li>Etape actuelle</li>
+<li>Date de cloture prevue</li>
+<li>Representant</li>
+<li>Derniere activite</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer un nouveau deal</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau deal</strong> dans le ruban</li>
+<li>Remplissez les champs :</li>
+</ol>
+<ul>
+<li><strong>Nom du deal</strong> : description courte (ex: "Commande initiale - Clinique Sante Plus")</li>
+<li><strong>Contact</strong> : la personne associee (recherche par nom ou email)</li>
+<li><strong>Entreprise</strong> : l'entreprise associee (si B2B)</li>
+<li><strong>Montant</strong> : valeur estimee en $CA</li>
+<li><strong>Pipeline</strong> : quel pipeline utiliser (si vous en avez plusieurs)</li>
+<li><strong>Etape</strong> : l'etape initiale (generalement "Prospection")</li>
+<li><strong>Date de cloture prevue</strong> : quand vous esperez conclure</li>
+<li><strong>Representant</strong> : qui est en charge</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>2. Faire progresser un deal</h3>
+
+<p><strong>Methode glisser-deposer</strong> :</p>
+<ol>
+<li>Cliquez sur la carte du deal dans le kanban</li>
+<li>Maintenez le clic et faites-la glisser vers la colonne suivante</li>
+<li>Relacher : le deal est maintenant a la nouvelle etape</li>
+</ol>
+
+<p><strong>Methode manuelle</strong> :</p>
+<ol>
+<li>Cliquez sur le deal pour ouvrir son detail</li>
+<li>Dans le champ <strong>Etape</strong>, selectionnez la nouvelle etape</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Note</strong> : Chaque changement d'etape est enregistre dans l'historique du deal et peut declencher des automatisations (email au client, notification a l'equipe, etc.).</p>
+</blockquote>
+
+<h3>3. Marquer un deal comme gagne ou perdu</h3>
+
+<p><strong>Deal gagne</strong> :</p>
+<ol>
+<li>Glissez le deal dans la colonne <strong>Gagne</strong>, ou changez l'etape</li>
+<li>Le systeme vous demandera de confirmer et d'indiquer le montant final</li>
+<li>Le deal est archive et le revenu est comptabilise</li>
+</ol>
+
+<p><strong>Deal perdu</strong> :</p>
+<ol>
+<li>Glissez le deal dans la colonne <strong>Perdu</strong></li>
+<li>Selectionnez une raison de perte (prix, timing, concurrent, pas de besoin, etc.)</li>
+<li>Ajoutez un commentaire optionnel</li>
+<li>Le deal est archive avec la raison de perte pour analyse future</li>
+</ol>
+
+<h3>4. Configurer un pipeline personnalise</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/pipelines</code></p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau pipeline</strong></li>
+<li>Donnez-lui un nom (ex: "Pipeline B2B Cliniques", "Pipeline Abonnements")</li>
+<li>Ajoutez les etapes avec leur nom et probabilite</li>
+<li>Ordonnez les etapes par glisser-deposer</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong> : Vous pouvez avoir un pipeline different pour la vente directe (individus) et la vente B2B (cliniques, pharmacies). Chaque pipeline a ses propres etapes et probabilites.</p>
+</blockquote>
+
+<h3>5. Soumissions et contrats</h3>
+
+<p><strong>Soumissions</strong> (<code>/admin/crm/quotes</code>) :</p>
+<ul>
+<li>Creez des devis professionnels lies a un deal</li>
+<li>Envoyez-les directement par email</li>
+<li>Suivez si le client les a ouverts et acceptes</li>
+</ul>
+
+<p><strong>Contrats</strong> (<code>/admin/crm/contracts</code>) :</p>
+<ul>
+<li>Generez des contrats a partir de modeles</li>
+<li>Suivi des signatures et dates d'echeance</li>
+<li>Association automatique au deal</li>
+</ul>
+
+<h3>6. Previsions de vente</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/forecast</code></p>
+
+<p>La page Forecast calcule automatiquement :</p>
+<ul>
+<li><strong>Revenu prevu</strong> : somme des montants x probabilite par etape</li>
+<li><strong>Revenu pondere par mois</strong> : projection temporelle</li>
+<li><strong>Objectifs vs realisation</strong> : progression vers vos cibles</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Traitement d'un nouveau lead entrant</h3>
+<ol>
+<li>Un lead est cree (formulaire web, import, scraper)</li>
+<li>Creez un deal associe dans le pipeline, etape "Prospection"</li>
+<li>Effectuez un premier appel ou envoyez un email d'introduction</li>
+<li>Si le besoin est confirme, passez a "Qualification"</li>
+<li>Envoyez une proposition → etape "Proposition"</li>
+<li>Negociez les termes → etape "Negociation"</li>
+<li>Concluez la vente → etape "Gagne"</li>
+</ol>
+
+<h3>Revue hebdomadaire du pipeline</h3>
+<ol>
+<li>Ouvrez la vue pipeline</li>
+<li>Filtrez par representant (votre equipe)</li>
+<li>Identifiez les deals bloques (meme etape depuis longtemps)</li>
+<li>Pour chaque deal bloque, verifiez la derniere activite</li>
+<li>Reassignez ou fermez les deals sans espoir</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Combien de pipelines puis-je creer ?</strong></p>
+<p>R : Autant que necessaire. Il est recommande d'avoir au moins un pipeline par type de vente (B2C, B2B, abonnements).</p>
+
+<p><strong>Q : Que se passe-t-il quand je marque un deal comme gagne ?</strong></p>
+<p>R : Le montant est comptabilise dans vos rapports de revenu, le contact est marque comme client actif, et les automatisations associees se declenchent (email de bienvenue, creation de commande, etc.).</p>
+
+<p><strong>Q : Puis-je modifier les etapes d'un pipeline existant ?</strong></p>
+<p>R : Oui, mais avec precaution. Si des deals sont dans une etape que vous supprimez, ils seront deplaces vers l'etape precedente. Il est recommande de vider l'etape avant de la supprimer.</p>
+
+<p><strong>Q : Comment suivre les raisons de perte ?</strong></p>
+<p>R : Les raisons sont collectees quand un deal est marque comme perdu. Consultez les rapports d'analyse de l'entonnoir (Funnel Analysis) pour une vue d'ensemble des raisons les plus frequentes.</p>
+
+<hr>
+
+<h2>Strategie expert : pipeline B2B adapte aux peptides de recherche</h2>
+
+<h3>Pourquoi un pipeline B2B specifique ?</h3>
+
+<p>Le cycle de vente B2B pour les peptides de recherche est fondamentalement different du B2C. Les clients B2B (universites, laboratoires de recherche, cliniques) ont des processus d'achat plus longs, necessitent des certificats d'analyse (COA), et commandent des volumes significatifs. Un pipeline B2B dedie permet de suivre ces ventes complexes.</p>
+
+<h3>Etapes du pipeline B2B peptides</h3>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Description</th><th>Duree moyenne</th><th>Probabilite</th><th>Actions cles</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Premier contact</strong></td><td>Le laboratoire ou la clinique a ete identifie et un premier echange a eu lieu (email, formulaire, salon)</td><td>1-2 semaines</td><td>10%</td><td>Qualifier le besoin, identifier le decideur, envoyer la presentation BioCycle</td></tr>
+  <tr><td><strong>Echantillon/COA envoye</strong></td><td>Un echantillon gratuit ou un certificat d'analyse a ete envoye pour evaluation</td><td>2-4 semaines</td><td>25%</td><td>Envoyer COA, echantillon si politique le permet, repondre aux questions techniques</td></tr>
+  <tr><td><strong>Commande test (500 $CA+)</strong></td><td>Le client passe une premiere commande de test pour valider la qualite</td><td>1-3 semaines</td><td>50%</td><td>Livraison prioritaire, suivi qualite, appel de satisfaction a J+7</td></tr>
+  <tr><td><strong>Compte regulier</strong></td><td>Le client commande regulierement (mensuel ou trimestriel)</td><td>Continu</td><td>75%</td><td>Grille de prix volume, representant dedie, relance automatique de reapprovisionnement</td></tr>
+  <tr><td><strong>Contrat annuel</strong></td><td>Engagement formel avec volumes et prix negocies sur 12 mois</td><td>2-4 semaines de negociation</td><td>90%</td><td>Contrat signe, conditions de paiement net 30, prix bloque, livraison planifiee</td></tr>
+  <tr><td><strong>Gagne</strong></td><td>Contrat signe et premiere livraison effectuee</td><td>--</td><td>100%</td><td>Transition vers gestion de compte, onboarding B2B</td></tr>
+  <tr><td><strong>Perdu</strong></td><td>Le prospect a choisi un concurrent ou n'a plus besoin</td><td>--</td><td>0%</td><td>Documenter la raison, planifier un suivi dans 6 mois</td></tr>
+</tbody>
+</table>
+<h3>Duree totale du cycle de vente B2B</h3>
+
+<table>
+<thead>
+    <tr><th>Type de client</th><th>Cycle court</th><th>Cycle moyen</th><th>Cycle long</th></tr>
+</thead>
+<tbody>
+  <tr><td>Clinique privee</td><td>2 semaines</td><td>4-6 semaines</td><td>3 mois</td></tr>
+  <tr><td>Laboratoire universitaire</td><td>4 semaines</td><td>8-12 semaines</td><td>6 mois (subventions)</td></tr>
+  <tr><td>Entreprise pharmaceutique</td><td>8 semaines</td><td>16-24 semaines</td><td>12 mois</td></tr>
+</tbody>
+</table>
+<p>Les laboratoires universitaires ont souvent des cycles longs car ils dependent de l'approbation de subventions de recherche (CRSNG, IRSC, FRQNT au Quebec).</p>
+
+<h3>Taux de conversion par etape (benchmarks)</h3>
+
+<table>
+<thead>
+    <tr><th>Transition</th><th>Taux attendu</th><th>Signe d'alerte si <</th></tr>
+</thead>
+<tbody>
+  <tr><td>Premier contact → Echantillon/COA</td><td>40-50%</td><td>25% (mauvais ciblage)</td></tr>
+  <tr><td>Echantillon/COA → Commande test</td><td>30-40%</td><td>20% (probleme de qualite ou de prix)</td></tr>
+  <tr><td>Commande test → Compte regulier</td><td>50-60%</td><td>35% (experience client deficiente)</td></tr>
+  <tr><td>Compte regulier → Contrat annuel</td><td>25-35%</td><td>15% (offre de contrat mal presentee)</td></tr>
+</tbody>
+</table>
+<h3>Metriques pipeline a surveiller</h3>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Calcul</th><th>Cible</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Valeur totale pipeline</strong></td><td>Somme de tous les deals ouverts</td><td>> 3x votre objectif de revenu mensuel</td></tr>
+  <tr><td><strong>Valeur ponderee</strong></td><td>Somme (montant x probabilite) par deal</td><td>> 1.5x votre objectif mensuel</td></tr>
+  <tr><td><strong>Velocity</strong></td><td>Jours moyens pour passer de Premier contact a Gagne</td><td>< 60 jours (cliniques), < 120 jours (labos)</td></tr>
+  <tr><td><strong>Deals bloques</strong></td><td>Deals sans activite depuis > 14 jours</td><td>< 20% du pipeline total</td></tr>
+  <tr><td><strong>Win rate</strong></td><td>Deals gagnes / (Deals gagnes + Deals perdus)</td><td>> 25%</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Deal</strong></td><td>Opportunite de vente avec un montant et une date de cloture estimee</td></tr>
+  <tr><td><strong>Pipeline</strong></td><td>Succession d'etapes representant le processus de vente</td></tr>
+  <tr><td><strong>Etape</strong></td><td>Phase specifique dans le pipeline (ex: Qualification)</td></tr>
+  <tr><td><strong>Kanban</strong></td><td>Mode d'affichage en colonnes, chaque colonne etant une etape</td></tr>
+  <tr><td><strong>Probabilite</strong></td><td>Chance estimee de conclure le deal a cette etape</td></tr>
+  <tr><td><strong>Forecast</strong></td><td>Prevision des revenus bases sur le pipeline et les probabilites</td></tr>
+  <tr><td><strong>Soumission</strong></td><td>Devis formel envoye au prospect</td></tr>
+  <tr><td><strong>Deal gagne</strong></td><td>Opportunite conclue avec succes, vente realisee</td></tr>
+  <tr><td><strong>Deal perdu</strong></td><td>Opportunite qui n'a pas abouti</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/contacts">Contacts</a> : Fiches des contacts associes aux deals</li>
+<li><a href="/admin/crm/leads">Leads</a> : Prospects a convertir en deals</li>
+<li><a href="/admin/crm/forecast">Previsions</a> : Projections de revenus</li>
+<li><a href="/admin/crm/quotes">Soumissions</a> : Creation de devis</li>
+<li><a href="/admin/crm/contracts">Contrats</a> : Gestion des contrats</li>
+<li><a href="/admin/crm/leaderboard">Leaderboard</a> : Performance des representants</li>
+<li><a href="/admin/crm/funnel-analysis">Analyse d'entonnoir</a> : Rapports sur le pipeline</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="10-crm--04-leads">
+<h1>Gestion des Leads et Lead Scoring</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Leads</p>
+<p><strong>URL</strong>: <code>/admin/crm/leads</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Leads</strong> centralise tous vos prospects - les personnes ou entreprises qui ont manifeste un interet pour BioCycle Peptides mais qui n'ont pas encore achete. Le <strong>Lead Scoring</strong> attribue automatiquement un score a chaque lead pour vous aider a prioriser vos efforts.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir la liste de tous les leads entrants</li>
+<li>Filtrer par source (site web, salon, referral, scraper, etc.)</li>
+<li>Trier par score de qualification (les plus "chauds" en premier)</li>
+<li>Assigner les leads aux representants commerciaux</li>
+<li>Qualifier ou disqualifier un lead</li>
+<li>Convertir un lead en contact + deal dans le pipeline</li>
+<li>Suivre la progression de chaque lead</li>
+<li>Configurer les regles de scoring automatique</li>
+<li>Definir des criteres de qualification (BANT, MEDDIC, etc.)</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un lead ?</h3>
+
+<p>Un <strong>lead</strong> est un prospect qui a montre un premier signe d'interet : il a visite votre site, rempli un formulaire, demande des informations, ou a ete identifie par vos equipes. Ce n'est pas encore un client, c'est un potentiel.</p>
+
+<h3>Qu'est-ce que le lead scoring ?</h3>
+
+<p>Le <strong>lead scoring</strong> est un systeme de points automatique. Chaque action d'un lead augmente (ou diminue) son score :</p>
+
+<table>
+<thead>
+    <tr><th>Action</th><th>Points</th></tr>
+</thead>
+<tbody>
+  <tr><td>Visite du site web</td><td>+2</td></tr>
+  <tr><td>Telechargement d'un document</td><td>+10</td></tr>
+  <tr><td>Ouverture d'un email</td><td>+3</td></tr>
+  <tr><td>Clic dans un email</td><td>+5</td></tr>
+  <tr><td>Visite de la page prix</td><td>+15</td></tr>
+  <tr><td>Formulaire de contact rempli</td><td>+20</td></tr>
+  <tr><td>Demande de devis</td><td>+30</td></tr>
+  <tr><td>Inactivite 30 jours</td><td>-10</td></tr>
+  <tr><td>Desabonnement newsletter</td><td>-20</td></tr>
+</tbody>
+</table>
+<p>Plus le score est eleve, plus le lead est "chaud" (pret a acheter).</p>
+
+<h3>Classification des leads</h3>
+
+<table>
+<thead>
+    <tr><th>Score</th><th>Classification</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td>0-20</td><td><strong>Froid</strong></td><td>Interet minimal, a nourrir</td></tr>
+  <tr><td>21-50</td><td><strong>Tiede</strong></td><td>Interet modere, en phase d'information</td></tr>
+  <tr><td>51-80</td><td><strong>Chaud</strong></td><td>Interet fort, pret pour un contact commercial</td></tr>
+  <tr><td>81-100</td><td><strong>Brulant</strong></td><td>Besoin immediat, contacter d'urgence</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Cliquez sur <strong>CRM</strong> dans la navigation horizontale</li>
+<li>Dans le panneau lateral, cliquez sur <strong>Leads</strong></li>
+<li>URL directe : <code>/admin/crm/leads</code></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. La barre de ruban</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau lead</strong></td><td>Creer manuellement un lead</td></tr>
+  <tr><td><strong>Importer</strong></td><td>Importer des leads depuis CSV/Excel</td></tr>
+  <tr><td><strong>Convertir</strong></td><td>Convertir le lead en contact + deal</td></tr>
+  <tr><td><strong>Assigner</strong></td><td>Attribuer a un representant</td></tr>
+  <tr><td><strong>Disqualifier</strong></td><td>Marquer comme non pertinent</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Exporter les leads filtres</td></tr>
+</tbody>
+</table>
+<h3>2. Les onglets de statut</h3>
+
+<table>
+<thead>
+    <tr><th>Onglet</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Tous</strong></td><td>Tous les leads, quel que soit le statut</td></tr>
+  <tr><td><strong>Nouveaux</strong></td><td>Leads recemment arrives, pas encore traites</td></tr>
+  <tr><td><strong>En cours</strong></td><td>Leads en phase de qualification</td></tr>
+  <tr><td><strong>Qualifies</strong></td><td>Leads prets a etre convertis en deals</td></tr>
+  <tr><td><strong>Disqualifies</strong></td><td>Leads rejetes (pas de budget, hors cible, etc.)</td></tr>
+</tbody>
+</table>
+<h3>3. La liste des leads</h3>
+
+<p>Chaque ligne affiche :</p>
+<ul>
+<li><strong>Score</strong> (barre coloree ou chiffre)</li>
+<li>Nom et entreprise</li>
+<li>Email et telephone</li>
+<li>Source d'acquisition</li>
+<li>Date d'arrivee</li>
+<li>Representant assigne</li>
+<li>Dernier contact</li>
+</ul>
+
+<h3>4. Le panneau de detail</h3>
+
+<p>Au clic sur un lead :</p>
+<ul>
+<li>Informations de profil completes</li>
+<li>Score detaille (quels criteres ont ete remplis)</li>
+<li>Timeline des interactions</li>
+<li>Notes de qualification</li>
+<li>Bouton de conversion rapide</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer un lead manuellement</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau lead</strong></li>
+<li>Remplissez le formulaire :</li>
+</ol>
+<ul>
+<li>Nom, prenom, email, telephone</li>
+<li>Entreprise (si B2B)</li>
+<li>Source : comment ce lead est arrive (salon, referral, appel entrant, etc.)</li>
+<li>Notes initiales</li>
+</ul>
+<ol>
+<li>Le systeme attribue un score initial base sur les informations fournies</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>2. Qualifier un lead</h3>
+
+<p><strong>Objectif</strong> : Determiner si un lead est un bon prospect.</p>
+
+<p><strong>Methode BANT</strong> (utilisee par defaut dans Koraline) :</p>
+
+<table>
+<thead>
+    <tr><th>Critere</th><th>Question a poser</th><th>Poids</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>B</strong>udget</td><td>A-t-il les moyens d'acheter ?</td><td>25%</td></tr>
+  <tr><td><strong>A</strong>uthority</td><td>Est-il le decideur ?</td><td>25%</td></tr>
+  <tr><td><strong>N</strong>eed</td><td>A-t-il un besoin reel ?</td><td>25%</td></tr>
+  <tr><td><strong>T</strong>iming</td><td>Quand prevoit-il d'acheter ?</td><td>25%</td></tr>
+</tbody>
+</table>
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le lead</li>
+<li>Dans le detail, allez a l'onglet <strong>Qualification</strong></li>
+<li>Remplissez les criteres BANT</li>
+<li>Le score de qualification se calcule automatiquement</li>
+<li>Si le score est suffisant, le bouton <strong>Convertir</strong> devient actif</li>
+</ol>
+
+<blockquote>
+<p><strong>Page dediee</strong> : <code>/admin/crm/qualification</code> pour configurer les criteres de qualification.</p>
+</blockquote>
+
+<h3>3. Convertir un lead en deal</h3>
+
+<p><strong>Objectif</strong> : Transformer un prospect qualifie en opportunite de vente.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le lead qualifie</li>
+<li>Cliquez sur <strong>Convertir</strong> dans le ruban</li>
+<li>Le systeme cree automatiquement :</li>
+</ol>
+<ul>
+<li>Un <strong>contact</strong> (si le lead n'etait pas deja un contact)</li>
+<li>Un <strong>deal</strong> dans le pipeline, a l'etape "Qualification"</li>
+</ul>
+<ol>
+<li>Confirmez les informations pre-remplies</li>
+<li>Cliquez sur <strong>Convertir</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Important</strong> : Le lead est archive apres conversion. Son historique est conserve sur la fiche contact.</p>
+</blockquote>
+
+<h3>4. Configurer le scoring automatique</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/qualification</code></p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Allez dans CRM > Automatisation > Qualification</li>
+<li>Definissez les criteres demographiques (secteur, taille entreprise, poste)</li>
+<li>Definissez les criteres comportementaux (actions sur le site, emails)</li>
+<li>Attribuez des points a chaque critere</li>
+<li>Definissez le seuil de qualification (ex: 60 points = lead qualifie)</li>
+<li>Sauvegardez</li>
+</ol>
+
+<h3>5. Distribution automatique des leads</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/workflows</code></p>
+
+<p>Configurez des regles pour assigner automatiquement les leads :</p>
+<ul>
+<li><strong>Round-robin</strong> : distribution equitable entre les representants</li>
+<li><strong>Par territoire</strong> : Quebec → Rep A, Ontario → Rep B</li>
+<li><strong>Par specialite</strong> : Cliniques → Rep senior, Individus → Rep junior</li>
+<li><strong>Par score</strong> : Leads chauds → meilleur vendeur</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Traitement quotidien des leads</h3>
+<ol>
+<li>Filtrez les leads <strong>Nouveaux</strong> (non traites)</li>
+<li>Pour chaque lead, evaluez rapidement la qualite :</li>
+</ol>
+<ul>
+<li>Source fiable ? Email professionnel ?</li>
+<li>Score automatique eleve ?</li>
+</ul>
+<ol>
+<li>Les bons leads : assignez a un representant, ajoutez une tache de premier contact</li>
+<li>Les mauvais leads : disqualifiez avec une raison</li>
+<li>Les leads trop froids : ajoutez a une sequence de nurturing automatisee</li>
+</ol>
+
+<h3>Nurturing des leads tiedes</h3>
+<ol>
+<li>Identifiez les leads avec un score de 20-50</li>
+<li>Ajoutez-les a une liste de nurturing</li>
+<li>Lancez une sequence d'emails automatisee (voir Automatisations)</li>
+<li>Quand le score augmente au-dessus de 50, le lead est notifie comme "chaud"</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : D'ou viennent les leads automatiquement ?</strong></p>
+<p>R : Depuis plusieurs sources : formulaire de contact du site web, inscription a la newsletter, scraper web (voir page Scraper), importation CSV, et referencement par d'autres clients.</p>
+
+<p><strong>Q : Que se passe-t-il si je disqualifie un lead ?</strong></p>
+<p>R : Il est deplace dans la liste "Disqualifies" mais n'est pas supprime. Vous pouvez le requalifier plus tard si la situation change.</p>
+
+<p><strong>Q : Le scoring fonctionne-t-il automatiquement ?</strong></p>
+<p>R : Oui. Une fois les regles configurees, le score se met a jour en temps reel a chaque action du lead (visite web, ouverture email, etc.).</p>
+
+<p><strong>Q : Combien de temps faut-il garder les leads non convertis ?</strong></p>
+<p>R : En general, 6 a 12 mois. Passee cette periode, les leads inactifs sont automatiquement archives (si vous activez cette option dans les workflows).</p>
+
+<hr>
+
+<h2>Strategie expert : scoring BANT adapte au marche des peptides</h2>
+
+<h3>BANT classique vs BANT peptides</h3>
+
+<p>La methode BANT (Budget, Authority, Need, Timing) est le standard de qualification des leads. Pour BioCycle Peptides, chaque critere doit etre adapte au contexte specifique des peptides de recherche au Canada.</p>
+
+<h3>Budget : evaluer la capacite financiere</h3>
+
+<table>
+<thead>
+    <tr><th>Signal</th><th>Points</th><th>Interpretation</th></tr>
+</thead>
+<tbody>
+  <tr><td>Institutions financees (universite, hopital, pharma)</td><td>+25</td><td>Budget recherche disponible</td></tr>
+  <tr><td>Clinique privee ou labo independant</td><td>+15</td><td>Budget discreionnaire, decision rapide</td></tr>
+  <tr><td>Individu avec historique d'achats > 500 $CA</td><td>+15</td><td>Acheteur recurrent confirme</td></tr>
+  <tr><td>Demande de grille de prix volume</td><td>+20</td><td>Intention d'achat significatif</td></tr>
+  <tr><td>Etudiant ou demande "d'echantillon gratuit"</td><td>+5</td><td>Budget limite, potentiel a long terme</td></tr>
+  <tr><td>Aucune information budget</td><td>+0</td><td>A qualifier en priorite</td></tr>
+</tbody>
+</table>
+<p><strong>Question cle a poser</strong> : "Quel est le budget recherche alloue pour les reactifs et peptides cette annee ?"</p>
+
+<h3>Authority : identifier le decideur</h3>
+
+<table>
+<thead>
+    <tr><th>Signal</th><th>Points</th><th>Interpretation</th></tr>
+</thead>
+<tbody>
+  <tr><td>Titre : PI (Principal Investigator), Directeur labo, Chef de recherche</td><td>+25</td><td>Decideur direct</td></tr>
+  <tr><td>Titre : Responsable achats, Procurement</td><td>+20</td><td>Decideur achat</td></tr>
+  <tr><td>Titre : Post-doc, Chercheur associe</td><td>+15</td><td>Influenceur, recommande au PI</td></tr>
+  <tr><td>Titre : Etudiant MSc/PhD</td><td>+10</td><td>Utilisateur, influence indirecte</td></tr>
+  <tr><td>Aucun titre ou titre generique</td><td>+5</td><td>A qualifier</td></tr>
+</tbody>
+</table>
+<p><strong>Question cle a poser</strong> : "Qui valide les commandes de reactifs dans votre laboratoire ?"</p>
+
+<h3>Need : identifier le besoin specifique</h3>
+
+<table>
+<thead>
+    <tr><th>Signal</th><th>Points</th><th>Interpretation</th></tr>
+</thead>
+<tbody>
+  <tr><td>Demande un peptide specifique par nom (BPC-157, CJC-1295)</td><td>+25</td><td>Besoin precis et immediat</td></tr>
+  <tr><td>Demande un COA ou une fiche technique</td><td>+20</td><td>En phase d'evaluation serieuse</td></tr>
+  <tr><td>Recherche sur le site : pages produit visitees</td><td>+15</td><td>Interet actif</td></tr>
+  <tr><td>Question generique "que sont les peptides"</td><td>+5</td><td>Phase de decouverte, besoin a developper</td></tr>
+  <tr><td>Interet pour categorie specifique (reparation, GH, immunitaire)</td><td>+15</td><td>Besoin identifie par domaine</td></tr>
+</tbody>
+</table>
+<p><strong>Question cle a poser</strong> : "Sur quel projet de recherche travaillez-vous et quels peptides envisagez-vous ?"</p>
+
+<h3>Timing : evaluer l'urgence</h3>
+
+<table>
+<thead>
+    <tr><th>Signal</th><th>Points</th><th>Interpretation</th></tr>
+</thead>
+<tbody>
+  <tr><td>"Nous avons besoin pour cette semaine/ce mois"</td><td>+25</td><td>Urgence elevee, priorite maximale</td></tr>
+  <tr><td>"Projet demarre au prochain trimestre"</td><td>+15</td><td>Pipeline planifie</td></tr>
+  <tr><td>"Nous evaluons les fournisseurs"</td><td>+10</td><td>Phase de comparaison</td></tr>
+  <tr><td>"Subvention en attente d'approbation"</td><td>+10</td><td>Potentiel mais conditionnel</td></tr>
+  <tr><td>"Pas de timeline precise"</td><td>+5</td><td>A nourrir</td></tr>
+</tbody>
+</table>
+<p><strong>Question cle a poser</strong> : "Quand prevoyez-vous de passer votre premiere commande ?"</p>
+
+<h3>Grille de scoring totale</h3>
+
+<table>
+<thead>
+    <tr><th>Score total BANT</th><th>Classification</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td>80-100</td><td><strong>Brulant</strong></td><td>Appeler dans l'heure, proposer une offre immediate</td></tr>
+  <tr><td>60-79</td><td><strong>Chaud</strong></td><td>Appeler dans les 24h, envoyer une proposition</td></tr>
+  <tr><td>40-59</td><td><strong>Tiede</strong></td><td>Sequence email nurturing, suivi dans 1-2 semaines</td></tr>
+  <tr><td>20-39</td><td><strong>Froid</strong></td><td>Ajouter au nurturing automatise, contenu educatif</td></tr>
+  <tr><td>0-19</td><td><strong>Non qualifie</strong></td><td>Surveiller passivement, pas d'effort commercial direct</td></tr>
+</tbody>
+</table>
+<h3>Sources de leads specifiques aux peptides</h3>
+
+<table>
+<thead>
+    <tr><th>Source</th><th>Volume</th><th>Qualite</th><th>Cout</th><th>Strategie</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Google Ads "buy peptides Canada"</strong></td><td>Moyen</td><td>Haute (intention transactionnelle)</td><td>2-5 $CA/clic</td><td>Mots-cles exacts, landing pages dediees</td></tr>
+  <tr><td><strong>Google Ads "peptides for research"</strong></td><td>Moyen</td><td>Haute</td><td>1-3 $CA/clic</td><td>Contenu educatif + conversion</td></tr>
+  <tr><td><strong>SEO / Blog organique</strong></td><td>Eleve (long terme)</td><td>Moyenne</td><td>Cout de redaction</td><td>Articles longue traine, guides</td></tr>
+  <tr><td><strong>PubMed / Google Scholar</strong></td><td>Faible mais premium</td><td>Tres haute (chercheurs)</td><td>Temps de prospection</td><td>Identifier les labos publiant sur les peptides</td></tr>
+  <tr><td><strong>Conferences scientifiques</strong></td><td>Faible</td><td>Tres haute</td><td>Frais de participation</td><td>Kiosque, networking, collecte de cartes</td></tr>
+  <tr><td><strong>LinkedIn (recherche ciblee)</strong></td><td>Moyen</td><td>Haute si bien cible</td><td>Temps + LinkedIn Sales Navigator</td><td>Cibler PI, directeurs de labo, responsables achats</td></tr>
+  <tr><td><strong>Reddit (r/peptides, r/Nootropics)</strong></td><td>Moyen</td><td>Basse a moyenne</td><td>Gratuit</td><td>Veille, identification de tendances, pas de prospection directe</td></tr>
+  <tr><td><strong>Referral (bouche a oreille)</strong></td><td>Faible</td><td>Tres haute (confiance)</td><td>Programme ambassadeur</td><td>Recompenser les recommandations</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Lead</strong></td><td>Prospect ayant manifeste un interet initial</td></tr>
+  <tr><td><strong>Lead scoring</strong></td><td>Attribution automatique d'un score base sur le profil et le comportement</td></tr>
+  <tr><td><strong>Qualification</strong></td><td>Processus de verification qu'un lead est un bon prospect</td></tr>
+  <tr><td><strong>BANT</strong></td><td>Methode de qualification : Budget, Authority, Need, Timing</td></tr>
+  <tr><td><strong>Conversion</strong></td><td>Transformation d'un lead en contact + deal</td></tr>
+  <tr><td><strong>Nurturing</strong></td><td>Actions de "nourrissage" pour faire murir un lead pas encore pret</td></tr>
+  <tr><td><strong>MQL</strong></td><td>Marketing Qualified Lead : lead qualifie par le marketing</td></tr>
+  <tr><td><strong>SQL</strong></td><td>Sales Qualified Lead : lead qualifie par les ventes</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/contacts">Contacts</a> : Fiches des contacts (apres conversion)</li>
+<li><a href="/admin/crm/pipeline">Pipeline</a> : Ou arrivent les deals apres conversion</li>
+<li><a href="/admin/scraper">Scraper</a> : Outil de generation de leads web</li>
+<li><a href="/admin/crm/lists">Listes et Segments</a> : Organisation des leads par groupes</li>
+<li><a href="/admin/crm/workflows">Automatisations</a> : Regles de scoring et distribution</li>
+<li><a href="/admin/crm/forms">Formulaires</a> : Formulaires web capturant des leads</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="10-crm--05-taches">
+<h1>Gestion des Taches CRM</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Taches</p>
+<p><strong>URL</strong>: <code>/admin/crm/tasks</code></p>
+<p><strong>Niveau</strong>: Debutant a intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Taches</strong> est le gestionnaire d'actions de votre equipe commerciale. Chaque action a realiser (appeler un prospect, envoyer un devis, relancer un client, preparer une presentation) est une tache dans le CRM.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir toutes les taches de votre equipe ou les votres uniquement</li>
+<li>Creer des taches manuellement ou par automatisation</li>
+<li>Assigner des taches a des membres de l'equipe</li>
+<li>Definir des echeances et des priorites</li>
+<li>Lier une tache a un contact, un deal ou une entreprise</li>
+<li>Marquer les taches comme completees</li>
+<li>Filtrer par statut (en retard, aujourd'hui, cette semaine, completees)</li>
+<li>Recevoir des rappels automatiques pour les echeances proches</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Pourquoi gerer les taches dans le CRM ?</h3>
+
+<p>Dans un systeme CRM, les taches ne sont pas de simples rappels. Elles sont <strong>liees a des contacts et des deals</strong>, ce qui permet de :</p>
+<ul>
+<li>Savoir exactement qui doit faire quoi, pour quel prospect</li>
+<li>Ne jamais oublier une relance ou un suivi</li>
+<li>Mesurer la productivite de l'equipe (nombre de taches completees, temps moyen)</li>
+<li>Automatiser la creation de taches (ex: apres un appel, creer une tache de suivi)</li>
+</ul>
+
+<h3>Types de taches</h3>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Icone</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Appel</strong></td><td>Telephone</td><td>Passer un appel a un contact</td></tr>
+  <tr><td><strong>Email</strong></td><td>Enveloppe</td><td>Envoyer un email</td></tr>
+  <tr><td><strong>Reunion</strong></td><td>Calendrier</td><td>Organiser ou participer a une reunion</td></tr>
+  <tr><td><strong>Suivi</strong></td><td>Fleche</td><td>Relancer ou faire un point</td></tr>
+  <tr><td><strong>Document</strong></td><td>Fichier</td><td>Preparer ou envoyer un document</td></tr>
+  <tr><td><strong>Autre</strong></td><td>Point</td><td>Action personnalisee</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>CRM > <strong>Taches</strong> dans le panneau lateral</li>
+<li>Ou depuis n'importe quelle fiche contact/deal : onglet <strong>Activites</strong></li>
+<li>URL directe : dans le panneau CRM sous le groupe principal</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. Les onglets de filtrage</h3>
+
+<table>
+<thead>
+    <tr><th>Onglet</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Mes taches</strong></td><td>Uniquement les taches qui vous sont assignees</td></tr>
+  <tr><td><strong>Equipe</strong></td><td>Toutes les taches de votre equipe</td></tr>
+  <tr><td><strong>En retard</strong></td><td>Taches dont l'echeance est passee (badge rouge)</td></tr>
+  <tr><td><strong>Aujourd'hui</strong></td><td>Taches a faire aujourd'hui</td></tr>
+  <tr><td><strong>Cette semaine</strong></td><td>Taches de la semaine en cours</td></tr>
+  <tr><td><strong>Completees</strong></td><td>Historique des taches terminees</td></tr>
+</tbody>
+</table>
+<h3>2. La liste des taches</h3>
+
+<p>Chaque tache affiche :</p>
+<ul>
+<li><strong>Titre</strong> et description courte</li>
+<li><strong>Type</strong> (appel, email, reunion, etc.)</li>
+<li><strong>Priorite</strong> (haute = rouge, normale = bleu, basse = gris)</li>
+<li><strong>Echeance</strong> (avec indicateur de retard)</li>
+<li><strong>Assignee a</strong> : le membre de l'equipe responsable</li>
+<li><strong>Liee a</strong> : contact et/ou deal associe (lien cliquable)</li>
+<li><strong>Statut</strong> : a faire, en cours, completee</li>
+</ul>
+
+<h3>3. Le panneau de detail</h3>
+
+<p>Au clic sur une tache :</p>
+<ul>
+<li>Description complete</li>
+<li>Contact et deal associes</li>
+<li>Notes et commentaires</li>
+<li>Historique des modifications</li>
+<li>Bouton <strong>Marquer terminee</strong></li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer une tache</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouvelle tache</strong> dans le ruban</li>
+<li>Remplissez les champs :</li>
+</ol>
+<ul>
+<li><strong>Titre</strong> : description courte de l'action (ex: "Appeler Dr. Martin pour suivi devis")</li>
+<li><strong>Type</strong> : appel, email, reunion, suivi, document</li>
+<li><strong>Echeance</strong> : date et heure limites</li>
+<li><strong>Priorite</strong> : haute, normale, basse</li>
+<li><strong>Assignee a</strong> : le responsable (vous-meme ou un collegue)</li>
+<li><strong>Contact</strong> : la personne concernee (recherche par nom)</li>
+<li><strong>Deal</strong> : l'opportunite associee (optionnel)</li>
+<li><strong>Description</strong> : details complementaires</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong> : Vous pouvez aussi creer une tache directement depuis la fiche d'un contact ou d'un deal, ce qui pre-remplit le lien automatiquement.</p>
+</blockquote>
+
+<h3>2. Marquer une tache comme completee</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cochez la case a gauche de la tache dans la liste, OU</li>
+<li>Ouvrez la tache et cliquez sur <strong>Marquer terminee</strong></li>
+<li>Ajoutez un commentaire de completion si necessaire</li>
+<li>La tache passe dans l'onglet "Completees"</li>
+</ol>
+
+<h3>3. Creer des taches recurrentes</h3>
+
+<p><strong>Objectif</strong> : Pour les actions regulieres (rapport hebdomadaire, relance mensuelle).</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Creez une tache normalement</li>
+<li>Activez l'option <strong>Recurrence</strong></li>
+<li>Choisissez la frequence : quotidienne, hebdomadaire, mensuelle</li>
+<li>Le systeme creera automatiquement une nouvelle tache a chaque echeance</li>
+</ol>
+
+<h3>4. Gestion d'equipe</h3>
+
+<p><strong>En tant que manager</strong> :</p>
+<ul>
+<li>Consultez l'onglet <strong>Equipe</strong> pour voir toutes les taches</li>
+<li>Filtrez par representant pour evaluer la charge de travail</li>
+<li>Reassignez les taches si un membre est surcharge</li>
+<li>Utilisez la vue <strong>Calendrier</strong> pour voir les echeances visuellement</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Routine matinale</h3>
+<ol>
+<li>Ouvrez l'onglet <strong>En retard</strong> : traitez les urgences</li>
+<li>Consultez <strong>Aujourd'hui</strong> : planifiez votre journee</li>
+<li>Pour chaque tache, effectuez l'action puis marquez comme terminee</li>
+<li>Si une tache necessite un suivi, creez une nouvelle tache avec la prochaine echeance</li>
+</ol>
+
+<h3>Apres un appel commercial</h3>
+<ol>
+<li>Terminez l'appel</li>
+<li>Creez une tache de suivi (ex: "Envoyer devis" echeance 2 jours)</li>
+<li>Ajoutez des notes sur la conversation dans la fiche contact</li>
+<li>Si un devis est promis, creez aussi une tache "Preparer devis"</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Les taches sont-elles visibles par toute l'equipe ?</strong></p>
+<p>R : Les taches sont visibles par le createur, l'assignee et les administrateurs. Les autres membres de l'equipe ne voient pas vos taches individuelles, sauf si un manager consulte la vue Equipe.</p>
+
+<p><strong>Q : Puis-je recevoir des rappels ?</strong></p>
+<p>R : Oui. Le systeme envoie des notifications (dans l'interface et par email) pour les taches proches de leur echeance ou en retard. Vous pouvez configurer les preferences de notification dans vos parametres.</p>
+
+<p><strong>Q : Les taches automatiques sont-elles differentes des manuelles ?</strong></p>
+<p>R : Fonctionnellement non, elles sont identiques. La seule difference est leur origine : les taches automatiques sont creees par les workflows (ex: "Appeler le lead 24h apres son inscription"), tandis que les manuelles sont creees par vous.</p>
+
+<p><strong>Q : Puis-je supprimer une tache ?</strong></p>
+<p>R : Oui, mais il est preferable de la marquer comme terminee ou annulee pour garder un historique. La suppression est irreversible.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Tache</strong></td><td>Action a realiser, liee a un contact ou un deal</td></tr>
+  <tr><td><strong>Echeance</strong></td><td>Date et heure limites pour completer la tache</td></tr>
+  <tr><td><strong>Assignee</strong></td><td>Personne responsable de la tache</td></tr>
+  <tr><td><strong>Tache recurrente</strong></td><td>Tache qui se recree automatiquement a intervalle regulier</td></tr>
+  <tr><td><strong>Priorite</strong></td><td>Niveau d'urgence : haute, normale, basse</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/contacts">Contacts</a> : Contacts associes aux taches</li>
+<li><a href="/admin/crm/pipeline">Pipeline</a> : Deals associes aux taches</li>
+<li><a href="/admin/crm/workflows">Automatisations</a> : Workflows creant des taches automatiquement</li>
+<li><a href="/admin/crm/scheduling">Planification</a> : Calendrier de l'equipe commerciale</li>
+<li><a href="/admin/crm/activity-reports">Rapports d'activite</a> : Mesure de la productivite</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="10-crm--06-entreprises">
+<h1>Gestion des Entreprises</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Entreprises</p>
+<p><strong>URL</strong>: <code>/admin/crm/companies</code></p>
+<p><strong>Niveau</strong>: Debutant a intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Entreprises</strong> gere les fiches des organisations (cliniques, pharmacies, laboratoires, distributeurs) avec lesquelles BioCycle Peptides fait affaire en B2B. Chaque entreprise peut avoir plusieurs contacts associes.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir la liste de toutes les entreprises dans votre CRM</li>
+<li>Creer et modifier des fiches entreprises</li>
+<li>Associer des contacts a une entreprise (employes, decideurs)</li>
+<li>Suivre les deals et revenus generes par entreprise</li>
+<li>Categoriser par secteur d'activite, taille, region</li>
+<li>Hierarchiser les entreprises (siege vs succursales)</li>
+<li>Consulter l'historique complet des interactions avec l'entreprise</li>
+<li>Calculer la valeur d'un compte (revenu total genere)</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Pourquoi gerer les entreprises separement ?</h3>
+
+<p>En B2B (Business-to-Business), vous ne vendez pas a une personne isolee mais a une organisation. Une meme entreprise peut avoir :</p>
+<ul>
+<li><strong>Plusieurs contacts</strong> : le decideur, l'acheteur, l'utilisateur final</li>
+<li><strong>Plusieurs deals</strong> : une premiere commande, un renouvellement, un upsell</li>
+<li><strong>Un historique riche</strong> : negociations, contrats, reclamations</li>
+</ul>
+
+<p>La fiche entreprise centralise tout cela en un seul endroit.</p>
+
+<h3>Organisation typique pour BioCycle Peptides</h3>
+
+<table>
+<thead>
+    <tr><th>Type d'entreprise</th><th>Exemples</th><th>Particularites</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Clinique medicale</strong></td><td>Clinique Sante Plus, Centre de medecine sportive</td><td>Commandent des peptides therapeutiques</td></tr>
+  <tr><td><strong>Pharmacie</strong></td><td>Pharmacie Jean-Coutu, Uniprix</td><td>Distribution au detail</td></tr>
+  <tr><td><strong>Laboratoire</strong></td><td>Labo recherche UdeM</td><td>Commandent pour la recherche</td></tr>
+  <tr><td><strong>Distributeur</strong></td><td>DistribPharma QC</td><td>Volumes importants, prix negocies</td></tr>
+  <tr><td><strong>Centre de conditionnement</strong></td><td>CrossFit Montreal</td><td>Produits de performance</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>CRM > panneau lateral, cherchez dans le groupe principal</li>
+<li>URL directe : <code>/admin/crm/companies</code> (si le lien existe dans le CRM)</li>
+<li>Ou via la recherche globale en tapant "entreprises"</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. La liste des entreprises</h3>
+
+<p>Chaque fiche affiche :</p>
+<ul>
+<li><strong>Nom de l'entreprise</strong> et logo (si disponible)</li>
+<li><strong>Secteur d'activite</strong> (sante, pharmaceutique, sport, etc.)</li>
+<li><strong>Nombre de contacts</strong> associes</li>
+<li><strong>Nombre de deals</strong> ouverts</li>
+<li><strong>Revenu total</strong> genere par ce compte</li>
+<li><strong>Representant</strong> en charge du compte</li>
+<li><strong>Region</strong> ou adresse</li>
+</ul>
+
+<h3>2. Le panneau de detail</h3>
+
+<p>Au clic sur une entreprise :</p>
+
+<p><strong>Informations generales</strong> :</p>
+<ul>
+<li>Raison sociale, NEQ (numero d'entreprise du Quebec)</li>
+<li>Adresse, telephone, site web</li>
+<li>Secteur, taille (nombre d'employes), chiffre d'affaires estime</li>
+<li>Date de creation du compte</li>
+</ul>
+
+<p><strong>Onglets</strong> :</p>
+<ul>
+<li><strong>Contacts</strong> : liste des personnes associees a cette entreprise</li>
+<li><strong>Deals</strong> : opportunites de vente en cours et passees</li>
+<li><strong>Timeline</strong> : historique de toutes les interactions</li>
+<li><strong>Commandes</strong> : achats effectues sur la boutique</li>
+<li><strong>Documents</strong> : contrats, devis, fichiers joints</li>
+<li><strong>Notes</strong> : commentaires internes de l'equipe</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer une entreprise</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouvelle entreprise</strong></li>
+<li>Remplissez les champs :</li>
+</ol>
+<ul>
+<li><strong>Nom</strong> (obligatoire)</li>
+<li><strong>Secteur d'activite</strong> (sante, sport, recherche, distribution)</li>
+<li><strong>Adresse</strong> complete</li>
+<li><strong>Telephone</strong> et <strong>site web</strong></li>
+<li><strong>NEQ</strong> : Numero d'entreprise du Quebec (optionnel mais recommande pour B2B)</li>
+<li><strong>Taille</strong> : micro, petite, moyenne, grande</li>
+<li><strong>Representant</strong> : le responsable de ce compte</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<h3>2. Associer des contacts a une entreprise</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Ouvrez la fiche de l'entreprise</li>
+<li>Allez a l'onglet <strong>Contacts</strong></li>
+<li>Cliquez sur <strong>Ajouter un contact</strong></li>
+<li>Recherchez le contact existant, ou creez-en un nouveau</li>
+<li>Definissez le role du contact dans l'entreprise (decideur, acheteur, technique)</li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong> : Quand vous creez un contact et indiquez son entreprise, l'association se fait automatiquement.</p>
+</blockquote>
+
+<h3>3. Hierarchie d'entreprises</h3>
+
+<p><strong>Objectif</strong> : Gerer les groupes avec siege et succursales.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Ouvrez la fiche de la succursale</li>
+<li>Dans le champ <strong>Entreprise parente</strong>, selectionnez le siege</li>
+<li>La hierarchie apparait visuellement dans la fiche du siege</li>
+</ol>
+
+<h3>4. Consulter la valeur d'un compte</h3>
+
+<p>Dans le panneau de detail, la section <strong>Resume financier</strong> affiche :</p>
+<ul>
+<li><strong>Revenu total</strong> : somme de toutes les commandes passees</li>
+<li><strong>Revenu annuel</strong> : revenus des 12 derniers mois</li>
+<li><strong>Panier moyen</strong> : montant moyen par commande</li>
+<li><strong>Frequence d'achat</strong> : nombre de commandes par an</li>
+<li><strong>CLV estimee</strong> : valeur a vie estimee du client</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Onboarding d'un nouveau compte B2B</h3>
+<ol>
+<li>Creez la fiche entreprise avec toutes les informations</li>
+<li>Ajoutez les contacts cles (decideur, acheteur, comptabilite)</li>
+<li>Creez un deal dans le pipeline B2B</li>
+<li>Assignez un representant dedie</li>
+<li>Preparez une proposition commerciale personnalisee</li>
+</ol>
+
+<h3>Revue trimestrielle des comptes</h3>
+<ol>
+<li>Filtrez les entreprises par revenu decroissant</li>
+<li>Pour les 10 premiers comptes (vos meilleurs clients) :</li>
+</ol>
+<ul>
+<li>Verifiez la satisfaction (derniers tickets, avis)</li>
+<li>Identifiez les opportunites de upsell</li>
+<li>Planifiez un appel de suivi</li>
+</ul>
+<ol>
+<li>Pour les comptes inactifs depuis 3 mois :</li>
+</ol>
+<ul>
+<li>Contactez pour comprendre la raison</li>
+<li>Proposez une offre de reactivation</li>
+</ul>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Quelle est la difference entre une entreprise dans le CRM et un distributeur dans Commerce ?</strong></p>
+<p>R : Un distributeur dans Commerce est un client B2B avec des prix negocies et des conditions speciales de vente. Une entreprise dans le CRM est plus large : elle represente toute organisation, qu'elle soit cliente ou non. Les deux sont lies : un distributeur est aussi une entreprise dans le CRM.</p>
+
+<p><strong>Q : Puis-je supprimer une entreprise qui a des commandes ?</strong></p>
+<p>R : Non, pour des raisons de tracabilite. Vous pouvez l'archiver pour qu'elle n'apparaisse plus dans les listes actives.</p>
+
+<p><strong>Q : Comment gerer les fusions d'entreprises ?</strong></p>
+<p>R : Contactez l'administrateur. La fusion de fiches entreprises regroupe les contacts, deals et historique sur une seule fiche, similaire a la fusion de contacts.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Compte</strong></td><td>Terme generique pour une fiche entreprise dans le CRM</td></tr>
+  <tr><td><strong>NEQ</strong></td><td>Numero d'entreprise du Quebec, identifiant legal</td></tr>
+  <tr><td><strong>Hierarchie</strong></td><td>Relation siege-succursales entre entreprises</td></tr>
+  <tr><td><strong>CLV</strong></td><td>Customer Lifetime Value, valeur totale generee par le client</td></tr>
+  <tr><td><strong>Upsell</strong></td><td>Vendre un produit superieur ou complementaire a un client existant</td></tr>
+  <tr><td><strong>Compte cle</strong></td><td>Entreprise strategique generant un revenu important</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/contacts">Contacts</a> : Personnes associees aux entreprises</li>
+<li><a href="/admin/crm/pipeline">Pipeline</a> : Deals des comptes B2B</li>
+<li><a href="/admin/customers">Distributeurs</a> : Clients B2B avec conditions speciales</li>
+<li><a href="/admin/crm/analytics">Rapports CRM</a> : Analyse par compte</li>
+<li><a href="/admin/crm/contracts">Contrats</a> : Contrats lies aux entreprises</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="10-crm--07-listes-segments">
+<h1>Listes, Segments et Tags</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Listes / Segments / Tags</p>
+<p><strong>URL</strong>: <code>/admin/crm/lists</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Listes</strong> permet d'organiser vos contacts en groupes pour des actions ciblees. Les <strong>segments</strong> sont des groupes dynamiques bases sur des criteres, les <strong>listes</strong> sont des groupes statiques geres manuellement, et les <strong>tags</strong> sont des etiquettes libres.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Creer des listes statiques de contacts (ex: invites au salon, VIP)</li>
+<li>Creer des segments dynamiques bases sur des criteres (ex: clients Quebec actifs)</li>
+<li>Ajouter et gerer des tags pour categoriser les contacts</li>
+<li>Utiliser les listes et segments pour des campagnes ciblees</li>
+<li>Exporter une liste ou un segment en CSV</li>
+<li>Combiner des criteres pour des ciblages precis</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>La difference entre liste, segment et tag</h3>
+
+<table>
+<thead>
+    <tr><th>Outil</th><th>Type</th><th>Mise a jour</th><th>Usage principal</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Liste</strong></td><td>Statique</td><td>Manuelle (vous ajoutez/retirez des contacts)</td><td>Groupes ponctuels (invites evenement, VIP manuels)</td></tr>
+  <tr><td><strong>Segment</strong></td><td>Dynamique</td><td>Automatique (les contacts entrent/sortent selon les criteres)</td><td>Ciblage marketing, analyse comportementale</td></tr>
+  <tr><td><strong>Tag</strong></td><td>Etiquette</td><td>Manuelle</td><td>Classification rapide, filtrage transversal</td></tr>
+</tbody>
+</table>
+<h3>Exemples concrets</h3>
+
+<p><strong>Liste statique</strong> : "Invites salon Sante Montreal 2026"</p>
+<ul>
+<li>Vous ajoutez manuellement les 50 contacts invites</li>
+<li>Meme si un contact change de ville, il reste dans la liste</li>
+</ul>
+
+<p><strong>Segment dynamique</strong> : "Clients Quebec ayant achete dans les 30 derniers jours"</p>
+<ul>
+<li>Le segment se recalcule automatiquement</li>
+<li>Si un client quebecois achete aujourd'hui, il apparait demain dans le segment</li>
+<li>Si un client n'a pas achete depuis 31 jours, il sort du segment</li>
+</ul>
+
+<p><strong>Tag</strong> : "VIP"</p>
+<ul>
+<li>Vous marquez les contacts importants avec ce tag</li>
+<li>Utile pour filtrer rapidement dans n'importe quelle vue</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>CRM > <strong>Listes</strong> dans le panneau lateral</li>
+<li>URL directe : <code>/admin/crm/lists</code></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. Les onglets principaux</h3>
+
+<table>
+<thead>
+    <tr><th>Onglet</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Listes</strong></td><td>Vos listes statiques</td></tr>
+  <tr><td><strong>Segments</strong></td><td>Vos segments dynamiques</td></tr>
+  <tr><td><strong>Tags</strong></td><td>Gestion de tous les tags</td></tr>
+</tbody>
+</table>
+<h3>2. La grille des listes/segments</h3>
+
+<p>Chaque ligne affiche :</p>
+<ul>
+<li><strong>Nom</strong> de la liste ou du segment</li>
+<li><strong>Nombre de contacts</strong> actuellement inclus</li>
+<li><strong>Type</strong> : statique ou dynamique</li>
+<li><strong>Date de creation</strong> et derniere mise a jour</li>
+<li><strong>Createur</strong> : qui l'a cree</li>
+<li><strong>Actions</strong> : modifier, dupliquer, exporter, supprimer</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer une liste statique</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouvelle liste</strong></li>
+<li>Choisissez <strong>Liste statique</strong></li>
+<li>Donnez un nom (ex: "Prospects salon Bio 2026")</li>
+<li>Ajoutez une description (optionnel)</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+<li>Pour ajouter des contacts :</li>
+</ol>
+<ul>
+<li>Cliquez sur <strong>Ajouter des contacts</strong></li>
+<li>Recherchez et selectionnez les contacts souhaites</li>
+<li>Ou importez une liste de noms/emails depuis un fichier CSV</li>
+</ul>
+
+<h3>2. Creer un segment dynamique</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau segment</strong></li>
+<li>Donnez un nom (ex: "Clients actifs Quebec")</li>
+<li>Definissez les <strong>criteres de filtrage</strong> :</li>
+</ol>
+
+<p><strong>Criteres disponibles</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Categorie</th><th>Criteres</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Profil</strong></td><td>Province, ville, code postal, secteur, taille entreprise</td></tr>
+  <tr><td><strong>Comportement</strong></td><td>Date dernier achat, nombre de commandes, montant total depense</td></tr>
+  <tr><td><strong>Engagement</strong></td><td>Score CRM, emails ouverts, clics, visites site</td></tr>
+  <tr><td><strong>Statut</strong></td><td>Client actif, prospect, lead, inactif</td></tr>
+  <tr><td><strong>Tags</strong></td><td>Possede le tag X, ne possede pas le tag Y</td></tr>
+  <tr><td><strong>Source</strong></td><td>Canal d'acquisition (web, salon, referral)</td></tr>
+  <tr><td><strong>Temporel</strong></td><td>Cree il y a X jours, derniere activite il y a X jours</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Combinez les criteres avec <strong>ET</strong> / <strong>OU</strong> :</li>
+</ol>
+<ul>
+<li>Province = Quebec <strong>ET</strong> Dernier achat < 30 jours <strong>ET</strong> Nombre commandes > 2</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Previsualiser</strong> pour voir les contacts correspondants</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong> : Le segment se met a jour automatiquement. Vous n'avez pas a le maintenir manuellement.</p>
+</blockquote>
+
+<h3>3. Gerer les tags</h3>
+
+<p><strong>Creer un tag</strong> :</p>
+<ol>
+<li>Allez dans l'onglet <strong>Tags</strong></li>
+<li>Cliquez sur <strong>Nouveau tag</strong></li>
+<li>Entrez le nom et choisissez une couleur</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<p><strong>Appliquer un tag</strong> :</p>
+<ul>
+<li>Depuis la fiche contact : cliquez sur l'icone tag, selectionnez</li>
+<li>En masse : selectionnez plusieurs contacts dans la liste, cliquez sur <strong>Tagger</strong></li>
+</ul>
+
+<p><strong>Tags recommandes pour BioCycle Peptides</strong> :</p>
+<ul>
+<li><code>VIP</code> : clients a haute valeur</li>
+<li><code>B2B</code> : clients professionnels</li>
+<li><code>Athlete</code> : clients sportifs</li>
+<li><code>Professionnel sante</code> : medecins, pharmaciens</li>
+<li><code>Recherche</code> : laboratoires et chercheurs</li>
+<li><code>International</code> : clients hors Canada</li>
+</ul>
+
+<h3>4. Utiliser les listes pour des campagnes</h3>
+
+<p><strong>Objectif</strong> : Envoyer un email cible a un groupe specifique.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Creez ou selectionnez votre liste/segment</li>
+<li>Allez dans CRM > Campagnes (voir page Automatisations)</li>
+<li>Dans le champ <strong>Destinataires</strong>, selectionnez votre liste/segment</li>
+<li>Redigez et envoyez votre campagne</li>
+<li>Le segment se met a jour : seuls les contacts correspondant aux criteres recevront l'email</li>
+</ol>
+
+<h3>5. Segments imbriques</h3>
+
+<p><strong>Objectif</strong> : Creer des segments complexes en combinant d'autres segments.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Creez un segment "Clients Quebec" (critere : province = QC)</li>
+<li>Creez un segment "Gros acheteurs" (critere : total > 1000 $CA)</li>
+<li>Creez un segment combine "Gros acheteurs Quebec" qui utilise les deux segments precedents avec un operateur ET</li>
+</ol>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Preparation d'une campagne email</h3>
+<ol>
+<li>Definissez votre cible (ex: clients inactifs depuis 60 jours)</li>
+<li>Creez un segment dynamique avec les criteres</li>
+<li>Previsualisez pour verifier le nombre de contacts</li>
+<li>Utilisez ce segment comme audience dans votre campagne</li>
+<li>Apres la campagne, le segment se met a jour automatiquement</li>
+</ol>
+
+<h3>Etiquetage apres un salon professionnel</h3>
+<ol>
+<li>Creez un tag "Salon Bio Montreal 2026"</li>
+<li>Creez une liste statique "Contacts salon Bio 2026"</li>
+<li>Importez les contacts rencontres (CSV depuis le scanner de badges)</li>
+<li>Appliquez le tag en masse a ces contacts</li>
+<li>Creez une tache de suivi pour chaque contact</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Quelle est la limite de contacts dans un segment ?</strong></p>
+<p>R : Il n'y a pas de limite technique. Un segment peut contenir tous les contacts de votre base.</p>
+
+<p><strong>Q : Les segments affectent-ils les performances ?</strong></p>
+<p>R : Non, les segments sont recalcules en arriere-plan. Meme avec des criteres complexes, ils ne ralentissent pas l'interface.</p>
+
+<p><strong>Q : Puis-je combiner une liste et un segment ?</strong></p>
+<p>R : Oui. Dans le generateur de segment, vous pouvez ajouter un critere "Fait partie de la liste X" pour combiner les deux approches.</p>
+
+<p><strong>Q : Comment savoir combien de contacts sont dans un segment avant de l'utiliser ?</strong></p>
+<p>R : Le bouton <strong>Previsualiser</strong> affiche le nombre exact de contacts correspondant aux criteres en temps reel.</p>
+
+<p><strong>Q : Les tags sont-ils partages entre tous les utilisateurs ?</strong></p>
+<p>R : Oui, les tags sont globaux. Tout le monde peut voir et utiliser les memes tags.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Liste statique</strong></td><td>Groupe de contacts gere manuellement</td></tr>
+  <tr><td><strong>Segment dynamique</strong></td><td>Groupe de contacts base sur des criteres, mis a jour automatiquement</td></tr>
+  <tr><td><strong>Tag</strong></td><td>Etiquette libre pour categoriser les contacts</td></tr>
+  <tr><td><strong>Critere</strong></td><td>Condition utilisee pour definir un segment (province, achat, etc.)</td></tr>
+  <tr><td><strong>Operateur</strong></td><td>ET / OU pour combiner les criteres d'un segment</td></tr>
+  <tr><td><strong>Audience</strong></td><td>Groupe de contacts cible pour une campagne</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/contacts">Contacts</a> : Les contacts a organiser</li>
+<li><a href="/admin/crm/campaigns">Campagnes</a> : Envoi d'emails aux listes/segments</li>
+<li><a href="/admin/crm/sms-campaigns">Campagnes SMS</a> : Envoi de SMS aux listes/segments</li>
+<li><a href="/admin/crm/workflows">Automatisations</a> : Workflows bases sur les segments</li>
+<li><a href="/admin/crm/analytics">Rapports CRM</a> : Analyse par segment</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="10-crm--08-automatisations">
+<h1>Automatisations, Workflows et Sequences</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Automatisation</p>
+<p><strong>URL</strong>: <code>/admin/crm/workflows</code>, <code>/admin/crm/campaigns</code>, <code>/admin/crm/sms-campaigns</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~30 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La section <strong>Automatisation</strong> regroupe tous les outils pour automatiser vos processus commerciaux : envoi d'emails, creation de taches, attribution de leads, sequences de nurturing, campagnes marketing, et controle qualite.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Creer des workflows automatises (si X alors Y)</li>
+<li>Configurer des sequences d'emails pour les leads et clients</li>
+<li>Lancer des campagnes email et SMS ciblees</li>
+<li>Automatiser l'attribution des leads aux representants</li>
+<li>Definir des regles de conformite et de controle qualite</li>
+<li>Creer des formulaires web capturant des leads</li>
+<li>Gerer des playbooks (guides de vente standardises)</li>
+<li>Suivre les performances des workflows et campagnes</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un workflow ?</h3>
+
+<p>Un <strong>workflow</strong> est une serie d'actions automatiques declenchees par un evenement. C'est comme un assistant invisible qui execute des taches a votre place.</p>
+
+<p><strong>Exemple concret</strong> :</p>
+<pre><code>EVENEMENT: Un nouveau lead est cree
+  → ACTION 1: Attribuer au representant de garde
+  → ACTION 2: Envoyer un email de bienvenue
+  → ATTENDRE: 2 jours
+  → CONDITION: Le lead a-t-il ouvert l'email ?
+    → OUI: Creer une tache "Appeler le lead"
+    → NON: Envoyer un deuxieme email</code></pre>
+
+<h3>Qu'est-ce qu'une sequence ?</h3>
+
+<p>Une <strong>sequence</strong> est une serie d'emails envoyes automatiquement a intervalle regulier. C'est un workflow simplifie, specialise dans l'email.</p>
+
+<p><strong>Exemple</strong> :</p>
+<ul>
+<li>Jour 0 : Email de bienvenue + presentation BioCycle</li>
+<li>Jour 3 : Email educatif sur les peptides</li>
+<li>Jour 7 : Temoignages de clients satisfaits</li>
+<li>Jour 14 : Offre speciale premiere commande</li>
+</ul>
+
+<h3>Qu'est-ce qu'une campagne ?</h3>
+
+<p>Une <strong>campagne</strong> est un envoi ponctuel d'un email ou SMS a un groupe de contacts. Contrairement a une sequence (automatique et continue), une campagne est un envoi unique, a une date precise.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<p>Les sous-pages de la section Automatisation sont dans le groupe <strong>Automatisation</strong> du panneau CRM :</p>
+
+<table>
+<thead>
+    <tr><th>Page</th><th>URL</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Workflows</strong></td><td><code>/admin/crm/workflows</code></td><td>Generateur de workflows</td></tr>
+  <tr><td><strong>Campagnes email</strong></td><td><code>/admin/crm/campaigns</code></td><td>Campagnes d'email marketing</td></tr>
+  <tr><td><strong>Campagnes SMS</strong></td><td><code>/admin/crm/sms-campaigns</code></td><td>Campagnes SMS</td></tr>
+  <tr><td><strong>Modeles SMS</strong></td><td><code>/admin/crm/sms-templates</code></td><td>Modeles de messages SMS</td></tr>
+  <tr><td><strong>Snippets</strong></td><td><code>/admin/crm/snippets</code></td><td>Blocs de texte reutilisables</td></tr>
+  <tr><td><strong>Base de connaissances</strong></td><td><code>/admin/crm/knowledge-base</code></td><td>Articles d'aide pour l'equipe</td></tr>
+  <tr><td><strong>Tickets</strong></td><td><code>/admin/crm/tickets</code></td><td>Support client integre</td></tr>
+  <tr><td><strong>Conformite</strong></td><td><code>/admin/crm/compliance</code></td><td>Regles de conformite (Loi 25, LPRPDE)</td></tr>
+  <tr><td><strong>Controle qualite</strong></td><td><code>/admin/crm/qa</code></td><td>Evaluation de la qualite des interactions</td></tr>
+  <tr><td><strong>Formulaires</strong></td><td><code>/admin/crm/forms</code></td><td>Formulaires web capturant des leads</td></tr>
+  <tr><td><strong>Playbooks</strong></td><td><code>/admin/crm/playbooks</code></td><td>Guides de vente standardises</td></tr>
+  <tr><td><strong>Analyse workflows</strong></td><td><code>/admin/crm/workflow-analytics</code></td><td>Performances des automatisations</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer un workflow</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/workflows</code></p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau workflow</strong></li>
+<li>Choisissez un <strong>declencheur</strong> (trigger) :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Declencheur</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau lead</strong></td><td>Quand un lead est cree</td></tr>
+  <tr><td><strong>Deal change d'etape</strong></td><td>Quand un deal passe a une nouvelle etape</td></tr>
+  <tr><td><strong>Contact modifie</strong></td><td>Quand les informations d'un contact changent</td></tr>
+  <tr><td><strong>Tag ajoute</strong></td><td>Quand un tag specifique est ajoute a un contact</td></tr>
+  <tr><td><strong>Formulaire soumis</strong></td><td>Quand un formulaire web est rempli</td></tr>
+  <tr><td><strong>Commande passee</strong></td><td>Quand un client passe une commande</td></tr>
+  <tr><td><strong>Inactivite</strong></td><td>Quand un contact est inactif depuis X jours</td></tr>
+  <tr><td><strong>Score atteint</strong></td><td>Quand le lead scoring atteint un seuil</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Ajoutez des <strong>actions</strong> en sequence :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Action</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Envoyer email</strong></td><td>Envoyer un email automatique (choisir un modele)</td></tr>
+  <tr><td><strong>Envoyer SMS</strong></td><td>Envoyer un SMS (necessite un modele SMS)</td></tr>
+  <tr><td><strong>Creer tache</strong></td><td>Creer une tache pour un representant</td></tr>
+  <tr><td><strong>Modifier contact</strong></td><td>Mettre a jour un champ du contact</td></tr>
+  <tr><td><strong>Ajouter tag</strong></td><td>Ajouter un tag au contact</td></tr>
+  <tr><td><strong>Assigner</strong></td><td>Attribuer le contact a un representant</td></tr>
+  <tr><td><strong>Notifier</strong></td><td>Envoyer une notification a un membre de l'equipe</td></tr>
+  <tr><td><strong>Attendre</strong></td><td>Pause de X minutes/heures/jours avant l'action suivante</td></tr>
+  <tr><td><strong>Condition</strong></td><td>Branchement si/sinon selon un critere</td></tr>
+  <tr><td><strong>Webhook</strong></td><td>Appeler un service externe</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Connectez les actions entre elles en glissant-deposant les connecteurs</li>
+<li>Cliquez sur <strong>Sauvegarder</strong> puis <strong>Activer</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Attention</strong> : Testez toujours un workflow avec un contact de test avant de l'activer pour tous.</p>
+</blockquote>
+
+<h3>2. Creer une campagne email</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/campaigns</code></p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouvelle campagne</strong></li>
+<li>Definissez les parametres :</li>
+</ol>
+<ul>
+<li><strong>Nom</strong> de la campagne</li>
+<li><strong>Expediteur</strong> : nom et email de l'expediteur</li>
+<li><strong>Objet</strong> : la ligne d'objet de l'email</li>
+<li><strong>Audience</strong> : selectionnez une liste ou un segment</li>
+</ul>
+<ol>
+<li>Redigez le contenu :</li>
+</ol>
+<ul>
+<li>Utilisez l'editeur visuel (drag & drop)</li>
+<li>Ou collez du HTML pour les utilisateurs avances</li>
+<li>Inserez des variables de personnalisation ({prenom}, {entreprise}, etc.)</li>
+</ul>
+<ol>
+<li><strong>Previsualiser</strong> : verifiez le rendu sur desktop et mobile</li>
+<li><strong>Tester</strong> : envoyez-vous un email de test</li>
+<li><strong>Planifier</strong> ou <strong>Envoyer maintenant</strong></li>
+</ol>
+
+<p><strong>Metriques suivies apres l'envoi</strong> :</p>
+<ul>
+<li>Taux d'ouverture (%)</li>
+<li>Taux de clic (%)</li>
+<li>Taux de desabonnement (%)</li>
+<li>Taux de rebond (emails invalides)</li>
+<li>Conversions (si lien vers la boutique)</li>
+</ul>
+
+<h3>3. Creer une campagne SMS</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/sms-campaigns</code></p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouvelle campagne SMS</strong></li>
+<li>Selectionnez un <strong>modele SMS</strong> ou redigez le message (max 160 caracteres)</li>
+<li>Choisissez l'<strong>audience</strong> (liste ou segment)</li>
+<li>Planifiez l'envoi</li>
+<li>Le systeme verifie que les contacts ont un numero de telephone valide</li>
+</ol>
+
+<blockquote>
+<p><strong>Important</strong> : Les SMS sont soumis a la legislation canadienne (LPRPDE/Loi 25). Le consentement du contact est obligatoire avant l'envoi.</p>
+</blockquote>
+
+<h3>4. Conformite et consentement</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/compliance</code></p>
+
+<p>Cette page gere :</p>
+<ul>
+<li><strong>Consentements</strong> : quels contacts ont accepte de recevoir des communications</li>
+<li><strong>Loi 25 (Quebec)</strong> : gestion des preferences de confidentialite</li>
+<li><strong>LPRPDE (federal)</strong> : conformite a la loi canadienne sur la protection des renseignements</li>
+<li><strong>Desabonnements</strong> : traitement automatique des demandes de retrait</li>
+<li><strong>Journal d'audit</strong> : tracabilite de tous les consentements (quand, comment, par qui)</li>
+</ul>
+
+<h3>5. Playbooks de vente</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/playbooks</code></p>
+
+<p>Un <strong>playbook</strong> est un guide standardise que vos representants suivent pour un processus specifique :</p>
+<ul>
+<li><strong>Playbook premier appel</strong> : quoi dire, quelles questions poser</li>
+<li><strong>Playbook objections prix</strong> : reponses aux objections courantes</li>
+<li><strong>Playbook upsell</strong> : comment proposer des produits complementaires</li>
+<li><strong>Playbook reactivation</strong> : comment recuperer un client inactif</li>
+</ul>
+
+<h3>6. Boite de reception unifiee</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/inbox</code></p>
+
+<p>La boite de reception centralise :</p>
+<ul>
+<li>Emails recus des contacts</li>
+<li>Messages de formulaires web</li>
+<li>Conversations chat en direct</li>
+<li>Reponses aux campagnes</li>
+</ul>
+
+<p>Chaque message est automatiquement associe a la fiche contact correspondante.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Sequence de bienvenue nouveau client</h3>
+<ol>
+<li><strong>Declencheur</strong> : Premiere commande passee</li>
+<li><strong>Jour 0</strong> : Email de remerciement + confirmation commande</li>
+<li><strong>Jour 3</strong> : Email "Comment utiliser vos peptides" (guide)</li>
+<li><strong>Jour 7</strong> : Email demandant un avis sur le produit</li>
+<li><strong>Jour 30</strong> : Email avec offre de reabonnement</li>
+</ol>
+
+<h3>Workflow d'attribution automatique des leads</h3>
+<ol>
+<li><strong>Declencheur</strong> : Nouveau lead cree</li>
+<li><strong>Condition</strong> : Source du lead ?</li>
+</ol>
+<ul>
+<li>Si formulaire B2B → assigner au representant B2B</li>
+<li>Si boutique en ligne → assigner en round-robin</li>
+<li>Si salon professionnel → assigner au representant terrain</li>
+</ul>
+<ol>
+<li><strong>Action</strong> : Creer une tache "Premier contact" echeance 24h</li>
+<li><strong>Action</strong> : Envoyer un email de confirmation au lead</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Combien de workflows puis-je avoir actifs en meme temps ?</strong></p>
+<p>R : Il n'y a pas de limite technique. Cependant, il est recommande de garder vos workflows organises et de desactiver ceux qui ne sont plus pertinents.</p>
+
+<p><strong>Q : Comment savoir si mes campagnes sont efficaces ?</strong></p>
+<p>R : Consultez la page Analyse workflows (<code>/admin/crm/workflow-analytics</code>) pour les workflows, et les statistiques de chaque campagne (taux d'ouverture, clics, conversions).</p>
+
+<p><strong>Q : Les emails sont-ils envoyes immediatement ?</strong></p>
+<p>R : Les campagnes planifiees sont envoyees a l'heure prevue. Les emails de workflow sont envoyes en temps reel quand le declencheur se produit. L'action "Attendre" permet de retarder l'envoi.</p>
+
+<p><strong>Q : Comment eviter de spammer mes contacts ?</strong></p>
+<p>R : Le systeme inclut des protections : un meme contact ne recevra pas plus d'un email automatique par jour (configurable). Les contacts desabonnes sont automatiquement exclus.</p>
+
+<hr>
+
+<h2>Strategie expert : les 10 automatisations essentielles pour une PME e-commerce</h2>
+
+<h3>Vue d'ensemble</h3>
+
+<p>Ces 10 automatisations couvrent les besoins fondamentaux d'une PME e-commerce de peptides au Quebec. Implementez-les dans cet ordre de priorite (les premieres generent le plus de valeur le plus rapidement).</p>
+
+<h3>1. Bienvenue nouveau inscrit</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Inscription newsletter ou creation de compte</li>
+<li><strong>Actions</strong> : Email bienvenue (immediat) → Delai 3j → Email educatif → Delai 4j → Email code promo premiere commande</li>
+<li><strong>Impact</strong> : Conversion inscrit → acheteur de 10-15%</li>
+</ul>
+
+<h3>2. Abandon de panier</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Produit en panier, pas de checkout en 1 heure</li>
+<li><strong>Actions</strong> : Email rappel (H+1) → Delai 23h → Email avec FAQ produit (H+24) → Delai 48h → Email avec 10% (H+72)</li>
+<li><strong>Impact</strong> : Recuperation de 5-15% des paniers abandonnes</li>
+</ul>
+
+<h3>3. Post-achat et cross-sell</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Commande confirmee</li>
+<li><strong>Actions</strong> : Email merci (J+1) → Delai 6j → Email guide utilisation + cross-sell (J+7) → Delai 23j → Email rappel reachat (J+30)</li>
+<li><strong>Impact</strong> : Augmentation du taux de reachat de 20-30%</li>
+</ul>
+
+<h3>4. Rappel de reapprovisionnement</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Delai estime depuis le dernier achat (30, 60, 90 jours selon le produit)</li>
+<li><strong>Actions</strong> : Email "Il est temps de reapprovisionner votre [peptide]" avec bouton de recommande rapide</li>
+<li><strong>Impact</strong> : 8-12% de taux de conversion, revenu recurrent previsible</li>
+</ul>
+
+<h3>5. Reactivation client inactif</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Pas de commande depuis 60 jours ET au moins 1 commande passee</li>
+<li><strong>Actions</strong> : Email "Vous nous manquez" + 15% (J+60) → Delai 15j → Email derniere chance (J+75)</li>
+<li><strong>Impact</strong> : Reactivation de 3-8% des clients dormants</li>
+</ul>
+
+<h3>6. Attribution automatique des leads</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Nouveau lead cree (formulaire, import, scraper)</li>
+<li><strong>Actions</strong> : Condition source → Si B2B : assigner au representant B2B. Si B2C : round-robin entre representants. Creer tache "Premier contact" echeance 24h</li>
+<li><strong>Impact</strong> : Reduction du temps de premier contact de 72h a < 24h</li>
+</ul>
+
+<h3>7. Demande d'avis apres livraison</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Commande livree (statut = delivered)</li>
+<li><strong>Actions</strong> : Delai 5j → Email demande d'avis avec lien direct. Si pas d'avis apres 7j → Rappel avec incitatif (5% prochaine commande)</li>
+<li><strong>Impact</strong> : Social proof, amelioration du taux de conversion page produit</li>
+</ul>
+
+<h3>8. Alerte stock bas pour clients interesses</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Stock d'un produit < seuil defini</li>
+<li><strong>Actions</strong> : Notifier l'equipe interne → Si "Alerte stock" activee sur la fiche contact, envoyer un email "Stock limite : commandez maintenant"</li>
+<li><strong>Impact</strong> : Urgence naturelle, acceleration des achats</li>
+</ul>
+
+<h3>9. Notification interne pour commandes VIP</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Commande > 500 $CA OU client tag "VIP" commande</li>
+<li><strong>Actions</strong> : Notification Slack/email a l'equipe → Creer tache "Suivi personnalise" pour le representant</li>
+<li><strong>Impact</strong> : Service client haut de gamme pour les meilleurs clients</li>
+</ul>
+
+<h3>10. Anniversaire et dates cles</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Date d'anniversaire du client OU anniversaire de premiere commande</li>
+<li><strong>Actions</strong> : Email personnalise + code promo exclusif 20% valide 7 jours</li>
+<li><strong>Impact</strong> : Taux de conversion de 10-15%, renforcement de la relation</li>
+</ul>
+
+<h2>Strategie expert : conformite Loi 25 du Quebec</h2>
+
+<h3>Qu'est-ce que la Loi 25 ?</h3>
+
+<p>La Loi 25 (anciennement Projet de loi 64) est la loi quebecoise modernisant la protection des renseignements personnels. Entree en vigueur par etapes depuis 2022, elle impose des obligations strictes aux entreprises qui collectent, utilisent ou communiquent des renseignements personnels de residants du Quebec.</p>
+
+<h3>Obligations principales pour BioCycle Peptides</h3>
+
+<p><strong>1. Responsable de la protection des renseignements personnels</strong></p>
+<ul>
+<li>Designez une personne responsable (par defaut : le dirigeant de l'entreprise)</li>
+<li>Publiez son titre et ses coordonnees sur le site web</li>
+<li>Cette personne supervise la conformite et repond aux demandes des individus</li>
+</ul>
+
+<p><strong>2. Consentement clair et eclaire</strong></p>
+<ul>
+<li>Le consentement doit etre donne pour chaque finalite separement (marketing, newsletter, profil client)</li>
+<li>Le consentement doit etre explicite (pas de cases pre-cochees)</li>
+<li>L'individu peut retirer son consentement a tout moment</li>
+<li>Conservez la preuve du consentement (date, methode, texte presente)</li>
+</ul>
+
+<p><strong>3. Politique de confidentialite obligatoire</strong></p>
+<ul>
+<li>Accessible en langage clair sur votre site</li>
+<li>Doit decrire : quels renseignements sont collectes, pourquoi, comment, combien de temps, avec qui ils sont partages</li>
+<li>Mise a jour obligatoire a chaque changement</li>
+</ul>
+
+<p><strong>4. Droit d'acces et de rectification</strong></p>
+<ul>
+<li>Tout individu peut demander : quels renseignements vous detenez sur lui, les corriger, ou les faire supprimer</li>
+<li>Delai de reponse : 30 jours</li>
+<li>Ce droit s'exerce via un formulaire ou un email a la personne responsable</li>
+</ul>
+
+<p><strong>5. Droit a l'oubli (desindexation)</strong></p>
+<ul>
+<li>Un individu peut demander que ses renseignements soient desindexes ou anonymises</li>
+<li>Si les renseignements ne sont plus necessaires a la finalite initiale, vous devez les supprimer</li>
+</ul>
+
+<p><strong>6. Registre des incidents de confidentialite</strong></p>
+<ul>
+<li>OBLIGATOIRE : tenir un registre de tout incident impliquant un acces non autorise a des renseignements personnels</li>
+<li>Un "incident" inclut : fuite de donnees, acces non autorise, perte de donnees, envoi d'email au mauvais destinataire</li>
+<li>Notification obligatoire a la Commission d'acces a l'information du Quebec (CAI) et aux personnes concernees si l'incident presente un "risque serieux de prejudice"</li>
+</ul>
+
+<h3>Actions dans Koraline pour la conformite</h3>
+
+<table>
+<thead>
+    <tr><th>Obligation</th><th>Fonctionnalite Koraline</th><th>Emplacement</th></tr>
+</thead>
+<tbody>
+  <tr><td>Consentement</td><td>Champ "Consentement CASL/Loi 25" sur chaque contact avec date et methode</td><td>CRM > Contacts > Fiche contact</td></tr>
+  <tr><td>Droit d'acces</td><td>Exporter les donnees d'un contact en CSV</td><td>CRM > Contacts > Exporter</td></tr>
+  <tr><td>Droit a l'oubli</td><td>Anonymiser un contact (remplacer les donnees par des placeholders)</td><td>CRM > Contacts > Menu actions</td></tr>
+  <tr><td>Desabonnement</td><td>Traitement automatique et instantane</td><td>Automatique via lien desabonnement</td></tr>
+  <tr><td>Registre des incidents</td><td>Page dediee dans la section Conformite</td><td>CRM > Automatisation > Conformite</td></tr>
+  <tr><td>Audit trail</td><td>Journal de tous les consentements et modifications</td><td>CRM > Automatisation > Conformite</td></tr>
+</tbody>
+</table>
+<h3>Penalites Loi 25</h3>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Montant maximum</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Personne physique</strong></td><td>50 000 $CA</td></tr>
+  <tr><td><strong>Entreprise (sanction administrative)</strong></td><td>10 000 000 $CA ou 2% du chiffre d'affaires mondial</td></tr>
+  <tr><td><strong>Entreprise (sanction penale)</strong></td><td>25 000 000 $CA ou 4% du chiffre d'affaires mondial</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Workflow</strong></td><td>Serie d'actions automatiques declenchees par un evenement</td></tr>
+  <tr><td><strong>Declencheur</strong></td><td>L'evenement qui lance un workflow (trigger)</td></tr>
+  <tr><td><strong>Sequence</strong></td><td>Serie d'emails automatiques envoyes a intervalle regulier</td></tr>
+  <tr><td><strong>Campagne</strong></td><td>Envoi ponctuel d'un email/SMS a un groupe de contacts</td></tr>
+  <tr><td><strong>Playbook</strong></td><td>Guide standardise pour un processus de vente</td></tr>
+  <tr><td><strong>Nurturing</strong></td><td>Processus de "nourrissage" d'un lead par du contenu regulier</td></tr>
+  <tr><td><strong>A/B testing</strong></td><td>Tester deux versions d'un email pour voir laquelle performe mieux</td></tr>
+  <tr><td><strong>Snippet</strong></td><td>Bloc de texte reutilisable dans les emails</td></tr>
+  <tr><td><strong>Conformite</strong></td><td>Respect des lois sur la protection des donnees (Loi 25, LPRPDE)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/lists">Listes et Segments</a> : Audiences pour les campagnes</li>
+<li><a href="/admin/crm/contacts">Contacts</a> : Destinataires des communications</li>
+<li><a href="/admin/crm/leads">Leads</a> : Prospects a nourrir par sequences</li>
+<li><a href="/admin/crm/dialer">Centre d'appels</a> : Appels integres aux workflows</li>
+<li><a href="/admin/crm/analytics">Rapports</a> : Performances des campagnes et workflows</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="10-crm--09-centre-appels">
+<h1>Centre d'Appels, SMS et WhatsApp</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Centre d'appels</p>
+<p><strong>URL</strong>: <code>/admin/crm/dialer</code>, <code>/admin/crm/wallboard</code>, <code>/admin/crm/agents/performance</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>Le <strong>Centre d'appels</strong> integre dans le CRM permet a votre equipe de passer et recevoir des appels telephoniques directement depuis l'interface Koraline, sans quitter le navigateur. Il integre aussi les campagnes SMS et les communications multicanal.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Passer des appels depuis le navigateur (softphone integre)</li>
+<li>Recevoir des appels entrants avec identification du contact</li>
+<li>Enregistrer les appels pour le controle qualite</li>
+<li>Suivre les performances des agents en temps reel (wallboard)</li>
+<li>Lancer des campagnes d'appels sortants (power dialer)</li>
+<li>Gerer les files d'attente et les horaires</li>
+<li>Analyser les metriques du centre d'appels (temps d'attente, duree, abandons)</li>
+<li>Envoyer des SMS et campagnes SMS depuis la plateforme</li>
+<li>Planifier les equipes et suivre l'adherence aux horaires</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un softphone ?</h3>
+
+<p>Un <strong>softphone</strong> est un telephone logiciel qui fonctionne dans votre navigateur. Pas besoin d'un telephone physique : vous utilisez le micro et les haut-parleurs de votre ordinateur (ou un casque) pour passer et recevoir des appels.</p>
+
+<h3>Comment ca marche techniquement ?</h3>
+
+<p>BioCycle Peptides utilise <strong>Telnyx</strong> comme fournisseur de telephonie VoIP. Les appels transitent par Internet, ce qui permet :</p>
+<ul>
+<li>Des couts d'appel reduits</li>
+<li>L'integration directe avec le CRM (identification du contact, historique)</li>
+<li>L'enregistrement des conversations</li>
+<li>Des numeros locaux canadiens</li>
+</ul>
+
+<h3>Les differents modes d'appel</h3>
+
+<table>
+<thead>
+    <tr><th>Mode</th><th>Description</th><th>Usage</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Click-to-call</strong></td><td>Cliquez sur un numero pour appeler</td><td>Appels individuels depuis une fiche contact</td></tr>
+  <tr><td><strong>Power dialer</strong></td><td>Le systeme appelle automatiquement une liste de contacts</td><td>Campagnes de prospection</td></tr>
+  <tr><td><strong>Preview dialer</strong></td><td>Affiche la fiche avant de lancer l'appel</td><td>Appels de suivi personnalises</td></tr>
+  <tr><td><strong>Appels entrants</strong></td><td>Les appels arrivent dans la file d'attente</td><td>Service client, support</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<p>Les pages du centre d'appels sont dans le groupe <strong>Centre d'appels</strong> du panneau CRM :</p>
+
+<table>
+<thead>
+    <tr><th>Page</th><th>URL</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Dialeur</strong></td><td><code>/admin/crm/dialer</code></td><td>Interface de gestion des appels</td></tr>
+  <tr><td><strong>Wallboard</strong></td><td><code>/admin/crm/wallboard</code></td><td>Ecran de supervision en temps reel</td></tr>
+  <tr><td><strong>Performance agents</strong></td><td><code>/admin/crm/agents/performance</code></td><td>Metriques individuelles des agents</td></tr>
+  <tr><td><strong>Representants 360</strong></td><td><code>/admin/crm/reps</code></td><td>Vue complete d'un representant</td></tr>
+  <tr><td><strong>Analytique appels</strong></td><td><code>/admin/crm/call-analytics</code></td><td>Rapports detailles sur les appels</td></tr>
+  <tr><td><strong>KPIs centre d'appels</strong></td><td><code>/admin/crm/call-center-kpis</code></td><td>Indicateurs cles du centre</td></tr>
+  <tr><td><strong>Planification</strong></td><td><code>/admin/crm/scheduling</code></td><td>Gestion des horaires et quarts</td></tr>
+  <tr><td><strong>Adherence</strong></td><td><code>/admin/crm/adherence</code></td><td>Suivi du respect des horaires</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>Page Dialeur (<code>/admin/crm/dialer</code>)</h3>
+
+<p>L'interface principale du centre d'appels avec :</p>
+
+<p><strong>Zone gauche</strong> : Liste des contacts a appeler</p>
+<ul>
+<li>File d'attente des appels entrants</li>
+<li>Liste de campagne (pour le power dialer)</li>
+<li>Historique des appels recents</li>
+</ul>
+
+<p><strong>Zone centrale</strong> : Le softphone</p>
+<ul>
+<li>Pave numerique</li>
+<li>Boutons : appeler, raccrocher, mettre en attente, transferer, muet</li>
+<li>Timer de duree d'appel</li>
+<li>Indicateur de qualite audio</li>
+</ul>
+
+<p><strong>Zone droite</strong> : Fiche contact</p>
+<ul>
+<li>Informations du contact (identifie automatiquement pour les appels entrants)</li>
+<li>Historique des interactions</li>
+<li>Notes d'appel</li>
+<li>Deals et commandes associes</li>
+</ul>
+
+<h3>Wallboard (<code>/admin/crm/wallboard</code>)</h3>
+
+<p>Ecran de supervision concu pour etre affiche sur un ecran TV ou moniteur :</p>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Appels en cours</strong></td><td>Nombre d'appels actifs en ce moment</td></tr>
+  <tr><td><strong>En attente</strong></td><td>Nombre d'appelants dans la file d'attente</td></tr>
+  <tr><td><strong>Temps attente moyen</strong></td><td>Combien de temps les appelants attendent</td></tr>
+  <tr><td><strong>Agents disponibles</strong></td><td>Nombre d'agents prets a prendre un appel</td></tr>
+  <tr><td><strong>Agents en appel</strong></td><td>Nombre d'agents actuellement en conversation</td></tr>
+  <tr><td><strong>Agents en pause</strong></td><td>Nombre d'agents en pause</td></tr>
+  <tr><td><strong>Appels traites aujourd'hui</strong></td><td>Compteur du jour</td></tr>
+  <tr><td><strong>Taux d'abandon</strong></td><td>Pourcentage d'appelants qui raccrochent avant d'etre servis</td></tr>
+  <tr><td><strong>SLA</strong></td><td>Pourcentage d'appels repondus dans le delai cible (ex: 80% en 20 sec)</td></tr>
+</tbody>
+</table>
+<h3>Performance agents (<code>/admin/crm/agents/performance</code>)</h3>
+
+<p>Metriques individuelles :</p>
+<ul>
+<li>Nombre d'appels traites (entrants + sortants)</li>
+<li>Duree moyenne de conversation</li>
+<li>Temps moyen de traitement post-appel</li>
+<li>Taux de resolution au premier appel</li>
+<li>Score qualite (si evaluation QA activee)</li>
+<li>Adherence aux horaires (%)</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Passer un appel</h3>
+
+<p><strong>Methode click-to-call</strong> :</p>
+<ol>
+<li>Ouvrez la fiche d'un contact</li>
+<li>Cliquez sur le numero de telephone (lien cliquable)</li>
+<li>Le softphone se lance automatiquement</li>
+<li>Attendez que le contact decroche</li>
+<li>Pendant l'appel, prenez des notes dans le champ prevu</li>
+<li>Apres l'appel, ajoutez un resume et une disposition (resultat)</li>
+</ol>
+
+<p><strong>Dispositions d'appel</strong> :</p>
+<table>
+<thead>
+    <tr><th>Disposition</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Repondu - Interesse</strong></td><td>Le contact est interesse, prochaine etape definie</td></tr>
+  <tr><td><strong>Repondu - Pas interesse</strong></td><td>Contact non interesse</td></tr>
+  <tr><td><strong>Repondu - Rappeler</strong></td><td>Demande d'etre rappele plus tard</td></tr>
+  <tr><td><strong>Messagerie vocale</strong></td><td>Tombe sur la boite vocale</td></tr>
+  <tr><td><strong>Pas de reponse</strong></td><td>Personne n'a decroche</td></tr>
+  <tr><td><strong>Numero invalide</strong></td><td>Numero hors service ou incorrect</td></tr>
+  <tr><td><strong>Occupe</strong></td><td>Ligne occupee</td></tr>
+</tbody>
+</table>
+<h3>2. Recevoir un appel entrant</h3>
+
+<ol>
+<li>Un appel arrive dans le systeme</li>
+<li>Le systeme identifie le numero et affiche la fiche contact (si existant)</li>
+<li>Une notification apparait avec le nom du contact</li>
+<li>Cliquez sur <strong>Accepter</strong> pour repondre</li>
+<li>La fiche contact s'ouvre automatiquement</li>
+<li>Apres l'appel, ajoutez notes et disposition</li>
+</ol>
+
+<h3>3. Lancer une campagne d'appels (Power Dialer)</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Preparez une liste de contacts a appeler (ou utilisez un segment)</li>
+<li>Allez dans le dialeur</li>
+<li>Cliquez sur <strong>Campagne</strong> et selectionnez votre liste</li>
+<li>Configurez :</li>
+</ol>
+<ul>
+<li>Nombre de lignes simultanees (1 a 3 par agent)</li>
+<li>Script d'appel (texte que l'agent peut suivre)</li>
+<li>Dispositions disponibles</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Lancer la campagne</strong></li>
+<li>Le systeme appelle automatiquement le prochain contact quand l'agent est disponible</li>
+</ol>
+
+<h3>4. Gerer les campagnes SMS</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/sms-campaigns</code></p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouvelle campagne SMS</strong></li>
+<li>Selectionnez un modele SMS ou redigez le message</li>
+<li>Personnalisez avec des variables ({prenom}, {nom_produit})</li>
+<li>Selectionnez l'audience (liste ou segment)</li>
+<li>Planifiez ou envoyez immediatement</li>
+<li>Suivez les taux de livraison et les reponses</li>
+</ol>
+
+<h3>5. Planifier les equipes</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/scheduling</code></p>
+
+<ul>
+<li>Creez des quarts de travail (shifts)</li>
+<li>Assignez les agents aux quarts</li>
+<li>Gerez les pauses et les conges</li>
+<li>Le systeme optimise la couverture selon les volumes prevus</li>
+</ul>
+
+<h3>6. Suivi de l'adherence</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/adherence</code></p>
+
+<ul>
+<li>Comparez le planning prevu vs le temps reel</li>
+<li>Identifiez les agents en retard ou absents</li>
+<li>Mesurez le taux de conformite aux horaires</li>
+<li>Generez des rapports pour la gestion des ressources humaines</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Journee type d'un agent du centre d'appels</h3>
+<ol>
+<li>Connexion au systeme : passez en statut "Disponible"</li>
+<li>Traitez les appels entrants de la file d'attente</li>
+<li>Entre les appels, travaillez la campagne sortante</li>
+<li>Prenez des pauses planifiees (passez en statut "Pause")</li>
+<li>En fin de journee, passez en statut "Hors ligne"</li>
+</ol>
+
+<h3>Mise en place d'une campagne de prospection B2B</h3>
+<ol>
+<li>Creez un segment "Cliniques Quebec sans commande"</li>
+<li>Creez une campagne d'appels avec un script adapte</li>
+<li>Assignez 2-3 agents a la campagne</li>
+<li>Lancez le power dialer</li>
+<li>Suivez les resultats sur le wallboard</li>
+<li>Analysez les dispositions : combien d'interesses ?</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Ai-je besoin d'un casque ?</strong></p>
+<p>R : Fortement recommande. Un casque avec microphone offre une bien meilleure qualite audio que les haut-parleurs de l'ordinateur, et evite les echos.</p>
+
+<p><strong>Q : Les appels sont-ils enregistres ?</strong></p>
+<p>R : Oui, si la fonctionnalite est activee dans les parametres. Au Canada, la loi exige d'informer l'interlocuteur qu'il est enregistre (un message automatique peut etre joue en debut d'appel).</p>
+
+<p><strong>Q : Combien coute un appel ?</strong></p>
+<p>R : Les tarifs dependent du plan Telnyx. En general : appels locaux canadiens ~0.01 $CA/min, interurbains ~0.02 $CA/min. Les appels entrants sont generalement gratuits.</p>
+
+<p><strong>Q : Puis-je utiliser mon numero de telephone personnel ?</strong></p>
+<p>R : Non. Le systeme utilise des numeros Telnyx dedies configures dans la section Telephonie. C'est necessaire pour l'identification, l'enregistrement et la conformite.</p>
+
+<hr>
+
+<h2>Strategie expert : scripts d'appel adaptes au commerce de peptides</h2>
+
+<h3>Principes generaux</h3>
+
+<p>Un bon script d'appel n'est pas un texte rigide lu mot a mot. C'est un guide structurant qui assure la coherence et la qualite de chaque interaction, tout en laissant de la place a la conversation naturelle. Pour les peptides de recherche, le ton doit etre professionnel et technique -- vos interlocuteurs sont souvent des scientifiques.</p>
+
+<h3>Script appel entrant : accueil et qualification</h3>
+
+<p><strong>Salutation bilingue</strong> (OBLIGATOIRE pour le Quebec) :</p>
+<blockquote>
+<p>"BioCycle Peptides, bonjour! BioCycle Peptides, hello! Comment puis-je vous aider? How can I help you?"</p>
+</blockquote>
+
+<p><em>Continuer dans la langue choisie par l'appelant.</em></p>
+
+<p><strong>Phase 1 : Identification (30 secondes)</strong></p>
+<blockquote>
+<p>"Puis-je avoir votre nom et votre adresse email pour que je consulte votre dossier?"</p>
+</blockquote>
+
+<p><em>Rechercher le contact dans Koraline. Si existant, la fiche s'ouvre automatiquement.</em></p>
+
+<p><strong>Phase 2 : Qualification du besoin (1-2 minutes)</strong></p>
+<blockquote>
+<p>"D'accord [prenom]. Comment puis-je vous aider aujourd'hui?"</p>
+</blockquote>
+
+<p><em>Ecouter activement. Identifier si c'est :</em></p>
+<ul>
+<li>Une question sur un produit → Transferer vers le guide produit</li>
+<li>Un probleme de commande → Ouvrir la commande dans le systeme</li>
+<li>Une question technique (reconstitution, dosage) → Fournir les informations ou proposer le guide PDF</li>
+<li>Une demande B2B (volume, COA, compte) → Transferer au representant B2B</li>
+</ul>
+
+<p><strong>Phase 3 : Resolution et fermeture</strong></p>
+<blockquote>
+<p>"Y a-t-il autre chose que je puisse faire pour vous? Merci d'avoir appele BioCycle Peptides. Bonne journee!"</p>
+</blockquote>
+
+<p><em>Ajouter les notes dans la fiche contact. Selectionner la disposition d'appel.</em></p>
+
+<h3>Script relance panier abandonne</h3>
+
+<p>Ce script est utilise quand l'equipe appelle un client qui a abandonne un panier de valeur significative (> 150 $CA).</p>
+
+<p><strong>Timing optimal</strong> : 2 a 4 heures apres l'abandon. Au-dela de 24h, le taux de conversion chute drastiquement.</p>
+
+<p><strong>Taux de conversion attendu</strong> : 5 a 15% (nettement superieur aux emails de relance).</p>
+
+<p><strong>Script</strong> :</p>
+<blockquote>
+<p>"Bonjour [prenom], ici [votre nom] de BioCycle Peptides. Je vous appelle car j'ai vu que vous aviez commence une commande sur notre site plus tot aujourd'hui. Je voulais m'assurer que tout s'etait bien passe -- avez-vous rencontre un probleme technique ou avez-vous des questions sur les produits?"</p>
+</blockquote>
+
+<p><em>Scenarii de reponse :</em></p>
+
+<table>
+<thead>
+    <tr><th>Reponse client</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td>"J'ai eu un probleme technique"</td><td>Aider a finaliser la commande par telephone ou renvoyer un lien de panier</td></tr>
+  <tr><td>"J'hesite sur le produit"</td><td>Repondre aux questions, proposer un COA, rassurer sur la qualite</td></tr>
+  <tr><td>"C'est trop cher"</td><td>Proposer le code promo abandon panier (10%) ou suggerer une quantite plus petite</td></tr>
+  <tr><td>"Je n'ai plus besoin"</td><td>Remercier, proposer de rester informe des promotions</td></tr>
+  <tr><td>"Je vais revenir plus tard"</td><td>Confirmer que le panier est sauvegarde, envoyer un rappel par email</td></tr>
+</tbody>
+</table>
+<p><strong>Fermeture</strong> :</p>
+<blockquote>
+<p>"Parfait! N'hesitez pas a nous appeler si vous avez d'autres questions. Vous pouvez aussi nous joindre par email a support@biocyclepeptides.com. Merci et bonne journee!"</p>
+</blockquote>
+
+<h3>Script prospection B2B (appel sortant)</h3>
+
+<p>Pour les appels vers des laboratoires ou cliniques identifies comme prospects :</p>
+
+<blockquote>
+<p>"Bonjour, ici [votre nom] de BioCycle Peptides. Nous sommes un fournisseur canadien de peptides de recherche de haute purete. Je contacte votre laboratoire car nous avons vu que vous travaillez sur [domaine de recherche -- si connu]. Est-ce que [nom du PI] est disponible?"</p>
+</blockquote>
+
+<p><em>Si le PI est disponible :</em></p>
+<blockquote>
+<p>"Docteur [nom], je serai bref. BioCycle Peptides fournit des peptides de recherche avec une purete de 98%+ et des COA complets. Nous offrons des prix competitifs pour les laboratoires canadiens, avec livraison en 2-3 jours. Puis-je vous envoyer notre catalogue et un COA d'echantillon?"</p>
+</blockquote>
+
+<h3>Metriques de performance appels</h3>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Cible equipe</th><th>Cible agent individuel</th></tr>
+</thead>
+<tbody>
+  <tr><td>Taux de reponse appels entrants</td><td>> 85% en < 20 secondes</td><td>--</td></tr>
+  <tr><td>Duree moyenne appel entrant</td><td>3-5 minutes</td><td>3-5 minutes</td></tr>
+  <tr><td>Taux de resolution au premier appel</td><td>> 70%</td><td>> 70%</td></tr>
+  <tr><td>Appels sortants par jour (prospection)</td><td>--</td><td>20-30 appels</td></tr>
+  <tr><td>Taux de contact (sortant)</td><td>--</td><td>30-40%</td></tr>
+  <tr><td>Taux de conversion panier abandonne (appel)</td><td>5-15%</td><td>> 8%</td></tr>
+  <tr><td>Score qualite (evaluation QA)</td><td>> 80/100</td><td>> 80/100</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Softphone</strong></td><td>Telephone logiciel fonctionnant dans le navigateur</td></tr>
+  <tr><td><strong>VoIP</strong></td><td>Voice over IP, appels telephoniques via Internet</td></tr>
+  <tr><td><strong>Wallboard</strong></td><td>Ecran de supervision en temps reel du centre d'appels</td></tr>
+  <tr><td><strong>Power dialer</strong></td><td>Systeme appelant automatiquement une liste de contacts</td></tr>
+  <tr><td><strong>Disposition</strong></td><td>Resultat d'un appel (repondu, messagerie, pas de reponse, etc.)</td></tr>
+  <tr><td><strong>SLA</strong></td><td>Service Level Agreement, objectif de temps de reponse</td></tr>
+  <tr><td><strong>Adherence</strong></td><td>Respect des horaires planifies par les agents</td></tr>
+  <tr><td><strong>File d'attente</strong></td><td>Queue dans laquelle les appels entrants attendent un agent</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/telephonie">Telephonie</a> : Configuration des connexions VoIP et numeros</li>
+<li><a href="/admin/crm/contacts">Contacts</a> : Fiches des contacts appeles</li>
+<li><a href="/admin/crm/workflows">Automatisations</a> : Workflows incluant des appels</li>
+<li><a href="/admin/crm/sms-campaigns">Campagnes SMS</a> : Envoi de SMS marketing</li>
+<li><a href="/admin/crm/call-analytics">Rapports</a> : Analytique detaillee des appels</li>
+<li><a href="/admin/crm/leaderboard">Leaderboard</a> : Classement des performances</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="10-crm--10-scraper">
+<h1>Scraper Web pour Generation de Leads</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Scraper</p>
+<p><strong>URL</strong>: <code>/admin/scraper</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>Le <strong>Scraper</strong> est un outil de prospection automatisee qui explore le web pour identifier des leads potentiels pour BioCycle Peptides. Il collecte des informations publiques sur des entreprises et professionnels susceptibles d'etre interesses par vos produits.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Configurer des recherches automatisees par secteur et region</li>
+<li>Extraire des informations de contact depuis des sources publiques</li>
+<li>Importer automatiquement les resultats dans le CRM comme leads</li>
+<li>Programmer des scans reguliers (quotidien, hebdomadaire)</li>
+<li>Filtrer et enrichir les donnees extraites</li>
+<li>Creer des listes ciblees a partir des resultats</li>
+<li>Suivre les sources qui generent les meilleurs leads</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qu'est-ce que le scraping web ?</h3>
+
+<p>Le <strong>scraping</strong> (ou "web scraping") consiste a extraire automatiquement des informations publiees sur des sites web. C'est comme avoir un assistant qui visite des centaines de sites pour noter les coordonnees de prospects potentiels.</p>
+
+<h3>Est-ce legal ?</h3>
+
+<p>Le scraping d'informations <strong>publiquement accessibles</strong> est generalement permis au Canada, sous certaines conditions :</p>
+<ul>
+<li>Les donnees doivent etre publiques (pas derriere un login)</li>
+<li>Le site ne doit pas l'interdire explicitement dans ses conditions d'utilisation</li>
+<li>Les donnees personnelles doivent etre traitees conformement a la LPRPDE/Loi 25</li>
+<li>L'usage doit etre commercial legitime (prospection, pas de spam)</li>
+</ul>
+
+<blockquote>
+<p><strong>Important</strong> : BioCycle Peptides utilise le scraper de maniere ethique, en se limitant aux annuaires professionnels publics et aux sites d'entreprises.</p>
+</blockquote>
+
+<h3>Sources typiques</h3>
+
+<table>
+<thead>
+    <tr><th>Source</th><th>Type de donnees</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Annuaires professionnels</strong></td><td>Cliniques, pharmacies, medecins</td></tr>
+  <tr><td><strong>LinkedIn</strong> (via API)</td><td>Profils professionnels, entreprises</td></tr>
+  <tr><td><strong>Google Maps</strong></td><td>Commerces locaux, coordonnees, avis</td></tr>
+  <tr><td><strong>Registres publics</strong></td><td>Entreprises enregistrees au Quebec</td></tr>
+  <tr><td><strong>Sites d'associations</strong></td><td>Membres d'ordres professionnels</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>CRM > <strong>Scraper</strong> dans le panneau lateral</li>
+<li>Ou Systeme > Outils > <strong>Scraper</strong></li>
+<li>URL directe : <code>/admin/scraper</code></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. La barre de ruban</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau scan</strong></td><td>Lancer une nouvelle recherche</td></tr>
+  <tr><td><strong>Historique</strong></td><td>Voir les scans precedents</td></tr>
+  <tr><td><strong>Importer</strong></td><td>Envoyer les resultats dans le CRM</td></tr>
+  <tr><td><strong>Parametres</strong></td><td>Configurer les sources et filtres</td></tr>
+</tbody>
+</table>
+<h3>2. Le formulaire de recherche</h3>
+
+<p>Champs de configuration d'un scan :</p>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Description</th><th>Exemple</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Mots-cles</strong></td><td>Termes de recherche</td><td>"clinique peptides", "medecin sport"</td></tr>
+  <tr><td><strong>Localisation</strong></td><td>Region geographique</td><td>Quebec, Montreal, Canada</td></tr>
+  <tr><td><strong>Secteur</strong></td><td>Domaine d'activite</td><td>Sante, pharmaceutique, sport</td></tr>
+  <tr><td><strong>Source</strong></td><td>Quel site/annuaire explorer</td><td>Google Maps, Pages Jaunes</td></tr>
+  <tr><td><strong>Limite</strong></td><td>Nombre max de resultats</td><td>50, 100, 500</td></tr>
+</tbody>
+</table>
+<h3>3. Les resultats</h3>
+
+<p>Tableau des prospects trouves :</p>
+<ul>
+<li>Nom de l'entreprise/personne</li>
+<li>Adresse email (si trouvee)</li>
+<li>Telephone</li>
+<li>Site web</li>
+<li>Adresse</li>
+<li>Score de pertinence (note automatique)</li>
+<li>Statut : nouveau, importe, ignore</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Lancer un scan</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau scan</strong></li>
+<li>Remplissez les criteres de recherche :</li>
+</ol>
+<ul>
+<li>Mots-cles : "clinique sante naturopathe Montreal"</li>
+<li>Localisation : "Montreal, QC"</li>
+<li>Source : Google Maps</li>
+<li>Limite : 100 resultats</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Lancer le scan</strong></li>
+<li>Le systeme explore la source et collecte les resultats</li>
+<li>Attendez la fin du scan (barre de progression)</li>
+</ol>
+
+<blockquote>
+<p><strong>Note</strong> : Un scan peut prendre de quelques secondes a plusieurs minutes selon la source et le nombre de resultats demandes.</p>
+</blockquote>
+
+<h3>2. Examiner et filtrer les resultats</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Une fois le scan termine, les resultats s'affichent en tableau</li>
+<li>Verifiez la pertinence de chaque resultat :</li>
+</ol>
+<ul>
+<li>Score de pertinence (calcule automatiquement)</li>
+<li>Completude des donnees (email present ? telephone ?)</li>
+</ul>
+<ol>
+<li>Cochez les resultats pertinents</li>
+<li>Marquez les non-pertinents comme "ignores"</li>
+<li>Filtrez par score, secteur, ou completude des donnees</li>
+</ol>
+
+<h3>3. Importer les resultats dans le CRM</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez les resultats a importer (ou "tous les pertinents")</li>
+<li>Cliquez sur <strong>Importer dans le CRM</strong></li>
+<li>Configurez l'import :</li>
+</ol>
+<ul>
+<li><strong>Type</strong> : lead, contact, ou entreprise</li>
+<li><strong>Source</strong> : sera taguee automatiquement ("Scraper - Google Maps")</li>
+<li><strong>Assignation</strong> : representant par defaut ou round-robin</li>
+<li><strong>Tags</strong> : tags a appliquer automatiquement</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Importer</strong></li>
+<li>Les resultats deviennent des leads dans le CRM</li>
+</ol>
+
+<h3>4. Programmer des scans recurrents</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Creez un scan avec vos criteres habituels</li>
+<li>Activez l'option <strong>Recurrence</strong></li>
+<li>Choisissez la frequence : quotidien, hebdomadaire, mensuel</li>
+<li>Le systeme lancera le scan automatiquement et vous notifiera des nouveaux resultats</li>
+<li>Les doublons sont detectes automatiquement (un meme contact n'est pas importe deux fois)</li>
+</ol>
+
+<h3>5. Enrichissement des donnees</h3>
+
+<p>Le scraper peut enrichir les fiches existantes :</p>
+<ul>
+<li>Trouver l'email d'un contact dont vous n'avez que le nom</li>
+<li>Ajouter le site web d'une entreprise</li>
+<li>Completer l'adresse a partir du nom</li>
+<li>Verifier si un numero de telephone est encore actif</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Campagne de prospection regionale</h3>
+<ol>
+<li>Lancez un scan : "cliniques sante" dans "Laval, QC"</li>
+<li>Examinez les resultats et filtrez les plus pertinents</li>
+<li>Importez comme leads dans le CRM</li>
+<li>Creez un segment "Prospects Laval cliniques"</li>
+<li>Lancez une sequence d'emails d'introduction</li>
+<li>Apres 5 jours, lancez une campagne d'appels sur les non-repondants</li>
+</ol>
+
+<h3>Veille concurrentielle</h3>
+<ol>
+<li>Programmez un scan hebdomadaire sur vos mots-cles</li>
+<li>Identifiez les nouveaux acteurs du marche</li>
+<li>Ajoutez les contacts pertinents dans une liste de veille</li>
+<li>Analysez les tendances (nouveaux types de cliniques, nouvelles regions)</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Le scraper peut-il trouver des emails avec certitude ?</strong></p>
+<p>R : Pas toujours. Les emails sont extraits des sites publics ou devines par des patterns (prenom.nom@entreprise.com). Le systeme indique un taux de confiance pour chaque email trouve.</p>
+
+<p><strong>Q : Combien de scans puis-je lancer par jour ?</strong></p>
+<p>R : Cela depend du plan d'abonnement et des limites des sources (API). En general, 5-10 scans par jour sont raisonnables.</p>
+
+<p><strong>Q : Les resultats sont-ils toujours a jour ?</strong></p>
+<p>R : Les donnees sont aussi recentes que la source. Les annuaires sont generalement mis a jour regulierement. Pour des donnees critiques, verifiez manuellement avant de contacter.</p>
+
+<p><strong>Q : Comment eviter d'importer des doublons ?</strong></p>
+<p>R : Le systeme compare automatiquement les emails et numeros de telephone avec votre base existante. Les doublons potentiels sont signales avant l'import.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Scraping</strong></td><td>Extraction automatisee de donnees depuis des sites web</td></tr>
+  <tr><td><strong>Scan</strong></td><td>Une session de scraping avec des criteres definis</td></tr>
+  <tr><td><strong>Enrichissement</strong></td><td>Ajout d'informations complementaires a une fiche existante</td></tr>
+  <tr><td><strong>Score de pertinence</strong></td><td>Note automatique evaluant la qualite d'un resultat</td></tr>
+  <tr><td><strong>Recurrence</strong></td><td>Programmation d'un scan a intervalle regulier</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/leads">Leads</a> : Ou sont importes les resultats du scraper</li>
+<li><a href="/admin/crm/contacts">Contacts</a> : Enrichissement des fiches existantes</li>
+<li><a href="/admin/crm/lists">Listes et Segments</a> : Organisation des leads scrapes</li>
+<li><a href="/admin/crm/workflows">Automatisations</a> : Workflows post-import</li>
+<li><a href="/admin/crm/import-export">Import/Export</a> : Autres methodes d'importation</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="10-crm--11-leaderboard">
+<h1>Leaderboard et Gamification des Ventes</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Ventes > Leaderboard</p>
+<p><strong>URL</strong>: <code>/admin/crm/leaderboard</code></p>
+<p><strong>Niveau</strong>: Debutant a intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>Le <strong>Leaderboard</strong> (classement des ventes) est un outil de motivation et de suivi de performance qui classe vos representants commerciaux selon leurs resultats. Il transforme la vente en une competition amicale avec des metriques claires et des objectifs mesurables.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir le classement en temps reel de votre equipe de vente</li>
+<li>Comparer les performances par representant</li>
+<li>Suivre les objectifs individuels et d'equipe (quotas)</li>
+<li>Identifier les meilleurs performeurs et ceux qui ont besoin de coaching</li>
+<li>Configurer des periodes de competition (mensuel, trimestriel)</li>
+<li>Afficher le leaderboard sur un ecran d'equipe (mode TV)</li>
+<li>Analyser les tendances de performance dans le temps</li>
+<li>Gerer les approbations de deals et soumissions</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Pourquoi un leaderboard ?</h3>
+
+<p>La gamification (transformer le travail en jeu) est une technique prouvee pour stimuler la motivation des equipes de vente. Un classement visible :</p>
+<ul>
+<li>Cree une <strong>competition saine</strong> entre representants</li>
+<li>Rend les objectifs <strong>concrets et visibles</strong></li>
+<li>Permet de <strong>celebrer les succes</strong> publiquement</li>
+<li>Aide a <strong>identifier les besoins</strong> de formation</li>
+</ul>
+
+<h3>Metriques du leaderboard</h3>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Revenu genere</strong></td><td>Montant total des deals gagnes ($CA)</td></tr>
+  <tr><td><strong>Nombre de deals gagnes</strong></td><td>Nombre d'opportunites conclues</td></tr>
+  <tr><td><strong>Valeur pipeline</strong></td><td>Montant total des deals ouverts</td></tr>
+  <tr><td><strong>Activites</strong></td><td>Nombre d'appels + emails + reunions</td></tr>
+  <tr><td><strong>Taux de conversion</strong></td><td>% de leads convertis en clients</td></tr>
+  <tr><td><strong>Panier moyen</strong></td><td>Montant moyen par deal gagne</td></tr>
+  <tr><td><strong>Temps moyen de cycle</strong></td><td>Duree moyenne de la prospection a la conclusion</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>CRM > groupe <strong>Ventes</strong> > <strong>Leaderboard</strong></li>
+<li>URL directe : <code>/admin/crm/leaderboard</code></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. Le classement principal</h3>
+
+<p>Un tableau montrant les representants classes du meilleur au moins bon :</p>
+
+<table>
+<thead>
+    <tr><th>Position</th><th>Representant</th><th>Deals gagnes</th><th>Revenu</th><th>Activites</th><th>Quota (%)</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>Marie L.</td><td>12</td><td>45 200 $</td><td>156</td><td>112%</td></tr>
+  <tr><td>2</td><td>Jean-Marc R.</td><td>10</td><td>38 800 $</td><td>142</td><td>97%</td></tr>
+  <tr><td>3</td><td>Sophie D.</td><td>8</td><td>31 500 $</td><td>118</td><td>79%</td></tr>
+</tbody>
+</table>
+<h3>2. Les filtres temporels</h3>
+
+<table>
+<thead>
+    <tr><th>Periode</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Cette semaine</strong></td><td>Performances de la semaine en cours</td></tr>
+  <tr><td><strong>Ce mois</strong></td><td>Performances du mois en cours</td></tr>
+  <tr><td><strong>Ce trimestre</strong></td><td>Performances du trimestre en cours</td></tr>
+  <tr><td><strong>Cette annee</strong></td><td>Performances de l'annee en cours</td></tr>
+  <tr><td><strong>Personnalise</strong></td><td>Plage de dates specifique</td></tr>
+</tbody>
+</table>
+<h3>3. Les graphiques</h3>
+
+<ul>
+<li><strong>Graphique en barres</strong> : revenu par representant</li>
+<li><strong>Evolution temporelle</strong> : progression du revenu dans le temps</li>
+<li><strong>Radar</strong> : performance multi-criteres (appels, emails, deals, revenu)</li>
+<li><strong>Comparaison vs objectif</strong> : barre de progression vers le quota</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Configurer les quotas</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/quotas</code></p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Allez dans CRM > Ventes > <strong>Quotas</strong></li>
+<li>Pour chaque representant, definissez :</li>
+</ol>
+<ul>
+<li><strong>Quota de revenu</strong> : montant a atteindre par mois/trimestre ($CA)</li>
+<li><strong>Quota d'activites</strong> : nombre minimum d'appels, emails, reunions</li>
+<li><strong>Quota de deals</strong> : nombre minimum de deals a conclure</li>
+</ul>
+<ol>
+<li>Sauvegardez</li>
+</ol>
+
+<p>Le leaderboard calcule automatiquement le pourcentage d'atteinte du quota.</p>
+
+<h3>2. Gerer les approbations</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/approvals</code></p>
+
+<p>Certains deals necessitent une approbation avant d'etre conclus :</p>
+<ul>
+<li>Deals au-dessus d'un montant seuil (ex: > 10 000 $CA)</li>
+<li>Remises superieures a un pourcentage (ex: > 15%)</li>
+<li>Conditions speciales de paiement</li>
+</ul>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Le representant soumet le deal pour approbation</li>
+<li>Le manager recoit une notification</li>
+<li>Il examine les details et approuve ou refuse</li>
+<li>Le deal peut ensuite etre marque comme gagne</li>
+</ol>
+
+<h3>3. Gerer les taux de change</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/exchange-rates</code></p>
+
+<p>Si vous avez des clients internationaux :</p>
+<ul>
+<li>Definissez les taux de change USD/CAD, EUR/CAD</li>
+<li>Les montants du pipeline sont automatiquement convertis en $CA</li>
+<li>Le leaderboard utilise toujours la devise de reference ($CA)</li>
+</ul>
+
+<h3>4. Mode affichage TV</h3>
+
+<p><strong>Objectif</strong> : Afficher le leaderboard sur un ecran dans le bureau de vente.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur le bouton <strong>Mode TV</strong> en haut a droite</li>
+<li>L'interface passe en plein ecran avec des chiffres grand format</li>
+<li>Le rafraichissement est automatique (toutes les 5 minutes)</li>
+<li>Les animations soulignent les changements de position</li>
+</ol>
+
+<hr>
+
+<h2>Pages associees dans la section Ventes</h2>
+
+<h3>Soumissions (<code>/admin/crm/quotes</code>)</h3>
+<ul>
+<li>Creez des devis professionnels</li>
+<li>Envoyez par email directement</li>
+<li>Suivez l'etat : brouillon, envoye, accepte, refuse</li>
+</ul>
+
+<h3>Previsions (<code>/admin/crm/forecast</code>)</h3>
+<ul>
+<li>Projection des revenus futurs</li>
+<li>Base sur le pipeline actuel et les probabilites par etape</li>
+<li>Comparaison objectifs vs prevision vs realisation</li>
+</ul>
+
+<h3>Contrats (<code>/admin/crm/contracts</code>)</h3>
+<ul>
+<li>Gestion des contrats lies aux deals</li>
+<li>Suivi des dates d'echeance et de renouvellement</li>
+<li>Modeles de contrats reutilisables</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Revue mensuelle de performance</h3>
+<ol>
+<li>Ouvrez le leaderboard, periode "Ce mois"</li>
+<li>Identifiez les 3 meilleurs : preparez des felicitations</li>
+<li>Identifiez ceux sous 70% du quota : planifiez un coaching</li>
+<li>Comparez avec le mois precedent : tendance positive ou negative ?</li>
+<li>Ajustez les quotas si necessaire pour le mois suivant</li>
+</ol>
+
+<h3>Competition trimestrielle</h3>
+<ol>
+<li>Definissez un objectif d'equipe ambitieux</li>
+<li>Communiquez le defi (ex: "50 000 $ de revenu nouveau ce trimestre")</li>
+<li>Affichez le leaderboard en mode TV dans le bureau</li>
+<li>Faites un point hebdomadaire sur la progression</li>
+<li>Celebrez les resultats en fin de trimestre</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Les representants voient-ils le leaderboard ?</strong></p>
+<p>R : Par defaut, oui. Chaque representant voit sa position et celles de ses collegues. Vous pouvez desactiver cette visibilite dans les parametres si prefere.</p>
+
+<p><strong>Q : Comment sont comptes les deals d'equipe ?</strong></p>
+<p>R : Un deal est attribue au representant principal. Si la vente est collaborative, vous pouvez activer le "split credit" qui repartit le revenu entre les participants.</p>
+
+<p><strong>Q : Le leaderboard prend-il en compte les remboursements ?</strong></p>
+<p>R : Oui. Si un deal gagne est ensuite rembourse, le revenu est deduit du score du representant.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Leaderboard</strong></td><td>Classement des representants par performance</td></tr>
+  <tr><td><strong>Quota</strong></td><td>Objectif chiffre a atteindre par periode</td></tr>
+  <tr><td><strong>Gamification</strong></td><td>Utilisation de mecaniques de jeu pour motiver</td></tr>
+  <tr><td><strong>Split credit</strong></td><td>Repartition du credit d'une vente entre plusieurs representants</td></tr>
+  <tr><td><strong>Forecast</strong></td><td>Prevision des revenus futurs</td></tr>
+  <tr><td><strong>Approbation</strong></td><td>Validation manageriale requise pour certains deals</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/pipeline">Pipeline</a> : Source des deals comptabilises</li>
+<li><a href="/admin/crm/quotas">Quotas</a> : Configuration des objectifs</li>
+<li><a href="/admin/crm/forecast">Previsions</a> : Projections de revenus</li>
+<li><a href="/admin/crm/quotes">Soumissions</a> : Devis associes aux deals</li>
+<li><a href="/admin/crm/agents/performance">Performance agents</a> : Metriques detaillees</li>
+<li><a href="/admin/crm/analytics">Rapports CRM</a> : Analyses approfondies</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="10-crm--12-rapports">
+<h1>Rapports et Analytique CRM</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Rapports</p>
+<p><strong>URL</strong>: <code>/admin/crm/analytics</code>, <code>/admin/crm/reports/builder</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La section <strong>Rapports CRM</strong> fournit des analyses detaillees de votre activite commerciale. Elle regroupe plusieurs outils d'analyse pour comprendre vos performances, identifier les tendances et prendre des decisions eclairees.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Consulter des tableaux de bord analytiques preconfigures</li>
+<li>Creer des rapports personnalises avec le Report Builder</li>
+<li>Analyser l'entonnoir de conversion (funnel analysis)</li>
+<li>Suivre les rapports d'activite de l'equipe</li>
+<li>Mesurer le revenu recurrent (MRR/ARR)</li>
+<li>Identifier les sources d'acquisition les plus performantes (attribution)</li>
+<li>Analyser le taux de churn (attrition)</li>
+<li>Calculer la valeur a vie des clients (CLV)</li>
+<li>Effectuer des analyses de cohortes</li>
+<li>Visualiser les patterns d'activite avec des heatmaps</li>
+<li>Suivre le parcours complet d'un deal (deal journey)</li>
+<li>Prendre des snapshots pour comparer dans le temps</li>
+<li>Construire des tableaux de bord personnalises</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Pourquoi analyser ses ventes ?</h3>
+
+<p>Sans analyse, vous naviguez a l'aveugle. Les rapports CRM repondent a des questions cruciales :</p>
+<ul>
+<li><strong>Combien</strong> avons-nous vendu ce mois-ci vs le mois dernier ?</li>
+<li><strong>D'ou</strong> viennent nos meilleurs clients ?</li>
+<li><strong>Pourquoi</strong> certains deals sont perdus ?</li>
+<li><strong>Qui</strong> performe le mieux dans l'equipe ?</li>
+<li><strong>Combien</strong> vaut un client sur sa duree de vie ?</li>
+<li><strong>Ou</strong> perdons-nous des clients dans le pipeline ?</li>
+</ul>
+
+<h3>Les types de rapports</h3>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Question</th><th>Page</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Analytique generale</strong></td><td>Vue d'ensemble des performances</td><td><code>/admin/crm/analytics</code></td></tr>
+  <tr><td><strong>Report Builder</strong></td><td>Rapports personnalises</td><td><code>/admin/crm/reports/builder</code></td></tr>
+  <tr><td><strong>Funnel Analysis</strong></td><td>Ou les prospects quittent le pipeline ?</td><td><code>/admin/crm/funnel-analysis</code></td></tr>
+  <tr><td><strong>Activity Reports</strong></td><td>Qui fait quoi dans l'equipe ?</td><td><code>/admin/crm/activity-reports</code></td></tr>
+  <tr><td><strong>Recurring Revenue</strong></td><td>Quel est notre revenu recurrent ?</td><td><code>/admin/crm/recurring-revenue</code></td></tr>
+  <tr><td><strong>Attribution</strong></td><td>Quel canal genere le plus de ventes ?</td><td><code>/admin/crm/attribution</code></td></tr>
+  <tr><td><strong>Churn</strong></td><td>Combien de clients perdons-nous ?</td><td><code>/admin/crm/churn</code></td></tr>
+  <tr><td><strong>CLV</strong></td><td>Combien vaut un client a vie ?</td><td><code>/admin/crm/clv</code></td></tr>
+  <tr><td><strong>Cohort Analysis</strong></td><td>Comment se comportent des groupes similaires ?</td><td><code>/admin/crm/cohort-analysis</code></td></tr>
+  <tr><td><strong>Heatmaps</strong></td><td>Quand sont nos pics d'activite ?</td><td><code>/admin/crm/heatmaps</code></td></tr>
+  <tr><td><strong>Deal Journey</strong></td><td>Quel est le parcours d'un deal type ?</td><td><code>/admin/crm/deal-journey</code></td></tr>
+  <tr><td><strong>Snapshots</strong></td><td>Comment etait le pipeline il y a X jours ?</td><td><code>/admin/crm/snapshots</code></td></tr>
+  <tr><td><strong>Dashboard Builder</strong></td><td>Tableaux de bord sur mesure</td><td><code>/admin/crm/dashboard-builder</code></td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<p>Les rapports sont dans le groupe <strong>Rapports</strong> du panneau CRM, ou directement via les URLs listees ci-dessus.</p>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Analytique generale (<code>/admin/crm/analytics</code>)</h3>
+
+<p>Vue d'ensemble avec les KPIs principaux :</p>
+
+<table>
+<thead>
+    <tr><th>KPI</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Revenu total</strong></td><td>Somme des deals gagnes sur la periode</td></tr>
+  <tr><td><strong>Deals gagnes vs perdus</strong></td><td>Ratio de succes</td></tr>
+  <tr><td><strong>Pipeline value</strong></td><td>Valeur des deals ouverts</td></tr>
+  <tr><td><strong>Cycle moyen</strong></td><td>Duree moyenne d'un deal de la creation a la conclusion</td></tr>
+  <tr><td><strong>Win rate</strong></td><td>Taux de deals gagnes / (gagnes + perdus)</td></tr>
+  <tr><td><strong>Taille moyenne deal</strong></td><td>Montant moyen d'un deal gagne</td></tr>
+</tbody>
+</table>
+<p>Graphiques disponibles :</p>
+<ul>
+<li>Evolution du revenu (ligne)</li>
+<li>Repartition par etape (barres empilees)</li>
+<li>Top sources (camembert)</li>
+<li>Top representants (barres horizontales)</li>
+</ul>
+
+<h3>2. Report Builder (<code>/admin/crm/reports/builder</code>)</h3>
+
+<p><strong>Objectif</strong> : Creer des rapports 100% personnalises.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau rapport</strong></li>
+<li>Choisissez le <strong>type de donnees</strong> : contacts, deals, activites, commandes</li>
+<li>Selectionnez les <strong>colonnes</strong> a afficher (glisser-deposer)</li>
+<li>Ajoutez des <strong>filtres</strong> (periode, representant, source, etc.)</li>
+<li>Choisissez le <strong>type de visualisation</strong> : tableau, barres, lignes, camembert, jauge</li>
+<li>Nommez et sauvegardez le rapport</li>
+<li>Optionnel : planifiez un envoi automatique par email (quotidien, hebdomadaire)</li>
+</ol>
+
+<h3>3. Analyse d'entonnoir (<code>/admin/crm/funnel-analysis</code>)</h3>
+
+<p><strong>Objectif</strong> : Comprendre ou les prospects "tombent" du pipeline.</p>
+
+<p>L'entonnoir montre :</p>
+<pre><code>Prospection :     100 deals (100%)
+  ↓ -30%
+Qualification :    70 deals (70%)
+  ↓ -28%
+Proposition :      42 deals (42%)
+  ↓ -24%
+Negociation :      18 deals (18%)
+  ↓ -10%
+Gagne :             8 deals (8%)</code></pre>
+
+<p><strong>Lecture</strong> : Sur 100 deals entres en prospection, 30 sont perdus avant la qualification. C'est la ou il faut agir en priorite.</p>
+
+<p><strong>Filtres disponibles</strong> :</p>
+<ul>
+<li>Par representant</li>
+<li>Par source</li>
+<li>Par periode</li>
+<li>Par montant</li>
+</ul>
+
+<h3>4. Revenu recurrent (<code>/admin/crm/recurring-revenue</code>)</h3>
+
+<p>Pour les ventes par abonnement (tres pertinent pour BioCycle Peptides) :</p>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>MRR</strong></td><td>Monthly Recurring Revenue - revenu recurrent mensuel</td></tr>
+  <tr><td><strong>ARR</strong></td><td>Annual Recurring Revenue - revenu recurrent annuel</td></tr>
+  <tr><td><strong>New MRR</strong></td><td>Nouveaux abonnements ce mois</td></tr>
+  <tr><td><strong>Expansion MRR</strong></td><td>Augmentation des abonnements existants (upgrades)</td></tr>
+  <tr><td><strong>Churn MRR</strong></td><td>Perte de revenu due aux desabonnements</td></tr>
+  <tr><td><strong>Net MRR</strong></td><td>New + Expansion - Churn</td></tr>
+</tbody>
+</table>
+<h3>5. Attribution (<code>/admin/crm/attribution</code>)</h3>
+
+<p><strong>Objectif</strong> : Savoir quel canal marketing genere le plus de revenus.</p>
+
+<table>
+<thead>
+    <tr><th>Canal</th><th>Leads</th><th>Deals gagnes</th><th>Revenu</th><th>Cout acquisition</th></tr>
+</thead>
+<tbody>
+  <tr><td>Google Ads</td><td>120</td><td>8</td><td>28 000 $</td><td>45 $</td></tr>
+  <tr><td>Email marketing</td><td>85</td><td>12</td><td>42 000 $</td><td>12 $</td></tr>
+  <tr><td>Salon professionnel</td><td>40</td><td>6</td><td>35 000 $</td><td>180 $</td></tr>
+  <tr><td>Referral</td><td>30</td><td>10</td><td>55 000 $</td><td>0 $</td></tr>
+</tbody>
+</table>
+<p><strong>Modeles d'attribution</strong> :</p>
+<ul>
+<li><strong>Premier contact</strong> : tout le credit au premier canal</li>
+<li><strong>Dernier contact</strong> : tout le credit au dernier canal avant la vente</li>
+<li><strong>Lineaire</strong> : credit reparti egalement entre tous les canaux</li>
+<li><strong>Pondere</strong> : plus de credit aux etapes proches de la conclusion</li>
+</ul>
+
+<h3>6. Churn et retention (<code>/admin/crm/churn</code>)</h3>
+
+<p><strong>Objectif</strong> : Mesurer et reduire la perte de clients.</p>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Taux de churn mensuel</strong></td><td>% de clients perdus ce mois</td></tr>
+  <tr><td><strong>Churn revenue</strong></td><td>Montant de revenu perdu</td></tr>
+  <tr><td><strong>Raisons de churn</strong></td><td>Pourquoi les clients partent (prix, qualite, concurrent)</td></tr>
+  <tr><td><strong>Cohorte de retention</strong></td><td>% de clients encore actifs X mois apres leur premier achat</td></tr>
+</tbody>
+</table>
+<h3>7. CLV - Customer Lifetime Value (<code>/admin/crm/clv</code>)</h3>
+
+<p><strong>Objectif</strong> : Calculer la valeur totale qu'un client genere pendant sa relation avec BioCycle.</p>
+
+<p><strong>Formule simplifiee</strong> :</p>
+<pre><code>CLV = (Panier moyen x Frequence d'achat annuelle) x Duree de vie moyenne
+Exemple : (150 $ x 6 achats/an) x 3 ans = 2 700 $ CLV</code></pre>
+
+<p><strong>Utilite</strong> : Si un client vaut 2 700 $ sur sa vie, vous savez combien investir pour l'acquerir (cout d'acquisition acceptable).</p>
+
+<h3>8. Analyse de cohortes (<code>/admin/crm/cohort-analysis</code>)</h3>
+
+<p><strong>Objectif</strong> : Comparer le comportement de groupes de clients acquis a la meme periode.</p>
+
+<p><strong>Exemple</strong> :</p>
+<table>
+<thead>
+    <tr><th>Cohorte</th><th>Mois 1</th><th>Mois 3</th><th>Mois 6</th><th>Mois 12</th></tr>
+</thead>
+<tbody>
+  <tr><td>Janvier 2026</td><td>100%</td><td>72%</td><td>55%</td><td>40%</td></tr>
+  <tr><td>Fevrier 2026</td><td>100%</td><td>78%</td><td>62%</td><td>-</td></tr>
+  <tr><td>Mars 2026</td><td>100%</td><td>80%</td><td>-</td><td>-</td></tr>
+</tbody>
+</table>
+<p><strong>Lecture</strong> : La cohorte de mars retient mieux ses clients que celle de janvier. Qu'est-ce qui a change ? (nouveau produit, meilleur onboarding, etc.)</p>
+
+<h3>9. Dashboard Builder (<code>/admin/crm/dashboard-builder</code>)</h3>
+
+<p><strong>Objectif</strong> : Creer des tableaux de bord personnalises combinant plusieurs widgets.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau dashboard</strong></li>
+<li>Nommez-le (ex: "Vue directeur commercial")</li>
+<li>Ajoutez des widgets depuis le catalogue :</li>
+</ol>
+<ul>
+<li>KPIs, graphiques, tableaux, jauges, listes</li>
+</ul>
+<ol>
+<li>Configurez chaque widget (source, filtres, periode)</li>
+<li>Disposez-les en glisser-deposer</li>
+<li>Sauvegardez et partagez avec l'equipe</li>
+</ol>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Rapport mensuel de direction</h3>
+<ol>
+<li>Ouvrez l'analytique generale, periode "Ce mois"</li>
+<li>Notez les KPIs principaux (revenu, win rate, pipeline)</li>
+<li>Consultez l'attribution pour les canaux performants</li>
+<li>Verifiez le churn pour les signaux d'alerte</li>
+<li>Exportez le tout en PDF pour la direction</li>
+</ol>
+
+<h3>Diagnostic d'une baisse de performance</h3>
+<ol>
+<li>Comparez les metriques avec la periode precedente</li>
+<li>Analysez l'entonnoir : ou est le blocage ?</li>
+<li>Verifiez les rapports d'activite : l'equipe est-elle moins active ?</li>
+<li>Consultez les cohortes : est-ce un probleme d'acquisition ou de retention ?</li>
+<li>Identifiez les actions correctives</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Les rapports sont-ils en temps reel ?</strong></p>
+<p>R : Les KPIs principaux sont en temps reel. Les rapports complexes (cohortes, CLV) sont recalcules toutes les heures.</p>
+
+<p><strong>Q : Puis-je exporter les rapports ?</strong></p>
+<p>R : Oui, tous les rapports sont exportables en CSV, Excel ou PDF.</p>
+
+<p><strong>Q : Puis-je planifier l'envoi automatique d'un rapport ?</strong></p>
+<p>R : Oui, dans le Report Builder, activez l'option "Envoi planifie" pour recevoir le rapport par email chaque semaine ou chaque mois.</p>
+
+<p><strong>Q : Qui peut voir les rapports ?</strong></p>
+<p>R : Les administrateurs et managers voient tous les rapports. Les representants voient leurs propres metriques mais pas celles des collegues (sauf le leaderboard si active).</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Win rate</strong></td><td>Taux de deals gagnes vs (gagnes + perdus)</td></tr>
+  <tr><td><strong>MRR</strong></td><td>Monthly Recurring Revenue, revenu recurrent mensuel</td></tr>
+  <tr><td><strong>CLV</strong></td><td>Customer Lifetime Value, valeur a vie du client</td></tr>
+  <tr><td><strong>Churn</strong></td><td>Taux d'attrition, perte de clients</td></tr>
+  <tr><td><strong>Attribution</strong></td><td>Identification du canal ayant genere une vente</td></tr>
+  <tr><td><strong>Cohorte</strong></td><td>Groupe de clients acquis dans la meme periode</td></tr>
+  <tr><td><strong>Funnel</strong></td><td>Entonnoir de conversion, visualisation du pipeline</td></tr>
+  <tr><td><strong>Heatmap</strong></td><td>Carte de chaleur montrant les concentrations d'activite</td></tr>
+  <tr><td><strong>Snapshot</strong></td><td>Photo instantanee de l'etat du pipeline a un moment donne</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm">Tableau de bord CRM</a> : Vue synthetique</li>
+<li><a href="/admin/crm/pipeline">Pipeline</a> : Donnees source des rapports</li>
+<li><a href="/admin/crm/leaderboard">Leaderboard</a> : Performance de l'equipe</li>
+<li><a href="/admin/crm/forecast">Previsions</a> : Projections de revenus</li>
+<li><a href="/admin/crm/activity-reports">Rapports d'activite</a> : Detail des actions</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="10-crm--13-import-export">
+<h1>Import et Export de Donnees CRM</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Import/Export</p>
+<p><strong>URL</strong>: <code>/admin/crm/import</code>, <code>/admin/crm/export</code></p>
+<p><strong>Niveau</strong>: Debutant a intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>Les outils d'<strong>Import et Export</strong> permettent de faire entrer des donnees dans le CRM depuis des sources externes (fichiers CSV, Excel, autres systemes) et d'en extraire pour les utiliser ailleurs (comptabilite, rapports, autres outils).</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Importer des contacts, leads ou entreprises depuis un fichier CSV/Excel</li>
+<li>Mapper les colonnes de votre fichier aux champs du CRM</li>
+<li>Detecter et gerer les doublons pendant l'import</li>
+<li>Exporter des contacts, deals ou rapports en CSV/Excel/PDF</li>
+<li>Programmer des exports automatiques</li>
+<li>Migrer des donnees depuis un autre CRM</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Pourquoi importer des donnees ?</h3>
+
+<p>Plusieurs situations courantes :</p>
+<ul>
+<li>Vous <strong>migrez</strong> d'un autre CRM (Salesforce, HubSpot, Excel maison)</li>
+<li>Vous avez collecte des <strong>contacts a un salon</strong> (scanner de badges → CSV)</li>
+<li>Un partenaire vous envoie une <strong>liste de leads</strong> referres</li>
+<li>Vous avez un fichier Excel de clients existants a integrer</li>
+</ul>
+
+<h3>Pourquoi exporter des donnees ?</h3>
+
+<ul>
+<li><strong>Comptabilite</strong> : envoyer la liste des clients a votre comptable</li>
+<li><strong>Marketing</strong> : utiliser les donnees dans un outil externe (Mailchimp)</li>
+<li><strong>Analyse</strong> : travailler les donnees dans Excel ou Google Sheets</li>
+<li><strong>Sauvegarde</strong> : garder une copie de vos donnees CRM</li>
+<li><strong>Rapport</strong> : presentation a la direction</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ul>
+<li><strong>Import</strong> : depuis le ruban de la page Contacts/Leads, bouton <strong>Importer</strong></li>
+<li><strong>Export</strong> : depuis le ruban de n'importe quelle page avec des donnees, bouton <strong>Exporter</strong></li>
+<li>Via le panneau CRM, sous la section appropriee</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Importer des contacts</h3>
+
+<p><strong>Formats acceptes</strong> :</p>
+<ul>
+<li>CSV (virgule, point-virgule ou tabulation)</li>
+<li>Excel (.xlsx)</li>
+<li>vCard (.vcf)</li>
+</ul>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Importer</strong> dans le ruban</li>
+<li>Selectionnez votre fichier</li>
+<li>Le systeme analyse les colonnes et propose un <strong>mappage automatique</strong> :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Colonne du fichier</th><th>Champ CRM detecte</th><th>Statut</th></tr>
+</thead>
+<tbody>
+  <tr><td>Nom</td><td>Nom de famille</td><td>Automatique</td></tr>
+  <tr><td>Prenom</td><td>Prenom</td><td>Automatique</td></tr>
+  <tr><td>Courriel</td><td>Email</td><td>Automatique</td></tr>
+  <tr><td>Tel</td><td>Telephone</td><td>Automatique</td></tr>
+  <tr><td>Ville</td><td>Ville</td><td>Automatique</td></tr>
+  <tr><td>Colonne inconnue</td><td>???</td><td>A mapper manuellement</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Verifiez et ajustez le mappage si necessaire</li>
+<li>Configurez les options :</li>
+</ol>
+<ul>
+<li><strong>Doublons</strong> : ignorer, mettre a jour, creer quand meme</li>
+<li><strong>Tags</strong> : tag a appliquer a tous les imports (ex: "Import salon 2026")</li>
+<li><strong>Assignation</strong> : representant par defaut</li>
+<li><strong>Source</strong> : d'ou viennent ces contacts</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Previsualiser</strong> pour verifier les 5 premieres lignes</li>
+<li>Cliquez sur <strong>Importer</strong></li>
+<li>Le systeme traite le fichier et affiche un rapport :</li>
+</ol>
+<ul>
+<li>X contacts crees</li>
+<li>X mis a jour (doublons)</li>
+<li>X ignores (erreurs)</li>
+</ul>
+
+<blockquote>
+<p><strong>Astuce</strong> : Pour les gros fichiers (plus de 10 000 lignes), l'import se fait en arriere-plan et vous recevrez une notification a la fin.</p>
+</blockquote>
+
+<h3>2. Gerer les doublons a l'import</h3>
+
+<p><strong>Detection des doublons</strong> :</p>
+
+<p>Le systeme compare les contacts importes avec la base existante sur :</p>
+<ul>
+<li><strong>Email</strong> (critere principal)</li>
+<li><strong>Telephone</strong> (critere secondaire)</li>
+<li><strong>Nom + Prenom</strong> (critere complementaire)</li>
+</ul>
+
+<p><strong>Options en cas de doublon</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Option</th><th>Comportement</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Ignorer</strong></td><td>Le contact du fichier est ignore, l'existant est conserve tel quel</td></tr>
+  <tr><td><strong>Mettre a jour</strong></td><td>Les champs vides de l'existant sont completes avec les donnees du fichier</td></tr>
+  <tr><td><strong>Ecraser</strong></td><td>Les donnees du fichier remplacent celles de l'existant</td></tr>
+  <tr><td><strong>Creer quand meme</strong></td><td>Un nouveau contact est cree (doublon volontaire)</td></tr>
+</tbody>
+</table>
+<h3>3. Exporter des contacts</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Allez sur la page dont vous voulez exporter les donnees</li>
+<li>Appliquez les filtres souhaites (ne pas tout exporter si vous n'avez besoin que d'un segment)</li>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban</li>
+<li>Choisissez le format :</li>
+</ol>
+<ul>
+<li><strong>CSV</strong> : compatible avec tout (Excel, Google Sheets, etc.)</li>
+<li><strong>Excel</strong> (.xlsx) : format natif Microsoft Excel</li>
+<li><strong>PDF</strong> : pour impression ou partage</li>
+</ul>
+<ol>
+<li>Selectionnez les colonnes a inclure (ou laissez tout)</li>
+<li>Cliquez sur <strong>Telecharger</strong></li>
+</ol>
+
+<h3>4. Exporter des rapports</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Ouvrez le rapport souhaite (analytics, funnel, CLV, etc.)</li>
+<li>Cliquez sur l'icone <strong>Exporter</strong> en haut a droite du rapport</li>
+<li>Choisissez le format (PDF pour presentation, CSV pour analyse)</li>
+<li>Le fichier est telecharge</li>
+</ol>
+
+<h3>5. Exports programmes</h3>
+
+<p><strong>Objectif</strong> : Recevoir automatiquement un export par email a intervalle regulier.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Configurez un export normalement</li>
+<li>Au lieu de telecharger, cliquez sur <strong>Programmer</strong></li>
+<li>Choisissez la frequence : quotidien, hebdomadaire, mensuel</li>
+<li>Indiquez l'adresse email de destination</li>
+<li>Le systeme enverra le fichier automatiquement</li>
+</ol>
+
+<h3>6. Migration depuis un autre CRM</h3>
+
+<p><strong>Objectif</strong> : Transferer toutes vos donnees depuis un CRM existant.</p>
+
+<p><strong>CRM supportes</strong> :</p>
+<ul>
+<li>Salesforce (export CSV standard)</li>
+<li>HubSpot (export CSV standard)</li>
+<li>Zoho CRM (export CSV)</li>
+<li>Tout CRM exportant en CSV</li>
+</ul>
+
+<p><strong>Processus recommande</strong> :</p>
+<ol>
+<li>Exportez les donnees de l'ancien CRM en CSV</li>
+<li>Nettoyez le fichier (supprimez les colonnes inutiles, corrigez les erreurs)</li>
+<li>Preparez un fichier de mappage (quelles colonnes correspondent a quoi)</li>
+<li>Importez d'abord les <strong>entreprises</strong></li>
+<li>Puis importez les <strong>contacts</strong> (en les associant aux entreprises)</li>
+<li>Enfin, importez les <strong>deals</strong> (en les associant aux contacts)</li>
+<li>Verifiez les donnees importees</li>
+</ol>
+
+<blockquote>
+<p><strong>Important</strong> : Faites toujours un test avec un petit echantillon (10-20 lignes) avant d'importer la totalite.</p>
+</blockquote>
+
+<hr>
+
+<h2>Modele de fichier CSV pour l'import</h2>
+
+<p>Pour un import optimal, structurez votre fichier ainsi :</p>
+
+<pre data-lang="csv"><code>prenom,nom,email,telephone,entreprise,poste,ville,province,source,notes
+Marie,Tremblay,marie@clinique.ca,514-555-0101,Clinique Sante Plus,Directrice,Montreal,QC,Salon Bio 2026,Interessee par BPC-157
+Jean,Martin,jmartin@pharma.ca,418-555-0202,Pharmacie Martin,Proprietaire,Quebec,QC,Referral,Deja client peptides</code></pre>
+
+<p><strong>Conseils pour un fichier propre</strong> :</p>
+<ul>
+<li>Une seule ligne d'en-tete</li>
+<li>Pas de lignes vides</li>
+<li>Encodage UTF-8 (pour les caracteres accentues)</li>
+<li>Un contact par ligne</li>
+<li>Pas de formules Excel, uniquement des valeurs</li>
+</ul>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Combien de contacts puis-je importer a la fois ?</strong></p>
+<p>R : Il n'y a pas de limite stricte, mais au-dela de 50 000 contacts, l'import se fait en arriere-plan par lots pour eviter les timeouts.</p>
+
+<p><strong>Q : L'import peut-il creer des doublons ?</strong></p>
+<p>R : Oui, si la detection de doublons est desactivee ou si les criteres ne correspondent pas. Il est recommande de toujours activer la detection sur l'email.</p>
+
+<p><strong>Q : Puis-je annuler un import ?</strong></p>
+<p>R : Pas directement. Cependant, si vous avez applique un tag a l'import (ex: "Import test"), vous pouvez filtrer et supprimer tous les contacts ayant ce tag.</p>
+
+<p><strong>Q : L'export inclut-il les donnees sensibles ?</strong></p>
+<p>R : L'export respecte les permissions de l'utilisateur. Seuls les champs auxquels vous avez acces sont inclus. Les donnees de paiement (numeros de carte) ne sont jamais exportees.</p>
+
+<p><strong>Q : Quel format est le plus fiable pour l'import ?</strong></p>
+<p>R : CSV avec encodage UTF-8 et separateur virgule. C'est le format le plus universel et le moins sujet a des erreurs d'interpretation.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>CSV</strong></td><td>Comma-Separated Values, format de fichier texte avec separateur</td></tr>
+  <tr><td><strong>Mappage</strong></td><td>Association entre les colonnes d'un fichier et les champs du CRM</td></tr>
+  <tr><td><strong>Doublon</strong></td><td>Deux fiches representant la meme personne/entreprise</td></tr>
+  <tr><td><strong>Migration</strong></td><td>Transfert de donnees d'un systeme a un autre</td></tr>
+  <tr><td><strong>Export programme</strong></td><td>Export automatique envoye par email a intervalle regulier</td></tr>
+  <tr><td><strong>UTF-8</strong></td><td>Encodage de caracteres supportant les accents et caracteres speciaux</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/contacts">Contacts</a> : Destination principale des imports</li>
+<li><a href="/admin/crm/leads">Leads</a> : Import de prospects</li>
+<li><a href="/admin/crm/companies">Entreprises</a> : Import d'organisations</li>
+<li><a href="/admin/crm/duplicates">Doublons</a> : Gestion post-import des doublons</li>
+<li><a href="/admin/crm/analytics">Rapports</a> : Source des exports de rapports</li>
+</ul>
+
+</div>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

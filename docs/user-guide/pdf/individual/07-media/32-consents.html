@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consentements &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 07 — Media</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Consentements</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Media > Gestion de Contenu > Consentements</p>
+<p><strong>URL</strong>: <code>/admin/media/consents</code></p>
+<p><strong>Niveau</strong>: Intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Consentements</strong> centralise le suivi de toutes les autorisations obtenues (ou en attente) aupres de vos clients pour l'utilisation de leur image, temoignage ou participation dans du contenu multimedia. Cette page est essentielle pour la conformite legale.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir tous les consentements classes par client, date, type et statut</li>
+<li>Filtrer par statut (en attente, accorde, revoque, expire) et par type</li>
+<li>Rechercher un consentement par nom ou email de client</li>
+<li>Consulter le detail d'un consentement individuel</li>
+<li>Telecharger le PDF du consentement signe</li>
+<li>Renvoyer une demande de consentement en attente</li>
+<li>Exporter la liste complete en CSV pour conformite</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Consentement</strong></td><td>Autorisation ecrite d'un client pour utiliser son image ou contenu</td></tr>
+  <tr><td><strong>En attente (Pending)</strong></td><td>Demande envoyee mais pas encore signee par le client</td></tr>
+  <tr><td><strong>Accorde (Granted)</strong></td><td>Client a signe et accorde l'autorisation</td></tr>
+  <tr><td><strong>Revoque (Revoked)</strong></td><td>Client a retire son autorisation apres l'avoir accordee</td></tr>
+  <tr><td><strong>Expire (Expired)</strong></td><td>Consentement dont la duree de validite est depassee</td></tr>
+  <tr><td><strong>Formulaire de consentement</strong></td><td>Document standard utilise pour la demande (voir Modeles)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Allez dans <strong>Media</strong> dans la barre de navigation</li>
+<li>Cliquez sur <strong>Consentements</strong> dans le panneau lateral</li>
+<li>Ou depuis le <a href="./26-content-hub.md">Content Hub</a>, cliquez sur <strong>Voir les consentements</strong></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. En-tete</h3>
+<ul>
+<li>Titre <strong>Consentements</strong> avec icone</li>
+<li>Bouton <strong>Exporter CSV</strong> pour telecharger la liste</li>
+</ul>
+
+<h3>2. Cartes de statistiques (4 indicateurs)</h3>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total</strong></td><td>Nombre total de consentements dans le systeme</td></tr>
+  <tr><td><strong>En attente</strong></td><td>Nombre de demandes non encore signees (jaune)</td></tr>
+  <tr><td><strong>Accordes</strong></td><td>Nombre d'autorisations valides (vert)</td></tr>
+  <tr><td><strong>Revoques</strong></td><td>Nombre d'autorisations retirees (rouge)</td></tr>
+</tbody>
+</table>
+<h3>3. Filtres</h3>
+<ul>
+<li><strong>Recherche</strong> par nom ou email de client</li>
+<li><strong>Statut</strong> : Tous, En attente, Accorde, Revoque, Expire</li>
+<li><strong>Type</strong> : Apparition video, Temoignage, Photo, Etude de cas, Marketing, Autre</li>
+<li>Bouton <strong>Effacer</strong> pour reinitialiser les filtres</li>
+</ul>
+
+<h3>4. Tableau des consentements</h3>
+
+<table>
+<thead>
+    <tr><th>Colonne</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Client</strong></td><td>Nom et email du client</td></tr>
+  <tr><td><strong>Type</strong></td><td>Badge indiquant le type de consentement</td></tr>
+  <tr><td><strong>Sujet</strong></td><td>Video ou contenu associe (cliquable)</td></tr>
+  <tr><td><strong>Statut</strong></td><td>Badge colore (en attente, accorde, revoque, expire)</td></tr>
+  <tr><td><strong>Date</strong></td><td>Date de creation, d'accord ou de revocation</td></tr>
+  <tr><td><strong>Demande par</strong></td><td>Nom de l'administrateur qui a envoye la demande</td></tr>
+  <tr><td><strong>Actions</strong></td><td>Voir le detail, telecharger le PDF, renvoyer la demande</td></tr>
+</tbody>
+</table>
+<h3>5. Pagination</h3>
+<p>Navigation par pages en bas du tableau.</p>
+
+<hr>
+
+<h2>Types de consentement</h2>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Cle</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Apparition video</strong></td><td>VIDEO_APPEARANCE</td><td>Le client apparait dans une video</td></tr>
+  <tr><td><strong>Temoignage</strong></td><td>TESTIMONIAL</td><td>Le client donne un temoignage sur votre service</td></tr>
+  <tr><td><strong>Photo</strong></td><td>PHOTO</td><td>Utilisation de la photo du client</td></tr>
+  <tr><td><strong>Etude de cas</strong></td><td>CASE_STUDY</td><td>Le client participe a une etude de cas publiee</td></tr>
+  <tr><td><strong>Marketing</strong></td><td>MARKETING</td><td>Utilisation du nom/image dans du materiel marketing</td></tr>
+  <tr><td><strong>Autre</strong></td><td>OTHER</td><td>Tout autre type de consentement</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>Voir le detail d'un consentement</h3>
+<ol>
+<li>Cliquez sur l'icone oeil dans la colonne Actions</li>
+<li>Vous etes redirige vers la page de detail <code>/admin/media/consents/[id]</code></li>
+<li>Le detail montre toutes les informations, l'historique et le formulaire signe</li>
+</ol>
+
+<h3>Telecharger le PDF</h3>
+<ol>
+<li>Si un PDF est disponible (consentement signe), l'icone de telechargement est visible</li>
+<li>Cliquez dessus pour telecharger le document au format PDF</li>
+<li>Conservez ce document pour vos archives de conformite</li>
+</ol>
+
+<h3>Renvoyer une demande</h3>
+<ol>
+<li>Pour un consentement en statut "En attente", l'icone d'envoi est disponible</li>
+<li>Cliquez dessus pour renvoyer le formulaire au client par email</li>
+<li>Un message confirme l'envoi</li>
+</ol>
+
+<h3>Exporter en CSV</h3>
+<ol>
+<li>Cliquez sur <strong>Exporter CSV</strong> en haut a droite</li>
+<li>Un fichier CSV est telecharge avec toutes les colonnes du tableau</li>
+<li>Utilisez ce fichier pour vos audits de conformite ou rapports internes</li>
+</ol>
+
+<hr>
+
+<h2>Flux de travail recommandes</h2>
+
+<h3>Apres un enregistrement avec un client</h3>
+<ol>
+<li>La demande de consentement est automatiquement creee lors de l'import de l'enregistrement</li>
+<li>Verifiez le consentement dans cette page (statut "En attente")</li>
+<li>Le client recoit un email avec le formulaire a signer</li>
+<li>Une fois signe, le statut passe a "Accorde"</li>
+<li>Vous pouvez maintenant publier la video en toute legalite</li>
+</ol>
+
+<h3>Audit mensuel de conformite</h3>
+<ol>
+<li>Filtrez par statut "En attente" -- relancez les demandes en suspens</li>
+<li>Filtrez par statut "Expire" -- renouvelez les consentements expires</li>
+<li>Exportez la liste en CSV pour votre dossier de conformite</li>
+<li>Verifiez que toutes les videos publiees ont un consentement valide</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes</h2>
+
+<p><strong>Q : Un client peut-il revoquer son consentement ?</strong></p>
+<p>R : Oui, le client peut demander la revocation a tout moment. Le statut passe a "Revoque" et la video associee devrait etre depubliee.</p>
+
+<p><strong>Q : Les consentements sont-ils necessaires au Canada ?</strong></p>
+<p>R : Oui, la Loi 25 du Quebec et les lois federales sur la protection de la vie privee exigent un consentement explicite pour utiliser l'image d'une personne a des fins commerciales.</p>
+
+<p><strong>Q : Comment creer un nouveau formulaire de consentement ?</strong></p>
+<p>R : Utilisez la page <a href="./33-consent-templates.md">Modeles de Consentement</a> pour creer ou modifier les formulaires.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Loi 25</strong></td><td>Loi quebecoise sur la protection des renseignements personnels</td></tr>
+  <tr><td><strong>RGPD</strong></td><td>Reglement general sur la protection des donnees (Europe)</td></tr>
+  <tr><td><strong>PDF signe</strong></td><td>Document contenant la signature electronique du client</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<table>
+<thead>
+    <tr><th>Page</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><a href="./33-consent-templates.md">Modeles de Consentement</a></td><td>Creer et gerer les formulaires</td></tr>
+  <tr><td><a href="./27-videos.md">Videos</a></td><td>Voir les videos associees aux consentements</td></tr>
+  <tr><td><a href="./30-imports.md">Importations</a></td><td>Consentements auto-crees lors des imports</td></tr>
+  <tr><td><a href="./26-content-hub.md">Content Hub</a></td><td>Indicateur de consentements en attente</td></tr>
+</tbody>
+</table>
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

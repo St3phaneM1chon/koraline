@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flows email (Sequences automatisees) &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 08 — Emails</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Flows email (Sequences automatisees)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Emails > Flows</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Les <strong>flows email</strong> (ou sequences automatisees) sont des enchainements d'actions declenchees</p>
+<p>automatiquement par un evenement. Par exemple : quand un client s'inscrit, Koraline envoie</p>
+<p>automatiquement un email de bienvenue, attend 3 jours, puis envoie un email avec les produits</p>
+<p>recommandes.</p>
+
+<p>Un flow se compose de <strong>noeuds</strong> relies entre eux dans un editeur visuel :</p>
+<ul>
+<li><strong>Declencheur (Trigger)</strong> : L'evenement qui demarre le flow</li>
+<li><strong>Email</strong> : Un email a envoyer</li>
+<li><strong>Delai</strong> : Une periode d'attente entre deux actions</li>
+<li><strong>Condition</strong> : Un branchement selon les donnees du client</li>
+<li><strong>SMS</strong> : Un message texte a envoyer</li>
+</ul>
+
+<p>Les flows sont l'outil le plus puissant du module email car ils fonctionnent 24/7 sans</p>
+<p>intervention humaine. Ils sont essentiels pour le cycle de vie client : accueil, relance</p>
+<p>panier abandonne, reactivation, anniversaire, etc.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Emails</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, sous <strong>Gestion</strong>, cliquez sur <strong>Flows</strong>.</li>
+<li>L'URL directe est : <code>/admin/emails?tab=flows</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Liste des flows</h3>
+<p>L'ecran principal affiche tous les flows sous forme de cartes en grille (2 colonnes). Chaque flow</p>
+<p>montre :</p>
+<ul>
+<li><strong>Nom</strong> du flow</li>
+<li><strong>Declencheur</strong> : L'evenement qui active le flow</li>
+<li><strong>Statut</strong> : Actif (vert) ou Inactif (gris)</li>
+<li><strong>Composition</strong> : Nombre d'emails, de delais et de conditions dans le flow</li>
+<li><strong>Statistiques</strong> : Declenchements, envoyes, ouverts, revenus generes</li>
+<li><strong>Date de modification</strong></li>
+</ul>
+
+<h3>Bouton "Nouveau workflow"</h3>
+<p>Lance l'editeur de flow pour creer un nouveau workflow.</p>
+
+<h3>Actions par flow</h3>
+<ul>
+<li><strong>Activer/Desactiver</strong> (icone play/pause) : Basculer l'etat du flow</li>
+<li><strong>Modifier</strong> (icone crayon) : Ouvrir l'editeur visuel</li>
+<li><strong>Supprimer</strong> (icone corbeille) : Supprimer le flow (avec confirmation)</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Declencheurs disponibles</h3>
+
+<table>
+<thead>
+    <tr><th>Declencheur</th><th>Description</th><th>Cas d'usage</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Commande creee</strong></td><td>Un client passe une commande</td><td>Email de confirmation</td></tr>
+  <tr><td><strong>Commande expediee</strong></td><td>La commande est en transit</td><td>Notification de suivi</td></tr>
+  <tr><td><strong>Commande livree</strong></td><td>La commande est arrivee</td><td>Demande d'avis</td></tr>
+  <tr><td><strong>Panier abandonne</strong></td><td>Un panier n'a pas ete finalise</td><td>Relance avec incitatif</td></tr>
+  <tr><td><strong>Inscription</strong></td><td>Un nouveau compte est cree</td><td>Sequence de bienvenue</td></tr>
+  <tr><td><strong>Anniversaire</strong></td><td>Date d'anniversaire du client</td><td>Email promotionnel personnalise</td></tr>
+  <tr><td><strong>Reactivation</strong></td><td>Client inactif depuis longtemps</td><td>Offre de retour</td></tr>
+  <tr><td><strong>Reapprovisionnement</strong></td><td>Delai estime avant renouvellement</td><td>Rappel de rachat</td></tr>
+  <tr><td><strong>Avis recu</strong></td><td>Un client laisse un avis produit</td><td>Remerciement</td></tr>
+  <tr><td><strong>Stock bas</strong></td><td>Alerte de stock faible</td><td>Notification interne</td></tr>
+  <tr><td><strong>Stock retour</strong></td><td>Produit de nouveau disponible</td><td>Notification aux interesses</td></tr>
+</tbody>
+</table>
+<h3>Editeur visuel de flow</h3>
+<p>L'editeur utilise la bibliotheque <strong>ReactFlow</strong> pour offrir un canevas interactif :</p>
+
+<ul>
+<li><strong>Palette de noeuds</strong> (gauche) : Cliquez pour ajouter un noeud au canevas</li>
+<li><strong>Canevas</strong> (centre) : Glissez, connectez et organisez les noeuds</li>
+<li><strong>Inspecteur</strong> (droite) : Configurez le noeud selectionne</li>
+<li><strong>Minimap</strong> : Vue d'ensemble du flow en bas a droite</li>
+<li><strong>Controles</strong> : Zoom, centrage, plein ecran</li>
+</ul>
+
+<h3>Types de noeuds</h3>
+
+<table>
+<thead>
+    <tr><th>Noeud</th><th>Description</th><th>Configuration</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Trigger</strong></td><td>Declencheur du flow</td><td>Evenement declencheur</td></tr>
+  <tr><td><strong>Email</strong></td><td>Envoi d'un email</td><td>Objet, contenu HTML</td></tr>
+  <tr><td><strong>Delay</strong></td><td>Periode d'attente</td><td>Duree (minutes, heures, jours, semaines)</td></tr>
+  <tr><td><strong>Condition</strong></td><td>Branchement conditionnel</td><td>Champ, operateur, valeur</td></tr>
+  <tr><td><strong>SMS</strong></td><td>Envoi d'un SMS</td><td>Message (160 caracteres max)</td></tr>
+</tbody>
+</table>
+<h3>Connexion des noeuds</h3>
+<p>Reliez les noeuds en cliquant sur le point de sortie d'un noeud et en le glissant vers le</p>
+<p>point d'entree d'un autre. Les connexions sont animees pour indiquer le flux.</p>
+
+<h3>Conditions et branchements</h3>
+<p>Le noeud <strong>Condition</strong> permet de creer deux branches :</p>
+<ul>
+<li><strong>Vrai</strong> : Le flow continue si la condition est remplie</li>
+<li><strong>Faux</strong> : Le flow prend un chemin alternatif</li>
+</ul>
+
+<p>Operateurs disponibles : egal, different, superieur, inferieur, contient.</p>
+
+<p>Exemples de conditions :</p>
+<ul>
+<li><code>hasOrdered equals true</code> : Le client a deja commande</li>
+<li><code>totalSpent greater_than 500</code> : Le client a depense plus de 500$</li>
+<li><code>tier equals GOLD</code> : Le client est au niveau Gold du programme fidelite</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Creer une sequence de bienvenue</h3>
+<ol>
+<li>Cliquez sur <strong>Nouveau workflow</strong>.</li>
+<li>Nommez le flow "Sequence de bienvenue".</li>
+<li>Selectionnez le declencheur <strong>Inscription</strong>.</li>
+<li>Ajoutez un noeud <strong>Email</strong> "Bienvenue chez BioCycle Peptides!".</li>
+<li>Ajoutez un noeud <strong>Delay</strong> de 3 jours.</li>
+<li>Ajoutez un noeud <strong>Email</strong> "Decouvrez nos best-sellers".</li>
+<li>Ajoutez un noeud <strong>Delay</strong> de 7 jours.</li>
+<li>Ajoutez un noeud <strong>Condition</strong> : <code>hasOrdered equals false</code>.</li>
+<li>Si vrai : ajoutez un noeud <strong>Email</strong> avec un code promo de premiere commande.</li>
+<li>Activez le flow et cliquez sur <strong>Sauvegarder</strong>.</li>
+</ol>
+
+<h3>Workflow 2 : Relance de panier abandonne</h3>
+<ol>
+<li>Creez un flow avec le declencheur <strong>Panier abandonne</strong>.</li>
+<li>Ajoutez un <strong>Delay</strong> de 1 heure.</li>
+<li>Ajoutez un <strong>Email</strong> "Vous avez oublie quelque chose!".</li>
+<li>Ajoutez un <strong>Delay</strong> de 24 heures.</li>
+<li>Ajoutez une <strong>Condition</strong> : le panier est-il toujours actif ?</li>
+<li>Si oui : envoyez un <strong>Email</strong> avec un code de reduction de 10%.</li>
+<li>Sauvegardez et activez.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Un flow peut-il etre modifie alors qu'il est actif ?</strong></p>
+<p>R : Oui, vous pouvez modifier et sauvegarder un flow actif. Les modifications s'appliqueront</p>
+<p>aux nouveaux declenchements, pas aux sequences deja en cours.</p>
+
+<p><strong>Q : Combien de noeuds un flow peut-il contenir ?</strong></p>
+<p>R : Il n'y a pas de limite technique. Neanmoins, un flow trop complexe peut etre difficile</p>
+<p>a maintenir. Privilegiez la clarte.</p>
+
+<p><strong>Q : Les SMS sont-ils envoyes via le meme fournisseur que les emails ?</strong></p>
+<p>R : Non, les SMS sont envoyes via le fournisseur VoIP configure (Telnyx). L'envoi de SMS</p>
+<p>necessite un numero de telephone actif.</p>
+
+<p><strong>Q : Comment tester un flow ?</strong></p>
+<p>R : Un bouton de test permet d'executer le flow avec des donnees fictives pour verifier</p>
+<p>le bon fonctionnement avant l'activation.</p>
+
+<hr>
+
+<h2>Strategie expert : les 5 flows essentiels pour un e-commerce de peptides</h2>
+
+<h3>Pourquoi ces 5 flows sont non negociables</h3>
+
+<p>Ces 5 sequences automatisees couvrent les moments critiques du cycle de vie client. Ensemble, elles peuvent generer 20 a 40% du revenu email total d'un e-commerce, sans intervention humaine une fois configurees.</p>
+
+<h3>Flow 1 : Sequence de bienvenue (3 emails sur 7 jours)</h3>
+
+<p>C'est le flow le plus important. Un nouvel inscrit est au pic de son interet. Le taux d'ouverture des emails de bienvenue atteint 50 a 60%, contre 20-25% pour une newsletter classique.</p>
+
+<p><strong>Declencheur</strong> : Inscription (nouveau compte ou newsletter)</p>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Delai</th><th>Objet email</th><th>Contenu</th></tr>
+</thead>
+<tbody>
+  <tr><td>Email 1</td><td>J0 (immediat)</td><td>"Bienvenue chez BioCycle Peptides!"</td><td>Merci pour l'inscription + guide de reconstitution PDF en piece jointe + presentation de BioCycle (qui sommes-nous, pourquoi nous choisir)</td></tr>
+  <tr><td>Email 2</td><td>J+3</td><td>"5 questions frequentes sur les peptides de recherche"</td><td>FAQ : conservation, reconstitution, purete, certificats d'analyse, expedition au Canada. Liens vers les articles de blog correspondants</td></tr>
+  <tr><td>Email 3</td><td>J+7</td><td>"Votre code de bienvenue : BIENVENUE10"</td><td>Code promo 10% premiere commande, valide 14 jours, min 50 $CA. Mise en avant des 3 peptides les plus populaires avec liens directs</td></tr>
+</tbody>
+</table>
+<p><strong>Condition apres Email 3</strong> : Si le client a commande entre-temps, arreter le flow et basculer vers le flow post-achat.</p>
+
+<h3>Flow 2 : Abandon de panier (3 emails avec escalade)</h3>
+
+<p>Un panier abandonne represente un client qui etait pret a acheter. Le taux de recuperation moyen est de 5 a 15%, ce qui en fait le flow au meilleur ROI.</p>
+
+<p><strong>Declencheur</strong> : Panier abandonne (produit ajoute mais checkout non complete)</p>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Delai</th><th>Objet email</th><th>Contenu</th></tr>
+</thead>
+<tbody>
+  <tr><td>Email 1</td><td>H+1</td><td>"Votre panier vous attend"</td><td>Rappel simple avec image du produit, prix, bouton "Completer ma commande". Pas de remise a cette etape.</td></tr>
+  <tr><td>Email 2</td><td>H+24</td><td>"Avez-vous des questions sur [produit] ?"</td><td>Contenu educatif sur le produit abandonne (purete, COA, avis). FAQ rapide. Lien vers le service client.</td></tr>
+  <tr><td>Email 3</td><td>H+72</td><td>"Derniere chance : 10% sur votre panier"</td><td>Code promo 10% valide 48h, applique uniquement aux produits du panier abandonne. Mention "stock limite" si applicable.</td></tr>
+</tbody>
+</table>
+<p><strong>Important</strong> : Si le client achete a n'importe quelle etape, arreter le flow immediatement.</p>
+
+<h3>Flow 3 : Post-achat (3 emails sur 30 jours)</h3>
+
+<p>Le flow post-achat transforme un acheteur unique en client recurrent. C'est aussi le moment ideal pour le cross-sell.</p>
+
+<p><strong>Declencheur</strong> : Commande creee (paiement confirme)</p>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Delai</th><th>Objet email</th><th>Contenu</th></tr>
+</thead>
+<tbody>
+  <tr><td>Email 1</td><td>J+1</td><td>"Merci pour votre commande!"</td><td>Confirmation avec resume de commande, numero de suivi si disponible, delai de livraison estime, coordonnees du support.</td></tr>
+  <tr><td>Email 2</td><td>J+7</td><td>"Guide : bien utiliser vos peptides de recherche"</td><td>Guide pratique adapte aux produits commandes : reconstitution, dosage, stockage, duree de vie apres reconstitution. Cross-sell accessoires si non commandes (eau bacteriostatique, seringues).</td></tr>
+  <tr><td>Email 3</td><td>J+30</td><td>"Temps de reapprovisionner ?"</td><td>Rappel de reachat base sur la duree estimee d'utilisation. Bouton "Recommander" direct. Suggestion de produits complementaires (stacks). Code 5% fidelite si > 2e commande.</td></tr>
+</tbody>
+</table>
+<h3>Flow 4 : Reactivation (2 emails pour clients inactifs)</h3>
+
+<p>Un client qui n'a pas commande depuis 60 jours risque de vous oublier. Ce flow le ramene.</p>
+
+<p><strong>Declencheur</strong> : Derniere commande > 60 jours ET client a deja commande au moins 1 fois</p>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Delai</th><th>Objet email</th><th>Contenu</th></tr>
+</thead>
+<tbody>
+  <tr><td>Email 1</td><td>J+60 inactif</td><td>"Vous nous manquez! Voici 15% pour revenir"</td><td>Message personnalise avec rappel des derniers produits achetes. Code RETOUR15, 15% valide 14 jours. Nouveaux produits depuis la derniere visite.</td></tr>
+  <tr><td>Email 2</td><td>J+75 inactif</td><td>"Derniere chance : votre code expire dans 48h"</td><td>Rappel d'urgence. Le code expire bientot. Temoignage client ou etude recente sur le peptide qu'il achetait.</td></tr>
+</tbody>
+</table>
+<p><strong>Si aucune reaction apres 90 jours</strong> : Passer le contact en segment "Dormant". Reduire la frequence a 1 email/mois maximum. Ne pas supprimer -- un client dormant peut revenir des mois plus tard.</p>
+
+<h3>Flow 5 : Anniversaire (1 email festif)</h3>
+
+<p>Le flow d'anniversaire est simple mais tres efficace : taux d'ouverture de 40-50% et taux de conversion de 10-15%.</p>
+
+<p><strong>Declencheur</strong> : Date d'anniversaire du client (si renseignee)</p>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Delai</th><th>Objet email</th><th>Contenu</th></tr>
+</thead>
+<tbody>
+  <tr><td>Email 1</td><td>Jour J</td><td>"Joyeux anniversaire! Un cadeau pour vous"</td><td>Message personnalise avec prenom. Code ANNIV20, 20% valide 7 jours, usage unique, min 75 $CA. Suggestions basees sur l'historique d'achat.</td></tr>
+</tbody>
+</table>
+<h3>Performance attendue des 5 flows</h3>
+
+<table>
+<thead>
+    <tr><th>Flow</th><th>Taux d'ouverture</th><th>Taux de clic</th><th>Taux de conversion</th><th>Revenu estime/mois</th></tr>
+</thead>
+<tbody>
+  <tr><td>Bienvenue</td><td>50-60%</td><td>8-12%</td><td>10-15%</td><td>Variable selon nouveaux inscrits</td></tr>
+  <tr><td>Abandon panier</td><td>40-50%</td><td>10-15%</td><td>5-15%</td><td>5-10% du revenu perdu</td></tr>
+  <tr><td>Post-achat</td><td>45-55%</td><td>6-10%</td><td>3-8% cross-sell</td><td>2-5% revenu additionnel</td></tr>
+  <tr><td>Reactivation</td><td>25-35%</td><td>4-8%</td><td>3-8%</td><td>Recuperation clients dormants</td></tr>
+  <tr><td>Anniversaire</td><td>40-50%</td><td>8-12%</td><td>10-15%</td><td>Faible volume, fort taux</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Flow</strong></td><td>Sequence automatisee d'actions declenchees par un evenement</td></tr>
+  <tr><td><strong>Trigger</strong></td><td>Evenement declencheur qui demarre le flow</td></tr>
+  <tr><td><strong>Noeud</strong></td><td>Element du flow (email, delai, condition, SMS)</td></tr>
+  <tr><td><strong>Branchement</strong></td><td>Division du flow en deux chemins selon une condition</td></tr>
+  <tr><td><strong>ReactFlow</strong></td><td>Bibliotheque de visualisation de flux utilisee par l'editeur</td></tr>
+  <tr><td><strong>Cron</strong></td><td>Tache planifiee qui execute les flows a intervalles reguliers</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./04-templates.md">Templates</a> : Creer le contenu des emails utilises dans les flows</li>
+<li><a href="./05-campagnes.md">Campagnes</a> : Envoi ponctuel en masse (vs. flows automatises)</li>
+<li><a href="./07-analytics.md">Analytics emails</a> : Mesurer la performance des flows</li>
+<li><a href="./01-inbox.md">Boite de reception</a> : Gerer les reponses generees par les flows</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

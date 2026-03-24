@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Entreprises &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 10 — CRM</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion des Entreprises</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Entreprises</p>
+<p><strong>URL</strong>: <code>/admin/crm/companies</code></p>
+<p><strong>Niveau</strong>: Debutant a intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Entreprises</strong> gere les fiches des organisations (cliniques, pharmacies, laboratoires, distributeurs) avec lesquelles BioCycle Peptides fait affaire en B2B. Chaque entreprise peut avoir plusieurs contacts associes.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir la liste de toutes les entreprises dans votre CRM</li>
+<li>Creer et modifier des fiches entreprises</li>
+<li>Associer des contacts a une entreprise (employes, decideurs)</li>
+<li>Suivre les deals et revenus generes par entreprise</li>
+<li>Categoriser par secteur d'activite, taille, region</li>
+<li>Hierarchiser les entreprises (siege vs succursales)</li>
+<li>Consulter l'historique complet des interactions avec l'entreprise</li>
+<li>Calculer la valeur d'un compte (revenu total genere)</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Pourquoi gerer les entreprises separement ?</h3>
+
+<p>En B2B (Business-to-Business), vous ne vendez pas a une personne isolee mais a une organisation. Une meme entreprise peut avoir :</p>
+<ul>
+<li><strong>Plusieurs contacts</strong> : le decideur, l'acheteur, l'utilisateur final</li>
+<li><strong>Plusieurs deals</strong> : une premiere commande, un renouvellement, un upsell</li>
+<li><strong>Un historique riche</strong> : negociations, contrats, reclamations</li>
+</ul>
+
+<p>La fiche entreprise centralise tout cela en un seul endroit.</p>
+
+<h3>Organisation typique pour BioCycle Peptides</h3>
+
+<table>
+<thead>
+    <tr><th>Type d'entreprise</th><th>Exemples</th><th>Particularites</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Clinique medicale</strong></td><td>Clinique Sante Plus, Centre de medecine sportive</td><td>Commandent des peptides therapeutiques</td></tr>
+  <tr><td><strong>Pharmacie</strong></td><td>Pharmacie Jean-Coutu, Uniprix</td><td>Distribution au detail</td></tr>
+  <tr><td><strong>Laboratoire</strong></td><td>Labo recherche UdeM</td><td>Commandent pour la recherche</td></tr>
+  <tr><td><strong>Distributeur</strong></td><td>DistribPharma QC</td><td>Volumes importants, prix negocies</td></tr>
+  <tr><td><strong>Centre de conditionnement</strong></td><td>CrossFit Montreal</td><td>Produits de performance</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>CRM > panneau lateral, cherchez dans le groupe principal</li>
+<li>URL directe : <code>/admin/crm/companies</code> (si le lien existe dans le CRM)</li>
+<li>Ou via la recherche globale en tapant "entreprises"</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. La liste des entreprises</h3>
+
+<p>Chaque fiche affiche :</p>
+<ul>
+<li><strong>Nom de l'entreprise</strong> et logo (si disponible)</li>
+<li><strong>Secteur d'activite</strong> (sante, pharmaceutique, sport, etc.)</li>
+<li><strong>Nombre de contacts</strong> associes</li>
+<li><strong>Nombre de deals</strong> ouverts</li>
+<li><strong>Revenu total</strong> genere par ce compte</li>
+<li><strong>Representant</strong> en charge du compte</li>
+<li><strong>Region</strong> ou adresse</li>
+</ul>
+
+<h3>2. Le panneau de detail</h3>
+
+<p>Au clic sur une entreprise :</p>
+
+<p><strong>Informations generales</strong> :</p>
+<ul>
+<li>Raison sociale, NEQ (numero d'entreprise du Quebec)</li>
+<li>Adresse, telephone, site web</li>
+<li>Secteur, taille (nombre d'employes), chiffre d'affaires estime</li>
+<li>Date de creation du compte</li>
+</ul>
+
+<p><strong>Onglets</strong> :</p>
+<ul>
+<li><strong>Contacts</strong> : liste des personnes associees a cette entreprise</li>
+<li><strong>Deals</strong> : opportunites de vente en cours et passees</li>
+<li><strong>Timeline</strong> : historique de toutes les interactions</li>
+<li><strong>Commandes</strong> : achats effectues sur la boutique</li>
+<li><strong>Documents</strong> : contrats, devis, fichiers joints</li>
+<li><strong>Notes</strong> : commentaires internes de l'equipe</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer une entreprise</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouvelle entreprise</strong></li>
+<li>Remplissez les champs :</li>
+</ol>
+<ul>
+<li><strong>Nom</strong> (obligatoire)</li>
+<li><strong>Secteur d'activite</strong> (sante, sport, recherche, distribution)</li>
+<li><strong>Adresse</strong> complete</li>
+<li><strong>Telephone</strong> et <strong>site web</strong></li>
+<li><strong>NEQ</strong> : Numero d'entreprise du Quebec (optionnel mais recommande pour B2B)</li>
+<li><strong>Taille</strong> : micro, petite, moyenne, grande</li>
+<li><strong>Representant</strong> : le responsable de ce compte</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<h3>2. Associer des contacts a une entreprise</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Ouvrez la fiche de l'entreprise</li>
+<li>Allez a l'onglet <strong>Contacts</strong></li>
+<li>Cliquez sur <strong>Ajouter un contact</strong></li>
+<li>Recherchez le contact existant, ou creez-en un nouveau</li>
+<li>Definissez le role du contact dans l'entreprise (decideur, acheteur, technique)</li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong> : Quand vous creez un contact et indiquez son entreprise, l'association se fait automatiquement.</p>
+</blockquote>
+
+<h3>3. Hierarchie d'entreprises</h3>
+
+<p><strong>Objectif</strong> : Gerer les groupes avec siege et succursales.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Ouvrez la fiche de la succursale</li>
+<li>Dans le champ <strong>Entreprise parente</strong>, selectionnez le siege</li>
+<li>La hierarchie apparait visuellement dans la fiche du siege</li>
+</ol>
+
+<h3>4. Consulter la valeur d'un compte</h3>
+
+<p>Dans le panneau de detail, la section <strong>Resume financier</strong> affiche :</p>
+<ul>
+<li><strong>Revenu total</strong> : somme de toutes les commandes passees</li>
+<li><strong>Revenu annuel</strong> : revenus des 12 derniers mois</li>
+<li><strong>Panier moyen</strong> : montant moyen par commande</li>
+<li><strong>Frequence d'achat</strong> : nombre de commandes par an</li>
+<li><strong>CLV estimee</strong> : valeur a vie estimee du client</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Onboarding d'un nouveau compte B2B</h3>
+<ol>
+<li>Creez la fiche entreprise avec toutes les informations</li>
+<li>Ajoutez les contacts cles (decideur, acheteur, comptabilite)</li>
+<li>Creez un deal dans le pipeline B2B</li>
+<li>Assignez un representant dedie</li>
+<li>Preparez une proposition commerciale personnalisee</li>
+</ol>
+
+<h3>Revue trimestrielle des comptes</h3>
+<ol>
+<li>Filtrez les entreprises par revenu decroissant</li>
+<li>Pour les 10 premiers comptes (vos meilleurs clients) :</li>
+</ol>
+<ul>
+<li>Verifiez la satisfaction (derniers tickets, avis)</li>
+<li>Identifiez les opportunites de upsell</li>
+<li>Planifiez un appel de suivi</li>
+</ul>
+<ol>
+<li>Pour les comptes inactifs depuis 3 mois :</li>
+</ol>
+<ul>
+<li>Contactez pour comprendre la raison</li>
+<li>Proposez une offre de reactivation</li>
+</ul>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Quelle est la difference entre une entreprise dans le CRM et un distributeur dans Commerce ?</strong></p>
+<p>R : Un distributeur dans Commerce est un client B2B avec des prix negocies et des conditions speciales de vente. Une entreprise dans le CRM est plus large : elle represente toute organisation, qu'elle soit cliente ou non. Les deux sont lies : un distributeur est aussi une entreprise dans le CRM.</p>
+
+<p><strong>Q : Puis-je supprimer une entreprise qui a des commandes ?</strong></p>
+<p>R : Non, pour des raisons de tracabilite. Vous pouvez l'archiver pour qu'elle n'apparaisse plus dans les listes actives.</p>
+
+<p><strong>Q : Comment gerer les fusions d'entreprises ?</strong></p>
+<p>R : Contactez l'administrateur. La fusion de fiches entreprises regroupe les contacts, deals et historique sur une seule fiche, similaire a la fusion de contacts.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Compte</strong></td><td>Terme generique pour une fiche entreprise dans le CRM</td></tr>
+  <tr><td><strong>NEQ</strong></td><td>Numero d'entreprise du Quebec, identifiant legal</td></tr>
+  <tr><td><strong>Hierarchie</strong></td><td>Relation siege-succursales entre entreprises</td></tr>
+  <tr><td><strong>CLV</strong></td><td>Customer Lifetime Value, valeur totale generee par le client</td></tr>
+  <tr><td><strong>Upsell</strong></td><td>Vendre un produit superieur ou complementaire a un client existant</td></tr>
+  <tr><td><strong>Compte cle</strong></td><td>Entreprise strategique generant un revenu important</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/contacts">Contacts</a> : Personnes associees aux entreprises</li>
+<li><a href="/admin/crm/pipeline">Pipeline</a> : Deals des comptes B2B</li>
+<li><a href="/admin/customers">Distributeurs</a> : Clients B2B avec conditions speciales</li>
+<li><a href="/admin/crm/analytics">Rapports CRM</a> : Analyse par compte</li>
+<li><a href="/admin/crm/contracts">Contrats</a> : Contrats lies aux entreprises</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

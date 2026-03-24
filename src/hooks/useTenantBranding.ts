@@ -25,7 +25,7 @@ interface TenantBranding {
 const DEFAULT_BRANDING: TenantBranding = {
   id: '',
   slug: 'biocycle',
-  name: 'BioCycle Peptides',
+  name: 'Attitudes VIP',
   branding: {
     logoUrl: '/images/logo.png',
     primaryColor: '#16a34a',

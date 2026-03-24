@@ -34,6 +34,15 @@ function addSecurityHeaders(response: NextResponse): void {
   // unsafe-inline for scripts: required by Next.js inline scripts (nonce-based approach is a future improvement)
   // unsafe-inline for styles: required by Next.js styled-jsx, Radix UI, and Tailwind
   // unsafe-eval: only in development (needed for Next.js HMR/React Fast Refresh)
+  //
+  // TODO SEC-HARDENING: Subresource Integrity (SRI)
+  // Implement SRI hashes for third-party scripts (Stripe, PayPal, Google Maps, GTM).
+  // This requires:
+  // 1. Computing SHA-384 hashes of each external script at build time
+  // 2. Adding `integrity` attributes to <Script> tags in layout.tsx
+  // 3. Adding `require-sri-for script style` to CSP (once browser support matures)
+  // 4. Automating hash updates when vendors release new script versions
+  // Reference: https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity
   const cspDirectives = [
     "default-src 'self'",
     process.env.NODE_ENV === 'production'
@@ -50,8 +59,17 @@ function addSecurityHeaders(response: NextResponse): void {
     "object-src 'none'",
     "worker-src 'self'",
     ...(process.env.NODE_ENV === 'production' ? ['upgrade-insecure-requests'] : []),
+    // SEC-HARDENING: CSP violation reporting endpoint
+    "report-uri /api/csp-report",
+    "report-to csp-endpoint",
   ];
   response.headers.set('Content-Security-Policy', cspDirectives.join('; '));
+  // SEC-HARDENING: Report-To header for CSP reporting API (newer browsers)
+  response.headers.set('Report-To', JSON.stringify({
+    group: 'csp-endpoint',
+    max_age: 86400,
+    endpoints: [{ url: '/api/csp-report' }],
+  }));
 }
 
 // FAILLE-099 FIX: Use crypto.getRandomValues fallback instead of Math.random
@@ -138,7 +156,7 @@ const clientRoutes = ['/client', '/dashboard/client'];
  */
 function getTenantOrigin(tenantSlug: string): string {
   const origins: Record<string, string> = {
-    biocycle: 'https://biocyclepeptides.com',
+    biocycle: process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip',
     attitudes: 'https://attitudes.vip',
   };
   return origins[tenantSlug] || `https://${tenantSlug}.koraline.app`;
@@ -173,19 +191,26 @@ function resolveTenantFromHost(hostname: string): { tenantSlug: string; isSuperA
     return { tenantSlug: koralineMatch[1], isSuperAdmin: false };
   }
 
-  // Localhost / dev → default to biocycle (first tenant)
+  // Localhost / dev → default to attitudes (platform tenant)
   if (cleanHost === 'localhost' || cleanHost === '127.0.0.1') {
-    return { tenantSlug: 'biocycle', isSuperAdmin: false };
+    return { tenantSlug: 'attitudes', isSuperAdmin: false };
   }
 
   // Unknown domain → try to resolve via slug from first subdomain part
   // e.g., clientx.com → will be resolved by the API layer via DB lookup
-  // For now, default to biocycle
-  return { tenantSlug: 'biocycle', isSuperAdmin: false };
+  // Default to attitudes (platform tenant)
+  return { tenantSlug: 'attitudes', isSuperAdmin: false };
 }
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // C3-SEC-S-007 FIX: Explicit HTTP-to-HTTPS redirect in production
+  if (process.env.NODE_ENV === 'production' && request.headers.get('x-forwarded-proto') !== 'https') {
+    const httpsUrl = new URL(request.url);
+    httpsUrl.protocol = 'https:';
+    return NextResponse.redirect(httpsUrl.toString(), 301);
+  }
 
   // Generate a correlation ID for every request (useful for tracing)
   const requestId = request.headers.get('x-request-id') || generateRequestId();

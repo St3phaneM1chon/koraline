@@ -113,8 +113,8 @@ export const pageSizeSchema = z
 const ALLOWED_IMAGE_DOMAINS = [
   'attitudes.vip',
   'www.attitudes.vip',
-  'biocyclepeptides.com',
-  'www.biocyclepeptides.com',
+  'koraline.app',
+  'blob.core.windows.net',
   'res.cloudinary.com',
   'images.unsplash.com',
   'blob.core.windows.net',

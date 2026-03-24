@@ -15,32 +15,32 @@ const updateSchema = z.object({
 export const PUT = withAdminGuard(async (request, { params }) => {
   const { id } = await params;
 
-  const existing = await prisma.optionTypeOption.findUnique({ where: { id } });
+  const existing = await prisma.formatTypeOption.findUnique({ where: { id } });
   if (!existing) {
-    return apiError('Option type not found', 404);
+    return apiError('Option type not found', 'NOT_FOUND', { status: 404 });
   }
 
   const body = await request.json();
   const parsed = updateSchema.safeParse(body);
   if (!parsed.success) {
-    return apiError('Validation error', 400, { details: parsed.error.flatten().fieldErrors });
+    return apiError('Validation error', 'VALIDATION_ERROR', { details: parsed.error.flatten().fieldErrors });
   }
 
-  const updated = await prisma.optionTypeOption.update({
+  const updated = await prisma.formatTypeOption.update({
     where: { id },
     data: parsed.data,
   });
 
   return apiSuccess(updated, { request });
-}, { requiredPermission: 'manage_products' });
+}, { requiredPermission: 'products.manage_options' });
 
 // DELETE /api/admin/option-types/[id] — Delete a format type (only if unused)
 export const DELETE = withAdminGuard(async (request, { params }) => {
   const { id } = await params;
 
-  const existing = await prisma.optionTypeOption.findUnique({ where: { id } });
+  const existing = await prisma.formatTypeOption.findUnique({ where: { id } });
   if (!existing) {
-    return apiError('Option type not found', 404);
+    return apiError('Option type not found', 'NOT_FOUND', { status: 404 });
   }
 
   // Check if any ProductOption uses this type
@@ -49,10 +49,10 @@ export const DELETE = withAdminGuard(async (request, { params }) => {
   });
 
   if (usageCount > 0) {
-    return apiError(`Ce type est utilisé par ${usageCount} format(s). Désactivez-le plutôt.`, 409);
+    return apiError(`Ce type est utilisé par ${usageCount} format(s). Désactivez-le plutôt.`, 'VALIDATION_ERROR', { status: 409, request });
   }
 
-  await prisma.optionTypeOption.delete({ where: { id } });
+  await prisma.formatTypeOption.delete({ where: { id } });
 
   return apiSuccess({ deleted: true }, { request });
-}, { requiredPermission: 'manage_products' });
+}, { requiredPermission: 'products.manage_options' });

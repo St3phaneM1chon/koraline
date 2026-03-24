@@ -36,7 +36,7 @@ export function globalCacheKey(key: string): string {
 export async function purgeTenantCache(tenantId: string): Promise<number> {
   try {
     const { getRedisClient } = await import('@/lib/redis');
-    const redis = getRedisClient();
+    const redis = await getRedisClient();
     if (!redis) return 0;
 
     const pattern = `t:${tenantId}:*`;

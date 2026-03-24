@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion de la Newsletter &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 04 — Marketing</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion de la Newsletter</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Marketing > Newsletter</p>
+<p><strong>URL</strong>: <code>/admin/newsletter</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~30 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Newsletter</strong> est votre centre de commande pour le marketing par email. Elle regroupe deux volets : la gestion des <strong>abonnes</strong> (les personnes inscrites a votre liste de diffusion) et la gestion des <strong>campagnes</strong> (les emails que vous envoyez).</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir tous vos abonnes avec leur statut (actif, desabonne, rebondi)</li>
+<li>Filtrer et rechercher des abonnes</li>
+<li>Exporter la liste des abonnes en CSV</li>
+<li>Creer des campagnes email (brouillon, envoi immediat, planification)</li>
+<li>Configurer des tests A/B pour optimiser les taux d'ouverture</li>
+<li>Utiliser des segments predefinies pour cibler vos envois</li>
+<li>Consulter les statistiques detaillees de chaque campagne (taux d'ouverture, de clic, de rebond)</li>
+<li>Supprimer des campagnes ou desabonner des contacts</li>
+<li>Respecter automatiquement la conformite CASL (loi canadienne anti-pourriel)</li>
+</ul>
+
+<hr>
+
+<h2>Concepts pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un abonne ?</h3>
+
+<p>Un abonne est une personne qui a donne son consentement pour recevoir vos emails marketing. Les abonnes peuvent provenir de differentes sources :</p>
+<ul>
+<li><strong>Popup</strong> : Via un formulaire popup sur le site web</li>
+<li><strong>Pied de page (Footer)</strong> : Via le formulaire d'inscription dans le bas du site</li>
+<li><strong>Paiement (Checkout)</strong> : Via une case a cocher au moment de la commande</li>
+</ul>
+
+<h3>Les statuts d'un abonne</h3>
+
+<table>
+<thead>
+    <tr><th>Statut</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Actif</strong></td><td>L'abonne recoit vos emails normalement</td></tr>
+  <tr><td><strong>Desabonne</strong></td><td>L'abonne a demande a ne plus recevoir d'emails</td></tr>
+  <tr><td><strong>Rebondi (Bounced)</strong></td><td>L'adresse email n'est plus valide (boite pleine, adresse inexistante)</td></tr>
+</tbody>
+</table>
+<h3>Qu'est-ce qu'une campagne ?</h3>
+
+<p>Une campagne est un email que vous envoyez a vos abonnes. Elle peut etre un brouillon (en cours de redaction), planifiee (envoi programme a une date future), ou envoyee.</p>
+
+<h3>Qu'est-ce qu'un test A/B ?</h3>
+
+<p>Le test A/B consiste a envoyer deux versions legerement differentes d'un email (par exemple, deux objets differents) a un petit echantillon de vos abonnes. Apres un certain temps, le systeme analyse laquelle des deux versions a obtenu les meilleurs resultats, puis envoie automatiquement la version gagnante au reste de la liste.</p>
+
+<h3>Conformite CASL</h3>
+
+<p>La loi canadienne anti-pourriel (CASL) impose des regles strictes pour l'envoi d'emails commerciaux. Le systeme integre automatiquement les exigences CASL : consentement obligatoire, lien de desabonnement dans chaque email, identification de l'expediteur.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Marketing</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong>, cliquez sur <strong>Newsletter</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Cliquez sur l'icone de la section <strong>Marketing</strong> dans le rail</li>
+<li>Cliquez sur <strong>Newsletter</strong></li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche (ou tapez <code>/</code>)</li>
+<li>Tapez "newsletter" ou "email"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouvelle campagne</strong></td><td>Ouvrir le compositeur d'email</td></tr>
+  <tr><td><strong>Envoyer</strong></td><td>Envoyer la campagne selectionnee (avec confirmation)</td></tr>
+  <tr><td><strong>Planifier</strong></td><td>Planifier l'envoi de la campagne selectionnee a une date future</td></tr>
+  <tr><td><strong>Statistiques campagne</strong></td><td>Afficher les statistiques detaillees de la campagne selectionnee</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer la campagne selectionnee</td></tr>
+  <tr><td><strong>Exporter abonnes</strong></td><td>Telecharger la liste des abonnes en CSV</td></tr>
+  <tr><td><strong>Desabonner</strong></td><td>Desabonner manuellement un contact</td></tr>
+  <tr><td><strong>Rafraichir</strong></td><td>Recharger les donnees</td></tr>
+</tbody>
+</table>
+<h3>2. Les onglets principaux</h3>
+
+<p>Deux onglets principaux en haut de la zone de contenu :</p>
+<ul>
+<li><strong>Abonnes</strong> : La liste des personnes inscrites a la newsletter</li>
+<li><strong>Campagnes</strong> : La liste des emails envoyes ou en preparation</li>
+</ul>
+
+<h3>3. Les cartes de statistiques</h3>
+
+<p>Les statistiques changent selon l'onglet actif.</p>
+
+<p><strong>Onglet Abonnes :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total abonnes</strong></td><td>Nombre total de personnes inscrites</td></tr>
+  <tr><td><strong>Actifs</strong></td><td>Nombre d'abonnes qui recoivent les emails</td></tr>
+  <tr><td><strong>Desabonnes</strong></td><td>Nombre de personnes qui se sont desabonnees</td></tr>
+  <tr><td><strong>Rebondis</strong></td><td>Nombre d'adresses email invalides</td></tr>
+</tbody>
+</table>
+<p><strong>Onglet Campagnes :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total campagnes</strong></td><td>Nombre total de campagnes creees</td></tr>
+  <tr><td><strong>Envoyees</strong></td><td>Nombre de campagnes envoyees</td></tr>
+  <tr><td><strong>Planifiees</strong></td><td>Nombre de campagnes en attente d'envoi</td></tr>
+  <tr><td><strong>Brouillons</strong></td><td>Nombre de campagnes en cours de redaction</td></tr>
+</tbody>
+</table>
+<h3>4. La liste (panneau central)</h3>
+
+<ul>
+<li><strong>Onglets de filtrage</strong> : Selon l'onglet actif, differents filtres sont disponibles</li>
+<li><strong>Barre de recherche</strong> : Recherchez par email (abonnes) ou par sujet (campagnes)</li>
+<li><strong>Chaque element affiche</strong> : des badges de statut et les informations pertinentes</li>
+</ul>
+
+<h3>5. Le panneau de detail (panneau droit)</h3>
+
+<p><strong>Pour un abonne</strong> : email, statut, source d'inscription, langue, dates d'inscription et de desabonnement</p>
+
+<p><strong>Pour une campagne</strong> : sujet, contenu, statut, dates d'envoi, nombre de destinataires, taux d'ouverture et de clic, resultats du test A/B le cas echeant, et statistiques email detaillees (pont Email)</p>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Consulter les abonnes</h3>
+
+<ol>
+<li>Assurez-vous que l'onglet <strong>Abonnes</strong> est selectionne</li>
+<li>Parcourez la liste ou utilisez la recherche</li>
+<li>Cliquez sur un abonne pour voir son detail</li>
+<li>Les informations affichees incluent l'email, le statut, la source d'inscription et la langue</li>
+</ol>
+
+<h3>2. Exporter les abonnes</h3>
+
+<ol>
+<li>Onglet Abonnes actif</li>
+<li>Cliquez sur <strong>Exporter abonnes</strong> dans le ruban</li>
+<li>Le fichier CSV se telecharge avec les colonnes : Email, Statut, Source, Langue, Date d'inscription</li>
+</ol>
+
+<h3>3. Desabonner un contact manuellement</h3>
+
+<ol>
+<li>Selectionnez l'abonne dans la liste</li>
+<li>Cliquez sur <strong>Desabonner</strong> dans le ruban</li>
+<li>Confirmez l'action</li>
+</ol>
+
+<p>Cette action est conforme a la loi CASL et met a jour le statut de l'abonne immediatement.</p>
+
+<h3>4. Creer une campagne email</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle campagne</strong> dans le ruban</li>
+<li>Le compositeur d'email s'ouvre avec les champs :</li>
+</ol>
+<ul>
+<li><strong>Objet</strong> (obligatoire) : La ligne d'objet de l'email</li>
+<li><strong>Contenu</strong> (obligatoire) : Le corps du message en HTML</li>
+</ul>
+<ol>
+<li>Optionnel -- configurez un <strong>test A/B</strong> :</li>
+</ol>
+<ul>
+<li>Activez l'interrupteur "Test A/B"</li>
+<li>Choisissez le type de test : <strong>objet</strong> ou <strong>contenu</strong></li>
+<li>Saisissez la variante B (objet alternatif ou contenu alternatif)</li>
+<li>Definissez le pourcentage de l'echantillon test (par defaut 20%)</li>
+<li>Definissez le delai d'attente avant de choisir le gagnant (par defaut 120 minutes)</li>
+<li>Choisissez la metrique gagnante : taux d'ouverture ou taux de clic</li>
+</ul>
+<ol>
+<li>Actions disponibles :</li>
+</ol>
+<ul>
+<li><strong>Sauvegarder comme brouillon</strong> : Enregistre sans envoyer</li>
+<li><strong>Planifier</strong> : Programme l'envoi a une date future</li>
+<li><strong>Envoyer maintenant</strong> : Envoie immediatement</li>
+</ul>
+
+<p><strong>Validations</strong> :</p>
+<ul>
+<li>L'objet ne peut pas etre vide</li>
+<li>Le contenu ne peut pas etre vide</li>
+</ul>
+
+<h3>5. Envoyer une campagne existante</h3>
+
+<ol>
+<li>Onglet Campagnes actif</li>
+<li>Selectionnez un brouillon dans la liste</li>
+<li>Cliquez sur <strong>Envoyer</strong> dans le ruban</li>
+<li>Une fenetre de confirmation apparait (indiquant le nombre de destinataires)</li>
+<li>Confirmez l'envoi</li>
+</ol>
+
+<h3>6. Consulter les statistiques d'une campagne</h3>
+
+<ol>
+<li>Selectionnez une campagne envoyee</li>
+<li>Cliquez sur <strong>Statistiques campagne</strong> dans le ruban</li>
+<li>Une fenetre modale affiche :</li>
+</ol>
+<ul>
+<li>Nombre d'emails envoyes</li>
+<li>Taux d'ouverture</li>
+<li>Taux de clic</li>
+<li>Taux de rebond</li>
+<li>Taux de desabonnement</li>
+<li>Nombre d'ouvertures, de clics, de rebonds et de desabonnements</li>
+<li>Contexte des abonnes (total actifs, total desabonnes)</li>
+</ul>
+<ol>
+<li>Pour les campagnes avec test A/B : les resultats par variante (A et B), le gagnant, et le nombre d'emails envoyes au reste de la liste</li>
+</ol>
+
+<h3>7. Supprimer une campagne</h3>
+
+<ol>
+<li>Selectionnez la campagne</li>
+<li>Cliquez sur <strong>Supprimer</strong> dans le ruban</li>
+<li>Confirmez la suppression</li>
+</ol>
+
+<p>Seuls les brouillons et les campagnes planifiees peuvent etre supprimes. Les campagnes deja envoyees sont conservees pour l'historique.</p>
+
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario A : Envoyer une newsletter mensuelle</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle campagne</strong></li>
+<li>Objet : "Nouveautes mars 2026 - BioCycle Peptides"</li>
+<li>Contenu : Redigez le corps de l'email en HTML (nouveaux produits, offres speciales, actualites)</li>
+<li>Cliquez sur <strong>Envoyer maintenant</strong></li>
+<li>Confirmez l'envoi</li>
+<li>Apres quelques heures, revenez consulter les statistiques (taux d'ouverture, de clic)</li>
+</ol>
+
+<h3>Scenario B : Tester deux lignes d'objet avec un test A/B</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle campagne</strong></li>
+<li>Objet (variante A) : "Decouvrez nos nouveaux peptides"</li>
+<li>Contenu : Votre email</li>
+<li>Activez le <strong>test A/B</strong></li>
+<li>Type de test : <strong>Objet</strong></li>
+<li>Objet variante B : "25% de rabais sur nos nouveaux peptides !"</li>
+<li>Pourcentage test : 20% (20% des abonnes recevront la variante A, 20% la B)</li>
+<li>Delai : 120 minutes (2 heures pour analyser les resultats)</li>
+<li>Metrique gagnante : Taux d'ouverture</li>
+<li>Cliquez sur <strong>Envoyer maintenant</strong></li>
+<li>Apres 2 heures, le systeme determine automatiquement le gagnant et envoie cette version aux 60% restants</li>
+</ol>
+
+<h3>Scenario C : Nettoyer la liste d'abonnes</h3>
+
+<ol>
+<li>Allez sur l'onglet <strong>Abonnes</strong></li>
+<li>Filtrez sur le statut <strong>Rebondi</strong> (Bounced)</li>
+<li>Consultez les adresses invalides</li>
+<li>Exportez la liste en CSV pour archivage</li>
+<li>Utilisez ces informations pour mettre a jour vos bases de contacts</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Comment les gens s'inscrivent-ils a la newsletter ?</strong></p>
+<p>R: Les visiteurs du site peuvent s'inscrire via le popup d'inscription, le formulaire dans le pied de page du site, ou la case a cocher au moment du paiement. Chaque source est tracee dans le systeme.</p>
+
+<p><strong>Q: Le systeme est-il conforme a la loi CASL ?</strong></p>
+<p>R: Oui. Le systeme integre les exigences CASL automatiquement : consentement explicite a l'inscription, lien de desabonnement obligatoire dans chaque email, identification de l'expediteur, et gestion des desabonnements.</p>
+
+<p><strong>Q: Combien de temps faut-il attendre pour obtenir les resultats d'un test A/B ?</strong></p>
+<p>R: Le delai est configurable lors de la creation de la campagne (par defaut 120 minutes). Apres ce delai, le systeme compare les resultats et envoie la version gagnante au reste des abonnes.</p>
+
+<p><strong>Q: Puis-je modifier une campagne deja envoyee ?</strong></p>
+<p>R: Non. Une fois envoyee, la campagne ne peut plus etre modifiee. Vous pouvez en creer une nouvelle si necessaire.</p>
+
+<p><strong>Q: Comment sont calculees les statistiques d'ouverture et de clic ?</strong></p>
+<p>R: Le taux d'ouverture mesure le pourcentage d'emails ouverts par rapport au nombre d'emails envoyes. Le taux de clic mesure le pourcentage de destinataires ayant clique sur un lien dans l'email. Ces donnees sont collectees via des pixels de suivi et des liens traces.</p>
+
+<hr>
+
+<h2>Strategie expert : conformite CASL detaillee</h2>
+
+<h3>Qu'est-ce que la CASL exactement ?</h3>
+
+<p>La Loi canadienne anti-pourriel (CASL, en vigueur depuis 2014) est l'une des legislations anti-spam les plus strictes au monde. Elle s'applique a tout message electronique commercial (MEC) envoye depuis le Canada ou recu au Canada, y compris les emails, SMS et messages sur les reseaux sociaux.</p>
+
+<h3>Les 3 exigences obligatoires pour chaque envoi</h3>
+
+<p><strong>1. Consentement</strong> (le plus important)</p>
+<ul>
+<li><strong>Consentement explicite (opt-in)</strong> : Le destinataire a activement coche une case ou rempli un formulaire pour s'inscrire. La case ne doit PAS etre pre-cochee.</li>
+<li><strong>Consentement implicite</strong> : Existe pour les clients ayant achete dans les 2 derniers ans, ou les personnes ayant fait une demande dans les 6 derniers mois. ATTENTION : le consentement implicite expire. Apres expiration, il faut obtenir un consentement explicite.</li>
+<li><strong>Preuve</strong> : Conservez la date, la methode et le texte exact qui accompagnait la demande de consentement. Koraline enregistre automatiquement ces informations.</li>
+</ul>
+
+<p><strong>2. Identification de l'expediteur</strong></p>
+<ul>
+<li>Nom de l'entreprise : BioCycle Peptides Inc.</li>
+<li>Adresse postale physique (OBLIGATOIRE dans chaque email)</li>
+<li>Coordonnees valides (email, telephone ou URL)</li>
+</ul>
+
+<p><strong>3. Mecanisme de desabonnement</strong></p>
+<ul>
+<li>Lien de desabonnement dans chaque email, visible et fonctionnel</li>
+<li>Traitement de la demande en maximum 10 jours ouvrables (Koraline le fait instantanement)</li>
+<li>Le desabonnement doit etre gratuit et sans condition</li>
+</ul>
+
+<h3>Penalites en cas de non-conformite</h3>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Montant maximum</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Entreprise</strong></td><td>Jusqu'a 10 000 000 $CA par infraction</td></tr>
+  <tr><td><strong>Individu</strong></td><td>Jusqu'a 1 000 000 $CA par infraction</td></tr>
+  <tr><td><strong>Droit d'action prive</strong></td><td>Les destinataires peuvent poursuivre directement</td></tr>
+</tbody>
+</table>
+<p>Le CRTC (Conseil de la radiodiffusion et des telecommunications canadiennes) applique activement cette loi. Des amendes de plusieurs millions ont ete imposees a des entreprises canadiennes.</p>
+
+<h3>Ce que Koraline fait automatiquement pour vous</h3>
+
+<ul>
+<li>Enregistre la preuve de consentement (date, source, methode)</li>
+<li>Insere le lien de desabonnement dans chaque email</li>
+<li>Traite les desabonnements instantanement</li>
+<li>Bloque l'envoi vers les adresses desabonnees ou rebondies</li>
+<li>Ajoute l'adresse physique dans le pied de page</li>
+</ul>
+
+<h3>Ce que vous devez faire vous-meme</h3>
+
+<ul>
+<li>Ne JAMAIS importer une liste d'emails achetee -- c'est illegal sous la CASL</li>
+<li>Verifier que vos formulaires d'inscription ont un texte de consentement clair</li>
+<li>Ne pas pre-cocher la case d'inscription a la newsletter au checkout</li>
+<li>Documenter la source de chaque abonne (popup, footer, checkout)</li>
+</ul>
+
+<h2>Strategie expert : segmentation avancee pour peptides</h2>
+
+<h3>Pourquoi segmenter ?</h3>
+
+<p>Envoyer le meme email a toute votre base est inefficace. Un chercheur en biologie moleculaire n'a pas les memes besoins qu'un athlete qui decouvre les peptides. La segmentation augmente les taux d'ouverture de 40 a 60% et les taux de clic de 50 a 100%.</p>
+
+<h3>Segments recommandes pour BioCycle Peptides</h3>
+
+<table>
+<thead>
+    <tr><th>Segment</th><th>Criteres</th><th>Contenu adapte</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Chercheurs academiques</strong></td><td>Email .edu ou .ca universitaire, achats reguliers, panier moyen > 200 $CA</td><td>Nouvelles publications, certificats d'analyse, promotions sur volumes</td></tr>
+  <tr><td><strong>Acheteurs peptides reparation</strong></td><td>A achete BPC-157, TB-500, ou GHK-Cu</td><td>Cross-sell eau bacteriostatique, seringues, autres peptides reparation</td></tr>
+  <tr><td><strong>Acheteurs peptides performance</strong></td><td>A achete CJC-1295, Ipamorelin, ou GHRP-6</td><td>Cross-sell stacks, guides de reconstitution, nouveaux peptides performance</td></tr>
+  <tr><td><strong>Acheteurs supplements</strong></td><td>Achats uniquement dans la categorie "Supplements"</td><td>Education sur les peptides, offre decouverte premier peptide</td></tr>
+  <tr><td><strong>Gros acheteurs (VIP)</strong></td><td>CLV > 1000 $CA ou > 5 commandes</td><td>Offres exclusives, acces anticipe aux nouveaux produits, service prioritaire</td></tr>
+  <tr><td><strong>Inactifs 60+ jours</strong></td><td>Derniere commande > 60 jours</td><td>Email de reactivation avec code promo 15%</td></tr>
+  <tr><td><strong>Nouveaux inscrits</strong></td><td>Inscription < 7 jours, pas encore achete</td><td>Sequence de bienvenue, guide du debutant, code premiere commande</td></tr>
+  <tr><td><strong>B2B (labos, cliniques)</strong></td><td>Tag "B2B" ou entreprise associee</td><td>Grilles de prix volume, COA en lot, compte dedie</td></tr>
+</tbody>
+</table>
+<h3>Benchmarks industrie sante / supplements au Canada</h3>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Moyenne industrie</th><th>Bon</th><th>Excellent</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Taux d'ouverture</strong></td><td>20-25%</td><td>25-30%</td><td>> 30%</td></tr>
+  <tr><td><strong>Taux de clic</strong></td><td>2-4%</td><td>4-6%</td><td>> 6%</td></tr>
+  <tr><td><strong>Taux de desabonnement</strong></td><td>0.2-0.5%</td><td>< 0.2%</td><td>< 0.1%</td></tr>
+  <tr><td><strong>Taux de rebond</strong></td><td>1-3%</td><td>< 1%</td><td>< 0.5%</td></tr>
+  <tr><td><strong>Revenu par email</strong></td><td>0.10-0.25 $CA</td><td>0.25-0.50 $CA</td><td>> 0.50 $CA</td></tr>
+</tbody>
+</table>
+<p><strong>Frequence d'envoi optimale</strong> : 1 a 2 emails par semaine pour les segments actifs, 1 par mois pour les segments froids. Au-dela de 3 par semaine, le taux de desabonnement augmente significativement.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Abonne</strong></td><td>Une personne inscrite a la liste de diffusion de la newsletter</td></tr>
+  <tr><td><strong>Campagne</strong></td><td>Un email envoye a un groupe d'abonnes dans un but marketing</td></tr>
+  <tr><td><strong>Brouillon</strong></td><td>Une campagne en cours de redaction, pas encore envoyee</td></tr>
+  <tr><td><strong>Planifiee</strong></td><td>Une campagne programmee pour etre envoyee a une date future</td></tr>
+  <tr><td><strong>Test A/B</strong></td><td>Technique consistant a tester deux versions d'un email sur un echantillon avant d'envoyer la meilleure au reste</td></tr>
+  <tr><td><strong>Taux d'ouverture</strong></td><td>Pourcentage d'emails ouverts par les destinataires</td></tr>
+  <tr><td><strong>Taux de clic</strong></td><td>Pourcentage de destinataires ayant clique sur un lien</td></tr>
+  <tr><td><strong>Rebond (Bounce)</strong></td><td>Email non delivre car l'adresse est invalide ou la boite est pleine</td></tr>
+  <tr><td><strong>CASL</strong></td><td>Loi canadienne anti-pourriel (Canadian Anti-Spam Legislation)</td></tr>
+  <tr><td><strong>Segment</strong></td><td>Un sous-groupe d'abonnes defini par des criteres (langue, source, comportement)</td></tr>
+  <tr><td><strong>Variante</strong></td><td>L'une des versions d'un test A/B (variante A ou variante B)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/promo-codes">Codes Promo</a> -- Creer des codes de reduction a partager dans les newsletters</li>
+<li><a href="/admin/blog">Blog</a> -- Publier du contenu a relayer dans les newsletters</li>
+<li><a href="/admin/rapports">Rapports marketing</a> -- Analyser l'impact des campagnes sur les ventes</li>
+<li><a href="/admin/bannieres">Bannieres</a> -- Gerer les visuels promotionnels a inclure dans les emails</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
  * This route is an alias for POST /api/phone/calls for iOS compatibility.
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { withMobileGuard } from '@/lib/mobile-guard';
 import * as telnyx from '@/lib/telnyx';

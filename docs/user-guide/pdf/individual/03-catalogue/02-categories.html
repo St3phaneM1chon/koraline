@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Categories &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 03 — Catalogue</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion des Categories</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Catalogue > Categories</p>
+<p><strong>URL</strong>: <code>/admin/categories</code></p>
+<p><strong>Niveau</strong>: Debutant a intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Categories</strong> organise vos produits en groupes logiques. Les categories apparaissent dans le menu de la boutique et permettent aux clients de trouver facilement les produits qui les interessent.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir toutes les categories avec leur nombre de produits, ordre d'affichage et statut</li>
+<li>Creer une nouvelle categorie (avec nom, slug, description, image)</li>
+<li>Creer des sous-categories (hierarchie parent-enfant)</li>
+<li>Modifier une categorie existante</li>
+<li>Supprimer une categorie (si elle n'a pas de produits)</li>
+<li>Reorganiser l'ordre d'affichage (monter/descendre)</li>
+<li>Activer/desactiver une categorie</li>
+<li>Exporter la liste au format CSV</li>
+<li>Voir les statistiques de visites par categorie</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Qu'est-ce qu'une categorie ?</h3>
+<p>Une categorie, c'est un dossier qui regroupe des produits similaires. Par exemple :</p>
+<ul>
+<li><strong>Peptides</strong> — Tous les peptides synthetiques</li>
+<li><strong>Recuperation & Reparation</strong> — Peptides pour la guerison (BPC-157, TB-500)</li>
+<li><strong>Croissance Musculaire</strong> — Peptides anabolisants</li>
+<li><strong>Supplements</strong> — Supplements nutritionnels</li>
+<li><strong>Accessoires</strong> — Materiel de laboratoire</li>
+</ul>
+
+<h3>Hierarchie parent/enfant</h3>
+<p>Les categories peuvent avoir des <strong>sous-categories</strong>. Par exemple :</p>
+<ul>
+<li><strong>Peptides</strong> (categorie parente)</li>
+<li>Recuperation & Reparation (sous-categorie)</li>
+<li>Croissance Musculaire (sous-categorie)</li>
+<li>Sante Cognitive (sous-categorie)</li>
+</ul>
+
+<h3>Le slug</h3>
+<p>Le slug est la partie de l'URL qui identifie la categorie. Par exemple :</p>
+<ul>
+<li>Categorie "Recuperation & Reparation" → slug: <code>recovery-repair</code></li>
+<li>URL complete: <code>biocyclepeptides.com/categorie/recovery-repair</code></li>
+</ul>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Page Categories]</div>
+
+<h3>La barre de ruban</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouvelle categorie</strong></td><td>Creer une categorie de premier niveau</td></tr>
+  <tr><td><strong>Nouvelle sous-categorie</strong></td><td>Creer une sous-categorie de la categorie selectionnee</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer la categorie selectionnee</td></tr>
+  <tr><td><strong>Stats visites</strong></td><td>Voir combien de fois chaque categorie est visitee</td></tr>
+  <tr><td><strong>Reorganiser</strong></td><td>Activer le mode reorganisation (deplacer les categories)</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger la liste en CSV</td></tr>
+</tbody>
+</table>
+<h3>Le tableau des categories</h3>
+
+<table>
+<thead>
+    <tr><th>Colonne</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Categorie</strong></td><td>Nom + slug + image (miniature)</td></tr>
+  <tr><td><strong>Produits</strong></td><td>Nombre de produits dans cette categorie</td></tr>
+  <tr><td><strong>Ordre</strong></td><td>Position d'affichage (1 = premier)</td></tr>
+  <tr><td><strong>Actif</strong></td><td>Coche verte si la categorie est visible</td></tr>
+  <tr><td><strong>Actions</strong></td><td>+ Sous, Modifier, Supprimer</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>1. Creer une categorie</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle categorie</strong> (ruban ou bouton en haut a droite)</li>
+<li>Un formulaire modal s'ouvre :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Obligatoire</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nom</strong></td><td>Oui</td><td>Nom affiche sur la boutique (ex: "Sante Cognitive")</td></tr>
+  <tr><td><strong>Slug</strong></td><td>Auto-genere</td><td>URL de la categorie (se genere a partir du nom)</td></tr>
+  <tr><td><strong>Description</strong></td><td>Non</td><td>Texte affiche sur la page de la categorie</td></tr>
+  <tr><td><strong>Image</strong></td><td>Non</td><td>Image de couverture (via upload ou URL)</td></tr>
+  <tr><td><strong>Ordre</strong></td><td>Oui</td><td>Position dans le menu (defaut: apres la derniere)</td></tr>
+  <tr><td><strong>Categorie parente</strong></td><td>Non</td><td>Si rempli, devient une sous-categorie</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Cliquez sur <strong>Enregistrer</strong></li>
+</ol>
+
+<h3>2. Creer une sous-categorie</h3>
+
+<ol>
+<li>Sur la ligne de la categorie parente, cliquez sur <strong>+ Sous</strong></li>
+<li>Le formulaire s'ouvre avec la categorie parente pre-selectionnee</li>
+<li>Renseignez nom, description, image</li>
+<li>Enregistrez</li>
+</ol>
+
+<h3>3. Modifier une categorie</h3>
+
+<ol>
+<li>Sur la ligne de la categorie, cliquez sur <strong>Modifier</strong> (icone crayon)</li>
+<li>Le formulaire s'ouvre pre-rempli</li>
+<li>Modifiez les champs souhaites</li>
+<li>Enregistrez</li>
+</ol>
+
+<h3>4. Reorganiser l'ordre</h3>
+
+<ol>
+<li>Cliquez sur <strong>Reorganiser</strong> dans le ruban (ou le bouton en haut a droite)</li>
+<li>Le mode reorganisation s'active — des fleches haut/bas apparaissent</li>
+<li>Cliquez sur les fleches pour monter ou descendre une categorie</li>
+<li>Le nouvel ordre est sauvegarde automatiquement</li>
+</ol>
+
+<h3>5. Supprimer une categorie</h3>
+
+<ol>
+<li>Cliquez sur l'icone <strong>Poubelle</strong> sur la ligne de la categorie</li>
+<li>Confirmez la suppression</li>
+</ol>
+
+<blockquote>
+<p><strong>Attention</strong> : Vous ne pouvez pas supprimer une categorie qui contient des produits. Deplacez d'abord les produits vers une autre categorie.</p>
+</blockquote>
+
+<hr>
+
+<h2>Workflows complets</h2>
+
+<h3>Scenario : Ajouter une nouvelle gamme de produits</h3>
+
+<ol>
+<li>Allez dans <strong>Catalogue > Categories</strong></li>
+<li>Cliquez sur <strong>Nouvelle categorie</strong></li>
+<li>Nom: "Sante Hormonale", Description: "Peptides pour l'equilibre hormonal"</li>
+<li>Uploadez une image representative</li>
+<li>Enregistrez</li>
+<li>Allez dans <strong>Catalogue > Produits</strong> et assignez les produits concernes a cette categorie</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<h3>Q : Combien de niveaux de sous-categories puis-je creer ?</h3>
+<p><strong>R</strong> : Le systeme supporte 2 niveaux : categorie parente et sous-categorie. Pas de sous-sous-categorie.</p>
+
+<h3>Q : Si je desactive une categorie, ses produits disparaissent-ils ?</h3>
+<p><strong>R</strong> : Oui, la categorie et ses produits sont caches de la boutique. Mais les produits restent accessibles dans l'admin.</p>
+
+<h3>Q : Les images de categories sont-elles obligatoires ?</h3>
+<p><strong>R</strong> : Non, mais recommandees. Les categories sans image affichent une icone de dossier par defaut.</p>
+
+<hr>
+
+<h2>Strategie expert : Architecture d'information optimale pour la conversion</h2>
+
+<h3>Principes fondamentaux</h3>
+
+<p>L'architecture de vos categories est l'equivalent de l'organisation des rayons dans un magasin physique. Une bonne architecture aide le client a trouver rapidement ce qu'il cherche, reduit le taux de rebond et augmente le taux de conversion.</p>
+
+<h3>Regles d'or de la categorisation e-commerce</h3>
+
+<table>
+<thead>
+    <tr><th>Regle</th><th>Explication</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Maximum 7 a 9 categories principales</strong></td><td>Au-dela de 9, le client est submerge de choix (paradoxe du choix). En dessous de 5, les categories sont trop larges et peu utiles.</td></tr>
+  <tr><td><strong>Noms clairs et descriptifs</strong></td><td>"Recuperation et Reparation" est meilleur que "Categorie 1" ou "Divers". Le client doit comprendre en une seconde ce qu'il trouvera dans la categorie.</td></tr>
+  <tr><td><strong>Ordre par popularite</strong></td><td>Les categories les plus visitees et les plus vendues doivent apparaitre en premier dans le menu. Utilisez le bouton <strong>Stats visites</strong> pour identifier les categories populaires.</td></tr>
+  <tr><td><strong>Maximum 2 niveaux</strong></td><td>Categories parentes et sous-categories. Ne pas creer de sous-sous-categories (Koraline ne le supporte pas, et c'est une bonne pratique).</td></tr>
+  <tr><td><strong>Pas de categories vides</strong></td><td>Une categorie avec 0 produit desoriente le client. Desactivez les categories sans produit ou ajoutez un produit "bientot disponible".</td></tr>
+  <tr><td><strong>Pas de doublons</strong></td><td>Un produit ne devrait idealement appartenir qu'a une seule categorie. Si un peptide est pertinent pour deux categories, choisir la plus specifique.</td></tr>
+</tbody>
+</table>
+<h3>Taxonomie recommandee pour BioCycle Peptides</h3>
+
+<p>Voici une architecture de categories optimisee pour un e-commerce de peptides de recherche au Canada, classee par usage de recherche.</p>
+
+<p><strong>Niveau 1 : Categories principales (7 categories)</strong></p>
+
+<table>
+<thead>
+    <tr><th>Ordre</th><th>Categorie</th><th>Description</th><th>Produits typiques</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td><strong>Recuperation et Reparation</strong></td><td>Peptides etudies pour la regeneration tissulaire</td><td>BPC-157, TB-500, TB4-FRAG</td></tr>
+  <tr><td>2</td><td><strong>Croissance et Performance</strong></td><td>Peptides de recherche sur la croissance des tissus</td><td>CJC-1295, Ipamorelin, GHRP-6, MK-677</td></tr>
+  <tr><td>3</td><td><strong>Sante Cognitive</strong></td><td>Peptides etudies pour les fonctions neurologiques</td><td>Semax, Selank, Dihexa, BPC-157</td></tr>
+  <tr><td>4</td><td><strong>Metabolisme et Composition</strong></td><td>Recherche sur le metabolisme et la composition corporelle</td><td>AOD-9604, Fragment 176-191, Tesamorelin</td></tr>
+  <tr><td>5</td><td><strong>Anti-Age et Longevite</strong></td><td>Recherche sur le vieillissement cellulaire</td><td>Epitalon, GHK-Cu, Thymosin Alpha-1</td></tr>
+  <tr><td>6</td><td><strong>Supplements</strong></td><td>Supplements nutritionnels complementaires</td><td>Vitamines, mineraux, cofacteurs</td></tr>
+  <tr><td>7</td><td><strong>Accessoires</strong></td><td>Materiel de laboratoire et accessoires</td><td>Eau bacteriostatique, seringues, fioles vides</td></tr>
+</tbody>
+</table>
+<p><strong>Niveau 2 : Sous-categories (exemples)</strong></p>
+
+<p>Sous "Croissance et Performance" :</p>
+<ul>
+<li>Secretagogues de GH (CJC-1295, Ipamorelin, GHRP-2, GHRP-6)</li>
+<li>Modulateurs selectifs (MK-677, LGD-4033)</li>
+<li>Peptides de croissance (IGF-1 LR3, MGF)</li>
+</ul>
+
+<h3>Erreurs courantes a eviter</h3>
+
+<table>
+<thead>
+    <tr><th>Erreur</th><th>Probleme</th><th>Solution</th></tr>
+</thead>
+<tbody>
+  <tr><td>Trop de categories principales (15+)</td><td>Navigation confuse, client perd ses reperes</td><td>Fusionner les categories similaires</td></tr>
+  <tr><td>Categories par format ("5mg", "10mg")</td><td>Melange la classification par usage et par format</td><td>Les formats sont des variantes de produit, pas des categories</td></tr>
+  <tr><td>Noms trop techniques</td><td>"Secretagogues de GH" est incomprehensible pour un debutant</td><td>Utiliser "Croissance et Performance" avec les termes techniques en sous-description</td></tr>
+  <tr><td>Categories alphabetiques</td><td>L'ordre alphabetique ne reflete pas la popularite</td><td>Ordonner par popularite (utiliser les stats)</td></tr>
+</tbody>
+</table>
+<h3>Impact sur le SEO</h3>
+
+<p>Chaque categorie genere une page indexable par Google. Optimiser les categories pour le SEO :</p>
+<ul>
+<li><strong>Slug</strong> : court et descriptif (ex: <code>recovery-repair</code>, <code>growth-performance</code>)</li>
+<li><strong>Description</strong> : 150-300 mots uniques, incluant les mots-cles pertinents</li>
+<li><strong>Image</strong> : image representative de haute qualite avec attribut alt descriptif</li>
+</ul>
+
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="01-produits.md">Produits</a> — Les produits organises dans ces categories</li>
+<li><a href="03-bundles.md">Bundles</a> — Lots de produits multi-categories</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

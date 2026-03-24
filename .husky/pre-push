@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# C1-OPS-A-018: Pre-push hook — build must pass before pushing
+echo "Running build check before push..."
+npx prisma generate && npm run build
+echo "Build passed — push allowed"

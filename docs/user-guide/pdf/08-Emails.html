@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>08 — Emails &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 08 — Emails</span>
+        <span>2026-03-20</span>
+      </div>
+
+<div class="cover" style="min-height: 40vh; padding: 3rem 2rem;">
+  <div class="cover-logo" style="width:80px; height:80px; font-size:1.8rem; border-radius:16px;">K</div>
+  <h1 style="font-size:2rem;">08 — Emails</h1>
+  <div class="subtitle">Guide Utilisateur &mdash; Suite Koraline</div>
+  <div class="version">
+    7 pages dans cette section<br>
+    2026-03-20
+  </div>
+</div><div class="toc-container" style="margin:1rem 0 2rem;">
+<h2>Contenu de cette section</h2>
+<ul class="toc">
+<ul class="toc-pages">
+<li><a href="#08-emails--01-inbox"><span>Boite de reception (Inbox)</span><span class="toc-dots"></span></a></li>
+<li><a href="#08-emails--02-envois"><span>Emails envoyes</span><span class="toc-dots"></span></a></li>
+<li><a href="#08-emails--03-brouillons"><span>Brouillons</span><span class="toc-dots"></span></a></li>
+<li><a href="#08-emails--04-templates"><span>Templates d'email</span><span class="toc-dots"></span></a></li>
+<li><a href="#08-emails--05-campagnes"><span>Campagnes email</span><span class="toc-dots"></span></a></li>
+<li><a href="#08-emails--06-flows"><span>Flows email (Sequences automatisees)</span><span class="toc-dots"></span></a></li>
+<li><a href="#08-emails--07-analytics"><span>Analytics email</span><span class="toc-dots"></span></a></li>
+</ul>
+</ul>
+</div><div id="08-emails--01-inbox">
+<h1>Boite de reception (Inbox)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Emails > Boite de reception</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>La boite de reception de Koraline fonctionne comme un client email de type Outlook integre directement dans</p>
+<p>le panneau d'administration. Elle centralise toutes les conversations entrantes des clients de BioCycle</p>
+<p>Peptides en un seul endroit. Chaque email entrant cree automatiquement une <strong>conversation</strong> qui regroupe</p>
+<p>l'ensemble des echanges avec un meme client sur un meme sujet.</p>
+
+<p>Contrairement a un client email classique, cette boite de reception est enrichie avec les donnees CRM :</p>
+<p>vous voyez immediatement le nom du client, son niveau de fidelite, et l'agent assigne a la conversation.</p>
+<p>Cela permet de repondre plus rapidement et avec un meilleur contexte.</p>
+
+<p>Les conversations ont un cycle de vie defini par des <strong>statuts</strong> : Nouveau, Ouvert, En attente, Resolu</p>
+<p>et Ferme. Ces statuts permettent a toute l'equipe de savoir ou en est chaque demande client.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Emails</strong> dans la barre laterale gauche (icone enveloppe).</li>
+<li>Dans le panneau de navigation, sous <strong>Favoris</strong>, cliquez sur <strong>Boite de reception</strong>.</li>
+<li>L'URL directe est : <code>/admin/emails?folder=inbox</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Barre de recherche</h3>
+<p>En haut de la boite de reception se trouve un champ de recherche. Tapez un nom, une adresse email ou</p>
+<p>un mot-cle pour filtrer les conversations en temps reel.</p>
+
+<h3>Filtres de statut</h3>
+<p>Sous la barre de recherche, une rangee de boutons-filtres permet de trier par statut :</p>
+
+<table>
+<thead>
+    <tr><th>Filtre</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Tous</strong></td><td>Affiche toutes les conversations</td></tr>
+  <tr><td><strong>Nouveau</strong></td><td>Conversations jamais ouvertes (icone cercle bleu)</td></tr>
+  <tr><td><strong>Ouvert</strong></td><td>Conversations en cours de traitement (icone alerte orange)</td></tr>
+  <tr><td><strong>En attente</strong></td><td>Conversations en attente d'une reponse du client (icone pause jaune)</td></tr>
+  <tr><td><strong>Resolu</strong></td><td>Conversations resolues (icone coche vert)</td></tr>
+</tbody>
+</table>
+<p>Chaque filtre affiche un compteur indiquant le nombre de conversations dans cette categorie.</p>
+
+<h3>Liste des conversations</h3>
+<p>Chaque conversation affiche :</p>
+<ul>
+<li><strong>Avatar du client</strong> : Photo de profil ou initiale</li>
+<li><strong>Nom de l'expediteur</strong> : Nom du client ou adresse email</li>
+<li><strong>Objet</strong> : Ligne d'objet du dernier email</li>
+<li><strong>Apercu</strong> : Les 100 premiers caracteres du dernier message</li>
+<li><strong>Horodatage relatif</strong> : "il y a 5m", "il y a 2h", "il y a 3j", etc.</li>
+<li><strong>Indicateur de priorite</strong> : Bordure gauche coloree (rouge = urgent, orange = haute)</li>
+<li><strong>Agent assigne</strong> : Nom de l'agent s'occupant de la conversation</li>
+<li><strong>Tags</strong> : Etiquettes de classification (maximum 2 affiches)</li>
+<li><strong>Compteur de messages</strong> : Nombre total de messages dans le fil</li>
+</ul>
+
+<h3>Panneau de detail</h3>
+<p>Lorsque vous cliquez sur une conversation, le panneau de droite affiche le <strong>fil de conversation</strong></p>
+<p>complet avec l'historique des echanges, les pieces jointes, et la barre latérale client (CRM).</p>
+
+<h3>Ruban d'actions</h3>
+<p>Depuis le detail d'une conversation, vous pouvez :</p>
+<ul>
+<li><strong>Repondre</strong> : Envoyer une reponse au client</li>
+<li><strong>Ajouter une note interne</strong> : Note visible uniquement par l'equipe</li>
+<li><strong>Changer le statut</strong> : Marquer comme resolu, en attente, etc.</li>
+<li><strong>Assigner</strong> : Attribuer la conversation a un autre agent</li>
+<li><strong>Archiver</strong> : Deplacer vers les archives</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Actualisation automatique</h3>
+<p>La boite de reception se rafraichit automatiquement toutes les <strong>30 secondes</strong> pour afficher les</p>
+<p>nouveaux messages sans recharger la page.</p>
+
+<h3>Priorites des conversations</h3>
+<p>Les conversations sont classees par priorite, signalee par la bordure gauche :</p>
+<ul>
+<li><strong>Rouge</strong> : Priorite urgente - a traiter immediatement</li>
+<li><strong>Orange</strong> : Priorite haute - a traiter dans l'heure</li>
+<li><strong>Transparent</strong> : Priorite normale</li>
+<li><strong>Gris</strong> : Priorite basse</li>
+</ul>
+
+<h3>Sidebar client (CRM)</h3>
+<p>A droite du fil de conversation, la sidebar affiche les informations CRM du client :</p>
+<ul>
+<li>Nom, email, photo de profil</li>
+<li>Niveau de fidelite (tier)</li>
+<li>Historique des commandes recentes</li>
+<li>Liens rapides vers la fiche client</li>
+</ul>
+
+<h3>Reponses et notes</h3>
+<ul>
+<li><strong>Repondre</strong> : Composez votre reponse dans l'editeur integre. Les variables dynamiques</li>
+</ul>
+<p>  (prenom, nom) sont disponibles.</p>
+<ul>
+<li><strong>Note interne</strong> : Ajoutez des notes visibles uniquement par l'equipe interne. Utile pour</li>
+</ul>
+<p>  documenter le contexte avant un transfert de conversation.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Traiter un nouvel email client</h3>
+<ol>
+<li>Cliquez sur le filtre <strong>Nouveau</strong> pour voir les conversations non traitees.</li>
+<li>Selectionnez une conversation pour lire le message.</li>
+<li>Consultez la sidebar CRM pour comprendre le contexte client.</li>
+<li>Redigez votre reponse dans l'editeur.</li>
+<li>Cliquez sur <strong>Envoyer</strong>.</li>
+<li>Changez le statut a <strong>Resolu</strong> si la demande est traitee, ou <strong>En attente</strong> si vous attendez</li>
+</ol>
+<p>   une reponse du client.</p>
+
+<h3>Workflow 2 : Escalader une conversation a un collegue</h3>
+<ol>
+<li>Ouvrez la conversation concernee.</li>
+<li>Ajoutez une <strong>note interne</strong> expliquant le contexte et la raison du transfert.</li>
+<li>Cliquez sur <strong>Assigner</strong> et selectionnez le collegue.</li>
+<li>Le collegue verra la conversation apparaitre dans sa boite avec la note.</li>
+</ol>
+
+<h3>Workflow 3 : Rechercher un echange passe</h3>
+<ol>
+<li>Tapez le nom du client ou un mot-cle dans la <strong>barre de recherche</strong>.</li>
+<li>Les resultats s'affichent instantanement dans la liste.</li>
+<li>Cliquez sur la conversation pour consulter l'historique complet.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Les emails sont-ils synchronises avec un serveur email externe ?</strong></p>
+<p>R : Oui, les emails entrants sont recus via un webhook d'email entrant et stockes dans la base</p>
+<p>de donnees Koraline. Les reponses sont envoyees via le service d'envoi configure (SendGrid, SMTP).</p>
+
+<p><strong>Q : Puis-je voir les pieces jointes ?</strong></p>
+<p>R : Oui, les pieces jointes sont accessibles dans le fil de conversation via l'API des pieces jointes.</p>
+
+<p><strong>Q : Comment savoir si un email a ete lu ?</strong></p>
+<p>R : Les conversations non lues apparaissent avec le statut <strong>Nouveau</strong>. Des qu'un agent ouvre la</p>
+<p>conversation, elle passe automatiquement a <strong>Ouvert</strong>.</p>
+
+<p><strong>Q : Combien de conversations peuvent s'afficher ?</strong></p>
+<p>R : La liste affiche toutes les conversations correspondant au filtre actif, sans pagination.</p>
+<p>Le rafraichissement automatique garantit que les nouvelles conversations apparaissent en temps reel.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Conversation</strong></td><td>Fil de messages regroupant tous les echanges avec un client sur un meme sujet</td></tr>
+  <tr><td><strong>Statut</strong></td><td>Etat d'avancement de la conversation (Nouveau, Ouvert, En attente, Resolu, Ferme)</td></tr>
+  <tr><td><strong>Priorite</strong></td><td>Niveau d'urgence de la conversation (Urgent, Haute, Normale, Basse)</td></tr>
+  <tr><td><strong>Note interne</strong></td><td>Message visible uniquement par les agents, pas envoye au client</td></tr>
+  <tr><td><strong>Tag</strong></td><td>Etiquette de classification appliquee a une conversation</td></tr>
+  <tr><td><strong>Assignation</strong></td><td>Action d'attribuer une conversation a un agent specifique</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./02-envois.md">Emails envoyes</a> : Consulter les emails envoyes</li>
+<li><a href="./03-brouillons.md">Brouillons</a> : Gerer les emails en cours de redaction</li>
+<li><a href="./04-templates.md">Templates</a> : Creer des modeles d'email reutilisables</li>
+<li><a href="./05-campagnes.md">Campagnes</a> : Envoyer des emails en masse</li>
+<li><a href="./07-analytics.md">Analytics emails</a> : Statistiques de delivrabilite</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="08-emails--02-envois">
+<h1>Emails envoyes</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Emails > Emails envoyes</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Le dossier <strong>Emails envoyes</strong> contient l'historique complet de tous les emails expedies depuis</p>
+<p>Koraline, que ce soit des reponses individuelles aux clients, des emails transactionnels</p>
+<p>(confirmations de commande, notifications d'expedition), ou des emails marketing envoyes via</p>
+<p>les campagnes.</p>
+
+<p>Ce dossier est essentiel pour la tracabilite : il permet de verifier ce qui a ete communique</p>
+<p>a un client, quand, et par quel agent.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Emails</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, sous <strong>Favoris</strong>, cliquez sur <strong>Envoyes</strong>.</li>
+<li>Vous pouvez aussi naviguer via <strong>Compte</strong> > <strong>Envoyes</strong>.</li>
+<li>L'URL directe est : <code>/admin/emails?folder=sent</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Liste des emails envoyes</h3>
+<p>Chaque email envoye affiche :</p>
+<ul>
+<li><strong>Destinataire</strong> : Nom ou adresse email du destinataire</li>
+<li><strong>Objet</strong> : Ligne d'objet de l'email</li>
+<li><strong>Date d'envoi</strong> : Horodatage de l'expedition</li>
+<li><strong>Statut de livraison</strong> : Indicateur visuel (delivre, rebondi, echoue)</li>
+<li><strong>Apercu</strong> : Premiers caracteres du contenu</li>
+</ul>
+
+<h3>Barre de recherche</h3>
+<p>Recherchez un email envoye par destinataire, objet ou contenu.</p>
+
+<h3>Filtres</h3>
+<ul>
+<li>Par periode (date de debut / date de fin)</li>
+<li>Par statut de livraison (delivre, rebondi, echoue)</li>
+<li>Par type (reponse manuelle, transactionnel, campagne)</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Consultation d'un email envoye</h3>
+<p>Cliquez sur un email pour voir :</p>
+<ul>
+<li>Le contenu HTML complet tel qu'il a ete envoye</li>
+<li>Les pieces jointes incluses</li>
+<li>Les informations de suivi (ouverture, clics)</li>
+<li>Le lien vers la conversation associee</li>
+</ul>
+
+<h3>Statuts de livraison</h3>
+<table>
+<thead>
+    <tr><th>Statut</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Delivre</strong></td><td>L'email a ete accepte par le serveur destinataire</td></tr>
+  <tr><td><strong>Rebondi</strong></td><td>L'email a ete rejete (adresse invalide, boite pleine)</td></tr>
+  <tr><td><strong>Echoue</strong></td><td>L'envoi a echoue pour une raison technique</td></tr>
+  <tr><td><strong>En cours</strong></td><td>L'email est en file d'attente d'envoi</td></tr>
+</tbody>
+</table>
+<h3>Suivi des ouvertures et clics</h3>
+<p>Pour les emails marketing et campagnes, Koraline integre un pixel de suivi permettant de savoir</p>
+<p>si le destinataire a ouvert l'email et s'il a clique sur les liens.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Verifier qu'un email a bien ete envoye</h3>
+<ol>
+<li>Ouvrez le dossier <strong>Envoyes</strong>.</li>
+<li>Recherchez le destinataire dans la barre de recherche.</li>
+<li>Verifiez le statut de livraison de l'email.</li>
+<li>Cliquez sur l'email pour voir les details de suivi.</li>
+</ol>
+
+<h3>Workflow 2 : Retrouver un email transactionnel</h3>
+<ol>
+<li>Filtrez par type <strong>Transactionnel</strong>.</li>
+<li>Definissez la plage de dates correspondant a la commande.</li>
+<li>Recherchez par numero de commande ou nom du client.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Puis-je renvoyer un email echoue ?</strong></p>
+<p>R : Oui, depuis le detail de l'email, un bouton permet de retenter l'envoi.</p>
+
+<p><strong>Q : Les emails envoyes depuis les campagnes apparaissent-ils ici ?</strong></p>
+<p>R : Oui, tous les emails envoyes sont consolides dans ce dossier, quelle que soit leur origine.</p>
+
+<p><strong>Q : Combien de temps les emails envoyes sont-ils conserves ?</strong></p>
+<p>R : Les emails sont conserves indefiniment dans la base de donnees. Un archivage automatique</p>
+<p>peut etre configure dans les parametres.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Email transactionnel</strong></td><td>Email automatique declenche par une action (commande, inscription)</td></tr>
+  <tr><td><strong>Email marketing</strong></td><td>Email promotionnel envoye via une campagne</td></tr>
+  <tr><td><strong>Rebond (bounce)</strong></td><td>Email rejete par le serveur destinataire</td></tr>
+  <tr><td><strong>Pixel de suivi</strong></td><td>Image invisible integree a l'email pour detecter les ouvertures</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./01-inbox.md">Boite de reception</a> : Gerer les emails entrants</li>
+<li><a href="./03-brouillons.md">Brouillons</a> : Emails en cours de redaction</li>
+<li><a href="./07-analytics.md">Analytics emails</a> : Statistiques de delivrabilite detaillees</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="08-emails--03-brouillons">
+<h1>Brouillons</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Emails > Brouillons</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Le dossier <strong>Brouillons</strong> stocke les emails que vous avez commences a rediger mais que vous n'avez</p>
+<p>pas encore envoyes. Cela vous permet de preparer un email, de le revoir plus tard, ou de le faire</p>
+<p>valider par un collegue avant de l'expedier.</p>
+
+<p>Les brouillons sont sauvegardes automatiquement dans Koraline et restent disponibles jusqu'a ce</p>
+<p>que vous les envoyiez ou les supprimiez. Ils sont visibles uniquement par leur auteur et les</p>
+<p>administrateurs.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Emails</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, sous <strong>Favoris</strong> ou <strong>Compte</strong>, cliquez sur <strong>Brouillons</strong>.</li>
+<li>L'URL directe est : <code>/admin/emails?folder=drafts</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Liste des brouillons</h3>
+<p>Chaque brouillon affiche :</p>
+<ul>
+<li><strong>Destinataire</strong> : Adresse email du destinataire prevu (ou "Sans destinataire")</li>
+<li><strong>Objet</strong> : Ligne d'objet du brouillon</li>
+<li><strong>Apercu</strong> : Premiers caracteres du contenu</li>
+<li><strong>Date de creation</strong> : Quand le brouillon a ete cree</li>
+<li><strong>Date de derniere modification</strong> : Derniere sauvegarde</li>
+</ul>
+
+<h3>Actions disponibles</h3>
+<ul>
+<li><strong>Modifier</strong> : Ouvrir le brouillon dans l'editeur pour continuer la redaction</li>
+<li><strong>Envoyer</strong> : Envoyer le brouillon immediatement</li>
+<li><strong>Supprimer</strong> : Supprimer definitivement le brouillon</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Sauvegarde automatique</h3>
+<p>Lorsque vous redigez un email depuis le compositeur, le contenu est sauvegarde automatiquement</p>
+<p>comme brouillon. Si vous fermez l'editeur sans envoyer, le brouillon sera disponible ici.</p>
+
+<h3>Edition d'un brouillon</h3>
+<p>Cliquez sur un brouillon pour l'ouvrir dans le compositeur d'email. Vous retrouverez :</p>
+<ul>
+<li>Le destinataire pre-rempli</li>
+<li>L'objet tel que vous l'avez redige</li>
+<li>Le contenu HTML complet</li>
+<li>Les pieces jointes deja ajoutees</li>
+</ul>
+
+<h3>Envoi depuis les brouillons</h3>
+<p>Depuis la liste des brouillons, cliquez sur l'icone d'envoi pour expedier directement sans</p>
+<p>repasser par l'editeur. Un dialogue de confirmation apparait avant l'envoi.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Preparer un email pour validation</h3>
+<ol>
+<li>Redigez votre email dans le compositeur.</li>
+<li>Fermez l'editeur sans envoyer (le brouillon est sauvegarde automatiquement).</li>
+<li>Informez votre collegue que le brouillon est pret pour revision.</li>
+<li>Une fois valide, ouvrez le brouillon et cliquez sur <strong>Envoyer</strong>.</li>
+</ol>
+
+<h3>Workflow 2 : Reprendre un email commence</h3>
+<ol>
+<li>Ouvrez le dossier <strong>Brouillons</strong>.</li>
+<li>Cliquez sur le brouillon que vous souhaitez completer.</li>
+<li>Terminez la redaction dans l'editeur.</li>
+<li>Cliquez sur <strong>Envoyer</strong>.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Les brouillons sont-ils partages entre les agents ?</strong></p>
+<p>R : Par defaut, un brouillon n'est visible que par son auteur. Les administrateurs peuvent</p>
+<p>voir tous les brouillons.</p>
+
+<p><strong>Q : Y a-t-il une limite au nombre de brouillons ?</strong></p>
+<p>R : Non, il n'y a pas de limite technique. Neanmoins, il est recommande de nettoyer regulierement</p>
+<p>les brouillons obsoletes.</p>
+
+<p><strong>Q : Un brouillon peut-il contenir des pieces jointes ?</strong></p>
+<p>R : Oui, les pieces jointes ajoutees pendant la redaction sont conservees avec le brouillon.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Brouillon</strong></td><td>Email sauvegarde mais non envoye</td></tr>
+  <tr><td><strong>Compositeur</strong></td><td>Editeur d'email integre a Koraline pour rediger et envoyer des messages</td></tr>
+  <tr><td><strong>Sauvegarde automatique</strong></td><td>Mecanisme qui preserve le contenu en cours de redaction</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./01-inbox.md">Boite de reception</a> : Gerer les emails entrants</li>
+<li><a href="./02-envois.md">Emails envoyes</a> : Consulter l'historique des envois</li>
+<li><a href="./04-templates.md">Templates</a> : Utiliser des modeles pour accelerer la redaction</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="08-emails--04-templates">
+<h1>Templates d'email</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Emails > Templates</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Les <strong>templates d'email</strong> (modeles) sont des gabarits reutilisables qui permettent de creer</p>
+<p>rapidement des emails professionnels sans repartir de zero a chaque fois. Dans Koraline, le</p>
+<p>constructeur de templates fonctionne par <strong>blocs</strong> : vous assemblez visuellement des elements</p>
+<p>(en-tete, texte, image, grille de produits, bouton d'action, separateur) pour composer votre email.</p>
+
+<p>Chaque template peut contenir des <strong>variables dynamiques</strong> (comme <code>{{prenom}}</code>, <code>{{email}}</code>,</p>
+<p><code>{{nom}}</code>) qui seront remplacees automatiquement par les donnees du destinataire lors de l'envoi.</p>
+<p>Cela permet de personnaliser les emails a grande echelle.</p>
+
+<p>Les templates servent de base aux campagnes email, aux flows automatises, et aux reponses rapides</p>
+<p>de l'equipe. Un bon jeu de templates reduit considerablement le temps de preparation des</p>
+<p>communications.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Emails</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, sous <strong>Gestion</strong>, cliquez sur <strong>Templates</strong>.</li>
+<li>L'URL directe est : <code>/admin/emails?tab=templates</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Liste des templates</h3>
+<p>L'interface principale affiche tous les templates existants sous forme de cartes ou de tableau.</p>
+<p>Chaque template affiche :</p>
+<ul>
+<li><strong>Nom</strong> du template (ex: "welcome-new-customer")</li>
+<li><strong>Objet</strong> de l'email</li>
+<li><strong>Date de creation</strong> et de derniere modification</li>
+<li><strong>Apercu</strong> visuel du rendu</li>
+</ul>
+
+<h3>Bouton "Nouveau template"</h3>
+<p>En haut a droite, un bouton permet de creer un nouveau template.</p>
+
+<h3>Constructeur de template (Template Builder)</h3>
+<p>Le constructeur se divise en trois zones :</p>
+
+<ol>
+<li><strong>Palette de blocs</strong> (gauche) : Liste des types de blocs disponibles</li>
+<li><strong>Canevas</strong> (centre) : Zone de composition ou les blocs sont empiles</li>
+<li><strong>Panneau de proprietes</strong> (droite) : Options de configuration du bloc selectionne</li>
+</ol>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Types de blocs disponibles</h3>
+
+<table>
+<thead>
+    <tr><th>Bloc</th><th>Description</th><th>Utilisation typique</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>En-tete</strong></td><td>Titre avec alignement configurable</td><td>Titre principal de l'email</td></tr>
+  <tr><td><strong>Texte</strong></td><td>Paragraphe de texte libre</td><td>Corps du message, explications</td></tr>
+  <tr><td><strong>Image</strong></td><td>Image avec URL, texte alternatif et largeur</td><td>Banniere, photo de produit</td></tr>
+  <tr><td><strong>Grille produits</strong></td><td>Grille de 1 a 8 produits</td><td>Recommandations, nouveautes</td></tr>
+  <tr><td><strong>Bouton CTA</strong></td><td>Bouton d'appel a l'action colore</td><td>"Acheter maintenant", "Voir les produits"</td></tr>
+  <tr><td><strong>Separateur</strong></td><td>Ligne horizontale de separation</td><td>Organisation visuelle</td></tr>
+</tbody>
+</table>
+<h3>Manipulation des blocs</h3>
+<ul>
+<li><strong>Ajouter</strong> : Cliquez sur un type de bloc dans la palette pour l'ajouter en bas du canevas</li>
+<li><strong>Selectionner</strong> : Cliquez sur un bloc dans le canevas pour le selectionner</li>
+<li><strong>Deplacer</strong> : Utilisez les fleches haut/bas pour reordonner les blocs</li>
+<li><strong>Supprimer</strong> : Cliquez sur l'icone corbeille a gauche du bloc</li>
+<li><strong>Configurer</strong> : Modifiez les proprietes dans le panneau de droite</li>
+</ul>
+
+<h3>Variables dynamiques</h3>
+<p>Inserez des variables dans le texte avec la syntaxe <code>{{nomVariable}}</code> :</p>
+<ul>
+<li><code>{{prenom}}</code> ou <code>{{firstName}}</code> : Prenom du destinataire</li>
+<li><code>{{nom}}</code> : Nom de famille</li>
+<li><code>{{email}}</code> : Adresse email</li>
+<li><code>{{company}}</code> : Nom de l'entreprise</li>
+</ul>
+
+<p>Le systeme detecte automatiquement les variables utilisees et les affiche lors de la sauvegarde.</p>
+
+<h3>Mode apercu</h3>
+<p>Cliquez sur le bouton <strong>Apercu</strong> pour visualiser le rendu final de l'email tel qu'il apparaitra</p>
+<p>dans la boite de reception du destinataire. Le mode apercu montre le HTML compile.</p>
+
+<h3>Sauvegarde</h3>
+<ul>
+<li><strong>Nouveau template</strong> : Renseignez le nom et l'objet, puis cliquez sur <strong>Sauvegarder</strong></li>
+<li><strong>Template existant</strong> : Cliquez sur <strong>Mettre a jour</strong> pour enregistrer les modifications</li>
+</ul>
+
+<p>Le contenu est compile en HTML compatible email (tables, styles inline) et le JSON des blocs</p>
+<p>est conserve pour permettre l'edition ulterieure.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Creer un template de bienvenue</h3>
+<ol>
+<li>Cliquez sur <strong>Nouveau template</strong>.</li>
+<li>Nommez-le "welcome-new-customer" et definissez l'objet "Bienvenue chez BioCycle Peptides!".</li>
+<li>Ajoutez un bloc <strong>En-tete</strong> avec le texte "BioCycle Peptides".</li>
+<li>Ajoutez un bloc <strong>Texte</strong> avec : "Bonjour {{prenom}}, Decouvrez nos peptides de qualite pharmaceutique!"</li>
+<li>Ajoutez un bloc <strong>Grille produits</strong> pour montrer 4 produits recommandes.</li>
+<li>Ajoutez un bloc <strong>Bouton CTA</strong> "Voir les produits" pointant vers biocyclepeptides.com/products.</li>
+<li>Cliquez sur <strong>Sauvegarder</strong>.</li>
+</ol>
+
+<h3>Workflow 2 : Modifier un template existant</h3>
+<ol>
+<li>Dans la liste des templates, cliquez sur celui a modifier.</li>
+<li>Le constructeur s'ouvre avec les blocs existants pre-charges.</li>
+<li>Ajoutez, supprimez ou modifiez les blocs selon vos besoins.</li>
+<li>Verifiez le rendu via le bouton <strong>Apercu</strong>.</li>
+<li>Cliquez sur <strong>Mettre a jour</strong>.</li>
+</ol>
+
+<h3>Workflow 3 : Utiliser un template dans une campagne</h3>
+<ol>
+<li>Creez un template avec le contenu souhaite.</li>
+<li>Allez dans <strong>Campagnes</strong> et creez une nouvelle campagne.</li>
+<li>Dans l'editeur de campagne, selectionnez le template comme base.</li>
+<li>Personnalisez si necessaire, puis envoyez.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Les templates supportent-ils le HTML personnalise ?</strong></p>
+<p>R : Le constructeur genere du HTML compatible email automatiquement. Pour un controle total,</p>
+<p>l'editeur de campagne offre un mode <strong>Code</strong> pour editer le HTML directement.</p>
+
+<p><strong>Q : Comment tester un template avant de l'utiliser ?</strong></p>
+<p>R : Utilisez le mode <strong>Apercu</strong> dans le constructeur. Pour un test reel, creez une campagne</p>
+<p>de test avec votre propre adresse email comme destinataire.</p>
+
+<p><strong>Q : Les images sont-elles hebergees par Koraline ?</strong></p>
+<p>R : Non, vous devez fournir l'URL de l'image. Utilisez la mediatheque de Koraline ou un CDN</p>
+<p>pour heberger vos images.</p>
+
+<p><strong>Q : Combien de templates puis-je creer ?</strong></p>
+<p>R : Il n'y a pas de limite au nombre de templates.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Template</strong></td><td>Modele d'email reutilisable compose de blocs</td></tr>
+  <tr><td><strong>Bloc</strong></td><td>Element de base du template (texte, image, bouton, etc.)</td></tr>
+  <tr><td><strong>Variable dynamique</strong></td><td>Placeholder remplace par les donnees du destinataire lors de l'envoi</td></tr>
+  <tr><td><strong>CTA (Call-to-Action)</strong></td><td>Bouton incitant le destinataire a effectuer une action</td></tr>
+  <tr><td><strong>Canevas</strong></td><td>Zone centrale du constructeur ou les blocs sont assembles</td></tr>
+  <tr><td><strong>HTML compatible email</strong></td><td>Code HTML utilisant des tables et styles inline pour un affichage uniforme</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./05-campagnes.md">Campagnes</a> : Utiliser les templates dans des envois en masse</li>
+<li><a href="./06-flows.md">Flows</a> : Integrer les templates dans des sequences automatisees</li>
+<li><a href="./01-inbox.md">Boite de reception</a> : Gerer les reponses aux emails envoyes</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="08-emails--05-campagnes">
+<h1>Campagnes email</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Emails > Campagnes</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Les <strong>campagnes email</strong> permettent d'envoyer un meme email a un grand nombre de destinataires</p>
+<p>en une seule operation. C'est l'outil principal pour les communications marketing de BioCycle</p>
+<p>Peptides : promotions, lancements de produits, newsletters, offres speciales.</p>
+
+<p>Chaque campagne passe par un cycle de vie : elle est creee en tant que <strong>brouillon</strong>, editee</p>
+<p>avec le contenu souhaite, puis <strong>envoyee</strong> ou <strong>planifiee</strong> pour un envoi ulterieur. Apres</p>
+<p>l'envoi, les statistiques de performance (ouvertures, clics, rebonds, revenus) sont collectees</p>
+<p>automatiquement.</p>
+
+<p>Koraline offre un editeur visuel riche avec mode visuel (WYSIWYG), mode code HTML, et mode</p>
+<p>apercu. Les variables dynamiques permettent de personnaliser chaque email avec le prenom du</p>
+<p>destinataire, son entreprise, etc.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Emails</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, sous <strong>Gestion</strong>, cliquez sur <strong>Campagnes</strong>.</li>
+<li>L'URL directe est : <code>/admin/emails?tab=campaigns</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Liste des campagnes</h3>
+<p>L'ecran principal affiche toutes les campagnes sous forme de cartes, chacune avec :</p>
+<ul>
+<li><strong>Nom</strong> de la campagne</li>
+<li><strong>Statut</strong> : Brouillon, Planifiee, En cours d'envoi, Envoyee, Annulee</li>
+<li><strong>Objet</strong> de l'email</li>
+<li><strong>Date de creation</strong> et date d'envoi</li>
+<li><strong>Statistiques</strong> (pour les campagnes envoyees) : envoyes, ouverts, cliques, rebondis, revenus</li>
+</ul>
+
+<h3>Bouton "Nouvelle campagne"</h3>
+<p>Cree une nouvelle campagne en brouillon avec un nom et un objet par defaut.</p>
+
+<h3>Badges de statut</h3>
+
+<table>
+<thead>
+    <tr><th>Statut</th><th>Couleur</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Brouillon</strong></td><td>Gris</td><td>Campagne en cours de preparation</td></tr>
+  <tr><td><strong>Planifiee</strong></td><td>Bleu</td><td>Campagne programmee pour un envoi futur</td></tr>
+  <tr><td><strong>En cours</strong></td><td>Jaune</td><td>Campagne en train d'etre envoyee</td></tr>
+  <tr><td><strong>Envoyee</strong></td><td>Vert</td><td>Campagne entierement envoyee</td></tr>
+  <tr><td><strong>Annulee</strong></td><td>Rouge</td><td>Campagne annulee avant l'envoi</td></tr>
+</tbody>
+</table>
+<h3>Actions par campagne</h3>
+<ul>
+<li><strong>Envoyer</strong> (icone avion) : Envoyer la campagne (brouillons uniquement)</li>
+<li><strong>Modifier</strong> (icone crayon) : Ouvrir l'editeur de campagne</li>
+<li><strong>Supprimer</strong> (icone corbeille) : Supprimer la campagne</li>
+<li><strong>Statistiques</strong> (icone graphique) : Voir les metriques (campagnes envoyees)</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Editeur de campagne</h3>
+<p>L'editeur de campagne est l'outil central de creation de contenu. Il offre trois modes :</p>
+
+<ol>
+<li><strong>Mode visuel</strong> : Editeur WYSIWYG avec barre d'outils complete (gras, italique, liens,</li>
+</ol>
+<p>   images, alignement, listes). Modifier le contenu directement comme dans un traitement de texte.</p>
+
+<ol>
+<li><strong>Mode code</strong> : Editeur HTML brut pour un controle total du rendu. Utile pour les</li>
+</ol>
+<p>   utilisateurs avances ou pour coller du HTML depuis un outil externe.</p>
+
+<ol>
+<li><strong>Mode apercu</strong> : Visualisation du rendu final avec les variables remplacees par des</li>
+</ol>
+<p>   valeurs d'exemple.</p>
+
+<h3>Barre d'outils (mode visuel)</h3>
+<p>La barre d'outils EmailToolbar offre :</p>
+<ul>
+<li>Mise en forme : Gras, Italique, Souligne, Barre</li>
+<li>Listes : A puces, Numerotees</li>
+<li>Alignement : Gauche, Centre, Droite</li>
+<li>Insertion : Liens, Images</li>
+<li>Variables : Menu deroulant pour inserer <code>{{prenom}}</code>, <code>{{email}}</code>, <code>{{nom}}</code>, <code>{{company}}</code></li>
+</ul>
+
+<h3>Variables dynamiques</h3>
+<p>Les variables sont inserees avec la syntaxe <code>{{variable}}</code> et remplacees automatiquement :</p>
+<ul>
+<li><code>{{prenom}}</code> : Prenom du client</li>
+<li><code>{{email}}</code> : Adresse email du client</li>
+<li><code>{{nom}}</code> : Nom de famille</li>
+<li><code>{{company}}</code> : Nom de l'entreprise</li>
+</ul>
+
+<h3>Version texte</h3>
+<p>En bas de l'editeur, une section pliable permet de definir une <strong>version texte brut</strong> de l'email.</p>
+<p>Cette version est utilisee par les clients email qui n'affichent pas le HTML.</p>
+
+<h3>Statistiques post-envoi</h3>
+<p>Apres l'envoi, la campagne affiche des metriques en temps reel :</p>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Envoyes</strong></td><td>Nombre d'emails expedies</td></tr>
+  <tr><td><strong>Ouverts</strong></td><td>Nombre de destinataires ayant ouvert l'email</td></tr>
+  <tr><td><strong>Cliques</strong></td><td>Nombre de clics sur les liens</td></tr>
+  <tr><td><strong>Rebondis</strong></td><td>Nombre d'emails non delivres</td></tr>
+  <tr><td><strong>Revenus</strong></td><td>Revenus generes par la campagne (suivi des conversions)</td></tr>
+</tbody>
+</table>
+<h3>Confirmation d'envoi</h3>
+<p>Avant chaque envoi, une boite de dialogue demande confirmation. Cette precaution empeche</p>
+<p>les envois accidentels.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Creer et envoyer une campagne promotionnelle</h3>
+<ol>
+<li>Cliquez sur <strong>Nouvelle campagne</strong> pour creer un brouillon.</li>
+<li>Dans l'editeur, modifiez le <strong>nom</strong> (ex: "Promo printemps 2026").</li>
+<li>Definissez l'<strong>objet</strong> (ex: "20% sur les peptides cette semaine!").</li>
+<li>Composez le contenu en mode visuel, en utilisant les variables pour personnaliser.</li>
+<li>Cliquez sur <strong>Apercu</strong> pour verifier le rendu.</li>
+<li>Cliquez sur <strong>Sauvegarder</strong> puis <strong>Envoyer</strong>.</li>
+<li>Confirmez l'envoi dans la boite de dialogue.</li>
+</ol>
+
+<h3>Workflow 2 : Analyser les performances d'une campagne</h3>
+<ol>
+<li>Dans la liste des campagnes, trouvez une campagne avec le statut <strong>Envoyee</strong>.</li>
+<li>Consultez les statistiques affichees directement sur la carte (envoyes, ouverts, cliques,</li>
+</ol>
+<p>   rebondis, revenus).</p>
+<ol>
+<li>Cliquez sur l'icone graphique pour des metriques plus detaillees.</li>
+<li>Comparez avec vos benchmarks (taux d'ouverture cible > 20%, taux de clic > 3%).</li>
+</ol>
+
+<h3>Workflow 3 : Dupliquer et adapter une campagne</h3>
+<ol>
+<li>Creez une nouvelle campagne.</li>
+<li>Dans l'editeur en mode code, copiez le HTML d'une campagne precedente.</li>
+<li>Adaptez le contenu (objet, texte, variables).</li>
+<li>Verifiez via l'apercu et envoyez.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Puis-je planifier une campagne pour un envoi futur ?</strong></p>
+<p>R : Oui, le champ de planification permet de definir une date et heure d'envoi automatique.</p>
+
+<p><strong>Q : A qui est envoyee la campagne ?</strong></p>
+<p>R : Par defaut, la campagne est envoyee a la liste de diffusion (mailing list). Vous pouvez</p>
+<p>definir un segment specifique via les criteres de segmentation.</p>
+
+<p><strong>Q : Puis-je annuler une campagne en cours d'envoi ?</strong></p>
+<p>R : Les campagnes en statut <strong>Brouillon</strong> ou <strong>Planifiee</strong> peuvent etre annulees. Une fois</p>
+<p>l'envoi commence, il ne peut pas etre interrompu.</p>
+
+<p><strong>Q : Comment eviter le spam ?</strong></p>
+<p>R : Koraline integre la conformite CASL (loi anti-pourriel canadienne). Chaque email</p>
+<p>inclut un lien de desabonnement et respecte les preferences des destinataires.</p>
+
+<hr>
+
+<h2>Strategie expert : calendrier email annuel pour BioCycle Peptides</h2>
+
+<h3>Planification sur 12 mois</h3>
+
+<p>Un calendrier email structure garantit une communication reguliere sans submerger vos abonnes. Prevoyez 2 a 3 emails par mois minimum : 1 newsletter educative, 1 promotion, et 1 email de contenu (blog, guide, actualite).</p>
+
+<table>
+<thead>
+    <tr><th>Mois</th><th>Theme principal</th><th>Type de campagne</th><th>Objet email suggere</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Janvier</strong></td><td>Resolutions sante / Bien-etre</td><td>Promotion -15% peptides reparation</td><td>"Nouvelle annee, nouvelle recherche : 15% sur les peptides reparation"</td></tr>
+  <tr><td><strong>Fevrier</strong></td><td>Guides pour debutants</td><td>Contenu educatif</td><td>"Votre premier peptide : le guide complet de reconstitution"</td></tr>
+  <tr><td><strong>Mars</strong></td><td>Printemps / Renouveau</td><td>Flash sale 48h</td><td>"Flash Sale Printemps : 48h pour economiser 20%"</td></tr>
+  <tr><td><strong>Avril</strong></td><td>Nouveaux produits</td><td>Lancement produit</td><td>"Nouveau : [peptide] maintenant disponible chez BioCycle"</td></tr>
+  <tr><td><strong>Mai</strong></td><td>Temoignages / Etudes</td><td>Social proof + contenu</td><td>"Ce que les chercheurs disent du BPC-157 en 2026"</td></tr>
+  <tr><td><strong>Juin</strong></td><td>Ete fitness</td><td>Bundle promotion</td><td>"Summer Stack : BPC-157 + TB-500 a -20%"</td></tr>
+  <tr><td><strong>Juillet</strong></td><td>Soldes mi-annee</td><td>Promotion generale</td><td>"Soldes d'ete : jusqu'a 25% sur tout le catalogue"</td></tr>
+  <tr><td><strong>Aout</strong></td><td>Rentree labos</td><td>Campagne B2B</td><td>"Labos et universites : votre tarif recherche rentre en vigueur"</td></tr>
+  <tr><td><strong>Septembre</strong></td><td>Immunitaire / Automne</td><td>Contenu + promotion</td><td>"Preparez votre recherche automnale : focus peptides immunitaires"</td></tr>
+  <tr><td><strong>Octobre</strong></td><td>Pre-Black Friday</td><td>Teaser + liste VIP</td><td>"Black Friday arrive : inscrivez-vous pour un acces anticipe"</td></tr>
+  <tr><td><strong>Novembre</strong></td><td>Black Friday / Cyber Monday</td><td>Promotion majeure</td><td>"BLACK FRIDAY : -25% sur TOUT - 4 jours seulement"</td></tr>
+  <tr><td><strong>Decembre</strong></td><td>Coffrets / Fin d'annee</td><td>Coffrets cadeaux + bilan</td><td>"Coffret Starter Research Kit : l'idee cadeau parfaite"</td></tr>
+</tbody>
+</table>
+<h3>Conformite CASL : rappel essentiel pour chaque campagne</h3>
+
+<p>Avant chaque envoi de campagne, verifiez ces 5 points :</p>
+
+<ol>
+<li><strong>Consentement valide</strong> : Chaque destinataire a donne son consentement explicite (opt-in actif) ou implicite (achat < 2 ans, demande < 6 mois)</li>
+<li><strong>Identification</strong> : Le nom de BioCycle Peptides et l'adresse postale physique apparaissent dans l'email</li>
+<li><strong>Desabonnement</strong> : Le lien de desabonnement est visible, fonctionnel et gratuit</li>
+<li><strong>Objet non trompeur</strong> : L'objet de l'email decrit fidelement le contenu (pas de fausses urgences ou de sujets misleading)</li>
+<li><strong>Registre a jour</strong> : Les desabonnements recents ont ete traites (Koraline le fait automatiquement, mais verifiez si vous importez des listes externes)</li>
+</ol>
+
+<p><strong>Penalites</strong> : Jusqu'a 10 000 000 $CA par infraction pour les entreprises. Le CRTC audite activement les e-commerces canadiens.</p>
+
+<h3>A/B testing : guide pratique</h3>
+
+<p>Le A/B testing est la methode la plus fiable pour ameliorer vos performances email. Testez UN SEUL element a la fois pour des resultats mesurables.</p>
+
+<p><strong>Elements a tester par ordre d'impact</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Element</th><th>Impact potentiel</th><th>Exemple de test</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Objet</strong></td><td>+20 a +50% taux d'ouverture</td><td>"20% de rabais sur les peptides" vs "Votre code exclusif : PEPTIDE20"</td></tr>
+  <tr><td><strong>Heure d'envoi</strong></td><td>+10 a +25% taux d'ouverture</td><td>Mardi 10h vs Jeudi 14h</td></tr>
+  <tr><td><strong>CTA (appel a l'action)</strong></td><td>+15 a +30% taux de clic</td><td>"Magasiner" vs "Voir les offres" vs "Profitez maintenant"</td></tr>
+  <tr><td><strong>Personnalisation</strong></td><td>+10 a +20% taux d'ouverture</td><td>"Offre speciale" vs "{{prenom}}, offre speciale pour vous"</td></tr>
+  <tr><td><strong>Longueur</strong></td><td>+5 a +15% taux de clic</td><td>Email court (3 paragraphes) vs email long (8 paragraphes)</td></tr>
+</tbody>
+</table>
+<p><strong>Protocole de test</strong> :</p>
+<ol>
+<li>Definissez l'hypothese : "Un objet avec le prenom augmente le taux d'ouverture"</li>
+<li>Creez 2 variantes identiques sauf l'element teste</li>
+<li>Envoyez a 20% de votre liste (10% variante A, 10% variante B)</li>
+<li>Attendez 2 a 4 heures (Koraline le fait automatiquement)</li>
+<li>Envoyez la variante gagnante aux 80% restants</li>
+<li>Documentez le resultat pour vos prochaines campagnes</li>
+</ol>
+
+<p><strong>Heures d'envoi optimales pour le marche canadien</strong> :</p>
+<ul>
+<li><strong>B2C</strong> : Mardi et jeudi, 10h-11h EST (meilleur taux d'ouverture)</li>
+<li><strong>B2B</strong> : Mardi et mercredi, 8h-9h EST (avant les reunions)</li>
+<li><strong>Weekend</strong> : Samedi 9h-10h EST (moins de concurrence dans la boite de reception, mais volume plus faible)</li>
+</ul>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Campagne</strong></td><td>Envoi en masse d'un email a une liste de destinataires</td></tr>
+  <tr><td><strong>WYSIWYG</strong></td><td>Editeur visuel "What You See Is What You Get"</td></tr>
+  <tr><td><strong>Taux d'ouverture</strong></td><td>Pourcentage de destinataires ayant ouvert l'email</td></tr>
+  <tr><td><strong>Taux de clic</strong></td><td>Pourcentage de destinataires ayant clique sur un lien</td></tr>
+  <tr><td><strong>Rebond (bounce)</strong></td><td>Email non delivre au destinataire</td></tr>
+  <tr><td><strong>CASL</strong></td><td>Canadian Anti-Spam Legislation, loi federale canadienne sur les courriels</td></tr>
+  <tr><td><strong>Segmentation</strong></td><td>Ciblage d'un sous-ensemble de destinataires selon des criteres</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./04-templates.md">Templates</a> : Creer des modeles reutilisables pour les campagnes</li>
+<li><a href="./06-flows.md">Flows</a> : Automatiser l'envoi d'emails bases sur des evenements</li>
+<li><a href="./07-analytics.md">Analytics emails</a> : Tableau de bord complet des metriques</li>
+<li><a href="./01-inbox.md">Boite de reception</a> : Gerer les reponses des clients</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="08-emails--06-flows">
+<h1>Flows email (Sequences automatisees)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Emails > Flows</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Les <strong>flows email</strong> (ou sequences automatisees) sont des enchainements d'actions declenchees</p>
+<p>automatiquement par un evenement. Par exemple : quand un client s'inscrit, Koraline envoie</p>
+<p>automatiquement un email de bienvenue, attend 3 jours, puis envoie un email avec les produits</p>
+<p>recommandes.</p>
+
+<p>Un flow se compose de <strong>noeuds</strong> relies entre eux dans un editeur visuel :</p>
+<ul>
+<li><strong>Declencheur (Trigger)</strong> : L'evenement qui demarre le flow</li>
+<li><strong>Email</strong> : Un email a envoyer</li>
+<li><strong>Delai</strong> : Une periode d'attente entre deux actions</li>
+<li><strong>Condition</strong> : Un branchement selon les donnees du client</li>
+<li><strong>SMS</strong> : Un message texte a envoyer</li>
+</ul>
+
+<p>Les flows sont l'outil le plus puissant du module email car ils fonctionnent 24/7 sans</p>
+<p>intervention humaine. Ils sont essentiels pour le cycle de vie client : accueil, relance</p>
+<p>panier abandonne, reactivation, anniversaire, etc.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Emails</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, sous <strong>Gestion</strong>, cliquez sur <strong>Flows</strong>.</li>
+<li>L'URL directe est : <code>/admin/emails?tab=flows</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Liste des flows</h3>
+<p>L'ecran principal affiche tous les flows sous forme de cartes en grille (2 colonnes). Chaque flow</p>
+<p>montre :</p>
+<ul>
+<li><strong>Nom</strong> du flow</li>
+<li><strong>Declencheur</strong> : L'evenement qui active le flow</li>
+<li><strong>Statut</strong> : Actif (vert) ou Inactif (gris)</li>
+<li><strong>Composition</strong> : Nombre d'emails, de delais et de conditions dans le flow</li>
+<li><strong>Statistiques</strong> : Declenchements, envoyes, ouverts, revenus generes</li>
+<li><strong>Date de modification</strong></li>
+</ul>
+
+<h3>Bouton "Nouveau workflow"</h3>
+<p>Lance l'editeur de flow pour creer un nouveau workflow.</p>
+
+<h3>Actions par flow</h3>
+<ul>
+<li><strong>Activer/Desactiver</strong> (icone play/pause) : Basculer l'etat du flow</li>
+<li><strong>Modifier</strong> (icone crayon) : Ouvrir l'editeur visuel</li>
+<li><strong>Supprimer</strong> (icone corbeille) : Supprimer le flow (avec confirmation)</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Declencheurs disponibles</h3>
+
+<table>
+<thead>
+    <tr><th>Declencheur</th><th>Description</th><th>Cas d'usage</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Commande creee</strong></td><td>Un client passe une commande</td><td>Email de confirmation</td></tr>
+  <tr><td><strong>Commande expediee</strong></td><td>La commande est en transit</td><td>Notification de suivi</td></tr>
+  <tr><td><strong>Commande livree</strong></td><td>La commande est arrivee</td><td>Demande d'avis</td></tr>
+  <tr><td><strong>Panier abandonne</strong></td><td>Un panier n'a pas ete finalise</td><td>Relance avec incitatif</td></tr>
+  <tr><td><strong>Inscription</strong></td><td>Un nouveau compte est cree</td><td>Sequence de bienvenue</td></tr>
+  <tr><td><strong>Anniversaire</strong></td><td>Date d'anniversaire du client</td><td>Email promotionnel personnalise</td></tr>
+  <tr><td><strong>Reactivation</strong></td><td>Client inactif depuis longtemps</td><td>Offre de retour</td></tr>
+  <tr><td><strong>Reapprovisionnement</strong></td><td>Delai estime avant renouvellement</td><td>Rappel de rachat</td></tr>
+  <tr><td><strong>Avis recu</strong></td><td>Un client laisse un avis produit</td><td>Remerciement</td></tr>
+  <tr><td><strong>Stock bas</strong></td><td>Alerte de stock faible</td><td>Notification interne</td></tr>
+  <tr><td><strong>Stock retour</strong></td><td>Produit de nouveau disponible</td><td>Notification aux interesses</td></tr>
+</tbody>
+</table>
+<h3>Editeur visuel de flow</h3>
+<p>L'editeur utilise la bibliotheque <strong>ReactFlow</strong> pour offrir un canevas interactif :</p>
+
+<ul>
+<li><strong>Palette de noeuds</strong> (gauche) : Cliquez pour ajouter un noeud au canevas</li>
+<li><strong>Canevas</strong> (centre) : Glissez, connectez et organisez les noeuds</li>
+<li><strong>Inspecteur</strong> (droite) : Configurez le noeud selectionne</li>
+<li><strong>Minimap</strong> : Vue d'ensemble du flow en bas a droite</li>
+<li><strong>Controles</strong> : Zoom, centrage, plein ecran</li>
+</ul>
+
+<h3>Types de noeuds</h3>
+
+<table>
+<thead>
+    <tr><th>Noeud</th><th>Description</th><th>Configuration</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Trigger</strong></td><td>Declencheur du flow</td><td>Evenement declencheur</td></tr>
+  <tr><td><strong>Email</strong></td><td>Envoi d'un email</td><td>Objet, contenu HTML</td></tr>
+  <tr><td><strong>Delay</strong></td><td>Periode d'attente</td><td>Duree (minutes, heures, jours, semaines)</td></tr>
+  <tr><td><strong>Condition</strong></td><td>Branchement conditionnel</td><td>Champ, operateur, valeur</td></tr>
+  <tr><td><strong>SMS</strong></td><td>Envoi d'un SMS</td><td>Message (160 caracteres max)</td></tr>
+</tbody>
+</table>
+<h3>Connexion des noeuds</h3>
+<p>Reliez les noeuds en cliquant sur le point de sortie d'un noeud et en le glissant vers le</p>
+<p>point d'entree d'un autre. Les connexions sont animees pour indiquer le flux.</p>
+
+<h3>Conditions et branchements</h3>
+<p>Le noeud <strong>Condition</strong> permet de creer deux branches :</p>
+<ul>
+<li><strong>Vrai</strong> : Le flow continue si la condition est remplie</li>
+<li><strong>Faux</strong> : Le flow prend un chemin alternatif</li>
+</ul>
+
+<p>Operateurs disponibles : egal, different, superieur, inferieur, contient.</p>
+
+<p>Exemples de conditions :</p>
+<ul>
+<li><code>hasOrdered equals true</code> : Le client a deja commande</li>
+<li><code>totalSpent greater_than 500</code> : Le client a depense plus de 500$</li>
+<li><code>tier equals GOLD</code> : Le client est au niveau Gold du programme fidelite</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Creer une sequence de bienvenue</h3>
+<ol>
+<li>Cliquez sur <strong>Nouveau workflow</strong>.</li>
+<li>Nommez le flow "Sequence de bienvenue".</li>
+<li>Selectionnez le declencheur <strong>Inscription</strong>.</li>
+<li>Ajoutez un noeud <strong>Email</strong> "Bienvenue chez BioCycle Peptides!".</li>
+<li>Ajoutez un noeud <strong>Delay</strong> de 3 jours.</li>
+<li>Ajoutez un noeud <strong>Email</strong> "Decouvrez nos best-sellers".</li>
+<li>Ajoutez un noeud <strong>Delay</strong> de 7 jours.</li>
+<li>Ajoutez un noeud <strong>Condition</strong> : <code>hasOrdered equals false</code>.</li>
+<li>Si vrai : ajoutez un noeud <strong>Email</strong> avec un code promo de premiere commande.</li>
+<li>Activez le flow et cliquez sur <strong>Sauvegarder</strong>.</li>
+</ol>
+
+<h3>Workflow 2 : Relance de panier abandonne</h3>
+<ol>
+<li>Creez un flow avec le declencheur <strong>Panier abandonne</strong>.</li>
+<li>Ajoutez un <strong>Delay</strong> de 1 heure.</li>
+<li>Ajoutez un <strong>Email</strong> "Vous avez oublie quelque chose!".</li>
+<li>Ajoutez un <strong>Delay</strong> de 24 heures.</li>
+<li>Ajoutez une <strong>Condition</strong> : le panier est-il toujours actif ?</li>
+<li>Si oui : envoyez un <strong>Email</strong> avec un code de reduction de 10%.</li>
+<li>Sauvegardez et activez.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Un flow peut-il etre modifie alors qu'il est actif ?</strong></p>
+<p>R : Oui, vous pouvez modifier et sauvegarder un flow actif. Les modifications s'appliqueront</p>
+<p>aux nouveaux declenchements, pas aux sequences deja en cours.</p>
+
+<p><strong>Q : Combien de noeuds un flow peut-il contenir ?</strong></p>
+<p>R : Il n'y a pas de limite technique. Neanmoins, un flow trop complexe peut etre difficile</p>
+<p>a maintenir. Privilegiez la clarte.</p>
+
+<p><strong>Q : Les SMS sont-ils envoyes via le meme fournisseur que les emails ?</strong></p>
+<p>R : Non, les SMS sont envoyes via le fournisseur VoIP configure (Telnyx). L'envoi de SMS</p>
+<p>necessite un numero de telephone actif.</p>
+
+<p><strong>Q : Comment tester un flow ?</strong></p>
+<p>R : Un bouton de test permet d'executer le flow avec des donnees fictives pour verifier</p>
+<p>le bon fonctionnement avant l'activation.</p>
+
+<hr>
+
+<h2>Strategie expert : les 5 flows essentiels pour un e-commerce de peptides</h2>
+
+<h3>Pourquoi ces 5 flows sont non negociables</h3>
+
+<p>Ces 5 sequences automatisees couvrent les moments critiques du cycle de vie client. Ensemble, elles peuvent generer 20 a 40% du revenu email total d'un e-commerce, sans intervention humaine une fois configurees.</p>
+
+<h3>Flow 1 : Sequence de bienvenue (3 emails sur 7 jours)</h3>
+
+<p>C'est le flow le plus important. Un nouvel inscrit est au pic de son interet. Le taux d'ouverture des emails de bienvenue atteint 50 a 60%, contre 20-25% pour une newsletter classique.</p>
+
+<p><strong>Declencheur</strong> : Inscription (nouveau compte ou newsletter)</p>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Delai</th><th>Objet email</th><th>Contenu</th></tr>
+</thead>
+<tbody>
+  <tr><td>Email 1</td><td>J0 (immediat)</td><td>"Bienvenue chez BioCycle Peptides!"</td><td>Merci pour l'inscription + guide de reconstitution PDF en piece jointe + presentation de BioCycle (qui sommes-nous, pourquoi nous choisir)</td></tr>
+  <tr><td>Email 2</td><td>J+3</td><td>"5 questions frequentes sur les peptides de recherche"</td><td>FAQ : conservation, reconstitution, purete, certificats d'analyse, expedition au Canada. Liens vers les articles de blog correspondants</td></tr>
+  <tr><td>Email 3</td><td>J+7</td><td>"Votre code de bienvenue : BIENVENUE10"</td><td>Code promo 10% premiere commande, valide 14 jours, min 50 $CA. Mise en avant des 3 peptides les plus populaires avec liens directs</td></tr>
+</tbody>
+</table>
+<p><strong>Condition apres Email 3</strong> : Si le client a commande entre-temps, arreter le flow et basculer vers le flow post-achat.</p>
+
+<h3>Flow 2 : Abandon de panier (3 emails avec escalade)</h3>
+
+<p>Un panier abandonne represente un client qui etait pret a acheter. Le taux de recuperation moyen est de 5 a 15%, ce qui en fait le flow au meilleur ROI.</p>
+
+<p><strong>Declencheur</strong> : Panier abandonne (produit ajoute mais checkout non complete)</p>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Delai</th><th>Objet email</th><th>Contenu</th></tr>
+</thead>
+<tbody>
+  <tr><td>Email 1</td><td>H+1</td><td>"Votre panier vous attend"</td><td>Rappel simple avec image du produit, prix, bouton "Completer ma commande". Pas de remise a cette etape.</td></tr>
+  <tr><td>Email 2</td><td>H+24</td><td>"Avez-vous des questions sur [produit] ?"</td><td>Contenu educatif sur le produit abandonne (purete, COA, avis). FAQ rapide. Lien vers le service client.</td></tr>
+  <tr><td>Email 3</td><td>H+72</td><td>"Derniere chance : 10% sur votre panier"</td><td>Code promo 10% valide 48h, applique uniquement aux produits du panier abandonne. Mention "stock limite" si applicable.</td></tr>
+</tbody>
+</table>
+<p><strong>Important</strong> : Si le client achete a n'importe quelle etape, arreter le flow immediatement.</p>
+
+<h3>Flow 3 : Post-achat (3 emails sur 30 jours)</h3>
+
+<p>Le flow post-achat transforme un acheteur unique en client recurrent. C'est aussi le moment ideal pour le cross-sell.</p>
+
+<p><strong>Declencheur</strong> : Commande creee (paiement confirme)</p>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Delai</th><th>Objet email</th><th>Contenu</th></tr>
+</thead>
+<tbody>
+  <tr><td>Email 1</td><td>J+1</td><td>"Merci pour votre commande!"</td><td>Confirmation avec resume de commande, numero de suivi si disponible, delai de livraison estime, coordonnees du support.</td></tr>
+  <tr><td>Email 2</td><td>J+7</td><td>"Guide : bien utiliser vos peptides de recherche"</td><td>Guide pratique adapte aux produits commandes : reconstitution, dosage, stockage, duree de vie apres reconstitution. Cross-sell accessoires si non commandes (eau bacteriostatique, seringues).</td></tr>
+  <tr><td>Email 3</td><td>J+30</td><td>"Temps de reapprovisionner ?"</td><td>Rappel de reachat base sur la duree estimee d'utilisation. Bouton "Recommander" direct. Suggestion de produits complementaires (stacks). Code 5% fidelite si > 2e commande.</td></tr>
+</tbody>
+</table>
+<h3>Flow 4 : Reactivation (2 emails pour clients inactifs)</h3>
+
+<p>Un client qui n'a pas commande depuis 60 jours risque de vous oublier. Ce flow le ramene.</p>
+
+<p><strong>Declencheur</strong> : Derniere commande > 60 jours ET client a deja commande au moins 1 fois</p>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Delai</th><th>Objet email</th><th>Contenu</th></tr>
+</thead>
+<tbody>
+  <tr><td>Email 1</td><td>J+60 inactif</td><td>"Vous nous manquez! Voici 15% pour revenir"</td><td>Message personnalise avec rappel des derniers produits achetes. Code RETOUR15, 15% valide 14 jours. Nouveaux produits depuis la derniere visite.</td></tr>
+  <tr><td>Email 2</td><td>J+75 inactif</td><td>"Derniere chance : votre code expire dans 48h"</td><td>Rappel d'urgence. Le code expire bientot. Temoignage client ou etude recente sur le peptide qu'il achetait.</td></tr>
+</tbody>
+</table>
+<p><strong>Si aucune reaction apres 90 jours</strong> : Passer le contact en segment "Dormant". Reduire la frequence a 1 email/mois maximum. Ne pas supprimer -- un client dormant peut revenir des mois plus tard.</p>
+
+<h3>Flow 5 : Anniversaire (1 email festif)</h3>
+
+<p>Le flow d'anniversaire est simple mais tres efficace : taux d'ouverture de 40-50% et taux de conversion de 10-15%.</p>
+
+<p><strong>Declencheur</strong> : Date d'anniversaire du client (si renseignee)</p>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Delai</th><th>Objet email</th><th>Contenu</th></tr>
+</thead>
+<tbody>
+  <tr><td>Email 1</td><td>Jour J</td><td>"Joyeux anniversaire! Un cadeau pour vous"</td><td>Message personnalise avec prenom. Code ANNIV20, 20% valide 7 jours, usage unique, min 75 $CA. Suggestions basees sur l'historique d'achat.</td></tr>
+</tbody>
+</table>
+<h3>Performance attendue des 5 flows</h3>
+
+<table>
+<thead>
+    <tr><th>Flow</th><th>Taux d'ouverture</th><th>Taux de clic</th><th>Taux de conversion</th><th>Revenu estime/mois</th></tr>
+</thead>
+<tbody>
+  <tr><td>Bienvenue</td><td>50-60%</td><td>8-12%</td><td>10-15%</td><td>Variable selon nouveaux inscrits</td></tr>
+  <tr><td>Abandon panier</td><td>40-50%</td><td>10-15%</td><td>5-15%</td><td>5-10% du revenu perdu</td></tr>
+  <tr><td>Post-achat</td><td>45-55%</td><td>6-10%</td><td>3-8% cross-sell</td><td>2-5% revenu additionnel</td></tr>
+  <tr><td>Reactivation</td><td>25-35%</td><td>4-8%</td><td>3-8%</td><td>Recuperation clients dormants</td></tr>
+  <tr><td>Anniversaire</td><td>40-50%</td><td>8-12%</td><td>10-15%</td><td>Faible volume, fort taux</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Flow</strong></td><td>Sequence automatisee d'actions declenchees par un evenement</td></tr>
+  <tr><td><strong>Trigger</strong></td><td>Evenement declencheur qui demarre le flow</td></tr>
+  <tr><td><strong>Noeud</strong></td><td>Element du flow (email, delai, condition, SMS)</td></tr>
+  <tr><td><strong>Branchement</strong></td><td>Division du flow en deux chemins selon une condition</td></tr>
+  <tr><td><strong>ReactFlow</strong></td><td>Bibliotheque de visualisation de flux utilisee par l'editeur</td></tr>
+  <tr><td><strong>Cron</strong></td><td>Tache planifiee qui execute les flows a intervalles reguliers</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./04-templates.md">Templates</a> : Creer le contenu des emails utilises dans les flows</li>
+<li><a href="./05-campagnes.md">Campagnes</a> : Envoi ponctuel en masse (vs. flows automatises)</li>
+<li><a href="./07-analytics.md">Analytics emails</a> : Mesurer la performance des flows</li>
+<li><a href="./01-inbox.md">Boite de reception</a> : Gerer les reponses generees par les flows</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="08-emails--07-analytics">
+<h1>Analytics email</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Emails > Analytics</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Le tableau de bord <strong>Analytics email</strong> centralise toutes les metriques de performance de</p>
+<p>vos communications par email. Il vous donne une vue d'ensemble de la delivrabilite, des</p>
+<p>taux d'engagement (ouvertures, clics), et de l'impact commercial (revenus generes).</p>
+
+<p>Ces donnees sont essentielles pour evaluer l'efficacite de vos campagnes, identifier les</p>
+<p>problemes de delivrabilite, et optimiser votre strategie email. Par exemple, un taux de</p>
+<p>rebond eleve peut indiquer un probleme de qualite de votre liste de contacts, tandis qu'un</p>
+<p>faible taux d'ouverture peut signaler des lignes d'objet peu engageantes.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Emails</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, sous <strong>Gestion</strong>, cliquez sur <strong>Analytics</strong>.</li>
+<li>L'URL directe est : <code>/admin/emails?tab=analytics</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Selecteur de periode</h3>
+<p>En haut a droite, un selecteur permet de choisir la periode d'analyse :</p>
+<ul>
+<li><strong>7 jours</strong> : Vue court terme</li>
+<li><strong>30 jours</strong> : Vue mensuelle (par defaut)</li>
+<li><strong>90 jours</strong> : Vue trimestrielle</li>
+<li><strong>1 an</strong> : Vue annuelle</li>
+</ul>
+
+<h3>Cartes KPI</h3>
+<p>Quatre cartes de metriques principales sont affichees en haut :</p>
+
+<table>
+<thead>
+    <tr><th>KPI</th><th>Description</th><th>Indicateur</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Emails envoyes</strong></td><td>Nombre total d'emails expedies sur la periode</td><td>Taux de delivrabilite (%)</td></tr>
+  <tr><td><strong>Rebonds</strong></td><td>Nombre d'emails non delivres</td><td>Taux de rebond (%)</td></tr>
+  <tr><td><strong>Workflows actifs</strong></td><td>Nombre de flows actuellement en fonctionnement</td><td>Nombre de campagnes</td></tr>
+  <tr><td><strong>Conversations</strong></td><td>Nombre total de conversations</td><td>Nouvelles conversations</td></tr>
+</tbody>
+</table>
+<h3>Graphique de volume d'envoi</h3>
+<p>Un graphique en barres empilees montre le volume d'emails par jour, segmente par statut :</p>
+<ul>
+<li><strong>Bleu</strong> : Emails envoyes/delivres</li>
+<li><strong>Rouge</strong> : Emails rebondis</li>
+</ul>
+
+<p>Ce graphique permet d'identifier les pics d'envoi et les tendances de delivrabilite.</p>
+
+<h3>Diagramme circulaire des conversations</h3>
+<p>Un camembert affiche la repartition des conversations par statut (Nouveau, Ouvert, En attente,</p>
+<p>Resolu, Ferme). Il donne une vue instantanee de la charge de travail du support.</p>
+
+<h3>Top templates</h3>
+<p>Un classement des templates les plus utilises, avec le nombre d'utilisations pour chacun.</p>
+<p>Utile pour identifier les contenus les plus populaires.</p>
+
+<h3>Activite recente</h3>
+<p>Un journal des derniers emails envoyes, avec :</p>
+<ul>
+<li>Adresse du destinataire</li>
+<li>Objet de l'email</li>
+<li>Statut (delivre, rebondi, echoue) indique par un point colore</li>
+<li>Date et heure d'envoi</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Metriques de delivrabilite</h3>
+<p>La delivrabilite mesure la capacite de vos emails a atteindre la boite de reception du</p>
+<p>destinataire. Koraline suit :</p>
+<ul>
+<li><strong>Taux de delivrabilite</strong> : % d'emails acceptes par les serveurs destinataires</li>
+<li><strong>Taux de rebond</strong> : % d'emails rejetes (hard bounce = adresse invalide, soft bounce =</li>
+</ul>
+<p>  boite pleine)</p>
+<ul>
+<li><strong>Emails echoues</strong> : Erreurs techniques d'envoi</li>
+</ul>
+
+<h3>Suivi des revenus</h3>
+<p>Pour les campagnes et flows, Koraline suit les conversions et attribue un revenu genere.</p>
+<p>Cette metrique permet de calculer le ROI de chaque campagne.</p>
+
+<h3>Donnees par periode</h3>
+<p>Le changement de periode met a jour toutes les metriques simultanement, permettant de</p>
+<p>comparer les performances entre differentes periodes.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Audit mensuel de delivrabilite</h3>
+<ol>
+<li>Selectionnez la periode <strong>30 jours</strong>.</li>
+<li>Verifiez le taux de delivrabilite (cible : > 95%).</li>
+<li>Si le taux de rebond depasse 5%, consultez la liste des rebonds.</li>
+<li>Nettoyez les adresses invalides de votre liste de contacts.</li>
+</ol>
+
+<h3>Workflow 2 : Evaluer la performance d'une campagne recente</h3>
+<ol>
+<li>Selectionnez la periode <strong>7 jours</strong>.</li>
+<li>Consultez le graphique de volume pour identifier le pic d'envoi de la campagne.</li>
+<li>Verifiez les metriques de la campagne dans la section activite recente.</li>
+<li>Comparez le taux d'ouverture et de clic avec les benchmarks de l'industrie.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Les statistiques incluent-elles les emails transactionnels ?</strong></p>
+<p>R : Oui, le tableau de bord consolide tous les types d'emails : transactionnels, campagnes,</p>
+<p>flows et reponses manuelles.</p>
+
+<p><strong>Q : Le taux d'ouverture est-il fiable a 100% ?</strong></p>
+<p>R : Non, le suivi des ouvertures repose sur un pixel invisible. Certains clients email</p>
+<p>bloquent le chargement d'images, ce qui peut sous-estimer le taux reel.</p>
+
+<p><strong>Q : Comment ameliorer ma delivrabilite ?</strong></p>
+<p>R : Nettoyez regulierement votre liste de contacts, utilisez un domaine d'envoi authentifie</p>
+<p>(SPF, DKIM, DMARC), et maintenez un taux de plainte inferieur a 0.1%.</p>
+
+<p><strong>Q : Les revenus sont-ils calcules automatiquement ?</strong></p>
+<p>R : Oui, Koraline attribue un revenu lorsqu'un destinataire clique sur un lien d'email</p>
+<p>et complete un achat dans les 7 jours suivant le clic.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Delivrabilite</strong></td><td>Capacite d'un email a atteindre la boite de reception</td></tr>
+  <tr><td><strong>Hard bounce</strong></td><td>Email rejete definitivement (adresse invalide)</td></tr>
+  <tr><td><strong>Soft bounce</strong></td><td>Email rejete temporairement (boite pleine, serveur indisponible)</td></tr>
+  <tr><td><strong>Taux d'ouverture</strong></td><td>Pourcentage de destinataires ayant ouvert l'email</td></tr>
+  <tr><td><strong>Taux de clic</strong></td><td>Pourcentage de destinataires ayant clique sur un lien</td></tr>
+  <tr><td><strong>SPF/DKIM/DMARC</strong></td><td>Protocoles d'authentification des emails pour empecher l'usurpation</td></tr>
+  <tr><td><strong>ROI</strong></td><td>Return on Investment, retour sur investissement d'une campagne</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./05-campagnes.md">Campagnes</a> : Creer et envoyer des campagnes email</li>
+<li><a href="./06-flows.md">Flows</a> : Configurer les sequences automatisees</li>
+<li><a href="./01-inbox.md">Boite de reception</a> : Voir les conversations qui alimentent les stats</li>
+</ul>
+
+</div>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

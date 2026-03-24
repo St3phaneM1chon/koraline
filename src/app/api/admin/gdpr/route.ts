@@ -99,7 +99,11 @@ export const DELETE = withAdminGuard(async (request: NextRequest, { session }) =
     const { userId, confirmation } = parsed.data;
     void confirmation; // Used for validation only
 
-    const user = await prisma.user.findUnique({ where: { id: userId } });
+    // C3-SEC-S-006 FIX: Select only needed fields (avoid fetching password hash)
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, email: true },
+    });
     if (!user) {
       return NextResponse.json({ error: 'Utilisateur non trouve' }, { status: 404 });
     }

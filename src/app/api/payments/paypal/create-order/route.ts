@@ -433,7 +433,7 @@ export async function POST(request: NextRequest) {
               }
               return {
                 name: item.name,
-                description: item.format || '',
+                description: item.option || '',
                 quantity: item.quantity.toString(),
                 unit_amount: {
                   currency_code: currency.toUpperCase(),

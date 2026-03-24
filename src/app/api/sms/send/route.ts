@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
  * POST /api/sms/send — Send an SMS message
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { withMobileGuard } from '@/lib/mobile-guard';
 import { MessagingChannel } from '@/lib/voip/messaging-channel';

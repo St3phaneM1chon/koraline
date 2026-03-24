@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configuration Upsell / Cross-Sell &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 04 — Marketing</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Configuration Upsell / Cross-Sell</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Marketing > Upsell</p>
+<p><strong>URL</strong>: <code>/admin/upsell</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Upsell</strong> permet de configurer les regles de vente additionnelle qui s'affichent sur les pages produit de votre boutique. L'objectif est d'inciter le client a augmenter la valeur de son panier, soit en achetant une plus grande quantite (remise volume), soit en souscrivant a un abonnement recurrent.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Definir une configuration globale qui s'applique a tous les produits</li>
+<li>Creer des configurations specifiques par produit (qui remplacent la configuration globale)</li>
+<li>Activer ou desactiver l'affichage des remises volume</li>
+<li>Activer ou desactiver l'affichage des offres d'abonnement</li>
+<li>Choisir la regle d'affichage (toujours, une fois par session, une fois par produit)</li>
+<li>Personnaliser les titres et sous-titres des sections upsell</li>
+<li>Definir la quantite et la frequence d'abonnement suggerees</li>
+<li>Dupliquer une configuration pour l'appliquer a un autre produit</li>
+<li>Exporter les configurations en CSV</li>
+<li>Consulter les statistiques de conversion</li>
+</ul>
+
+<hr>
+
+<h2>Concepts pour les debutants</h2>
+
+<h3>Qu'est-ce que l'upsell ?</h3>
+
+<p>L'upsell (ou "vente incitative") consiste a proposer au client un achat de valeur superieure a ce qu'il envisageait. Par exemple, quand un client regarde un produit a l'unite, lui suggerer d'en acheter 3 avec une remise volume.</p>
+
+<h3>Qu'est-ce que le cross-sell ?</h3>
+
+<p>Le cross-sell (ou "vente croisee") consiste a proposer des produits complementaires. Par exemple, suggerer un peptide de reparation a quelqu'un qui achete un peptide de performance.</p>
+
+<h3>Configuration globale vs par produit</h3>
+
+<p>Le systeme fonctionne avec deux niveaux de configuration :</p>
+<ul>
+<li><strong>Configuration globale</strong> : S'applique a TOUS les produits de la boutique. Il ne peut y en avoir qu'une seule.</li>
+<li><strong>Configuration par produit</strong> : Remplace la configuration globale pour un produit specifique. Utile si un produit necessite des parametres differents.</li>
+</ul>
+
+<h3>Les deux sections upsell</h3>
+
+<p>Sur chaque page produit, deux sections upsell peuvent s'afficher :</p>
+<ol>
+<li><strong>Remise volume (Quantity Discount)</strong> : Propose d'acheter plus d'unites avec un rabais progressif</li>
+<li><strong>Abonnement (Subscription)</strong> : Propose de souscrire a un envoi recurrent a prix reduit</li>
+</ol>
+
+<h3>Regles d'affichage</h3>
+
+<table>
+<thead>
+    <tr><th>Regle</th><th>Comportement</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Toujours</strong></td><td>L'upsell s'affiche a chaque visite de la page produit</td></tr>
+  <tr><td><strong>Une fois par session</strong></td><td>L'upsell s'affiche une seule fois par session de navigation</td></tr>
+  <tr><td><strong>Une fois par produit</strong></td><td>L'upsell s'affiche une seule fois pour chaque produit visite</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Marketing</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong>, cliquez sur <strong>Upsell</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Cliquez sur l'icone de la section <strong>Marketing</strong> dans le rail</li>
+<li>Cliquez sur <strong>Upsell</strong></li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche (ou tapez <code>/</code>)</li>
+<li>Tapez "upsell" ou "vente additionnelle"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>L'interface utilise le layout master/detail Outlook standard.</p>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouvelle regle</strong></td><td>Creer une nouvelle configuration upsell</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer la configuration selectionnee</td></tr>
+  <tr><td><strong>Activer</strong></td><td>Activer la configuration selectionnee</td></tr>
+  <tr><td><strong>Desactiver</strong></td><td>Desactiver la configuration selectionnee</td></tr>
+  <tr><td><strong>Dupliquer</strong></td><td>Creer une copie de la configuration selectionnee</td></tr>
+  <tr><td><strong>Statistiques conversion</strong></td><td>Afficher un resume des configurations actives</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger les configurations en CSV</td></tr>
+</tbody>
+</table>
+<h3>2. Les cartes de statistiques</h3>
+
+<p>3 cartes en haut :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Configs actives</strong></td><td>Nombre de configurations upsell actuellement actives</td></tr>
+  <tr><td><strong>Surcharges produit</strong></td><td>Nombre de configurations specifiques a un produit</td></tr>
+  <tr><td><strong>Statut global</strong></td><td>Indique si la configuration globale est active ou non</td></tr>
+</tbody>
+</table>
+<h3>3. La liste des configurations (panneau central)</h3>
+
+<ul>
+<li><strong>Onglets de filtrage</strong> : Toutes, Actives, Configuration globale, Surcharges produit</li>
+<li><strong>Barre de recherche</strong> : Recherchez par nom de produit</li>
+<li><strong>Chaque configuration affiche</strong> : nom du produit (ou "Global"), regle d'affichage, sections activees (remise volume, abonnement), badge de statut (active en vert, desactivee en rouge), badge "Global" pour la configuration par defaut</li>
+</ul>
+
+<h3>4. Le panneau de detail (panneau droit)</h3>
+
+<p>Quand vous selectionnez une configuration :</p>
+<ul>
+<li><strong>Statut</strong> : badge actif/desactive</li>
+<li><strong>Sections activees</strong> : remise volume (on/off), abonnement (on/off)</li>
+<li><strong>Regle d'affichage</strong> : la regle actuellement en vigueur</li>
+<li><strong>Titres personnalises</strong> : titre et sous-titre de la section remise volume, titre et sous-titre de la section abonnement</li>
+<li><strong>Valeurs suggerees</strong> : quantite suggeree, frequence d'abonnement suggeree</li>
+<li><strong>Image du produit</strong> : si la configuration est liee a un produit specifique</li>
+<li><strong>Metadonnees</strong> : identifiant, slug, dates de creation et de mise a jour</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer une configuration globale</h3>
+
+<p><strong>Objectif</strong> : Definir le comportement upsell par defaut pour tous les produits.</p>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle regle</strong></li>
+<li><strong>Produit</strong> : Laissez le selecteur sur "Global" (ne selectionnez aucun produit)</li>
+<li><strong>Active</strong> : Activez l'interrupteur</li>
+<li><strong>Remise volume</strong> : Activez pour afficher la section de remise volume</li>
+<li><strong>Abonnement</strong> : Activez pour afficher la section d'abonnement</li>
+<li><strong>Regle d'affichage</strong> : Choisissez quand l'upsell s'affiche</li>
+<li><strong>Titres personnalises</strong> (optionnel) :</li>
+</ol>
+<ul>
+<li>Titre remise volume : ex: "Achetez plus, economisez plus"</li>
+<li>Sous-titre remise volume : ex: "Remise progressive sur les quantites"</li>
+<li>Titre abonnement : ex: "Souscrivez et economisez 15%"</li>
+<li>Sous-titre abonnement : ex: "Livraison automatique, annulable a tout moment"</li>
+</ul>
+<ol>
+<li><strong>Valeurs suggerees</strong> (optionnel) :</li>
+</ol>
+<ul>
+<li>Quantite suggeree : ex: 3</li>
+<li>Frequence suggeree : ex: Tous les 2 mois</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<p>Il ne peut y avoir qu'une seule configuration globale. Si une existe deja, modifiez-la plutot que d'en creer une nouvelle.</p>
+
+<h3>2. Creer une surcharge produit</h3>
+
+<p><strong>Objectif</strong> : Definir un comportement upsell different pour un produit specifique.</p>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle regle</strong></li>
+<li><strong>Produit</strong> : Utilisez le champ de recherche pour trouver le produit, puis selectionnez-le dans la liste deroulante</li>
+<li>Remplissez les parametres comme pour la configuration globale</li>
+<li>Les parametres de cette surcharge remplaceront la configuration globale pour ce produit uniquement</li>
+</ol>
+
+<h3>3. Modifier une configuration</h3>
+
+<ol>
+<li>Selectionnez la configuration dans la liste</li>
+<li>Cliquez sur <strong>Modifier</strong> (icone crayon) dans le panneau de detail</li>
+<li>Le formulaire s'ouvre pre-rempli</li>
+<li>Modifiez les parametres souhaites</li>
+<li>Sauvegardez</li>
+</ol>
+
+<h3>4. Dupliquer une configuration</h3>
+
+<ol>
+<li>Selectionnez la configuration source</li>
+<li>Cliquez sur <strong>Dupliquer</strong> dans le ruban</li>
+<li>Le formulaire s'ouvre avec tous les parametres copies</li>
+<li>Le champ produit est remis a vide pour que vous puissiez choisir un autre produit</li>
+<li>Sauvegardez</li>
+</ol>
+
+<h3>5. Consulter les statistiques</h3>
+
+<p>Cliquez sur <strong>Statistiques conversion</strong> dans le ruban. Un toast affiche un resume : nombre de configs actives/desactivees, nombre avec remise volume, nombre avec abonnement, nombre de configs globales et de surcharges produit.</p>
+
+<h3>6. Exporter en CSV</h3>
+
+<ol>
+<li>Appliquez vos filtres</li>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban</li>
+<li>Le fichier CSV se telecharge avec les colonnes : Produit, Active, Remise volume, Abonnement, Regle d'affichage, Quantite suggeree, Frequence suggeree, Derniere mise a jour</li>
+</ol>
+
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario A : Configurer l'upsell global pour tout le site</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle regle</strong></li>
+<li>Laissez le produit sur "Global"</li>
+<li>Activez la remise volume et l'abonnement</li>
+<li>Regle d'affichage : Toujours</li>
+<li>Titre remise volume : "Economisez en achetant plus"</li>
+<li>Titre abonnement : "Abonnez-vous et economisez 15%"</li>
+<li>Quantite suggeree : 3</li>
+<li>Frequence suggeree : Tous les 2 mois</li>
+<li>Sauvegardez</li>
+</ol>
+
+<h3>Scenario B : Desactiver l'abonnement pour un produit specifique</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle regle</strong></li>
+<li>Selectionnez le produit concerne</li>
+<li>Activez la remise volume</li>
+<li>Desactivez l'abonnement</li>
+<li>Gardez les autres parametres identiques au global</li>
+<li>Sauvegardez</li>
+</ol>
+
+<p>Le produit affichera la remise volume mais pas l'option d'abonnement, meme si la configuration globale propose les deux.</p>
+
+<h3>Scenario C : Tester l'impact de l'upsell sur un produit phare</h3>
+
+<ol>
+<li>Creez une surcharge pour votre produit phare</li>
+<li>Activez l'upsell avec un titre personnalise accrocheur</li>
+<li>Definissez la regle sur "Toujours"</li>
+<li>Apres quelques semaines, consultez les rapports marketing pour voir si le panier moyen a augmente</li>
+<li>Comparez avec les produits qui n'ont que la configuration globale</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Que se passe-t-il si je n'ai pas de configuration globale ?</strong></p>
+<p>R: Sans configuration globale, aucun upsell ne s'affiche sur les pages produit (sauf ceux qui ont une surcharge specifique). Il est recommande de toujours avoir une configuration globale active.</p>
+
+<p><strong>Q: Puis-je avoir plusieurs configurations pour le meme produit ?</strong></p>
+<p>R: Non. Chaque produit ne peut avoir qu'une seule surcharge. Le systeme empeche la creation de doublons.</p>
+
+<p><strong>Q: Les titres personnalises sont-ils obligatoires ?</strong></p>
+<p>R: Non. Si vous laissez les titres vides, le systeme utilise des titres par defaut.</p>
+
+<p><strong>Q: Comment sont affichees les remises volume sur le site ?</strong></p>
+<p>R: Un tableau de prix degressifs s'affiche sous le selecteur de quantite sur la page produit, montrant le prix unitaire pour differentes quantites.</p>
+
+<p><strong>Q: Que signifie "Frequence suggeree" ?</strong></p>
+<p>R: C'est la frequence d'abonnement qui sera pre-selectionnee par defaut pour le client (par exemple "Tous les 2 mois"). Le client peut toujours choisir une autre frequence.</p>
+
+<hr>
+
+<h2>Strategie expert : regles de cross-sell specifiques aux peptides</h2>
+
+<h3>Principe fondamental</h3>
+
+<p>Les peptides ne s'utilisent pas seuls. Chaque peptide necessite des accessoires (eau bacteriostatique, seringues) et se combine naturellement avec d'autres peptides pour des "stacks" de recherche. Le cross-sell est donc particulierement pertinent et naturel dans ce domaine -- il s'agit de guider le client vers les produits dont il aura reellement besoin.</p>
+
+<h3>Matrice de cross-sell recommandee</h3>
+
+<table>
+<thead>
+    <tr><th>Produit principal</th><th>Cross-sell prioritaire</th><th>Cross-sell secondaire</th><th>Logique</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>BPC-157</strong></td><td>Eau bacteriostatique, seringues insuline</td><td>TB-500 (stack reparation), GHK-Cu</td><td>Accessoires essentiels + stack complementaire</td></tr>
+  <tr><td><strong>TB-500</strong></td><td>Eau bacteriostatique, seringues</td><td>BPC-157 (stack reparation)</td><td>Le stack BPC+TB est le plus populaire</td></tr>
+  <tr><td><strong>CJC-1295</strong></td><td>Ipamorelin (stack GH), eau bacteriostatique</td><td>GHRP-6, seringues insuline</td><td>Stack synergique hormone de croissance</td></tr>
+  <tr><td><strong>Ipamorelin</strong></td><td>CJC-1295 (stack GH), eau bacteriostatique</td><td>MOD-GRF, seringues</td><td>Stack classique GH release</td></tr>
+  <tr><td><strong>GHK-Cu</strong></td><td>Seringues, eau bacteriostatique</td><td>BPC-157, collagene</td><td>Reparation cutanee et tissulaire</td></tr>
+  <tr><td><strong>Thymosin Alpha-1</strong></td><td>Eau bacteriostatique, seringues</td><td>BPC-157</td><td>Complementarite immunitaire et reparation</td></tr>
+  <tr><td><strong>Eau bacteriostatique</strong></td><td>Seringues insuline, alcool tampons</td><td>Peptide le plus vendu du moment</td><td>Accessoire appele accessoire</td></tr>
+  <tr><td><strong>Seringues insuline</strong></td><td>Eau bacteriostatique, alcool tampons</td><td>Pack de peptides populaires</td><td>Accessoire appele accessoire</td></tr>
+</tbody>
+</table>
+<h3>Moment optimal de l'upsell</h3>
+
+<table>
+<thead>
+    <tr><th>Moment</th><th>Type</th><th>Taux de conversion moyen</th><th>Usage recommande</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Page produit</strong></td><td>Cross-sell lateral ("Souvent achete avec")</td><td>3-5%</td><td>Accessoires indispensables</td></tr>
+  <tr><td><strong>Ajout au panier</strong></td><td>Popup upsell ("Completez votre commande")</td><td>5-8%</td><td>Stacks et bundles</td></tr>
+  <tr><td><strong>Checkout</strong></td><td>Derniere chance ("N'oubliez pas")</td><td>2-4%</td><td>Petits accessoires (tampons, seringues)</td></tr>
+  <tr><td><strong>Post-achat</strong></td><td>Email J+1 ("Pour completer votre recherche")</td><td>8-12%</td><td>Produits complementaires non urgents</td></tr>
+</tbody>
+</table>
+<p>Le post-achat est le moment le plus efficace car le client a deja fait confiance a votre marque. L'email post-achat bien segmente surpasse tous les autres canaux de cross-sell.</p>
+
+<h3>Objectif panier moyen</h3>
+
+<table>
+<thead>
+    <tr><th>Segment</th><th>Panier moyen actuel (estimation)</th><th>Panier moyen cible</th><th>Levier principal</th></tr>
+</thead>
+<tbody>
+  <tr><td>Nouveau client B2C</td><td>80-120 $CA</td><td>140-180 $CA</td><td>Cross-sell accessoires + code bundle</td></tr>
+  <tr><td>Client recurrent B2C</td><td>120-180 $CA</td><td>200-250 $CA</td><td>Stack suggestions + remise volume</td></tr>
+  <tr><td>Client B2B (labo)</td><td>300-600 $CA</td><td>500-1000 $CA</td><td>Grille de prix volume + abonnement</td></tr>
+</tbody>
+</table>
+<h3>Regles d'affichage recommandees par produit</h3>
+
+<ul>
+<li><strong>Peptides a unite (BPC-157, TB-500, etc.)</strong> : Afficher remise volume + cross-sell accessoires. Regle "Toujours".</li>
+<li><strong>Accessoires (eau bact., seringues)</strong> : Afficher cross-sell peptides populaires uniquement. Regle "Une fois par session" pour ne pas surcharger.</li>
+<li><strong>Stacks/Bundles pre-configures</strong> : Desactiver l'upsell (le client achete deja le lot). Regle "Desactive".</li>
+</ul>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Upsell</strong></td><td>Technique de vente incitative qui propose au client un achat de valeur superieure</td></tr>
+  <tr><td><strong>Cross-sell</strong></td><td>Technique de vente croisee qui propose des produits complementaires</td></tr>
+  <tr><td><strong>Configuration globale</strong></td><td>Les parametres upsell par defaut appliques a tous les produits</td></tr>
+  <tr><td><strong>Surcharge produit</strong></td><td>Configuration specifique a un produit qui remplace la globale</td></tr>
+  <tr><td><strong>Remise volume</strong></td><td>Remise progressive accordee en fonction de la quantite achetee</td></tr>
+  <tr><td><strong>Abonnement</strong></td><td>Envoi recurrent automatique d'un produit a intervalles reguliers</td></tr>
+  <tr><td><strong>Regle d'affichage</strong></td><td>Condition qui determine quand l'upsell est visible pour le client</td></tr>
+  <tr><td><strong>Frequence</strong></td><td>L'intervalle entre chaque livraison d'un abonnement</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/produits">Produits</a> -- Les produits concernes par les regles upsell</li>
+<li><a href="/admin/abonnements">Abonnements</a> -- Gerer les abonnements souscrits par les clients</li>
+<li><a href="/admin/commandes">Commandes</a> -- Voir les commandes avec upsell</li>
+<li><a href="/admin/rapports">Rapports marketing</a> -- Analyser l'impact de l'upsell sur le panier moyen</li>
+<li><a href="/admin/promotions">Promotions</a> -- Remises automatiques complementaires a l'upsell</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

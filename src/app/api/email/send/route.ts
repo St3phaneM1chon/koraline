@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
  * POST /api/email/send — Send an email via Resend/SendGrid/SMTP
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { withMobileGuard } from '@/lib/mobile-guard';
 import { sendEmail } from '@/lib/email/email-service';

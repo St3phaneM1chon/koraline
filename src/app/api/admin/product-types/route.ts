@@ -73,7 +73,7 @@ export const POST = withAdminGuard(async (request) => {
   const body = await request.json();
   const parsed = createSchema.safeParse(body);
   if (!parsed.success) {
-    return apiError('Validation error', 400, { details: parsed.error.flatten().fieldErrors });
+    return apiError('Validation error', 'VALIDATION_ERROR', { status: 400, request });
   }
 
   const { value, label, sortOrder } = parsed.data;
@@ -81,7 +81,7 @@ export const POST = withAdminGuard(async (request) => {
 
   // Check uniqueness
   if (types.some(t => t.value === value)) {
-    return apiError('Ce type existe déjà', 409);
+    return apiError('Ce type existe déjà', 'VALIDATION_ERROR', { status: 409, request });
   }
 
   const finalSort = sortOrder ?? types.length + 1;
@@ -91,7 +91,7 @@ export const POST = withAdminGuard(async (request) => {
   await writeProductTypes(types);
 
   return apiSuccess(newType, { request, status: 201 });
-}, { requiredPermission: 'manage_products' });
+}, { requiredPermission: 'products.edit' });
 
 const updateSchema = z.object({
   label: z.string().min(1).max(100).optional(),
@@ -104,43 +104,43 @@ export const PUT = withAdminGuard(async (request) => {
   const { searchParams } = new URL(request.url);
   const value = searchParams.get('value');
   if (!value) {
-    return apiError('Missing value query parameter', 400);
+    return apiError('Missing value query parameter', 'VALIDATION_ERROR', { status: 400, request });
   }
 
   const types = await readProductTypes();
   const idx = types.findIndex(t => t.value === value);
   if (idx === -1) {
-    return apiError('Product type not found', 404);
+    return apiError('Product type not found', 'RESOURCE_NOT_FOUND', { status: 404, request });
   }
 
   const body = await request.json();
   const parsed = updateSchema.safeParse(body);
   if (!parsed.success) {
-    return apiError('Validation error', 400, { details: parsed.error.flatten().fieldErrors });
+    return apiError('Validation error', 'VALIDATION_ERROR', { status: 400, request });
   }
 
   types[idx] = { ...types[idx], ...parsed.data };
   await writeProductTypes(types);
 
   return apiSuccess(types[idx], { request });
-}, { requiredPermission: 'manage_products' });
+}, { requiredPermission: 'products.edit' });
 
 // DELETE /api/admin/product-types — Delete a product type (by value in query param)
 export const DELETE = withAdminGuard(async (request) => {
   const { searchParams } = new URL(request.url);
   const value = searchParams.get('value');
   if (!value) {
-    return apiError('Missing value query parameter', 400);
+    return apiError('Missing value query parameter', 'VALIDATION_ERROR', { status: 400, request });
   }
 
   const types = await readProductTypes();
   const idx = types.findIndex(t => t.value === value);
   if (idx === -1) {
-    return apiError('Product type not found', 404);
+    return apiError('Product type not found', 'RESOURCE_NOT_FOUND', { status: 404, request });
   }
 
   types.splice(idx, 1);
   await writeProductTypes(types);
 
   return apiSuccess({ deleted: true }, { request });
-}, { requiredPermission: 'manage_products' });
+}, { requiredPermission: 'products.edit' });

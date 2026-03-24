@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Promotions &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 04 — Marketing</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion des Promotions</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Marketing > Promotions</p>
+<p><strong>URL</strong>: <code>/admin/promotions</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Promotions</strong> permet de creer et gerer des remises automatiques qui s'appliquent sans que le client ait besoin de saisir un code. Contrairement aux codes promo, les promotions sont appliquees automatiquement selon des regles que vous definissez.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Creer des promotions de 5 types differents (reduction produit, reduction categorie, lot, achetez X obtenez Y, vente eclair)</li>
+<li>Definir une reduction en pourcentage ou en montant fixe</li>
+<li>Planifier les dates de debut et de fin</li>
+<li>Activer ou desactiver une promotion instantanement</li>
+<li>Definir une priorite pour gerer les conflits entre promotions</li>
+<li>Dupliquer une promotion existante pour la modifier</li>
+<li>Filtrer les promotions par type ou par statut</li>
+<li>Consulter les produits et categories cibles</li>
+<li>Exporter la liste des promotions en CSV</li>
+<li>Supprimer les promotions obsoletes</li>
+</ul>
+
+<hr>
+
+<h2>Concepts pour les debutants</h2>
+
+<h3>Quelle difference entre un code promo et une promotion ?</h3>
+
+<p>Un <strong>code promo</strong> necessite que le client saisisse un code dans un champ au moment du paiement. Une <strong>promotion</strong> s'applique automatiquement : le client voit la remise directement sur la page produit ou dans son panier, sans rien faire.</p>
+
+<h3>Les 5 types de promotions</h3>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Description</th><th>Exemple</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Reduction produit</strong></td><td>Remise sur un ou plusieurs produits specifiques</td><td>-15% sur le BPC-157</td></tr>
+  <tr><td><strong>Reduction categorie</strong></td><td>Remise sur tous les produits d'une categorie</td><td>-10% sur toute la categorie "Peptides de reparation"</td></tr>
+  <tr><td><strong>Lot (Bundle)</strong></td><td>Remise quand le client achete un groupe de produits ensemble</td><td>Pack de 3 peptides a -20%</td></tr>
+  <tr><td><strong>Achetez X obtenez Y</strong></td><td>Le client achete un certain nombre de produits et en recoit d'autres en bonus ou a prix reduit</td><td>Achetez 2, obtenez 1 gratuit</td></tr>
+  <tr><td><strong>Vente eclair (Flash Sale)</strong></td><td>Remise temporaire qui s'applique a tout le catalogue</td><td>-25% sur tout le site pendant 48h</td></tr>
+</tbody>
+</table>
+<h3>Priorite des promotions</h3>
+
+<p>Quand plusieurs promotions pourraient s'appliquer au meme produit, c'est la <strong>priorite</strong> qui determine laquelle est utilisee. La promotion avec le numero de priorite le plus eleve l'emporte.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Marketing</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong>, cliquez sur <strong>Promotions</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Dans la colonne d'icones tout a gauche, cliquez sur l'icone de la section <strong>Marketing</strong></li>
+<li>Le panneau "Marketing" s'ouvre</li>
+<li>Cliquez sur <strong>Promotions</strong></li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche en haut (ou tapez <code>/</code>)</li>
+<li>Tapez "promotions"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>L'interface est divisee en <strong>4 zones principales</strong> :</p>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouvelle promotion</strong></td><td>Ouvrir le formulaire de creation</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer la promotion selectionnee</td></tr>
+  <tr><td><strong>Planifier</strong></td><td>Ouvrir le formulaire d'edition avec les champs de dates pre-remplis</td></tr>
+  <tr><td><strong>Activer</strong></td><td>Activer la promotion selectionnee</td></tr>
+  <tr><td><strong>Desactiver</strong></td><td>Desactiver la promotion selectionnee</td></tr>
+  <tr><td><strong>Dupliquer</strong></td><td>Creer une copie de la promotion selectionnee</td></tr>
+  <tr><td><strong>Performance</strong></td><td>Afficher un resume statistique de toutes les promotions</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger la liste des promotions en CSV</td></tr>
+</tbody>
+</table>
+<h3>2. Les cartes de statistiques</h3>
+
+<p>4 cartes en haut de la page :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total</strong></td><td>Nombre total de promotions</td></tr>
+  <tr><td><strong>Actives</strong></td><td>Nombre de promotions actuellement actives</td></tr>
+  <tr><td><strong>Ventes eclair</strong></td><td>Nombre de promotions de type Flash Sale</td></tr>
+  <tr><td><strong>Lots</strong></td><td>Nombre de promotions de type Bundle</td></tr>
+</tbody>
+</table>
+<h3>3. La liste des promotions (panneau central)</h3>
+
+<ul>
+<li><strong>Onglets de filtrage</strong> : Toutes, Actives, Reduction produit, Reduction categorie, Ventes eclair, Lots, Achetez X obtenez Y</li>
+<li><strong>Barre de recherche</strong> : Recherchez par nom de promotion</li>
+<li><strong>Chaque promotion affiche</strong> : nom, valeur de la remise, type de promotion (badge colore), statut (actif, inactif, expire), et priorite</li>
+</ul>
+
+<h3>4. Le panneau de detail (panneau droit)</h3>
+
+<p>Quand vous selectionnez une promotion :</p>
+<ul>
+<li><strong>Statut</strong> avec interrupteur pour activer/desactiver</li>
+<li><strong>Remise</strong> : valeur et type (pourcentage ou montant fixe)</li>
+<li><strong>Priorite</strong> : numero de priorite</li>
+<li><strong>Details specifiques au type</strong> : pour "Achetez X obtenez Y", les quantites a acheter et a recevoir ; pour "Lot", le nombre de produits inclus ; pour les types avec quantite minimum, le seuil</li>
+<li><strong>Validite</strong> : dates de debut et de fin</li>
+<li><strong>Cibles</strong> : produits et categories concernes</li>
+<li><strong>Metadonnees</strong> : identifiant, date de creation</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer une nouvelle promotion</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouvelle promotion</strong> dans le ruban ou sur le bouton en haut a droite</li>
+<li>Remplissez le formulaire :</li>
+</ol>
+<ul>
+<li><strong>Nom</strong> (obligatoire) : Un nom descriptif (par exemple "Soldes d'ete 2026")</li>
+<li><strong>Type de promotion</strong> : Choisissez parmi les 5 types disponibles</li>
+<li><strong>Type de remise</strong> : Pourcentage ou Montant fixe</li>
+<li><strong>Valeur</strong> (obligatoire) : Le chiffre de la remise</li>
+<li>Pour <strong>Achetez X obtenez Y</strong> : Saisissez la quantite a acheter et la quantite offerte</li>
+<li>Pour <strong>Lot</strong> ou <strong>Achetez X obtenez Y</strong> : Saisissez la quantite minimum</li>
+<li><strong>Date de debut</strong> : Quand la promotion commence</li>
+<li><strong>Date de fin</strong> : Quand la promotion expire</li>
+<li><strong>S'applique a tous les produits</strong> : Cochez pour une promotion globale (automatiquement coche pour les ventes eclair)</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<p><strong>Validations</strong> :</p>
+<ul>
+<li>Le nom ne peut pas etre vide</li>
+<li>La valeur doit etre superieure a 0</li>
+<li>Un pourcentage ne peut pas depasser 100%</li>
+<li>La date de fin doit etre posterieure a la date de debut</li>
+</ul>
+
+<h3>2. Activer ou desactiver une promotion</h3>
+
+<ol>
+<li>Selectionnez la promotion dans la liste</li>
+<li>Utilisez l'interrupteur dans le panneau de detail</li>
+<li>Le changement est immediat</li>
+</ol>
+
+<h3>3. Planifier une promotion</h3>
+
+<p><strong>Objectif</strong> : Definir ou modifier les dates de debut et de fin.</p>
+
+<ol>
+<li>Selectionnez la promotion</li>
+<li>Cliquez sur <strong>Planifier</strong> dans le ruban</li>
+<li>Le formulaire d'edition s'ouvre avec les champs de dates en focus</li>
+<li>Modifiez les dates</li>
+<li>Sauvegardez</li>
+</ol>
+
+<h3>4. Dupliquer une promotion</h3>
+
+<ol>
+<li>Selectionnez la promotion a copier</li>
+<li>Cliquez sur <strong>Dupliquer</strong> dans le ruban</li>
+<li>Le formulaire de creation s'ouvre avec tous les champs pre-remplis et le nom suffixe par "(copy)"</li>
+<li>Les dates sont remises a zero pour que vous puissiez en definir de nouvelles</li>
+<li>Modifiez les parametres et cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>5. Consulter les statistiques de performance</h3>
+
+<p>Cliquez sur <strong>Performance</strong> dans le ruban. Un toast affiche le total de promotions, le nombre d'actives, le nombre d'expirees, et la repartition par type.</p>
+
+<h3>6. Exporter en CSV</h3>
+
+<ol>
+<li>Appliquez vos filtres</li>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban</li>
+<li>Le fichier se telecharge avec les colonnes : Nom, Type, Remise, Valeur, Active, Date debut, Date fin, Priorite</li>
+</ol>
+
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario A : Creer une vente eclair de 48 heures</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle promotion</strong></li>
+<li>Nom : "Flash Sale Weekend"</li>
+<li>Type de promotion : <strong>Vente eclair</strong></li>
+<li>Type de remise : Pourcentage</li>
+<li>Valeur : 20</li>
+<li>Date de debut : vendredi 18:00</li>
+<li>Date de fin : dimanche 18:00</li>
+<li>La case "S'applique a tous" est automatiquement cochee</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>Scenario B : Configurer une offre "Achetez 2, obtenez 1 gratuit"</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle promotion</strong></li>
+<li>Nom : "Buy 2 Get 1 Free - BPC-157"</li>
+<li>Type de promotion : <strong>Achetez X obtenez Y</strong></li>
+<li>Quantite a acheter : 2</li>
+<li>Quantite offerte : 1</li>
+<li>Type de remise : Pourcentage</li>
+<li>Valeur : 100 (100% = gratuit pour le produit offert)</li>
+<li>Quantite minimum : 2</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>Scenario C : Comparer la performance de differents types de promotions</h3>
+
+<ol>
+<li>Ouvrez la page Promotions</li>
+<li>Cliquez sur <strong>Performance</strong> dans le ruban pour un resume global</li>
+<li>Utilisez les onglets de filtrage pour voir separement les ventes eclair, les lots, etc.</li>
+<li>Exportez en CSV pour une analyse detaillee dans Excel</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Peut-on avoir une promotion et un code promo qui s'appliquent en meme temps ?</strong></p>
+<p>R: Oui, une promotion automatique et un code promo peuvent se cumuler sur la meme commande, a condition que vos regles le permettent. Verifiez les montants resultants pour eviter des remises excessives.</p>
+
+<p><strong>Q: Comment gerer les conflits quand deux promotions s'appliquent au meme produit ?</strong></p>
+<p>R: Le systeme utilise le champ <strong>Priorite</strong>. La promotion avec la priorite la plus elevee l'emporte. Assurez-vous de definir des priorites differentes pour eviter les ambiguites.</p>
+
+<p><strong>Q: Que se passe-t-il quand une promotion expire ?</strong></p>
+<p>R: Le statut passe automatiquement a "Expire" (affiche en rouge). La promotion n'est plus appliquee aux nouvelles commandes. Elle reste visible dans l'admin pour consultation.</p>
+
+<p><strong>Q: Une vente eclair s'applique-t-elle automatiquement a tout le catalogue ?</strong></p>
+<p>R: Oui, quand vous choisissez le type "Vente eclair", la case "S'applique a tous les produits" est automatiquement cochee et ne peut pas etre decochee.</p>
+
+<p><strong>Q: Puis-je creer une promotion sans date de fin ?</strong></p>
+<p>R: Oui, si vous laissez la date de fin vide, la promotion reste active indefiniment (jusqu'a ce que vous la desactiviez manuellement).</p>
+
+<hr>
+
+<h2>Strategie expert : calendrier promotionnel annuel pour peptides</h2>
+
+<h3>Pourquoi planifier un calendrier annuel ?</h3>
+
+<p>Un calendrier promotionnel structure evite les promotions improvisees (qui diluent vos marges) et aligne vos offres avec les cycles d'achat naturels de votre clientele. Pour un e-commerce de peptides au Canada, ces cycles suivent les saisons de sante, de recherche universitaire et les evenements commerciaux majeurs.</p>
+
+<h3>Calendrier recommande</h3>
+
+<table>
+<thead>
+    <tr><th>Mois</th><th>Evenement</th><th>Type de promotion</th><th>Exemple</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Janvier</strong></td><td>Resolutions sante / Nouveau depart</td><td>Reduction categorie "Reparation" + "Longevite"</td><td>-15% sur BPC-157, TB-500, Epitalon pendant 2 semaines</td></tr>
+  <tr><td><strong>Fevrier</strong></td><td>Saint-Valentin (sante en duo)</td><td>Bundle : achete 2 produits = 10% sur le 2e</td><td>Pack "Research Duo"</td></tr>
+  <tr><td><strong>Mars</strong></td><td>Printemps / Detox / Renouveau</td><td>Vente eclair 48h sur peptides "Detox & Recovery"</td><td>Flash Sale -20% GHK-Cu, Thymosin Alpha-1</td></tr>
+  <tr><td><strong>Avril</strong></td><td>Paques / Fin trimestre universitaire</td><td>Code promo newsletter</td><td><code>SPRING15</code> 15% min 100 $CA</td></tr>
+  <tr><td><strong>Mai</strong></td><td>Fete des meres / Bien-etre</td><td>Reduction produit sur peptides collagene</td><td>-10% sur tous les peptides de la categorie "Peau & Collagene"</td></tr>
+  <tr><td><strong>Juin</strong></td><td>Ete fitness / Pre-vacances</td><td>Bundle "Summer Stack"</td><td>Pack BPC-157 + TB-500 + eau bacteriostatique a -20%</td></tr>
+  <tr><td><strong>Juillet</strong></td><td>Soldes mi-annee</td><td>Vente eclair tout le catalogue 72h</td><td>Flash Sale -15% sur tout</td></tr>
+  <tr><td><strong>Aout</strong></td><td>Rentree recherche (universites reprennent)</td><td>Code B2B pour les labos</td><td><code>LABRENTREE</code> 20% premiere commande B2B</td></tr>
+  <tr><td><strong>Septembre</strong></td><td>Rentree generale / Boost immunitaire</td><td>Reduction categorie "Immunitaire"</td><td>-15% Thymosin Alpha-1, BPC-157</td></tr>
+  <tr><td><strong>Octobre</strong></td><td>Halloween (ludique) / Pre-Black Friday teaser</td><td>Loterie code surprise</td><td>Code mystere entre 5% et 25%</td></tr>
+  <tr><td><strong>Novembre</strong></td><td>Black Friday + Cyber Monday</td><td>La plus grosse promo de l'annee</td><td>-25% tout le site 4 jours, max 500 usages</td></tr>
+  <tr><td><strong>Decembre</strong></td><td>Noel / Coffrets cadeaux</td><td>Bundles cadeaux + cartes-cadeaux</td><td>Coffret "Starter Research Kit" a prix reduit</td></tr>
+</tbody>
+</table>
+<h3>Flash Sale : bonnes pratiques</h3>
+
+<p>Les ventes eclair sont les promotions les plus efficaces pour generer un pic de revenu rapide, mais elles doivent etre executees correctement :</p>
+
+<p><strong>Duree optimale</strong> : 24 a 48 heures. Au-dela de 72h, l'effet d'urgence disparait.</p>
+
+<p><strong>Elements d'urgence a activer</strong> :</p>
+<ul>
+<li>Banniere avec compte a rebours en page d'accueil</li>
+<li>Email d'annonce 2h avant le debut</li>
+<li>Email de rappel "Derniere chance" 6h avant la fin</li>
+<li>Mention "Stock limite" sur les produits concernes (si applicable)</li>
+</ul>
+
+<p><strong>Frequence recommandee</strong> : Maximum 1 flash sale par mois. Au-dela, vos clients apprendront a attendre les promotions plutot que d'acheter au prix normal.</p>
+
+<p><strong>Mesure de succes</strong> :</p>
+<ul>
+<li>Revenu pendant la flash sale vs meme periode le mois precedent</li>
+<li>Nombre de nouveaux clients acquis</li>
+<li>Impact sur le panier moyen (il baisse generalement de 10-15% pendant une flash sale, c'est normal)</li>
+<li>Revenus la semaine suivante (attention a l'effet de cannibalisation : les clients qui auraient achete la semaine suivante ont accelere leur achat)</li>
+</ul>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Promotion</strong></td><td>Une remise automatique appliquee sans saisie de code par le client</td></tr>
+  <tr><td><strong>Vente eclair</strong></td><td>Une promotion de courte duree qui s'applique a tout le catalogue (Flash Sale)</td></tr>
+  <tr><td><strong>Lot (Bundle)</strong></td><td>Un groupe de produits vendus ensemble avec une remise</td></tr>
+  <tr><td><strong>Achetez X obtenez Y</strong></td><td>Offre ou l'achat d'une certaine quantite donne droit a des produits supplementaires</td></tr>
+  <tr><td><strong>Priorite</strong></td><td>Numero qui determine quelle promotion s'applique en cas de conflit</td></tr>
+  <tr><td><strong>Reduction produit</strong></td><td>Remise ciblee sur un ou plusieurs produits specifiques</td></tr>
+  <tr><td><strong>Reduction categorie</strong></td><td>Remise sur tous les produits d'une categorie donnee</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/promo-codes">Codes Promo</a> -- Codes de reduction a saisir par le client</li>
+<li><a href="/admin/produits">Produits</a> -- Les produits concernes par les promotions</li>
+<li><a href="/admin/categories">Categories</a> -- Les categories de produits</li>
+<li><a href="/admin/rapports">Rapports marketing</a> -- Analyser l'impact des promotions sur les ventes</li>
+<li><a href="/admin/commandes">Commandes</a> -- Voir les commandes ayant beneficie d'une promotion</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

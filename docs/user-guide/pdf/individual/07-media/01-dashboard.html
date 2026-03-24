@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tableau de Bord Media &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 07 — Media</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Tableau de Bord Media</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Media > Tableau de Bord</p>
+<p><strong>URL</strong>: <code>/admin/media</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>Le <strong>Tableau de Bord Media</strong> est la page centrale de toute la section Media de Koraline. Elle offre une vue d'ensemble en temps reel de vos ressources mediatiques, des plateformes connectees et des raccourcis vers les outils de gestion de contenu.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir les statistiques globales : nombre de fichiers, videos, images et plateformes connectees</li>
+<li>Lancer directement une reunion sur une plateforme (Teams, Zoom, Webex, Google Meet, WhatsApp)</li>
+<li>Verifier l'etat de connexion de chaque integration (Zoom, YouTube, Meta, X, TikTok, Google Ads, LinkedIn)</li>
+<li>Envoyer des fichiers media depuis le tableau de bord en un clic</li>
+<li>Acceder rapidement aux sous-pages de gestion (Videos, Images, Mediatheque)</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Plateforme de communication</strong></td><td>Un outil de visioconference (Zoom, Teams, Webex, Google Meet, WhatsApp) integre a Koraline</td></tr>
+  <tr><td><strong>Integration API</strong></td><td>Connexion technique entre Koraline et un service externe (YouTube, Meta, etc.) via leurs cles API</td></tr>
+  <tr><td><strong>Mediatheque</strong></td><td>L'ensemble des fichiers (images, videos, PDF) stockes dans votre administration</td></tr>
+  <tr><td><strong>Ruban (Ribbon)</strong></td><td>La barre d'outils contextuelle en haut de la page qui change selon la page affichee</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la barre de navigation horizontale, cliquez sur <strong>Media</strong></li>
+<li>La premiere page qui s'affiche est le tableau de bord</li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation</h3>
+<ol>
+<li>Dans la colonne d'icones a gauche, cliquez sur l'icone <strong>Media</strong> (camera/video)</li>
+<li>Le panneau Media s'ouvre, cliquez sur <strong>Tableau de bord</strong></li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche (ou tapez <code>/</code>)</li>
+<li>Tapez "media" ou "tableau de bord media"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>L'interface est organisee en <strong>5 zones principales</strong> :</p>
+
+<h3>1. En-tete et bouton d'envoi</h3>
+<p>En haut de la page, vous trouvez :</p>
+<ul>
+<li>Le titre <strong>Tableau de bord Media</strong></li>
+<li>Un bouton <strong>Envoyer</strong> (Upload) qui permet d'envoyer des fichiers directement depuis cette page</li>
+</ul>
+
+<h3>2. Cartes de statistiques</h3>
+<p>Quatre cartes affichent les compteurs principaux :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Donnee</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Mediatheque</strong></td><td>Nombre total de fichiers dans la mediatheque</td></tr>
+  <tr><td><strong>Videos</strong></td><td>Nombre total de videos enregistrees</td></tr>
+  <tr><td><strong>Images</strong></td><td>Nombre d'images dans la bibliotheque</td></tr>
+  <tr><td><strong>Connectees</strong></td><td>Nombre de plateformes actives / total configure (ex: 5/10)</td></tr>
+</tbody>
+</table>
+<h3>3. Plateformes de communication</h3>
+<p>Une grille de cartes colorees, une par plateforme :</p>
+
+<table>
+<thead>
+    <tr><th>Plateforme</th><th>Couleur</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Microsoft Teams</strong></td><td>Violet</td><td>Reunions et collaboration</td></tr>
+  <tr><td><strong>Zoom</strong></td><td>Bleu</td><td>Visioconference</td></tr>
+  <tr><td><strong>Webex</strong></td><td>Vert</td><td>Reunions Cisco</td></tr>
+  <tr><td><strong>Google Meet</strong></td><td>Sarcelle</td><td>Visioconference Google</td></tr>
+  <tr><td><strong>WhatsApp</strong></td><td>Vert</td><td>Messagerie directe</td></tr>
+</tbody>
+</table>
+<p>Cliquer sur une carte ouvre la page de lancement de la plateforme correspondante.</p>
+
+<blockquote>
+<p><strong>Astuce</strong> : L'icone moniteur a droite d'une carte indique que l'application bureau est disponible.</p>
+</blockquote>
+
+<h3>4. Integrations API et Publicites</h3>
+<p>Une grille de cartes montrant chaque service connecte :</p>
+<ul>
+<li>Un indicateur vert avec coche = connecte et actif</li>
+<li>Un indicateur gris avec croix = non connecte</li>
+<li>Un indicateur gris "Bientot" = pas encore configure</li>
+</ul>
+
+<p>Chaque carte renvoie vers la page de configuration API ou la page de publicite correspondante.</p>
+
+<h3>5. Gestion media (liens rapides)</h3>
+<p>Trois cartes de raccourcis vers :</p>
+<ul>
+<li><strong>Videos</strong> : gerer toutes les videos</li>
+<li><strong>Images</strong> : gerer la bibliotheque d'images</li>
+<li><strong>Mediatheque</strong> : tous les fichiers (images, videos, PDF, documents)</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>Envoyer un fichier depuis le tableau de bord</h3>
+<ol>
+<li>Cliquez sur le bouton <strong>Envoyer</strong> en haut a droite</li>
+<li>La boite de dialogue de votre systeme d'exploitation s'ouvre</li>
+<li>Selectionnez un ou plusieurs fichiers</li>
+<li>Les fichiers sont envoyes dans le dossier "general" de la mediatheque</li>
+<li>Un message de confirmation s'affiche avec le nombre de fichiers envoyes</li>
+<li>Les statistiques se mettent a jour automatiquement</li>
+</ol>
+
+<h3>Actions du ruban</h3>
+<p>La barre de ruban offre des actions contextuelles :</p>
+
+<table>
+<thead>
+    <tr><th>Action</th><th>Effet</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Upload</strong></td><td>Ouvre la boite de selection de fichiers</td></tr>
+  <tr><td><strong>Delete</strong></td><td>Affiche un message d'aide pour la suppression</td></tr>
+  <tr><td><strong>Play</strong></td><td>Affiche un message d'aide pour la lecture</td></tr>
+  <tr><td><strong>Export</strong></td><td>Affiche un message d'aide pour l'export</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Flux de travail recommandes</h2>
+
+<h3>Configuration initiale des medias</h3>
+<ol>
+<li><strong>Connectez vos plateformes</strong> : Allez dans chaque page API (Zoom, Teams, etc.) et configurez les identifiants</li>
+<li><strong>Envoyez vos images</strong> : Utilisez la page Images pour envoyer vos visuels produits et marketing</li>
+<li><strong>Configurez vos categories</strong> : Creez des categories video pour organiser votre contenu</li>
+<li><strong>Testez une reunion</strong> : Lancez une reunion de test via une plateforme pour verifier la connexion</li>
+</ol>
+
+<h3>Routine quotidienne</h3>
+<ol>
+<li>Ouvrez le tableau de bord media</li>
+<li>Verifiez que toutes les plateformes sont connectees (vert)</li>
+<li>Consultez les statistiques pour suivre la croissance de votre mediatheque</li>
+<li>Si une plateforme est deconnectee (rouge), allez reconfigurer la connexion</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes</h2>
+
+<p><strong>Q : Le compteur de plateformes connectees affiche "0/10", est-ce normal ?</strong></p>
+<p>R : Oui, a la premiere utilisation. Chaque plateforme doit etre configuree individuellement dans sa page API. Consultez les pages 14 a 25 de ce guide.</p>
+
+<p><strong>Q : Puis-je envoyer n'importe quel type de fichier ?</strong></p>
+<p>R : Oui, la mediatheque accepte les images (JPG, PNG, WebP, GIF), les videos (MP4, WebM), les PDF et d'autres formats. La limite par fichier est de 10 Mo.</p>
+
+<p><strong>Q : Une plateforme affiche "Bientot" au lieu de "Connecte" ou "Non connecte"</strong></p>
+<p>R : Cela signifie que l'API de cette plateforme n'a pas repondu ou n'est pas encore configuree dans votre environnement. Contactez votre administrateur technique.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Upload</strong></td><td>Action d'envoyer un fichier depuis votre ordinateur vers le serveur</td></tr>
+  <tr><td><strong>API</strong></td><td>Interface de programmation permettant a deux systemes de communiquer</td></tr>
+  <tr><td><strong>OAuth</strong></td><td>Protocole d'authentification securise utilise par les plateformes pour autoriser Koraline</td></tr>
+  <tr><td><strong>Webhook</strong></td><td>URL de rappel que la plateforme utilise pour notifier Koraline des evenements</td></tr>
+  <tr><td><strong>CSRF</strong></td><td>Protection de securite qui empeche les requetes non autorisees</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<table>
+<thead>
+    <tr><th>Page</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><a href="./02-analytics.md">Analytique Media</a></td><td>Statistiques detaillees de vos medias</td></tr>
+  <tr><td><a href="./27-videos.md">Videos</a></td><td>Gestion complete des videos</td></tr>
+  <tr><td><a href="./34-images.md">Images</a></td><td>Gestion de la bibliotheque d'images</td></tr>
+  <tr><td><a href="./35-library.md">Mediatheque</a></td><td>Tous les fichiers media</td></tr>
+  <tr><td><a href="./29-connections.md">Connexions</a></td><td>Configuration des plateformes connectees</td></tr>
+</tbody>
+</table>
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

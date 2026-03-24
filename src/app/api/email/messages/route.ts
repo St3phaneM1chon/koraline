@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
  * GET /api/email/messages — List emails from configured accounts
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { withMobileGuard } from '@/lib/mobile-guard';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
@@ -14,7 +14,7 @@ import { logger } from '@/lib/logger';
  * GET — List email conversations / inbound emails.
  * Returns data in the format the iOS app expects.
  */
-export const GET = withMobileGuard(async (request, { session }) => {
+export const GET = withMobileGuard(async (request, { session: _session }) => {
   try {
     const { searchParams } = new URL(request.url);
     const folder = searchParams.get('folder') || 'INBOX';

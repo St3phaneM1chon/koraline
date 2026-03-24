@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Factures Clients et Fournisseurs &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 11 — Comptabilite</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Factures Clients et Fournisseurs</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Comptabilite > Factures</p>
+<p><strong>URL</strong>: <code>/admin/comptabilite/factures-clients</code>, <code>/admin/comptabilite/factures-fournisseurs</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~35 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>Pourquoi cette page est importante</h2>
+
+<p>Les factures sont les <strong>documents fondamentaux de toute transaction commerciale</strong>. La facture client prouve qu'un client vous doit de l'argent. La facture fournisseur prouve que vous devez de l'argent a un fournisseur. Sans factures correctes, impossible de declarer les taxes, impossible de reclamer les credits d'intrants, et impossible de prouver vos revenus ou deductions a l'ARC.</p>
+
+<p><strong>Obligations legales</strong> :</p>
+<ul>
+<li>Au Quebec, toute facture de plus de 30 $ doit inclure le nom et l'adresse de l'emetteur, les numeros de TPS et TVQ, un numero de facture unique, la date, la description des biens/services, le montant avant taxes, la TPS et la TVQ separees, et le total TTC.</li>
+<li>L'ARC exige des factures conformes pour accorder les CTI (credits de taxe sur intrants). Sans facture valide du fournisseur, vous ne pouvez pas recuperer la TPS/TVQ payee.</li>
+<li>Les factures doivent etre conservees pendant <strong>6 ans</strong> apres la fin de l'annee d'imposition.</li>
+<li>Les numeros de TPS et TVQ de l'emetteur doivent etre reels et verifiables.</li>
+</ul>
+
+<p><strong>Impact concret</strong> :</p>
+<ul>
+<li>Une facture mal redigee peut entrainer le refus des CTI/RTI lors d'une verification -- vous perdez 14,975% du montant.</li>
+<li>Des factures clients non suivies = de l'argent non collecte = problemes de tresorerie.</li>
+<li>Des factures fournisseurs non saisies = des charges manquantes = impots trop eleves.</li>
+</ul>
+
+<hr>
+
+<h2>Cycle comptable complet -- Ou se situe cette page</h2>
+
+<pre><code>1. Plan comptable → 2. Journal → 3. Ecritures → 4. Grand livre/Balance
+ ↓
+ 5. Bilan → 6. Etat des resultats
+ ↓
+[7. FACTURES] ← VOUS ETES ICI (source des revenus et des achats)
+ ↓
+ 8. Depenses → 9. Taxes TPS/TVQ → 10. Rapprochement
+ ↓
+ 11. Budget → 12. Rapports</code></pre>
+
+<p>Les factures sont une source majeure de transactions dans le journal. Chaque facture client genere automatiquement une ecriture de vente (revenu + taxes collectees). Chaque facture fournisseur genere une ecriture d'achat (charge + taxes recuperables). Ces ecritures alimentent le grand livre, le bilan (comptes clients/fournisseurs) et l'etat des resultats (revenus/charges).</p>
+
+<hr>
+
+<h2>Ordre des operations</h2>
+
+<h3>Pour une facture client</h3>
+
+<ol>
+<li>Le service ou le produit est livre au client</li>
+<li><strong>Creer la facture</strong> dans Koraline (ou elle est generee automatiquement par une commande en ligne)</li>
+<li><strong>Envoyer la facture</strong> au client (par email avec lien de paiement Stripe)</li>
+<li><strong>Suivre le paiement</strong> -- la facture reste "en attente" jusqu'au reglement</li>
+<li><strong>Enregistrer le paiement</strong> quand il arrive (automatique pour Stripe, manuel pour virement/cheque)</li>
+<li><strong>Relancer</strong> si le paiement est en retard (a 30, 60, 90 jours)</li>
+<li><strong>Provisionner</strong> si le paiement semble compromis (creance douteuse)</li>
+</ol>
+
+<h3>Pour une facture fournisseur</h3>
+
+<ol>
+<li>Vous recevez la marchandise ou le service du fournisseur</li>
+<li>Vous recevez la facture du fournisseur</li>
+<li><strong>Saisir la facture</strong> dans Koraline (manuellement ou par OCR)</li>
+<li><strong>Verifier</strong> que les montants et les taxes sont corrects</li>
+<li><strong>Joindre</strong> la facture originale (PDF ou photo)</li>
+<li><strong>Payer</strong> a l'echeance prevue</li>
+<li><strong>Enregistrer le paiement</strong> dans Koraline</li>
+</ol>
+
+<hr>
+
+<h2>Comment entrer les donnees</h2>
+
+<h3>Creer une facture client</h3>
+
+<p><strong>URL</strong> : <code>/admin/comptabilite/factures-clients</code></p>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle facture</strong></li>
+<li>Remplissez l'en-tete :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Quoi mettre</th><th>Exemple</th><th>Pourquoi</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Client</strong></td><td>Selectionnez ou creez le client</td><td>Clinique Sante Plus</td><td>Lien avec le CRM, adresse de facturation</td></tr>
+  <tr><td><strong>Date de facture</strong></td><td>Date d'emission</td><td>2026-03-15</td><td>Date a laquelle le revenu est reconnu</td></tr>
+  <tr><td><strong>Date d'echeance</strong></td><td>Date limite de paiement</td><td>2026-04-14 (Net 30)</td><td>Determine quand la facture est en retard</td></tr>
+  <tr><td><strong>Numero</strong></td><td>Genere automatiquement</td><td>FACT-2026-0423</td><td>Identifiant unique, obligatoire au Quebec</td></tr>
+  <tr><td><strong>Devise</strong></td><td>CAD par defaut</td><td>CAD</td><td>USD possible pour les clients hors Canada</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Ajoutez les lignes de facture :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Ligne</th><th>Description</th><th>Quantite</th><th>Prix unitaire</th><th>Total</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>BPC-157 Oral 60 capsules</td><td>10</td><td>89,95 $</td><td>899,50 $</td></tr>
+  <tr><td>2</td><td>TB-500 Injectable 5mg</td><td>5</td><td>79,95 $</td><td>399,75 $</td></tr>
+  <tr><td>3</td><td>Frais de livraison</td><td>1</td><td>25,00 $</td><td>25,00 $</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Les taxes sont calculees automatiquement :</li>
+</ol>
+<ul>
+<li>Sous-total : 1 324,25 $</li>
+<li>TPS (5%) : 66,21 $</li>
+<li>TVQ (9,975%) : 132,04 $</li>
+<li><strong>Total TTC : 1 522,50 $</strong></li>
+</ul>
+
+<ol>
+<li>Ajoutez des notes ou conditions (optionnel)</li>
+<li>Choisissez : <strong>Sauvegarder</strong> (brouillon) ou <strong>Envoyer</strong> (envoi par email au client)</li>
+</ol>
+
+<h3>Ecriture comptable generee automatiquement (facture client)</h3>
+
+<pre><code>Debit  1100 - Comptes clients        1 522,50 $
+Credit 4010 - Ventes peptides                      1 324,25 $
+Credit 2100 - TPS a remettre                          66,21 $
+Credit 2110 - TVQ a remettre                         132,04 $</code></pre>
+
+<p><strong>Logique</strong> : Le client nous doit le montant TTC (actif augmente au debit). Nous reconnaissons le revenu HT (revenu augmente au credit). Nous devons remettre les taxes aux gouvernements (passif augmente au credit).</p>
+
+<h3>Enregistrer le paiement d'un client</h3>
+
+<ol>
+<li>Ouvrez la facture concernee</li>
+<li>Cliquez sur <strong>Enregistrer paiement</strong></li>
+<li>Remplissez :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Quoi mettre</th><th>Pourquoi</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Montant</strong></td><td>Montant recu</td><td>Peut etre partiel</td></tr>
+  <tr><td><strong>Date</strong></td><td>Date du paiement</td><td>Date du virement ou du depot</td></tr>
+  <tr><td><strong>Mode</strong></td><td>Carte (Stripe), virement, cheque</td><td>Tracabilite</td></tr>
+  <tr><td><strong>Reference</strong></td><td>Numero de transaction</td><td>Pour le rapprochement bancaire</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Cliquez sur <strong>Confirmer</strong></li>
+</ol>
+
+<p><strong>Note</strong> : Les paiements Stripe sont enregistres automatiquement. Vous ne saisissez manuellement que les virements et cheques.</p>
+
+<h3>Ecriture comptable generee (paiement recu)</h3>
+
+<pre><code>Debit  1010 - Banque TD               1 522,50 $
+Credit 1100 - Comptes clients                      1 522,50 $</code></pre>
+
+<p><strong>Logique</strong> : L'argent arrive en banque (actif augmente au debit). Le client ne nous doit plus rien (actif diminue au credit).</p>
+
+<h3>Saisir une facture fournisseur</h3>
+
+<p><strong>URL</strong> : <code>/admin/comptabilite/factures-fournisseurs</code></p>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle facture</strong></li>
+<li>Remplissez :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Quoi mettre</th><th>Exemple</th><th>Pourquoi</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Fournisseur</strong></td><td>Selectionnez ou creez</td><td>PeptideLab Inc.</td><td>Lien avec le registre fournisseurs</td></tr>
+  <tr><td><strong>Numero de facture</strong></td><td>Celui du fournisseur</td><td>PL-2026-1158</td><td>Pour tracer la facture originale</td></tr>
+  <tr><td><strong>Date de facture</strong></td><td>Date sur la facture</td><td>2026-03-10</td><td>Date de reconnaissance de la charge</td></tr>
+  <tr><td><strong>Date d'echeance</strong></td><td>Echeance de paiement</td><td>2026-04-09</td><td>Pour la gestion de tresorerie</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Ajoutez les lignes (description, montant HT)</li>
+<li>Les taxes sont separees automatiquement : TPS recuperable et TVQ recuperable</li>
+<li><strong>Joignez la facture originale</strong> (PDF ou photo) -- obligatoire pour reclamer les CTI/RTI</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<h3>Ecriture comptable generee (facture fournisseur)</h3>
+
+<pre><code>Debit  5011 - Achats matieres         5 000,00 $
+Debit  1150 - TPS intrants              250,00 $
+Debit  1160 - TVQ intrants              498,75 $
+Credit 2010 - Comptes fournisseurs                  5 748,75 $</code></pre>
+
+<p><strong>Logique</strong> : Nous avons une charge de 5 000 $ (charge augmente au debit). Les taxes payees sont recuperables (actif augmente au debit). Nous devons 5 748,75 $ au fournisseur (passif augmente au credit).</p>
+
+<hr>
+
+<h2>Pourquoi entrer ces donnees</h2>
+
+<h3>Factures clients</h3>
+
+<table>
+<thead>
+    <tr><th>Raison</th><th>Explication</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Reconnaissance du revenu</strong></td><td>Le revenu est reconnu a la date de la facture, pas a la date du paiement. C'est la norme comptable (comptabilite d'exercice).</td></tr>
+  <tr><td><strong>Suivi des comptes clients</strong></td><td>Savoir exactement combien les clients doivent et depuis quand.</td></tr>
+  <tr><td><strong>Declaration TPS/TVQ</strong></td><td>Les taxes collectees doivent etre declarees dans la bonne periode.</td></tr>
+  <tr><td><strong>Tresorerie</strong></td><td>Prevoir les entrees d'argent basees sur les echeances des factures.</td></tr>
+</tbody>
+</table>
+<h3>Factures fournisseurs</h3>
+
+<table>
+<thead>
+    <tr><th>Raison</th><th>Explication</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Reconnaissance de la charge</strong></td><td>La charge est reconnue a la date de la facture, pas a la date du paiement.</td></tr>
+  <tr><td><strong>Credits d'intrants (CTI/RTI)</strong></td><td>Sans la facture fournisseur avec le bon numero de TPS/TVQ, vous ne pouvez pas reclamer les credits.</td></tr>
+  <tr><td><strong>Suivi des comptes fournisseurs</strong></td><td>Savoir exactement combien vous devez et a quelle echeance.</td></tr>
+  <tr><td><strong>Deductions fiscales</strong></td><td>Chaque facture fournisseur est une deduction potentielle de vos impots. Sans piece justificative, pas de deduction.</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Gerer les cas particuliers</h2>
+
+<h3>Factures en retard -- Relance client</h3>
+
+<p>Le systeme identifie automatiquement les factures dont l'echeance est depassee.</p>
+
+<table>
+<thead>
+    <tr><th>Anciennete</th><th>Action recommandee</th></tr>
+</thead>
+<tbody>
+  <tr><td>30 jours</td><td>Envoyer un rappel amical par email</td></tr>
+  <tr><td>60 jours</td><td>Appeler le client, envoyer un rappel formel</td></tr>
+  <tr><td>90 jours</td><td>Lettre de mise en demeure, provisionner 50%</td></tr>
+  <tr><td>120+ jours</td><td>Envisager l'agence de recouvrement, provisionner 100%</td></tr>
+</tbody>
+</table>
+<h3>Notes de credit</h3>
+
+<p><strong>URL</strong> : <code>/admin/comptabilite/notes-credit</code></p>
+
+<p><strong>Quand</strong> : Retour de marchandise, erreur de facturation, remise accordee apres coup.</p>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle note de credit</strong></li>
+<li>Selectionnez la facture originale</li>
+<li>Indiquez le montant a crediter et la raison</li>
+<li>La note de credit genere l'ecriture inverse :</li>
+</ol>
+
+<pre><code>Debit  4010 - Ventes peptides            200,00 $
+Debit  2100 - TPS a remettre              10,00 $
+Debit  2110 - TVQ a remettre              19,95 $
+Credit 1100 - Comptes clients                        229,95 $</code></pre>
+
+<h3>Paiements partiels</h3>
+
+<p>Un client peut payer en plusieurs fois. Enregistrez chaque paiement separement. Le solde restant est calcule automatiquement. La facture passe en statut "Partiellement payee".</p>
+
+<h3>Factures en devises etrangeres (USD)</h3>
+
+<p>Si un fournisseur facture en USD :</p>
+<ol>
+<li>Saisissez le montant en USD</li>
+<li>Koraline convertit au taux du jour en CAD</li>
+<li>Le gain ou la perte de change est comptabilise automatiquement au moment du paiement si le taux a change</li>
+</ol>
+
+<hr>
+
+<h2>La cloture mensuelle des comptes a recevoir et a payer</h2>
+
+<h3>Processus mensuel pour les comptes clients</h3>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Action</th><th>Pourquoi</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>Verifier que toutes les factures du mois sont creees</td><td>Revenu complet pour l'etat des resultats</td></tr>
+  <tr><td>2</td><td>Verifier que tous les paiements recus sont enregistres</td><td>Comptes clients a jour</td></tr>
+  <tr><td>3</td><td>Generer le rapport d'anciennete (Aging)</td><td>Identifier les retards</td></tr>
+  <tr><td>4</td><td>Relancer les factures a 30+ jours</td><td>Accelerer les encaissements</td></tr>
+  <tr><td>5</td><td>Provisionner les creances a 90+ jours</td><td>Refleter le risque dans les etats financiers</td></tr>
+</tbody>
+</table>
+<h3>Processus mensuel pour les comptes fournisseurs</h3>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Action</th><th>Pourquoi</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>Verifier que toutes les factures recues sont saisies</td><td>Charges completes, CTI/RTI complets</td></tr>
+  <tr><td>2</td><td>Verifier les echeances de paiement</td><td>Eviter les penalites de retard</td></tr>
+  <tr><td>3</td><td>Payer les factures a echeance</td><td>Maintenir la relation fournisseur</td></tr>
+  <tr><td>4</td><td>Enregistrer les paiements</td><td>Comptes fournisseurs a jour</td></tr>
+</tbody>
+</table>
+<h3>Politique d'escompte -- Quand payer en avance</h3>
+
+<p>Certains fournisseurs offrent un escompte pour paiement rapide (ex: "2/10 Net 30" = 2% d'escompte si paye en 10 jours au lieu de 30). Pour BioCycle :</p>
+
+<pre><code>Facture fournisseur : 5 000 $ HT
+Conditions : 2/10 Net 30
+
+Option A : Payer en 10 jours
+  Montant : 5 000 $ x (1 - 2%) = 4 900 $
+  Economie : 100 $
+
+Option B : Payer en 30 jours
+  Montant : 5 000 $
+  Cout de l'attente de 20 jours : 100 $
+
+Taux annualise de l'escompte : (2% / 98%) x (365 / 20) = 37,2% par an</code></pre>
+
+<p>Un taux de 37,2% est bien superieur au cout d'emprunt bancaire (~6-8%). Il est presque toujours avantageux de prendre l'escompte si la tresorerie le permet.</p>
+
+<hr>
+
+<h2>Erreurs courantes a eviter</h2>
+
+<table>
+<thead>
+    <tr><th>Erreur</th><th>Consequence</th><th>Comment eviter</th></tr>
+</thead>
+<tbody>
+  <tr><td>Facture client sans numeros TPS/TVQ</td><td>Le client ne peut pas reclamer ses CTI/RTI</td><td>Configurer les numeros TPS/TVQ dans les parametres</td></tr>
+  <tr><td>Facture fournisseur sans piece jointe</td><td>CTI/RTI refuses lors d'une verification ARC</td><td>Toujours joindre le PDF original de la facture fournisseur</td></tr>
+  <tr><td>Ne pas verifier le numero de TPS/TVQ du fournisseur</td><td>Si le numero est invalide, vos CTI/RTI sont refuses</td><td>Verifier les numeros sur le site de l'ARC avant la premiere facture</td></tr>
+  <tr><td>Saisir le montant TTC au lieu de HT</td><td>Les taxes sont calculees en double</td><td>Toujours saisir le montant HT, Koraline calcule les taxes</td></tr>
+  <tr><td>Ne pas relancer les factures en retard</td><td>L'argent ne rentre jamais, la creance devient irrecuperable</td><td>Mettre en place le processus de relance automatique</td></tr>
+  <tr><td>Modifier une facture envoyee au lieu d'emettre une note de credit</td><td>Le client a deja un exemplaire different, conflit</td><td>Toujours emettre une note de credit puis une nouvelle facture</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Quand faire cette operation</h2>
+
+<table>
+<thead>
+    <tr><th>Frequence</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>A chaque vente B2B</strong></td><td>Creer et envoyer la facture client</td></tr>
+  <tr><td><strong>A chaque reception de facture</strong></td><td>Saisir la facture fournisseur (meme jour si possible)</td></tr>
+  <tr><td><strong>Hebdomadaire</strong></td><td>Verifier les factures clients en attente, relancer si necessaire</td></tr>
+  <tr><td><strong>Fin de mois</strong></td><td>Verifier que toutes les factures du mois sont saisies, verifier l'anciennete</td></tr>
+  <tr><td><strong>Fin de trimestre</strong></td><td>Exporter la liste des factures pour la declaration TPS/TVQ</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Les commandes de la boutique en ligne generent-elles des factures automatiquement ?</strong></p>
+<p>R : Oui. Chaque commande payee genere une facture client dans le module comptabilite avec les ecritures correspondantes. Vous n'avez rien a saisir pour les ventes en ligne.</p>
+
+<p><strong>Q : Puis-je modifier une facture envoyee ?</strong></p>
+<p>R : Non directement. La facture envoyee est un document legal. Pour corriger, emettez une note de credit pour annuler l'originale, puis creez une nouvelle facture corrigee.</p>
+
+<p><strong>Q : Comment gerer les paiements partiels ?</strong></p>
+<p>R : Enregistrez le montant recu. Le solde restant est automatiquement calcule. La facture passe en statut "Partiellement payee" et reste dans la liste des comptes a recevoir.</p>
+
+<p><strong>Q : Les taxes sont-elles calculees automatiquement ?</strong></p>
+<p>R : Oui. La TPS (5%) et la TVQ (9,975%) sont appliquees automatiquement. Certains produits ou services peuvent etre exemptes ou detaxes -- configurez le statut fiscal dans les parametres produit.</p>
+
+<p><strong>Q : Comment savoir si un fournisseur a un numero de TPS/TVQ valide ?</strong></p>
+<p>R : Utilisez le service de verification en ligne de l'ARC (Registre des entreprises GST/HST) et de Revenu Quebec. Koraline peut stocker les numeros verifies dans la fiche fournisseur.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition comptable</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Comptes a recevoir</strong></td><td>Montants que les clients doivent a l'entreprise. Aussi appeles "debiteurs". Poste d'actif au bilan.</td></tr>
+  <tr><td><strong>Comptes a payer</strong></td><td>Montants que l'entreprise doit a ses fournisseurs. Aussi appeles "crediteurs". Poste de passif au bilan.</td></tr>
+  <tr><td><strong>Net 30</strong></td><td>Conditions de paiement : la facture est payable dans les 30 jours suivant son emission.</td></tr>
+  <tr><td><strong>2/10 Net 30</strong></td><td>Escompte de 2% si paye en 10 jours, sinon plein prix en 30 jours. Encourager le paiement rapide.</td></tr>
+  <tr><td><strong>Note de credit</strong></td><td>Document comptable qui reduit le montant d'une facture. Inverse d'une facture. Genere une ecriture de contre-passation.</td></tr>
+  <tr><td><strong>TTC</strong></td><td>Toutes Taxes Comprises. Montant final incluant TPS et TVQ.</td></tr>
+  <tr><td><strong>HT</strong></td><td>Hors Taxes. Montant avant ajout de la TPS et TVQ. Base de calcul des taxes.</td></tr>
+  <tr><td><strong>Aging</strong></td><td>Analyse d'anciennete qui classe les factures impayees par tranche d'age (0-30, 31-60, 61-90, 90+ jours).</td></tr>
+  <tr><td><strong>Comptabilite d'exercice</strong></td><td>Methode comptable qui reconnait les revenus et charges a la date de la transaction (facture), pas du paiement.</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="04-grand-livre.md">Grand livre</a> : Ecritures generees par les factures</li>
+<li><a href="08-depenses.md">Depenses</a> : Saisie simplifiee des charges (alternative aux factures fournisseurs)</li>
+<li><a href="09-taxes.md">Taxes TPS/TVQ</a> : Declarations basees sur les taxes des factures</li>
+<li><a href="10-rapprochement.md">Rapprochement</a> : Verification des paiements recus en banque</li>
+<li><a href="03-ecritures.md">Ecritures</a> : Detail technique des ecritures generees par les factures</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

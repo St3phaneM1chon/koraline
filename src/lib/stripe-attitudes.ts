@@ -25,7 +25,7 @@ export function getStripeAttitudes(): Stripe {
       throw new Error('STRIPE_ATTITUDES_SECRET_KEY is not configured');
     }
     _stripeAttitudes = new Stripe(key, {
-      apiVersion: '2024-06-20',
+      apiVersion: '2023-10-16',
       typescript: true,
     });
   }
@@ -116,6 +116,52 @@ export const KORALINE_LICENSES = {
 } as const;
 
 export type KoralineLicense = keyof typeof KORALINE_LICENSES;
+
+// ---------------------------------------------------------------------------
+// Price ID Lookup — Resolves Stripe Price IDs for plans, modules, and licenses
+// ---------------------------------------------------------------------------
+
+/**
+ * Resolves a Stripe Price ID for a given product type and key.
+ * Looks up the price from Stripe products by metadata or naming convention.
+ * Returns null if not found (caller should handle gracefully).
+ */
+export async function getStripePriceId(
+  type: 'plan' | 'module' | 'license' | 'socle_mini',
+  key: string
+): Promise<string | null> {
+  try {
+    const stripe = getStripeAttitudes();
+    const searchQuery = type === 'socle_mini' ? 'socle_mini' : `${type}_${key}`;
+
+    // Search for active prices matching our lookup key in metadata
+    const prices = await stripe.prices.list({
+      active: true,
+      lookup_keys: [searchQuery],
+      limit: 1,
+    });
+
+    if (prices.data.length > 0) {
+      return prices.data[0].id;
+    }
+
+    // Fallback: search products by metadata
+    const products = await stripe.products.search({
+      query: `metadata["koraline_type"]:"${type}" AND metadata["koraline_key"]:"${key || type}"`,
+      limit: 1,
+    });
+
+    if (products.data.length > 0 && products.data[0].default_price) {
+      return typeof products.data[0].default_price === 'string'
+        ? products.data[0].default_price
+        : products.data[0].default_price.id;
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Checkout Session for new tenant subscription

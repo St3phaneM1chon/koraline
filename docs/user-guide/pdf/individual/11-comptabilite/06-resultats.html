@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etat des Resultats (Income Statement / P&amp;L) &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 11 — Comptabilite</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Etat des Resultats (Income Statement / P&L)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Comptabilite > Etats financiers > Resultats</p>
+<p><strong>URL</strong>: <code>/admin/comptabilite/etats-financiers</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~35 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>Pourquoi cette page est importante</h2>
+
+<p>L'etat des resultats repond a la question la plus importante pour un proprietaire d'entreprise : <strong>est-ce que BioCycle Peptides fait de l'argent ?</strong> Contrairement au bilan qui est une photo a un instant, l'etat des resultats couvre une periode et montre le film de la performance : combien est entre, combien est sorti, et ce qui reste.</p>
+
+<p><strong>Obligations legales</strong> :</p>
+<ul>
+<li>L'etat des resultats est un composant obligatoire des etats financiers annuels exiges par la Loi canadienne sur les societes par actions.</li>
+<li>Il est requis pour les declarations T2 (ARC) et CO-17 (Revenu Quebec), rempli via les codes GIFI des comptes de revenus (8000-8299) et de charges (8300-9998).</li>
+<li>L'ARC utilise l'etat des resultats pour verifier que les revenus declares correspondent aux ventes reelles et que les deductions sont admissibles.</li>
+</ul>
+
+<p><strong>Impact concret</strong> :</p>
+<ul>
+<li>Un etat des resultats positif (benefice net) signifie que l'entreprise est rentable et genere des impots a payer.</li>
+<li>Un etat des resultats negatif (perte nette) peut etre reporte sur les annees futures pour reduire les impots (report de pertes).</li>
+<li>Les marges (brute, operationnelle, nette) sont les indicateurs cles pour evaluer la sante de l'entreprise et prendre des decisions strategiques.</li>
+<li>La comparaison mois par mois revele les tendances saisonnieres et les problemes emergents.</li>
+</ul>
+
+<hr>
+
+<h2>Cycle comptable complet -- Ou se situe cette page</h2>
+
+<pre><code>1. Plan comptable → 2. Journal → 3. Ecritures → 4. Grand livre/Balance
+ ↓
+ 5. Bilan (actifs, passifs, capitaux propres)
+ ↓
+[6. ETAT DES RESULTATS] ← VOUS ETES ICI (revenus - charges = benefice)
+ ↓
+ 7-12. Factures, depenses, taxes, rapprochement, budget, rapports</code></pre>
+
+<p>L'etat des resultats est l'etape 6. Il est genere a partir des comptes de revenus (4000-4999) et de charges (5000-5999) du grand livre. Le resultat net (benefice ou perte) de l'etat des resultats est ensuite reporte dans les BNR du bilan.</p>
+
+<p><strong>Lien fondamental avec le bilan</strong> :</p>
+<ul>
+<li>Benefice net de l'etat des resultats = variation du BNR au bilan (si pas de dividendes)</li>
+<li>Les deux etats financiers doivent etre coherents</li>
+</ul>
+
+<hr>
+
+<h2>Ordre des operations</h2>
+
+<ol>
+<li><strong>Toutes les ecritures de revenus et charges du mois sont publiees</strong></li>
+<li><strong>Les ecritures d'ajustement sont passees</strong> (amortissement, provisions, charges a payer)</li>
+<li><strong>La balance de verification est equilibree</strong></li>
+<li><strong>Generer l'etat des resultats</strong> pour la periode souhaitee</li>
+<li><strong>Analyser les marges</strong> : brute, operationnelle, nette</li>
+<li><strong>Comparer</strong> avec la periode precedente et avec le budget</li>
+<li><strong>Identifier les ecarts</strong> significatifs et investiguer</li>
+</ol>
+
+<hr>
+
+<h2>La structure de l'etat des resultats</h2>
+
+<pre><code>Revenus
+- Cout des marchandises vendues (CMV)
+= BENEFICE BRUT (marge brute)
+- Depenses d'exploitation
+= BENEFICE D'EXPLOITATION (BAIIA avant amortissement et interets)
+- Amortissement
+- Interets
+= BENEFICE AVANT IMPOTS (BAI)
+- Impots
+= BENEFICE NET (resultat final)</code></pre>
+
+<p>Chaque sous-total a une signification specifique :</p>
+
+<table>
+<thead>
+    <tr><th>Sous-total</th><th>Ce qu'il mesure</th><th>Question qu'il pose</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Benefice brut</strong></td><td>Rentabilite du produit lui-meme</td><td>"Gagnons-nous assez sur chaque vente de peptides ?"</td></tr>
+  <tr><td><strong>BAIIA</strong></td><td>Rentabilite des operations avant elements financiers</td><td>"Nos operations courantes sont-elles rentables ?"</td></tr>
+  <tr><td><strong>BAI</strong></td><td>Rentabilite apres cout du capital</td><td>"Apres avoir paye nos interets et l'usure de nos equipements, restons-nous rentables ?"</td></tr>
+  <tr><td><strong>Benefice net</strong></td><td>Rentabilite finale</td><td>"Combien reste-t-il vraiment dans la poche de l'entreprise ?"</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment entrer les donnees</h2>
+
+<p>L'etat des resultats est <strong>genere automatiquement</strong> a partir du grand livre. Vous n'entrez rien directement dans ce rapport. Votre role est de vous assurer que les ecritures de revenus et de charges sous-jacentes sont correctes.</p>
+
+<h3>Generer l'etat des resultats</h3>
+
+<ol>
+<li>Ouvrez Etats financiers > onglet <strong>Resultats</strong> (ou P&L)</li>
+<li>Selectionnez la <strong>periode</strong> (ex: Mars 2026, Q1 2026, Annee 2026)</li>
+<li>Le rapport se genere automatiquement</li>
+<li>Chaque ligne est cliquable pour voir le detail dans le grand livre</li>
+</ol>
+
+<h3>Comparer avec la periode precedente</h3>
+
+<ol>
+<li>Activez le mode <strong>Comparaison</strong></li>
+<li>Deux colonnes s'affichent avec l'ecart en valeur et en pourcentage</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Poste</th><th>Mars 2026</th><th>Fevrier 2026</th><th>Ecart</th><th>%</th></tr>
+</thead>
+<tbody>
+  <tr><td>Revenus totaux</td><td>128 200 $</td><td>115 800 $</td><td>+12 400 $</td><td>+10,7%</td></tr>
+  <tr><td>CMV</td><td>42 300 $</td><td>38 500 $</td><td>+3 800 $</td><td>+9,9%</td></tr>
+  <tr><td>Benefice brut</td><td>85 900 $</td><td>77 300 $</td><td>+8 600 $</td><td>+11,1%</td></tr>
+  <tr><td>Depenses exploitation</td><td>50 795 $</td><td>48 200 $</td><td>+2 595 $</td><td>+5,4%</td></tr>
+  <tr><td>Benefice net</td><td>26 640 $</td><td>21 800 $</td><td>+4 840 $</td><td>+22,2%</td></tr>
+</tbody>
+</table>
+<p><strong>Analyse</strong> : Les revenus augmentent de 10,7% tandis que les depenses n'augmentent que de 5,4%. L'effet de levier operationnel est positif -- chaque dollar supplementaire de vente genere plus de profit.</p>
+
+<h3>Comparer avec le budget</h3>
+
+<ol>
+<li>En mode comparaison, selectionnez <strong>Budget</strong> au lieu d'une periode</li>
+<li>Le rapport montre la realite vs le budget prevu</li>
+<li>Les ecarts favorables (revenus plus hauts, depenses plus basses que prevu) sont en vert</li>
+<li>Les ecarts defavorables sont en rouge</li>
+</ol>
+
+<h3>Explorer le detail d'un poste</h3>
+
+<ol>
+<li>Cliquez sur n'importe quel montant (ex: "Google Ads : 5 200 $")</li>
+<li>Le grand livre s'ouvre filtre sur les transactions de ce compte</li>
+<li>Vous voyez exactement quelles depenses composent ce total</li>
+</ol>
+
+<hr>
+
+<h2>Pourquoi entrer ces donnees (dans le grand livre)</h2>
+
+<h3>Les revenus (4000-4999)</h3>
+
+<table>
+<thead>
+    <tr><th>Poste</th><th>Pourquoi le suivre</th><th>Impact fiscal</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Ventes B2C</strong> (4010)</td><td>Volume principal de revenus, indicateur de croissance</td><td>Revenu imposable -- TPS/TVQ collectee sur chaque vente</td></tr>
+  <tr><td><strong>Ventes B2B</strong> (4020)</td><td>Revenus des distributeurs et cliniques, souvent a marge plus faible</td><td>Memes taxes, mais conditions de paiement differentes (Net 30/60)</td></tr>
+  <tr><td><strong>Abonnements</strong> (4030)</td><td>Revenu recurrent previsible, tres valorise</td><td>Se reconnait mensuellement, pas a la signature</td></tr>
+  <tr><td><strong>Frais livraison</strong> (4040)</td><td>Revenu accessoire qui couvre (ou non) les couts de livraison</td><td>Taxable au meme titre que les ventes</td></tr>
+  <tr><td><strong>Escomptes sur ventes</strong> (4050)</td><td>Reductions accordees (ex: 2% si paiement en 10 jours)</td><td>Reduit le revenu imposable</td></tr>
+</tbody>
+</table>
+<h3>Le cout des marchandises vendues (CMV)</h3>
+
+<table>
+<thead>
+    <tr><th>Poste</th><th>Pourquoi le suivre</th><th>Impact fiscal</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Matieres premieres</strong> (5011)</td><td>Cout d'achat des peptides bruts -- le plus gros poste de CMV</td><td>Deductible. La variation de stock est un ajustement fiscal important.</td></tr>
+  <tr><td><strong>Emballage</strong> (5012)</td><td>Flacons, etiquettes, boites -- cout par unite vendue</td><td>Deductible. Surveiller les hausses de prix des fournisseurs.</td></tr>
+  <tr><td><strong>Livraison sortante</strong> (5013)</td><td>Cout d'expedition vers les clients</td><td>Deductible. Comparer avec le revenu 4040 pour voir si la livraison est rentable.</td></tr>
+</tbody>
+</table>
+<p><strong>Marge brute</strong> = (Revenus - CMV) / Revenus. Pour BioCycle, la marge brute devrait etre entre 55% et 70%. Si elle descend sous 50%, il y a un probleme de prix ou de couts.</p>
+
+<h3>Les charges d'exploitation (5020-5600)</h3>
+
+<table>
+<thead>
+    <tr><th>Poste</th><th>Pourquoi le suivre</th><th>Specificite fiscale</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Salaires</strong> (5020)</td><td>Le plus gros poste de charges apres le CMV</td><td>Deductible. Inclut les cotisations employeur (RRQ, AE, RQAP, CNESST).</td></tr>
+  <tr><td><strong>Loyer</strong> (5030)</td><td>Charge fixe mensuelle</td><td>Deductible a 100% si local commercial.</td></tr>
+  <tr><td><strong>Marketing</strong> (5040)</td><td>Investissement en croissance</td><td>Deductible. Surveiller le retour sur investissement (ROI).</td></tr>
+  <tr><td><strong>Frais bancaires/Stripe</strong> (5060)</td><td>Environ 2,9% + 0,30 $ par transaction</td><td>Deductible. Sur 128 200 $ de ventes, ca represente ~3 845 $. Poste significatif.</td></tr>
+  <tr><td><strong>Honoraires professionnels</strong> (5090)</td><td>Comptable, avocat, consultant</td><td>Deductible. Conservez les factures -- l'ARC les verifie souvent.</td></tr>
+  <tr><td><strong>Repas et divertissements</strong> (5095)</td><td>Repas d'affaires, receptions clients</td><td>Deductibles a <strong>50% seulement</strong> (regle canadienne speciale).</td></tr>
+  <tr><td><strong>Amortissement</strong> (5200)</td><td>Depreciation de l'equipement</td><td>Calcule selon les taux de DPA de l'ARC. Pas une sortie d'argent reelle.</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Lecture complete d'un etat des resultats -- Exemple BioCycle</h2>
+
+<pre><code>ETAT DES RESULTATS
+BioCycle Peptides Inc.
+Pour la periode du 1er au 31 mars 2026
+
+REVENUS
+  Ventes de peptides (detail B2C)              65 000 $
+  Ventes B2B (distributeurs/cliniques)         42 000 $
+  Abonnements mensuels                         18 000 $
+  Frais de livraison factures                   3 200 $
+TOTAL REVENUS                                 128 200 $
+
+COUT DES MARCHANDISES VENDUES (CMV)
+  Achat de matieres premieres                  32 000 $
+  Emballage et etiquetage                       4 500 $
+  Frais de livraison (transporteurs)            5 800 $
+TOTAL CMV                                      42 300 $
+
+BENEFICE BRUT                                  85 900 $    Marge brute : 67,0%
+
+CHARGES D'EXPLOITATION
+  Salaires et avantages sociaux                28 000 $
+  Loyer et services publics                     3 500 $
+  Marketing et publicite                        8 200 $
+  Logiciels et hebergement                      2 800 $
+  Frais bancaires et Stripe                     3 845 $
+  Assurances                                    1 200 $
+  Fournitures de bureau                           350 $
+  Honoraires professionnels                     1 500 $
+  Divers                                          600 $
+TOTAL CHARGES D'EXPLOITATION                   49 995 $
+
+BAIIA                                          35 905 $    Marge BAIIA : 28,0%
+
+  Amortissement                                   800 $
+TOTAL CHARGES APRES AMORTISSEMENT              50 795 $
+
+BENEFICE D'EXPLOITATION                        35 105 $    Marge operationnelle : 27,4%
+
+AUTRES REVENUS (CHARGES)
+  Interets sur emprunt bancaire                  (250 $)
+  Gain de change                                    85 $
+TOTAL AUTRES                                     (165 $)
+
+BENEFICE AVANT IMPOTS                          34 940 $
+
+IMPOTS ESTIMES
+  Impot federal estime                          4 500 $
+  Impot provincial estime                       3 800 $
+TOTAL IMPOTS                                    8 300 $
+
+BENEFICE NET                                   26 640 $    Marge nette : 20,8%</code></pre>
+
+<h3>Analyse des marges</h3>
+
+<table>
+<thead>
+    <tr><th>Marge</th><th>Formule</th><th>BioCycle Mars 2026</th><th>Fourchette saine e-commerce</th><th>Interpretation</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Marge brute</strong></td><td>(Revenus - CMV) / Revenus</td><td>67,0%</td><td>50-70%</td><td>Excellent. Le produit degage une bonne marge.</td></tr>
+  <tr><td><strong>Marge BAIIA</strong></td><td>BAIIA / Revenus</td><td>28,0%</td><td>15-25%</td><td>Tres bon. Les operations sont efficaces.</td></tr>
+  <tr><td><strong>Marge operationnelle</strong></td><td>Benefice exploitation / Revenus</td><td>27,4%</td><td>15-25%</td><td>Tres bon. Faible amortissement.</td></tr>
+  <tr><td><strong>Marge nette</strong></td><td>Benefice net / Revenus</td><td>20,8%</td><td>10-20%</td><td>Excellent. Chaque dollar de vente genere 0,21 $ de profit net.</td></tr>
+</tbody>
+</table>
+<h3>Indicateurs cles a surveiller</h3>
+
+<table>
+<thead>
+    <tr><th>Indicateur</th><th>Ce que BioCycle devrait surveiller</th><th>Alerte si...</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Marge brute</strong></td><td>Variation mensuelle</td><td>Baisse de plus de 3 points (indique hausse des couts fournisseurs ou baisses de prix)</td></tr>
+  <tr><td><strong>Ratio marketing/ventes</strong></td><td>8 200 / 128 200 = 6,4%</td><td>Depasse 10% sans augmentation proportionnelle des ventes</td></tr>
+  <tr><td><strong>Frais Stripe/ventes</strong></td><td>3 845 / 128 200 = 3,0%</td><td>Normal pour Stripe. Si > 3,5%, verifier les transactions refusees</td></tr>
+  <tr><td><strong>Salaires/ventes</strong></td><td>28 000 / 128 200 = 21,8%</td><td>Depasse 30% (signal d'inefficacite)</td></tr>
+  <tr><td><strong>Benefice net mensuel</strong></td><td>26 640 $</td><td>Negatif pendant 2 mois consecutifs</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Specificites BioCycle Peptides</h2>
+
+<h3>Saisonnalite du secteur peptides</h3>
+
+<table>
+<thead>
+    <tr><th>Periode</th><th>Tendance</th><th>Impact sur les resultats</th></tr>
+</thead>
+<tbody>
+  <tr><td>Janvier-Mars</td><td>Forte demande (resolutions, sport)</td><td>Revenus plus eleves, marge brute stable</td></tr>
+  <tr><td>Avril-Juin</td><td>Demande stable</td><td>Periode de base pour les comparaisons</td></tr>
+  <tr><td>Juillet-Aout</td><td>Demande stable (athletes, cliniques)</td><td>Marketing peut etre reduit</td></tr>
+  <tr><td>Septembre</td><td>Pic de reprise</td><td>Investissement marketing accru</td></tr>
+  <tr><td>Decembre</td><td>Creux (fetes)</td><td>Revenus plus bas, mais charges fixes identiques</td></tr>
+</tbody>
+</table>
+<p><strong>Important</strong> : La comparaison mois par mois peut etre trompeuse a cause de la saisonnalite. Comparez aussi avec le meme mois de l'annee precedente (mars 2026 vs mars 2025).</p>
+
+<h3>Cout des marchandises vendues -- Specificite e-commerce peptides</h3>
+
+<p>Le CMV pour BioCycle inclut :</p>
+<ul>
+<li><strong>Matieres premieres</strong> : les peptides bruts achetes aux fabricants (Chine, Inde, USA). Cout variable avec le taux de change USD/CAD.</li>
+<li><strong>Emballage</strong> : flacons pharmaceutiques, etiquettes conformes, boites d'expedition. Cout relativement fixe par unite.</li>
+<li><strong>Livraison</strong> : Postes Canada, UPS, FedEx. Variable selon le volume et les destinations.</li>
+</ul>
+
+<p>Un CMV en hausse sans hausse proportionnelle des ventes signale : augmentation des prix fournisseurs, depreciation du CAD vs USD, gaspillage ou peremption de stock, ou erreur de saisie comptable.</p>
+
+<hr>
+
+<h2>Erreurs courantes a eviter</h2>
+
+<table>
+<thead>
+    <tr><th>Erreur</th><th>Consequence</th><th>Comment eviter</th></tr>
+</thead>
+<tbody>
+  <tr><td>Oublier les ecritures d'ajustement avant de generer</td><td>Amortissement et provisions manquent, le benefice est surevalue</td><td>Checklist de fin de mois obligatoire</td></tr>
+  <tr><td>Confondre les revenus du dashboard Commerce et les revenus comptables</td><td>Ecart entre les ventes en temps reel et les revenus comptabilises</td><td>Le dashboard montre les commandes ; l'etat des resultats montre les factures publiees</td></tr>
+  <tr><td>Classer un achat d'equipement en charge</td><td>Le benefice est sous-evalue, la charge n'est pas etalee</td><td>Tout achat > 500 $ avec duree de vie > 1 an est une immobilisation, pas une charge</td></tr>
+  <tr><td>Ne pas separer les deductions limitees</td><td>Repas a 100% au lieu de 50%, deduction refusee par l'ARC</td><td>Utiliser un compte separe pour les repas et divertissements</td></tr>
+  <tr><td>Ignorer l'impact fiscal des stocks</td><td>La variation de stock affecte le CMV et donc le benefice imposable</td><td>Faire un decompte physique au moins en fin d'annee</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Quand faire cette operation</h2>
+
+<table>
+<thead>
+    <tr><th>Frequence</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Mensuelle</strong></td><td>Generer l'etat des resultats. Analyser les marges. Comparer avec le mois precedent et le budget. Identifier les ecarts significatifs.</td></tr>
+  <tr><td><strong>Trimestrielle</strong></td><td>Vue trimestrielle pour les tendances. Comparaison Q-sur-Q et avec le meme trimestre de l'annee precedente.</td></tr>
+  <tr><td><strong>Annuelle</strong></td><td>Etat des resultats annuel definitif. Base pour la declaration T2/CO-17 et le calcul des impots.</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Quelle est la difference entre le benefice brut et le benefice net ?</strong></p>
+<p>R : Le benefice <strong>brut</strong> = revenus - cout des produits vendus. C'est la marge sur les produits eux-memes. Le benefice <strong>net</strong> = brut - TOUTES les charges (salaires, loyer, marketing, amortissement, interets, impots). C'est ce qui reste reellement dans la poche de l'entreprise.</p>
+
+<p><strong>Q : Les impots affiches sont-ils definitifs ?</strong></p>
+<p>R : Non, ce sont des estimations basees sur les taux d'imposition configures. Le montant exact sera determine lors de la declaration annuelle avec votre comptable. Les taux combines federal + provincial pour une PME au Quebec sont d'environ 26,5% sur les premiers 500 000 $ de benefice (deduction pour petite entreprise).</p>
+
+<p><strong>Q : Qu'est-ce que le BAIIA (EBITDA) ?</strong></p>
+<p>R : Benefice Avant Interets, Impots et Amortissement. C'est le benefice des operations pures, avant les elements financiers et comptables. C'est l'indicateur prefere des investisseurs car il mesure la performance operationnelle independamment de la structure de capital et des choix comptables.</p>
+
+<p><strong>Q : Les revenus de l'etat des resultats ne correspondent pas aux ventes du dashboard Commerce -- pourquoi ?</strong></p>
+<p>R : Le dashboard Commerce montre les ventes en temps reel (commandes). L'etat des resultats montre les revenus comptables (factures publiees). Il peut y avoir un decalage de 1 a 3 jours. De plus, les retours et escomptes reduisent les revenus comptables.</p>
+
+<p><strong>Q : Comment sont calcules les impots estimes ?</strong></p>
+<p>R : Koraline applique les taux d'imposition configures : environ 15% federal (9% avec la deduction pour petite entreprise) et 11,5% provincial (3,2% avec la DPE au Quebec) sur le benefice avant impots. Votre comptable ajustera lors de la declaration annuelle.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition comptable</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Etat des resultats</strong></td><td>Rapport financier montrant les revenus, les charges et le benefice (ou la perte) sur une periode. Aussi appele P&L (Profit and Loss) ou compte de resultat.</td></tr>
+  <tr><td><strong>CMV</strong></td><td>Cout des Marchandises Vendues (COGS en anglais). Cout direct des produits vendus : matieres premieres, emballage, livraison.</td></tr>
+  <tr><td><strong>Marge brute</strong></td><td>(Revenus - CMV) / Revenus. Mesure la rentabilite du produit avant les charges d'exploitation.</td></tr>
+  <tr><td><strong>BAIIA / EBITDA</strong></td><td>Benefice Avant Interets, Impots et Amortissement. Mesure la performance operationnelle pure.</td></tr>
+  <tr><td><strong>Benefice d'exploitation</strong></td><td>Benefice apres toutes les charges operationnelles mais avant les elements financiers et les impots.</td></tr>
+  <tr><td><strong>Benefice net</strong></td><td>Resultat final apres toutes les charges, y compris les impots. C'est le "vrai" profit de l'entreprise.</td></tr>
+  <tr><td><strong>Marge nette</strong></td><td>Benefice net / Revenus. Pourcentage de chaque dollar de vente qui reste en profit.</td></tr>
+  <tr><td><strong>DPE</strong></td><td>Deduction pour Petite Entreprise. Reduction du taux d'imposition federal et provincial sur les premiers 500 000 $ de benefice pour les societes privees controlees canadiennes (SPCC).</td></tr>
+  <tr><td><strong>Report de pertes</strong></td><td>Possibilite de reporter une perte nette sur les 3 annees precedentes ou les 20 annees suivantes pour reduire les impots.</td></tr>
+  <tr><td><strong>Charges fixes</strong></td><td>Charges qui ne varient pas avec le volume de ventes (loyer, salaires, assurances).</td></tr>
+  <tr><td><strong>Charges variables</strong></td><td>Charges qui augmentent proportionnellement aux ventes (CMV, commissions Stripe, livraison).</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="05-bilan.md">Bilan</a> : L'autre etat financier principal (le benefice net alimente les BNR)</li>
+<li><a href="11-budget.md">Budget</a> : Previsions a comparer avec les resultats reels</li>
+<li><a href="04-grand-livre.md">Grand livre</a> : Detail des transactions de revenus et charges</li>
+<li><a href="08-depenses.md">Depenses</a> : Source des charges d'exploitation</li>
+<li><a href="07-factures.md">Factures</a> : Source des revenus</li>
+<li><a href="12-rapports.md">Rapports</a> : Analyses et ratios derives de l'etat des resultats</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

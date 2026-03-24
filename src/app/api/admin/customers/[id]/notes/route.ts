@@ -22,7 +22,8 @@ export const GET = withAdminGuard(async (
     include: { author: { select: { name: true, image: true } } },
     orderBy: { createdAt: 'desc' },
   });
-  return NextResponse.json(notes);
+  // C3-API-A-001 FIX: Return wrapped object for pagination consistency
+  return NextResponse.json({ data: notes, total: notes.length });
 });
 
 // POST: Create a new note for a customer

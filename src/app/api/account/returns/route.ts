@@ -27,9 +27,10 @@ const updateReturnSchema = z.object({
 export const GET = withUserGuard(async (_request: NextRequest, { session }) => {
   try {
 
-    // Get user
+    // C3-SEC-S-006 FIX: Select only needed fields (avoid fetching password hash)
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
+      select: { id: true },
     });
 
     if (!user) {
@@ -94,9 +95,10 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
       return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
     }
 
-    // Get user
+    // C3-SEC-S-006 FIX: Select only needed fields (avoid fetching password hash)
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
+      select: { id: true },
     });
 
     if (!user) {

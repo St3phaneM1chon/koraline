@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analytiques du Blog &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 04 — Marketing</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Analytiques du Blog</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Marketing > Blog > Analytiques</p>
+<p><strong>URL</strong>: <code>/admin/blog/analytics</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Blog Analytics</strong> offre une vue d'ensemble de la performance de votre blog. Elle regroupe des statistiques cles sur vos articles, l'activite de publication, la repartition par categorie, les contributions des auteurs, et les articles recents.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir le nombre total d'articles, de publications, de brouillons et d'articles en vedette</li>
+<li>Suivre le taux de publication (pourcentage d'articles publies par rapport au total)</li>
+<li>Consulter l'activite de publication de la semaine et du mois en cours</li>
+<li>Analyser la repartition des articles par categorie avec des barres de progression</li>
+<li>Voir quels auteurs contribuent le plus</li>
+<li>Consulter les 10 articles les plus recents avec leur statut, categorie, auteur et temps de lecture</li>
+<li>Rafraichir les donnees a la demande</li>
+</ul>
+
+<hr>
+
+<h2>Concepts pour les debutants</h2>
+
+<h3>Pourquoi suivre les analytiques du blog ?</h3>
+
+<p>Les statistiques du blog vous aident a repondre a plusieurs questions strategiques :</p>
+<ul>
+<li><strong>Est-ce qu'on publie assez ?</strong> L'activite de la semaine et du mois vous donne un rythme de publication.</li>
+<li><strong>Quels sujets couvrons-nous ?</strong> La repartition par categorie revele les themes surrepresentes ou sous-representes.</li>
+<li><strong>Qui contribue ?</strong> Les statistiques par auteur montrent la charge de travail editoriale.</li>
+<li><strong>Quel est notre taux de finalisation ?</strong> Le taux de publication revele combien de brouillons sont finalises.</li>
+</ul>
+
+<h3>Les metriques cles</h3>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total Posts</strong></td><td>Nombre total d'articles (publies + brouillons)</td></tr>
+  <tr><td><strong>Published</strong></td><td>Nombre d'articles actuellement publies sur le site</td></tr>
+  <tr><td><strong>Drafts</strong></td><td>Nombre de brouillons en attente de publication</td></tr>
+  <tr><td><strong>Featured</strong></td><td>Nombre d'articles marques "en vedette" (affiches en priorite)</td></tr>
+  <tr><td><strong>Publish Rate</strong></td><td>Pourcentage d'articles qui ont ete publies sur le total</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Marketing</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong>, cliquez sur <strong>Blog</strong>, puis sur <strong>Analytiques</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Cliquez sur l'icone de la section <strong>Marketing</strong> dans le rail</li>
+<li>Cliquez sur <strong>Blog</strong>, puis sur <strong>Analytiques</strong></li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche (ou tapez <code>/</code>)</li>
+<li>Tapez "blog analytics" ou "analytiques blog"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>La page est organisee en sections verticales, du haut vers le bas.</p>
+
+<h3>1. L'en-tete</h3>
+
+<ul>
+<li>Titre : "Blog Analytics"</li>
+<li>Sous-titre : description de la page</li>
+<li>Bouton <strong>Rafraichir</strong> a droite pour recharger les donnees</li>
+</ul>
+
+<h3>2. Les cartes de statistiques generales</h3>
+
+<p>5 cartes disposees en grille :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Icone</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total Posts</strong></td><td>Document</td><td>Nombre total d'articles dans le systeme</td></tr>
+  <tr><td><strong>Published</strong></td><td>Oeil</td><td>Nombre d'articles publies</td></tr>
+  <tr><td><strong>Drafts</strong></td><td>Crayon</td><td>Nombre de brouillons</td></tr>
+  <tr><td><strong>Featured</strong></td><td>Etoile</td><td>Nombre d'articles en vedette</td></tr>
+  <tr><td><strong>Publish Rate</strong></td><td>Tendance</td><td>Pourcentage d'articles publies (ex: "72%")</td></tr>
+</tbody>
+</table>
+<h3>3. L'activite de publication</h3>
+
+<p>Un panneau avec deux cartes cote a cote :</p>
+<ul>
+<li><strong>Cette semaine</strong> : Nombre d'articles publies durant la semaine en cours</li>
+<li><strong>Ce mois-ci</strong> : Nombre d'articles publies durant le mois en cours</li>
+</ul>
+
+<h3>4. La repartition par categorie</h3>
+
+<p>Un panneau montrant chaque categorie avec :</p>
+<ul>
+<li>Le nom de la categorie</li>
+<li>Une barre de progression proportionnelle au nombre d'articles</li>
+<li>Le nombre d'articles dans cette categorie</li>
+</ul>
+
+<h3>5. Les auteurs</h3>
+
+<p>Un panneau montrant chaque auteur avec :</p>
+<ul>
+<li>Le nombre d'articles ecrits</li>
+<li>Le nom de l'auteur</li>
+</ul>
+
+<p>Les auteurs sont affiches dans des cartes colorees disposees en grille.</p>
+
+<h3>6. Le tableau des articles recents</h3>
+
+<p>Un tableau detaille des 10 articles les plus recents :</p>
+
+<table>
+<thead>
+    <tr><th>Colonne</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Title</strong></td><td>Titre de l'article (avec etoile si en vedette)</td></tr>
+  <tr><td><strong>Category</strong></td><td>Categorie de l'article (ou "Uncategorized")</td></tr>
+  <tr><td><strong>Author</strong></td><td>Nom de l'auteur</td></tr>
+  <tr><td><strong>Status</strong></td><td>Badge "Published" (vert) ou "Draft" (gris)</td></tr>
+  <tr><td><strong>Published</strong></td><td>Date de publication</td></tr>
+  <tr><td><strong>Read Time</strong></td><td>Temps de lecture estime en minutes</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Consulter les statistiques generales</h3>
+
+<p>Les 5 cartes en haut de la page donnent une vue instantanee de l'etat de votre blog. Elles se mettent a jour a chaque chargement de la page ou quand vous cliquez sur Rafraichir.</p>
+
+<h3>2. Suivre le rythme de publication</h3>
+
+<p>La section "Publishing Activity" montre combien d'articles ont ete publies cette semaine et ce mois-ci. Utilisez ces chiffres pour evaluer si votre rythme editorial correspond a vos objectifs.</p>
+
+<h3>3. Analyser la repartition par categorie</h3>
+
+<p>La section "Categories" montre la distribution de vos articles par theme. Les barres de progression permettent de visualiser rapidement quelles categories sont les plus fournies et lesquelles auraient besoin de plus de contenu.</p>
+
+<h3>4. Evaluer les contributions des auteurs</h3>
+
+<p>La section "Authors" montre le nombre d'articles par auteur. Utile pour equilibrer la charge de travail redactionnelle dans une equipe.</p>
+
+<h3>5. Parcourir les articles recents</h3>
+
+<p>Le tableau en bas de page liste les 10 derniers articles. Pour chaque article, vous pouvez voir son titre, sa categorie, son auteur, son statut de publication, sa date et son temps de lecture estime. Les articles en vedette sont marques d'une etoile jaune.</p>
+
+<h3>6. Rafraichir les donnees</h3>
+
+<p>Cliquez sur le bouton <strong>Refresh</strong> en haut a droite pour recharger toutes les donnees de la page sans recharger la page entiere. Un indicateur de chargement s'affiche pendant le rafraichissement.</p>
+
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario A : Etablir un bilan editorial mensuel</h3>
+
+<ol>
+<li>Ouvrez la page Blog Analytics</li>
+<li>Notez le nombre total d'articles publies et de brouillons</li>
+<li>Consultez le taux de publication : si beaucoup de brouillons stagnent, planifiez des sessions de relecture</li>
+<li>Regardez la repartition par categorie : identifiez les categories sous-representees</li>
+<li>Regardez les contributions par auteur : equilibrez si un auteur porte l'essentiel de la charge</li>
+</ol>
+
+<h3>Scenario B : Identifier les categories a developper</h3>
+
+<ol>
+<li>Consultez la section Categories</li>
+<li>Identifiez les categories avec peu d'articles (barres courtes)</li>
+<li>Planifiez la creation d'articles sur ces sujets</li>
+<li>Apres quelques semaines, revenez verifier l'evolution</li>
+</ol>
+
+<h3>Scenario C : Surveiller le rythme hebdomadaire</h3>
+
+<ol>
+<li>Consultez la section "Publishing Activity"</li>
+<li>"This Week" devrait idealement etre superieur ou egal a votre objectif (par exemple 2 articles par semaine)</li>
+<li>Si le chiffre est a zero, relancez votre equipe editoriale</li>
+<li>Comparez avec "This Month" pour voir la tendance</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Les analytiques incluent-elles les vues des articles ?</strong></p>
+<p>R: La page actuelle se concentre sur les metriques editoriales (nombre d'articles, statuts, categories, auteurs). Les statistiques de trafic (pages vues, visiteurs uniques) se trouvent dans les outils d'analyse web (Google Analytics ou equivalent).</p>
+
+<p><strong>Q: Comment un article devient-il "Featured" (en vedette) ?</strong></p>
+<p>R: L'option "en vedette" se configure dans l'editeur d'article. Les articles en vedette apparaissent en priorite sur la page blog du site et sont signales par une etoile dans les analytiques.</p>
+
+<p><strong>Q: Le temps de lecture est-il calcule automatiquement ?</strong></p>
+<p>R: Oui. Le temps de lecture est estime automatiquement en fonction de la longueur du contenu de l'article (environ 200 mots par minute de lecture).</p>
+
+<p><strong>Q: A quelle frequence les donnees sont-elles mises a jour ?</strong></p>
+<p>R: Les donnees sont chargees en temps reel a chaque ouverture de la page. Cliquez sur Rafraichir pour obtenir les donnees les plus recentes sans recharger la page.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Analytiques</strong></td><td>Donnees statistiques permettant de mesurer la performance</td></tr>
+  <tr><td><strong>Taux de publication</strong></td><td>Pourcentage d'articles publies par rapport au total des articles</td></tr>
+  <tr><td><strong>Article en vedette</strong></td><td>Article mis en avant sur le blog (affiche en priorite)</td></tr>
+  <tr><td><strong>Categorie</strong></td><td>Classification thematique des articles (ex: "Peptides de reparation")</td></tr>
+  <tr><td><strong>Temps de lecture</strong></td><td>Estimation du temps necessaire pour lire un article, en minutes</td></tr>
+  <tr><td><strong>Auteur</strong></td><td>La personne creditee pour la redaction d'un article</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/blog">Blog</a> -- Gerer les articles (creer, modifier, publier)</li>
+<li><a href="/admin/rapports">Rapports marketing</a> -- Analyser l'impact du blog sur les ventes</li>
+<li><a href="/admin/newsletter">Newsletter</a> -- Diffuser les articles par email</li>
+<li><a href="/admin/bannieres">Bannieres</a> -- Promouvoir des articles via le carrousel hero</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

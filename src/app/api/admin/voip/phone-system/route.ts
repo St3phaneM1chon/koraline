@@ -8,7 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { withAdminGuard } from '@/lib/admin-api-guard';
-import { PHONE_NUMBERS, IVR_MENUS, BUSINESS_HOURS, STAFF } from '@/lib/voip/phone-system-config';
+import { PHONE_NUMBERS, BUSINESS_HOURS, STAFF } from '@/lib/voip/phone-system-config';
 
 export const dynamic = 'force-dynamic';
 

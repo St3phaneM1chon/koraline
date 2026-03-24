@@ -31,8 +31,8 @@ const fallbackCurrencies: Currency[] = [
 
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
 
-const CURRENCY_STORAGE_KEY = 'biocycle-currency';
-const CURRENCIES_CACHE_KEY = 'biocycle-currencies-cache';
+const CURRENCY_STORAGE_KEY = 'attitudes-currency';
+const CURRENCIES_CACHE_KEY = 'attitudes-currencies-cache';
 const CURRENCIES_CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
 interface CurrenciesCache {

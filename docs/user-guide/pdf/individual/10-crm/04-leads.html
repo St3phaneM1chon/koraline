@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Leads et Lead Scoring &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 10 — CRM</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion des Leads et Lead Scoring</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Leads</p>
+<p><strong>URL</strong>: <code>/admin/crm/leads</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Leads</strong> centralise tous vos prospects - les personnes ou entreprises qui ont manifeste un interet pour BioCycle Peptides mais qui n'ont pas encore achete. Le <strong>Lead Scoring</strong> attribue automatiquement un score a chaque lead pour vous aider a prioriser vos efforts.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir la liste de tous les leads entrants</li>
+<li>Filtrer par source (site web, salon, referral, scraper, etc.)</li>
+<li>Trier par score de qualification (les plus "chauds" en premier)</li>
+<li>Assigner les leads aux representants commerciaux</li>
+<li>Qualifier ou disqualifier un lead</li>
+<li>Convertir un lead en contact + deal dans le pipeline</li>
+<li>Suivre la progression de chaque lead</li>
+<li>Configurer les regles de scoring automatique</li>
+<li>Definir des criteres de qualification (BANT, MEDDIC, etc.)</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un lead ?</h3>
+
+<p>Un <strong>lead</strong> est un prospect qui a montre un premier signe d'interet : il a visite votre site, rempli un formulaire, demande des informations, ou a ete identifie par vos equipes. Ce n'est pas encore un client, c'est un potentiel.</p>
+
+<h3>Qu'est-ce que le lead scoring ?</h3>
+
+<p>Le <strong>lead scoring</strong> est un systeme de points automatique. Chaque action d'un lead augmente (ou diminue) son score :</p>
+
+<table>
+<thead>
+    <tr><th>Action</th><th>Points</th></tr>
+</thead>
+<tbody>
+  <tr><td>Visite du site web</td><td>+2</td></tr>
+  <tr><td>Telechargement d'un document</td><td>+10</td></tr>
+  <tr><td>Ouverture d'un email</td><td>+3</td></tr>
+  <tr><td>Clic dans un email</td><td>+5</td></tr>
+  <tr><td>Visite de la page prix</td><td>+15</td></tr>
+  <tr><td>Formulaire de contact rempli</td><td>+20</td></tr>
+  <tr><td>Demande de devis</td><td>+30</td></tr>
+  <tr><td>Inactivite 30 jours</td><td>-10</td></tr>
+  <tr><td>Desabonnement newsletter</td><td>-20</td></tr>
+</tbody>
+</table>
+<p>Plus le score est eleve, plus le lead est "chaud" (pret a acheter).</p>
+
+<h3>Classification des leads</h3>
+
+<table>
+<thead>
+    <tr><th>Score</th><th>Classification</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td>0-20</td><td><strong>Froid</strong></td><td>Interet minimal, a nourrir</td></tr>
+  <tr><td>21-50</td><td><strong>Tiede</strong></td><td>Interet modere, en phase d'information</td></tr>
+  <tr><td>51-80</td><td><strong>Chaud</strong></td><td>Interet fort, pret pour un contact commercial</td></tr>
+  <tr><td>81-100</td><td><strong>Brulant</strong></td><td>Besoin immediat, contacter d'urgence</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Cliquez sur <strong>CRM</strong> dans la navigation horizontale</li>
+<li>Dans le panneau lateral, cliquez sur <strong>Leads</strong></li>
+<li>URL directe : <code>/admin/crm/leads</code></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. La barre de ruban</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau lead</strong></td><td>Creer manuellement un lead</td></tr>
+  <tr><td><strong>Importer</strong></td><td>Importer des leads depuis CSV/Excel</td></tr>
+  <tr><td><strong>Convertir</strong></td><td>Convertir le lead en contact + deal</td></tr>
+  <tr><td><strong>Assigner</strong></td><td>Attribuer a un representant</td></tr>
+  <tr><td><strong>Disqualifier</strong></td><td>Marquer comme non pertinent</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Exporter les leads filtres</td></tr>
+</tbody>
+</table>
+<h3>2. Les onglets de statut</h3>
+
+<table>
+<thead>
+    <tr><th>Onglet</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Tous</strong></td><td>Tous les leads, quel que soit le statut</td></tr>
+  <tr><td><strong>Nouveaux</strong></td><td>Leads recemment arrives, pas encore traites</td></tr>
+  <tr><td><strong>En cours</strong></td><td>Leads en phase de qualification</td></tr>
+  <tr><td><strong>Qualifies</strong></td><td>Leads prets a etre convertis en deals</td></tr>
+  <tr><td><strong>Disqualifies</strong></td><td>Leads rejetes (pas de budget, hors cible, etc.)</td></tr>
+</tbody>
+</table>
+<h3>3. La liste des leads</h3>
+
+<p>Chaque ligne affiche :</p>
+<ul>
+<li><strong>Score</strong> (barre coloree ou chiffre)</li>
+<li>Nom et entreprise</li>
+<li>Email et telephone</li>
+<li>Source d'acquisition</li>
+<li>Date d'arrivee</li>
+<li>Representant assigne</li>
+<li>Dernier contact</li>
+</ul>
+
+<h3>4. Le panneau de detail</h3>
+
+<p>Au clic sur un lead :</p>
+<ul>
+<li>Informations de profil completes</li>
+<li>Score detaille (quels criteres ont ete remplis)</li>
+<li>Timeline des interactions</li>
+<li>Notes de qualification</li>
+<li>Bouton de conversion rapide</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer un lead manuellement</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau lead</strong></li>
+<li>Remplissez le formulaire :</li>
+</ol>
+<ul>
+<li>Nom, prenom, email, telephone</li>
+<li>Entreprise (si B2B)</li>
+<li>Source : comment ce lead est arrive (salon, referral, appel entrant, etc.)</li>
+<li>Notes initiales</li>
+</ul>
+<ol>
+<li>Le systeme attribue un score initial base sur les informations fournies</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>2. Qualifier un lead</h3>
+
+<p><strong>Objectif</strong> : Determiner si un lead est un bon prospect.</p>
+
+<p><strong>Methode BANT</strong> (utilisee par defaut dans Koraline) :</p>
+
+<table>
+<thead>
+    <tr><th>Critere</th><th>Question a poser</th><th>Poids</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>B</strong>udget</td><td>A-t-il les moyens d'acheter ?</td><td>25%</td></tr>
+  <tr><td><strong>A</strong>uthority</td><td>Est-il le decideur ?</td><td>25%</td></tr>
+  <tr><td><strong>N</strong>eed</td><td>A-t-il un besoin reel ?</td><td>25%</td></tr>
+  <tr><td><strong>T</strong>iming</td><td>Quand prevoit-il d'acheter ?</td><td>25%</td></tr>
+</tbody>
+</table>
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le lead</li>
+<li>Dans le detail, allez a l'onglet <strong>Qualification</strong></li>
+<li>Remplissez les criteres BANT</li>
+<li>Le score de qualification se calcule automatiquement</li>
+<li>Si le score est suffisant, le bouton <strong>Convertir</strong> devient actif</li>
+</ol>
+
+<blockquote>
+<p><strong>Page dediee</strong> : <code>/admin/crm/qualification</code> pour configurer les criteres de qualification.</p>
+</blockquote>
+
+<h3>3. Convertir un lead en deal</h3>
+
+<p><strong>Objectif</strong> : Transformer un prospect qualifie en opportunite de vente.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le lead qualifie</li>
+<li>Cliquez sur <strong>Convertir</strong> dans le ruban</li>
+<li>Le systeme cree automatiquement :</li>
+</ol>
+<ul>
+<li>Un <strong>contact</strong> (si le lead n'etait pas deja un contact)</li>
+<li>Un <strong>deal</strong> dans le pipeline, a l'etape "Qualification"</li>
+</ul>
+<ol>
+<li>Confirmez les informations pre-remplies</li>
+<li>Cliquez sur <strong>Convertir</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Important</strong> : Le lead est archive apres conversion. Son historique est conserve sur la fiche contact.</p>
+</blockquote>
+
+<h3>4. Configurer le scoring automatique</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/qualification</code></p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Allez dans CRM > Automatisation > Qualification</li>
+<li>Definissez les criteres demographiques (secteur, taille entreprise, poste)</li>
+<li>Definissez les criteres comportementaux (actions sur le site, emails)</li>
+<li>Attribuez des points a chaque critere</li>
+<li>Definissez le seuil de qualification (ex: 60 points = lead qualifie)</li>
+<li>Sauvegardez</li>
+</ol>
+
+<h3>5. Distribution automatique des leads</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/workflows</code></p>
+
+<p>Configurez des regles pour assigner automatiquement les leads :</p>
+<ul>
+<li><strong>Round-robin</strong> : distribution equitable entre les representants</li>
+<li><strong>Par territoire</strong> : Quebec → Rep A, Ontario → Rep B</li>
+<li><strong>Par specialite</strong> : Cliniques → Rep senior, Individus → Rep junior</li>
+<li><strong>Par score</strong> : Leads chauds → meilleur vendeur</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Traitement quotidien des leads</h3>
+<ol>
+<li>Filtrez les leads <strong>Nouveaux</strong> (non traites)</li>
+<li>Pour chaque lead, evaluez rapidement la qualite :</li>
+</ol>
+<ul>
+<li>Source fiable ? Email professionnel ?</li>
+<li>Score automatique eleve ?</li>
+</ul>
+<ol>
+<li>Les bons leads : assignez a un representant, ajoutez une tache de premier contact</li>
+<li>Les mauvais leads : disqualifiez avec une raison</li>
+<li>Les leads trop froids : ajoutez a une sequence de nurturing automatisee</li>
+</ol>
+
+<h3>Nurturing des leads tiedes</h3>
+<ol>
+<li>Identifiez les leads avec un score de 20-50</li>
+<li>Ajoutez-les a une liste de nurturing</li>
+<li>Lancez une sequence d'emails automatisee (voir Automatisations)</li>
+<li>Quand le score augmente au-dessus de 50, le lead est notifie comme "chaud"</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : D'ou viennent les leads automatiquement ?</strong></p>
+<p>R : Depuis plusieurs sources : formulaire de contact du site web, inscription a la newsletter, scraper web (voir page Scraper), importation CSV, et referencement par d'autres clients.</p>
+
+<p><strong>Q : Que se passe-t-il si je disqualifie un lead ?</strong></p>
+<p>R : Il est deplace dans la liste "Disqualifies" mais n'est pas supprime. Vous pouvez le requalifier plus tard si la situation change.</p>
+
+<p><strong>Q : Le scoring fonctionne-t-il automatiquement ?</strong></p>
+<p>R : Oui. Une fois les regles configurees, le score se met a jour en temps reel a chaque action du lead (visite web, ouverture email, etc.).</p>
+
+<p><strong>Q : Combien de temps faut-il garder les leads non convertis ?</strong></p>
+<p>R : En general, 6 a 12 mois. Passee cette periode, les leads inactifs sont automatiquement archives (si vous activez cette option dans les workflows).</p>
+
+<hr>
+
+<h2>Strategie expert : scoring BANT adapte au marche des peptides</h2>
+
+<h3>BANT classique vs BANT peptides</h3>
+
+<p>La methode BANT (Budget, Authority, Need, Timing) est le standard de qualification des leads. Pour BioCycle Peptides, chaque critere doit etre adapte au contexte specifique des peptides de recherche au Canada.</p>
+
+<h3>Budget : evaluer la capacite financiere</h3>
+
+<table>
+<thead>
+    <tr><th>Signal</th><th>Points</th><th>Interpretation</th></tr>
+</thead>
+<tbody>
+  <tr><td>Institutions financees (universite, hopital, pharma)</td><td>+25</td><td>Budget recherche disponible</td></tr>
+  <tr><td>Clinique privee ou labo independant</td><td>+15</td><td>Budget discreionnaire, decision rapide</td></tr>
+  <tr><td>Individu avec historique d'achats > 500 $CA</td><td>+15</td><td>Acheteur recurrent confirme</td></tr>
+  <tr><td>Demande de grille de prix volume</td><td>+20</td><td>Intention d'achat significatif</td></tr>
+  <tr><td>Etudiant ou demande "d'echantillon gratuit"</td><td>+5</td><td>Budget limite, potentiel a long terme</td></tr>
+  <tr><td>Aucune information budget</td><td>+0</td><td>A qualifier en priorite</td></tr>
+</tbody>
+</table>
+<p><strong>Question cle a poser</strong> : "Quel est le budget recherche alloue pour les reactifs et peptides cette annee ?"</p>
+
+<h3>Authority : identifier le decideur</h3>
+
+<table>
+<thead>
+    <tr><th>Signal</th><th>Points</th><th>Interpretation</th></tr>
+</thead>
+<tbody>
+  <tr><td>Titre : PI (Principal Investigator), Directeur labo, Chef de recherche</td><td>+25</td><td>Decideur direct</td></tr>
+  <tr><td>Titre : Responsable achats, Procurement</td><td>+20</td><td>Decideur achat</td></tr>
+  <tr><td>Titre : Post-doc, Chercheur associe</td><td>+15</td><td>Influenceur, recommande au PI</td></tr>
+  <tr><td>Titre : Etudiant MSc/PhD</td><td>+10</td><td>Utilisateur, influence indirecte</td></tr>
+  <tr><td>Aucun titre ou titre generique</td><td>+5</td><td>A qualifier</td></tr>
+</tbody>
+</table>
+<p><strong>Question cle a poser</strong> : "Qui valide les commandes de reactifs dans votre laboratoire ?"</p>
+
+<h3>Need : identifier le besoin specifique</h3>
+
+<table>
+<thead>
+    <tr><th>Signal</th><th>Points</th><th>Interpretation</th></tr>
+</thead>
+<tbody>
+  <tr><td>Demande un peptide specifique par nom (BPC-157, CJC-1295)</td><td>+25</td><td>Besoin precis et immediat</td></tr>
+  <tr><td>Demande un COA ou une fiche technique</td><td>+20</td><td>En phase d'evaluation serieuse</td></tr>
+  <tr><td>Recherche sur le site : pages produit visitees</td><td>+15</td><td>Interet actif</td></tr>
+  <tr><td>Question generique "que sont les peptides"</td><td>+5</td><td>Phase de decouverte, besoin a developper</td></tr>
+  <tr><td>Interet pour categorie specifique (reparation, GH, immunitaire)</td><td>+15</td><td>Besoin identifie par domaine</td></tr>
+</tbody>
+</table>
+<p><strong>Question cle a poser</strong> : "Sur quel projet de recherche travaillez-vous et quels peptides envisagez-vous ?"</p>
+
+<h3>Timing : evaluer l'urgence</h3>
+
+<table>
+<thead>
+    <tr><th>Signal</th><th>Points</th><th>Interpretation</th></tr>
+</thead>
+<tbody>
+  <tr><td>"Nous avons besoin pour cette semaine/ce mois"</td><td>+25</td><td>Urgence elevee, priorite maximale</td></tr>
+  <tr><td>"Projet demarre au prochain trimestre"</td><td>+15</td><td>Pipeline planifie</td></tr>
+  <tr><td>"Nous evaluons les fournisseurs"</td><td>+10</td><td>Phase de comparaison</td></tr>
+  <tr><td>"Subvention en attente d'approbation"</td><td>+10</td><td>Potentiel mais conditionnel</td></tr>
+  <tr><td>"Pas de timeline precise"</td><td>+5</td><td>A nourrir</td></tr>
+</tbody>
+</table>
+<p><strong>Question cle a poser</strong> : "Quand prevoyez-vous de passer votre premiere commande ?"</p>
+
+<h3>Grille de scoring totale</h3>
+
+<table>
+<thead>
+    <tr><th>Score total BANT</th><th>Classification</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td>80-100</td><td><strong>Brulant</strong></td><td>Appeler dans l'heure, proposer une offre immediate</td></tr>
+  <tr><td>60-79</td><td><strong>Chaud</strong></td><td>Appeler dans les 24h, envoyer une proposition</td></tr>
+  <tr><td>40-59</td><td><strong>Tiede</strong></td><td>Sequence email nurturing, suivi dans 1-2 semaines</td></tr>
+  <tr><td>20-39</td><td><strong>Froid</strong></td><td>Ajouter au nurturing automatise, contenu educatif</td></tr>
+  <tr><td>0-19</td><td><strong>Non qualifie</strong></td><td>Surveiller passivement, pas d'effort commercial direct</td></tr>
+</tbody>
+</table>
+<h3>Sources de leads specifiques aux peptides</h3>
+
+<table>
+<thead>
+    <tr><th>Source</th><th>Volume</th><th>Qualite</th><th>Cout</th><th>Strategie</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Google Ads "buy peptides Canada"</strong></td><td>Moyen</td><td>Haute (intention transactionnelle)</td><td>2-5 $CA/clic</td><td>Mots-cles exacts, landing pages dediees</td></tr>
+  <tr><td><strong>Google Ads "peptides for research"</strong></td><td>Moyen</td><td>Haute</td><td>1-3 $CA/clic</td><td>Contenu educatif + conversion</td></tr>
+  <tr><td><strong>SEO / Blog organique</strong></td><td>Eleve (long terme)</td><td>Moyenne</td><td>Cout de redaction</td><td>Articles longue traine, guides</td></tr>
+  <tr><td><strong>PubMed / Google Scholar</strong></td><td>Faible mais premium</td><td>Tres haute (chercheurs)</td><td>Temps de prospection</td><td>Identifier les labos publiant sur les peptides</td></tr>
+  <tr><td><strong>Conferences scientifiques</strong></td><td>Faible</td><td>Tres haute</td><td>Frais de participation</td><td>Kiosque, networking, collecte de cartes</td></tr>
+  <tr><td><strong>LinkedIn (recherche ciblee)</strong></td><td>Moyen</td><td>Haute si bien cible</td><td>Temps + LinkedIn Sales Navigator</td><td>Cibler PI, directeurs de labo, responsables achats</td></tr>
+  <tr><td><strong>Reddit (r/peptides, r/Nootropics)</strong></td><td>Moyen</td><td>Basse a moyenne</td><td>Gratuit</td><td>Veille, identification de tendances, pas de prospection directe</td></tr>
+  <tr><td><strong>Referral (bouche a oreille)</strong></td><td>Faible</td><td>Tres haute (confiance)</td><td>Programme ambassadeur</td><td>Recompenser les recommandations</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Lead</strong></td><td>Prospect ayant manifeste un interet initial</td></tr>
+  <tr><td><strong>Lead scoring</strong></td><td>Attribution automatique d'un score base sur le profil et le comportement</td></tr>
+  <tr><td><strong>Qualification</strong></td><td>Processus de verification qu'un lead est un bon prospect</td></tr>
+  <tr><td><strong>BANT</strong></td><td>Methode de qualification : Budget, Authority, Need, Timing</td></tr>
+  <tr><td><strong>Conversion</strong></td><td>Transformation d'un lead en contact + deal</td></tr>
+  <tr><td><strong>Nurturing</strong></td><td>Actions de "nourrissage" pour faire murir un lead pas encore pret</td></tr>
+  <tr><td><strong>MQL</strong></td><td>Marketing Qualified Lead : lead qualifie par le marketing</td></tr>
+  <tr><td><strong>SQL</strong></td><td>Sales Qualified Lead : lead qualifie par les ventes</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/contacts">Contacts</a> : Fiches des contacts (apres conversion)</li>
+<li><a href="/admin/crm/pipeline">Pipeline</a> : Ou arrivent les deals apres conversion</li>
+<li><a href="/admin/scraper">Scraper</a> : Outil de generation de leads web</li>
+<li><a href="/admin/crm/lists">Listes et Segments</a> : Organisation des leads par groupes</li>
+<li><a href="/admin/crm/workflows">Automatisations</a> : Regles de scoring et distribution</li>
+<li><a href="/admin/crm/forms">Formulaires</a> : Formulaires web capturant des leads</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

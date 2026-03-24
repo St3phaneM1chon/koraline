@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
  * GET /api/contacts — List CRM contacts
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { withMobileGuard } from '@/lib/mobile-guard';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
@@ -14,7 +14,7 @@ import { logger } from '@/lib/logger';
  * GET — List contacts from CRM.
  * Maps CrmLead fields to the Contact format expected by iOS.
  */
-export const GET = withMobileGuard(async (request, { session }) => {
+export const GET = withMobileGuard(async (request, { session: _session }) => {
   try {
     const { searchParams } = new URL(request.url);
     const search = searchParams.get('search');
@@ -32,7 +32,7 @@ export const GET = withMobileGuard(async (request, { session }) => {
       ];
     }
 
-    const [contacts, total] = await Promise.all([
+    const [contacts, _total] = await Promise.all([
       prisma.crmLead.findMany({
         where,
         select: {

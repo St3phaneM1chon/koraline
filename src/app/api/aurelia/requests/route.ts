@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
  * POST /api/aurelia/requests — Create new request
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { withMobileGuard } from '@/lib/mobile-guard';
 import { prisma } from '@/lib/db';

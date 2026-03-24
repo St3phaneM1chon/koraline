@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Import et Export de Donnees CRM &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 10 — CRM</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Import et Export de Donnees CRM</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Import/Export</p>
+<p><strong>URL</strong>: <code>/admin/crm/import</code>, <code>/admin/crm/export</code></p>
+<p><strong>Niveau</strong>: Debutant a intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>Les outils d'<strong>Import et Export</strong> permettent de faire entrer des donnees dans le CRM depuis des sources externes (fichiers CSV, Excel, autres systemes) et d'en extraire pour les utiliser ailleurs (comptabilite, rapports, autres outils).</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Importer des contacts, leads ou entreprises depuis un fichier CSV/Excel</li>
+<li>Mapper les colonnes de votre fichier aux champs du CRM</li>
+<li>Detecter et gerer les doublons pendant l'import</li>
+<li>Exporter des contacts, deals ou rapports en CSV/Excel/PDF</li>
+<li>Programmer des exports automatiques</li>
+<li>Migrer des donnees depuis un autre CRM</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Pourquoi importer des donnees ?</h3>
+
+<p>Plusieurs situations courantes :</p>
+<ul>
+<li>Vous <strong>migrez</strong> d'un autre CRM (Salesforce, HubSpot, Excel maison)</li>
+<li>Vous avez collecte des <strong>contacts a un salon</strong> (scanner de badges → CSV)</li>
+<li>Un partenaire vous envoie une <strong>liste de leads</strong> referres</li>
+<li>Vous avez un fichier Excel de clients existants a integrer</li>
+</ul>
+
+<h3>Pourquoi exporter des donnees ?</h3>
+
+<ul>
+<li><strong>Comptabilite</strong> : envoyer la liste des clients a votre comptable</li>
+<li><strong>Marketing</strong> : utiliser les donnees dans un outil externe (Mailchimp)</li>
+<li><strong>Analyse</strong> : travailler les donnees dans Excel ou Google Sheets</li>
+<li><strong>Sauvegarde</strong> : garder une copie de vos donnees CRM</li>
+<li><strong>Rapport</strong> : presentation a la direction</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ul>
+<li><strong>Import</strong> : depuis le ruban de la page Contacts/Leads, bouton <strong>Importer</strong></li>
+<li><strong>Export</strong> : depuis le ruban de n'importe quelle page avec des donnees, bouton <strong>Exporter</strong></li>
+<li>Via le panneau CRM, sous la section appropriee</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Importer des contacts</h3>
+
+<p><strong>Formats acceptes</strong> :</p>
+<ul>
+<li>CSV (virgule, point-virgule ou tabulation)</li>
+<li>Excel (.xlsx)</li>
+<li>vCard (.vcf)</li>
+</ul>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Importer</strong> dans le ruban</li>
+<li>Selectionnez votre fichier</li>
+<li>Le systeme analyse les colonnes et propose un <strong>mappage automatique</strong> :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Colonne du fichier</th><th>Champ CRM detecte</th><th>Statut</th></tr>
+</thead>
+<tbody>
+  <tr><td>Nom</td><td>Nom de famille</td><td>Automatique</td></tr>
+  <tr><td>Prenom</td><td>Prenom</td><td>Automatique</td></tr>
+  <tr><td>Courriel</td><td>Email</td><td>Automatique</td></tr>
+  <tr><td>Tel</td><td>Telephone</td><td>Automatique</td></tr>
+  <tr><td>Ville</td><td>Ville</td><td>Automatique</td></tr>
+  <tr><td>Colonne inconnue</td><td>???</td><td>A mapper manuellement</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Verifiez et ajustez le mappage si necessaire</li>
+<li>Configurez les options :</li>
+</ol>
+<ul>
+<li><strong>Doublons</strong> : ignorer, mettre a jour, creer quand meme</li>
+<li><strong>Tags</strong> : tag a appliquer a tous les imports (ex: "Import salon 2026")</li>
+<li><strong>Assignation</strong> : representant par defaut</li>
+<li><strong>Source</strong> : d'ou viennent ces contacts</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Previsualiser</strong> pour verifier les 5 premieres lignes</li>
+<li>Cliquez sur <strong>Importer</strong></li>
+<li>Le systeme traite le fichier et affiche un rapport :</li>
+</ol>
+<ul>
+<li>X contacts crees</li>
+<li>X mis a jour (doublons)</li>
+<li>X ignores (erreurs)</li>
+</ul>
+
+<blockquote>
+<p><strong>Astuce</strong> : Pour les gros fichiers (plus de 10 000 lignes), l'import se fait en arriere-plan et vous recevrez une notification a la fin.</p>
+</blockquote>
+
+<h3>2. Gerer les doublons a l'import</h3>
+
+<p><strong>Detection des doublons</strong> :</p>
+
+<p>Le systeme compare les contacts importes avec la base existante sur :</p>
+<ul>
+<li><strong>Email</strong> (critere principal)</li>
+<li><strong>Telephone</strong> (critere secondaire)</li>
+<li><strong>Nom + Prenom</strong> (critere complementaire)</li>
+</ul>
+
+<p><strong>Options en cas de doublon</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Option</th><th>Comportement</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Ignorer</strong></td><td>Le contact du fichier est ignore, l'existant est conserve tel quel</td></tr>
+  <tr><td><strong>Mettre a jour</strong></td><td>Les champs vides de l'existant sont completes avec les donnees du fichier</td></tr>
+  <tr><td><strong>Ecraser</strong></td><td>Les donnees du fichier remplacent celles de l'existant</td></tr>
+  <tr><td><strong>Creer quand meme</strong></td><td>Un nouveau contact est cree (doublon volontaire)</td></tr>
+</tbody>
+</table>
+<h3>3. Exporter des contacts</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Allez sur la page dont vous voulez exporter les donnees</li>
+<li>Appliquez les filtres souhaites (ne pas tout exporter si vous n'avez besoin que d'un segment)</li>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban</li>
+<li>Choisissez le format :</li>
+</ol>
+<ul>
+<li><strong>CSV</strong> : compatible avec tout (Excel, Google Sheets, etc.)</li>
+<li><strong>Excel</strong> (.xlsx) : format natif Microsoft Excel</li>
+<li><strong>PDF</strong> : pour impression ou partage</li>
+</ul>
+<ol>
+<li>Selectionnez les colonnes a inclure (ou laissez tout)</li>
+<li>Cliquez sur <strong>Telecharger</strong></li>
+</ol>
+
+<h3>4. Exporter des rapports</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Ouvrez le rapport souhaite (analytics, funnel, CLV, etc.)</li>
+<li>Cliquez sur l'icone <strong>Exporter</strong> en haut a droite du rapport</li>
+<li>Choisissez le format (PDF pour presentation, CSV pour analyse)</li>
+<li>Le fichier est telecharge</li>
+</ol>
+
+<h3>5. Exports programmes</h3>
+
+<p><strong>Objectif</strong> : Recevoir automatiquement un export par email a intervalle regulier.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Configurez un export normalement</li>
+<li>Au lieu de telecharger, cliquez sur <strong>Programmer</strong></li>
+<li>Choisissez la frequence : quotidien, hebdomadaire, mensuel</li>
+<li>Indiquez l'adresse email de destination</li>
+<li>Le systeme enverra le fichier automatiquement</li>
+</ol>
+
+<h3>6. Migration depuis un autre CRM</h3>
+
+<p><strong>Objectif</strong> : Transferer toutes vos donnees depuis un CRM existant.</p>
+
+<p><strong>CRM supportes</strong> :</p>
+<ul>
+<li>Salesforce (export CSV standard)</li>
+<li>HubSpot (export CSV standard)</li>
+<li>Zoho CRM (export CSV)</li>
+<li>Tout CRM exportant en CSV</li>
+</ul>
+
+<p><strong>Processus recommande</strong> :</p>
+<ol>
+<li>Exportez les donnees de l'ancien CRM en CSV</li>
+<li>Nettoyez le fichier (supprimez les colonnes inutiles, corrigez les erreurs)</li>
+<li>Preparez un fichier de mappage (quelles colonnes correspondent a quoi)</li>
+<li>Importez d'abord les <strong>entreprises</strong></li>
+<li>Puis importez les <strong>contacts</strong> (en les associant aux entreprises)</li>
+<li>Enfin, importez les <strong>deals</strong> (en les associant aux contacts)</li>
+<li>Verifiez les donnees importees</li>
+</ol>
+
+<blockquote>
+<p><strong>Important</strong> : Faites toujours un test avec un petit echantillon (10-20 lignes) avant d'importer la totalite.</p>
+</blockquote>
+
+<hr>
+
+<h2>Modele de fichier CSV pour l'import</h2>
+
+<p>Pour un import optimal, structurez votre fichier ainsi :</p>
+
+<pre data-lang="csv"><code>prenom,nom,email,telephone,entreprise,poste,ville,province,source,notes
+Marie,Tremblay,marie@clinique.ca,514-555-0101,Clinique Sante Plus,Directrice,Montreal,QC,Salon Bio 2026,Interessee par BPC-157
+Jean,Martin,jmartin@pharma.ca,418-555-0202,Pharmacie Martin,Proprietaire,Quebec,QC,Referral,Deja client peptides</code></pre>
+
+<p><strong>Conseils pour un fichier propre</strong> :</p>
+<ul>
+<li>Une seule ligne d'en-tete</li>
+<li>Pas de lignes vides</li>
+<li>Encodage UTF-8 (pour les caracteres accentues)</li>
+<li>Un contact par ligne</li>
+<li>Pas de formules Excel, uniquement des valeurs</li>
+</ul>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Combien de contacts puis-je importer a la fois ?</strong></p>
+<p>R : Il n'y a pas de limite stricte, mais au-dela de 50 000 contacts, l'import se fait en arriere-plan par lots pour eviter les timeouts.</p>
+
+<p><strong>Q : L'import peut-il creer des doublons ?</strong></p>
+<p>R : Oui, si la detection de doublons est desactivee ou si les criteres ne correspondent pas. Il est recommande de toujours activer la detection sur l'email.</p>
+
+<p><strong>Q : Puis-je annuler un import ?</strong></p>
+<p>R : Pas directement. Cependant, si vous avez applique un tag a l'import (ex: "Import test"), vous pouvez filtrer et supprimer tous les contacts ayant ce tag.</p>
+
+<p><strong>Q : L'export inclut-il les donnees sensibles ?</strong></p>
+<p>R : L'export respecte les permissions de l'utilisateur. Seuls les champs auxquels vous avez acces sont inclus. Les donnees de paiement (numeros de carte) ne sont jamais exportees.</p>
+
+<p><strong>Q : Quel format est le plus fiable pour l'import ?</strong></p>
+<p>R : CSV avec encodage UTF-8 et separateur virgule. C'est le format le plus universel et le moins sujet a des erreurs d'interpretation.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>CSV</strong></td><td>Comma-Separated Values, format de fichier texte avec separateur</td></tr>
+  <tr><td><strong>Mappage</strong></td><td>Association entre les colonnes d'un fichier et les champs du CRM</td></tr>
+  <tr><td><strong>Doublon</strong></td><td>Deux fiches representant la meme personne/entreprise</td></tr>
+  <tr><td><strong>Migration</strong></td><td>Transfert de donnees d'un systeme a un autre</td></tr>
+  <tr><td><strong>Export programme</strong></td><td>Export automatique envoye par email a intervalle regulier</td></tr>
+  <tr><td><strong>UTF-8</strong></td><td>Encodage de caracteres supportant les accents et caracteres speciaux</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/contacts">Contacts</a> : Destination principale des imports</li>
+<li><a href="/admin/crm/leads">Leads</a> : Import de prospects</li>
+<li><a href="/admin/crm/companies">Entreprises</a> : Import d'organisations</li>
+<li><a href="/admin/crm/duplicates">Doublons</a> : Gestion post-import des doublons</li>
+<li><a href="/admin/crm/analytics">Rapports</a> : Source des exports de rapports</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

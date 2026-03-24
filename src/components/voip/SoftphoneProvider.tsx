@@ -93,7 +93,7 @@ export function SoftphoneProvider({ children }: { children: ReactNode }) {
       remoteNumber: telnyx.call.callerNumber || '',
       remoteName: telnyx.call.callerName || null,
       state: callState,
-      startTime: callState !== 'idle' ? new Date() : null,
+      startTime: callState !== 'ended' ? new Date() : null,
       answerTime: callState === 'in_progress' ? new Date() : null,
       isMuted: telnyx.call.isMuted,
       isOnHold: telnyx.call.isHeld,

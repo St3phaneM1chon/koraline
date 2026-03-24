@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Traductions (i18n) &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 12 — Systeme</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion des Traductions (i18n)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Systeme > Configuration > Traductions</p>
+<p><strong>URL</strong>: <code>/admin/traductions</code></p>
+<p><strong>Niveau</strong>: Intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Traductions</strong> gere les textes affiches dans les 22 langues supportees par la boutique BioCycle Peptides. Chaque label, bouton, message et description peut etre traduit pour offrir une experience multilingue aux clients du monde entier.</p>
+
+<p><strong>En tant qu'administrateur, vous pouvez :</strong></p>
+<ul>
+<li>Consulter toutes les cles de traduction organisees par section</li>
+<li>Modifier les traductions existantes</li>
+<li>Ajouter des traductions manquantes</li>
+<li>Verifier les cles non traduites par langue</li>
+<li>Exporter et importer les traductions en masse</li>
+<li>Definir la langue par defaut de l'interface</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qu'est-ce que l'i18n ?</h3>
+
+<p><strong>i18n</strong> est l'abreviation de "internationalization" (il y a 18 lettres entre le "i" et le "n"). C'est le systeme qui permet a Koraline d'afficher son contenu dans differentes langues.</p>
+
+<h3>Les 22 langues supportees</h3>
+
+<table>
+<thead>
+    <tr><th>Code</th><th>Langue</th><th>Marche cible</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>fr</strong></td><td>Francais</td><td>Quebec, France, Afrique francophone</td></tr>
+  <tr><td><strong>en</strong></td><td>Anglais</td><td>Canada anglophone, USA, international</td></tr>
+  <tr><td><strong>es</strong></td><td>Espagnol</td><td>Amerique latine</td></tr>
+  <tr><td><strong>de</strong></td><td>Allemand</td><td>Allemagne, Suisse</td></tr>
+  <tr><td><strong>pt</strong></td><td>Portugais</td><td>Bresil, Portugal</td></tr>
+  <tr><td><strong>it</strong></td><td>Italien</td><td>Italie</td></tr>
+  <tr><td><strong>ar</strong></td><td>Arabe</td><td>Moyen-Orient</td></tr>
+  <tr><td><strong>ar-dz</strong></td><td>Arabe (Algerie)</td><td>Algerie</td></tr>
+  <tr><td><strong>ar-lb</strong></td><td>Arabe (Liban)</td><td>Liban</td></tr>
+  <tr><td><strong>ar-ma</strong></td><td>Arabe (Maroc)</td><td>Maroc</td></tr>
+  <tr><td><strong>zh</strong></td><td>Chinois</td><td>Chine</td></tr>
+  <tr><td><strong>ko</strong></td><td>Coreen</td><td>Coree du Sud</td></tr>
+  <tr><td><strong>hi</strong></td><td>Hindi</td><td>Inde</td></tr>
+  <tr><td><strong>pa</strong></td><td>Pendjabi</td><td>Inde, Pakistan</td></tr>
+  <tr><td><strong>ta</strong></td><td>Tamoul</td><td>Inde du Sud, Sri Lanka</td></tr>
+  <tr><td><strong>ru</strong></td><td>Russe</td><td>Russie</td></tr>
+  <tr><td><strong>pl</strong></td><td>Polonais</td><td>Pologne</td></tr>
+  <tr><td><strong>sv</strong></td><td>Suedois</td><td>Suede</td></tr>
+  <tr><td><strong>vi</strong></td><td>Vietnamien</td><td>Vietnam</td></tr>
+  <tr><td><strong>tl</strong></td><td>Tagalog</td><td>Philippines</td></tr>
+  <tr><td><strong>ht</strong></td><td>Creole haitien</td><td>Haiti</td></tr>
+  <tr><td><strong>gcr</strong></td><td>Creole guyanais</td><td>Guyane</td></tr>
+</tbody>
+</table>
+<h3>Comment ca fonctionne</h3>
+
+<p>Chaque texte affiche dans l'interface est associe a une <strong>cle de traduction</strong>. Par exemple :</p>
+<ul>
+<li>Cle : <code>common.addToCart</code></li>
+<li>Francais : "Ajouter au panier"</li>
+<li>Anglais : "Add to Cart"</li>
+<li>Espagnol : "Agregar al carrito"</li>
+</ul>
+
+<p>Quand un client visite le site en espagnol, le systeme affiche "Agregar al carrito" partout ou la cle <code>common.addToCart</code> est utilisee.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Systeme > Configuration > <strong>Traductions</strong></li>
+<li>URL directe : <code>/admin/traductions</code></li>
+</ol>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Parcourir les traductions</h3>
+
+<p>L'interface affiche les traductions groupees par <strong>namespace</strong> (section) :</p>
+
+<table>
+<thead>
+    <tr><th>Namespace</th><th>Exemples de cles</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>common</strong></td><td>addToCart, search, save, cancel, loading</td></tr>
+  <tr><td><strong>shop</strong></td><td>productDetails, relatedProducts, reviews</td></tr>
+  <tr><td><strong>admin</strong></td><td>dashboard, settings, permissions</td></tr>
+  <tr><td><strong>account</strong></td><td>myOrders, myProfile, changePassword</td></tr>
+  <tr><td><strong>checkout</strong></td><td>shippingAddress, paymentMethod, orderSummary</td></tr>
+</tbody>
+</table>
+<h3>2. Modifier une traduction</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Trouvez la cle (recherche ou navigation par namespace)</li>
+<li>Cliquez sur la cle</li>
+<li>Modifiez le texte dans la langue souhaitee</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Important</strong> : Le francais est la <strong>langue de reference</strong>. Toute modification en francais devrait etre propagee aux autres langues.</p>
+</blockquote>
+
+<h3>3. Identifier les traductions manquantes</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez une langue dans le filtre</li>
+<li>Activez le filtre <strong>Non traduit</strong></li>
+<li>La liste affiche les cles sans traduction dans cette langue</li>
+<li>Traduisez ou utilisez le bouton <strong>Traduire automatiquement</strong></li>
+</ol>
+
+<h3>4. Import/Export en masse</h3>
+
+<p><strong>Exporter</strong> :</p>
+<ol>
+<li>Selectionnez la langue</li>
+<li>Cliquez sur <strong>Exporter CSV</strong></li>
+<li>Le fichier contient les cles et les traductions</li>
+</ol>
+
+<p><strong>Importer</strong> :</p>
+<ol>
+<li>Modifiez le CSV exporte (ou preparez un nouveau)</li>
+<li>Cliquez sur <strong>Importer CSV</strong></li>
+<li>Les traductions sont mises a jour en masse</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Les descriptions de produits sont-elles aussi dans ce systeme ?</strong></p>
+<p>R : Non. Les descriptions de produits ont leur propre systeme de traduction dans la fiche produit (Catalogue). Cette page gere les textes d'interface (boutons, labels, messages).</p>
+
+<p><strong>Q : La traduction automatique est-elle fiable ?</strong></p>
+<p>R : Elle donne un bon point de depart, mais une relecture humaine est recommandee pour le contenu visible par les clients.</p>
+
+<p><strong>Q : Le site detecte-t-il la langue du visiteur automatiquement ?</strong></p>
+<p>R : Oui, la langue est detectee via le navigateur du visiteur et peut etre changee manuellement via le selecteur de langue sur le site.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>i18n</strong></td><td>Internationalization, systeme de gestion multilingue</td></tr>
+  <tr><td><strong>Cle de traduction</strong></td><td>Identifiant unique d'un texte (ex: common.save)</td></tr>
+  <tr><td><strong>Namespace</strong></td><td>Groupe de cles par section (common, shop, admin, etc.)</td></tr>
+  <tr><td><strong>Locale</strong></td><td>Code de langue (fr, en, es, etc.)</td></tr>
+  <tr><td><strong>Fallback</strong></td><td>Langue de secours si une traduction manque (anglais)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/parametres">Parametres</a> : Langue par defaut</li>
+<li><a href="/admin/contenu">Contenu</a> : Pages de contenu traduisibles</li>
+<li><a href="/admin/seo">SEO</a> : Meta-donnees multilingues</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

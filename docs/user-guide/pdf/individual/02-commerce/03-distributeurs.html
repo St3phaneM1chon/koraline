@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Distributeurs et Utilisateurs (Clients B2B) &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 02 — Commerce</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion des Distributeurs et Utilisateurs (Clients B2B)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Commerce > Distributeurs</p>
+<p><strong>URL</strong>: <code>/admin/clients</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Distributeurs</strong> (aussi appelee "Clients B2B") est votre <strong>gestionnaire d'utilisateurs complet</strong>. Elle permet de voir et gerer TOUS les comptes de votre application, qu'ils soient acheteurs, clients B2B, employes ou proprietaires.</p>
+
+<blockquote>
+<p><strong>Attention nomenclature</strong> :</p>
+<p>- L'URL est <code>/admin/clients</code> mais la sidebar dit "Distributeurs"</p>
+<p>- Le breadcrumb dit "Clients B2B"</p>
+<p>- Le titre de la page dit "Clients"</p>
+<p>- En realite, cette page gere <strong>tous les types d'utilisateurs</strong></p>
+</blockquote>
+
+<p><strong>Ce que vous pouvez faire ici</strong> :</p>
+<ul>
+<li>Voir tous les utilisateurs de l'application avec leurs roles</li>
+<li>Filtrer par role (Acheteur, Client, Employe, Proprietaire)</li>
+<li>Consulter la fiche detaillee d'un utilisateur</li>
+<li>Changer le role d'un utilisateur (promouvoir un client en employe, etc.)</li>
+<li>Ajuster manuellement les points de fidelite</li>
+<li>Envoyer un email directement a un utilisateur</li>
+<li>Reinitialiser le mot de passe d'un utilisateur</li>
+<li>Suspendre un compte utilisateur</li>
+<li>Voir les commandes d'un utilisateur</li>
+<li>Exporter la liste en CSV</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Cliquez sur <strong>Commerce</strong> dans la barre de navigation</li>
+<li>Cliquez sur <strong>Distributeurs</strong> dans le panneau lateral</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Page Distributeurs]</div>
+
+<h3>Les 4 cartes de statistiques</h3>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total utilisateurs</strong></td><td>Nombre total de comptes dans le systeme</td></tr>
+  <tr><td><strong>Clients</strong></td><td>Utilisateurs avec le role CUSTOMER (acheteurs)</td></tr>
+  <tr><td><strong>Employes</strong></td><td>Utilisateurs avec le role EMPLOYEE (votre equipe)</td></tr>
+  <tr><td><strong>VIP (Gold+)</strong></td><td>Utilisateurs de niveau Gold, Platinum ou Diamond</td></tr>
+</tbody>
+</table>
+<h3>Les onglets de filtrage par role</h3>
+
+<table>
+<thead>
+    <tr><th>Onglet</th><th>Qui sont-ils</th><th>Cas d'usage</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Tous les roles</strong></td><td>Tout le monde</td><td>Vue globale</td></tr>
+  <tr><td><strong>Acheteur</strong></td><td>Clients qui ont passe commande</td><td>Gestion courante</td></tr>
+  <tr><td><strong>Client</strong></td><td>Comptes crees mais pas encore achete</td><td>Prospects, comptes B2B</td></tr>
+  <tr><td><strong>Employe</strong></td><td>Votre equipe interne</td><td>Gestion RH</td></tr>
+  <tr><td><strong>Proprietaire</strong></td><td>Administrateurs du site</td><td>Votre compte et ceux des associes</td></tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Pour les neophytes</strong> :</p>
+<p>- <strong>Acheteur</strong> = quelqu'un qui a fait au moins 1 achat</p>
+<p>- <strong>Client</strong> = quelqu'un qui a un compte mais n'a pas encore achete (ou un partenaire B2B)</p>
+<p>- <strong>Employe</strong> = un membre de votre equipe que vous avez ajoute au systeme</p>
+<p>- <strong>Proprietaire</strong> = vous (le boss) et vos administrateurs avec acces complet</p>
+</blockquote>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Consulter la fiche d'un utilisateur</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur un utilisateur dans la liste</li>
+<li>Le panneau de detail s'ouvre a droite</li>
+</ol>
+
+<p><strong>Informations visibles</strong> :</p>
+<ul>
+<li>Nom, email, telephone</li>
+<li>Role actuel (Acheteur/Client/Employe/Proprietaire)</li>
+<li>Niveau de fidelite + points</li>
+<li>Code de parrainage (si ambassadeur)</li>
+<li>Historique des commandes (lien)</li>
+</ul>
+
+<hr>
+
+<h3>2. Changer le role d'un utilisateur</h3>
+
+<p><strong>Objectif</strong> : Promouvoir ou retrograder un utilisateur.</p>
+
+<p><strong>Cas d'usage typiques</strong> :</p>
+<ul>
+<li>Un client regulier devient partenaire B2B → passer de "Acheteur" a "Client"</li>
+<li>Vous embauchez quelqu'un → passer a "Employe"</li>
+<li>Un employe part → retrograder a "Client"</li>
+</ul>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez l'utilisateur</li>
+<li>Dans la section <strong>Gestion des roles</strong> du panneau de detail</li>
+<li>Selectionnez le nouveau role</li>
+<li>Confirmez</li>
+</ol>
+
+<blockquote>
+<p><strong>Important</strong> : Changer le role d'un utilisateur affecte ses <strong>permissions d'acces</strong>. Un Employe a acces au panneau admin, un Acheteur non.</p>
+</blockquote>
+
+<hr>
+
+<h3>3. Ajuster manuellement les points de fidelite</h3>
+
+<p><strong>Objectif</strong> : Ajouter ou retirer des points de fidelite a un utilisateur.</p>
+
+<p><strong>Quand l'utiliser</strong> :</p>
+<ul>
+<li>Geste commercial (offrir des points bonus)</li>
+<li>Correction d'erreur (points non credites suite a un bug)</li>
+<li>Penalite (retrait de points en cas d'abus)</li>
+<li>Migration (transfert de points depuis un ancien systeme)</li>
+</ul>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez l'utilisateur</li>
+<li>Dans la section <strong>Ajustement de points</strong> du panneau de detail</li>
+<li>Entrez le nombre de points (positif pour ajouter, negatif pour retirer)</li>
+<li>Indiquez la raison</li>
+<li>Confirmez</li>
+</ol>
+
+<hr>
+
+<h3>4. Envoyer un email a un utilisateur</h3>
+
+<p><strong>Objectif</strong> : Communiquer directement avec un client depuis l'admin.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez l'utilisateur</li>
+<li>Cliquez sur le bouton <strong>Envoyer email</strong> (icone enveloppe)</li>
+<li>Saisissez le sujet de l'email</li>
+<li>Saisissez le contenu</li>
+<li>L'email est envoye immediatement</li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong> : Utilisez cette fonction pour les communications individuelles. Pour les envois en masse, utilisez la section <strong>Marketing > Newsletter</strong>.</p>
+</blockquote>
+
+<hr>
+
+<h3>5. Reinitialiser le mot de passe</h3>
+
+<p><strong>Objectif</strong> : Envoyer un lien de reinitialisation de mot de passe au client.</p>
+
+<p><strong>Quand l'utiliser</strong> :</p>
+<ul>
+<li>Le client a oublie son mot de passe et n'arrive pas a utiliser la page "Mot de passe oublie"</li>
+<li>Vous soupconnez une compromission de compte</li>
+<li>Le client vous contacte par telephone et ne peut pas acceder a son email de reset</li>
+</ul>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez l'utilisateur</li>
+<li>Cliquez sur <strong>Reinitialiser mot de passe</strong> (icone cle)</li>
+<li>Un email de reinitialisation est automatiquement envoye au client</li>
+</ol>
+
+<hr>
+
+<h3>6. Suspendre un compte</h3>
+
+<p><strong>Objectif</strong> : Bloquer l'acces d'un utilisateur a son compte.</p>
+
+<p><strong>Quand l'utiliser</strong> :</p>
+<ul>
+<li>Suspicion de fraude confirmee</li>
+<li>Client abusif ou harcelant</li>
+<li>Employe licencie (bloquer l'acces immediatement)</li>
+<li>Demande RGPD/CASL de desactivation de compte</li>
+</ul>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez l'utilisateur</li>
+<li>Cliquez sur <strong>Suspendre</strong> (bouton rouge avec icone d'interdiction)</li>
+<li>Confirmez : "Suspendre [nom du client] ?"</li>
+<li>Le compte est immediatement desactive</li>
+</ol>
+
+<blockquote>
+<p><strong>Attention</strong> : La suspension est immediate. L'utilisateur ne pourra plus se connecter. Ses commandes en cours ne sont PAS annulees automatiquement.</p>
+</blockquote>
+
+<hr>
+
+<h3>7. Voir les commandes d'un utilisateur</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez l'utilisateur</li>
+<li>Cliquez sur <strong>Voir les commandes</strong> (icone panier)</li>
+<li>Vous etes redirige vers la page Commandes, filtree sur ce client</li>
+</ol>
+
+<hr>
+
+<h3>8. Exporter en CSV</h3>
+
+<p>Meme principe que la page Clients (acheteurs). Colonnes : Nom, Email, Telephone, Niveau fidelite, Points, Total depense, Nombre d'achats, Code parrainage, Date inscription.</p>
+
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario : Ajouter un partenaire B2B</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouveau client</strong> dans le ruban</li>
+<li>Remplissez les informations (nom de l'entreprise, email du contact, telephone)</li>
+<li>Une fois cree, changez son role a "Client" (B2B)</li>
+<li>Ajustez ses points de fidelite si necessaire (bonus de bienvenue B2B)</li>
+<li>Envoyez-lui un email de bienvenue avec ses identifiants</li>
+</ol>
+
+<h3>Scenario : Gerer un employe qui part</h3>
+
+<ol>
+<li>Recherchez l'employe par nom ou email</li>
+<li>Cliquez sur <strong>Suspendre</strong> pour bloquer son acces immediatement</li>
+<li>Optionnellement, changez son role de "Employe" a "Client" (au lieu de suspendre)</li>
+<li>Verifiez qu'il n'a pas de taches admin en cours</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Quelle est la difference entre cette page et la page Clients (acheteurs) ?</strong></p>
+<p>R: La page <code>/admin/customers</code> montre uniquement les acheteurs finaux avec une analyse RFM avancee. Cette page <code>/admin/clients</code> montre TOUS les types d'utilisateurs et permet de gerer les roles, les points et les acces.</p>
+
+<p><strong>Q: Un utilisateur suspendu peut-il etre reactive ?</strong></p>
+<p>R: Oui, en modifiant son statut dans sa fiche (meme bouton, action inverse).</p>
+
+<p><strong>Q: Les points de fidelite ajustes manuellement comptent-ils pour le changement de niveau ?</strong></p>
+<p>R: Oui, les points manuels ont la meme valeur que les points gagnes par achat. Si l'ajout fait depasser un seuil de niveau, le client est promu automatiquement.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Role</strong></td><td>Le type de compte : Acheteur, Client, Employe, Proprietaire</td></tr>
+  <tr><td><strong>B2B</strong></td><td>Business-to-Business — vente entre entreprises</td></tr>
+  <tr><td><strong>B2C</strong></td><td>Business-to-Consumer — vente au grand public</td></tr>
+  <tr><td><strong>Suspension</strong></td><td>Blocage temporaire ou permanent de l'acces a un compte</td></tr>
+  <tr><td><strong>CASL/RGPD</strong></td><td>Lois de protection des donnees (Canada/Europe)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/customers">Clients (acheteurs)</a> — Vue specifique aux acheteurs avec RFM</li>
+<li><a href="/admin/commandes">Commandes</a> — Commandes de ces clients</li>
+<li><a href="/admin/fidelite">Programme de fidelite</a> — Configuration des niveaux et points</li>
+<li><a href="/admin/employes">Employes</a> — Gestion des employes (section Systeme)</li>
+<li><a href="/admin/permissions">Permissions</a> — Gestion des droits d'acces</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

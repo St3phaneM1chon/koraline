@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Codes Promo &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 04 — Marketing</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion des Codes Promo</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Marketing > Codes Promo</p>
+<p><strong>URL</strong>: <code>/admin/promo-codes</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Codes Promo</strong> permet de creer et gerer des codes de reduction que vos clients peuvent saisir au moment du paiement. Un code promo est une chaine de caracteres (par exemple <code>BIENVENUE10</code> ou <code>BLACKFRIDAY</code>) qui accorde une remise sur la commande.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Creer de nouveaux codes promo avec un pourcentage ou un montant fixe de remise</li>
+<li>Generer automatiquement des codes aleatoires securises</li>
+<li>Definir des conditions d'utilisation (montant minimum, limite d'usage, premiere commande uniquement)</li>
+<li>Planifier la validite dans le temps (date de debut et de fin)</li>
+<li>Activer ou desactiver un code en un clic</li>
+<li>Dupliquer un code existant pour en creer un similaire rapidement</li>
+<li>Suivre les statistiques d'utilisation de chaque code</li>
+<li>Consulter l'impact commercial (revenus generes, commandes associees, produits les plus vendus avec le code)</li>
+<li>Voir les liens CRM (clients uniques, deals associes)</li>
+<li>Voir les produits et categories cibles par un code</li>
+<li>Exporter la liste des codes en CSV</li>
+<li>Supprimer les codes obsoletes</li>
+</ul>
+
+<hr>
+
+<h2>Concepts pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un code promo ?</h3>
+
+<p>Un code promo est un mot ou une combinaison de lettres et chiffres que le client tape dans un champ dedie au moment de passer sa commande. Si le code est valide, une remise est automatiquement appliquee au panier.</p>
+
+<h3>Types de remise</h3>
+
+<p>Il existe deux types de remise :</p>
+<ul>
+<li><strong>Pourcentage</strong> : Le client obtient X% de reduction sur sa commande. Par exemple, <code>BIENVENUE10</code> donne 10% de rabais.</li>
+<li><strong>Montant fixe</strong> : Le client obtient un montant precis de reduction. Par exemple, un code de 15 $CA retire 15 dollars du total.</li>
+</ul>
+
+<h3>Conditions courantes</h3>
+
+<ul>
+<li><strong>Montant minimum de commande</strong> : Le code ne s'applique que si le panier depasse un certain montant (par exemple, minimum 50 $CA).</li>
+<li><strong>Remise maximale</strong> : Pour les codes en pourcentage, vous pouvez plafonner la remise (par exemple, 10% mais maximum 25 $CA de rabais).</li>
+<li><strong>Limite d'utilisation globale</strong> : Le nombre total de fois que le code peut etre utilise (par tous les clients combines).</li>
+<li><strong>Limite par client</strong> : Le nombre de fois qu'un meme client peut utiliser le code (souvent 1).</li>
+<li><strong>Premiere commande uniquement</strong> : Le code ne fonctionne que pour les nouveaux clients qui n'ont jamais commande.</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Marketing</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong> qui apparait, cliquez sur <strong>Codes Promo</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Dans la colonne d'icones tout a gauche de l'ecran, cliquez sur l'icone de la section <strong>Marketing</strong></li>
+<li>Le panneau "Marketing" s'ouvre avec la liste des sous-pages</li>
+<li>Cliquez sur <strong>Codes Promo</strong></li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche en haut au centre (ou tapez <code>/</code>)</li>
+<li>Tapez "codes promo" ou "promo"</li>
+<li>Selectionnez le resultat correspondant</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>L'interface est divisee en <strong>4 zones principales</strong> :</p>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<p>C'est la barre d'outils contextuelle. Pour les codes promo, elle contient :</p>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau code</strong></td><td>Ouvrir le formulaire de creation d'un code promo</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer le code selectionne (avec confirmation)</td></tr>
+  <tr><td><strong>Dupliquer</strong></td><td>Creer une copie du code selectionne pour le personnaliser</td></tr>
+  <tr><td><strong>Activer</strong></td><td>Activer le code selectionne (s'il etait desactive)</td></tr>
+  <tr><td><strong>Desactiver</strong></td><td>Desactiver le code selectionne (sans le supprimer)</td></tr>
+  <tr><td><strong>Statistiques</strong></td><td>Afficher un resume des statistiques d'utilisation de tous les codes</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger la liste des codes filtres en fichier CSV</td></tr>
+</tbody>
+</table>
+<h3>2. Les cartes de statistiques</h3>
+
+<p>3 cartes resumant l'etat de vos codes :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total des codes</strong></td><td>Nombre total de codes promo dans le systeme</td></tr>
+  <tr><td><strong>Actifs</strong></td><td>Nombre de codes actuellement actifs et utilisables</td></tr>
+  <tr><td><strong>Utilisation totale</strong></td><td>Nombre total de fois que tous les codes ont ete utilises</td></tr>
+</tbody>
+</table>
+<h3>3. La liste des codes (panneau central)</h3>
+
+<p>La zone principale affiche les codes sous forme de liste avec :</p>
+<ul>
+<li><strong>Onglets de filtrage</strong> : Tous, Actifs, Inactifs, Expires</li>
+<li><strong>Barre de recherche</strong> : Recherchez par code ou description</li>
+<li><strong>Chaque code affiche</strong> : les 2 premieres lettres du code en avatar, le code complet, le type et la valeur de la remise, un badge de statut (actif en vert, inactif en gris, expire en rouge, utilisation complete en jaune), et un badge "Premiere commande" si applicable</li>
+</ul>
+
+<h3>4. Le panneau de detail (panneau droit)</h3>
+
+<p>Quand vous selectionnez un code dans la liste, le panneau de detail affiche :</p>
+<ul>
+<li><strong>Statut</strong> avec interrupteur pour activer/desactiver</li>
+<li><strong>Information de remise</strong> : valeur de la remise, type (pourcentage ou montant fixe), remise maximale si definie</li>
+<li><strong>Utilisation</strong> : nombre d'utilisations / limite (ou illimite), limite par client</li>
+<li><strong>Conditions</strong> : montant minimum de commande, premiere commande uniquement</li>
+<li><strong>Impact commercial</strong> : revenus generes, nombre de commandes, produits les plus vendus avec ce code (donnees du pont Commerce)</li>
+<li><strong>Lien CRM</strong> : clients uniques et deals associes (donnees du pont CRM)</li>
+<li><strong>Produits cibles</strong> : liste des produits et categories concernes si le code n'est pas global (donnees du pont Catalogue)</li>
+<li><strong>Validite</strong> : dates de debut et de fin</li>
+<li><strong>Metadonnees</strong> : identifiant technique, date de creation</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer un nouveau code promo</h3>
+
+<p><strong>Objectif</strong> : Creer un code que les clients pourront utiliser pour obtenir une reduction.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau code</strong> dans le ruban ou sur le bouton en haut a droite</li>
+<li>Le formulaire de creation s'ouvre dans une fenetre modale</li>
+<li>Remplissez les champs :</li>
+</ol>
+<ul>
+<li><strong>Code</strong> (obligatoire) : Le texte du code. Il est automatiquement converti en majuscules. Vous pouvez aussi cliquer sur <strong>Generer</strong> pour creer un code aleatoire de 8 caracteres.</li>
+<li><strong>Description</strong> : Un texte libre pour decrire l'objectif du code (visible uniquement dans l'admin, pas par le client).</li>
+<li><strong>Type</strong> (obligatoire) : Pourcentage ou Montant fixe.</li>
+<li><strong>Valeur</strong> (obligatoire) : Le chiffre de la remise (par exemple 10 pour 10%, ou 15 pour 15 $CA).</li>
+<li><strong>Montant minimum de commande</strong> : Le panier doit atteindre ce montant pour que le code fonctionne.</li>
+<li><strong>Remise maximale</strong> : Plafond de la remise (utile pour les pourcentages).</li>
+<li><strong>Limite totale d'utilisation</strong> : Nombre maximum de fois que le code peut etre utilise globalement.</li>
+<li><strong>Limite par client</strong> : Nombre de fois qu'un meme client peut l'utiliser (par defaut 1).</li>
+<li><strong>Date de debut</strong> : Quand le code devient valide.</li>
+<li><strong>Date de fin</strong> : Quand le code expire automatiquement.</li>
+<li><strong>Premiere commande uniquement</strong> : Cochez si le code ne doit fonctionner que pour les nouveaux clients.</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<p><strong>Validations automatiques</strong> :</p>
+<ul>
+<li>Le code ne peut pas etre vide</li>
+<li>La valeur doit etre superieure a 0</li>
+<li>Un pourcentage ne peut pas depasser 100%</li>
+<li>La date de fin doit etre posterieure a la date de debut</li>
+</ul>
+
+<h3>2. Activer ou desactiver un code</h3>
+
+<p><strong>Objectif</strong> : Controler la disponibilite d'un code sans le supprimer.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le code dans la liste</li>
+<li>Dans le panneau de detail, utilisez l'interrupteur a bascule dans la section <strong>Statut</strong></li>
+<li>Le changement est immediat (mise a jour optimiste)</li>
+</ol>
+
+<p>Un code desactive ne peut plus etre utilise par les clients, mais reste dans le systeme pour consultation.</p>
+
+<h3>3. Modifier un code existant</h3>
+
+<p><strong>Objectif</strong> : Changer les parametres d'un code (valeur, conditions, dates).</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le code dans la liste</li>
+<li>Cliquez sur <strong>Modifier</strong> (icone crayon) dans le panneau de detail</li>
+<li>Le formulaire s'ouvre pre-rempli avec les valeurs actuelles</li>
+<li>Modifiez les champs souhaites</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<h3>4. Dupliquer un code</h3>
+
+<p><strong>Objectif</strong> : Creer un nouveau code base sur les parametres d'un code existant.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le code a dupliquer</li>
+<li>Cliquez sur <strong>Dupliquer</strong> dans le ruban</li>
+<li>Le formulaire de creation s'ouvre avec tous les champs pre-remplis (sauf le code lui-meme, qui sera vide)</li>
+<li>Saisissez un nouveau code et ajustez les parametres si necessaire</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>5. Consulter les statistiques d'utilisation</h3>
+
+<p><strong>Objectif</strong> : Voir combien de fois les codes ont ete utilises.</p>
+
+<p><strong>Methode rapide</strong> : Cliquez sur <strong>Statistiques</strong> dans le ruban. Un toast affiche un resume global (total d'utilisations, nombre de codes actifs et expires, codes reserves a la premiere commande, top 3 des codes les plus utilises).</p>
+
+<p><strong>Methode detaillee</strong> : Selectionnez un code dans la liste. Le panneau de detail affiche le nombre d'utilisations, la limite, et si les donnees sont disponibles, le revenu total genere, le nombre de commandes, et les produits les plus vendus avec ce code.</p>
+
+<h3>6. Exporter les codes en CSV</h3>
+
+<p><strong>Objectif</strong> : Telecharger un fichier tabulaire pour l'analyse ou l'archivage.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Appliquez vos filtres si necessaire (onglets ou barre de recherche)</li>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban</li>
+<li>Le fichier CSV se telecharge automatiquement</li>
+</ol>
+
+<p><strong>Colonnes exportees</strong> : Code, Description, Type, Valeur, Utilisation, Limite, Statut, Date de debut, Date de fin, Premiere commande uniquement.</p>
+
+<h3>7. Supprimer un code</h3>
+
+<p><strong>Objectif</strong> : Retirer definitivement un code du systeme.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le code a supprimer</li>
+<li>Cliquez sur l'icone de suppression (poubelle rouge) dans le panneau de detail, ou sur <strong>Supprimer</strong> dans le ruban</li>
+<li>Une fenetre de confirmation apparait. Confirmez la suppression.</li>
+</ol>
+
+<p>La suppression est irreversible. Les commandes passees avec ce code conservent la remise appliquee.</p>
+
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario A : Creer un code de bienvenue pour les nouveaux clients</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouveau code</strong></li>
+<li>Saisissez le code : <code>BIENVENUE10</code></li>
+<li>Description : "10% de remise pour les nouveaux clients"</li>
+<li>Type : Pourcentage</li>
+<li>Valeur : 10</li>
+<li>Montant minimum : 50 (pour un minimum de 50 $CA)</li>
+<li>Remise maximale : 25 (plafond de 25 $CA de rabais)</li>
+<li>Limite par client : 1</li>
+<li>Cochez <strong>Premiere commande uniquement</strong></li>
+<li>Laissez les dates vides (valide indefiniment)</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>Scenario B : Preparer un code Black Friday a duree limitee</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouveau code</strong></li>
+<li>Saisissez le code : <code>BLACKFRIDAY25</code></li>
+<li>Description : "Vente Black Friday 2026 - 25% de reduction"</li>
+<li>Type : Pourcentage</li>
+<li>Valeur : 25</li>
+<li>Remise maximale : 100 (plafond de 100 $CA)</li>
+<li>Limite totale : 500 (maximum 500 utilisations)</li>
+<li>Limite par client : 1</li>
+<li>Date de debut : 2026-11-27 00:00</li>
+<li>Date de fin : 2026-11-30 23:59</li>
+<li>Ne cochez PAS "Premiere commande uniquement"</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>Scenario C : Analyser la performance d'un code promo apres une campagne</h3>
+
+<ol>
+<li>Ouvrez la page Codes Promo</li>
+<li>Recherchez le code utilise dans votre campagne</li>
+<li>Selectionnez-le dans la liste</li>
+<li>Dans le panneau de detail, consultez :</li>
+</ol>
+<ul>
+<li>Le nombre d'utilisations (section Utilisation)</li>
+<li>Le revenu genere (section Impact commercial)</li>
+<li>Les produits les plus achetes avec ce code (section Impact commercial)</li>
+</ul>
+<ol>
+<li>Pour un rapport complet, exportez les codes en CSV et croisez avec vos donnees de campagne</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Puis-je modifier le texte d'un code apres sa creation ?</strong></p>
+<p>R: Oui, vous pouvez modifier le code via le formulaire d'edition. Cependant, si des clients ont deja recu l'ancien code (par email, par exemple), ils ne pourront plus l'utiliser. Creez plutot un nouveau code dans ce cas.</p>
+
+<p><strong>Q: Que se passe-t-il quand un code expire ?</strong></p>
+<p>R: Le code passe automatiquement en statut "Expire" (badge rouge). Les clients qui tentent de l'utiliser recoivent un message d'erreur au moment du paiement. Le code reste visible dans la liste admin pour consultation.</p>
+
+<p><strong>Q: Comment savoir quels codes sont les plus utilises ?</strong></p>
+<p>R: Cliquez sur <strong>Statistiques</strong> dans le ruban pour voir un resume rapide incluant le top 3 des codes les plus utilises. Pour plus de detail, selectionnez chaque code individuellement.</p>
+
+<p><strong>Q: Peut-on cumuler plusieurs codes promo sur une meme commande ?</strong></p>
+<p>R: Non, en general un seul code promo peut etre applique par commande. Cette restriction est geree au niveau du panier.</p>
+
+<p><strong>Q: Quelle est la difference entre "desactiver" et "supprimer" un code ?</strong></p>
+<p>R: Desactiver rend le code temporairement inutilisable mais le conserve dans le systeme (vous pouvez le reactiver plus tard). Supprimer le retire definitivement.</p>
+
+<hr>
+
+<h2>Strategie expert : codes promo par objectif marketing</h2>
+
+<h3>Codes d'acquisition (attirer de nouveaux clients)</h3>
+
+<p>Les codes d'acquisition ciblent les visiteurs qui n'ont jamais achete. Ils reduisent la barriere a l'entree pour un premier achat de peptides, un produit a forte valeur unitaire ou le panier d'un nouveau client peut sembler intimidant.</p>
+
+<table>
+<thead>
+    <tr><th>Code</th><th>Remise</th><th>Condition</th><th>Objectif</th></tr>
+</thead>
+<tbody>
+  <tr><td><code>BIENVENUE10</code></td><td>10%</td><td>Premiere commande, min 50 $CA</td><td>Convertir les visiteurs en acheteurs</td></tr>
+  <tr><td><code>PREMIER15</code></td><td>15 $CA fixe</td><td>Premiere commande, min 75 $CA</td><td>Inciter un premier panier plus eleve</td></tr>
+  <tr><td><code>ESSAI20</code></td><td>20%</td><td>Premiere commande, max 30 $CA de remise</td><td>Offrir un incitatif fort mais plafonne</td></tr>
+</tbody>
+</table>
+<p><strong>Limites anti-abus recommandees</strong> : 1 usage par client, expiration 30 jours apres creation, premiere commande uniquement cochee. Surveillez le taux de conversion de ces codes -- un bon code d'acquisition convertit entre 8% et 15% des visiteurs qui le recoivent.</p>
+
+<h3>Codes de retention (fideliser les clients existants)</h3>
+
+<p>Les clients recurrents representent 60 a 70% du revenu d'un e-commerce de peptides. Recompensez-les pour maintenir leur loyaute.</p>
+
+<table>
+<thead>
+    <tr><th>Code</th><th>Remise</th><th>Condition</th><th>Objectif</th></tr>
+</thead>
+<tbody>
+  <tr><td><code>FIDELE15</code></td><td>15%</td><td>Min 2 commandes precedentes, min 100 $CA</td><td>Recompenser les clients reguliers</td></tr>
+  <tr><td><code>VIP25</code></td><td>25 $CA fixe</td><td>Min 5 commandes, min 150 $CA</td><td>Offre exclusive pour les meilleurs clients</td></tr>
+  <tr><td><code>RETOUR10</code></td><td>10%</td><td>Client inactif 60+ jours</td><td>Reactiver un client dormant</td></tr>
+</tbody>
+</table>
+<h3>Codes de panier moyen (augmenter la valeur par commande)</h3>
+
+<p>L'objectif est de pousser le client a ajouter un produit supplementaire ou a passer a une quantite superieure.</p>
+
+<table>
+<thead>
+    <tr><th>Code</th><th>Remise</th><th>Condition</th><th>Objectif</th></tr>
+</thead>
+<tbody>
+  <tr><td><code>BUNDLE20</code></td><td>20%</td><td>Min 3 produits differents, min 200 $CA</td><td>Encourager les lots</td></tr>
+  <tr><td><code>PLUS50</code></td><td>50 $CA fixe</td><td>Min 300 $CA de panier</td><td>Inciter les grosses commandes</td></tr>
+  <tr><td><code>STACK15</code></td><td>15%</td><td>Categorie "Stacks peptides" uniquement</td><td>Promouvoir les combinaisons</td></tr>
+</tbody>
+</table>
+<h3>Calcul du ROI d'un code promo</h3>
+
+<p>Pour chaque code promo, calculez le retour sur investissement :</p>
+
+<p><strong>Formule</strong> : <code>ROI = (Revenu incremental - Remise totale accordee) / Remise totale accordee x 100</code></p>
+
+<ul>
+<li><strong>Revenu incremental</strong> : le revenu genere par les commandes utilisant le code, MOINS le revenu que ces clients auraient probablement depense sans le code (estimez 30 a 50% pour les clients existants, 0% pour les nouveaux)</li>
+<li><strong>Remise totale</strong> : somme de toutes les remises accordees par le code</li>
+<li><strong>Cible</strong> : un ROI superieur a 200% signifie que le code est rentable (chaque dollar de remise genere 2 $CA de revenu net supplementaire)</li>
+</ul>
+
+<p><strong>Exemple concret</strong> :</p>
+<ul>
+<li>Code <code>BIENVENUE10</code> utilise 45 fois en mars</li>
+<li>Revenu total des commandes avec ce code : 6 750 $CA</li>
+<li>Remise totale accordee : 675 $CA</li>
+<li>Ces clients etaient tous nouveaux (revenu incremental = 100%) : 6 750 $CA</li>
+<li>ROI = (6 750 - 675) / 675 x 100 = <strong>900%</strong> -- excellent resultat</li>
+</ul>
+
+<p><strong>Seuils d'interpretation</strong> :</p>
+<table>
+<thead>
+    <tr><th>ROI</th><th>Interpretation</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td>< 100%</td><td>Perte nette</td><td>Suspendre ou revoir les conditions</td></tr>
+  <tr><td>100-200%</td><td>Neutre a faible</td><td>Ajuster la remise ou le ciblage</td></tr>
+  <tr><td>200-500%</td><td>Bon</td><td>Maintenir</td></tr>
+  <tr><td>> 500%</td><td>Excellent</td><td>Augmenter la visibilite du code</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Code promo</strong></td><td>Une chaine de caracteres que le client saisit au paiement pour obtenir une reduction</td></tr>
+  <tr><td><strong>Pourcentage</strong></td><td>Type de remise ou la reduction est un pourcentage du montant de la commande</td></tr>
+  <tr><td><strong>Montant fixe</strong></td><td>Type de remise ou la reduction est un montant precis en dollars canadiens</td></tr>
+  <tr><td><strong>Montant minimum</strong></td><td>Le seuil minimum du panier pour que le code soit applicable</td></tr>
+  <tr><td><strong>Remise maximale</strong></td><td>Le plafond de la reduction en dollars, utile pour les codes en pourcentage</td></tr>
+  <tr><td><strong>Limite d'utilisation</strong></td><td>Le nombre total de fois que le code peut etre utilise par tous les clients</td></tr>
+  <tr><td><strong>Limite par client</strong></td><td>Le nombre de fois qu'un meme client peut utiliser le code</td></tr>
+  <tr><td><strong>Premiere commande</strong></td><td>Restriction qui limite l'usage du code aux clients n'ayant jamais passe de commande</td></tr>
+  <tr><td><strong>CSV</strong></td><td>Comma-Separated Values, un format de fichier tabulaire compatible avec Excel</td></tr>
+  <tr><td><strong>Impact commercial</strong></td><td>Les donnees de revenus et commandes generes par un code (pont vers le module Commerce)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/promotions">Promotions</a> -- Remises automatiques sans code a saisir</li>
+<li><a href="/admin/newsletter">Newsletter</a> -- Envoyer les codes promo par email a vos abonnes</li>
+<li><a href="/admin/commandes">Commandes</a> -- Voir les commandes ayant utilise un code promo</li>
+<li><a href="/admin/rapports">Rapports marketing</a> -- Analyser l'impact des codes sur les ventes</li>
+<li><a href="/admin/customers">Clients</a> -- Consulter les fiches clients ayant utilise un code</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

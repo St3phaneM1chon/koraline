@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Publicites Meta (Facebook/Instagram) &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 07 — Media</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Publicites Meta (Facebook/Instagram)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Media > Publicites > Meta Ads</p>
+<p><strong>URL</strong>: <code>/admin/media/ads-meta</code></p>
+<p><strong>Niveau</strong>: Intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~12 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Meta Ads</strong> affiche le tableau de bord de vos campagnes publicitaires sur Facebook et Instagram. Elle regroupe les metriques des deux plateformes puisqu'elles sont gerees via le meme Meta Business Suite.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir les metriques globales : impressions, clics, depenses, conversions, CTR et CPA</li>
+<li>Suivre l'evolution quotidienne des performances</li>
+<li>Consulter la liste de vos campagnes actives</li>
+<li>Synchroniser les donnees depuis Meta Ads Manager</li>
+<li>Acceder au portail Meta Business Suite</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Meta Business Suite</strong></td><td>Plateforme unifiee de Meta pour gerer Facebook et Instagram</td></tr>
+  <tr><td><strong>Audience personnalisee</strong></td><td>Groupe de personnes ciblees selon des criteres specifiques</td></tr>
+  <tr><td><strong>Pixel Meta</strong></td><td>Code de suivi installe sur votre site pour mesurer les conversions</td></tr>
+  <tr><td><strong>Retargeting</strong></td><td>Recibler les personnes qui ont deja visite votre site</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Allez dans <strong>Media > Tableau de Bord</strong></li>
+<li>Cliquez sur la carte <strong>Meta (FB/IG)</strong> dans la section "APIs & Publicites"</li>
+<li>Ou naviguez vers <code>/admin/media/ads-meta</code></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>Cartes KPI (6 indicateurs)</h3>
+<p>Impressions, Clics, Depenses, Conversions, CTR, CPA.</p>
+
+<h3>Graphique de tendance quotidienne</h3>
+<p>Evolution jour par jour avec selecteur de periode.</p>
+
+<h3>Liste des campagnes</h3>
+<p>Tableau detaille par campagne (Facebook et Instagram confondus).</p>
+
+<hr>
+
+<h2>Benchmarks Meta Ads (e-commerce)</h2>
+<ul>
+<li><strong>CTR moyen Facebook</strong> : 1.0% a 2.0%</li>
+<li><strong>CTR moyen Instagram</strong> : 0.8% a 1.5%</li>
+<li><strong>CPC moyen</strong> : 0.50$ a 2.00$ CAD</li>
+<li><strong>Meilleur format Facebook</strong> : Carrousel d'images produits</li>
+<li><strong>Meilleur format Instagram</strong> : Reels et Stories avec appel a l'action</li>
+</ul>
+
+<hr>
+
+<h2>Cas d'utilisation pour BioCycle Peptides</h2>
+
+<ul>
+<li><strong>Carrousel produits</strong> : montrer plusieurs peptides avec prix et certificats</li>
+<li><strong>Reels Instagram</strong> : demonstrations de produits en 15-30 secondes</li>
+<li><strong>Retargeting</strong> : recibler les visiteurs qui ont ajoute un produit au panier sans acheter</li>
+<li><strong>Lookalike Audience</strong> : trouver de nouveaux clients similaires a vos meilleurs acheteurs</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>Synchroniser les donnees</h3>
+<ol>
+<li>Cliquez sur <strong>Synchroniser</strong></li>
+<li>Les donnees Facebook et Instagram sont recuperees ensemble via Meta Business API</li>
+</ol>
+
+<h3>Suivre les campagnes</h3>
+<ul>
+<li>Les campagnes Facebook et Instagram apparaissent dans le meme tableau</li>
+<li>Le nom de la campagne inclut generalement la plateforme (ex: "FB - Peptides BPC" ou "IG - Promo ete")</li>
+</ul>
+
+<hr>
+
+<h2>Questions frequentes</h2>
+
+<p><strong>Q : Les donnees Facebook et Instagram sont-elles separees ?</strong></p>
+<p>R : Non, elles sont combinees dans cette vue car Meta les gere via la meme API. Pour voir le detail par plateforme, consultez Meta Ads Manager.</p>
+
+<p><strong>Q : Comment installer le Pixel Meta sur mon site ?</strong></p>
+<p>R : Le Pixel est generalement configure dans les parametres du site. Contactez votre administrateur technique.</p>
+
+<hr>
+
+<h2>Strategie expert : Publicite Meta pour un e-commerce de peptides -- restrictions et strategies alternatives</h2>
+
+<h3>Politique Meta sur les substances et supplements</h3>
+
+<p>Meta (Facebook et Instagram) applique des restrictions parmi les plus severes de l'industrie publicitaire en ce qui concerne les substances chimiques, les supplements et tout ce qui touche a la sante. Pour BioCycle Peptides, cela signifie que <strong>la publicite directe de peptides est extremement risquee</strong> et souvent rejetee.</p>
+
+<p><strong>Politique Meta applicable :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Categorie Meta</th><th>Statut pour les peptides</th><th>Consequence</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Substances non approuvees</strong></td><td>Les peptides peuvent etre classes dans cette categorie</td><td>Rejet des annonces, potentielle suspension du compte</td></tr>
+  <tr><td><strong>Claims sante</strong></td><td>Tout claim therapeutique est interdit</td><td>Pas de "guerit", "traite", "ameliore la sante"</td></tr>
+  <tr><td><strong>Contenu pharmaceutique</strong></td><td>Necessite une pre-approbation dans certains pays</td><td>Process long et incertain</td></tr>
+  <tr><td><strong>Produits dangereux</strong></td><td>Certains peptides peuvent etre signales</td><td>Rejet automatique par l'algorithme de moderation</td></tr>
+  <tr><td><strong>Supplements alimentaires</strong></td><td>Restreint mais possible avec precautions</td><td>Necessite un positionnement tres prudent</td></tr>
+</tbody>
+</table>
+<p><strong>Risques concrets :</strong></p>
+<ul>
+<li>Rejet de l'annonce dans les 24h (algorithme automatique)</li>
+<li>Restriction du compte publicitaire (limite de depenses imposee)</li>
+<li>Suspension definitive du compte Business Manager (la sanction la plus grave)</li>
+<li>Les appels en moderation prennent 2-6 semaines et echouent souvent</li>
+</ul>
+
+<h3>Strategies alternatives (contourner les restrictions sans les violer)</h3>
+
+<p>L'approche directe ("Achetez nos peptides sur biocyclepeptides.com") sera probablement rejetee. Voici les strategies alternatives qui fonctionnent dans le marche des peptides :</p>
+
+<p><strong>Strategie 1 : Contenu educatif (la plus efficace)</strong></p>
+
+<p>Au lieu de vendre directement, publier du contenu educatif qui attire les chercheurs et professionnels vers le site :</p>
+
+<table>
+<thead>
+    <tr><th>Type de contenu</th><th>Exemple</th><th>Objectif Meta Ads</th></tr>
+</thead>
+<tbody>
+  <tr><td>Article de blog</td><td>"Comment lire un certificat d'analyse de peptides"</td><td>Trafic</td></tr>
+  <tr><td>Video educative</td><td>"Les 5 criteres de qualite pour les peptides de recherche"</td><td>Vues video</td></tr>
+  <tr><td>Infographie</td><td>"Le processus de synthese des peptides explique"</td><td>Engagement</td></tr>
+  <tr><td>Guide telechargesable</td><td>"Guide complet des peptides pour la recherche" (email requis)</td><td>Lead generation</td></tr>
+</tbody>
+</table>
+<p><strong>Ce contenu n'est pas publicitaire</strong> aux yeux de Meta : il ne vend pas un produit specifique, il eduque. Les utilisateurs qui consomment ce contenu sont ensuite retarges avec du contenu plus avance, et finissent par visiter le site et acheter.</p>
+
+<p><strong>Strategie 2 : Construction de communaute</strong></p>
+
+<ul>
+<li>Creer une page Facebook "BioCycle Peptides - Communaute de Recherche"</li>
+<li>Publier du contenu organique regulier (articles, discussions, actualites scientifiques)</li>
+<li>Promouvoir la page (pas les produits) via Meta Ads -- cette approche est rarement rejetee</li>
+<li>Les membres de la communaute deviennent naturellement des clients</li>
+</ul>
+
+<p><strong>Strategie 3 : Retargeting visiteurs du site</strong></p>
+
+<p>Le retargeting est la strategie la plus rentable sur Meta, et elle est moins susceptible d'etre rejetee car elle cible des personnes qui ont deja montre un interet :</p>
+
+<table>
+<thead>
+    <tr><th>Audience de retargeting</th><th>Message</th><th>Resultat attendu</th></tr>
+</thead>
+<tbody>
+  <tr><td>Visiteurs du site (7 derniers jours)</td><td>"Completez votre commande chez BioCycle"</td><td>Recuperation de paniers abandonnes</td></tr>
+  <tr><td>Visiteurs d'une fiche produit specifique</td><td>Carrousel des produits consultes</td><td>Conversion directe</td></tr>
+  <tr><td>Clients existants (n'ont pas commande depuis 60+ jours)</td><td>"Votre prochaine commande vous attend"</td><td>Reactivation</td></tr>
+  <tr><td>Lecteurs d'articles de blog</td><td>"Decouvrez notre catalogue de recherche"</td><td>Migration du contenu vers le commerce</td></tr>
+</tbody>
+</table>
+<p><strong>Important :</strong> Meme pour le retargeting, eviter les claims medicaux et les images de seringues/injections.</p>
+
+<p><strong>Strategie 4 : Lookalike Audiences</strong></p>
+
+<p>Creer des audiences similaires basees sur :</p>
+<ul>
+<li>Les 100 meilleurs clients (par LTV)</li>
+<li>Les acheteurs recurrents (3+ commandes)</li>
+<li>Les visiteurs qui ont passe plus de 5 minutes sur le site</li>
+</ul>
+
+<h3>Budget et ROAS cible pour Meta Ads</h3>
+
+<table>
+<thead>
+    <tr><th>Phase</th><th>Budget mensuel</th><th>ROAS cible</th><th>Strategie</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Phase 1 : Contenu</strong></td><td>300 - 500$</td><td>N/A (objectif = trafic et leads)</td><td>Promotion d'articles educatifs, lead magnets</td></tr>
+  <tr><td><strong>Phase 2 : Retargeting</strong></td><td>500 - 1 000$</td><td>> 3x</td><td>Retargeting visiteurs + clients inactifs</td></tr>
+  <tr><td><strong>Phase 3 : Acquisition</strong></td><td>500 - 1 000$</td><td>> 2.5x</td><td>Lookalike audiences + contenu educatif</td></tr>
+  <tr><td><strong>Total recommande</strong></td><td>1 000 - 2 000$</td><td>> 3x global</td><td>Mix des 3 strategies</td></tr>
+</tbody>
+</table>
+<p><strong>Quand un ROAS > 3x est-il rentable ?</strong> Si le panier moyen est de 250$ CAD et la marge brute est de 40% (100$ de marge), un ROAS de 3x signifie que chaque dollar depense en publicite genere 3$ de ventes et 1.20$ de marge. Le cout de la publicite est de 1$, donc le benefice net est de 0.20$ par dollar depense. A 1 000$/mois de budget, cela genere 3 000$ de ventes supplementaires et 200$ de profit direct -- plus la valeur a vie du client acquis.</p>
+
+<h3>Plan B : Si le compte est restreint</h3>
+
+<p>Si Meta restreint ou suspend le compte publicitaire de BioCycle :</p>
+
+<ol>
+<li><strong>Ne pas creer un nouveau compte</strong> (Meta detecte et bannit definitivement)</li>
+<li><strong>Faire appel</strong> via le Business Help Center avec documentation (licence d'entreprise, conformite reglementaire)</li>
+<li><strong>Pivoter vers d'autres canaux</strong> : Google Ads (moins restrictif pour les peptides), YouTube, LinkedIn, contenu organique</li>
+<li><strong>Investir dans le SEO et le contenu</strong> : moins volatile que la publicite payante</li>
+<li><strong>Renforcer le programme ambassadeur</strong> : acquisition sans dependance aux plateformes publicitaires</li>
+</ol>
+
+<hr>
+
+<h2>Pages associees</h2>
+
+<table>
+<thead>
+    <tr><th>Page</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><a href="./25-api-meta.md">API Meta</a></td><td>Configuration de la connexion Meta</td></tr>
+  <tr><td><a href="./37-social-scheduler.md">Planificateur Social</a></td><td>Publication organique sur Facebook/Instagram</td></tr>
+  <tr><td><a href="./02-analytics.md">Analytique Media</a></td><td>Vue globale des performances</td></tr>
+</tbody>
+</table>
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

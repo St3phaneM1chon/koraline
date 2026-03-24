@@ -70,8 +70,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // C3-SEC-S-006 FIX: Select only needed fields to avoid overfetching password hash in memory
     const user = await prisma.user.findUnique({
       where: { email: normalizedEmail },
+      select: {
+        id: true, email: true, name: true, role: true, image: true, locale: true,
+        password: true, mfaEnabled: true, mfaSecret: true,
+        tenantId: true, emailVerified: true,
+      },
     });
 
     if (!user || !user.password) {

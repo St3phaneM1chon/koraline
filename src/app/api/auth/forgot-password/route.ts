@@ -51,9 +51,10 @@ export async function POST(request: NextRequest) {
 
     const email = stripControlChars(stripHtml(parsed.data.email));
 
-    // Vérifier si l'utilisateur existe
+    // C3-SEC-S-006 FIX: Select only needed fields (avoid fetching password hash)
     const user = await prisma.user.findUnique({
       where: { email: email.toLowerCase() },
+      select: { id: true, email: true, name: true },
     });
 
     // IMPORTANT: Toujours retourner succès même si l'email n'existe pas

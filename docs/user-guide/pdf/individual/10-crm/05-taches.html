@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Taches CRM &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 10 — CRM</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion des Taches CRM</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Taches</p>
+<p><strong>URL</strong>: <code>/admin/crm/tasks</code></p>
+<p><strong>Niveau</strong>: Debutant a intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Taches</strong> est le gestionnaire d'actions de votre equipe commerciale. Chaque action a realiser (appeler un prospect, envoyer un devis, relancer un client, preparer une presentation) est une tache dans le CRM.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir toutes les taches de votre equipe ou les votres uniquement</li>
+<li>Creer des taches manuellement ou par automatisation</li>
+<li>Assigner des taches a des membres de l'equipe</li>
+<li>Definir des echeances et des priorites</li>
+<li>Lier une tache a un contact, un deal ou une entreprise</li>
+<li>Marquer les taches comme completees</li>
+<li>Filtrer par statut (en retard, aujourd'hui, cette semaine, completees)</li>
+<li>Recevoir des rappels automatiques pour les echeances proches</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Pourquoi gerer les taches dans le CRM ?</h3>
+
+<p>Dans un systeme CRM, les taches ne sont pas de simples rappels. Elles sont <strong>liees a des contacts et des deals</strong>, ce qui permet de :</p>
+<ul>
+<li>Savoir exactement qui doit faire quoi, pour quel prospect</li>
+<li>Ne jamais oublier une relance ou un suivi</li>
+<li>Mesurer la productivite de l'equipe (nombre de taches completees, temps moyen)</li>
+<li>Automatiser la creation de taches (ex: apres un appel, creer une tache de suivi)</li>
+</ul>
+
+<h3>Types de taches</h3>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Icone</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Appel</strong></td><td>Telephone</td><td>Passer un appel a un contact</td></tr>
+  <tr><td><strong>Email</strong></td><td>Enveloppe</td><td>Envoyer un email</td></tr>
+  <tr><td><strong>Reunion</strong></td><td>Calendrier</td><td>Organiser ou participer a une reunion</td></tr>
+  <tr><td><strong>Suivi</strong></td><td>Fleche</td><td>Relancer ou faire un point</td></tr>
+  <tr><td><strong>Document</strong></td><td>Fichier</td><td>Preparer ou envoyer un document</td></tr>
+  <tr><td><strong>Autre</strong></td><td>Point</td><td>Action personnalisee</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>CRM > <strong>Taches</strong> dans le panneau lateral</li>
+<li>Ou depuis n'importe quelle fiche contact/deal : onglet <strong>Activites</strong></li>
+<li>URL directe : dans le panneau CRM sous le groupe principal</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. Les onglets de filtrage</h3>
+
+<table>
+<thead>
+    <tr><th>Onglet</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Mes taches</strong></td><td>Uniquement les taches qui vous sont assignees</td></tr>
+  <tr><td><strong>Equipe</strong></td><td>Toutes les taches de votre equipe</td></tr>
+  <tr><td><strong>En retard</strong></td><td>Taches dont l'echeance est passee (badge rouge)</td></tr>
+  <tr><td><strong>Aujourd'hui</strong></td><td>Taches a faire aujourd'hui</td></tr>
+  <tr><td><strong>Cette semaine</strong></td><td>Taches de la semaine en cours</td></tr>
+  <tr><td><strong>Completees</strong></td><td>Historique des taches terminees</td></tr>
+</tbody>
+</table>
+<h3>2. La liste des taches</h3>
+
+<p>Chaque tache affiche :</p>
+<ul>
+<li><strong>Titre</strong> et description courte</li>
+<li><strong>Type</strong> (appel, email, reunion, etc.)</li>
+<li><strong>Priorite</strong> (haute = rouge, normale = bleu, basse = gris)</li>
+<li><strong>Echeance</strong> (avec indicateur de retard)</li>
+<li><strong>Assignee a</strong> : le membre de l'equipe responsable</li>
+<li><strong>Liee a</strong> : contact et/ou deal associe (lien cliquable)</li>
+<li><strong>Statut</strong> : a faire, en cours, completee</li>
+</ul>
+
+<h3>3. Le panneau de detail</h3>
+
+<p>Au clic sur une tache :</p>
+<ul>
+<li>Description complete</li>
+<li>Contact et deal associes</li>
+<li>Notes et commentaires</li>
+<li>Historique des modifications</li>
+<li>Bouton <strong>Marquer terminee</strong></li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer une tache</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouvelle tache</strong> dans le ruban</li>
+<li>Remplissez les champs :</li>
+</ol>
+<ul>
+<li><strong>Titre</strong> : description courte de l'action (ex: "Appeler Dr. Martin pour suivi devis")</li>
+<li><strong>Type</strong> : appel, email, reunion, suivi, document</li>
+<li><strong>Echeance</strong> : date et heure limites</li>
+<li><strong>Priorite</strong> : haute, normale, basse</li>
+<li><strong>Assignee a</strong> : le responsable (vous-meme ou un collegue)</li>
+<li><strong>Contact</strong> : la personne concernee (recherche par nom)</li>
+<li><strong>Deal</strong> : l'opportunite associee (optionnel)</li>
+<li><strong>Description</strong> : details complementaires</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong> : Vous pouvez aussi creer une tache directement depuis la fiche d'un contact ou d'un deal, ce qui pre-remplit le lien automatiquement.</p>
+</blockquote>
+
+<h3>2. Marquer une tache comme completee</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cochez la case a gauche de la tache dans la liste, OU</li>
+<li>Ouvrez la tache et cliquez sur <strong>Marquer terminee</strong></li>
+<li>Ajoutez un commentaire de completion si necessaire</li>
+<li>La tache passe dans l'onglet "Completees"</li>
+</ol>
+
+<h3>3. Creer des taches recurrentes</h3>
+
+<p><strong>Objectif</strong> : Pour les actions regulieres (rapport hebdomadaire, relance mensuelle).</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Creez une tache normalement</li>
+<li>Activez l'option <strong>Recurrence</strong></li>
+<li>Choisissez la frequence : quotidienne, hebdomadaire, mensuelle</li>
+<li>Le systeme creera automatiquement une nouvelle tache a chaque echeance</li>
+</ol>
+
+<h3>4. Gestion d'equipe</h3>
+
+<p><strong>En tant que manager</strong> :</p>
+<ul>
+<li>Consultez l'onglet <strong>Equipe</strong> pour voir toutes les taches</li>
+<li>Filtrez par representant pour evaluer la charge de travail</li>
+<li>Reassignez les taches si un membre est surcharge</li>
+<li>Utilisez la vue <strong>Calendrier</strong> pour voir les echeances visuellement</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Routine matinale</h3>
+<ol>
+<li>Ouvrez l'onglet <strong>En retard</strong> : traitez les urgences</li>
+<li>Consultez <strong>Aujourd'hui</strong> : planifiez votre journee</li>
+<li>Pour chaque tache, effectuez l'action puis marquez comme terminee</li>
+<li>Si une tache necessite un suivi, creez une nouvelle tache avec la prochaine echeance</li>
+</ol>
+
+<h3>Apres un appel commercial</h3>
+<ol>
+<li>Terminez l'appel</li>
+<li>Creez une tache de suivi (ex: "Envoyer devis" echeance 2 jours)</li>
+<li>Ajoutez des notes sur la conversation dans la fiche contact</li>
+<li>Si un devis est promis, creez aussi une tache "Preparer devis"</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Les taches sont-elles visibles par toute l'equipe ?</strong></p>
+<p>R : Les taches sont visibles par le createur, l'assignee et les administrateurs. Les autres membres de l'equipe ne voient pas vos taches individuelles, sauf si un manager consulte la vue Equipe.</p>
+
+<p><strong>Q : Puis-je recevoir des rappels ?</strong></p>
+<p>R : Oui. Le systeme envoie des notifications (dans l'interface et par email) pour les taches proches de leur echeance ou en retard. Vous pouvez configurer les preferences de notification dans vos parametres.</p>
+
+<p><strong>Q : Les taches automatiques sont-elles differentes des manuelles ?</strong></p>
+<p>R : Fonctionnellement non, elles sont identiques. La seule difference est leur origine : les taches automatiques sont creees par les workflows (ex: "Appeler le lead 24h apres son inscription"), tandis que les manuelles sont creees par vous.</p>
+
+<p><strong>Q : Puis-je supprimer une tache ?</strong></p>
+<p>R : Oui, mais il est preferable de la marquer comme terminee ou annulee pour garder un historique. La suppression est irreversible.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Tache</strong></td><td>Action a realiser, liee a un contact ou un deal</td></tr>
+  <tr><td><strong>Echeance</strong></td><td>Date et heure limites pour completer la tache</td></tr>
+  <tr><td><strong>Assignee</strong></td><td>Personne responsable de la tache</td></tr>
+  <tr><td><strong>Tache recurrente</strong></td><td>Tache qui se recree automatiquement a intervalle regulier</td></tr>
+  <tr><td><strong>Priorite</strong></td><td>Niveau d'urgence : haute, normale, basse</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/contacts">Contacts</a> : Contacts associes aux taches</li>
+<li><a href="/admin/crm/pipeline">Pipeline</a> : Deals associes aux taches</li>
+<li><a href="/admin/crm/workflows">Automatisations</a> : Workflows creant des taches automatiquement</li>
+<li><a href="/admin/crm/scheduling">Planification</a> : Calendrier de l'equipe commerciale</li>
+<li><a href="/admin/crm/activity-reports">Rapports d'activite</a> : Mesure de la productivite</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

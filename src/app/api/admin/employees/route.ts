@@ -242,11 +242,10 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
       });
     }
 
-    // Assign permissions if provided and role is EMPLOYEE
+    // C3-PERF-P-010 FIX: Batch upsert permissions via $transaction instead of individual calls
     if (targetRole === 'EMPLOYEE' && Array.isArray(permissions) && permissions.length > 0) {
-      // Find or create permission overrides for each permission
-      for (const permCode of permissions) {
-        await prisma.userPermissionOverride.upsert({
+      const upsertOps = permissions.map((permCode: string) =>
+        prisma.userPermissionOverride.upsert({
           where: {
             userId_permissionCode: {
               userId: employee.id,
@@ -264,8 +263,9 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
             grantedBy: session.user.id,
             reason: 'Assigned during employee invitation',
           },
-        });
-      }
+        })
+      );
+      await prisma.$transaction(upsertOps);
     }
 
     // Assign phone number if provided

@@ -171,19 +171,24 @@ export const POST = withAdminGuard(async (_request, { session }) => {
       autoAssigned: boolean;
     }> = [];
 
+    // C3-PERF-P-002 FIX: Collect all updates and batch via $transaction
+    const updateOps: ReturnType<typeof prisma.chartOfAccount.update>[] = [];
+
     for (const account of accountsWithoutGifi) {
       const topSuggestions = getTopSuggestions(account.name, account.type, 1);
       const top = topSuggestions[0];
 
       if (top && top.score > 0.7) {
-        // Auto-assign: high confidence match
-        await prisma.chartOfAccount.update({
-          where: { id: account.id },
-          data: {
-            gifiCode: top.code,
-            gifiName: top.nameEn,
-          },
-        });
+        // Auto-assign: high confidence match — queue for batch
+        updateOps.push(
+          prisma.chartOfAccount.update({
+            where: { id: account.id },
+            data: {
+              gifiCode: top.code,
+              gifiName: top.nameEn,
+            },
+          })
+        );
         assigned++;
         suggestions.push({
           accountId: account.id,
@@ -206,6 +211,11 @@ export const POST = withAdminGuard(async (_request, { session }) => {
           autoAssigned: false,
         });
       }
+    }
+
+    // Execute all updates in a single transaction
+    if (updateOps.length > 0) {
+      await prisma.$transaction(updateOps);
     }
 
     // Audit log

@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coaching des agents &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 09 — Telephonie</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Coaching des agents</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Coaching</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Le module <strong>Coaching</strong> permet aux superviseurs de former et d'evaluer les agents du centre</p>
+<p>d'appels en temps reel. Trois modes d'intervention sont disponibles pendant un appel en cours :</p>
+
+<ul>
+<li><strong>Ecoute (Listen)</strong> : Le superviseur ecoute l'appel sans que l'agent ou le client ne le sache</li>
+<li><strong>Chuchotement (Whisper)</strong> : Le superviseur parle a l'agent sans que le client n'entende</li>
+<li><strong>Intervention (Barge)</strong> : Le superviseur rejoint la conversation a trois voix</li>
+</ul>
+
+<p>Chaque session de coaching est documentee avec un sujet, des objectifs, et une evaluation</p>
+<p>par criteres ponderes. Cela permet de suivre la progression des agents dans le temps.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, sous <strong>Operations</strong>, cliquez sur <strong>Coaching</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/coaching</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Classement des agents</h3>
+<p>En haut de page, des cartes affichent le classement des agents par score moyen :</p>
+<ul>
+<li>Position (1, 2, 3...)</li>
+<li>Nom de l'agent</li>
+<li>Nombre de sessions completees</li>
+<li>Score moyen sur 10</li>
+<li>Etoiles de notation (1 a 5)</li>
+</ul>
+
+<p>Le premier du classement a un arriere-plan dore.</p>
+
+<h3>Sessions actives</h3>
+<p>La section suivante liste les sessions de coaching en cours ou planifiees :</p>
+<ul>
+<li><strong>Coach</strong> : Nom du superviseur</li>
+<li><strong>Agent</strong> : Nom de l'agent coache</li>
+<li><strong>Statut</strong> : Planifie, En cours, Termine</li>
+<li><strong>Duree</strong> : Temps ecoule depuis le debut</li>
+<li><strong>Sujet</strong> : Theme de la session</li>
+<li><strong>Actions</strong> : Boutons Ecoute, Chuchotement, Intervention, Terminer</li>
+</ul>
+
+<h3>Historique des sessions</h3>
+<p>Un tableau liste les sessions terminees avec :</p>
+<ul>
+<li>Coach et Agent</li>
+<li>Sujet aborde</li>
+<li>Score obtenu (sur 10)</li>
+<li>Date de la session</li>
+</ul>
+
+<h3>Bouton "Nouvelle session"</h3>
+<p>Lance la creation d'une session de coaching.</p>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Modes de coaching</h3>
+
+<table>
+<thead>
+    <tr><th>Mode</th><th>Icone</th><th>Description</th><th>Utilisation</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Ecoute</strong></td><td>Casque</td><td>Ecouter sans etre detecte</td><td>Evaluation silencieuse</td></tr>
+  <tr><td><strong>Chuchotement</strong></td><td>Bulle</td><td>Parler a l'agent uniquement</td><td>Guider pendant un appel difficile</td></tr>
+  <tr><td><strong>Intervention</strong></td><td>Telephone</td><td>Rejoindre la conversation</td><td>Prendre le relais sur un probleme</td></tr>
+</tbody>
+</table>
+<h3>Creation d'une session</h3>
+<p>Le formulaire de nouvelle session demande :</p>
+<ul>
+<li><strong>Agent</strong> : Selection dans la liste des employes</li>
+<li><strong>Sujet</strong> : Theme de la session (ex: "Techniques de vente", "Gestion des plaintes")</li>
+<li><strong>Objectifs</strong> : Ce que l'agent doit pratiquer</li>
+<li><strong>Date/Heure</strong> : Planification de la session</li>
+</ul>
+
+<h3>Notation par criteres</h3>
+<p>Apres la session, le coach attribue des scores par critere :</p>
+<ul>
+<li>Chaque critere a un <strong>poids</strong> (importance relative)</li>
+<li>Le score va de 1 a 10</li>
+<li>Un commentaire optionnel accompagne chaque note</li>
+<li>Certains criteres peuvent etre notes automatiquement par l'IA (<strong>auto-scored</strong>)</li>
+<li>Le score moyen pondere est calcule automatiquement</li>
+</ul>
+
+<h3>Progression des agents</h3>
+<p>Le classement des agents permet de suivre l'evolution dans le temps. Un agent avec un</p>
+<p>score moyen en progression constante valide l'efficacite du programme de coaching.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Session d'ecoute silencieuse</h3>
+<ol>
+<li>Cliquez sur <strong>Nouvelle session</strong>.</li>
+<li>Selectionnez l'agent a evaluer.</li>
+<li>Definissez le sujet (ex: "Evaluation trimestrielle").</li>
+<li>Quand l'agent est en appel, cliquez sur <strong>Ecoute</strong>.</li>
+<li>Prenez des notes pendant l'appel.</li>
+<li>Apres l'appel, cliquez sur <strong>Terminer la session</strong>.</li>
+<li>Completez la grille d'evaluation.</li>
+</ol>
+
+<h3>Workflow 2 : Coaching en temps reel</h3>
+<ol>
+<li>Creez une session avec l'agent.</li>
+<li>Quand l'agent recoit un appel difficile, activez le mode <strong>Chuchotement</strong>.</li>
+<li>Guidez l'agent avec des suggestions que le client n'entend pas.</li>
+<li>Si la situation l'exige, passez en mode <strong>Intervention</strong>.</li>
+<li>Terminez la session et evaluez les points d'amelioration.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : L'agent sait-il qu'il est en mode ecoute ?</strong></p>
+<p>R : Non, le mode ecoute est invisible pour l'agent et le client.</p>
+
+<p><strong>Q : Le chuchotement est-il audible par le client ?</strong></p>
+<p>R : Non, seul l'agent entend le superviseur en mode chuchotement.</p>
+
+<p><strong>Q : Puis-je coacher plusieurs agents simultanement ?</strong></p>
+<p>R : Un superviseur ne peut etre en session active qu'avec un seul agent a la fois.</p>
+
+<hr>
+
+<h2>Strategie expert : Techniques de vente consultative pour les peptides</h2>
+
+<h3>Approche consultative vs. vente agressive</h3>
+
+<p>Dans le marche des peptides de recherche, la vente agressive (hard sell) est contre-productive et potentiellement dangereuse sur le plan reglementaire. L'approche consultative -- ou l'agent se positionne comme un conseiller technique plutot qu'un vendeur -- est la seule strategie viable.</p>
+
+<p><strong>Principes fondamentaux :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Principe</th><th>Vente agressive (a eviter)</th><th>Vente consultative (a adopter)</th></tr>
+</thead>
+<tbody>
+  <tr><td>Posture</td><td>"Achetez notre BPC-157, c'est le meilleur"</td><td>"Quel type de recherche menez-vous ? Je peux vous orienter vers le produit adapte"</td></tr>
+  <tr><td>Objectif</td><td>Fermer la vente rapidement</td><td>Comprendre le besoin et proposer la solution optimale</td></tr>
+  <tr><td>Argumentation</td><td>Centree sur le prix et les promotions</td><td>Centree sur la qualite, la purete et la documentation</td></tr>
+  <tr><td>Resultat long terme</td><td>Vente unique, pas de fidelisation</td><td>Client recurrent, referrals naturels</td></tr>
+</tbody>
+</table>
+<h3>Ecoute active et questions ouvertes</h3>
+
+<p>L'agent doit guider la conversation avec des questions ouvertes qui revelent le besoin reel du client :</p>
+
+<p><strong>Questions de decouverte (dans cet ordre) :</strong></p>
+
+<ol>
+<li>"Quel type de recherche ou d'application visez-vous ?" (comprendre le contexte)</li>
+<li>"Avez-vous deja travaille avec ce type de peptide ?" (evaluer le niveau d'expertise)</li>
+<li>"Quel degre de purete est requis pour votre protocole ?" (orienter vers le bon produit)</li>
+<li>"Quelle quantite estimez-vous necessaire pour votre projet ?" (dimensionner la commande)</li>
+<li>"Avez-vous des contraintes particulieres de stockage ou de livraison ?" (anticiper la logistique)</li>
+</ol>
+
+<p><strong>Techniques d'ecoute active :</strong></p>
+<ul>
+<li>Reformuler : "Si je comprends bien, vous cherchez un peptide de purete >98% pour une etude de stabilite..."</li>
+<li>Valider : "C'est tout a fait pertinent. Beaucoup de nos clients en recherche dermatologique choisissent ce produit pour les memes raisons."</li>
+<li>Approfondir : "Pouvez-vous m'en dire plus sur les volumes que vous anticipez sur les 6 prochains mois ?"</li>
+</ul>
+
+<h3>Education du client (le levier de vente le plus puissant)</h3>
+
+<p>Dans le marche des peptides, eduquer le client EST vendre. Un client qui comprend la difference entre un peptide a 85% de purete et un peptide a 99% de purete achete systematiquement le produit premium.</p>
+
+<p><strong>Points d'education a integrer dans la conversation :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Sujet</th><th>Message cle</th><th>Impact sur la vente</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Purete</strong></td><td>"Notre BPC-157 est teste par HPLC et spectrometrie de masse avec un CoA par lot"</td><td>Justifie le prix premium</td></tr>
+  <tr><td><strong>Stockage</strong></td><td>"Les peptides lyophilises se conservent 24 mois a -20C. Une fois reconstitues, 30 jours au refrigerateur"</td><td>Montre l'expertise, cree confiance</td></tr>
+  <tr><td><strong>Reconstitution</strong></td><td>"Nous fournissons un guide de reconstitution avec chaque commande"</td><td>Reduit l'anxiete du premier achat</td></tr>
+  <tr><td><strong>Documentation</strong></td><td>"Le CoA est disponible avant achat sur simple demande"</td><td>Transparence = confiance</td></tr>
+  <tr><td><strong>Conformite</strong></td><td>"Tous nos produits sont etiquetes 'pour usage de recherche uniquement', conformement a la reglementation"</td><td>Protege l'entreprise et rassure le client</td></tr>
+</tbody>
+</table>
+<h3>Gestion des objections courantes</h3>
+
+<table>
+<thead>
+    <tr><th>Objection</th><th>Mauvaise reponse</th><th>Bonne reponse</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>"C'est cher par rapport a [concurrent]"</strong></td><td>"On peut faire un rabais"</td><td>"Je comprends. Notre prix reflète la purete verifiee par analyse independante et la traçabilite complete du lot. Beaucoup de nos clients ont compare et sont revenus chez nous apres avoir eu des resultats inconsistants avec des produits moins chers. Souhaitez-vous voir le CoA de notre dernier lot ?"</td></tr>
+  <tr><td><strong>"Est-ce legal au Canada ?"</strong></td><td>"Oui, c'est legal" (trop vague)</td><td>"Les peptides de recherche sont legaux a l'achat au Canada pour usage de recherche, et non pour consommation humaine. Nous vendons exclusivement des produits etiquetes 'recherche uniquement' et nous nous conformons a toutes les reglementations applicables de Sante Canada."</td></tr>
+  <tr><td><strong>"Comment etre sur de la purete ?"</strong></td><td>"Faites-nous confiance"</td><td>"Chaque lot est teste par HPLC et spectrometrie de masse dans un laboratoire tiers independant. Le certificat d'analyse est disponible sur la fiche produit et je peux vous l'envoyer par email immediatement. Notre purete garantie est de 98% minimum, et la plupart de nos lots depassent 99%."</td></tr>
+  <tr><td><strong>"Je peux avoir un echantillon ?"</strong></td><td>"Non"</td><td>"Pour les commandes institutionnelles ou les projets de recherche de volume, nous offrons des echantillons aux clients du palier Argent et plus. Si vous etes un nouveau client, je peux vous proposer une remise de premiere commande de 10% pour que vous puissiez tester notre qualite."</td></tr>
+  <tr><td><strong>"La livraison est trop longue"</strong></td><td>"C'est la poste"</td><td>"Je comprends que les delais sont importants pour vos travaux. Nous proposons l'expedition Xpresspost (2-3 jours ouvrables) et Prioritaire (lendemain, grandes villes). Pour les commandes urgentes, je peux verifier la disponibilite de l'expedition le jour meme si la commande est passee avant 14h EST."</td></tr>
+</tbody>
+</table>
+<h3>Criteres d'evaluation specifiques au coaching peptides</h3>
+
+<p>Pour les sessions de coaching, utiliser ces criteres ponderes adaptes au marche des peptides :</p>
+
+<table>
+<thead>
+    <tr><th>Critere</th><th>Poids</th><th>Description</th><th>Score 1-10</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Conformite reglementaire</strong></td><td>25%</td><td>L'agent ne fait jamais de claims medicaux/therapeutiques</td><td>Critique -- score < 7 = echec</td></tr>
+  <tr><td><strong>Connaissance produit</strong></td><td>20%</td><td>L'agent maitrise purete, stockage, reconstitution, CoA</td><td></td></tr>
+  <tr><td><strong>Ecoute et decouverte</strong></td><td>20%</td><td>L'agent pose des questions ouvertes avant de proposer</td><td></td></tr>
+  <tr><td><strong>Gestion des objections</strong></td><td>15%</td><td>L'agent repond aux objections avec des faits, sans pression</td><td></td></tr>
+  <tr><td><strong>Upsell pertinent</strong></td><td>10%</td><td>L'agent propose des produits complementaires logiques (eau bacteriostatique, seringues, etc.)</td><td></td></tr>
+  <tr><td><strong>Cloture naturelle</strong></td><td>10%</td><td>L'agent guide vers la commande sans forcer</td><td></td></tr>
+</tbody>
+</table>
+<p><strong>Score de passage :</strong> 7/10 minimum. Tout agent en dessous de 7 doit suivre un programme de formation supplementaire.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Coaching</strong></td><td>Accompagnement et formation d'un agent par un superviseur</td></tr>
+  <tr><td><strong>Listen (Ecoute)</strong></td><td>Mode d'ecoute silencieuse d'un appel en cours</td></tr>
+  <tr><td><strong>Whisper (Chuchotement)</strong></td><td>Mode ou le coach parle uniquement a l'agent</td></tr>
+  <tr><td><strong>Barge (Intervention)</strong></td><td>Mode ou le coach rejoint la conversation a trois</td></tr>
+  <tr><td><strong>Score pondere</strong></td><td>Note globale calculee en tenant compte de l'importance de chaque critere</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./05-wallboard.md">Wallboard</a> : Identifier les agents actifs pour le coaching</li>
+<li><a href="./16-analytics-agents.md">Analytics agents</a> : Performance individuelle des agents</li>
+<li><a href="./02-journal.md">Journal d'appels</a> : Retrouver les appels pour la revue qualite</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

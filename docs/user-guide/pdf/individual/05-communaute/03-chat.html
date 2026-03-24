@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat Support en Direct &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 05 — Communaute</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Chat Support en Direct</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Communaute > Chat</p>
+<p><strong>URL</strong>: <code>/admin/chat</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Chat</strong> est le centre de messagerie en direct de votre boutique BioCycle Peptides. Elle permet de communiquer en temps reel avec les visiteurs du site qui utilisent le widget de chat integre. C'est l'outil ideal pour repondre instantanement aux questions de pre-achat, resoudre des problemes et offrir un service client reactif.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir toutes les conversations actives, en attente et archivees</li>
+<li>Repondre en temps reel aux visiteurs du site</li>
+<li>Recevoir des notifications quand un visiteur attend une reponse</li>
+<li>Voir la langue du visiteur et beneficier de la traduction automatique</li>
+<li>Envoyer des images et des pieces jointes</li>
+<li>Utiliser des emojis dans vos reponses</li>
+<li>Voir l'indicateur de frappe du visiteur ("est en train d'ecrire...")</li>
+<li>Basculer votre statut entre en ligne et hors ligne</li>
+<li>Fermer, resoudre ou archiver une conversation</li>
+<li>Exporter l'historique d'une conversation en CSV</li>
+<li>Voir la page que le visiteur consulte actuellement</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Qu'est-ce que le chat en direct ?</h3>
+<p>C'est un systeme de messagerie instantanee integre au site web. Les visiteurs voient une petite bulle de chat en bas de leur ecran. En cliquant dessus, ils ouvrent une fenetre de conversation ou ils peuvent poser des questions en temps reel.</p>
+
+<h3>Que signifient les statuts de conversation ?</h3>
+<ul>
+<li><strong>Active</strong> : la conversation est en cours, les deux parties echangent des messages</li>
+<li><strong>En attente admin</strong> : le visiteur a envoye un message et attend votre reponse (prioritaire)</li>
+<li><strong>Resolue</strong> : le probleme du visiteur a ete traite</li>
+<li><strong>Fermee</strong> : la conversation est terminee</li>
+<li><strong>Archivee</strong> : la conversation est archivee pour reference</li>
+</ul>
+
+<h3>Comment fonctionne la traduction automatique ?</h3>
+<p>Le systeme detecte automatiquement la langue du visiteur. Quand vous repondez en francais, votre message est traduit dans la langue du visiteur. Vous pouvez voir le message original via le menu "Voir l'original" sous chaque message traduit.</p>
+
+<h3>Que fait le chatbot automatique ?</h3>
+<p>Quand vous etes hors ligne, un chatbot peut prendre le relais pour repondre aux questions simples. Les messages du bot sont identifies par un badge violet "Bot". Quand vous revenez en ligne, vous prenez la suite de la conversation.</p>
+
+<h3>Que signifie le statut "En ligne / Hors ligne" ?</h3>
+<ul>
+<li><strong>En ligne</strong> : les visiteurs voient que vous etes disponible et peuvent initier une conversation</li>
+<li><strong>Hors ligne</strong> : les visiteurs voient que vous n'etes pas disponible ; le chatbot prend le relais si active</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le rail de navigation</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la colonne d'icones a gauche, cliquez sur l'icone <strong>Communaute</strong></li>
+<li>Dans le panneau lateral, cliquez sur <strong>Chat Support</strong></li>
+<li>Un badge rouge apparait sur l'icone si des conversations sont en attente</li>
+</ol>
+
+<h3>Methode 2 : Via la barre de recherche</h3>
+<ol>
+<li>Tapez "chat" dans la barre de recherche</li>
+<li>Selectionnez le resultat correspondant</li>
+</ol>
+
+<h3>Methode 3 : Acces direct par URL</h3>
+<ol>
+<li>Rendez-vous a l'adresse <code>/admin/chat</code> dans votre navigateur</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>L'interface de chat est divisee en <strong>3 zones principales</strong> (disposition specifique au chat) :</p>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Icone</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau message</strong></td><td>Enveloppe</td><td>Mettre le focus sur le champ de saisie pour repondre rapidement</td></tr>
+  <tr><td><strong>Fermer la conversation</strong></td><td>Cercle X</td><td>Fermer la conversation selectionnee</td></tr>
+  <tr><td><strong>Transferer</strong></td><td>Fleche de transfert</td><td>Transferer la conversation a un autre agent (fonctionnalite a venir)</td></tr>
+  <tr><td><strong>Marquer resolue</strong></td><td>Coche verte</td><td>Marquer la conversation comme resolue</td></tr>
+  <tr><td><strong>Archiver</strong></td><td>Boite d'archive</td><td>Archiver la conversation selectionnee</td></tr>
+  <tr><td><strong>Exporter historique</strong></td><td>Telecharger</td><td>Exporter les messages de la conversation en CSV</td></tr>
+</tbody>
+</table>
+<h3>2. L'en-tete avec statistiques et statut</h3>
+
+<p>En haut a droite de la page :</p>
+<ul>
+<li><strong>Badges de statut</strong> : nombre de conversations actives (vert), en attente (orange clignotant), non lues (rouge)</li>
+<li><strong>Bouton En ligne / Hors ligne</strong> : basculer votre disponibilite d'un clic</li>
+</ul>
+
+<h3>3. La zone de travail a deux panneaux</h3>
+
+<p><strong>Panneau gauche (liste des conversations) :</strong></p>
+<ul>
+<li>Chaque conversation affiche :</li>
+<li>Le nom ou l'email du visiteur (ou un identifiant anonyme)</li>
+<li>Un point vert si le visiteur est actuellement en ligne, gris sinon</li>
+<li>Un apercu du dernier message</li>
+<li>La langue du visiteur (code ISO : FR, EN, DE, etc.)</li>
+<li>Le temps ecoule depuis le dernier message</li>
+<li>Un triangle jaune si la conversation est en attente admin</li>
+<li>Un badge rouge avec le nombre de messages non lus</li>
+</ul>
+
+<p><strong>Panneau droit (fenetre de conversation) :</strong></p>
+<ul>
+<li><strong>En-tete</strong> : nom du visiteur, langue, email, page en cours de consultation, statut en ligne</li>
+<li><strong>Zone de messages</strong> : bulles de conversation (bleu pour l'admin, blanc pour le visiteur, violet pour le bot)</li>
+<li>Chaque message affiche l'expediteur, l'heure, et les coches de lecture (une coche = envoye, double coche = lu)</li>
+<li>Les images envoyees s'affichent directement dans la conversation</li>
+<li>Le lien "Voir l'original" permet de consulter le message avant traduction</li>
+<li><strong>Indicateur de frappe</strong> : "X est en train d'ecrire..." avec animation</li>
+<li><strong>Barre de saisie</strong> : champ de texte, bouton d'envoi d'image, selecteur d'emojis, bouton Envoyer</li>
+<li><strong>Indice de traduction</strong> : rappel que les messages sont traduits automatiquement</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Repondre a un visiteur</h3>
+
+<ol>
+<li>Selectionnez la conversation dans la liste de gauche</li>
+<li>Les messages s'affichent dans le panneau droit</li>
+<li>Tapez votre reponse dans le champ de saisie en bas</li>
+<li>Appuyez sur <strong>Entree</strong> pour envoyer (ou cliquez le bouton Envoyer)</li>
+<li>Votre message apparait immediatement dans la conversation</li>
+<li>Le visiteur recoit la traduction dans sa langue si elle differe de la votre</li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong> : utilisez Shift+Entree pour sauter une ligne sans envoyer le message.</p>
+</blockquote>
+
+<h3>Envoyer une image</h3>
+
+<ol>
+<li>Dans la barre de saisie, cliquez sur l'icone <strong>Image</strong> (a gauche du champ de texte)</li>
+<li>Selectionnez un fichier image depuis votre ordinateur (JPEG, PNG, WebP, GIF)</li>
+<li>L'image est telechargee puis envoyee dans la conversation</li>
+<li>Le visiteur voit l'image directement dans son widget de chat</li>
+</ol>
+
+<h3>Utiliser les emojis</h3>
+
+<ol>
+<li>Cliquez sur l'icone <strong>Smiley</strong> a cote du champ de texte</li>
+<li>Un panneau de 32 emojis courants apparait</li>
+<li>Cliquez sur un emoji pour l'inserer dans votre message</li>
+<li>Le panneau se ferme automatiquement</li>
+</ol>
+
+<h3>Basculer en ligne / hors ligne</h3>
+
+<ol>
+<li>Cliquez sur le bouton <strong>En ligne</strong> (vert) ou <strong>Hors ligne</strong> (gris) en haut a droite</li>
+<li>Le statut est mis a jour immediatement</li>
+<li>Quand vous passez hors ligne, les visiteurs voient un message indiquant que le support n'est pas disponible</li>
+</ol>
+
+<h3>Fermer ou archiver une conversation</h3>
+
+<ol>
+<li>Selectionnez la conversation</li>
+<li>Cliquez sur <strong>Fermer la conversation</strong> (le visiteur voit un message de cloture) ou <strong>Archiver</strong> (la conversation disparait de la liste active)</li>
+<li>Vous pouvez aussi utiliser <strong>Marquer resolue</strong> si le probleme est traite</li>
+</ol>
+
+<h3>Exporter l'historique d'une conversation</h3>
+
+<ol>
+<li>Selectionnez la conversation dont vous souhaitez garder une trace</li>
+<li>Cliquez sur <strong>Exporter historique</strong> dans le ruban</li>
+<li>Un fichier CSV est telecharge avec les colonnes : Date, Expediteur, Langue, Message</li>
+</ol>
+
+<hr>
+
+<h2>Scenarios courants</h2>
+
+<h3>Scenario 1 : Traiter les conversations en attente</h3>
+
+<ol>
+<li>Ouvrez la page Chat</li>
+<li>Passez votre statut sur <strong>En ligne</strong> si vous ne l'etes pas deja</li>
+<li>Identifiez les conversations avec le badge orange "En attente" ou le triangle jaune</li>
+<li>Cliquez sur la premiere conversation en attente</li>
+<li>Lisez le dernier message du visiteur</li>
+<li>Redigez et envoyez votre reponse</li>
+<li>Passez a la conversation suivante</li>
+<li>Une fois toutes les conversations traitees, verifiez que le badge rouge "non lus" a disparu</li>
+</ol>
+
+<h3>Scenario 2 : Aider un client etranger avec la traduction automatique</h3>
+
+<ol>
+<li>Un visiteur envoie un message en allemand (le badge "DE" apparait)</li>
+<li>Selectionnez la conversation</li>
+<li>Le message du visiteur est affiche traduit dans votre langue</li>
+<li>Redigez votre reponse normalement en francais</li>
+<li>Le systeme traduit automatiquement votre reponse en allemand pour le visiteur</li>
+<li>Si la traduction semble imprecise, cliquez sur "Voir l'original" pour verifier le message source</li>
+</ol>
+
+<h3>Scenario 3 : Fin de journee -- cloturer les conversations ouvertes</h3>
+
+<ol>
+<li>Parcourez la liste des conversations actives</li>
+<li>Pour chaque conversation terminee :</li>
+</ol>
+<ul>
+<li>Si le probleme est resolu : cliquez <strong>Marquer resolue</strong></li>
+<li>Si la conversation est inactive depuis longtemps : cliquez <strong>Fermer la conversation</strong></li>
+</ul>
+<ol>
+<li>Passez votre statut sur <strong>Hors ligne</strong></li>
+<li>Le chatbot automatique prendra le relais si il est active</li>
+</ol>
+
+<hr>
+
+<h2>Foire aux questions (FAQ)</h2>
+
+<p><strong>Q : Les conversations sont-elles mises a jour en temps reel ?</strong></p>
+<p>R : Oui. Le systeme utilise le streaming SSE (Server-Sent Events) pour recevoir les nouveaux messages instantanement. Un rafraichissement de secours s'effectue toutes les 30 secondes au cas ou une connexion SSE serait perdue.</p>
+
+<p><strong>Q : Que se passe-t-il si je suis hors ligne et qu'un visiteur envoie un message ?</strong></p>
+<p>R : Si le chatbot est active, il tente de repondre. Sinon, le visiteur voit un message indiquant que le support n'est pas disponible. Les messages sont conserves et vous les retrouverez a votre retour.</p>
+
+<p><strong>Q : La traduction automatique est-elle fiable ?</strong></p>
+<p>R : Elle est suffisante pour des echanges courants. Pour des sujets techniques complexes, verifiez le message original en cliquant sur "Voir l'original" et adaptez votre reponse si necessaire.</p>
+
+<p><strong>Q : Puis-je voir quelle page le visiteur consulte ?</strong></p>
+<p>R : Oui. L'en-tete de la conversation affiche la page en cours de consultation du visiteur (icone de localisation), ce qui vous aide a comprendre le contexte de sa question.</p>
+
+<p><strong>Q : Combien de conversations puis-je gerer simultanement ?</strong></p>
+<p>R : Il n'y a pas de limite technique. Le systeme charge jusqu'a 100 conversations. En pratique, gerer 3 a 5 conversations simultanees est confortable pour maintenir un temps de reponse rapide.</p>
+
+<hr>
+
+<h2>Strategie expert : Scripts de reponse et conversion par chat pour un e-commerce de peptides</h2>
+
+<h3>Temps de reponse cible et impact sur la conversion</h3>
+
+<p>Le chat en direct est le canal de support avec le plus fort taux de conversion en e-commerce. Respecter des temps de reponse stricts est essentiel.</p>
+
+<p><strong>Objectifs de temps de reponse :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Periode</th><th>Temps cible</th><th>Temps maximum acceptable</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Heures ouvrables</strong> (9h-17h EST)</td><td>< 2 minutes</td><td>5 minutes</td></tr>
+  <tr><td><strong>Heures etendues</strong> (17h-21h EST)</td><td>< 5 minutes</td><td>15 minutes</td></tr>
+  <tr><td><strong>Hors heures</strong></td><td>Chatbot immediat + reponse humaine le matin suivant</td><td>Avant 10h le jour ouvrable suivant</td></tr>
+</tbody>
+</table>
+<p><strong>Impact mesure sur la conversion :</strong></p>
+<ul>
+<li>Taux de conversion chat vers vente : 10-15% en moyenne (contre 2-3% pour un visiteur sans interaction)</li>
+<li>Valeur moyenne du panier apres interaction chat : +20% par rapport a la moyenne du site</li>
+<li>Taux de satisfaction client avec chat en direct : 73% (le plus eleve de tous les canaux, LiveChat Inc.)</li>
+</ul>
+
+<h3>Scripts de reponse par situation</h3>
+
+<h4>Situation 1 : Question sur un produit peptide</h4>
+
+<blockquote>
+<p><strong>Client</strong> : "Bonjour, je cherche du BPC-157, est-ce que votre produit est de qualite recherche ?"</p>
+</blockquote>
+<p>></p>
+<blockquote>
+<p><strong>Script recommande</strong> : "Bonjour ! Oui, tous nos peptides sont de qualite recherche, synthetises en conditions GMP et accompagnes d'un certificat d'analyse (CoA) par lot. Pour le BPC-157, nous proposons des flacons de 5mg et 10mg avec une purete superieure a 98%. Souhaitez-vous que je vous envoie le CoA du lot actuellement en stock ?"</p>
+</blockquote>
+
+<p><strong>Points cles :</strong> Toujours mentionner la purete, le certificat d'analyse et la qualite recherche. Ne jamais faire de claims medicaux ou therapeutiques (conformite Sante Canada et FDA).</p>
+
+<h4>Situation 2 : Probleme de livraison</h4>
+
+<blockquote>
+<p><strong>Client</strong> : "Ma commande #12345 aurait du arriver il y a 3 jours, je n'ai rien recu."</p>
+</blockquote>
+<p>></p>
+<blockquote>
+<p><strong>Script recommande</strong> : "Je comprends votre inquietude et je m'en occupe immediatement. Laissez-moi verifier le suivi de votre commande #12345. [Verification] Votre colis a ete expedie le [date] via [transporteur] avec le numero de suivi [numero]. Le dernier scan indique [statut]. Je vais contacter le transporteur pour accelerer la resolution. En attendant, souhaitez-vous que je vous envoie les details de suivi par email ?"</p>
+</blockquote>
+
+<p><strong>Points cles :</strong> Toujours verifier le suivi avant de repondre. Ne jamais blamer le transporteur devant le client. Proposer une action concrete et un suivi proactif.</p>
+
+<h4>Situation 3 : Demande de remboursement</h4>
+
+<blockquote>
+<p><strong>Client</strong> : "Le produit que j'ai recu ne correspond pas a ma commande, je veux un remboursement."</p>
+</blockquote>
+<p>></p>
+<blockquote>
+<p><strong>Script recommande</strong> : "Je suis desole pour cette erreur. C'est tout a fait inacceptable et je comprends votre frustration. Pouvez-vous me preciser quel produit vous avez recu et quel produit etait attendu ? Je vais lancer immediatement la procedure de correction. Vous aurez le choix entre un remplacement en expedition prioritaire ou un remboursement complet. Quelle option preferez-vous ?"</p>
+</blockquote>
+
+<p><strong>Points cles :</strong> S'excuser sincerement sans justification excessive. Donner le choix au client (remplacement ou remboursement). Resoudre en un seul contact si possible.</p>
+
+<h4>Situation 4 : Question technique sur les peptides</h4>
+
+<blockquote>
+<p><strong>Client</strong> : "Comment reconstituer le TB-500 ? Quelle quantite d'eau bacteriostatique utiliser ?"</p>
+</blockquote>
+<p>></p>
+<blockquote>
+<p><strong>Script recommande</strong> : "Excellente question ! Pour les peptides lyophilises comme le TB-500, nous recommandons d'utiliser de l'eau bacteriostatique. Vous trouverez un guide de reconstitution detaille dans la section documentation de votre espace client, ainsi que sur la fiche produit. Pour des dosages specifiques a votre protocole de recherche, je vous recommande de consulter la litterature scientifique pertinente. Avez-vous besoin du lien vers le guide ?"</p>
+</blockquote>
+
+<p><strong>Points cles :</strong> Fournir des informations factuelles sur la manipulation. Rediriger vers la documentation officielle. Ne jamais donner de conseils de dosage a usage humain (conformite reglementaire).</p>
+
+<h3>Regles d'escalade vers le telephone</h3>
+
+<p>Certaines situations ne se pretent pas au chat et doivent etre escaladees vers un appel telephonique :</p>
+
+<table>
+<thead>
+    <tr><th>Declencheur d'escalade</th><th>Raison</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td>Client visiblement frustre apres 3+ echanges</td><td>Le chat amplifie la frustration</td><td>"Puis-je vous appeler directement pour resoudre cela plus efficacement ?"</td></tr>
+  <tr><td>Commande superieure a 500$ avec probleme</td><td>Enjeu financier important</td><td>Proposer un rappel dans les 15 minutes</td></tr>
+  <tr><td>Question technique complexe necesitant discussion</td><td>Le chat n'est pas adapte aux echanges longs</td><td>Proposer un rendez-vous telephonique</td></tr>
+  <tr><td>Plainte potentiellement publique (menace d'avis negatif)</td><td>Desamorcer avant publication</td><td>Appel immediat avec superviseur</td></tr>
+  <tr><td>Client B2B / distributeur / institution</td><td>Relation commerciale strategique</td><td>Transfert vers le responsable commercial</td></tr>
+</tbody>
+</table>
+<h3>Metriques de performance du chat</h3>
+
+<p>Suivre ces indicateurs chaque semaine pour optimiser le canal :</p>
+
+<table>
+<thead>
+    <tr><th>Indicateur</th><th>Cible</th><th>Calcul</th></tr>
+</thead>
+<tbody>
+  <tr><td>Temps de premiere reponse</td><td>< 2 min</td><td>Moyenne du delai entre le premier message client et la premiere reponse agent</td></tr>
+  <tr><td>Taux de resolution au premier contact</td><td>> 80%</td><td>Conversations resolues sans escalade ni suivi</td></tr>
+  <tr><td>Taux de conversion chat vers vente</td><td>10-15%</td><td>Commandes passees dans les 24h suivant une session chat</td></tr>
+  <tr><td>Score de satisfaction (CSAT)</td><td>> 4.5/5</td><td>Sondage post-conversation</td></tr>
+  <tr><td>Conversations par agent par heure</td><td>3-5 simultanees</td><td>Charge de travail optimale sans degradation de qualite</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>SSE</strong></td><td>Server-Sent Events, technologie de communication en temps reel du serveur vers le navigateur</td></tr>
+  <tr><td><strong>Widget de chat</strong></td><td>Bulle de conversation visible par les visiteurs en bas a droite du site</td></tr>
+  <tr><td><strong>Chatbot</strong></td><td>Agent automatise qui repond aux visiteurs quand l'administrateur est hors ligne</td></tr>
+  <tr><td><strong>Traduction automatique</strong></td><td>Traduction instantanee des messages entre la langue de l'admin et celle du visiteur</td></tr>
+  <tr><td><strong>Indicateur de frappe</strong></td><td>Animation montrant que l'autre personne est en train d'ecrire</td></tr>
+  <tr><td><strong>Coches de lecture</strong></td><td>Une coche = message envoye, double coche = message lu par le destinataire</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/avis">Avis clients</a> -- pour les retours post-achat (publics)</li>
+<li><a href="/admin/questions">Questions produits</a> -- pour les questions posees sur les fiches produits</li>
+<li><a href="/admin/emails">Emails</a> -- pour la communication email avec les clients</li>
+<li><a href="/admin/crm">CRM</a> -- pour le suivi des contacts et opportunites commerciales</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

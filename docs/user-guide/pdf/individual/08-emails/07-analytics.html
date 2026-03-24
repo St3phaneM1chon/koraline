@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analytics email &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 08 — Emails</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Analytics email</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Emails > Analytics</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Le tableau de bord <strong>Analytics email</strong> centralise toutes les metriques de performance de</p>
+<p>vos communications par email. Il vous donne une vue d'ensemble de la delivrabilite, des</p>
+<p>taux d'engagement (ouvertures, clics), et de l'impact commercial (revenus generes).</p>
+
+<p>Ces donnees sont essentielles pour evaluer l'efficacite de vos campagnes, identifier les</p>
+<p>problemes de delivrabilite, et optimiser votre strategie email. Par exemple, un taux de</p>
+<p>rebond eleve peut indiquer un probleme de qualite de votre liste de contacts, tandis qu'un</p>
+<p>faible taux d'ouverture peut signaler des lignes d'objet peu engageantes.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Emails</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, sous <strong>Gestion</strong>, cliquez sur <strong>Analytics</strong>.</li>
+<li>L'URL directe est : <code>/admin/emails?tab=analytics</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Selecteur de periode</h3>
+<p>En haut a droite, un selecteur permet de choisir la periode d'analyse :</p>
+<ul>
+<li><strong>7 jours</strong> : Vue court terme</li>
+<li><strong>30 jours</strong> : Vue mensuelle (par defaut)</li>
+<li><strong>90 jours</strong> : Vue trimestrielle</li>
+<li><strong>1 an</strong> : Vue annuelle</li>
+</ul>
+
+<h3>Cartes KPI</h3>
+<p>Quatre cartes de metriques principales sont affichees en haut :</p>
+
+<table>
+<thead>
+    <tr><th>KPI</th><th>Description</th><th>Indicateur</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Emails envoyes</strong></td><td>Nombre total d'emails expedies sur la periode</td><td>Taux de delivrabilite (%)</td></tr>
+  <tr><td><strong>Rebonds</strong></td><td>Nombre d'emails non delivres</td><td>Taux de rebond (%)</td></tr>
+  <tr><td><strong>Workflows actifs</strong></td><td>Nombre de flows actuellement en fonctionnement</td><td>Nombre de campagnes</td></tr>
+  <tr><td><strong>Conversations</strong></td><td>Nombre total de conversations</td><td>Nouvelles conversations</td></tr>
+</tbody>
+</table>
+<h3>Graphique de volume d'envoi</h3>
+<p>Un graphique en barres empilees montre le volume d'emails par jour, segmente par statut :</p>
+<ul>
+<li><strong>Bleu</strong> : Emails envoyes/delivres</li>
+<li><strong>Rouge</strong> : Emails rebondis</li>
+</ul>
+
+<p>Ce graphique permet d'identifier les pics d'envoi et les tendances de delivrabilite.</p>
+
+<h3>Diagramme circulaire des conversations</h3>
+<p>Un camembert affiche la repartition des conversations par statut (Nouveau, Ouvert, En attente,</p>
+<p>Resolu, Ferme). Il donne une vue instantanee de la charge de travail du support.</p>
+
+<h3>Top templates</h3>
+<p>Un classement des templates les plus utilises, avec le nombre d'utilisations pour chacun.</p>
+<p>Utile pour identifier les contenus les plus populaires.</p>
+
+<h3>Activite recente</h3>
+<p>Un journal des derniers emails envoyes, avec :</p>
+<ul>
+<li>Adresse du destinataire</li>
+<li>Objet de l'email</li>
+<li>Statut (delivre, rebondi, echoue) indique par un point colore</li>
+<li>Date et heure d'envoi</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Metriques de delivrabilite</h3>
+<p>La delivrabilite mesure la capacite de vos emails a atteindre la boite de reception du</p>
+<p>destinataire. Koraline suit :</p>
+<ul>
+<li><strong>Taux de delivrabilite</strong> : % d'emails acceptes par les serveurs destinataires</li>
+<li><strong>Taux de rebond</strong> : % d'emails rejetes (hard bounce = adresse invalide, soft bounce =</li>
+</ul>
+<p>  boite pleine)</p>
+<ul>
+<li><strong>Emails echoues</strong> : Erreurs techniques d'envoi</li>
+</ul>
+
+<h3>Suivi des revenus</h3>
+<p>Pour les campagnes et flows, Koraline suit les conversions et attribue un revenu genere.</p>
+<p>Cette metrique permet de calculer le ROI de chaque campagne.</p>
+
+<h3>Donnees par periode</h3>
+<p>Le changement de periode met a jour toutes les metriques simultanement, permettant de</p>
+<p>comparer les performances entre differentes periodes.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Audit mensuel de delivrabilite</h3>
+<ol>
+<li>Selectionnez la periode <strong>30 jours</strong>.</li>
+<li>Verifiez le taux de delivrabilite (cible : > 95%).</li>
+<li>Si le taux de rebond depasse 5%, consultez la liste des rebonds.</li>
+<li>Nettoyez les adresses invalides de votre liste de contacts.</li>
+</ol>
+
+<h3>Workflow 2 : Evaluer la performance d'une campagne recente</h3>
+<ol>
+<li>Selectionnez la periode <strong>7 jours</strong>.</li>
+<li>Consultez le graphique de volume pour identifier le pic d'envoi de la campagne.</li>
+<li>Verifiez les metriques de la campagne dans la section activite recente.</li>
+<li>Comparez le taux d'ouverture et de clic avec les benchmarks de l'industrie.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Les statistiques incluent-elles les emails transactionnels ?</strong></p>
+<p>R : Oui, le tableau de bord consolide tous les types d'emails : transactionnels, campagnes,</p>
+<p>flows et reponses manuelles.</p>
+
+<p><strong>Q : Le taux d'ouverture est-il fiable a 100% ?</strong></p>
+<p>R : Non, le suivi des ouvertures repose sur un pixel invisible. Certains clients email</p>
+<p>bloquent le chargement d'images, ce qui peut sous-estimer le taux reel.</p>
+
+<p><strong>Q : Comment ameliorer ma delivrabilite ?</strong></p>
+<p>R : Nettoyez regulierement votre liste de contacts, utilisez un domaine d'envoi authentifie</p>
+<p>(SPF, DKIM, DMARC), et maintenez un taux de plainte inferieur a 0.1%.</p>
+
+<p><strong>Q : Les revenus sont-ils calcules automatiquement ?</strong></p>
+<p>R : Oui, Koraline attribue un revenu lorsqu'un destinataire clique sur un lien d'email</p>
+<p>et complete un achat dans les 7 jours suivant le clic.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Delivrabilite</strong></td><td>Capacite d'un email a atteindre la boite de reception</td></tr>
+  <tr><td><strong>Hard bounce</strong></td><td>Email rejete definitivement (adresse invalide)</td></tr>
+  <tr><td><strong>Soft bounce</strong></td><td>Email rejete temporairement (boite pleine, serveur indisponible)</td></tr>
+  <tr><td><strong>Taux d'ouverture</strong></td><td>Pourcentage de destinataires ayant ouvert l'email</td></tr>
+  <tr><td><strong>Taux de clic</strong></td><td>Pourcentage de destinataires ayant clique sur un lien</td></tr>
+  <tr><td><strong>SPF/DKIM/DMARC</strong></td><td>Protocoles d'authentification des emails pour empecher l'usurpation</td></tr>
+  <tr><td><strong>ROI</strong></td><td>Return on Investment, retour sur investissement d'une campagne</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./05-campagnes.md">Campagnes</a> : Creer et envoyer des campagnes email</li>
+<li><a href="./06-flows.md">Flows</a> : Configurer les sequences automatisees</li>
+<li><a href="./01-inbox.md">Boite de reception</a> : Voir les conversations qui alimentent les stats</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

@@ -318,11 +318,22 @@ export const POST = withAdminGuard(
         warnings.push('Flow has only a trigger node with no actions — it will do nothing when triggered');
       }
 
+      // C3-PERF-P-005 FIX: Batch fetch all templates at once instead of per-node lookups
       const emailNodes = nodes.filter(n => n.type === 'email' || n.type === 'send_email');
+      const templateIds = emailNodes
+        .map(en => en.data.templateId as string)
+        .filter(Boolean);
+      const templates = templateIds.length > 0
+        ? await prisma.emailTemplate.findMany({
+            where: { id: { in: templateIds } },
+            select: { id: true, name: true, isActive: true },
+          })
+        : [];
+      const templateMap = new Map(templates.map(t => [t.id, t]));
+
       for (const en of emailNodes) {
         if (en.data.templateId) {
-          // Check template exists
-          const tmpl = await prisma.emailTemplate.findUnique({ where: { id: en.data.templateId as string } });
+          const tmpl = templateMap.get(en.data.templateId as string);
           if (!tmpl) {
             warnings.push(`Email node "${en.id}" references templateId "${en.data.templateId}" which does not exist`);
           } else if (!tmpl.isActive) {

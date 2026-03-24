@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Securite &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 12 — Systeme</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Securite</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Systeme > Outils > Securite</p>
+<p><strong>URL</strong>: <code>/admin/securite</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Securite</strong> centralise tous les parametres de protection de la plateforme Koraline et des donnees de BioCycle Peptides. La securite est critique pour un site e-commerce qui traite des paiements et des donnees personnelles.</p>
+
+<p><strong>En tant qu'administrateur, vous pouvez :</strong></p>
+<ul>
+<li>Configurer la politique de mots de passe</li>
+<li>Activer l'authentification a deux facteurs (2FA)</li>
+<li>Gerer les sessions actives</li>
+<li>Configurer les restrictions d'acces par IP</li>
+<li>Surveiller les tentatives de connexion echouees</li>
+<li>Gerer le chiffrement des donnees sensibles</li>
+<li>Configurer les politiques de conformite (Loi 25, LPRPDE)</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Pourquoi la securite est-elle si importante ?</h3>
+
+<p>BioCycle Peptides gere :</p>
+<ul>
+<li><strong>Donnees de paiement</strong> : cartes de credit via Stripe (les numeros ne sont jamais stockes dans Koraline)</li>
+<li><strong>Donnees personnelles</strong> : noms, adresses, emails, telephones des clients</li>
+<li><strong>Donnees financieres</strong> : comptabilite, factures, relevees bancaires</li>
+<li><strong>Donnees commerciales</strong> : prix d'achat, marges, listes de clients</li>
+</ul>
+
+<p>Une fuite de donnees pourrait couter cher en termes de confiance, de reputation et de penalites legales.</p>
+
+<h3>Les 3 piliers de la securite</h3>
+
+<table>
+<thead>
+    <tr><th>Pilier</th><th>Description</th><th>Mesures</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Confidentialite</strong></td><td>Seules les personnes autorisees voient les donnees</td><td>Roles, permissions, chiffrement</td></tr>
+  <tr><td><strong>Integrite</strong></td><td>Les donnees ne sont pas alterees sans autorisation</td><td>Logs d'audit, validations</td></tr>
+  <tr><td><strong>Disponibilite</strong></td><td>Le systeme est accessible quand necessaire</td><td>Sauvegardes, monitoring, redondance</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Systeme > Outils > <strong>Securite</strong></li>
+<li>URL directe : <code>/admin/securite</code></li>
+</ol>
+
+<hr>
+
+<h2>Parametres de securite</h2>
+
+<h3>1. Politique de mots de passe</h3>
+
+<table>
+<thead>
+    <tr><th>Parametre</th><th>Valeur recommandee</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Longueur minimale</strong></td><td>12 caracteres</td><td>Plus c'est long, plus c'est securise</td></tr>
+  <tr><td><strong>Complexite</strong></td><td>Majuscule + minuscule + chiffre + caractere special</td><td>Exige un melange de types</td></tr>
+  <tr><td><strong>Expiration</strong></td><td>90 jours</td><td>Force le changement regulier</td></tr>
+  <tr><td><strong>Historique</strong></td><td>5 derniers mots de passe</td><td>Empeche la reutilisation</td></tr>
+  <tr><td><strong>Verrouillage</strong></td><td>Apres 5 echecs</td><td>Bloque le compte temporairement</td></tr>
+</tbody>
+</table>
+<h3>2. Authentification a deux facteurs (2FA)</h3>
+
+<p><strong>Qu'est-ce que c'est ?</strong></p>
+<p>En plus du mot de passe, un deuxieme facteur est demande : un code envoye par SMS ou genere par une application (Google Authenticator, Authy).</p>
+
+<p><strong>Configuration</strong> :</p>
+<ol>
+<li>Allez dans Securite > 2FA</li>
+<li>Activez pour <strong>tous les administrateurs</strong> (recommande)</li>
+<li>Optionnel : activez pour tous les utilisateurs</li>
+<li>Chaque utilisateur configure son application 2FA a sa prochaine connexion</li>
+</ol>
+
+<blockquote>
+<p><strong>Fortement recommande</strong> : Activez le 2FA au minimum pour les comptes administrateurs et comptables.</p>
+</blockquote>
+
+<h3>3. Gestion des sessions</h3>
+
+<table>
+<thead>
+    <tr><th>Parametre</th><th>Description</th><th>Valeur recommandee</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Duree de session</strong></td><td>Temps avant deconnexion automatique</td><td>8 heures</td></tr>
+  <tr><td><strong>Session unique</strong></td><td>Autoriser une seule session par utilisateur</td><td>Active</td></tr>
+  <tr><td><strong>Deconnexion inactivite</strong></td><td>Temps d'inactivite avant deconnexion</td><td>30 minutes</td></tr>
+</tbody>
+</table>
+<p><strong>Sessions actives</strong> :</p>
+<ul>
+<li>Voir la liste des utilisateurs actuellement connectes</li>
+<li>Forcer la deconnexion d'un utilisateur si necessaire</li>
+<li>Voir l'IP et le navigateur de chaque session</li>
+</ul>
+
+<h3>4. Restrictions d'acces par IP</h3>
+
+<p><strong>Objectif</strong> : Limiter l'acces a l'administration depuis certaines adresses IP seulement.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Allez dans Securite > Restrictions IP</li>
+<li>Ajoutez les adresses IP autorisees (bureau, VPN)</li>
+<li>Activez la restriction</li>
+<li>Seules les connexions depuis ces IP seront acceptees</li>
+</ol>
+
+<blockquote>
+<p><strong>Attention</strong> : Si vous activez cette restriction et perdez acces a l'IP autorisee, vous serez verrouille hors du systeme. Gardez toujours une IP de secours.</p>
+</blockquote>
+
+<h3>5. Surveillance des connexions</h3>
+
+<p>La page affiche :</p>
+<ul>
+<li><strong>Connexions reussies</strong> : derniere date, IP, navigateur</li>
+<li><strong>Tentatives echouees</strong> : nombre, IP source, date</li>
+<li><strong>Comptes verrouilles</strong> : utilisateurs bloques apres trop d'echecs</li>
+</ul>
+
+<p><strong>Signaux d'alerte</strong> :</p>
+<ul>
+<li>Plus de 10 tentatives echouees depuis la meme IP → possible attaque par force brute</li>
+<li>Connexions depuis des pays inhabituels → possible compromission de compte</li>
+<li>Connexions en dehors des heures normales → verifier avec l'utilisateur</li>
+</ul>
+
+<hr>
+
+<h2>Conformite legale</h2>
+
+<h3>Loi 25 du Quebec</h3>
+
+<p>La <strong>Loi modernisant des dispositions legislatives en matiere de protection des renseignements personnels</strong> (Loi 25) exige :</p>
+
+<table>
+<thead>
+    <tr><th>Exigence</th><th>Implementation dans Koraline</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Responsable</strong></td><td>Designez un responsable des donnees personnelles</td></tr>
+  <tr><td><strong>Consentement</strong></td><td>Formulaires de consentement pour la collecte de donnees</td></tr>
+  <tr><td><strong>Politique de confidentialite</strong></td><td>Page publiee sur le site</td></tr>
+  <tr><td><strong>Droit d'acces</strong></td><td>Les clients peuvent demander leurs donnees</td></tr>
+  <tr><td><strong>Droit de rectification</strong></td><td>Les clients peuvent corriger leurs donnees</td></tr>
+  <tr><td><strong>Droit de suppression</strong></td><td>Les clients peuvent demander la suppression</td></tr>
+  <tr><td><strong>Notification de breach</strong></td><td>Obligation de notifier en cas de fuite de donnees</td></tr>
+  <tr><td><strong>Journal d'audit</strong></td><td>Tracabilite des acces aux donnees personnelles</td></tr>
+</tbody>
+</table>
+<h3>LPRPDE (federal)</h3>
+
+<p>La Loi sur la Protection des Renseignements Personnels et les Documents Electroniques s'applique aussi aux entreprises canadiennes et impose des obligations similaires.</p>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Les donnees de cartes de credit sont-elles stockees dans Koraline ?</strong></p>
+<p>R : Non, jamais. Les paiements sont traites par Stripe. Koraline ne voit et ne stocke jamais les numeros de carte. Seuls les 4 derniers chiffres et le type de carte sont enregistres pour reference.</p>
+
+<p><strong>Q : Comment reagir en cas de suspicion de piratage ?</strong></p>
+<p>R : 1) Forcez la deconnexion de tous les utilisateurs. 2) Changez les mots de passe de tous les comptes admin. 3) Activez le 2FA. 4) Consultez les logs d'audit pour identifier l'intrusion. 5) Si des donnees clients sont compromises, notifiez conformement a la Loi 25.</p>
+
+<p><strong>Q : Les sauvegardes sont-elles chiffrees ?</strong></p>
+<p>R : Oui, les sauvegardes de la base de donnees sont chiffrees (voir page Sauvegardes).</p>
+
+<p><strong>Q : Le site utilise-t-il HTTPS ?</strong></p>
+<p>R : Oui, toutes les communications sont chiffrees via HTTPS (certificat SSL). Les connexions HTTP sont automatiquement redirigees vers HTTPS.</p>
+
+<hr>
+
+<h2>Strategie expert : Conformite reglementaire detaillee pour un e-commerce de peptides au Quebec</h2>
+
+<h3>Loi 25 du Quebec -- Obligations detaillees</h3>
+
+<p>La Loi 25 (anciennement projet de loi 64) est entree en vigueur progressivement depuis septembre 2022. Elle impose des obligations strictes aux entreprises qui collectent, utilisent ou communiquent des renseignements personnels. Pour BioCycle Peptides, qui traite des donnees clients, des informations de paiement et des adresses de livraison, la conformite est obligatoire et les penalites sont severes.</p>
+
+<p><strong>Obligations et implementation dans Koraline :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Obligation Loi 25</th><th>Echeance</th><th>Implementation BioCycle</th><th>Statut requis</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Responsable de la protection des RP</strong></td><td>En vigueur</td><td>Designez une personne (par defaut : le PDG). Son nom et ses coordonnees doivent etre publies sur le site web.</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Registre des incidents de confidentialite</strong></td><td>En vigueur</td><td>Tenir un registre de TOUT incident impliquant des RP (acces non autorise, perte, vol, communication non autorisee). Conserver minimum 5 ans.</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Notification des incidents</strong></td><td>En vigueur</td><td>Si un incident presente un "risque de prejudice serieux" : notifier la Commission d'acces a l'information (CAI) ET les personnes concernees. Delai : "avec diligence".</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Consentement explicite</strong></td><td>En vigueur</td><td>Le consentement doit etre manifeste, libre, eclaire, donne a des fins specifiques et de duree limitee. Les cases pre-cochees sont INTERDITES.</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Evaluation des facteurs relatifs a la vie privee (EFVP)</strong></td><td>En vigueur</td><td>Avant tout nouveau projet impliquant des RP (ex: nouveau partenaire de livraison, nouvel outil CRM, integration API tierce), mener une EFVP documentee.</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Droit a l'oubli (desindexation)</strong></td><td>En vigueur</td><td>Un client peut demander que ses informations soient desindexees des moteurs de recherche si la diffusion contrevient a la loi ou a une ordonnance.</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Droit a la portabilite</strong></td><td>En vigueur</td><td>Un client peut demander ses RP dans un format technologique structure et couramment utilise (CSV, JSON).</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Politique de confidentialite</strong></td><td>En vigueur</td><td>Publiee sur le site en termes simples et clairs. Doit detailler : quelles RP sont collectees, pourquoi, avec qui elles sont partagees, combien de temps conservees, comment exercer ses droits.</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Transparence des decisions automatisees</strong></td><td>En vigueur</td><td>Si Koraline utilise un algorithme pour prendre des decisions affectant les clients (scoring fidelite, detection fraude), informer le client et lui permettre de contester.</td><td>Obligatoire</td></tr>
+</tbody>
+</table>
+<p><strong>Penalites Loi 25 :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Type de penalite</th><th>Montant maximum</th><th>Applicable a</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Penalite administrative (CAI)</strong></td><td>10 000 000$ ou 2% du chiffre d'affaires mondial</td><td>Entreprise</td></tr>
+  <tr><td><strong>Penalite penale</strong></td><td>25 000 000$ ou 4% du chiffre d'affaires mondial</td><td>Entreprise</td></tr>
+  <tr><td><strong>Penalite individuelle</strong></td><td>50 000$ a 100 000$</td><td>Dirigeant responsable</td></tr>
+</tbody>
+</table>
+<h3>LPRPDE federale -- Obligations complementaires</h3>
+
+<p>La Loi sur la Protection des Renseignements Personnels et les Documents Electroniques (LPRPDE) s'applique aux activites commerciales interprovinciales et internationales. Pour BioCycle Peptides, qui vend partout au Canada et potentiellement a l'international, la LPRPDE s'ajoute a la Loi 25.</p>
+
+<p><strong>Les 10 principes LPRPDE et leur application :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Principe</th><th>Application BioCycle</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Responsabilite</strong></td><td>L'entreprise est responsable des RP sous sa garde, y compris celles transferees a des tiers (Stripe, transporteurs)</td></tr>
+  <tr><td><strong>Fins determinees</strong></td><td>Collecter les RP uniquement pour des fins identifiees (commande, livraison, marketing si consentement)</td></tr>
+  <tr><td><strong>Consentement</strong></td><td>Obtenir le consentement avant ou au moment de la collecte</td></tr>
+  <tr><td><strong>Limitation de la collecte</strong></td><td>Ne collecter que les RP necessaires (pas de champs superflus dans les formulaires)</td></tr>
+  <tr><td><strong>Limitation de l'utilisation</strong></td><td>Ne pas utiliser les RP pour des fins autres que celles identifiees (pas de revente de donnees)</td></tr>
+  <tr><td><strong>Exactitude</strong></td><td>Maintenir les RP a jour et permettre au client de les corriger</td></tr>
+  <tr><td><strong>Mesures de securite</strong></td><td>Proteger les RP par des mesures techniques (chiffrement, 2FA) et organisationnelles (formation)</td></tr>
+  <tr><td><strong>Transparence</strong></td><td>Rendre disponible l'information sur les pratiques de gestion des RP</td></tr>
+  <tr><td><strong>Acces individuel</strong></td><td>Permettre au client d'acceder a ses RP et de les contester</td></tr>
+  <tr><td><strong>Possibilite de porter plainte</strong></td><td>Avoir un processus de traitement des plaintes relatif aux RP</td></tr>
+</tbody>
+</table>
+<h3>PCI-DSS pour les paiements par carte</h3>
+
+<p>BioCycle Peptides utilise Stripe pour traiter les paiements, ce qui simplifie considerablement la conformite PCI-DSS. Cependant, certaines obligations demeurent.</p>
+
+<p><strong>Niveau de conformite :</strong> BioCycle est probablement un marchand de <strong>niveau 4</strong> (< 20 000 transactions e-commerce par an), ce qui signifie un questionnaire d'auto-evaluation (SAQ) plutot qu'un audit externe.</p>
+
+<p><strong>Regles absolues :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Regle PCI-DSS</th><th>Implementation BioCycle</th><th>Consequence si non respectee</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Ne JAMAIS stocker le CVV/CVC</strong></td><td>Stripe gere tout -- aucun CVV ne transite par les serveurs Koraline</td><td>Amende 5 000 - 100 000$/mois + perte du droit de traiter les cartes</td></tr>
+  <tr><td><strong>Ne JAMAIS stocker le numero de carte complet</strong></td><td>Seuls les 4 derniers chiffres sont stockes pour reference</td><td>Idem</td></tr>
+  <tr><td><strong>Utiliser la tokenisation</strong></td><td>Stripe tokenise les cartes. Koraline ne recoit qu'un token Stripe, pas les donnees de carte</td><td>Obligatoire</td></tr>
+  <tr><td><strong>HTTPS obligatoire</strong></td><td>Tout le site est en HTTPS (certificat SSL)</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Logs d'acces</strong></td><td>Tracer les acces aux donnees de paiement</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Mise a jour reguliere</strong></td><td>Maintenir les dependances de securite a jour (Next.js, libraries)</td><td>Obligatoire</td></tr>
+</tbody>
+</table>
+<p><strong>Verifications trimestrielles recommandees :</strong></p>
+<ul>
+<li>Verifier que les pages de paiement ne contiennent aucun script tiers non autorise (risque de skimming)</li>
+<li>Verifier que les tokens Stripe expirent correctement</li>
+<li>Scanner le site avec un outil ASV (Approved Scanning Vendor) si le volume le justifie</li>
+<li>Revoir les logs d'acces aux donnees financieres</li>
+</ul>
+
+<h3>Checklist de conformite pour BioCycle Peptides</h3>
+
+<p><strong>A verifier chaque trimestre :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Element</th><th>Verification</th><th>Fait</th></tr>
+</thead>
+<tbody>
+  <tr><td>Responsable RP designe et publie sur le site</td><td>Verifier la page "Politique de confidentialite"</td><td></td></tr>
+  <tr><td>Registre d'incidents a jour</td><td>Verifier le registre (meme s'il est vide, il doit exister)</td><td></td></tr>
+  <tr><td>Consentement explicite sur tous les formulaires</td><td>Tester le formulaire d'inscription, de commande, de newsletter</td><td></td></tr>
+  <tr><td>Politique de confidentialite a jour</td><td>Relire et mettre a jour si changements</td><td></td></tr>
+  <tr><td>Droits des clients fonctionnels</td><td>Tester le processus de demande d'acces, de rectification et de suppression</td><td></td></tr>
+  <tr><td>EFVP pour tout nouveau partenaire/outil</td><td>Verifier que toute nouvelle integration a fait l'objet d'une EFVP</td><td></td></tr>
+  <tr><td>2FA actif sur tous les comptes admin</td><td>Verifier dans Securite > Sessions</td><td></td></tr>
+  <tr><td>Sauvegardes chiffrees fonctionnelles</td><td>Tester la restauration (voir page Sauvegardes)</td><td></td></tr>
+  <tr><td>Pas de donnees de carte stockees</td><td>Verifier avec Stripe que tout passe par tokenisation</td><td></td></tr>
+  <tr><td>Formation equipe sur la protection des RP</td><td>Chaque employe doit comprendre ses obligations</td><td></td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>2FA</strong></td><td>Two-Factor Authentication, authentification a deux facteurs</td></tr>
+  <tr><td><strong>Chiffrement</strong></td><td>Processus rendant les donnees illisibles sans la cle de dechiffrement</td></tr>
+  <tr><td><strong>Force brute</strong></td><td>Attaque essayant toutes les combinaisons de mot de passe</td></tr>
+  <tr><td><strong>Session</strong></td><td>Periode de connexion d'un utilisateur</td></tr>
+  <tr><td><strong>HTTPS</strong></td><td>Protocole de communication chiffre (le cadenas dans la barre d'adresse)</td></tr>
+  <tr><td><strong>Loi 25</strong></td><td>Loi quebecoise sur la protection des renseignements personnels</td></tr>
+  <tr><td><strong>LPRPDE</strong></td><td>Loi federale canadienne sur la protection des donnees</td></tr>
+  <tr><td><strong>Breach</strong></td><td>Fuite ou acces non autorise a des donnees</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/employes">Utilisateurs</a> : Comptes a securiser</li>
+<li><a href="/admin/permissions">Roles</a> : Permissions d'acces</li>
+<li><a href="/admin/logs">Audit Logs</a> : Journal des actions</li>
+<li><a href="/admin/backups">Sauvegardes</a> : Protection des donnees</li>
+<li><a href="/admin/parametres">Parametres</a> : Configuration generale</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

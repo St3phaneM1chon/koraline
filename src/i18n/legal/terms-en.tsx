@@ -173,7 +173,7 @@ export default function TermsEN({ siteName }: { siteName: string }) {
       <Section title="13. Contact">
         <p>For any questions regarding these terms:</p>
         <ul style={{ listStyle: 'none', padding: 0 }}>
-          <li>legal@biocyclepeptides.com</li>
+          <li>legal@attitudes.vip</li>
           <li>Montreal, Quebec, Canada</li>
         </ul>
       </Section>

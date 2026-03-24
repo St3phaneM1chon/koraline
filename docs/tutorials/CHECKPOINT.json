@@ -1,0 +1,47 @@
+{
+  "started_at": "2026-03-17T07:00:00Z",
+  "last_updated": "2026-03-20T14:00:00Z",
+  "total_pages": 223,
+  "pages_completed": 223,
+  "pages_in_progress": 0,
+  "current_section": "COMPLETE",
+  "current_page": null,
+  "sections": {
+    "dashboard": { "total": 1, "completed": 1, "errors": 0, "score_avg": 100 },
+    "commerce": { "total": 7, "completed": 7, "errors": 0, "score_avg": 86 },
+    "catalog": { "total": 3, "completed": 3, "errors": 1, "score_avg": 75 },
+    "marketing": { "total": 8, "completed": 8, "errors": 3, "score_avg": 82 },
+    "community": { "total": 4, "completed": 4, "errors": 0, "score_avg": 91 },
+    "loyalty": { "total": 2, "completed": 2, "errors": 1, "score_avg": 85 },
+    "crm": { "total": 54, "completed": 54, "errors": 4, "score_avg": 84 },
+    "media": { "total": 37, "completed": 37, "errors": 4, "score_avg": 88 },
+    "emails": { "total": 15, "completed": 15, "errors": 1, "score_avg": 86 },
+    "telephony": { "total": 22, "completed": 22, "errors": 9, "score_avg": 88 },
+    "accounting": { "total": 45, "completed": 45, "errors": 12, "score_avg": 2, "note": "Scores gonfles par erreurs dev-mode" },
+    "system": { "total": 24, "completed": 24, "errors": 24, "score_avg": 0, "note": "Scores gonfles par erreurs dev-mode" }
+  },
+  "agents_running": [],
+  "agents_completed": [
+    { "id": "agent-crm", "section": "crm", "pages": 54, "completed": "2026-03-17T20:31:00Z", "score_avg": 84 },
+    { "id": "agent-media", "section": "media", "pages": 37, "completed": "2026-03-17T21:00:00Z", "score_avg": 88 },
+    { "id": "agent-telephony-emails", "section": "telephony+emails", "pages": 37, "completed": "2026-03-17T21:00:00Z", "score_avg": 87 }
+  ],
+  "bugs_found": [
+    { "id": "BUG-MKT-01", "severity": "high", "description": "getActiveRailId() ne route pas /admin/blog et /admin/rapports vers marketing", "file": "src/lib/admin/outlook-nav.ts" },
+    { "id": "BUG-MKT-02", "severity": "medium", "description": "Label ADMIN.NAV.CONTENTMARKETING non traduit dans sidebar marketing" },
+    { "id": "BUG-MKT-03", "severity": "high", "description": "Blog Analytics page 100% en anglais" },
+    { "id": "BUG-MKT-04", "severity": "medium", "description": "Accents manquants Upsell et Blog" },
+    { "id": "BUG-MKT-05", "severity": "medium", "description": "Newsletter: descriptions segments en anglais" },
+    { "id": "BUG-MKT-06", "severity": "medium", "description": "Rapports: section dupliquee" },
+    { "id": "BUG-LOY-01", "severity": "medium", "description": "Fidelite: mix anglais/francais dans statistiques et recompenses" },
+    { "id": "BUG-LOY-02", "severity": "low", "description": "Fidelite: typo 'Non transactions yet'" },
+    { "id": "BUG-LOY-03", "severity": "low", "description": "Webinaires: 'Draft' non traduit" },
+    { "id": "BUG-CRM-01", "severity": "medium", "description": "CRM Dashboard: 6 API calls en cascade" },
+    { "id": "BUG-CRM-02", "severity": "medium", "description": "CRM SMS Campaigns: textes hardcodes en anglais" },
+    { "id": "BUG-CRM-03", "severity": "low", "description": "CRM Pipelines: textes hardcodes en francais (pas de cles i18n)" },
+    { "id": "BUG-CRM-04", "severity": "low", "description": "CRM Leaderboard: PodiumCard textes hardcodes" },
+    { "id": "BUG-GLOBAL-01", "severity": "medium", "description": "notifications/stream 404 sur toutes les pages" },
+    { "id": "BUG-GLOBAL-02", "severity": "low", "description": "Hydration mismatch sur majorite des pages" }
+  ],
+  "fixes_applied": []
+}

@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * ChatWidget - Floating chat bubble for BioCycle Peptides
+ * ChatWidget - Floating chat bubble for Attitudes VIP
  *
  * Features:
  * - Floating button (bottom-right) with MessageCircle icon
@@ -57,9 +57,9 @@ export default function ChatWidget() {
 
   // Restore identity from localStorage on mount
   useEffect(() => {
-    const storedName = localStorage.getItem('biocycle_chat_name');
-    const storedEmail = localStorage.getItem('biocycle_chat_email');
-    const storedConvId = localStorage.getItem('biocycle_chat_conversation_id');
+    const storedName = localStorage.getItem('attitudes_chat_name');
+    const storedEmail = localStorage.getItem('attitudes_chat_email');
+    const storedConvId = localStorage.getItem('attitudes_chat_conversation_id');
 
     if (storedName && storedEmail) {
       setName(storedName);
@@ -158,7 +158,7 @@ export default function ChatWidget() {
             }
             if (data.conversationId) {
               setConversationId(data.conversationId);
-              localStorage.setItem('biocycle_chat_conversation_id', data.conversationId);
+              localStorage.setItem('attitudes_chat_conversation_id', data.conversationId);
             }
           }
         } catch {
@@ -191,8 +191,8 @@ export default function ChatWidget() {
       return;
     }
 
-    localStorage.setItem('biocycle_chat_name', trimmedName);
-    localStorage.setItem('biocycle_chat_email', trimmedEmail);
+    localStorage.setItem('attitudes_chat_name', trimmedName);
+    localStorage.setItem('attitudes_chat_email', trimmedEmail);
     setName(trimmedName);
     setEmail(trimmedEmail);
     setHasIdentified(true);
@@ -238,7 +238,7 @@ export default function ChatWidget() {
       // Store the conversation ID from the server response
       if (data.conversationId) {
         setConversationId(data.conversationId);
-        localStorage.setItem('biocycle_chat_conversation_id', data.conversationId);
+        localStorage.setItem('attitudes_chat_conversation_id', data.conversationId);
       }
 
       // Replace temp message with server response messages

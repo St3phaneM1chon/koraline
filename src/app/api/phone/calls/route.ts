@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
  * POST /api/phone/calls — Initiate outbound call
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { withMobileGuard } from '@/lib/mobile-guard';
 import { prisma } from '@/lib/db';
@@ -20,13 +20,13 @@ const WEBHOOK_BASE_URL = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP
 /**
  * GET — List recent calls.
  */
-export const GET = withMobileGuard(async (request, { session }) => {
+export const GET = withMobileGuard(async (request, { session: _session }) => {
   try {
     const { searchParams } = new URL(request.url);
     const limit = Math.min(parseInt(searchParams.get('limit') || '50'), 200);
     const offset = parseInt(searchParams.get('offset') || '0');
 
-    const [calls, total] = await Promise.all([
+    const [calls, _total] = await Promise.all([
       prisma.callLog.findMany({
         include: {
           recording: { select: { id: true, durationSec: true, isTranscribed: true } },
@@ -41,7 +41,7 @@ export const GET = withMobileGuard(async (request, { session }) => {
 
     // Fetch voicemails for missed/voicemail calls to expose their URLs
     const voicemailCallerNumbers = calls
-      .filter(c => c.status === 'MISSED' || c.status === 'VOICEMAIL' || c.status === 'NO_ANSWER')
+      .filter(c => c.status === 'MISSED' || c.status === 'VOICEMAIL' || c.status as string === 'NO_ANSWER')
       .map(c => c.callerNumber)
       .filter(Boolean) as string[];
 

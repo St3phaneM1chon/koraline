@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Videos &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 07 — Media</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion des Videos</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Media > Gestion de Contenu > Videos</p>
+<p><strong>URL</strong>: <code>/admin/media/videos</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Videos</strong> est le gestionnaire central de toutes vos videos. Elle permet d'ajouter, modifier, publier, archiver et supprimer des videos. Chaque video peut etre categorisee, taguee, et associee a un client ou un produit.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir toutes les videos avec leurs miniatures, titres, statuts et vues</li>
+<li>Rechercher des videos par mot-cle</li>
+<li>Filtrer par categorie, statut, type de contenu, visibilite et source</li>
+<li>Ajouter une nouvelle video (par URL YouTube, Vimeo ou envoi direct)</li>
+<li>Modifier les details d'une video (titre, description, tags, categorie, statut)</li>
+<li>Mettre une video en vedette sur le site</li>
+<li>Publier ou depublier une video</li>
+<li>Archiver les videos obsoletes</li>
+<li>Supprimer les videos inutiles</li>
+<li>Lire une video directement dans l'interface (lecteur integre)</li>
+<li>Naviguer avec pagination</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Video</strong></td><td>Contenu multimedia associe a une URL (YouTube, Vimeo ou fichier direct)</td></tr>
+  <tr><td><strong>Miniature (Thumbnail)</strong></td><td>Image d'apercu de la video</td></tr>
+  <tr><td><strong>Slug</strong></td><td>Identifiant URL-friendly de la video (ex: "formation-peptides-bpc")</td></tr>
+  <tr><td><strong>Tags</strong></td><td>Mots-cles associes a la video pour le classement et la recherche</td></tr>
+  <tr><td><strong>En vedette (Featured)</strong></td><td>Video mise en avant sur le site (etoile jaune)</td></tr>
+  <tr><td><strong>Visibilite</strong></td><td>Qui peut voir la video : public, clients, employes, prive</td></tr>
+  <tr><td><strong>Type de contenu</strong></td><td>Classification fonctionnelle (podcast, formation, demo, etc.)</td></tr>
+  <tr><td><strong>Source</strong></td><td>Provenance (YouTube, Vimeo, URL directe, enregistrement)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Allez dans <strong>Media</strong> dans la barre de navigation</li>
+<li>Cliquez sur <strong>Videos</strong> dans le panneau lateral</li>
+<li>Ou naviguez vers <code>/admin/media/videos</code></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. En-tete</h3>
+<ul>
+<li>Le titre <strong>Videos</strong> avec le compteur total</li>
+<li>Un bouton <strong>Nouvelle Video</strong> pour en ajouter une</li>
+</ul>
+
+<h3>2. Barre de recherche et filtres</h3>
+<ul>
+<li>Champ de recherche par mot-cle (titre, description, tags)</li>
+<li>Filtres deroulants :</li>
+<li><strong>Categorie</strong> : toutes, ou une categorie specifique</li>
+<li><strong>Statut</strong> : brouillon, en revision, publie, archive</li>
+<li><strong>Type</strong> : podcast, formation, demo, temoignage, etc.</li>
+<li><strong>Visibilite</strong> : public, clients uniquement, employes uniquement, prive</li>
+<li><strong>Source</strong> : YouTube, Vimeo, enregistrement, envoi</li>
+</ul>
+
+<h3>3. Grille de videos</h3>
+<p>Chaque video est representee par une carte avec :</p>
+<ul>
+<li>Miniature de la video (avec badge de statut)</li>
+<li>Titre (tronque si trop long)</li>
+<li>Categorie et tags</li>
+<li>Nombre de vues</li>
+<li>Date de creation</li>
+<li>Icone etoile si en vedette</li>
+<li>Boutons d'action au survol (modifier, lire, supprimer)</li>
+</ul>
+
+<h3>4. Pagination</h3>
+<p>Navigation par pages en bas de la grille.</p>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>Ajouter une nouvelle video</h3>
+<ol>
+<li>Cliquez sur <strong>Nouvelle Video</strong> en haut a droite</li>
+<li>Un formulaire s'ouvre avec les champs suivants :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Description</th><th>Obligatoire</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Titre</strong></td><td>Nom de la video</td><td>Oui</td></tr>
+  <tr><td><strong>URL de la video</strong></td><td>Lien YouTube, Vimeo ou URL directe</td><td>Oui</td></tr>
+  <tr><td><strong>Description</strong></td><td>Texte descriptif de la video</td><td>Non</td></tr>
+  <tr><td><strong>Miniature</strong></td><td>URL d'image d'apercu</td><td>Non (auto-generee pour YouTube)</td></tr>
+  <tr><td><strong>Categorie</strong></td><td>Categorie de classement</td><td>Non</td></tr>
+  <tr><td><strong>Tags</strong></td><td>Mots-cles separes par des virgules</td><td>Non</td></tr>
+  <tr><td><strong>Type de contenu</strong></td><td>Podcast, formation, demo, etc.</td><td>Oui</td></tr>
+  <tr><td><strong>Visibilite</strong></td><td>Public, clients, employes, prive</td><td>Oui</td></tr>
+  <tr><td><strong>Instructeur</strong></td><td>Nom du presentateur/formateur</td><td>Non</td></tr>
+  <tr><td><strong>Statut</strong></td><td>Brouillon, en revision, publie</td><td>Oui</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<h3>Modifier une video</h3>
+<ol>
+<li>Cliquez sur la carte d'une video dans la grille</li>
+<li>Ou cliquez sur l'icone crayon au survol</li>
+<li>La page de detail s'ouvre avec tous les champs editables</li>
+<li>Modifiez les champs souhaites</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<h3>Lire une video dans l'interface</h3>
+<ol>
+<li>Cliquez sur l'icone <strong>Lire</strong> (triangle) au survol d'une carte</li>
+<li>Un lecteur video s'ouvre en modal (overlay)</li>
+<li>Le lecteur supporte YouTube, Vimeo et les fichiers video natifs</li>
+<li>Fermez le lecteur en cliquant sur le X ou en appuyant sur Echap</li>
+</ol>
+
+<h3>Mettre une video en vedette</h3>
+<ol>
+<li>Cliquez sur l'icone etoile sur la carte de la video</li>
+<li>L'etoile devient jaune pour indiquer que la video est en vedette</li>
+<li>La video apparaitra dans les sections "en vedette" du site</li>
+</ol>
+
+<h3>Supprimer une video</h3>
+<ol>
+<li>Selectionnez la video (coche)</li>
+<li>Cliquez sur l'icone poubelle ou utilisez le ruban <strong>Supprimer</strong></li>
+<li>Confirmez la suppression dans la boite de dialogue</li>
+</ol>
+
+<h3>Changer le statut</h3>
+<ul>
+<li><strong>Publier</strong> : passe la video en statut "publie" et la rend visible</li>
+<li><strong>Depublier</strong> : remet la video en brouillon</li>
+<li><strong>Archiver</strong> : retire la video sans la supprimer</li>
+</ul>
+
+<hr>
+
+<h2>Actions du ruban</h2>
+
+<table>
+<thead>
+    <tr><th>Action</th><th>Effet</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Upload</strong></td><td>Ouvre le selecteur de fichiers pour envoyer une video</td></tr>
+  <tr><td><strong>Delete</strong></td><td>Supprime les videos selectionnees</td></tr>
+  <tr><td><strong>Play</strong></td><td>Lit la video selectionnee</td></tr>
+  <tr><td><strong>Export</strong></td><td>Exporte la liste des videos en CSV</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Flux de travail recommandes</h2>
+
+<h3>Ajouter une video YouTube</h3>
+<ol>
+<li>Cliquez sur <strong>Nouvelle Video</strong></li>
+<li>Collez l'URL YouTube (ex: <code>https://youtube.com/watch?v=xxx</code>)</li>
+<li>Le titre et la miniature sont recuperes automatiquement</li>
+<li>Ajoutez une categorie et des tags</li>
+<li>Definissez la visibilite (public pour le site, prive pour l'interne)</li>
+<li>Sauvegardez en statut <strong>Brouillon</strong></li>
+<li>Revisez le contenu puis passez en <strong>Publie</strong></li>
+</ol>
+
+<h3>Importer un enregistrement de reunion</h3>
+<ol>
+<li>L'enregistrement est automatiquement detecte dans <a href="./30-imports.md">Importations</a></li>
+<li>Importez-le dans la bibliotheque video</li>
+<li>Editez le titre, la description et les tags</li>
+<li>Verifiez le <a href="./32-consents.md">consentement</a> des participants</li>
+<li>Publiez la video</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes</h2>
+
+<p><strong>Q : Quels formats video sont supportes ?</strong></p>
+<p>R : YouTube (URL), Vimeo (URL), et fichiers directs (MP4, WebM). L'envoi direct de fichiers volumineux n'est pas encore supporte -- utilisez YouTube ou Vimeo comme hebergeur.</p>
+
+<p><strong>Q : La miniature ne se charge pas</strong></p>
+<p>R : Verifiez que l'URL de la miniature est accessible. Pour YouTube, la miniature est generee automatiquement a partir de l'URL de la video.</p>
+
+<p><strong>Q : Comment organiser mes videos en categories ?</strong></p>
+<p>R : Creez des categories dans <a href="./28-video-categories.md">Categories Video</a>, puis assignez-les lors de la creation ou modification de chaque video.</p>
+
+<p><strong>Q : Les videos privees sont visibles par qui ?</strong></p>
+<p>R : Une video "prive" n'est visible que par les administrateurs dans le back-office. Les autres niveaux de visibilite controle l'acces cote site public.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Embed</strong></td><td>Integration d'une video hebergee ailleurs dans votre page</td></tr>
+  <tr><td><strong>Transcoding</strong></td><td>Conversion d'un format video en un autre</td></tr>
+  <tr><td><strong>Featured</strong></td><td>Mis en vedette, affiche en priorite</td></tr>
+  <tr><td><strong>Pagination</strong></td><td>Division du contenu en pages pour eviter les listes trop longues</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<table>
+<thead>
+    <tr><th>Page</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><a href="./26-content-hub.md">Content Hub</a></td><td>Vue d'ensemble du contenu</td></tr>
+  <tr><td><a href="./28-video-categories.md">Categories Video</a></td><td>Organiser les categories</td></tr>
+  <tr><td><a href="./30-imports.md">Importations</a></td><td>Importer des enregistrements</td></tr>
+  <tr><td><a href="./32-consents.md">Consentements</a></td><td>Gerer les autorisations</td></tr>
+  <tr><td><a href="./31-sessions.md">Sessions Video</a></td><td>Planifier des sessions d'enregistrement</td></tr>
+</tbody>
+</table>
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

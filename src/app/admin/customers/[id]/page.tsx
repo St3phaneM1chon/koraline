@@ -22,8 +22,6 @@ import {
   Shield,
   Ban,
   MessageSquare,
-  ChevronDown,
-  ChevronUp,
   Repeat,
   Pause,
   Play,
@@ -373,9 +371,6 @@ export default function ClientDetailPage() {
   const [mergeTargetId, setMergeTargetId] = useState('');
   const [mergeLoading, setMergeLoading] = useState(false);
 
-  // Expanded conversations
-  const [expandedConversations, setExpandedConversations] = useState<Set<string>>(new Set());
-
   const fetchUserDetail = useCallback(async () => {
     try {
       const res = await fetch(`/api/admin/users/${id}`);
@@ -498,19 +493,6 @@ export default function ClientDetailPage() {
     } finally {
       setMergeLoading(false);
     }
-  };
-
-  // Toggle expanded conversation
-  const toggleConversation = (convId: string) => {
-    setExpandedConversations((prev) => {
-      const next = new Set(prev);
-      if (next.has(convId)) {
-        next.delete(convId);
-      } else {
-        next.add(convId);
-      }
-      return next;
-    });
   };
 
   // Adjust loyalty points

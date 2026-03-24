@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Budget et Previsions &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 11 — Comptabilite</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Budget et Previsions</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Comptabilite > Rapports > Budget</p>
+<p><strong>URL</strong>: <code>/admin/comptabilite/budget</code>, <code>/admin/comptabilite/previsions</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~30 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>Pourquoi cette page est importante</h2>
+
+<p>Le budget est votre <strong>plan de vol financier</strong>. C'est l'outil qui transforme les intentions strategiques en chiffres concrets. Sans budget, vous reagissez aux problemes financiers au lieu de les anticiper. Avec un budget, vous savez a l'avance combien vous pouvez investir en marketing, combien vous devez vendre pour couvrir vos charges, et quand la tresorerie risque d'etre tendue.</p>
+
+<p><strong>Obligations legales</strong> :</p>
+<ul>
+<li>Le budget n'est pas une obligation legale comme les etats financiers. Aucune loi n'oblige une PME a produire un budget.</li>
+<li>Cependant, les banques exigent souvent des previsions budgetaires pour accorder un pret ou une marge de credit.</li>
+<li>Si BioCycle recherche des investisseurs ou du financement, un budget detaille est un prerequis.</li>
+<li>Les programmes gouvernementaux de subventions (RS&DE, CDAE, BDC) demandent frequemment des projections financieres.</li>
+</ul>
+
+<p><strong>Impact concret</strong> :</p>
+<ul>
+<li>Un budget permet d'identifier <strong>avant</strong> qu'ils ne se produisent : les mois ou la tresorerie sera insuffisante, les depassements de depenses, les objectifs de vente irralistes.</li>
+<li>La comparaison budget vs reel est le meilleur outil de gestion pour un proprietaire d'entreprise. Un ecart de +20% sur le marketing sans hausse proportionnelle des ventes signale un probleme immediatement.</li>
+<li>Sans budget, vous ne savez pas si vous depassez vos moyens jusqu'a ce que le releve bancaire vous le montre -- souvent trop tard.</li>
+</ul>
+
+<hr>
+
+<h2>Cycle comptable complet -- Ou se situe cette page</h2>
+
+<pre><code>1. Plan comptable → 2. Journal → 3. Ecritures → 4. Grand livre/Balance
+ ↓
+ 5. Bilan → 6. Etat des resultats
+ ↓
+ 7. Factures → 8. Depenses → 9. Taxes → 10. Rapprochement
+ ↓
+[11. BUDGET] ← VOUS ETES ICI (planification et controle)
+ ↓
+ 12. Rapports financiers</code></pre>
+
+<p>Le budget est l'etape 11 du cycle. Il n'est pas lie a une obligation d'enregistrement comptable, mais il est essentiel pour l'analyse. Le budget est compare a l'etat des resultats reel (etape 6) pour mesurer la performance. Les ecarts sont analyses dans les rapports (etape 12).</p>
+
+<hr>
+
+<h2>Ordre des operations</h2>
+
+<h3>Creation du budget annuel</h3>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Action</th><th>Quand</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>Analyser les resultats reels de l'annee precedente</td><td>Octobre-novembre</td></tr>
+  <tr><td>2</td><td>Definir les objectifs de l'annee suivante (croissance, investissements)</td><td>Novembre</td></tr>
+  <tr><td>3</td><td>Estimer les revenus mois par mois (saisonnalite)</td><td>Novembre-decembre</td></tr>
+  <tr><td>4</td><td>Estimer les charges fixes (loyer, salaires, assurances)</td><td>Novembre-decembre</td></tr>
+  <tr><td>5</td><td>Estimer les charges variables (CMV, marketing, livraison)</td><td>Novembre-decembre</td></tr>
+  <tr><td>6</td><td>Calculer le benefice previsionnel et la tresorerie</td><td>Decembre</td></tr>
+  <tr><td>7</td><td>Valider avec le comptable ou le directeur financier</td><td>Decembre</td></tr>
+  <tr><td>8</td><td>Saisir dans Koraline et activer</td><td>Janvier</td></tr>
+</tbody>
+</table>
+<h3>Suivi du budget en cours d'annee</h3>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Action</th><th>Frequence</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>Generer le rapport Budget vs Reel</td><td>Mensuel</td></tr>
+  <tr><td>2</td><td>Analyser les ecarts significatifs (> 10%)</td><td>Mensuel</td></tr>
+  <tr><td>3</td><td>Identifier les causes des ecarts</td><td>Mensuel</td></tr>
+  <tr><td>4</td><td>Ajuster les previsions pour les mois restants si necessaire</td><td>Trimestriel</td></tr>
+  <tr><td>5</td><td>Reviser formellement le budget si les conditions changent</td><td>Trimestriel</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment entrer les donnees</h2>
+
+<h3>Creer un budget annuel</h3>
+
+<p><strong>URL</strong> : <code>/admin/comptabilite/budget</code></p>
+
+<ol>
+<li>Cliquez sur <strong>Nouveau budget</strong></li>
+<li>Donnez un nom descriptif (ex: "Budget 2026 - Approuve")</li>
+<li>Selectionnez la periode (annee fiscale 2026)</li>
+<li>Choisissez la methode de creation :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Methode</th><th>Description</th><th>Quand l'utiliser</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>A partir de zero</strong></td><td>Tout remplir manuellement</td><td>Premiere annee ou changement majeur de strategie</td></tr>
+  <tr><td><strong>Basee sur l'annee precedente</strong></td><td>Pre-remplie avec les chiffres reels + % d'ajustement</td><td>Annees subsequentes avec croissance previsible</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Remplissez les montants par categorie et par mois :</li>
+</ol>
+
+<pre><code>BUDGET 2026 - BioCycle Peptides
+                     Jan       Fev       Mar       Avr      ...    Total
+REVENUS
+ Ventes B2C       55 000    58 000    65 000    60 000           750 000
+ Ventes B2B       35 000    38 000    42 000    40 000           480 000
+ Abonnements      15 000    16 000    18 000    17 000           210 000
+ Livraison fact.   2 500     2 700     3 200     2 800            35 000
+TOTAL REVENUS    107 500   114 700   128 200   119 800         1 475 000
+
+CMV
+ Matieres prem.   28 000    30 000    32 000    30 000           370 000
+ Emballage         3 800     4 000     4 500     4 200            50 000
+ Livraison sort.   4 500     5 000     5 800     5 200            62 000
+TOTAL CMV         36 300    39 000    42 300    39 400           482 000
+
+BENEFICE BRUT     71 200    75 700    85 900    80 400           993 000
+ Marge brute %     66,2%     66,0%     67,0%     67,1%            67,3%
+
+CHARGES EXPLOIT.
+ Salaires         25 000    25 000    28 000    28 000           324 000
+ Loyer             3 500     3 500     3 500     3 500            42 000
+ Marketing         6 000     7 000     8 200     7 500            90 000
+ Logiciels         2 800     2 800     2 800     2 800            33 600
+ Frais Stripe      3 200     3 400     3 845     3 600            44 000
+ Assurances        1 200     1 200     1 200     1 200            14 400
+ Honoraires prof.  1 500     1 500     1 500     1 500            18 000
+ Divers              800       800       800       800             9 600
+TOTAL CHARGES     44 000    45 200    49 845    48 900           575 600
+
+BENEFICE PREVU    27 200    30 500    36 055    31 500           417 400
+ Marge nette %     25,3%     26,6%     28,1%     26,3%            28,3%</code></pre>
+
+<ol>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<h3>Ajuster le budget en cours d'annee</h3>
+
+<ol>
+<li>Ouvrez le budget existant</li>
+<li>Cliquez sur <strong>Reviser</strong></li>
+<li>Le systeme cree une <strong>nouvelle version</strong> (l'ancienne est conservee pour comparaison)</li>
+<li>Modifiez les montants pour les mois restants</li>
+<li>Sauvegardez</li>
+</ol>
+
+<p><strong>Bonne pratique</strong> : Revisez le budget chaque trimestre. Gardez le budget original comme reference et creez des versions revisees. Cela permet de comparer "Budget initial vs Reel" et "Budget revise vs Reel".</p>
+
+<h3>Comparer budget vs reel</h3>
+
+<ol>
+<li>Ouvrez le budget</li>
+<li>Activez le mode <strong>Comparaison avec reel</strong></li>
+<li>Le rapport affiche :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Categorie</th><th>Budget Mars</th><th>Reel Mars</th><th>Ecart $</th><th>Ecart %</th><th>Analyse</th></tr>
+</thead>
+<tbody>
+  <tr><td>Ventes B2C</td><td>65 000 $</td><td>65 000 $</td><td>0</td><td>0%</td><td>Sur cible</td></tr>
+  <tr><td>Ventes B2B</td><td>42 000 $</td><td>42 000 $</td><td>0</td><td>0%</td><td>Sur cible</td></tr>
+  <tr><td>Marketing</td><td>8 200 $</td><td>9 500 $</td><td>+1 300</td><td>+15,9%</td><td>Depassement -- investiguer</td></tr>
+  <tr><td>Salaires</td><td>28 000 $</td><td>28 000 $</td><td>0</td><td>0%</td><td>Sur cible</td></tr>
+  <tr><td>Frais Stripe</td><td>3 845 $</td><td>3 845 $</td><td>0</td><td>0%</td><td>Sur cible</td></tr>
+</tbody>
+</table>
+<p><strong>Code couleur</strong> :</p>
+<ul>
+<li><strong>Vert</strong> : ecart favorable (revenus plus hauts ou depenses plus basses que prevu)</li>
+<li><strong>Rouge</strong> : ecart defavorable (revenus plus bas ou depenses plus hautes que prevu)</li>
+<li><strong>Jaune</strong> : ecart entre 5% et 10% (a surveiller)</li>
+</ul>
+
+<hr>
+
+<h2>Pourquoi entrer ces donnees</h2>
+
+<h3>Le budget comme outil de decision</h3>
+
+<table>
+<thead>
+    <tr><th>Situation</th><th>Sans budget</th><th>Avec budget</th></tr>
+</thead>
+<tbody>
+  <tr><td>Embauche d'un nouvel employe</td><td>"On verra si on peut se le permettre"</td><td>"Le budget montre 30 000 $ de marge -- on peut embaucher a 4 000 $/mois"</td></tr>
+  <tr><td>Investissement en marketing</td><td>"Combien depenser ?"</td><td>"Le budget alloue 90 000 $ annuels, soit 7 500 $/mois"</td></tr>
+  <tr><td>Negociation fournisseur</td><td>"C'est cher ou pas ?"</td><td>"Le budget CMV est de 482 000 $, cette hausse de 5% represente 24 100 $ -- acceptable ou non"</td></tr>
+  <tr><td>Demande de pret</td><td>"Combien emprunter ?"</td><td>"Les previsions montrent un besoin de 50 000 $ en Q3 pour le stock pre-noel"</td></tr>
+  <tr><td>Fin de mois difficile</td><td>Panique</td><td>"Le budget prevoyait un mois faible. Le cash flow est conforme aux previsions."</td></tr>
+</tbody>
+</table>
+<h3>Le budget comme outil de controle</h3>
+
+<p>L'ecart budgetaire est le signal d'alarme le plus puissant :</p>
+
+<table>
+<thead>
+    <tr><th>Type d'ecart</th><th>Signification</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td>Revenus > Budget</td><td>Les ventes depassent les attentes</td><td>Verifier si c'est durable, ajuster les commandes fournisseurs</td></tr>
+  <tr><td>Revenus < Budget</td><td>Les ventes sont en dessous des objectifs</td><td>Analyser pourquoi (saisonnalite ? concurrence ? marketing insuffisant ?)</td></tr>
+  <tr><td>Depenses > Budget</td><td>Depassement de couts</td><td>Identifier la cause, couper ou reporter les depenses non essentielles</td></tr>
+  <tr><td>Depenses < Budget</td><td>Economies realisees</td><td>Verifier que ce n'est pas un oubli de saisie. Si reel : reaffecter les economies.</td></tr>
+  <tr><td>CMV > Budget sans hausse ventes</td><td>Couts unitaires en hausse</td><td>Negocier avec les fournisseurs, ajuster les prix de vente</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Les previsions de tresorerie</h2>
+
+<h3>Pourquoi la tresorerie est differente du benefice</h3>
+
+<p>Une entreprise peut etre <strong>rentable et en faillite</strong> si elle n'a pas assez de liquidites pour payer ses obligations. Le benefice est un concept comptable. La tresorerie est l'argent reel en banque.</p>
+
+<p>Exemple :</p>
+<ul>
+<li>BioCycle fait 26 640 $ de benefice en mars (selon l'etat des resultats)</li>
+<li>Mais un client B2B de 15 000 $ n'a pas encore paye</li>
+<li>Et BioCycle a du payer un fournisseur de 20 000 $ d'avance</li>
+<li>Resultat : benefice de +26 640 $ mais tresorerie de -8 360 $ pour le mois</li>
+</ul>
+
+<h3>Prevision de tresorerie dans Koraline</h3>
+
+<p><strong>URL</strong> : <code>/admin/comptabilite/previsions</code></p>
+
+<p>Le systeme projette jour par jour :</p>
+<ul>
+<li><strong>Encaissements prevus</strong> : ventes en ligne (immediat), paiements B2B (selon echeances), remboursement TPS/TVQ</li>
+<li><strong>Decaissements prevus</strong> : fournisseurs (selon echeances), salaires (fin de mois), loyer (debut de mois), taxes (dates limites)</li>
+<li><strong>Solde bancaire prevu</strong> : argent disponible chaque jour</li>
+</ul>
+
+<p><strong>Alerte</strong> : Si le solde prevu descend sous un seuil defini (ex: 20 000 $), Koraline envoie une alerte. C'est vital pour eviter les decouvertes bancaires.</p>
+
+<h3>Creer des scenarios</h3>
+
+<table>
+<thead>
+    <tr><th>Scenario</th><th>Hypothese</th><th>Utilite</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Optimiste</strong></td><td>Croissance de 25%, maintien des marges</td><td>Planifier les investissements si tout va bien</td></tr>
+  <tr><td><strong>Realiste</strong></td><td>Croissance de 15%, legere pression sur les marges</td><td>Base de travail pour les decisions courantes</td></tr>
+  <tr><td><strong>Pessimiste</strong></td><td>Croissance de 5%, hausse des couts</td><td>Se preparer au pire : quelles depenses couper ?</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Construire un budget realiste -- Methode pas a pas</h2>
+
+<h3>Etape 1 : Estimer les revenus</h3>
+
+<p>Basez-vous sur les donnees historiques et vos objectifs de croissance :</p>
+
+<table>
+<thead>
+    <tr><th>Source de revenu</th><th>Reel 2025</th><th>Croissance visee</th><th>Budget 2026</th><th>Methode d'estimation</th></tr>
+</thead>
+<tbody>
+  <tr><td>Ventes B2C</td><td>620 000 $</td><td>+21%</td><td>750 000 $</td><td>Tendance + investissement marketing accru</td></tr>
+  <tr><td>Ventes B2B</td><td>380 000 $</td><td>+26%</td><td>480 000 $</td><td>5 nouveaux clients cliniques identifies</td></tr>
+  <tr><td>Abonnements</td><td>160 000 $</td><td>+31%</td><td>210 000 $</td><td>Taux de retention 85% + nouveaux</td></tr>
+  <tr><td>Livraison</td><td>28 000 $</td><td>+25%</td><td>35 000 $</td><td>Proportionnel aux ventes</td></tr>
+  <tr><td><strong>Total</strong></td><td><strong>1 188 000 $</strong></td><td><strong>+24%</strong></td><td><strong>1 475 000 $</strong></td><td></td></tr>
+</tbody>
+</table>
+<p><strong>Repartition mensuelle</strong> : Ne repartissez PAS de maniere egale (1/12 par mois). Utilisez la saisonnalite historique :</p>
+<ul>
+<li>Janvier : 7,3% du total (faible, debut d'annee)</li>
+<li>Mars : 8,7% (forte demande)</li>
+<li>Septembre : 9,2% (pic de reprise)</li>
+<li>Decembre : 6,5% (creux des fetes)</li>
+</ul>
+
+<h3>Etape 2 : Estimer le CMV</h3>
+
+<p>Le CMV est proportionnel aux ventes. Utilisez le ratio historique :</p>
+
+<table>
+<thead>
+    <tr><th>Element</th><th>Ratio historique</th><th>Budget 2026</th></tr>
+</thead>
+<tbody>
+  <tr><td>Matieres premieres</td><td>25% des ventes</td><td>369 000 $</td></tr>
+  <tr><td>Emballage</td><td>3,4% des ventes</td><td>50 000 $</td></tr>
+  <tr><td>Livraison sortante</td><td>4,2% des ventes</td><td>62 000 $</td></tr>
+  <tr><td><strong>Total CMV</strong></td><td><strong>32,7% des ventes</strong></td><td><strong>481 000 $</strong></td></tr>
+</tbody>
+</table>
+<p><strong>Marge brute budgetee</strong> : 67,3%. Comparez avec le reel chaque mois.</p>
+
+<h3>Etape 3 : Estimer les charges fixes</h3>
+
+<p>Les charges fixes sont previsibles car elles ne varient pas avec les ventes :</p>
+
+<table>
+<thead>
+    <tr><th>Charge</th><th>Mensuel</th><th>Annuel</th><th>Commentaire</th></tr>
+</thead>
+<tbody>
+  <tr><td>Salaires</td><td>27 000 $</td><td>324 000 $</td><td>6 employes, augmentation en avril</td></tr>
+  <tr><td>Loyer</td><td>3 500 $</td><td>42 000 $</td><td>Bail fixe</td></tr>
+  <tr><td>Assurances</td><td>1 200 $</td><td>14 400 $</td><td>Prime annuelle / 12</td></tr>
+  <tr><td>Logiciels</td><td>2 800 $</td><td>33 600 $</td><td>Azure, licences, SaaS</td></tr>
+  <tr><td>Honoraires</td><td>1 500 $</td><td>18 000 $</td><td>Comptable CPA</td></tr>
+</tbody>
+</table>
+<h3>Etape 4 : Estimer les charges variables</h3>
+
+<p>Les charges variables fluctuent avec les ventes :</p>
+
+<table>
+<thead>
+    <tr><th>Charge</th><th>Ratio</th><th>Budget 2026</th></tr>
+</thead>
+<tbody>
+  <tr><td>Frais Stripe</td><td>3,0% des ventes</td><td>44 000 $</td></tr>
+  <tr><td>Marketing Google</td><td>Variable</td><td>48 000 $ (objectif)</td></tr>
+  <tr><td>Marketing Meta</td><td>Variable</td><td>36 000 $ (objectif)</td></tr>
+  <tr><td>Marketing autre</td><td>Variable</td><td>6 000 $</td></tr>
+  <tr><td>Fournitures</td><td>0,07% des ventes</td><td>1 000 $</td></tr>
+  <tr><td>Divers</td><td>Forfait</td><td>9 600 $</td></tr>
+</tbody>
+</table>
+<h3>Etape 5 : Calculer le point mort</h3>
+
+<p>Le point mort est le niveau de ventes ou BioCycle couvre exactement ses charges :</p>
+
+<pre><code>Charges fixes annuelles :                        432 000 $
+Marge sur couts variables : 67,3% - 3,0% (Stripe) = 64,3%
+
+Point mort = Charges fixes / Marge sur couts variables
+Point mort = 432 000 / 0,643 = 671 850 $ de ventes annuelles
+
+Soit environ 56 000 $ de ventes par mois pour etre a l'equilibre.</code></pre>
+
+<p>Avec un budget de 1 475 000 $ de ventes, BioCycle est <strong>largement au-dessus du point mort</strong>. La marge de securite est de 803 150 $ (54%).</p>
+
+<hr>
+
+<h2>Erreurs courantes a eviter</h2>
+
+<table>
+<thead>
+    <tr><th>Erreur</th><th>Consequence</th><th>Comment eviter</th></tr>
+</thead>
+<tbody>
+  <tr><td>Budget trop optimiste</td><td>Deception, surinvestissement, problemes de tresorerie</td><td>Utiliser les chiffres reels de l'annee precedente comme base</td></tr>
+  <tr><td>Budget trop detaille</td><td>Impossible a suivre, personne ne le consulte</td><td>15-20 categories suffisent, pas 100</td></tr>
+  <tr><td>Ne jamais regarder le budget apres sa creation</td><td>Perte totale de l'utilite du budget</td><td>Inscrire la revue budget dans la routine mensuelle</td></tr>
+  <tr><td>Ignorer la saisonnalite</td><td>Budget lineaire alors que les ventes sont saisonnieres</td><td>Repartir les revenus selon les patterns historiques</td></tr>
+  <tr><td>Ne pas inclure les taxes dans les previsions de tresorerie</td><td>Le paiement trimestriel de TPS/TVQ (12 000 $+) est une surprise</td><td>Inclure les acomptes de taxes et les paiements trimestriels</td></tr>
+  <tr><td>Ne pas budgeter les impots</td><td>Le paiement annuel d'impots est une surprise massive</td><td>Estimer les acomptes provisionnels trimestriels</td></tr>
+  <tr><td>Confondre depense et sortie de tresorerie</td><td>Le budget montre un benefice mais le compte est vide</td><td>Separer le budget d'exploitation (P&L) du budget de tresorerie (cash flow)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Quand faire cette operation</h2>
+
+<table>
+<thead>
+    <tr><th>Quand</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Octobre-decembre</strong></td><td>Preparer le budget de l'annee suivante</td></tr>
+  <tr><td><strong>Janvier</strong></td><td>Saisir et activer le budget dans Koraline</td></tr>
+  <tr><td><strong>Mensuel</strong></td><td>Generer le rapport Budget vs Reel, analyser les ecarts</td></tr>
+  <tr><td><strong>Trimestriel</strong></td><td>Reviser le budget si les conditions ont change significativement</td></tr>
+  <tr><td><strong>Sur demande</strong></td><td>Mettre a jour les previsions pour les demandes de financement</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Suis-je oblige de faire un budget ?</strong></p>
+<p>R : Non, ce n'est pas une obligation legale. Mais c'est l'outil de gestion le plus puissant pour une entreprise en croissance. Toute banque ou investisseur vous en demandera un. Et sans budget, vous ne savez pas si vos depenses sont raisonnables jusqu'a ce qu'il soit trop tard.</p>
+
+<p><strong>Q : Que faire si je depasse mon budget ?</strong></p>
+<p>R : Analysez pourquoi. Un depassement de marketing qui genere plus de ventes est peut-etre bon. Un depassement de loyer sans raison est mauvais. L'important est de comprendre l'ecart, pas de le respecter a tout prix. Un budget est un guide, pas une loi.</p>
+
+<p><strong>Q : Les previsions sont-elles fiables ?</strong></p>
+<p>R : Plus vous avez d'historique, plus elles sont precises. Avec 12+ mois de donnees, les previsions de revenus sont generalement fiables a +/- 15%. Les depenses fixes sont tres previsibles. Les depenses variables et les ventes sont plus incertaines.</p>
+
+<p><strong>Q : Puis-je avoir plusieurs budgets pour la meme annee ?</strong></p>
+<p>R : Oui. Vous pouvez avoir un budget "Initial" (approuve en janvier), un budget "Revise Q2" (ajuste en juillet) et un budget "Direction" (objectifs ambitieux). Koraline conserve toutes les versions.</p>
+
+<p><strong>Q : Comment calculer le CMV previsionnel ?</strong></p>
+<p>R : Utilisez le ratio CMV/Ventes de l'annee precedente. Si le CMV etait de 33% des ventes en 2025 et que vous prevoyez 1 475 000 $ de ventes en 2026, le CMV previsionnel est d'environ 487 000 $. Ajustez si vous anticipez des changements de prix fournisseurs.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition comptable</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Budget</strong></td><td>Plan financier previsionnel detaillant les revenus et depenses attendus pour une periode. Outil de planification et de controle de gestion.</td></tr>
+  <tr><td><strong>Ecart budgetaire</strong></td><td>Difference entre le montant budgete et le montant reel. Favorable si les revenus reels sont superieurs ou les depenses inferieures au budget.</td></tr>
+  <tr><td><strong>Prevision (forecast)</strong></td><td>Projection des resultats futurs basee sur les tendances historiques et les conditions actuelles. Se met a jour en continu, contrairement au budget qui est fixe.</td></tr>
+  <tr><td><strong>Scenario</strong></td><td>Version alternative d'une prevision basee sur differentes hypotheses (optimiste, realiste, pessimiste).</td></tr>
+  <tr><td><strong>Tresorerie (cash flow)</strong></td><td>Argent reellement disponible en banque, par opposition au benefice comptable. Une entreprise peut etre rentable mais manquer de tresorerie.</td></tr>
+  <tr><td><strong>Budget de tresorerie</strong></td><td>Prevision des encaissements et decaissements reels, jour par jour ou mois par mois. Distingue du budget d'exploitation (P&L).</td></tr>
+  <tr><td><strong>Budget base zero</strong></td><td>Methode ou chaque poste est justifie a partir de zero, sans se baser sur l'annee precedente. Rigoureux mais long.</td></tr>
+  <tr><td><strong>Charges fixes</strong></td><td>Depenses qui ne varient pas avec le volume de ventes (loyer, salaires, assurances). Previsibles et budgetables avec precision.</td></tr>
+  <tr><td><strong>Charges variables</strong></td><td>Depenses proportionnelles aux ventes (CMV, commissions Stripe, livraison). Budgetees en pourcentage du revenu prevu.</td></tr>
+  <tr><td><strong>Point mort (break-even)</strong></td><td>Niveau de ventes ou les revenus couvrent exactement les charges. En dessous : perte. Au-dessus : profit.</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="06-resultats.md">Etat des resultats</a> : Les resultats reels a comparer avec le budget</li>
+<li><a href="04-grand-livre.md">Grand livre</a> : Detail des transactions reelles</li>
+<li><a href="08-depenses.md">Depenses</a> : Depenses a controler contre le budget</li>
+<li><a href="12-rapports.md">Rapports</a> : Rapports Budget vs Reel et analyses d'ecarts</li>
+<li><a href="05-bilan.md">Bilan</a> : Impact des decisions budgetaires sur la situation financiere</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

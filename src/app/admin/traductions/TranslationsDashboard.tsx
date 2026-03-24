@@ -729,7 +729,7 @@ export default function TranslationsDashboard() {
   // Load glossary from localStorage (or API when available)
   const loadGlossary = useCallback(() => {
     try {
-      const stored = localStorage.getItem('biocycle_glossary');
+      const stored = localStorage.getItem('attitudes_glossary');
       if (stored) setGlossary(JSON.parse(stored));
     } catch {
       // Ignore
@@ -738,7 +738,7 @@ export default function TranslationsDashboard() {
 
   const saveGlossaryToStorage = useCallback((entries: GlossaryEntry[]) => {
     try {
-      localStorage.setItem('biocycle_glossary', JSON.stringify(entries));
+      localStorage.setItem('attitudes_glossary', JSON.stringify(entries));
     } catch {
       // Ignore
     }

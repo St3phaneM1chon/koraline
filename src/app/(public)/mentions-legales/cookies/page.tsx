@@ -21,7 +21,7 @@ export default function CookiesPage() {
 
   const savePreferences = () => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem('biocycle-cookie-preferences', JSON.stringify(preferences));
+      localStorage.setItem('attitudes-cookie-preferences', JSON.stringify(preferences));
       setShowPreferences(false);
       alert(t('legal.cookies.preferencesSaved'));
     }

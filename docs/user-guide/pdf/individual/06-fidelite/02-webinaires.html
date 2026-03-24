@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Webinaires &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 06 — Fidelite</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion des Webinaires</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Fidelite > Webinaires</p>
+<p><strong>URL</strong>: <code>/admin/webinaires</code></p>
+<p><strong>Niveau</strong>: Debutant a intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Webinaires</strong> gere vos evenements educatifs en ligne. Les webinaires sont un outil puissant pour eduquer vos clients sur les peptides de recherche, presenter de nouveaux produits, repondre aux questions en direct et fideliser votre communaute. Ils renforcent votre positionnement d'expert dans le domaine.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Creer et planifier de nouveaux webinaires</li>
+<li>Modifier les details d'un webinaire (titre, description, date, heure, duree)</li>
+<li>Voir le nombre d'inscrits et le taux de remplissage</li>
+<li>Suivre les statistiques de participation (inscrits vs. presents)</li>
+<li>Annuler un webinaire planifie (avec confirmation)</li>
+<li>Lancer un webinaire directement depuis l'interface</li>
+<li>Acceder a l'enregistrement (replay) apres l'evenement</li>
+<li>Filtrer par statut (tous, a venir, termines, brouillons)</li>
+<li>Exporter la liste des webinaires au format CSV</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un webinaire ?</h3>
+<p>Un webinaire (contraction de "web" et "seminaire") est une presentation ou conference en ligne diffusee en direct. Les participants s'inscrivent a l'avance et rejoignent l'evenement via un lien de visioconference (Zoom, Teams, Google Meet, etc.).</p>
+
+<h3>Quels sont les statuts possibles d'un webinaire ?</h3>
+
+<table>
+<thead>
+    <tr><th>Statut</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Brouillon</strong></td><td>Le webinaire est cree mais pas encore planifie (pas de date definie)</td></tr>
+  <tr><td><strong>Planifie</strong></td><td>Le webinaire a une date et est ouvert aux inscriptions</td></tr>
+  <tr><td><strong>En direct</strong></td><td>Le webinaire est actuellement en cours de diffusion</td></tr>
+  <tr><td><strong>Termine</strong></td><td>Le webinaire est termine, les statistiques de participation sont disponibles</td></tr>
+  <tr><td><strong>Annule</strong></td><td>Le webinaire a ete annule avant sa tenue</td></tr>
+</tbody>
+</table>
+<h3>Qu'est-ce qu'un replay ?</h3>
+<p>Le replay est l'enregistrement video du webinaire. Une fois l'evenement termine, vous pouvez ajouter un lien vers l'enregistrement pour que les inscrits (ou tout client) puissent le visionner apres coup.</p>
+
+<h3>Qu'est-ce que le taux de participation ?</h3>
+<p>C'est le pourcentage de personnes inscrites qui ont effectivement assiste au webinaire. Un taux de 40 a 60 % est considere comme normal pour les webinaires en ligne.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le rail de navigation</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la colonne d'icones a gauche, cliquez sur l'icone <strong>Fidelite</strong> (cadeau)</li>
+<li>Dans le panneau lateral, cliquez sur <strong>Webinaires</strong></li>
+</ol>
+
+<h3>Methode 2 : Via la barre de recherche</h3>
+<ol>
+<li>Tapez "webinaires" ou "webinar" dans la barre de recherche</li>
+<li>Selectionnez le resultat correspondant</li>
+</ol>
+
+<h3>Methode 3 : Acces direct par URL</h3>
+<ol>
+<li>Rendez-vous a l'adresse <code>/admin/webinaires</code> dans votre navigateur</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>L'interface suit la disposition maitresse/detail (Outlook-style) avec 4 zones :</p>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Icone</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau webinaire</strong></td><td>+ vert</td><td>Ouvrir le formulaire de creation d'un webinaire</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Poubelle rouge</td><td>Annuler le webinaire selectionne (avec confirmation)</td></tr>
+  <tr><td><strong>Planifier</strong></td><td>Calendrier</td><td>Modifier la date et les details du webinaire selectionne</td></tr>
+  <tr><td><strong>Lancer maintenant</strong></td><td>Lecture</td><td>Ouvrir le lien de visioconference du webinaire dans un nouvel onglet</td></tr>
+  <tr><td><strong>Enregistrement</strong></td><td>Video</td><td>Ouvrir le lien de replay du webinaire termine</td></tr>
+  <tr><td><strong>Statistiques participants</strong></td><td>Graphique</td><td>Afficher le nombre d'inscrits et de presents</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger</td><td>Exporter la liste des webinaires au format CSV</td></tr>
+</tbody>
+</table>
+<h3>2. Les cartes statistiques -- sous le ruban</h3>
+
+<p>Quatre indicateurs :</p>
+<ul>
+<li><strong>A venir</strong> : nombre de webinaires planifies dans le futur</li>
+<li><strong>Termines</strong> : nombre de webinaires deja realises</li>
+<li><strong>Inscrits (a venir)</strong> : total des inscriptions aux webinaires planifies</li>
+<li><strong>Taux moyen de participation</strong> : pourcentage moyen de presents parmi les inscrits (webinaires termines)</li>
+</ul>
+
+<h3>3. Le panneau de liste (gauche) -- liste maitre</h3>
+
+<p>La colonne de gauche affiche la liste des webinaires. Chaque entree montre :</p>
+<ul>
+<li>La lettre initiale du titre (avatar)</li>
+<li>Le titre du webinaire</li>
+<li>La date et le nom de l'animateur</li>
+<li>Le nombre d'inscrits sur la capacite maximale et la duree</li>
+<li>Des badges : statut (Brouillon / Planifie / En direct / Termine / Annule) et "Replay" si un enregistrement est disponible</li>
+</ul>
+
+<p><strong>Au-dessus de la liste :</strong></p>
+<ul>
+<li>Des <strong>onglets de filtre</strong> : Tous / A venir (Scheduled) / Termines (Completed) / Brouillons (Draft) (avec compteur)</li>
+<li>Une <strong>barre de recherche</strong> pour filtrer par titre, animateur ou description</li>
+</ul>
+
+<h3>4. Le panneau de detail (droite)</h3>
+
+<p>Quand vous selectionnez un webinaire, le panneau droit affiche :</p>
+<ul>
+<li>Le titre et la date/heure</li>
+<li>Le badge de statut (avec couleur)</li>
+<li>La <strong>description</strong> complete</li>
+<li>Les <strong>details</strong> dans un encadre :</li>
+<li>Animateur (nom du presentateur)</li>
+<li>Date et heure</li>
+<li>Duree (en minutes)</li>
+<li>Capacite maximale</li>
+<li>Les <strong>statistiques d'inscription</strong> :</li>
+<li>Nombre d'inscrits</li>
+<li>Capacite maximale</li>
+<li>Nombre de presents (pour les webinaires termines)</li>
+<li>Barre de progression du remplissage (en pourcentage)</li>
+<li>Le <strong>lien de visioconference</strong> (cliquable, ouvre dans un nouvel onglet)</li>
+<li>Le <strong>lien de replay</strong> si un enregistrement est disponible</li>
+<li>Les boutons <strong>Modifier</strong> et <strong>Annuler</strong> (pour les webinaires planifies)</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Creer un nouveau webinaire</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouveau webinaire</strong> dans le ruban ou sur le bouton en haut a droite de la page</li>
+<li>La fenetre de creation s'ouvre avec les champs suivants :</li>
+</ol>
+<ul>
+<li><strong>Titre</strong> (obligatoire) : le nom du webinaire</li>
+<li><strong>Description</strong> (obligatoire) : le contenu et les objectifs du webinaire</li>
+<li><strong>Date et heure</strong> (obligatoire) : quand le webinaire aura lieu</li>
+<li><strong>Duree</strong> (obligatoire) : en minutes (par defaut 60 min)</li>
+<li><strong>Animateur</strong> (obligatoire) : le nom du presentateur</li>
+<li><strong>Places maximum</strong> : le nombre maximum de participants (par defaut 100)</li>
+<li><strong>Lien de visioconference</strong> : l'URL Zoom, Teams, Meet ou autre</li>
+</ul>
+<ol>
+<li>Remplissez tous les champs obligatoires</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+<li>Le webinaire apparait dans la liste avec le statut "Planifie" (si une date est definie) ou "Brouillon" (sans date)</li>
+</ol>
+
+<blockquote>
+<p><strong>Validation</strong> : le systeme verifie que le titre, la description, l'animateur, la date et la duree sont renseigns. Des messages d'erreur inline apparaissent sous chaque champ manquant.</p>
+</blockquote>
+
+<h3>Modifier un webinaire</h3>
+
+<ol>
+<li>Selectionnez le webinaire dans la liste</li>
+<li>Cliquez sur <strong>Modifier</strong> dans le panneau de detail ou sur <strong>Planifier</strong> dans le ruban</li>
+<li>La fenetre d'edition s'ouvre avec les valeurs actuelles pre-remplies</li>
+<li>Modifiez les champs souhaites</li>
+<li>Cliquez sur <strong>Mettre a jour</strong></li>
+</ol>
+
+<h3>Annuler un webinaire</h3>
+
+<ol>
+<li>Selectionnez le webinaire planifie</li>
+<li>Cliquez sur <strong>Annuler</strong> dans le panneau de detail ou sur <strong>Supprimer</strong> dans le ruban</li>
+<li>Une boite de confirmation apparait :</li>
+</ol>
+<ul>
+<li>Elle indique le titre du webinaire</li>
+<li>Elle precise le nombre d'inscrits qui seront affectes</li>
+</ul>
+<ol>
+<li>Confirmez l'annulation</li>
+<li>Le statut passe a "Annule" et le webinaire n'est plus visible pour les clients</li>
+</ol>
+
+<h3>Lancer un webinaire</h3>
+
+<ol>
+<li>Selectionnez le webinaire planifie</li>
+<li>Cliquez sur <strong>Lancer maintenant</strong> dans le ruban</li>
+<li>Le lien de visioconference s'ouvre dans un nouvel onglet de votre navigateur</li>
+<li>Si aucun lien n'est configure, un message vous invite a en ajouter un</li>
+</ol>
+
+<h3>Consulter le replay</h3>
+
+<ol>
+<li>Selectionnez un webinaire termine</li>
+<li>Si un enregistrement est disponible, un lien violet "Replay" apparait dans le panneau de detail</li>
+<li>Cliquez sur ce lien pour ouvrir l'enregistrement dans un nouvel onglet</li>
+<li>Si aucun replay n'est disponible, cliquez sur <strong>Enregistrement</strong> dans le ruban pour voir un message d'information</li>
+</ol>
+
+<h3>Voir les statistiques d'un webinaire</h3>
+
+<ol>
+<li>Selectionnez le webinaire</li>
+<li>Le panneau de detail affiche directement :</li>
+</ol>
+<ul>
+<li>Le nombre d'inscrits et la capacite</li>
+<li>La barre de progression de remplissage</li>
+<li>Le nombre de presents (si termine)</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Statistiques participants</strong> dans le ruban pour un resume rapide via notification</li>
+</ol>
+
+<h3>Exporter en CSV</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban</li>
+<li>Un fichier CSV contenant tous les webinaires est telecharge</li>
+<li>Colonnes : Titre, Animateur, Statut, Date, Duree, Inscrits, Presents, Capacite max, Lien</li>
+</ol>
+
+<hr>
+
+<h2>Scenarios courants</h2>
+
+<h3>Scenario 1 : Planifier un webinaire educatif mensuel</h3>
+
+<ol>
+<li>Ouvrez la page Webinaires</li>
+<li>Cliquez sur <strong>Nouveau webinaire</strong></li>
+<li>Remplissez les informations :</li>
+</ol>
+<ul>
+<li>Titre : "Peptides et recuperation musculaire : les dernieres etudes"</li>
+<li>Description : resume du contenu et des objectifs d'apprentissage</li>
+<li>Date : le premier mardi du mois prochain, 19h00 EST</li>
+<li>Duree : 60 minutes</li>
+<li>Animateur : "Dr. Martin Leblanc"</li>
+<li>Places : 200</li>
+<li>Lien : votre lien Zoom ou Teams</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Creer</strong></li>
+<li>Partagez le lien d'inscription dans votre newsletter et sur les reseaux sociaux</li>
+<li>Le jour J, ouvrez le webinaire et cliquez sur <strong>Lancer maintenant</strong> pour demarrer</li>
+</ol>
+
+<h3>Scenario 2 : Suivi post-webinaire et replay</h3>
+
+<ol>
+<li>Apres un webinaire termine, retournez sur la page Webinaires</li>
+<li>Selectionnez le webinaire recemment termine</li>
+<li>Consultez les statistiques : combien d'inscrits ? combien de presents ?</li>
+<li>Calculez le taux de participation (presents / inscrits x 100)</li>
+<li>Ajoutez le lien de replay en modifiant le webinaire si ce n'est pas deja fait</li>
+<li>Exportez les donnees en CSV si vous avez besoin d'un rapport pour votre equipe</li>
+</ol>
+
+<h3>Scenario 3 : Annuler un webinaire en cas d'imprevu</h3>
+
+<ol>
+<li>Selectionnez le webinaire concerne</li>
+<li>Cliquez sur <strong>Annuler</strong></li>
+<li>La boite de confirmation indique le nombre d'inscrits affectes</li>
+<li>Confirmez l'annulation</li>
+<li>Envoyez un email aux inscrits via la page Emails pour les prevenir et proposer une nouvelle date</li>
+<li>Creez un nouveau webinaire avec la date reportee</li>
+</ol>
+
+<hr>
+
+<h2>Foire aux questions (FAQ)</h2>
+
+<p><strong>Q : Les clients peuvent-ils s'inscrire directement depuis le site ?</strong></p>
+<p>R : Oui. Les webinaires planifies apparaissent sur le site public avec un bouton d'inscription. Les clients renseignent leur email pour s'inscrire.</p>
+
+<p><strong>Q : Puis-je limiter le nombre de places ?</strong></p>
+<p>R : Oui. Le champ "Places maximum" definit la capacite. Une fois le nombre d'inscrits atteint, les inscriptions sont fermees automatiquement.</p>
+
+<p><strong>Q : Comment ajouter un replay apres le webinaire ?</strong></p>
+<p>R : Modifiez le webinaire et ajoutez l'URL de l'enregistrement dans le champ "Lien de visioconference" ou dans un champ dedie au replay si disponible. Le badge "Replay" apparaitra dans la liste.</p>
+
+<p><strong>Q : Le suivi individuel des participants est-il disponible ?</strong></p>
+<p>R : Le bouton "Voir les inscrits" est actuellement en cours de developpement. Pour le moment, vous disposez du nombre total d'inscrits et de presents, mais pas de la liste nominative dans l'interface.</p>
+
+<p><strong>Q : Puis-je creer un webinaire recurrent automatiquement ?</strong></p>
+<p>R : Pas directement. Vous devez creer chaque occurrence manuellement. Cependant, vous pouvez modifier un webinaire existant pour le reutiliser avec une nouvelle date.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Webinaire</strong></td><td>Seminaire en ligne diffuse en direct, accessible via un lien de visioconference</td></tr>
+  <tr><td><strong>Animateur (host)</strong></td><td>Personne qui presente et anime le webinaire</td></tr>
+  <tr><td><strong>Replay</strong></td><td>Enregistrement video du webinaire, disponible apres l'evenement</td></tr>
+  <tr><td><strong>Taux de participation</strong></td><td>Pourcentage de personnes inscrites qui ont assiste au webinaire</td></tr>
+  <tr><td><strong>Brouillon (draft)</strong></td><td>Webinaire cree mais pas encore planifie (sans date)</td></tr>
+  <tr><td><strong>Planifie (scheduled)</strong></td><td>Webinaire avec une date definie, ouvert aux inscriptions</td></tr>
+  <tr><td><strong>Capacite</strong></td><td>Nombre maximum de participants autorises</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/fidelite">Programme de fidelite</a> -- les points de fidelite pouvant recompenser la participation</li>
+<li><a href="/admin/newsletter">Newsletter</a> -- pour promouvoir les webinaires aupres de votre base clients</li>
+<li><a href="/admin/emails">Emails</a> -- pour envoyer les invitations et les rappels</li>
+<li><a href="/admin/blog">Blog</a> -- pour publier un article resumant le contenu du webinaire</li>
+<li><a href="/admin/ambassadeurs">Ambassadeurs</a> -- les ambassadeurs peuvent relayer vos webinaires</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

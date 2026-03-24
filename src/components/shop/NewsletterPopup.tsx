@@ -89,7 +89,7 @@ export default function NewsletterPopup() {
     }
 
     // Check if disclaimer was already accepted
-    const disclaimerAccepted = localStorage.getItem('biocycle_disclaimer_accepted');
+    const disclaimerAccepted = localStorage.getItem('attitudes_disclaimer_accepted');
     if (disclaimerAccepted) {
       const timer = setTimeout(() => {
         setIsOpen(true);

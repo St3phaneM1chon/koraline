@@ -24,7 +24,7 @@ interface UpsellContextType {
 
 const UpsellContext = createContext<UpsellContextType | undefined>(undefined);
 
-const UPSELL_SESSION_KEY = 'biocycle-upsell-shown';
+const UPSELL_SESSION_KEY = 'attitudes-upsell-shown';
 
 function getShownProducts(): Record<string, boolean> {
   try {

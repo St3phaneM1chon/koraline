@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campagnes d'appels &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 09 — Telephonie</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Campagnes d'appels</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Campagnes</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Les <strong>campagnes d'appels</strong> (ou campagnes de composition automatique) permettent de passer</p>
+<p>des appels sortants en masse vers une liste de contacts. C'est l'outil principal pour la</p>
+<p>prospection telephonique, les relances commerciales, et les sondages telephoniques.</p>
+
+<p>Chaque campagne definit un <strong>Caller ID</strong> (numero affiche chez le destinataire), un <strong>script</strong></p>
+<p>que l'agent doit suivre, un <strong>calendrier</strong> de fonctionnement (horaires et jours actifs), et</p>
+<p>un niveau de <strong>concurrence</strong> (nombre d'appels simultanes).</p>
+
+<p>La detection de repondeur (<strong>AMD</strong> - Answering Machine Detection) permet d'identifier</p>
+<p>automatiquement les repondeurs pour que les agents ne perdent pas de temps avec des</p>
+<p>boites vocales.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, sous <strong>Operations</strong>, cliquez sur <strong>Campagnes</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/campagnes</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Tableau des campagnes</h3>
+<p>Le tableau principal liste toutes les campagnes avec les colonnes :</p>
+<ul>
+<li><strong>Nom</strong> : Nom de la campagne et description</li>
+<li><strong>Statut</strong> : Badge colore (Brouillon, Active, En pause, Terminee, Archivee)</li>
+<li><strong>Contacts</strong> : Nombre total de contacts dans la liste</li>
+<li><strong>Appeles</strong> : Nombre de contacts deja appeles</li>
+<li><strong>Connectes</strong> : Nombre de contacts ayant repondu (avec taux de connexion en %)</li>
+<li><strong>Caller ID</strong> : Numero affiche chez le destinataire</li>
+<li><strong>Horaires</strong> : Plage horaire de fonctionnement</li>
+<li><strong>Actions</strong> : Modifier, Supprimer</li>
+</ul>
+
+<h3>Bouton "Nouvelle campagne"</h3>
+<p>Ouvre le formulaire de creation de campagne.</p>
+
+<h3>Formulaire de campagne (modale)</h3>
+<p>Le formulaire de creation/edition comporte :</p>
+
+<p><strong>Informations generales</strong> :</p>
+<ul>
+<li>Nom de la campagne</li>
+<li>Caller ID (numero de telephone sortant)</li>
+</ul>
+
+<p><strong>Parametres d'appel</strong> :</p>
+<ul>
+<li>Appels simultanes maximum (1-50)</li>
+<li>Detection de repondeur (AMD) active/desactivee</li>
+</ul>
+
+<p><strong>Script de l'agent</strong> :</p>
+<ul>
+<li>Titre du script</li>
+<li>Corps du script (texte que l'agent doit lire/adapter)</li>
+</ul>
+
+<p><strong>Calendrier</strong> :</p>
+<ul>
+<li>Heure de debut et de fin</li>
+<li>Fuseau horaire (America/Montreal par defaut)</li>
+<li>Jours actifs (lundi a dimanche, selectionnable individuellement)</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Statuts des campagnes</h3>
+
+<table>
+<thead>
+    <tr><th>Statut</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Brouillon</strong></td><td>Campagne en preparation, pas encore lancee</td></tr>
+  <tr><td><strong>Active</strong></td><td>Campagne en cours de composition</td></tr>
+  <tr><td><strong>En pause</strong></td><td>Campagne temporairement arretee</td></tr>
+  <tr><td><strong>Terminee</strong></td><td>Tous les contacts ont ete appeles</td></tr>
+  <tr><td><strong>Archivee</strong></td><td>Campagne terminee et archivee</td></tr>
+</tbody>
+</table>
+<h3>Detection de repondeur (AMD)</h3>
+<p>Quand AMD est active, le systeme detecte automatiquement si l'appel est decroche</p>
+<p>par une personne ou un repondeur. Si c'est un repondeur, l'appel peut etre :</p>
+<ul>
+<li>Raccrocher automatiquement</li>
+<li>Laisser un message pre-enregistre</li>
+<li>Transfere a un agent</li>
+</ul>
+
+<h3>Taux de connexion</h3>
+<p>Le taux de connexion est calcule : <code>(contacts connectes / contacts appeles) * 100</code>.</p>
+<p>Un taux superieur a 30% est considere comme bon pour la prospection B2B.</p>
+
+<h3>Fuseau horaire</h3>
+<p>Le calendrier respecte le fuseau horaire configure. La campagne ne passera aucun appel</p>
+<p>en dehors des horaires definis, meme si le serveur est dans un autre fuseau.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Creer une campagne de prospection</h3>
+<ol>
+<li>Cliquez sur <strong>Nouvelle campagne</strong>.</li>
+<li>Nommez la campagne (ex: "Prospection Q2 2026").</li>
+<li>Definissez le Caller ID avec un numero local canadien.</li>
+<li>Activez AMD pour eviter les repondeurs.</li>
+<li>Redigez le script que les agents suivront.</li>
+<li>Definissez les horaires (9h-17h, lundi a vendredi).</li>
+<li>Sauvegardez et importez la liste de contacts.</li>
+<li>Activez la campagne.</li>
+</ol>
+
+<h3>Workflow 2 : Analyser les resultats d'une campagne</h3>
+<ol>
+<li>Consultez le tableau des campagnes.</li>
+<li>Identifiez la campagne souhaitee.</li>
+<li>Verifiez le taux de connexion (contacts connectes / appeles).</li>
+<li>Si le taux est faible (< 20%), verifiez la qualite de la liste de contacts.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Comment importer une liste de contacts ?</strong></p>
+<p>R : Les contacts sont importes via un fichier CSV ou saisis manuellement dans le module CRM.</p>
+
+<p><strong>Q : Les appels sont-ils enregistres pendant les campagnes ?</strong></p>
+<p>R : Oui, selon la politique d'enregistrement globale configuree dans les parametres.</p>
+
+<p><strong>Q : Puis-je respecter la loi sur la Liste nationale de numeros de telecommunication ?</strong></p>
+<p>R : Koraline ne verifie pas automatiquement la LNNTE. Assurez-vous que votre liste de</p>
+<p>contacts est conforme avant de lancer une campagne.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Campagne d'appels</strong></td><td>Ensemble d'appels sortants planifies vers une liste de contacts</td></tr>
+  <tr><td><strong>AMD</strong></td><td>Answering Machine Detection, detection automatique de repondeur</td></tr>
+  <tr><td><strong>Caller ID</strong></td><td>Numero de telephone affiche chez le destinataire</td></tr>
+  <tr><td><strong>Taux de connexion</strong></td><td>Pourcentage de contacts ayant effectivement decroche</td></tr>
+  <tr><td><strong>LNNTE</strong></td><td>Liste nationale de numeros de telecommunication exclus (loi canadienne)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./08-coaching.md">Coaching</a> : Former les agents avant de lancer une campagne</li>
+<li><a href="./10-groupes.md">Groupes de sonnerie</a> : Affecter les agents aux campagnes</li>
+<li><a href="./15-analytics-appels.md">Analytics appels</a> : Statistiques detaillees des appels sortants</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

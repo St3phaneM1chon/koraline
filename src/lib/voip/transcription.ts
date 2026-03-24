@@ -102,7 +102,8 @@ export async function transcribeRecording(
       type: recording.format === 'mp3' ? 'audio/mpeg' : 'audio/wav',
     });
 
-    const whisperParams: Parameters<typeof openai.audio.transcriptions.create>[0] = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const whisperParams: Record<string, any> = {
       file: audioFile,
       model: 'whisper-1',
       response_format: 'text',
@@ -114,7 +115,8 @@ export async function transcribeRecording(
       whisperParams.language = options.language;
     }
 
-    const transcriptionResponse = await openai.audio.transcriptions.create(whisperParams);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const transcriptionResponse = await openai.audio.transcriptions.create(whisperParams as any);
 
     // With response_format: 'text', the API returns a string directly
     const fullText = String(transcriptionResponse || '');

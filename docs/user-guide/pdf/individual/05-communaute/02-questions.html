@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Questions Produits &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 05 — Communaute</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion des Questions Produits</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Communaute > Questions</p>
+<p><strong>URL</strong>: <code>/admin/questions</code></p>
+<p><strong>Niveau</strong>: Debutant a intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Questions</strong> regroupe toutes les questions posees par les visiteurs et clients au sujet de vos produits. Ces questions apparaissent sur les fiches produits du site public, dans une section "Questions & Reponses". Repondre rapidement aux questions augmente la confiance des acheteurs potentiels et reduit le nombre de demandes de support.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir toutes les questions clients en un coup d'oeil</li>
+<li>Filtrer par statut (toutes, repondues, en attente de reponse)</li>
+<li>Rechercher une question par mot-cle, nom de client ou produit</li>
+<li>Repondre a une question (ou modifier une reponse existante)</li>
+<li>Basculer la visibilite d'une question entre publique et privee</li>
+<li>Supprimer une question inappropriee</li>
+<li>Convertir une question/reponse en entree FAQ</li>
+<li>Exporter toutes les questions au format CSV</li>
+<li>Marquer une question comme resolue</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Qu'est-ce qu'une question produit ?</h3>
+<p>C'est une question posee par un visiteur ou un client directement depuis la page d'un produit sur le site. Par exemple : "Ce peptide est-il compatible avec un autre supplement ?" ou "Quelle est la duree de conservation apres ouverture ?".</p>
+
+<h3>Pourquoi repondre aux questions ?</h3>
+<p>Les questions sans reponse signalent un manque d'information. Quand vous repondez, votre reponse est visible par tous les visiteurs du site, ce qui :</p>
+<ul>
+<li>Aide les futurs acheteurs a prendre leur decision</li>
+<li>Reduit les demandes de support repetitives</li>
+<li>Demontre votre expertise et votre reactivite</li>
+</ul>
+
+<h3>Quelle est la difference entre publique et privee ?</h3>
+<ul>
+<li><strong>Publique</strong> : la question et sa reponse sont visibles par tous les visiteurs du site</li>
+<li><strong>Privee</strong> : la question est masquee du site public, seul l'administrateur la voit</li>
+</ul>
+
+<h3>Qu'est-ce que la conversion en FAQ ?</h3>
+<p>Quand une question revient souvent, vous pouvez la convertir en entree FAQ. Le systeme copie la question et la reponse dans le presse-papier pour que vous puissiez facilement la coller dans votre section FAQ.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le rail de navigation</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la colonne d'icones a gauche, cliquez sur l'icone <strong>Communaute</strong></li>
+<li>Dans le panneau lateral, cliquez sur <strong>Questions</strong></li>
+</ol>
+
+<h3>Methode 2 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche en haut (ou tapez <code>/</code>)</li>
+<li>Tapez "questions"</li>
+<li>Selectionnez le resultat correspondant</li>
+</ol>
+
+<h3>Methode 3 : Acces direct par URL</h3>
+<ol>
+<li>Rendez-vous a l'adresse <code>/admin/questions</code> dans votre navigateur</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>L'interface suit la disposition maitresse/detail (Outlook-style) avec 4 zones :</p>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Icone</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Repondre</strong></td><td>Bulle de message</td><td>Ouvrir la fenetre de reponse pour la question selectionnee</td></tr>
+  <tr><td><strong>Marquer resolue</strong></td><td>Coche verte</td><td>Marquer la question comme resolue (la rend publique si elle ne l'est pas)</td></tr>
+  <tr><td><strong>Archiver</strong></td><td>Boite d'archive</td><td>Supprimer la question selectionnee (avec confirmation)</td></tr>
+  <tr><td><strong>Signaler le contenu</strong></td><td>Drapeau</td><td>Rendre une question publique privee (contenu inapproprie)</td></tr>
+  <tr><td><strong>Convertir en FAQ</strong></td><td>Signet</td><td>Copier la question et la reponse au format FAQ dans le presse-papier</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger</td><td>Exporter toutes les questions au format CSV</td></tr>
+</tbody>
+</table>
+<h3>2. Les cartes statistiques -- sous le ruban</h3>
+
+<p>Trois indicateurs cles :</p>
+<ul>
+<li><strong>Total des questions</strong> : nombre total de questions recues</li>
+<li><strong>Sans reponse</strong> : nombre de questions en attente de reponse (priorite haute)</li>
+<li><strong>Repondues</strong> : nombre de questions auxquelles vous avez deja repondu</li>
+</ul>
+
+<h3>3. Le panneau de liste (gauche) -- liste maitre</h3>
+
+<p>La colonne de gauche affiche la liste des questions. Chaque entree montre :</p>
+<ul>
+<li>L'avatar ou les initiales du client</li>
+<li>Le nom du client (ou "Utilisateur anonyme" si non identifie)</li>
+<li>Le nom du produit concerne</li>
+<li>Un apercu de la question (80 premiers caracteres)</li>
+<li>La date de soumission</li>
+<li>Des badges : <strong>Repondue</strong> (vert) ou <strong>En attente</strong> (orange), et <strong>Publique</strong> (bleu) ou <strong>Privee</strong> (gris)</li>
+</ul>
+
+<p><strong>Au-dessus de la liste :</strong></p>
+<ul>
+<li>Des <strong>onglets de filtre</strong> : Toutes / Sans reponse / Repondues (avec compteur)</li>
+<li>Une <strong>barre de recherche</strong> pour filtrer par mot-cle</li>
+</ul>
+
+<h3>4. Le panneau de detail (droite)</h3>
+
+<p>Quand vous selectionnez une question dans la liste, le panneau droit affiche :</p>
+<ul>
+<li>Le nom du client et le produit associe avec la date</li>
+<li>Le badge de visibilite <strong>Publique</strong> ou <strong>Privee</strong> (cliquable pour basculer)</li>
+<li>Le badge <strong>En attente de reponse</strong> si aucune reponse n'existe</li>
+<li>La <strong>question complete</strong> du client dans un encadre gris</li>
+<li>La <strong>reponse</strong> de l'administrateur dans un encadre vert (si elle existe)</li>
+<li>Le nom de l'administrateur qui a repondu et la date de la reponse</li>
+<li>Les informations de contact du client (email)</li>
+<li>Les boutons <strong>Repondre / Modifier la reponse</strong> et <strong>Supprimer</strong></li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Repondre a une question</h3>
+
+<ol>
+<li>Selectionnez la question dans la liste de gauche</li>
+<li>Cliquez sur le bouton <strong>Repondre</strong> dans le panneau de detail ou dans le ruban</li>
+<li>La fenetre modale s'ouvre et affiche :</li>
+</ol>
+<ul>
+<li>Le rappel de la question (client, produit, texte)</li>
+<li>Un champ de texte pour votre reponse</li>
+</ul>
+<ol>
+<li>Redigez votre reponse</li>
+<li>Cliquez sur <strong>Publier la reponse</strong></li>
+<li>La question passe au statut "Repondue" et votre reponse apparait sur le site (si la question est publique)</li>
+</ol>
+
+<blockquote>
+<p><strong>Raccourci clavier</strong> : appuyez sur Cmd+Entree (Mac) ou Ctrl+Entree (Windows) pour soumettre la reponse directement depuis le champ de texte.</p>
+</blockquote>
+
+<h3>Modifier une reponse existante</h3>
+
+<ol>
+<li>Selectionnez la question deja repondue</li>
+<li>Cliquez sur <strong>Modifier la reponse</strong> (icone crayon)</li>
+<li>La fenetre de reponse s'ouvre avec le texte existant pre-rempli</li>
+<li>Modifiez le texte selon vos besoins</li>
+<li>Cliquez sur <strong>Publier la reponse</strong> pour sauvegarder</li>
+</ol>
+
+<h3>Basculer la visibilite (publique / privee)</h3>
+
+<ol>
+<li>Selectionnez la question dans la liste</li>
+<li>Dans le panneau de detail, cliquez sur le badge <strong>Publique</strong> ou <strong>Privee</strong></li>
+<li>Le statut bascule immediatement (un indicateur de chargement apparait pendant la mise a jour)</li>
+<li>Une question privee ne sera pas visible sur le site public</li>
+</ol>
+
+<h3>Supprimer une question</h3>
+
+<ol>
+<li>Selectionnez la question a supprimer</li>
+<li>Cliquez sur le bouton <strong>Supprimer</strong> (poubelle rouge) dans le panneau de detail ou sur <strong>Archiver</strong> dans le ruban</li>
+<li>Une boite de confirmation apparait pour prevenir les suppressions accidentelles</li>
+<li>Confirmez la suppression</li>
+<li>La question est retiree de la liste definitivement</li>
+</ol>
+
+<h3>Convertir en FAQ</h3>
+
+<ol>
+<li>Selectionnez une question qui a deja une reponse</li>
+<li>Cliquez sur <strong>Convertir en FAQ</strong> dans le ruban</li>
+<li>Le systeme copie la question et la reponse au format "Q: ... / A: ..." dans votre presse-papier</li>
+<li>Collez le contenu dans votre section FAQ ou dans un document</li>
+</ol>
+
+<h3>Exporter en CSV</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban</li>
+<li>Un fichier CSV contenant toutes les questions est telecharge automatiquement</li>
+<li>Colonnes du fichier : Produit, Client, Question, Reponse, Statut, Publique, Date</li>
+</ol>
+
+<hr>
+
+<h2>Scenarios courants</h2>
+
+<h3>Scenario 1 : Repondre aux questions en attente de la journee</h3>
+
+<ol>
+<li>Ouvrez la page Questions</li>
+<li>Consultez la carte <strong>Sans reponse</strong> pour connaitre le volume</li>
+<li>Cliquez sur l'onglet <strong>Sans reponse</strong> pour afficher uniquement les questions en attente</li>
+<li>Pour chaque question :</li>
+</ol>
+<ul>
+<li>Lisez la question dans le panneau de detail</li>
+<li>Si la question est pertinente : cliquez <strong>Repondre</strong>, redigez votre reponse, publiez</li>
+<li>Si la question est inappropriee : cliquez sur le badge pour la passer en <strong>Privee</strong>, puis supprimez-la si necessaire</li>
+</ul>
+<ol>
+<li>Verifiez que le compteur "Sans reponse" est a zero une fois termine</li>
+</ol>
+
+<h3>Scenario 2 : Identifier les questions recurrentes pour la FAQ</h3>
+
+<ol>
+<li>Filtrez sur <strong>Toutes</strong> les questions</li>
+<li>Utilisez la barre de recherche pour chercher des termes recurrents (ex: "posologie", "conservation", "livraison")</li>
+<li>Pour chaque question frequente ayant une bonne reponse :</li>
+</ol>
+<ul>
+<li>Selectionnez-la</li>
+<li>Cliquez sur <strong>Convertir en FAQ</strong> dans le ruban</li>
+<li>La question et la reponse sont copiees dans votre presse-papier</li>
+</ul>
+<ol>
+<li>Collez le contenu dans la section FAQ de votre site</li>
+<li>Cette demarche reduit les questions futures sur les memes sujets</li>
+</ol>
+
+<hr>
+
+<h2>Foire aux questions (FAQ)</h2>
+
+<p><strong>Q : Les questions anonymes sont-elles frequentes ?</strong></p>
+<p>R : Oui, les visiteurs non connectes peuvent poser des questions. Elles apparaissent avec le nom "Utilisateur anonyme". Vous ne disposerez pas de leur adresse email dans ce cas.</p>
+
+<p><strong>Q : Puis-je modifier le texte de la question du client ?</strong></p>
+<p>R : Non. Seule la reponse de l'administrateur peut etre redigee ou modifiee. Le texte de la question reste intact pour preserver l'authenticite.</p>
+
+<p><strong>Q : La reponse est-elle visible immediatement sur le site ?</strong></p>
+<p>R : Oui, des que vous publiez la reponse, elle apparait sous la question sur la fiche produit -- a condition que la question soit en mode <strong>Publique</strong>.</p>
+
+<p><strong>Q : Que se passe-t-il si je supprime une question qui a deja une reponse ?</strong></p>
+<p>R : La question et sa reponse sont supprimees definitivement du site et de la base de donnees. Cette action est irreversible.</p>
+
+<p><strong>Q : Puis-je etre notifie quand une nouvelle question arrive ?</strong></p>
+<p>R : Le nombre de questions sans reponse est visible dans les cartes statistiques. Le systeme met a jour ce compteur en temps reel.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Question produit</strong></td><td>Question posee par un visiteur depuis la fiche d'un produit sur le site</td></tr>
+  <tr><td><strong>Publique / Privee</strong></td><td>Visibilite de la question sur le site public</td></tr>
+  <tr><td><strong>En attente</strong></td><td>Question qui n'a pas encore recu de reponse de l'administrateur</td></tr>
+  <tr><td><strong>Resolue</strong></td><td>Question repondue et rendue publique</td></tr>
+  <tr><td><strong>FAQ</strong></td><td>Foire aux questions, section du site regroupant les questions frequentes</td></tr>
+  <tr><td><strong>Conversion en FAQ</strong></td><td>Action de copier une question/reponse pour l'integrer dans la section FAQ</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/avis">Avis clients</a> -- les evaluations et notes laissees par les clients</li>
+<li><a href="/admin/chat">Chat support</a> -- les conversations en direct avec les visiteurs</li>
+<li><a href="/admin/produits">Produits</a> -- les fiches produits ou apparaissent les questions</li>
+<li><a href="/admin/contenu">Contenu</a> -- les pages de contenu dont la section FAQ</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

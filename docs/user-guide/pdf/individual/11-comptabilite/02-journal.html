@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journal General &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 11 — Comptabilite</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Journal General</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Comptabilite > Grand livre</p>
+<p><strong>URL</strong>: <code>/admin/comptabilite/grand-livre</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~30 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>Pourquoi cette page est importante</h2>
+
+<p>Le journal general est le <strong>registre chronologique de toutes les transactions financieres</strong> de BioCycle Peptides. C'est le livre de bord de votre entreprise. Chaque dollar qui entre ou sort y est inscrit, avec sa date, sa description, et les comptes affectes.</p>
+
+<p><strong>Obligations legales</strong> :</p>
+<ul>
+<li>L'article 230(1) de la Loi de l'impot sur le revenu du Canada oblige toute entreprise a tenir des registres et des livres de comptes adequats. Le journal general est le registre principal.</li>
+<li>L'ARC et Revenu Quebec peuvent exiger l'acces a votre journal general lors d'une verification fiscale. Vous devez conserver ces registres pendant <strong>6 ans</strong> apres la fin de l'annee d'imposition.</li>
+<li>En cas de litige commercial, le journal general est une preuve legale de vos transactions.</li>
+</ul>
+
+<p><strong>Impact concret</strong> : Sans journal general complet et a jour, vous ne pouvez pas produire de balance de verification, d'etats financiers, ni de declarations de taxes. Votre comptable ne peut pas faire son travail. L'ARC peut rejeter vos deductions si vous ne pouvez pas les justifier par des ecritures dans le journal.</p>
+
+<hr>
+
+<h2>Cycle comptable complet -- Ou se situe cette page</h2>
+
+<pre><code>1. Plan comptable (structure des comptes)
+ ↓
+[2. JOURNAL GENERAL] ← VOUS ETES ICI
+ ↓
+ 3. Ecritures de journal (debits et credits)
+ ↓
+ 4. Grand livre et balance de verification
+ ↓
+ 5. Bilan → 6. Etat des resultats
+ ↓
+ 7-8. Factures et depenses (sources de transactions)
+ ↓
+ 9-10. Taxes et rapprochement bancaire
+ ↓
+ 11-12. Budget et rapports</code></pre>
+
+<p>Le journal general est l'etape 2 du cycle. Une fois le plan comptable etabli, chaque transaction est d'abord enregistree dans le journal general en ordre chronologique. Ensuite, ces memes transactions sont reportees dans le grand livre, organisees par compte. Le journal est le point d'entree de toute information financiere.</p>
+
+<hr>
+
+<h2>Ordre des operations</h2>
+
+<ol>
+<li><strong>Une transaction se produit</strong> (vente, achat, paiement, etc.)</li>
+<li><strong>La transaction est enregistree dans le journal</strong> -- soit automatiquement par Koraline, soit manuellement par vous</li>
+<li><strong>L'ecriture du journal est reportee dans le grand livre</strong> par compte</li>
+<li><strong>En fin de periode</strong>, le grand livre sert a produire la balance de verification et les etats financiers</li>
+</ol>
+
+<p><strong>Regles de temporalite</strong> :</p>
+<ul>
+<li>Enregistrer les transactions <strong>le jour meme</strong> ou au plus tard dans les <strong>48 heures</strong></li>
+<li>Ne jamais attendre la fin du mois pour saisir les transactions -- les erreurs s'accumulent et deviennent impossibles a corriger</li>
+<li>Les ecritures automatiques (ventes en ligne, paiements Stripe) sont enregistrees en temps reel</li>
+</ul>
+
+<hr>
+
+<h2>Concepts fondamentaux</h2>
+
+<h3>Journal vs Grand livre -- La difference essentielle</h3>
+
+<table>
+<thead>
+    <tr><th>Concept</th><th>Journal general</th><th>Grand livre</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Organisation</strong></td><td>Par date (chronologique)</td><td>Par compte</td></tr>
+  <tr><td><strong>Analogie</strong></td><td>Journal intime : tout est note dans l'ordre</td><td>Classeur : meme info, rangee par dossier</td></tr>
+  <tr><td><strong>Contenu</strong></td><td>Chaque transaction avec tous ses comptes</td><td>Toutes les transactions d'un seul compte</td></tr>
+  <tr><td><strong>Usage</strong></td><td>Voir ce qui s'est passe le 15 mars</td><td>Voir tous les mouvements du compte Banque</td></tr>
+</tbody>
+</table>
+<p>Dans Koraline, la page Grand livre combine les deux vues. Vous pouvez voir les transactions dans l'ordre chronologique (vue journal) ou filtrees par compte (vue grand livre).</p>
+
+<h3>Comment les transactions arrivent dans le journal</h3>
+
+<table>
+<thead>
+    <tr><th>Source</th><th>Exemple BioCycle</th><th>Automatique ?</th><th>Frequence</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Commande boutique</strong></td><td>Client achete 3 flacons BPC-157</td><td>Oui</td><td>Plusieurs fois par jour</td></tr>
+  <tr><td><strong>Paiement Stripe</strong></td><td>Reglement de commande par carte</td><td>Oui</td><td>Plusieurs fois par jour</td></tr>
+  <tr><td><strong>Facture client B2B</strong></td><td>Facture pour Clinique Sante Plus</td><td>Oui (a la creation)</td><td>Hebdomadaire</td></tr>
+  <tr><td><strong>Facture fournisseur</strong></td><td>Achat de peptides bruts chez le fabricant</td><td>Oui (a la saisie)</td><td>Hebdomadaire</td></tr>
+  <tr><td><strong>Depense</strong></td><td>Paiement loyer, Google Ads, assurance</td><td>Oui (a la saisie)</td><td>Quotidien</td></tr>
+  <tr><td><strong>Ecriture recurrente</strong></td><td>Loyer mensuel, amortissement</td><td>Oui (programmee)</td><td>Mensuelle</td></tr>
+  <tr><td><strong>Ecriture manuelle</strong></td><td>Ajustement, correction, provision</td><td>Non (saisie manuelle)</td><td>Fin de mois</td></tr>
+  <tr><td><strong>Ecriture de cloture</strong></td><td>Fermeture des revenus/charges vers BNR</td><td>Non (saisie manuelle)</td><td>Annuelle</td></tr>
+</tbody>
+</table>
+<h3>Les 4 types d'ecritures dans le journal</h3>
+
+<ol>
+<li><strong>Ecritures courantes</strong> : transactions normales du quotidien (ventes, achats, paiements). Representent 95% des ecritures.</li>
+<li><strong>Ecritures de correction</strong> : pour corriger une erreur dans une ecriture precedente. On ne modifie jamais l'original -- on passe une ecriture inverse puis une nouvelle ecriture correcte.</li>
+<li><strong>Ecritures d'ajustement</strong> : en fin de periode pour enregistrer des elements non encore comptabilises (amortissement, provisions, charges a payer, revenus non factures).</li>
+<li><strong>Ecritures de cloture</strong> : en fin d'exercice pour fermer les comptes de revenus et de charges et transferer le resultat dans les Benefices Non Repartis (BNR).</li>
+</ol>
+
+<hr>
+
+<h2>Comment entrer les donnees</h2>
+
+<h3>Acceder au journal</h3>
+
+<ol>
+<li>Comptabilite > groupe <strong>Comptes</strong> > <strong>Grand livre</strong></li>
+<li>URL directe : <code>/admin/comptabilite/grand-livre</code></li>
+</ol>
+
+<h3>Interface du journal</h3>
+
+<h4>Les filtres</h4>
+
+<table>
+<thead>
+    <tr><th>Filtre</th><th>Description</th><th>Quand l'utiliser</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Periode</strong></td><td>Date de debut et de fin</td><td>Pour voir un mois, un trimestre, une annee</td></tr>
+  <tr><td><strong>Compte</strong></td><td>Filtrer par un compte du plan comptable</td><td>Pour voir tous les mouvements d'un compte specifique</td></tr>
+  <tr><td><strong>Type</strong></td><td>Facture, depense, paiement, ecriture manuelle</td><td>Pour isoler un type de transaction</td></tr>
+  <tr><td><strong>Montant</strong></td><td>Minimum et/ou maximum</td><td>Pour trouver les transactions significatives</td></tr>
+  <tr><td><strong>Recherche</strong></td><td>Texte libre dans la description</td><td>Pour retrouver une transaction specifique</td></tr>
+  <tr><td><strong>Reference</strong></td><td>Numero de facture, de commande, etc.</td><td>Pour tracer une transaction precise</td></tr>
+</tbody>
+</table>
+<h4>Les colonnes du journal</h4>
+
+<table>
+<thead>
+    <tr><th>Colonne</th><th>Ce qu'elle affiche</th><th>Pourquoi c'est utile</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Date</strong></td><td>Date de la transaction</td><td>Chronologie -- quand l'evenement s'est produit</td></tr>
+  <tr><td><strong>Reference</strong></td><td>Numero de piece (FACT-2026-0423)</td><td>Tracabilite -- lien vers le document original</td></tr>
+  <tr><td><strong>Description</strong></td><td>Libelle de la transaction</td><td>Comprehension -- nature de l'operation</td></tr>
+  <tr><td><strong>Compte(s)</strong></td><td>Comptes debites et credites</td><td>Destination comptable -- ou l'argent va</td></tr>
+  <tr><td><strong>Debit</strong></td><td>Montant debite</td><td>Flux entrant dans le compte</td></tr>
+  <tr><td><strong>Credit</strong></td><td>Montant credite</td><td>Flux sortant du compte</td></tr>
+  <tr><td><strong>Solde</strong></td><td>Solde cumulatif du compte</td><td>Position actuelle</td></tr>
+  <tr><td><strong>Source</strong></td><td>Origine de l'ecriture</td><td>Tracabilite -- facture, depense, manuelle</td></tr>
+</tbody>
+</table>
+<h3>Lire une ecriture de journal -- Exemple complet</h3>
+
+<p>Voici ce que vous voyez quand vous cliquez sur une transaction :</p>
+
+<pre><code>Date : 2026-03-15
+Reference : FACT-2026-0423
+Description : Vente peptides - Clinique Sante Plus
+Type : Facture client
+
+Compte                          Debit         Credit
+-----------------------------------------------------
+1100 - Comptes clients       1 149,75 $
+4010 - Ventes peptides                      1 000,00 $
+2100 - TPS a remettre                          50,00 $
+2110 - TVQ a remettre                          99,75 $
+                             ---------      ---------
+Total                        1 149,75 $     1 149,75 $</code></pre>
+
+<p><strong>Pourquoi ces comptes ?</strong></p>
+<ul>
+<li><strong>1100 debit</strong> : Le client nous doit 1 149,75 $. Comptes clients est un actif, il augmente au debit.</li>
+<li><strong>4010 credit</strong> : Nous avons gagne 1 000,00 $ de revenus. Les revenus augmentent au credit.</li>
+<li><strong>2100 credit</strong> : Nous avons collecte 50,00 $ de TPS pour le gouvernement federal. C'est un passif (nous devons le remettre), il augmente au credit.</li>
+<li><strong>2110 credit</strong> : Nous avons collecte 99,75 $ de TVQ pour le gouvernement provincial. Meme logique.</li>
+</ul>
+
+<p><strong>Verification</strong> : 1 000,00 + 50,00 + 99,75 = 1 149,75. Le total des debits egalise le total des credits. L'ecriture est equilibree.</p>
+
+<hr>
+
+<h2>Pourquoi entrer ces donnees</h2>
+
+<h3>Chaque ecriture sert a quatre fins</h3>
+
+<ol>
+<li><strong>Fiscale</strong> : L'ARC et Revenu Quebec utilisent ces ecritures pour verifier vos declarations. Chaque dollar de revenu et chaque dollar de deduction doit etre tracable dans le journal.</li>
+</ol>
+
+<ol>
+<li><strong>Legale</strong> : Le journal est un document legal. En cas de litige avec un fournisseur ou un client, les ecritures prouvent quand et combien vous avez facture ou paye.</li>
+</ol>
+
+<ol>
+<li><strong>Manageriale</strong> : Les ecritures alimentent les rapports qui vous permettent de prendre des decisions eclairees. Combien depensez-vous en marketing ? Quelle est votre marge sur les ventes B2B ? Pouvez-vous embaucher un nouvel employe ?</li>
+</ol>
+
+<ol>
+<li><strong>Bancaire</strong> : Si vous demandez un pret, la banque examinera vos etats financiers, qui sont directement derives du journal. Un journal bien tenu = des etats financiers fiables = un meilleur acces au financement.</li>
+</ol>
+
+<h3>Pourquoi la chronologie est importante</h3>
+
+<p>Le journal enregistre les transactions dans l'ordre ou elles se produisent. Cette chronologie est cruciale :</p>
+<ul>
+<li>Pour le rapprochement bancaire : comparer les dates dans le journal avec les dates sur le releve bancaire</li>
+<li>Pour les declarations de taxes : les periodes de declaration (trimestrielles) sont basees sur les dates</li>
+<li>Pour les audits : l'ARC verifie que les revenus sont declares dans la bonne periode</li>
+<li>Pour l'analyse : les tendances mensuelles n'ont de sens que si les transactions sont datees correctement</li>
+</ul>
+
+<hr>
+
+<h2>Comprendre les ecritures automatiques</h2>
+
+<h3>Vente sur la boutique en ligne (e-commerce)</h3>
+
+<p>Quand un client passe une commande et paie par carte :</p>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Ecriture automatique</th><th>Explication</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>1. Commande confirmee</strong></td><td>Debit 1100 (Clients) / Credit 4010 (Ventes) + 2100 (TPS) + 2110 (TVQ)</td><td>Le client doit le montant total ; on reconnait le revenu et les taxes</td></tr>
+  <tr><td><strong>2. Paiement Stripe recu</strong></td><td>Debit 1010 (Banque) / Credit 1100 (Clients)</td><td>L'argent arrive en banque ; la dette du client est annulee</td></tr>
+  <tr><td><strong>3. Commission Stripe</strong></td><td>Debit 5060 (Frais bancaires) / Credit 1010 (Banque)</td><td>Stripe preleve sa commission ; c'est une charge et l'argent sort de la banque</td></tr>
+</tbody>
+</table>
+<h3>Achat aupres d'un fournisseur</h3>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Ecriture automatique</th><th>Explication</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>1. Facture fournisseur saisie</strong></td><td>Debit 5011 (Achats) + 1150 (TPS intrants) + 1160 (TVQ intrants) / Credit 2010 (Fournisseurs)</td><td>On enregistre la charge, les taxes recuperables, et la dette fournisseur</td></tr>
+  <tr><td><strong>2. Paiement du fournisseur</strong></td><td>Debit 2010 (Fournisseurs) / Credit 1010 (Banque)</td><td>On paie le fournisseur ; la dette est annulee, l'argent sort de la banque</td></tr>
+</tbody>
+</table>
+<h3>Paie des employes (mensuelle)</h3>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Ecriture automatique</th><th>Explication</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>1. Salaire brut</strong></td><td>Debit 5021 (Salaires) / Credit 1010 (Banque) + 2151 (Impot federal) + 2152 (Impot provincial) + 2153 (RRQ) + 2154 (AE) + 2155 (RQAP)</td><td>Le salaire est une charge ; le net va en banque ; les retenues sont des passifs</td></tr>
+  <tr><td><strong>2. Charges employeur</strong></td><td>Debit 5022-5025 (Cotisations employeur) / Credit 2153-2155 (Retenues a payer)</td><td>Les contributions de l'employeur sont des charges additionnelles</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Naviguer dans le journal -- Operations courantes</h2>
+
+<h3>Consulter les transactions d'un compte</h3>
+
+<p><strong>Objectif</strong> : Voir tous les mouvements du compte bancaire pour le mois de mars.</p>
+
+<ol>
+<li>Dans le filtre <strong>Compte</strong>, selectionnez "1010 - Banque TD"</li>
+<li>Definissez la periode : 1er mars au 31 mars 2026</li>
+<li>Le journal affiche uniquement les transactions de ce compte</li>
+<li>Le solde cumulatif se calcule ligne par ligne</li>
+</ol>
+
+<h3>Rechercher une transaction</h3>
+
+<p><strong>Objectif</strong> : Retrouver le paiement a Google pour la campagne de mars.</p>
+
+<ol>
+<li>Tapez "Google" dans la barre de recherche</li>
+<li>Les transactions contenant "Google" dans la description s'affichent</li>
+<li>Cliquez sur la ligne pour voir le detail complet</li>
+</ol>
+
+<h3>Naviguer vers la source</h3>
+
+<p><strong>Objectif</strong> : Depuis le journal, ouvrir la facture originale.</p>
+
+<ol>
+<li>Cliquez sur une ecriture pour voir le detail</li>
+<li>Cliquez sur le lien <strong>Source</strong> (ex: "Facture FACT-2026-0423")</li>
+<li>La facture originale s'ouvre dans un nouvel onglet</li>
+</ol>
+
+<h3>Exporter le journal</h3>
+
+<ol>
+<li>Appliquez les filtres souhaites (periode, compte)</li>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban</li>
+<li>Choisissez le format : CSV, Excel, PDF</li>
+<li>Le fichier est telecharge</li>
+</ol>
+
+<p><strong>Astuce</strong> : Votre comptable vous demandera le grand livre en format Excel pour la fin d'annee fiscale. Exportez toute l'annee sans filtre de compte pour un export complet.</p>
+
+<hr>
+
+<h2>Erreurs courantes a eviter</h2>
+
+<table>
+<thead>
+    <tr><th>Erreur</th><th>Consequence</th><th>Comment eviter</th></tr>
+</thead>
+<tbody>
+  <tr><td>Attendre la fin du mois pour saisir</td><td>Oublis, erreurs de date, impossibilite de rapprocher</td><td>Saisir quotidiennement ou au maximum dans les 48h</td></tr>
+  <tr><td>Ne pas verifier les ecritures automatiques</td><td>Une erreur de configuration Stripe peut fausser des centaines d'ecritures</td><td>Verifier un echantillon de 5 transactions automatiques par semaine</td></tr>
+  <tr><td>Saisir une transaction sans piece justificative</td><td>L'ARC peut rejeter la deduction lors d'une verification</td><td>Toujours joindre le recu, la facture ou le contrat</td></tr>
+  <tr><td>Saisir le mauvais montant (HT au lieu de TTC ou l'inverse)</td><td>Les taxes sont mal calculees, la declaration est fausse</td><td>Saisir le montant HT et laisser Koraline calculer les taxes</td></tr>
+  <tr><td>Ne pas distinguer les ecritures personnelles</td><td>Melange fiscal, risque de penalites</td><td>Utiliser le compte "Avance a l'actionnaire" pour toute depense personnelle</td></tr>
+  <tr><td>Modifier une ecriture publiee au lieu de la corriger</td><td>Perte de piste d'audit, impossible de retracer l'erreur</td><td>Passer une contre-passation puis une nouvelle ecriture correcte</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Quand faire cette operation</h2>
+
+<table>
+<thead>
+    <tr><th>Frequence</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Quotidien</strong></td><td>Verifier que les ventes en ligne sont enregistrees, saisir les depenses du jour</td></tr>
+  <tr><td><strong>Hebdomadaire</strong></td><td>Saisir les factures fournisseurs recues, verifier les paiements Stripe verses en banque</td></tr>
+  <tr><td><strong>Mensuel</strong></td><td>Verifier les ecritures recurrentes (loyer, amortissement), publier les brouillons, verifier les totaux</td></tr>
+  <tr><td><strong>Trimestriel</strong></td><td>Exporter le journal pour la declaration TPS/TVQ, verifier la coherence globale</td></tr>
+  <tr><td><strong>Annuel</strong></td><td>Exporter le journal complet pour le comptable, passer les ecritures de cloture</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Pourquoi une meme transaction apparait-elle dans plusieurs comptes ?</strong></p>
+<p>R : C'est le principe de la comptabilite en partie double. Chaque transaction touche au minimum deux comptes (un debit et un credit). Si vous vendez pour 100 $ plus taxes, le journal enregistre un debit dans Comptes clients ET un credit dans Ventes ET un credit dans TPS a remettre ET un credit dans TVQ a remettre. Quatre comptes pour une seule vente.</p>
+
+<p><strong>Q : Puis-je modifier une ecriture dans le journal ?</strong></p>
+<p>R : Si la periode n'est pas cloturee, oui, via la page Ecritures. Si la periode est cloturee, vous devez passer une ecriture de contre-passation dans la periode suivante. Ne modifiez jamais directement une ecriture publiee -- la piste d'audit serait perdue.</p>
+
+<p><strong>Q : Les ventes de la boutique apparaissent-elles automatiquement ?</strong></p>
+<p>R : Oui. Chaque commande payee genere automatiquement les ecritures de vente, taxes et paiement dans le journal. Vous n'avez rien a saisir pour les ventes en ligne.</p>
+
+<p><strong>Q : A quelle frequence dois-je verifier le journal ?</strong></p>
+<p>R : Au minimum chaque semaine. Un coup d'oeil de 5 minutes pour verifier que les ecritures automatiques sont logiques et que rien ne manque. Plus vous verifiez souvent, plus les erreurs sont faciles a trouver et a corriger.</p>
+
+<p><strong>Q : Que signifie "Brouillon" sur une ecriture ?</strong></p>
+<p>R : Une ecriture en brouillon existe dans le systeme mais n'est pas comptabilisee dans les rapports financiers. Tant qu'elle n'est pas publiee, elle n'affecte pas les soldes, les etats financiers ou les declarations de taxes. Publiez-la une fois validee.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition comptable</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Journal general</strong></td><td>Registre chronologique de toutes les transactions financieres. Premiere etape d'enregistrement en comptabilite.</td></tr>
+  <tr><td><strong>Grand livre</strong></td><td>Meme information que le journal, mais organisee par compte au lieu de par date. Le grand livre est derive du journal.</td></tr>
+  <tr><td><strong>Partie double</strong></td><td>Principe selon lequel chaque transaction a un debit et un credit egaux. Le total des debits doit toujours egaliser le total des credits.</td></tr>
+  <tr><td><strong>Ecriture de journal</strong></td><td>Enregistrement d'une transaction avec date, description, comptes debites, comptes credites et montants.</td></tr>
+  <tr><td><strong>Contre-passation</strong></td><td>Ecriture inverse qui annule une ecriture erronee. Les debits deviennent des credits et vice versa.</td></tr>
+  <tr><td><strong>Piece justificative</strong></td><td>Document original prouvant qu'une transaction a eu lieu : facture, recu, contrat, releve de carte.</td></tr>
+  <tr><td><strong>Solde cumulatif</strong></td><td>Total courant d'un compte a mesure que les transactions s'accumulent.</td></tr>
+  <tr><td><strong>Reference</strong></td><td>Numero unique identifiant une transaction (FACT-2026-0423, PAY-0451, DEP-0122). Permet la tracabilite.</td></tr>
+  <tr><td><strong>Brouillon</strong></td><td>Ecriture sauvegardee mais pas encore publiee dans les livres comptables. N'affecte pas les rapports.</td></tr>
+  <tr><td><strong>Piste d'audit</strong></td><td>Enchainement tracable de toutes les modifications apportees aux ecritures. Essentiel pour les verifications fiscales.</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="01-plan-comptable.md">Plan comptable</a> : Structure des comptes utilises dans le journal</li>
+<li><a href="03-ecritures.md">Ecritures</a> : Saisie manuelle d'ecritures de journal</li>
+<li><a href="04-grand-livre.md">Grand livre et balance</a> : Transactions regroupees par compte</li>
+<li><a href="07-factures.md">Factures</a> : Source de transactions de vente</li>
+<li><a href="08-depenses.md">Depenses</a> : Source de transactions de charge</li>
+<li><a href="10-rapprochement.md">Rapprochement</a> : Verification du journal contre le releve bancaire</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listes, Segments et Tags &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 10 — CRM</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Listes, Segments et Tags</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Listes / Segments / Tags</p>
+<p><strong>URL</strong>: <code>/admin/crm/lists</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Listes</strong> permet d'organiser vos contacts en groupes pour des actions ciblees. Les <strong>segments</strong> sont des groupes dynamiques bases sur des criteres, les <strong>listes</strong> sont des groupes statiques geres manuellement, et les <strong>tags</strong> sont des etiquettes libres.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Creer des listes statiques de contacts (ex: invites au salon, VIP)</li>
+<li>Creer des segments dynamiques bases sur des criteres (ex: clients Quebec actifs)</li>
+<li>Ajouter et gerer des tags pour categoriser les contacts</li>
+<li>Utiliser les listes et segments pour des campagnes ciblees</li>
+<li>Exporter une liste ou un segment en CSV</li>
+<li>Combiner des criteres pour des ciblages precis</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>La difference entre liste, segment et tag</h3>
+
+<table>
+<thead>
+    <tr><th>Outil</th><th>Type</th><th>Mise a jour</th><th>Usage principal</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Liste</strong></td><td>Statique</td><td>Manuelle (vous ajoutez/retirez des contacts)</td><td>Groupes ponctuels (invites evenement, VIP manuels)</td></tr>
+  <tr><td><strong>Segment</strong></td><td>Dynamique</td><td>Automatique (les contacts entrent/sortent selon les criteres)</td><td>Ciblage marketing, analyse comportementale</td></tr>
+  <tr><td><strong>Tag</strong></td><td>Etiquette</td><td>Manuelle</td><td>Classification rapide, filtrage transversal</td></tr>
+</tbody>
+</table>
+<h3>Exemples concrets</h3>
+
+<p><strong>Liste statique</strong> : "Invites salon Sante Montreal 2026"</p>
+<ul>
+<li>Vous ajoutez manuellement les 50 contacts invites</li>
+<li>Meme si un contact change de ville, il reste dans la liste</li>
+</ul>
+
+<p><strong>Segment dynamique</strong> : "Clients Quebec ayant achete dans les 30 derniers jours"</p>
+<ul>
+<li>Le segment se recalcule automatiquement</li>
+<li>Si un client quebecois achete aujourd'hui, il apparait demain dans le segment</li>
+<li>Si un client n'a pas achete depuis 31 jours, il sort du segment</li>
+</ul>
+
+<p><strong>Tag</strong> : "VIP"</p>
+<ul>
+<li>Vous marquez les contacts importants avec ce tag</li>
+<li>Utile pour filtrer rapidement dans n'importe quelle vue</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>CRM > <strong>Listes</strong> dans le panneau lateral</li>
+<li>URL directe : <code>/admin/crm/lists</code></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. Les onglets principaux</h3>
+
+<table>
+<thead>
+    <tr><th>Onglet</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Listes</strong></td><td>Vos listes statiques</td></tr>
+  <tr><td><strong>Segments</strong></td><td>Vos segments dynamiques</td></tr>
+  <tr><td><strong>Tags</strong></td><td>Gestion de tous les tags</td></tr>
+</tbody>
+</table>
+<h3>2. La grille des listes/segments</h3>
+
+<p>Chaque ligne affiche :</p>
+<ul>
+<li><strong>Nom</strong> de la liste ou du segment</li>
+<li><strong>Nombre de contacts</strong> actuellement inclus</li>
+<li><strong>Type</strong> : statique ou dynamique</li>
+<li><strong>Date de creation</strong> et derniere mise a jour</li>
+<li><strong>Createur</strong> : qui l'a cree</li>
+<li><strong>Actions</strong> : modifier, dupliquer, exporter, supprimer</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer une liste statique</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouvelle liste</strong></li>
+<li>Choisissez <strong>Liste statique</strong></li>
+<li>Donnez un nom (ex: "Prospects salon Bio 2026")</li>
+<li>Ajoutez une description (optionnel)</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+<li>Pour ajouter des contacts :</li>
+</ol>
+<ul>
+<li>Cliquez sur <strong>Ajouter des contacts</strong></li>
+<li>Recherchez et selectionnez les contacts souhaites</li>
+<li>Ou importez une liste de noms/emails depuis un fichier CSV</li>
+</ul>
+
+<h3>2. Creer un segment dynamique</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau segment</strong></li>
+<li>Donnez un nom (ex: "Clients actifs Quebec")</li>
+<li>Definissez les <strong>criteres de filtrage</strong> :</li>
+</ol>
+
+<p><strong>Criteres disponibles</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Categorie</th><th>Criteres</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Profil</strong></td><td>Province, ville, code postal, secteur, taille entreprise</td></tr>
+  <tr><td><strong>Comportement</strong></td><td>Date dernier achat, nombre de commandes, montant total depense</td></tr>
+  <tr><td><strong>Engagement</strong></td><td>Score CRM, emails ouverts, clics, visites site</td></tr>
+  <tr><td><strong>Statut</strong></td><td>Client actif, prospect, lead, inactif</td></tr>
+  <tr><td><strong>Tags</strong></td><td>Possede le tag X, ne possede pas le tag Y</td></tr>
+  <tr><td><strong>Source</strong></td><td>Canal d'acquisition (web, salon, referral)</td></tr>
+  <tr><td><strong>Temporel</strong></td><td>Cree il y a X jours, derniere activite il y a X jours</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Combinez les criteres avec <strong>ET</strong> / <strong>OU</strong> :</li>
+</ol>
+<ul>
+<li>Province = Quebec <strong>ET</strong> Dernier achat < 30 jours <strong>ET</strong> Nombre commandes > 2</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Previsualiser</strong> pour voir les contacts correspondants</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong> : Le segment se met a jour automatiquement. Vous n'avez pas a le maintenir manuellement.</p>
+</blockquote>
+
+<h3>3. Gerer les tags</h3>
+
+<p><strong>Creer un tag</strong> :</p>
+<ol>
+<li>Allez dans l'onglet <strong>Tags</strong></li>
+<li>Cliquez sur <strong>Nouveau tag</strong></li>
+<li>Entrez le nom et choisissez une couleur</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<p><strong>Appliquer un tag</strong> :</p>
+<ul>
+<li>Depuis la fiche contact : cliquez sur l'icone tag, selectionnez</li>
+<li>En masse : selectionnez plusieurs contacts dans la liste, cliquez sur <strong>Tagger</strong></li>
+</ul>
+
+<p><strong>Tags recommandes pour BioCycle Peptides</strong> :</p>
+<ul>
+<li><code>VIP</code> : clients a haute valeur</li>
+<li><code>B2B</code> : clients professionnels</li>
+<li><code>Athlete</code> : clients sportifs</li>
+<li><code>Professionnel sante</code> : medecins, pharmaciens</li>
+<li><code>Recherche</code> : laboratoires et chercheurs</li>
+<li><code>International</code> : clients hors Canada</li>
+</ul>
+
+<h3>4. Utiliser les listes pour des campagnes</h3>
+
+<p><strong>Objectif</strong> : Envoyer un email cible a un groupe specifique.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Creez ou selectionnez votre liste/segment</li>
+<li>Allez dans CRM > Campagnes (voir page Automatisations)</li>
+<li>Dans le champ <strong>Destinataires</strong>, selectionnez votre liste/segment</li>
+<li>Redigez et envoyez votre campagne</li>
+<li>Le segment se met a jour : seuls les contacts correspondant aux criteres recevront l'email</li>
+</ol>
+
+<h3>5. Segments imbriques</h3>
+
+<p><strong>Objectif</strong> : Creer des segments complexes en combinant d'autres segments.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Creez un segment "Clients Quebec" (critere : province = QC)</li>
+<li>Creez un segment "Gros acheteurs" (critere : total > 1000 $CA)</li>
+<li>Creez un segment combine "Gros acheteurs Quebec" qui utilise les deux segments precedents avec un operateur ET</li>
+</ol>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Preparation d'une campagne email</h3>
+<ol>
+<li>Definissez votre cible (ex: clients inactifs depuis 60 jours)</li>
+<li>Creez un segment dynamique avec les criteres</li>
+<li>Previsualisez pour verifier le nombre de contacts</li>
+<li>Utilisez ce segment comme audience dans votre campagne</li>
+<li>Apres la campagne, le segment se met a jour automatiquement</li>
+</ol>
+
+<h3>Etiquetage apres un salon professionnel</h3>
+<ol>
+<li>Creez un tag "Salon Bio Montreal 2026"</li>
+<li>Creez une liste statique "Contacts salon Bio 2026"</li>
+<li>Importez les contacts rencontres (CSV depuis le scanner de badges)</li>
+<li>Appliquez le tag en masse a ces contacts</li>
+<li>Creez une tache de suivi pour chaque contact</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Quelle est la limite de contacts dans un segment ?</strong></p>
+<p>R : Il n'y a pas de limite technique. Un segment peut contenir tous les contacts de votre base.</p>
+
+<p><strong>Q : Les segments affectent-ils les performances ?</strong></p>
+<p>R : Non, les segments sont recalcules en arriere-plan. Meme avec des criteres complexes, ils ne ralentissent pas l'interface.</p>
+
+<p><strong>Q : Puis-je combiner une liste et un segment ?</strong></p>
+<p>R : Oui. Dans le generateur de segment, vous pouvez ajouter un critere "Fait partie de la liste X" pour combiner les deux approches.</p>
+
+<p><strong>Q : Comment savoir combien de contacts sont dans un segment avant de l'utiliser ?</strong></p>
+<p>R : Le bouton <strong>Previsualiser</strong> affiche le nombre exact de contacts correspondant aux criteres en temps reel.</p>
+
+<p><strong>Q : Les tags sont-ils partages entre tous les utilisateurs ?</strong></p>
+<p>R : Oui, les tags sont globaux. Tout le monde peut voir et utiliser les memes tags.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Liste statique</strong></td><td>Groupe de contacts gere manuellement</td></tr>
+  <tr><td><strong>Segment dynamique</strong></td><td>Groupe de contacts base sur des criteres, mis a jour automatiquement</td></tr>
+  <tr><td><strong>Tag</strong></td><td>Etiquette libre pour categoriser les contacts</td></tr>
+  <tr><td><strong>Critere</strong></td><td>Condition utilisee pour definir un segment (province, achat, etc.)</td></tr>
+  <tr><td><strong>Operateur</strong></td><td>ET / OU pour combiner les criteres d'un segment</td></tr>
+  <tr><td><strong>Audience</strong></td><td>Groupe de contacts cible pour une campagne</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/contacts">Contacts</a> : Les contacts a organiser</li>
+<li><a href="/admin/crm/campaigns">Campagnes</a> : Envoi d'emails aux listes/segments</li>
+<li><a href="/admin/crm/sms-campaigns">Campagnes SMS</a> : Envoi de SMS aux listes/segments</li>
+<li><a href="/admin/crm/workflows">Automatisations</a> : Workflows bases sur les segments</li>
+<li><a href="/admin/crm/analytics">Rapports CRM</a> : Analyse par segment</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

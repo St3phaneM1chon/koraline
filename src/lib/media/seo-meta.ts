@@ -52,7 +52,7 @@ export function generateVideoSEO(video: {
   }
 
   // Add default keywords
-  keywords = [...new Set([...keywords, 'peptides', 'research', 'biocycle', 'laboratory'])];
+  keywords = [...new Set([...keywords, 'peptides', 'research', 'attitudes vip', 'laboratory'])];
 
   // Generate description (max 160 chars for SEO)
   const rawDesc = video.description || video.title;

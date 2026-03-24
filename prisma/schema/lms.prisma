@@ -1,0 +1,1702 @@
+// =============================================================================
+// LMS APTITUDES — Centre de Formation Continue en Assurance (Koraline SaaS)
+// =============================================================================
+// Plateforme de formation pour le secteur de l'assurance:
+// - Clients corporatifs (Chubb Insurance, Industrielle Alliance, etc.)
+// - Etudiants: representants en assurance
+//   1. Obtention de certificat (permis initial AMF)
+//   2. Formation continue obligatoire (UFC/CE credits)
+// - Multi-tenant: chaque compagnie d'assurance a son propre portail
+// - Conformite AMF (Autorite des marches financiers du Quebec)
+// - Suivi des unites de formation continue (UFC)
+// - Certificats PDF avec QR verification publique
+
+// --- LMS Enums ---
+
+enum LessonType {
+  VIDEO
+  TEXT
+  QUIZ
+  EXERCISE
+  DOCUMENT
+  SCORM
+  LIVE_SESSION
+}
+
+enum QuizQuestionType {
+  MULTIPLE_CHOICE
+  TRUE_FALSE
+  FILL_IN
+  MATCHING
+  ORDERING
+}
+
+enum CourseStatus {
+  DRAFT
+  UNDER_REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+enum EnrollmentStatus {
+  ACTIVE
+  COMPLETED
+  SUSPENDED
+  CANCELLED
+  EXPIRED
+}
+
+enum CertificateStatus {
+  ISSUED
+  REVOKED
+  EXPIRED
+}
+
+enum CourseLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
+enum ComplianceStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  OVERDUE
+  EXEMPT
+}
+
+// --- Insurance / Continuing Education Enums ---
+
+enum CeCategory {
+  GENERAL // Formation generale
+  ETHICS // Deontologie et ethique
+  COMPLIANCE // Conformite reglementaire
+  PRODUCT_SPECIFIC // Produits specifiques (vie, IARD, etc.)
+  ANTI_MONEY_LAUNDERING // Lutte anti-blanchiment
+  PRIVACY // Protection des renseignements personnels
+  FINANCIAL_PLANNING // Planification financiere
+}
+
+enum LicenseType {
+  LIFE_INSURANCE // Assurance de personnes (vie)
+  DAMAGE_INSURANCE // Assurance de dommages (IARD)
+  GROUP_INSURANCE // Assurance collective
+  FINANCIAL_PLANNING // Planification financiere
+  MORTGAGE_INSURANCE // Assurance hypothecaire
+  CLAIMS_ADJUSTER // Expert en sinistres
+  INVESTMENT // Epargne collective / valeurs mobilieres
+}
+
+enum AccreditationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  EXPIRED
+}
+
+enum CePeriodStatus {
+  ACTIVE
+  COMPLETED
+  OVERDUE
+  GRACE_PERIOD
+}
+
+// --- Models ---
+
+model CourseCategory {
+  id          String           @id @default(cuid())
+  tenantId    String
+  slug        String   @unique
+  name        String
+  description String?
+  parentId    String?
+  parent      CourseCategory?  @relation("CourseCategoryTree", fields: [parentId], references: [id])
+  children    CourseCategory[] @relation("CourseCategoryTree")
+  sortOrder   Int              @default(0)
+  imageUrl    String?
+  isActive    Boolean          @default(true)
+  courses     Course[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@unique([tenantId, slug])
+  @@index([tenantId, isActive])
+  @@index([parentId])
+}
+
+model InstructorProfile {
+  id          String   @id @default(cuid())
+  tenantId    String
+  userId      String
+  bio         String?
+  title       String?
+  avatarUrl   String?
+  expertise   String[] @default([])
+  linkedinUrl String?
+  websiteUrl  String?
+  isActive    Boolean  @default(true)
+  courses     Course[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([tenantId, userId])
+  @@index([tenantId, isActive])
+}
+
+model Course {
+  id              String             @id @default(cuid())
+  tenantId        String
+  slug            String   @unique
+  title           String
+  subtitle        String?
+  description     String?
+  longDescription String?
+  thumbnailUrl    String?
+  trailerVideoUrl String?
+  level           CourseLevel        @default(BEGINNER)
+  status          CourseStatus       @default(DRAFT)
+  categoryId      String?
+  category        CourseCategory?    @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  instructorId    String?
+  instructor      InstructorProfile? @relation(fields: [instructorId], references: [id], onDelete: SetNull)
+
+  // Pricing
+  isFree   Boolean  @default(false)
+  price    Decimal? @db.Decimal(10, 2)
+  currency String   @default("CAD")
+
+  // Content
+  chapters       CourseChapter[]
+  enrollments    Enrollment[]
+  reviews        CourseReview[]
+  prerequisites  CoursePrerequisite[] @relation("CourseMain")
+  prerequisiteOf CoursePrerequisite[] @relation("CoursePrereq")
+
+  // Configuration
+  locale                String               @default("fr")
+  estimatedHours        Decimal?             @db.Decimal(5, 1)
+  maxEnrollments        Int?
+  enrollmentDeadline    DateTime?
+  certificateTemplateId String?
+  certificateTemplate   CertificateTemplate? @relation(fields: [certificateTemplateId], references: [id], onDelete: SetNull)
+  passingScore          Int                  @default(70) // Minimum quiz score (%) to pass
+
+  // SEO
+  metaTitle       String?
+  metaDescription String?
+  tags            String[] @default([])
+
+  // Stats (denormalized for performance)
+  enrollmentCount Int      @default(0)
+  completionCount Int      @default(0)
+  averageRating   Decimal? @db.Decimal(3, 2)
+  reviewCount     Int      @default(0)
+
+  // Compliance (for corporate mandatory training)
+  isCompliance           Boolean @default(false)
+  complianceDeadlineDays Int? // Days from enrollment to complete
+
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([tenantId, slug])
+  @@index([tenantId, status])
+  @@index([tenantId, categoryId])
+  @@index([tenantId, instructorId])
+  @@index([tenantId, isCompliance])
+  @@index([tenantId, publishedAt])
+}
+
+model CoursePrerequisite {
+  id             String @id @default(cuid())
+  courseId       String
+  course         Course @relation("CourseMain", fields: [courseId], references: [id], onDelete: Cascade)
+  prerequisiteId String
+  prerequisite   Course @relation("CoursePrereq", fields: [prerequisiteId], references: [id], onDelete: Cascade)
+
+  @@unique([courseId, prerequisiteId])
+}
+
+model CourseChapter {
+  id          String   @id @default(cuid())
+  tenantId    String
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(false)
+  lessons     Lesson[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([courseId, sortOrder])
+  @@index([tenantId])
+}
+
+model Lesson {
+  id          String        @id @default(cuid())
+  tenantId    String
+  chapterId   String
+  chapter     CourseChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  type        LessonType    @default(TEXT)
+  sortOrder   Int           @default(0)
+  isPublished Boolean       @default(false)
+  isFree      Boolean       @default(false) // Preview lesson (accessible without enrollment)
+
+  // Content (depends on type)
+  textContent     String? // For TEXT type (markdown)
+  videoUrl        String? // For VIDEO type
+  videoDuration   Int? // Seconds
+  documentUrl     String? // For DOCUMENT type
+  scormPackageUrl String? // For SCORM type
+
+  // Quiz reference
+  quizId String? @unique
+  quiz   Quiz?   @relation(fields: [quizId], references: [id], onDelete: SetNull)
+
+  // Exercise
+  exerciseInstructions   String?
+  exerciseSubmissionType String? // "text", "file", "url"
+
+  // Tracking
+  progress LessonProgress[]
+
+  estimatedMinutes Int?     @default(10)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([chapterId, sortOrder])
+  @@index([tenantId])
+}
+
+model Quiz {
+  id               String         @id @default(cuid())
+  tenantId         String
+  title            String
+  description      String?
+  timeLimit        Int? // Minutes (null = unlimited)
+  maxAttempts      Int            @default(3)
+  passingScore     Int            @default(70) // Percentage
+  shuffleQuestions Boolean        @default(false)
+  showResults      Boolean        @default(true)
+  questions        QuizQuestion[]
+  attempts         QuizAttempt[]
+  lesson           Lesson?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([tenantId])
+}
+
+model QuizQuestion {
+  id          String           @id @default(cuid())
+  quizId      String
+  quiz        Quiz             @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  type        QuizQuestionType @default(MULTIPLE_CHOICE)
+  question    String
+  explanation String? // Shown after answering
+  points      Int              @default(1)
+  sortOrder   Int              @default(0)
+
+  // Options stored as JSON for flexibility
+  // Format: [{"id":"a","text":"Option A","isCorrect":true}, ...]
+  options Json @default("[]")
+
+  // For FILL_IN type
+  correctAnswer String?
+  caseSensitive Boolean @default(false)
+
+  // For MATCHING/ORDERING
+  matchingPairs Json? // [{"left":"A","right":"1"}, ...]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([quizId, sortOrder])
+}
+
+model QuizAttempt {
+  id           String    @id @default(cuid())
+  tenantId     String
+  quizId       String
+  quiz         Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  userId       String
+  score        Int // Percentage 0-100
+  totalPoints  Int
+  earnedPoints Int
+  answers      Json      @default("[]") // [{questionId, answer, isCorrect, points}]
+  startedAt    DateTime  @default(now())
+  completedAt  DateTime?
+  timeTaken    Int? // Seconds
+  passed       Boolean   @default(false)
+
+  @@index([tenantId, userId])
+  @@index([quizId, userId])
+}
+
+model Enrollment {
+  id       String           @id @default(cuid())
+  tenantId String
+  courseId String
+  course   Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  userId   String
+  status   EnrollmentStatus @default(ACTIVE)
+
+  // Progress
+  progress         Decimal   @default(0) @db.Decimal(5, 2) // 0.00 to 100.00
+  lessonsCompleted Int       @default(0)
+  totalLessons     Int       @default(0)
+  lastAccessedAt   DateTime?
+
+  // Compliance
+  complianceStatus   ComplianceStatus?
+  complianceDeadline DateTime?
+
+  // Completion
+  completedAt   DateTime?
+  certificateId String?      @unique
+  certificate   Certificate? @relation(fields: [certificateId], references: [id], onDelete: SetNull)
+
+  // Source
+  enrolledBy       String? // userId of admin who enrolled (null = self-enrolled)
+  enrollmentSource String? // "self", "admin", "csv_import", "api"
+
+  lessonProgress LessonProgress[]
+
+  enrolledAt DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([tenantId, courseId, userId])
+  @@index([tenantId, userId])
+  @@index([tenantId, courseId, status])
+  @@index([tenantId, complianceStatus])
+  @@index([tenantId, completedAt])
+}
+
+model LessonProgress {
+  id           String     @id @default(cuid())
+  tenantId     String
+  enrollmentId String
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  lessonId     String
+  lesson       Lesson     @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  userId       String
+
+  isCompleted Boolean   @default(false)
+  completedAt DateTime?
+
+  // Video progress
+  videoProgress  Int? // Seconds watched
+  videoCompleted Boolean @default(false)
+
+  // Quiz progress (if lesson has quiz)
+  quizScore  Int? // Best score
+  quizPassed Boolean @default(false)
+
+  // Exercise
+  exerciseSubmitted Boolean @default(false)
+  exerciseGrade     Int?
+
+  // Time tracking
+  timeSpent      Int       @default(0) // Seconds
+  lastAccessedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([enrollmentId, lessonId])
+  @@index([tenantId, userId])
+  @@index([lessonId])
+}
+
+model CertificateTemplate {
+  id          String  @id @default(cuid())
+  tenantId    String
+  name        String   @unique
+  description String?
+
+  // Design
+  htmlTemplate String // HTML template with {{placeholders}}
+  cssStyles    String? // Custom CSS
+  logoUrl      String?
+  signatureUrl String?
+  signerName   String?
+  signerTitle  String?
+
+  // Configuration
+  orientation String @default("landscape") // "landscape" or "portrait"
+  paperSize   String @default("A4")
+
+  isDefault    Boolean       @default(false)
+  courses      Course[]
+  certificates Certificate[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@unique([tenantId, name])
+  @@index([tenantId])
+}
+
+model Certificate {
+  id          String              @id @default(cuid())
+  tenantId    String
+  templateId  String
+  template    CertificateTemplate @relation(fields: [templateId], references: [id], onDelete: Restrict)
+  userId      String
+  courseTitle String // Snapshot at time of issue
+  studentName String // Snapshot at time of issue
+
+  // Verification
+  verificationCode String  @unique // UUID for public verification
+  qrCodeUrl        String?
+  pdfUrl           String?
+
+  status        CertificateStatus @default(ISSUED)
+  issuedAt      DateTime          @default(now())
+  expiresAt     DateTime?
+  revokedAt     DateTime?
+  revokedReason String?
+
+  enrollment Enrollment?
+
+  @@index([tenantId, userId])
+  @@index([verificationCode])
+  @@index([tenantId, status])
+}
+
+model CourseReview {
+  id         String   @id @default(cuid())
+  tenantId   String
+  courseId   String
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  userId     String
+  rating     Int // 1-5
+  title      String?
+  comment    String?
+  isApproved Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([courseId, userId])
+  @@index([tenantId, courseId])
+  @@index([tenantId, isApproved])
+}
+
+// --- Gamification ---
+
+model LmsBadge {
+  id          String          @id @default(cuid())
+  tenantId    String
+  name        String   @unique
+  description String?
+  iconUrl     String?
+  criteria    Json            @default("{}") // {"type":"courses_completed","count":5}
+  isActive    Boolean         @default(true)
+  awards      LmsBadgeAward[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@unique([tenantId, name])
+  @@index([tenantId, isActive])
+}
+
+model LmsBadgeAward {
+  id        String   @id @default(cuid())
+  tenantId  String
+  badgeId   String
+  badge     LmsBadge @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  userId    String
+  awardedAt DateTime @default(now())
+
+  @@unique([badgeId, userId])
+  @@index([tenantId, userId])
+}
+
+model LmsStreak {
+  id               String    @id @default(cuid())
+  tenantId         String
+  userId           String    @unique
+  currentStreak    Int       @default(0)
+  longestStreak    Int       @default(0)
+  lastActivityDate DateTime?
+  updatedAt        DateTime  @updatedAt
+
+  @@index([tenantId])
+}
+
+// --- Corporate / Compliance ---
+
+model ComplianceAssignment {
+  id           String           @id @default(cuid())
+  tenantId     String
+  courseId     String
+  department   String? // Target department
+  teamId       String? // Target team
+  userId       String? // Target individual
+  deadline     DateTime
+  status       ComplianceStatus @default(NOT_STARTED)
+  assignedBy   String
+  reminderSent Boolean          @default(false)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@index([tenantId, status])
+  @@index([tenantId, courseId])
+  @@index([tenantId, deadline])
+  @@index([tenantId, userId])
+}
+
+// --- Leaderboard (materialized view, refreshed by cron) ---
+
+model LmsLeaderboard {
+  id          String  @id @default(cuid())
+  tenantId    String
+  userId      String
+  displayName String
+  avatarUrl   String?
+
+  coursesCompleted Int      @default(0)
+  totalPoints      Int      @default(0)
+  currentStreak    Int      @default(0)
+  badgeCount       Int      @default(0)
+  averageScore     Decimal? @db.Decimal(5, 2)
+
+  rank   Int    @default(0)
+  period String @default("all_time") // "weekly", "monthly", "all_time"
+
+  updatedAt DateTime @updatedAt
+
+  @@unique([tenantId, userId, period])
+  @@index([tenantId, period, rank])
+}
+
+// =============================================================================
+// ASSURANCE & FORMATION CONTINUE (CE / UFC)
+// =============================================================================
+// Specifique au secteur de l'assurance:
+// - Organismes de reglementation (AMF, CHAD, CSF, IQPF)
+// - Credits de formation continue (UFC)
+// - Permis des representants
+// - Periodes de formation (cycle 2 ans)
+// - Accreditation des cours par organisme
+
+/// Organisme de reglementation (AMF, CHAD, CSF, IQPF)
+model RegulatoryBody {
+  id           String  @id @default(cuid())
+  tenantId     String
+  code         String   @unique    // "AMF", "CHAD", "CSF", "IQPF"
+  name         String // "Autorite des marches financiers"
+  province     String  @default("QC")
+  websiteUrl   String?
+  contactEmail String?
+  isActive     Boolean @default(true)
+
+  // Requirements
+  cePeriodMonths        Int     @default(24) // Cycle de 2 ans typiquement
+  requiredUfc           Decimal @db.Decimal(5, 1) // UFC requises par cycle (ex: 30.0)
+  requiredEthicsUfc     Decimal @default(0) @db.Decimal(5, 1) // UFC ethique minimum
+  requiredComplianceUfc Decimal @default(0) @db.Decimal(5, 1) // UFC conformite minimum
+
+  accreditations CourseAccreditation[]
+  licenses       RepresentativeLicense[]
+  cePeriods      CePeriod[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tenantId, code])
+  @@index([tenantId, isActive])
+}
+
+/// Accreditation d'un cours par un organisme (UFC attribuees)
+model CourseAccreditation {
+  id               String         @id @default(cuid())
+  tenantId         String
+  courseId         String
+  regulatoryBodyId String
+  regulatoryBody   RegulatoryBody @relation(fields: [regulatoryBodyId], references: [id], onDelete: Restrict)
+
+  // Credits
+  ufcCredits   Decimal       @db.Decimal(5, 1) // Nombre d'UFC
+  ceCategory   CeCategory    @default(GENERAL)
+  licenseTypes LicenseType[] // Types de permis pour lesquels ce cours est valide
+
+  // Accreditation
+  accreditationNumber String? // Numero d'accreditation officiel
+  status              AccreditationStatus @default(PENDING)
+  approvedAt          DateTime?
+  expiresAt           DateTime?
+  rejectionReason     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tenantId, courseId, regulatoryBodyId])
+  @@index([tenantId, status])
+  @@index([courseId])
+}
+
+/// Permis/licence d'un representant en assurance
+model RepresentativeLicense {
+  id               String         @id @default(cuid())
+  tenantId         String
+  userId           String
+  regulatoryBodyId String
+  regulatoryBody   RegulatoryBody @relation(fields: [regulatoryBodyId], references: [id], onDelete: Restrict)
+
+  licenseType   LicenseType
+  licenseNumber String // Numero de certificat AMF
+  issuedAt      DateTime
+  expiresAt     DateTime?
+  isActive      Boolean     @default(true)
+
+  // CE tracking
+  cePeriods CePeriod[]
+  ceCredits CeCredit[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tenantId, userId, licenseType, regulatoryBodyId])
+  @@index([tenantId, userId])
+  @@index([tenantId, isActive])
+  @@index([licenseNumber])
+}
+
+/// Periode de formation continue (cycle 2 ans typiquement)
+model CePeriod {
+  id               String                @id @default(cuid())
+  tenantId         String
+  licenseId        String
+  license          RepresentativeLicense @relation(fields: [licenseId], references: [id], onDelete: Cascade)
+  regulatoryBodyId String
+  regulatoryBody   RegulatoryBody        @relation(fields: [regulatoryBodyId], references: [id], onDelete: Restrict)
+  userId           String
+
+  startDate DateTime
+  endDate   DateTime
+  status    CePeriodStatus @default(ACTIVE)
+
+  // Requirements for this period
+  requiredUfc           Decimal @db.Decimal(5, 1)
+  requiredEthicsUfc     Decimal @default(0) @db.Decimal(5, 1)
+  requiredComplianceUfc Decimal @default(0) @db.Decimal(5, 1)
+
+  // Progress (denormalized for performance)
+  earnedUfc           Decimal @default(0) @db.Decimal(5, 1)
+  earnedEthicsUfc     Decimal @default(0) @db.Decimal(5, 1)
+  earnedComplianceUfc Decimal @default(0) @db.Decimal(5, 1)
+
+  credits CeCredit[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId, userId])
+  @@index([tenantId, status])
+  @@index([licenseId])
+  @@index([endDate])
+}
+
+/// Credit de formation continue gagne par un representant
+model CeCredit {
+  id         String                @id @default(cuid())
+  tenantId   String
+  userId     String
+  licenseId  String
+  license    RepresentativeLicense @relation(fields: [licenseId], references: [id], onDelete: Restrict)
+  cePeriodId String
+  cePeriod   CePeriod              @relation(fields: [cePeriodId], references: [id], onDelete: Restrict)
+
+  // Source
+  courseId      String? // null if manually added
+  enrollmentId  String?
+  certificateId String?
+
+  // Credits
+  ufcCredits  Decimal    @db.Decimal(5, 1)
+  ceCategory  CeCategory @default(GENERAL)
+  description String // "Cours: Ethique en assurance de personnes"
+
+  // Verification
+  isVerified Boolean   @default(false)
+  verifiedBy String?
+  verifiedAt DateTime?
+
+  earnedAt  DateTime @default(now())
+  createdAt DateTime @default(now())
+
+  @@index([tenantId, userId])
+  @@index([cePeriodId])
+  @@index([licenseId])
+  @@index([courseId])
+}
+
+/// Portail brande par compagnie d'assurance (Chubb → chubb.aptitudes.vip)
+model TenantLmsPortal {
+  id             String  @id @default(cuid())
+  tenantId       String  @unique
+  subdomain      String  @unique // "chubb" → chubb.aptitudes.vip
+  customDomain   String? @unique // "formation.chubb.ca"
+  logoUrl        String?
+  faviconUrl     String?
+  primaryColor   String  @default("#0066CC")
+  secondaryColor String  @default("#003366")
+  heroImageUrl   String?
+  welcomeMessage String?
+  footerText     String?
+  isActive       Boolean @default(true)
+
+  // SSO / Integration
+  ssoEnabled  Boolean @default(false)
+  ssoProvider String? // "saml", "oidc"
+  ssoConfig   Json    @default("{}")
+  webhookUrl  String? // Notification de completion vers LMS corporatif
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([subdomain])
+}
+
+// =============================================================================
+// TUTEUR IA — Aurelia en ligne (abonnement mensuel)
+// =============================================================================
+// Version en ligne d'Aurelia specialisee en droit des assurances
+// Abonnement mensuel pour etudiants/representants
+// Domaines: droit assurance, conformite AMF, ethique, LDPSF, LSFSE, Code civil
+// Integration: cours LMS (contexte de formation), historique etudiant, reglementation
+
+enum AiTutorPlan {
+  FREE_TRIAL // 7 jours, 10 questions/jour
+  MONTHLY // Illimite, $29.99/mois
+  ANNUAL // Illimite, $249.99/an
+  CORPORATE // Inclus dans le forfait tenant (illimite pour tous les employes)
+}
+
+enum AiTutorSessionStatus {
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
+/// Abonnement au tuteur IA
+model AiTutorSubscription {
+  id       String      @id @default(cuid())
+  tenantId String
+  userId   String
+  plan     AiTutorPlan @default(FREE_TRIAL)
+  isActive Boolean     @default(true)
+
+  // Billing
+  stripeSubscriptionId String?  @unique
+  amount               Decimal? @db.Decimal(10, 2)
+  currency             String   @default("CAD")
+
+  // Limits
+  questionsPerDay    Int      @default(10) // FREE_TRIAL=10, MONTHLY/ANNUAL=unlimited(9999)
+  questionsUsedToday Int      @default(0)
+  lastResetDate      DateTime @default(now())
+
+  // Trial
+  trialEndsAt DateTime?
+  startedAt   DateTime  @default(now())
+  expiresAt   DateTime?
+  cancelledAt DateTime?
+
+  sessions AiTutorSession[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tenantId, userId])
+  @@index([tenantId, isActive])
+  @@index([stripeSubscriptionId])
+}
+
+/// Session de tutorat IA (conversation)
+model AiTutorSession {
+  id             String              @id @default(cuid())
+  tenantId       String
+  userId         String
+  subscriptionId String
+  subscription   AiTutorSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  title  String? // Auto-generated from first message
+  status AiTutorSessionStatus @default(ACTIVE)
+
+  // Context
+  courseId String? // If started from a course lesson
+  lessonId String? // Specific lesson context
+  topic    String? // "ethique", "conformite-amf", "ldpsf", etc.
+
+  // Specializations
+  specialization String[] @default([]) // ["droit-assurance", "amf", "ethique", "ldpsf"]
+
+  messages AiTutorMessage[]
+
+  // Stats
+  messageCount  Int       @default(0)
+  lastMessageAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId, userId])
+  @@index([subscriptionId])
+  @@index([tenantId, status])
+}
+
+/// Message dans une session de tutorat IA
+model AiTutorMessage {
+  id        String         @id @default(cuid())
+  sessionId String
+  session   AiTutorSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  role      String // "user", "assistant", "system"
+  content   String // Message text (markdown)
+
+  // Metadata
+  tokenCount Int? // Tokens used
+  modelUsed  String? // "claude-sonnet-4-5", etc.
+  sources    Json? // [{title, url, section}] — legal references cited
+
+  // Feedback
+  thumbsUp Boolean?
+  feedback String?
+
+  createdAt DateTime @default(now())
+
+  @@index([sessionId, createdAt])
+}
+
+/// Base de connaissances du tuteur IA (RAG)
+model AiTutorKnowledge {
+  id        String   @id @default(cuid())
+  tenantId  String
+  domain    String // "droit-assurance", "amf", "ethique", "ldpsf", "lsfse", "code-civil"
+  title     String
+  content   String // Full text
+  source    String? // URL or document reference
+  embedding String? // Vector embedding ID (external vector store)
+  metadata  Json     @default("{}")
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId, domain])
+  @@index([tenantId, isActive])
+}
+
+/// Transaction d'achat de formation par un etudiant
+model CourseOrder {
+  id           String  @id @default(cuid())
+  tenantId     String
+  userId       String
+  courseId     String
+  enrollmentId String?
+
+  // Pricing
+  amount      Decimal @db.Decimal(10, 2)
+  currency    String  @default("CAD")
+  taxAmount   Decimal @default(0) @db.Decimal(10, 2)
+  totalAmount Decimal @db.Decimal(10, 2)
+
+  // Payment
+  stripePaymentIntentId String?   @unique
+  paymentMethod         String? // "card", "company_account"
+  paidAt                DateTime?
+  refundedAt            DateTime?
+  refundAmount          Decimal?  @db.Decimal(10, 2)
+
+  // Corporate billing
+  corporateAccountId  String? // If paid by employer
+  purchaseOrderNumber String?
+
+  status String @default("pending") // pending, paid, refunded, cancelled
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId, userId])
+  @@index([tenantId, status])
+  @@index([stripePaymentIntentId])
+}
+
+// =============================================================================
+// PROFIL D'APPRENTISSAGE ULTRA-SOPHISTIQUÉ
+// =============================================================================
+// Construit par Aurelia via conversation naturelle + detection automatique.
+// Chaque interaction enrichit le profil. Rien n'est jamais perdu.
+// Le profil guide: contenu adapté, rythme personnalisé, intervention proactive.
+
+/// Profil complet de l'étudiant — noyau central
+model StudentProfile {
+  id          String   @id @default(cuid())
+  tenantId    String
+  userId      String   @unique
+
+  // ── Identité ──────────────────────────────────────────────
+  firstName        String?
+  lastName         String?
+  preferredName    String?          // "Appelle-moi Marie"
+  age              Int?
+  gender           String?          // optionnel, jamais force
+  city             String?
+  province         String?
+  country          String           @default("CA")
+  language         String           @default("fr")
+  secondLanguage   String?          // pour contenu bilingue
+  timezone         String           @default("America/Toronto")
+
+  // ── Professionnel ─────────────────────────────────────────
+  currentRole      String?          // "courtier", "agent", "expert sinistres"
+  employer         String?          // compagnie actuelle
+  department       String?          // "reclamations", "ventes", "souscription"
+  yearsExperience  Int?
+  yearsInInsurance Int?
+  specializations  String[]  @default([]) // ["auto", "habitation", "commercial", "vie"]
+  clientele        String?          // "particuliers", "entreprises", "mixte"
+  teamSize         Int?             // nb personnes dans son equipe
+  supervisorName   String?
+
+  // ── Education ─────────────────────────────────────────────
+  educationLevel       String?      // "SEC5", "DEC", "BAC", "MAITRISE", "DOCTORAT"
+  educationField       String?      // "administration", "droit", "assurance", "finance"
+  educationInstitution String?      // "Universite Laval", "Cegep du Vieux-Montreal"
+  graduationYear       Int?
+  certifications       String[]  @default([]) // ["AEC assurance", "CAIB", "PAA", "CRM"]
+  ongoingEducation     String?      // formation en cours
+
+  // ── Licence / Permis AMF ──────────────────────────────────
+  licenseTypes     String[]  @default([]) // ["DAMAGE_INSURANCE", "LIFE_INSURANCE"]
+  licenseNumber    String?
+  licenseYear      Int?
+  regulatoryBodies String[]  @default([]) // ["AMF", "CHAD", "CSF"]
+  ufcDeadline      DateTime?
+  ufcRequired      Decimal?  @db.Decimal(5, 1)
+  ufcCompleted     Decimal?  @db.Decimal(5, 1)
+  complianceStatus String?          // "ON_TRACK", "AT_RISK", "OVERDUE"
+
+  // ── Cognitif — Style d'apprentissage (VARK + Gardner) ─────
+  // Detecte par Aurelia via comportement + conversation
+  varkVisual       Float    @default(0)  // 0-1 preference visuelle
+  varkAuditory     Float    @default(0)  // 0-1 preference auditive
+  varkReadWrite    Float    @default(0)  // 0-1 preference lecture/ecriture
+  varkKinesthetic  Float    @default(0)  // 0-1 preference pratique/experimentation
+  dominantVark     String?              // "VISUAL", "AUDITORY", "READ_WRITE", "KINESTHETIC", "MULTIMODAL"
+
+  // Gardner — Intelligences multiples (detectees progressivement)
+  gardnerLinguistic      Float @default(0) // mots, langues, argumentation
+  gardnerLogical         Float @default(0) // raisonnement, patterns, chiffres
+  gardnerSpatial         Float @default(0) // images, diagrammes, cartes mentales
+  gardnerInterpersonal   Float @default(0) // travail en groupe, discussion
+  gardnerIntrapersonal   Float @default(0) // reflexion solo, journal
+  gardnerNaturalist      Float @default(0) // classification, categorisation
+
+  // ── Cognitif — Capacites mesurées ─────────────────────────
+  workingMemoryScore     Float?  // capacite memoire court terme (via quiz de calibration)
+  processingSpeed        Float?  // vitesse traitement info (sec/question moyenne)
+  attentionSpanMinutes   Int?    // duree moyenne avant decrochage
+  readingSpeedWPM        Int?    // mots par minute (mesure sur lecons texte)
+  comprehensionRate      Float?  // % comprehension premiere lecture
+  retentionRate7Days     Float?  // % retention apres 7 jours (via quiz espaces)
+  retentionRate30Days    Float?  // % retention apres 30 jours
+  transferAbility        Float?  // capacite a appliquer dans nouveau contexte (quiz niveau 3+)
+
+  // ── Rythme et Habitudes ───────────────────────────────────
+  pacePreference         String?  // "FAST", "MODERATE", "SLOW_THOROUGH"
+  actualPaceMultiplier   Float    @default(1.0) // 0.5=2x plus lent, 2.0=2x plus rapide que moyenne
+  sessionPreference      String?  // "SHORT_15MIN", "MEDIUM_30MIN", "LONG_60MIN"
+  actualAvgSessionMin    Int?     // duree reelle moyenne
+  bestTimeOfDay          String?  // "EARLY_MORNING", "MORNING", "AFTERNOON", "EVENING", "NIGHT"
+  bestDayOfWeek          String?  // "WEEKDAY", "WEEKEND", "MIXED"
+  studyFrequency         String?  // "DAILY", "FEW_TIMES_WEEK", "WEEKLY", "IRREGULAR"
+  prefersDeadlines       Boolean  @default(false) // travaille mieux avec pression
+  procrastinationLevel   String?  // "NONE", "MILD", "MODERATE", "SEVERE"
+
+  // ── Psychologique — Motivation et Emotions ────────────────
+  motivationLevel        String?  // "HIGH", "MODERATE", "LOW"
+  motivationSource       String?  // "CAREER_GROWTH", "COMPLIANCE_OBLIGATION", "CURIOSITY", "FEAR_OF_PENALTY", "SALARY_BONUS"
+  intrinsicMotivation    Float    @default(0) // 0-1 motivé par interet personnel
+  extrinsicMotivation    Float    @default(0) // 0-1 motivé par recompenses externes
+  selfEfficacy           Float    @default(0.5) // 0-1 croyance en sa capacite de reussir
+  growthMindset          Float    @default(0.5) // 0-1 (0=fixe "je suis pas bon", 1=croissance "je peux m'ameliorer")
+  testAnxiety            String?  // "NONE", "MILD", "MODERATE", "SEVERE"
+  frustrationTolerance   String?  // "LOW", "MODERATE", "HIGH"
+  frustrationTriggers    String[] @default([]) // ["long_videos", "repetitive_quizzes", "theory_heavy", "timed_tests"]
+  confidenceLevel        String?  // "LOW", "MODERATE", "HIGH", "OVERCONFIDENT"
+  responseToFailure      String?  // "GIVES_UP", "TRIES_AGAIN", "SEEKS_HELP", "ANALYZES_ERRORS"
+  responseToSuccess      String?  // "COMPLACENT", "MOTIVATED_FOR_MORE", "NEUTRAL"
+
+  // ── Preferences de contenu ────────────────────────────────
+  preferredContentTypes  String[] @default([]) // ["video", "text", "interactive", "case_study", "audio", "discussion", "simulation"]
+  dislikedContentTypes   String[] @default([]) // ["long_readings", "timed_quizzes", "group_work"]
+  preferredQuizStyle     String?  // "PRACTICE_LOW_STAKES", "CHALLENGE_HIGH_STAKES", "SELF_ASSESSMENT"
+  prefersExamples        Boolean  @default(true)
+  prefersAnalogies       Boolean  @default(true)
+  prefersCasePractiques  Boolean  @default(true)
+  prefersHumor           Boolean  @default(false)
+  prefersFormality       String?  // "FORMAL", "CASUAL", "ADAPTIVE"
+  contentDensityPref     String?  // "CONCISE", "DETAILED", "VERY_DETAILED"
+
+  // ── Objectifs personnels ──────────────────────────────────
+  primaryGoal            String?  // "PASS_UFC", "PROMOTION", "CHANGE_DOMAIN", "NEW_LICENSE", "MASTER_SUBJECT"
+  secondaryGoals         String[] @default([])
+  careerAspiration       String?  // "MANAGEMENT", "SPECIALIST", "INDEPENDENT", "CHANGE_CAREER"
+  targetCompletionDate   DateTime?
+  weeklyStudyBudgetHours Float?   // combien d'heures/semaine disponibles
+
+  // ── Contexte personnel (optionnel, partage volontairement) ─
+  hasChildren            Boolean?
+  workLifeBalance        String?  // "GOOD", "STRAINED", "DIFFICULT"
+  commuteTime            String?  // "NONE_REMOTE", "SHORT_30MIN", "LONG_60MIN+"
+  personalChallenges     String[] @default([]) // ["time", "fatigue", "family", "health"]
+
+  // ── Interaction avec Aurelia ───────────────────────────────
+  communicationStyle     String?  // "BRIEF", "CONVERSATIONAL", "DETAILED"
+  prefersVoice           Boolean  @default(false) // prefere parler plutot que taper
+  aureliaNickname        String?  // comment il appelle Aurelia ("Aure", "Prof", etc.)
+  feedbackFrequency      String?  // "AFTER_EACH_TASK", "DAILY_SUMMARY", "WEEKLY_ONLY"
+  encouragementLevel     String?  // "MINIMAL", "MODERATE", "ENTHUSIASTIC"
+
+  // ── Scores auto-calcules ──────────────────────────────────
+  engagementScore        Float    @default(0)   // 0-100 engagement global
+  riskOfDropout          Float    @default(0)   // 0-100 risque abandon
+  estimatedMasterySpeed  Float    @default(1.0) // multiplicateur vs moyenne
+  profileCompleteness    Int      @default(0)   // 0-100%
+  dataConfidence         Float    @default(0)   // 0-1 fiabilite des donnees
+
+  // ── Profilage ─────────────────────────────────────────────
+  onboardingCompleted    Boolean  @default(false)
+  onboardingCompletedAt  DateTime?
+  lastProfileUpdateAt    DateTime?
+  totalInteractions      Int      @default(0)   // nb interactions avec Aurelia
+
+  notes       StudentProfileNote[]
+  snapshots   StudentProfileSnapshot[]
+  taskFeedback StudentTaskFeedback[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([tenantId, riskOfDropout])
+  @@index([tenantId, engagementScore])
+  @@index([tenantId, complianceStatus])
+}
+
+/// Observations d'Aurelia sur l'etudiant (journal d'observations)
+model StudentProfileNote {
+  id          String   @id @default(cuid())
+  tenantId    String
+  userId      String
+  profileId   String
+  profile     StudentProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  category    String   // "learning_style", "motivation", "struggle", "strength", "emotion", "behavior", "breakthrough", "concern"
+  observation String   // texte libre d'Aurelia: "L'etudiant hesite sur les questions d'ethique mais excelle en procedure"
+  evidence    String?  // donnees probantes: "3/5 quiz ethique echoues, 5/5 quiz procedure reussis"
+  confidence  Float    @default(0.5) // 0-1, augmente avec observations repetees
+  source      String   // "onboarding_chat", "quiz_pattern", "study_habit", "direct_feedback", "voice_analysis", "response_time"
+  impact      String?  // "POSITIVE", "NEUTRAL", "NEGATIVE", "CRITICAL"
+
+  createdAt   DateTime @default(now())
+
+  @@index([userId, category])
+  @@index([profileId, category])
+  @@index([tenantId])
+}
+
+/// Snapshots periodiques du profil (evolution dans le temps)
+model StudentProfileSnapshot {
+  id          String   @id @default(cuid())
+  tenantId    String
+  userId      String
+  profileId   String
+  profile     StudentProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  period      String   // "WEEKLY", "MONTHLY", "QUARTERLY"
+  date        DateTime
+
+  // Metriques cles au moment du snapshot
+  engagementScore       Float
+  riskOfDropout         Float
+  masterySpeed          Float
+  averageQuizScore      Float?
+  studyHoursThisPeriod  Float?
+  conceptsMastered      Int?
+  conceptsInProgress    Int?
+  strongestDomain       String?
+  weakestDomain         String?
+  motivationTrend       String?  // "IMPROVING", "STABLE", "DECLINING"
+  sentimentTrend        String?  // "POSITIVE", "NEUTRAL", "NEGATIVE"
+  aureliaRecommendation String?  // recommandation cle de la periode
+
+  createdAt   DateTime @default(now())
+
+  @@index([userId, date])
+  @@index([profileId, period])
+  @@index([tenantId])
+}
+
+/// Feedback de l'etudiant sur chaque tache/lecon/quiz
+model StudentTaskFeedback {
+  id          String   @id @default(cuid())
+  tenantId    String
+  userId      String
+  profileId   String
+  profile     StudentProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  // Reference a la tache
+  taskType    String   // "LESSON", "QUIZ", "COURSE", "EXERCISE", "AI_SESSION"
+  taskId      String   // ID de la lecon, quiz, cours, etc.
+  taskTitle   String?
+
+  // Evaluation par l'etudiant
+  rating      Int?     // 1-5 etoiles
+  sentiment   String?  // "VERY_NEGATIVE", "NEGATIVE", "NEUTRAL", "POSITIVE", "VERY_POSITIVE"
+  comment     String?  // commentaire libre
+  tags        String[] @default([]) // ["too_long", "unclear", "boring", "useful", "too_easy", "too_hard", "great_examples"]
+
+  // Mesures objectives
+  completionTimeMinutes Float?   // temps pour completer
+  expectedTimeMinutes   Float?   // temps prevu
+  difficultyPerceived   String?  // "TOO_EASY", "EASY", "JUST_RIGHT", "HARD", "TOO_HARD"
+  difficultyActual      Float?   // score objectif (% reussite)
+  wouldRecommend        Boolean? // recommanderait a un collegue?
+
+  // Detecte par Aurelia
+  frustratedDuring      Boolean  @default(false)
+  confusedDuring        Boolean  @default(false)
+  engagedDuring         Boolean  @default(true)
+  rushedThrough         Boolean  @default(false) // a baclé
+
+  // Reponse d'Aurelia au feedback
+  aureliaResponse       String?  // "J'ai note, je vais adapter..."
+  pathAdjusted          Boolean  @default(false) // parcours modifie suite au feedback
+
+  createdAt   DateTime @default(now())
+
+  @@index([userId, taskType])
+  @@index([profileId])
+  @@index([tenantId, taskId])
+  @@index([tenantId, sentiment])
+}
+
+/// Metriques d'apprentissage en temps reel (agrege quotidiennement)
+model StudentAnalytics {
+  id          String   @id @default(cuid())
+  tenantId    String
+  userId      String   @unique
+
+  // ── Temps ─────────────────────────────────────
+  totalStudyTimeMinutes   Int     @default(0)
+  totalStudyDays          Int     @default(0)
+  avgDailyStudyMinutes    Float   @default(0)
+  longestSessionMinutes   Int     @default(0)
+  shortestSessionMinutes  Int?
+  totalSessions           Int     @default(0)
+
+  // ── Quiz et Evaluation ────────────────────────
+  totalQuizzesTaken       Int     @default(0)
+  totalQuizzesPassed      Int     @default(0)
+  averageQuizScore        Float   @default(0)
+  highestQuizScore        Int     @default(0)
+  lowestQuizScore         Int?
+  quizPassRate            Float   @default(0) // %
+  totalQuestionsAnswered  Int     @default(0)
+  totalQuestionsCorrect   Int     @default(0)
+  overallAccuracy         Float   @default(0) // %
+
+  // ── Vitesse ───────────────────────────────────
+  avgResponseTimeSec      Float   @default(0) // moyenne par question
+  medianResponseTimeSec   Float   @default(0)
+  fastestResponseTimeSec  Float?
+  slowestResponseTimeSec  Float?
+  responseTimeByLevel     Json    @default("{}") // {"1": 8.2, "2": 15.1, "3": 25.3, "4": 38.7, "5": 120.5}
+  responseTimeTrend       String? // "IMPROVING", "STABLE", "DECLINING"
+
+  // ── Maitrise ──────────────────────────────────
+  totalConceptsExposed    Int     @default(0)
+  totalConceptsMastered   Int     @default(0) // level >= 3
+  totalConceptsExpert     Int     @default(0) // level >= 5
+  avgMasteryLevel         Float   @default(0)
+  strongestConcepts       String[] @default([]) // top 5 concept IDs
+  weakestConcepts         String[] @default([]) // bottom 5 concept IDs
+  masteryByDomain         Json    @default("{}") // {"ethique": 4.2, "amf": 2.8, "ldpsf": 3.5}
+
+  // ── Engagement ────────────────────────────────
+  loginStreak             Int     @default(0)
+  longestLoginStreak      Int     @default(0)
+  daysWithoutActivity     Int     @default(0)
+  tutorSessionsCount      Int     @default(0)
+  tutorMessagesCount      Int     @default(0)
+  avgTutorSessionMinutes  Float   @default(0)
+  feedbackGiven           Int     @default(0)
+  coursesCompleted        Int     @default(0)
+  certificatesEarned      Int     @default(0)
+
+  // ── Patterns detectes ─────────────────────────
+  peakPerformanceHour     Int?    // 0-23
+  peakPerformanceDay      String? // "MON", "TUE", etc.
+  avgScoreByTimeOfDay     Json    @default("{}") // {"morning": 85, "afternoon": 72, "evening": 68}
+  conceptRetentionCurve   Json    @default("{}") // {"7d": 0.85, "14d": 0.72, "30d": 0.61}
+
+  lastActiveAt  DateTime?
+  updatedAt     DateTime  @updatedAt
+
+  @@index([tenantId])
+  @@index([tenantId, avgMasteryLevel])
+}
+
+/// Detail de chaque reponse a un quiz (pour analyse fine)
+model QuizResponseDetail {
+  id              String   @id @default(cuid())
+  tenantId        String
+  userId          String
+  quizAttemptId   String
+  questionId      String
+  conceptId       String?
+
+  // Reponse
+  selectedAnswer  Json              // ce que l'etudiant a choisi
+  isCorrect       Boolean
+  partialCredit   Float    @default(0) // 0-1 pour reponses partiellement correctes
+  bloomLevel      Int?              // niveau Bloom de la question
+  angle           String?           // "forward", "reverse", "scenario", "edge_case"
+
+  // Timing
+  responseTimeSec Float             // temps pour repondre
+  timeToFirstClick Float?           // temps avant premiere interaction
+  changedAnswer   Boolean @default(false) // a change sa reponse
+  timesChanged    Int     @default(0)     // nb de changements
+
+  // Confiance
+  selfConfidence  Int?              // 1-5 "etes-vous sur?"
+  wasGuessing     Boolean @default(false) // detecte: reponse < 2sec sur question difficile
+
+  // Contexte
+  attemptNumber   Int     @default(1) // 1er, 2e, 3e essai sur cette question
+  questionDifficulty Float? // difficulte calibree IRT
+  questionDiscrimination Float? // pouvoir discriminant
+
+  createdAt       DateTime @default(now())
+
+  @@index([userId, conceptId])
+  @@index([quizAttemptId])
+  @@index([tenantId, questionId])
+  @@index([tenantId, isCorrect, bloomLevel])
+}
+
+// ── Modeles pour l'apprentissage adaptatif ──────────────────
+
+/// Noeud de connaissance dans le graphe de concepts
+model LmsConcept {
+  id              String   @id @default(cuid())
+  tenantId        String
+  slug            String
+  name            String
+  description     String?
+  domain          String   // "ethique", "conformite-amf", "ldpsf", "iard", "vie"
+  targetBloomLevel Int     @default(3) // niveau cible pour maitrise
+  difficulty      Float    @default(0.5) // 0-1 difficulte moyenne
+  estimatedMinutes Int     @default(30) // temps estime pour maitriser
+
+  // Relations
+  prerequisites   LmsConceptPrereq[] @relation("ConceptMain")
+  prerequisiteOf  LmsConceptPrereq[] @relation("ConceptPrereq")
+  lessonMappings  LmsConceptLessonMap[]
+  questions       LmsConceptQuestion[]
+  masteries       LmsConceptMastery[]
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tenantId, slug])
+  @@index([tenantId, domain])
+  @@index([tenantId, isActive])
+}
+
+model LmsConceptPrereq {
+  id             String     @id @default(cuid())
+  conceptId      String
+  concept        LmsConcept @relation("ConceptMain", fields: [conceptId], references: [id], onDelete: Cascade)
+  prerequisiteId String
+  prerequisite   LmsConcept @relation("ConceptPrereq", fields: [prerequisiteId], references: [id], onDelete: Cascade)
+  strength       Float      @default(0.8) // 0-1 importance du prerequis
+
+  @@unique([conceptId, prerequisiteId])
+}
+
+model LmsConceptLessonMap {
+  id         String     @id @default(cuid())
+  conceptId  String
+  concept    LmsConcept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+  lessonId   String
+  bloomLevel Int        // quel niveau Bloom cette lecon enseigne pour ce concept
+
+  @@unique([conceptId, lessonId])
+}
+
+/// Questions tagees par concept et niveau Bloom
+model LmsConceptQuestion {
+  id          String     @id @default(cuid())
+  tenantId    String
+  conceptId   String
+  concept     LmsConcept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  bloomLevel  Int        // 1-5
+  angle       String     // "forward", "reverse", "scenario", "edge_case", "comparison", "elimination"
+  difficulty  Float      @default(0.5) // 0-1 calibre par IRT
+  discrimination Float   @default(0.5) // 0-1 pouvoir discriminant
+
+  // Contenu question (meme format que QuizQuestion)
+  type        String     @default("MULTIPLE_CHOICE")
+  question    String
+  explanation String?
+  options     Json       @default("[]")
+  correctAnswer String?
+  caseSensitive Boolean  @default(false)
+  matchingPairs Json?
+  points      Int        @default(1)
+
+  // Stats (mis a jour par IRT)
+  timesAnswered   Int    @default(0)
+  timesCorrect    Int    @default(0)
+  avgResponseTime Float? // secondes
+  isCalibrated    Boolean @default(false) // true apres 20+ reponses
+  isActive        Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([conceptId, bloomLevel])
+  @@index([tenantId, isActive, bloomLevel])
+  @@index([difficulty])
+}
+
+/// Maitrise par etudiant par concept (coeur du systeme adaptatif)
+model LmsConceptMastery {
+  id          String     @id @default(cuid())
+  tenantId    String
+  userId      String
+  conceptId   String
+  concept     LmsConcept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  currentLevel    Int      @default(0)   // 0=jamais teste, 1-5=niveau Bloom atteint
+  confidence      Float    @default(0)   // 0-1 fiabilite de l'evaluation
+  attemptsAtLevel Json     @default("{}") // {"1": 3, "2": 1, "3": 0}
+
+  // Repetition espacee (SM-2)
+  easiness        Float    @default(2.5) // facteur SM-2
+  interval        Int      @default(1)   // jours avant prochaine revue
+  reviewCount     Int      @default(0)
+  nextReviewAt    DateTime?
+  lastTestedAt    DateTime?
+  lastCorrectAt   DateTime?
+
+  // Historique
+  strengthHistory Json     @default("[]") // [{date, level, confidence, score}]
+  totalAttempts   Int      @default(0)
+  totalCorrect    Int      @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tenantId, userId, conceptId])
+  @@index([userId, nextReviewAt])
+  @@index([tenantId, userId])
+  @@index([conceptId])
+}
+
+/// Parcours d'apprentissage personnalise
+model LmsLearningPath {
+  id          String   @id @default(cuid())
+  tenantId    String
+  userId      String
+  title       String?
+  goalConcepts String[] @default([]) // concept IDs cibles
+  status      String   @default("ACTIVE") // ACTIVE, COMPLETED, PAUSED, ABANDONED
+  currentStep Int      @default(0)
+  totalSteps  Int      @default(0)
+  adaptedAt   DateTime? // derniere recalculation
+
+  steps       LmsLearningPathStep[]
+
+  startedAt   DateTime @default(now())
+  completedAt DateTime?
+  updatedAt   DateTime @updatedAt
+
+  @@index([tenantId, userId])
+  @@index([tenantId, status])
+}
+
+model LmsLearningPathStep {
+  id          String         @id @default(cuid())
+  pathId      String
+  path        LmsLearningPath @relation(fields: [pathId], references: [id], onDelete: Cascade)
+  sortOrder   Int
+  type        String         // "LESSON", "QUIZ", "REVIEW", "REMEDIATION", "AI_TUTOR", "PRACTICE"
+  conceptId   String?
+  lessonId    String?
+  quizId      String?
+  bloomLevel  Int?
+
+  isCompleted   Boolean   @default(false)
+  completedAt   DateTime?
+  masteryBefore Float?
+  masteryAfter  Float?
+  skipped       Boolean   @default(false) // saute car deja maitrise
+
+  @@index([pathId, sortOrder])
+}
+
+// =============================================================================
+// AMÉLIORATIONS ISSUES DE LA RECHERCHE 2025-2026
+// =============================================================================
+
+// ── 1. QUIZ DIAGNOSTIC RAPIDE (Squirrel AI killer feature) ──────────
+
+/// Quiz diagnostic de 5 minutes au début de chaque cours
+/// Cartographie les concepts maîtrisés/non AVANT la première leçon
+model DiagnosticQuiz {
+  id          String   @id @default(cuid())
+  tenantId    String
+  courseId    String   @unique  // Un diagnostic par cours
+  title       String
+  description String?
+  maxMinutes  Int      @default(5) // Temps max
+  questions   Int      @default(10) // Nb questions
+
+  // Concepts testés (sélectionnés automatiquement depuis le graphe de prérequis)
+  conceptIds  String[] @default([])
+
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  results     DiagnosticResult[]
+
+  @@index([tenantId])
+}
+
+/// Résultat du diagnostic d'un étudiant
+model DiagnosticResult {
+  id              String         @id @default(cuid())
+  tenantId        String
+  userId          String
+  diagnosticId    String
+  diagnostic      DiagnosticQuiz @relation(fields: [diagnosticId], references: [id], onDelete: Cascade)
+
+  // Résultats par concept
+  conceptResults  Json           // [{conceptId, known: true/false, confidence: 0.8}]
+
+  // Stats
+  totalConcepts   Int
+  knownConcepts   Int
+  unknownConcepts Int
+  timeSpentSec    Int
+
+  // Impact sur le parcours
+  lessonsSkipped  Int    @default(0)  // Leçons sautées car déjà maîtrisées
+  pathGenerated   Boolean @default(false) // Parcours personnalisé généré
+
+  completedAt     DateTime @default(now())
+
+  @@unique([tenantId, userId, diagnosticId])
+  @@index([tenantId, userId])
+}
+
+// ── 2. FSRS — Free Spaced Repetition Scheduler (remplace SM-2) ─────
+
+/// Paramètres FSRS personnalisés par étudiant
+/// 19 poids optimisés par machine learning sur l'historique de l'étudiant
+model FsrsParameters {
+  id          String   @id @default(cuid())
+  tenantId    String
+  userId      String   @unique
+
+  // 19 poids FSRS (optimisés après 20+ reviews)
+  weights     Json     @default("[]") // Float[19] — défaut = poids globaux
+
+  // Stats
+  totalReviews    Int       @default(0)
+  isOptimized     Boolean   @default(false) // true après optimisation ML
+  lastOptimizedAt DateTime?
+  retentionRate   Float     @default(0.9) // Taux de rétention cible (90%)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([tenantId])
+}
+
+// ── 3. SIMULATION ROLE-PLAY (différenciateur unique) ────────────────
+
+/// Scénario de simulation client-représentant
+/// Aurélia joue le rôle du client, l'étudiant est le représentant
+model RolePlayScenario {
+  id          String   @id @default(cuid())
+  tenantId    String
+  title       String
+  description String?
+  domain      String   // "iard", "vie", "collectif", "ethique"
+  difficulty  String   @default("INTERMEDIATE") // BEGINNER, INTERMEDIATE, ADVANCED
+
+  // Personnage client (joué par Aurélia)
+  clientName      String  // "Mme Tremblay"
+  clientProfile   String  // "52 ans, propriétaire PME, inquiète des coûts"
+  clientPersonality String // "ANXIOUS", "DEMANDING", "CONFUSED", "ANGRY", "FRIENDLY"
+  clientObjective String  // "Veut réduire sa prime d'assurance auto-flotte"
+
+  // Contexte
+  situationBrief  String  // Contexte de la rencontre
+  hiddenInfo      String? // Info que le client ne révèle que si bien questionné
+  regulatoryTrap  String? // Piège déontologique (ex: conflit d'intérêt, divulgation)
+
+  // Évaluation
+  evaluationCriteria Json @default("[]") // [{criterion, weight, description}]
+  conceptsTested  String[] @default([]) // Concepts évalués par ce scénario
+  bloomLevel      Int     @default(4) // Niveau Bloom (4=analyse, 5=synthèse)
+  passingScore    Int     @default(70)
+  maxMinutes      Int     @default(15)
+
+  isActive    Boolean  @default(true)
+  sessions    RolePlaySession[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([tenantId, domain])
+  @@index([tenantId, difficulty])
+}
+
+/// Session de role-play étudiant (conversation avec Aurélia-client)
+model RolePlaySession {
+  id          String            @id @default(cuid())
+  tenantId    String
+  userId      String
+  scenarioId  String
+  scenario    RolePlayScenario  @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+
+  // Conversation
+  messages    Json    @default("[]") // [{role, content, timestamp}]
+  messageCount Int    @default(0)
+
+  // Résultat
+  status      String  @default("IN_PROGRESS") // IN_PROGRESS, COMPLETED, ABANDONED
+  score       Int?    // 0-100
+  passed      Boolean @default(false)
+
+  // Évaluation par Aurélia
+  evaluation  Json?   // {criterionScores: [{criterion, score, feedback}], overallFeedback}
+  strengths   String[] @default([])
+  weaknesses  String[] @default([])
+
+  // Timing
+  durationSec  Int?
+  startedAt    DateTime @default(now())
+  completedAt  DateTime?
+
+  @@index([tenantId, userId])
+  @@index([scenarioId])
+}
+
+// ── 4. CONSENTEMENT LOI 25 — Profilage étudiant ─────────────────────
+
+/// Consentement explicite pour chaque catégorie de profilage
+/// Loi 25 Québec: profilage désactivé par défaut, opt-in obligatoire
+model LmsConsentRecord {
+  id          String   @id @default(cuid())
+  tenantId    String
+  userId      String
+
+  category    String   // "learning_style", "cognitive", "psychological", "voice_analysis", "study_habits"
+  granted     Boolean  @default(false)
+  grantedAt   DateTime?
+  revokedAt   DateTime?
+
+  // Transparence
+  description String   // Ce qui est collecté et pourquoi (en langage clair)
+  dataRetentionDays Int @default(730) // 2 ans par défaut
+
+  // Audit trail
+  consentMethod String  // "onboarding_dialog", "settings_page", "api"
+  ipAddress   String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([tenantId, userId, category])
+  @@index([tenantId, userId])
+}
+
+// ── 5. MICRO-LEÇONS (5 minutes) ────────────────────────────────────
+
+/// Micro-leçon: contenu condensé de 5 min pour révision rapide
+/// Générée automatiquement à partir des leçons complètes
+model MicroLesson {
+  id          String   @id @default(cuid())
+  tenantId    String
+  lessonId    String   // Leçon source
+  conceptId   String?  // Concept ciblé
+
+  title       String
+  content     String   // Markdown condensé (max 500 mots)
+  audioUrl    String?  // Version audio pour "walk & learn"
+  duration    Int      @default(5) // Minutes
+
+  // Points clés
+  keyPoints   Json     @default("[]") // ["Point 1", "Point 2", ...]
+
+  // Quiz rapide (2-3 questions)
+  quickQuiz   Json?    // [{question, options, correctAnswer}]
+
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([tenantId, lessonId])
+  @@index([tenantId, conceptId])
+}
+
+// ── 6. INTÉGRATION CALENDRIER (rappels UFC) ─────────────────────────
+
+/// Rappels d'étude synchronisés avec le calendrier de l'étudiant
+model StudyReminder {
+  id          String   @id @default(cuid())
+  tenantId    String
+  userId      String
+
+  type        String   // "STUDY_SESSION", "QUIZ_REVIEW", "UFC_DEADLINE", "STREAK_RISK"
+  title       String
+  description String?
+  scheduledAt DateTime
+
+  // Récurrence
+  isRecurring Boolean  @default(false)
+  recurrence  String?  // "DAILY", "WEEKLY_MON_WED_FRI", "CUSTOM"
+
+  // Calendrier externe
+  calendarProvider String? // "google", "outlook", "apple"
+  calendarEventId  String? // ID dans le calendrier externe
+  isSynced    Boolean  @default(false)
+
+  // État
+  status      String   @default("PENDING") // PENDING, SENT, COMPLETED, SKIPPED
+  sentAt      DateTime?
+  completedAt DateTime?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([tenantId, userId, scheduledAt])
+  @@index([tenantId, status])
+}

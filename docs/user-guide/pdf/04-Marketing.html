@@ -1,0 +1,3464 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>04 — Marketing &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 04 — Marketing</span>
+        <span>2026-03-20</span>
+      </div>
+
+<div class="cover" style="min-height: 40vh; padding: 3rem 2rem;">
+  <div class="cover-logo" style="width:80px; height:80px; font-size:1.8rem; border-radius:16px;">K</div>
+  <h1 style="font-size:2rem;">04 — Marketing</h1>
+  <div class="subtitle">Guide Utilisateur &mdash; Suite Koraline</div>
+  <div class="version">
+    8 pages dans cette section<br>
+    2026-03-20
+  </div>
+</div><div class="toc-container" style="margin:1rem 0 2rem;">
+<h2>Contenu de cette section</h2>
+<ul class="toc">
+<ul class="toc-pages">
+<li><a href="#04-marketing--01-promo-codes"><span>Gestion des Codes Promo</span><span class="toc-dots"></span></a></li>
+<li><a href="#04-marketing--02-promotions"><span>Gestion des Promotions</span><span class="toc-dots"></span></a></li>
+<li><a href="#04-marketing--03-newsletter"><span>Gestion de la Newsletter</span><span class="toc-dots"></span></a></li>
+<li><a href="#04-marketing--04-bannieres"><span>Gestion des Bannieres</span><span class="toc-dots"></span></a></li>
+<li><a href="#04-marketing--05-upsell"><span>Configuration Upsell / Cross-Sell</span><span class="toc-dots"></span></a></li>
+<li><a href="#04-marketing--06-blog"><span>Gestion du Blog</span><span class="toc-dots"></span></a></li>
+<li><a href="#04-marketing--07-blog-analytics"><span>Analytiques du Blog</span><span class="toc-dots"></span></a></li>
+<li><a href="#04-marketing--08-rapports"><span>Rapports Marketing</span><span class="toc-dots"></span></a></li>
+</ul>
+</ul>
+</div><div id="04-marketing--01-promo-codes">
+<h1>Gestion des Codes Promo</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Marketing > Codes Promo</p>
+<p><strong>URL</strong>: <code>/admin/promo-codes</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Codes Promo</strong> permet de creer et gerer des codes de reduction que vos clients peuvent saisir au moment du paiement. Un code promo est une chaine de caracteres (par exemple <code>BIENVENUE10</code> ou <code>BLACKFRIDAY</code>) qui accorde une remise sur la commande.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Creer de nouveaux codes promo avec un pourcentage ou un montant fixe de remise</li>
+<li>Generer automatiquement des codes aleatoires securises</li>
+<li>Definir des conditions d'utilisation (montant minimum, limite d'usage, premiere commande uniquement)</li>
+<li>Planifier la validite dans le temps (date de debut et de fin)</li>
+<li>Activer ou desactiver un code en un clic</li>
+<li>Dupliquer un code existant pour en creer un similaire rapidement</li>
+<li>Suivre les statistiques d'utilisation de chaque code</li>
+<li>Consulter l'impact commercial (revenus generes, commandes associees, produits les plus vendus avec le code)</li>
+<li>Voir les liens CRM (clients uniques, deals associes)</li>
+<li>Voir les produits et categories cibles par un code</li>
+<li>Exporter la liste des codes en CSV</li>
+<li>Supprimer les codes obsoletes</li>
+</ul>
+
+<hr>
+
+<h2>Concepts pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un code promo ?</h3>
+
+<p>Un code promo est un mot ou une combinaison de lettres et chiffres que le client tape dans un champ dedie au moment de passer sa commande. Si le code est valide, une remise est automatiquement appliquee au panier.</p>
+
+<h3>Types de remise</h3>
+
+<p>Il existe deux types de remise :</p>
+<ul>
+<li><strong>Pourcentage</strong> : Le client obtient X% de reduction sur sa commande. Par exemple, <code>BIENVENUE10</code> donne 10% de rabais.</li>
+<li><strong>Montant fixe</strong> : Le client obtient un montant precis de reduction. Par exemple, un code de 15 $CA retire 15 dollars du total.</li>
+</ul>
+
+<h3>Conditions courantes</h3>
+
+<ul>
+<li><strong>Montant minimum de commande</strong> : Le code ne s'applique que si le panier depasse un certain montant (par exemple, minimum 50 $CA).</li>
+<li><strong>Remise maximale</strong> : Pour les codes en pourcentage, vous pouvez plafonner la remise (par exemple, 10% mais maximum 25 $CA de rabais).</li>
+<li><strong>Limite d'utilisation globale</strong> : Le nombre total de fois que le code peut etre utilise (par tous les clients combines).</li>
+<li><strong>Limite par client</strong> : Le nombre de fois qu'un meme client peut utiliser le code (souvent 1).</li>
+<li><strong>Premiere commande uniquement</strong> : Le code ne fonctionne que pour les nouveaux clients qui n'ont jamais commande.</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Marketing</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong> qui apparait, cliquez sur <strong>Codes Promo</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Dans la colonne d'icones tout a gauche de l'ecran, cliquez sur l'icone de la section <strong>Marketing</strong></li>
+<li>Le panneau "Marketing" s'ouvre avec la liste des sous-pages</li>
+<li>Cliquez sur <strong>Codes Promo</strong></li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche en haut au centre (ou tapez <code>/</code>)</li>
+<li>Tapez "codes promo" ou "promo"</li>
+<li>Selectionnez le resultat correspondant</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>L'interface est divisee en <strong>4 zones principales</strong> :</p>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<p>C'est la barre d'outils contextuelle. Pour les codes promo, elle contient :</p>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau code</strong></td><td>Ouvrir le formulaire de creation d'un code promo</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer le code selectionne (avec confirmation)</td></tr>
+  <tr><td><strong>Dupliquer</strong></td><td>Creer une copie du code selectionne pour le personnaliser</td></tr>
+  <tr><td><strong>Activer</strong></td><td>Activer le code selectionne (s'il etait desactive)</td></tr>
+  <tr><td><strong>Desactiver</strong></td><td>Desactiver le code selectionne (sans le supprimer)</td></tr>
+  <tr><td><strong>Statistiques</strong></td><td>Afficher un resume des statistiques d'utilisation de tous les codes</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger la liste des codes filtres en fichier CSV</td></tr>
+</tbody>
+</table>
+<h3>2. Les cartes de statistiques</h3>
+
+<p>3 cartes resumant l'etat de vos codes :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total des codes</strong></td><td>Nombre total de codes promo dans le systeme</td></tr>
+  <tr><td><strong>Actifs</strong></td><td>Nombre de codes actuellement actifs et utilisables</td></tr>
+  <tr><td><strong>Utilisation totale</strong></td><td>Nombre total de fois que tous les codes ont ete utilises</td></tr>
+</tbody>
+</table>
+<h3>3. La liste des codes (panneau central)</h3>
+
+<p>La zone principale affiche les codes sous forme de liste avec :</p>
+<ul>
+<li><strong>Onglets de filtrage</strong> : Tous, Actifs, Inactifs, Expires</li>
+<li><strong>Barre de recherche</strong> : Recherchez par code ou description</li>
+<li><strong>Chaque code affiche</strong> : les 2 premieres lettres du code en avatar, le code complet, le type et la valeur de la remise, un badge de statut (actif en vert, inactif en gris, expire en rouge, utilisation complete en jaune), et un badge "Premiere commande" si applicable</li>
+</ul>
+
+<h3>4. Le panneau de detail (panneau droit)</h3>
+
+<p>Quand vous selectionnez un code dans la liste, le panneau de detail affiche :</p>
+<ul>
+<li><strong>Statut</strong> avec interrupteur pour activer/desactiver</li>
+<li><strong>Information de remise</strong> : valeur de la remise, type (pourcentage ou montant fixe), remise maximale si definie</li>
+<li><strong>Utilisation</strong> : nombre d'utilisations / limite (ou illimite), limite par client</li>
+<li><strong>Conditions</strong> : montant minimum de commande, premiere commande uniquement</li>
+<li><strong>Impact commercial</strong> : revenus generes, nombre de commandes, produits les plus vendus avec ce code (donnees du pont Commerce)</li>
+<li><strong>Lien CRM</strong> : clients uniques et deals associes (donnees du pont CRM)</li>
+<li><strong>Produits cibles</strong> : liste des produits et categories concernes si le code n'est pas global (donnees du pont Catalogue)</li>
+<li><strong>Validite</strong> : dates de debut et de fin</li>
+<li><strong>Metadonnees</strong> : identifiant technique, date de creation</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer un nouveau code promo</h3>
+
+<p><strong>Objectif</strong> : Creer un code que les clients pourront utiliser pour obtenir une reduction.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau code</strong> dans le ruban ou sur le bouton en haut a droite</li>
+<li>Le formulaire de creation s'ouvre dans une fenetre modale</li>
+<li>Remplissez les champs :</li>
+</ol>
+<ul>
+<li><strong>Code</strong> (obligatoire) : Le texte du code. Il est automatiquement converti en majuscules. Vous pouvez aussi cliquer sur <strong>Generer</strong> pour creer un code aleatoire de 8 caracteres.</li>
+<li><strong>Description</strong> : Un texte libre pour decrire l'objectif du code (visible uniquement dans l'admin, pas par le client).</li>
+<li><strong>Type</strong> (obligatoire) : Pourcentage ou Montant fixe.</li>
+<li><strong>Valeur</strong> (obligatoire) : Le chiffre de la remise (par exemple 10 pour 10%, ou 15 pour 15 $CA).</li>
+<li><strong>Montant minimum de commande</strong> : Le panier doit atteindre ce montant pour que le code fonctionne.</li>
+<li><strong>Remise maximale</strong> : Plafond de la remise (utile pour les pourcentages).</li>
+<li><strong>Limite totale d'utilisation</strong> : Nombre maximum de fois que le code peut etre utilise globalement.</li>
+<li><strong>Limite par client</strong> : Nombre de fois qu'un meme client peut l'utiliser (par defaut 1).</li>
+<li><strong>Date de debut</strong> : Quand le code devient valide.</li>
+<li><strong>Date de fin</strong> : Quand le code expire automatiquement.</li>
+<li><strong>Premiere commande uniquement</strong> : Cochez si le code ne doit fonctionner que pour les nouveaux clients.</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<p><strong>Validations automatiques</strong> :</p>
+<ul>
+<li>Le code ne peut pas etre vide</li>
+<li>La valeur doit etre superieure a 0</li>
+<li>Un pourcentage ne peut pas depasser 100%</li>
+<li>La date de fin doit etre posterieure a la date de debut</li>
+</ul>
+
+<h3>2. Activer ou desactiver un code</h3>
+
+<p><strong>Objectif</strong> : Controler la disponibilite d'un code sans le supprimer.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le code dans la liste</li>
+<li>Dans le panneau de detail, utilisez l'interrupteur a bascule dans la section <strong>Statut</strong></li>
+<li>Le changement est immediat (mise a jour optimiste)</li>
+</ol>
+
+<p>Un code desactive ne peut plus etre utilise par les clients, mais reste dans le systeme pour consultation.</p>
+
+<h3>3. Modifier un code existant</h3>
+
+<p><strong>Objectif</strong> : Changer les parametres d'un code (valeur, conditions, dates).</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le code dans la liste</li>
+<li>Cliquez sur <strong>Modifier</strong> (icone crayon) dans le panneau de detail</li>
+<li>Le formulaire s'ouvre pre-rempli avec les valeurs actuelles</li>
+<li>Modifiez les champs souhaites</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<h3>4. Dupliquer un code</h3>
+
+<p><strong>Objectif</strong> : Creer un nouveau code base sur les parametres d'un code existant.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le code a dupliquer</li>
+<li>Cliquez sur <strong>Dupliquer</strong> dans le ruban</li>
+<li>Le formulaire de creation s'ouvre avec tous les champs pre-remplis (sauf le code lui-meme, qui sera vide)</li>
+<li>Saisissez un nouveau code et ajustez les parametres si necessaire</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>5. Consulter les statistiques d'utilisation</h3>
+
+<p><strong>Objectif</strong> : Voir combien de fois les codes ont ete utilises.</p>
+
+<p><strong>Methode rapide</strong> : Cliquez sur <strong>Statistiques</strong> dans le ruban. Un toast affiche un resume global (total d'utilisations, nombre de codes actifs et expires, codes reserves a la premiere commande, top 3 des codes les plus utilises).</p>
+
+<p><strong>Methode detaillee</strong> : Selectionnez un code dans la liste. Le panneau de detail affiche le nombre d'utilisations, la limite, et si les donnees sont disponibles, le revenu total genere, le nombre de commandes, et les produits les plus vendus avec ce code.</p>
+
+<h3>6. Exporter les codes en CSV</h3>
+
+<p><strong>Objectif</strong> : Telecharger un fichier tabulaire pour l'analyse ou l'archivage.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Appliquez vos filtres si necessaire (onglets ou barre de recherche)</li>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban</li>
+<li>Le fichier CSV se telecharge automatiquement</li>
+</ol>
+
+<p><strong>Colonnes exportees</strong> : Code, Description, Type, Valeur, Utilisation, Limite, Statut, Date de debut, Date de fin, Premiere commande uniquement.</p>
+
+<h3>7. Supprimer un code</h3>
+
+<p><strong>Objectif</strong> : Retirer definitivement un code du systeme.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le code a supprimer</li>
+<li>Cliquez sur l'icone de suppression (poubelle rouge) dans le panneau de detail, ou sur <strong>Supprimer</strong> dans le ruban</li>
+<li>Une fenetre de confirmation apparait. Confirmez la suppression.</li>
+</ol>
+
+<p>La suppression est irreversible. Les commandes passees avec ce code conservent la remise appliquee.</p>
+
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario A : Creer un code de bienvenue pour les nouveaux clients</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouveau code</strong></li>
+<li>Saisissez le code : <code>BIENVENUE10</code></li>
+<li>Description : "10% de remise pour les nouveaux clients"</li>
+<li>Type : Pourcentage</li>
+<li>Valeur : 10</li>
+<li>Montant minimum : 50 (pour un minimum de 50 $CA)</li>
+<li>Remise maximale : 25 (plafond de 25 $CA de rabais)</li>
+<li>Limite par client : 1</li>
+<li>Cochez <strong>Premiere commande uniquement</strong></li>
+<li>Laissez les dates vides (valide indefiniment)</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>Scenario B : Preparer un code Black Friday a duree limitee</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouveau code</strong></li>
+<li>Saisissez le code : <code>BLACKFRIDAY25</code></li>
+<li>Description : "Vente Black Friday 2026 - 25% de reduction"</li>
+<li>Type : Pourcentage</li>
+<li>Valeur : 25</li>
+<li>Remise maximale : 100 (plafond de 100 $CA)</li>
+<li>Limite totale : 500 (maximum 500 utilisations)</li>
+<li>Limite par client : 1</li>
+<li>Date de debut : 2026-11-27 00:00</li>
+<li>Date de fin : 2026-11-30 23:59</li>
+<li>Ne cochez PAS "Premiere commande uniquement"</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>Scenario C : Analyser la performance d'un code promo apres une campagne</h3>
+
+<ol>
+<li>Ouvrez la page Codes Promo</li>
+<li>Recherchez le code utilise dans votre campagne</li>
+<li>Selectionnez-le dans la liste</li>
+<li>Dans le panneau de detail, consultez :</li>
+</ol>
+<ul>
+<li>Le nombre d'utilisations (section Utilisation)</li>
+<li>Le revenu genere (section Impact commercial)</li>
+<li>Les produits les plus achetes avec ce code (section Impact commercial)</li>
+</ul>
+<ol>
+<li>Pour un rapport complet, exportez les codes en CSV et croisez avec vos donnees de campagne</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Puis-je modifier le texte d'un code apres sa creation ?</strong></p>
+<p>R: Oui, vous pouvez modifier le code via le formulaire d'edition. Cependant, si des clients ont deja recu l'ancien code (par email, par exemple), ils ne pourront plus l'utiliser. Creez plutot un nouveau code dans ce cas.</p>
+
+<p><strong>Q: Que se passe-t-il quand un code expire ?</strong></p>
+<p>R: Le code passe automatiquement en statut "Expire" (badge rouge). Les clients qui tentent de l'utiliser recoivent un message d'erreur au moment du paiement. Le code reste visible dans la liste admin pour consultation.</p>
+
+<p><strong>Q: Comment savoir quels codes sont les plus utilises ?</strong></p>
+<p>R: Cliquez sur <strong>Statistiques</strong> dans le ruban pour voir un resume rapide incluant le top 3 des codes les plus utilises. Pour plus de detail, selectionnez chaque code individuellement.</p>
+
+<p><strong>Q: Peut-on cumuler plusieurs codes promo sur une meme commande ?</strong></p>
+<p>R: Non, en general un seul code promo peut etre applique par commande. Cette restriction est geree au niveau du panier.</p>
+
+<p><strong>Q: Quelle est la difference entre "desactiver" et "supprimer" un code ?</strong></p>
+<p>R: Desactiver rend le code temporairement inutilisable mais le conserve dans le systeme (vous pouvez le reactiver plus tard). Supprimer le retire definitivement.</p>
+
+<hr>
+
+<h2>Strategie expert : codes promo par objectif marketing</h2>
+
+<h3>Codes d'acquisition (attirer de nouveaux clients)</h3>
+
+<p>Les codes d'acquisition ciblent les visiteurs qui n'ont jamais achete. Ils reduisent la barriere a l'entree pour un premier achat de peptides, un produit a forte valeur unitaire ou le panier d'un nouveau client peut sembler intimidant.</p>
+
+<table>
+<thead>
+    <tr><th>Code</th><th>Remise</th><th>Condition</th><th>Objectif</th></tr>
+</thead>
+<tbody>
+  <tr><td><code>BIENVENUE10</code></td><td>10%</td><td>Premiere commande, min 50 $CA</td><td>Convertir les visiteurs en acheteurs</td></tr>
+  <tr><td><code>PREMIER15</code></td><td>15 $CA fixe</td><td>Premiere commande, min 75 $CA</td><td>Inciter un premier panier plus eleve</td></tr>
+  <tr><td><code>ESSAI20</code></td><td>20%</td><td>Premiere commande, max 30 $CA de remise</td><td>Offrir un incitatif fort mais plafonne</td></tr>
+</tbody>
+</table>
+<p><strong>Limites anti-abus recommandees</strong> : 1 usage par client, expiration 30 jours apres creation, premiere commande uniquement cochee. Surveillez le taux de conversion de ces codes -- un bon code d'acquisition convertit entre 8% et 15% des visiteurs qui le recoivent.</p>
+
+<h3>Codes de retention (fideliser les clients existants)</h3>
+
+<p>Les clients recurrents representent 60 a 70% du revenu d'un e-commerce de peptides. Recompensez-les pour maintenir leur loyaute.</p>
+
+<table>
+<thead>
+    <tr><th>Code</th><th>Remise</th><th>Condition</th><th>Objectif</th></tr>
+</thead>
+<tbody>
+  <tr><td><code>FIDELE15</code></td><td>15%</td><td>Min 2 commandes precedentes, min 100 $CA</td><td>Recompenser les clients reguliers</td></tr>
+  <tr><td><code>VIP25</code></td><td>25 $CA fixe</td><td>Min 5 commandes, min 150 $CA</td><td>Offre exclusive pour les meilleurs clients</td></tr>
+  <tr><td><code>RETOUR10</code></td><td>10%</td><td>Client inactif 60+ jours</td><td>Reactiver un client dormant</td></tr>
+</tbody>
+</table>
+<h3>Codes de panier moyen (augmenter la valeur par commande)</h3>
+
+<p>L'objectif est de pousser le client a ajouter un produit supplementaire ou a passer a une quantite superieure.</p>
+
+<table>
+<thead>
+    <tr><th>Code</th><th>Remise</th><th>Condition</th><th>Objectif</th></tr>
+</thead>
+<tbody>
+  <tr><td><code>BUNDLE20</code></td><td>20%</td><td>Min 3 produits differents, min 200 $CA</td><td>Encourager les lots</td></tr>
+  <tr><td><code>PLUS50</code></td><td>50 $CA fixe</td><td>Min 300 $CA de panier</td><td>Inciter les grosses commandes</td></tr>
+  <tr><td><code>STACK15</code></td><td>15%</td><td>Categorie "Stacks peptides" uniquement</td><td>Promouvoir les combinaisons</td></tr>
+</tbody>
+</table>
+<h3>Calcul du ROI d'un code promo</h3>
+
+<p>Pour chaque code promo, calculez le retour sur investissement :</p>
+
+<p><strong>Formule</strong> : <code>ROI = (Revenu incremental - Remise totale accordee) / Remise totale accordee x 100</code></p>
+
+<ul>
+<li><strong>Revenu incremental</strong> : le revenu genere par les commandes utilisant le code, MOINS le revenu que ces clients auraient probablement depense sans le code (estimez 30 a 50% pour les clients existants, 0% pour les nouveaux)</li>
+<li><strong>Remise totale</strong> : somme de toutes les remises accordees par le code</li>
+<li><strong>Cible</strong> : un ROI superieur a 200% signifie que le code est rentable (chaque dollar de remise genere 2 $CA de revenu net supplementaire)</li>
+</ul>
+
+<p><strong>Exemple concret</strong> :</p>
+<ul>
+<li>Code <code>BIENVENUE10</code> utilise 45 fois en mars</li>
+<li>Revenu total des commandes avec ce code : 6 750 $CA</li>
+<li>Remise totale accordee : 675 $CA</li>
+<li>Ces clients etaient tous nouveaux (revenu incremental = 100%) : 6 750 $CA</li>
+<li>ROI = (6 750 - 675) / 675 x 100 = <strong>900%</strong> -- excellent resultat</li>
+</ul>
+
+<p><strong>Seuils d'interpretation</strong> :</p>
+<table>
+<thead>
+    <tr><th>ROI</th><th>Interpretation</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td>< 100%</td><td>Perte nette</td><td>Suspendre ou revoir les conditions</td></tr>
+  <tr><td>100-200%</td><td>Neutre a faible</td><td>Ajuster la remise ou le ciblage</td></tr>
+  <tr><td>200-500%</td><td>Bon</td><td>Maintenir</td></tr>
+  <tr><td>> 500%</td><td>Excellent</td><td>Augmenter la visibilite du code</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Code promo</strong></td><td>Une chaine de caracteres que le client saisit au paiement pour obtenir une reduction</td></tr>
+  <tr><td><strong>Pourcentage</strong></td><td>Type de remise ou la reduction est un pourcentage du montant de la commande</td></tr>
+  <tr><td><strong>Montant fixe</strong></td><td>Type de remise ou la reduction est un montant precis en dollars canadiens</td></tr>
+  <tr><td><strong>Montant minimum</strong></td><td>Le seuil minimum du panier pour que le code soit applicable</td></tr>
+  <tr><td><strong>Remise maximale</strong></td><td>Le plafond de la reduction en dollars, utile pour les codes en pourcentage</td></tr>
+  <tr><td><strong>Limite d'utilisation</strong></td><td>Le nombre total de fois que le code peut etre utilise par tous les clients</td></tr>
+  <tr><td><strong>Limite par client</strong></td><td>Le nombre de fois qu'un meme client peut utiliser le code</td></tr>
+  <tr><td><strong>Premiere commande</strong></td><td>Restriction qui limite l'usage du code aux clients n'ayant jamais passe de commande</td></tr>
+  <tr><td><strong>CSV</strong></td><td>Comma-Separated Values, un format de fichier tabulaire compatible avec Excel</td></tr>
+  <tr><td><strong>Impact commercial</strong></td><td>Les donnees de revenus et commandes generes par un code (pont vers le module Commerce)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/promotions">Promotions</a> -- Remises automatiques sans code a saisir</li>
+<li><a href="/admin/newsletter">Newsletter</a> -- Envoyer les codes promo par email a vos abonnes</li>
+<li><a href="/admin/commandes">Commandes</a> -- Voir les commandes ayant utilise un code promo</li>
+<li><a href="/admin/rapports">Rapports marketing</a> -- Analyser l'impact des codes sur les ventes</li>
+<li><a href="/admin/customers">Clients</a> -- Consulter les fiches clients ayant utilise un code</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="04-marketing--02-promotions">
+<h1>Gestion des Promotions</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Marketing > Promotions</p>
+<p><strong>URL</strong>: <code>/admin/promotions</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Promotions</strong> permet de creer et gerer des remises automatiques qui s'appliquent sans que le client ait besoin de saisir un code. Contrairement aux codes promo, les promotions sont appliquees automatiquement selon des regles que vous definissez.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Creer des promotions de 5 types differents (reduction produit, reduction categorie, lot, achetez X obtenez Y, vente eclair)</li>
+<li>Definir une reduction en pourcentage ou en montant fixe</li>
+<li>Planifier les dates de debut et de fin</li>
+<li>Activer ou desactiver une promotion instantanement</li>
+<li>Definir une priorite pour gerer les conflits entre promotions</li>
+<li>Dupliquer une promotion existante pour la modifier</li>
+<li>Filtrer les promotions par type ou par statut</li>
+<li>Consulter les produits et categories cibles</li>
+<li>Exporter la liste des promotions en CSV</li>
+<li>Supprimer les promotions obsoletes</li>
+</ul>
+
+<hr>
+
+<h2>Concepts pour les debutants</h2>
+
+<h3>Quelle difference entre un code promo et une promotion ?</h3>
+
+<p>Un <strong>code promo</strong> necessite que le client saisisse un code dans un champ au moment du paiement. Une <strong>promotion</strong> s'applique automatiquement : le client voit la remise directement sur la page produit ou dans son panier, sans rien faire.</p>
+
+<h3>Les 5 types de promotions</h3>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Description</th><th>Exemple</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Reduction produit</strong></td><td>Remise sur un ou plusieurs produits specifiques</td><td>-15% sur le BPC-157</td></tr>
+  <tr><td><strong>Reduction categorie</strong></td><td>Remise sur tous les produits d'une categorie</td><td>-10% sur toute la categorie "Peptides de reparation"</td></tr>
+  <tr><td><strong>Lot (Bundle)</strong></td><td>Remise quand le client achete un groupe de produits ensemble</td><td>Pack de 3 peptides a -20%</td></tr>
+  <tr><td><strong>Achetez X obtenez Y</strong></td><td>Le client achete un certain nombre de produits et en recoit d'autres en bonus ou a prix reduit</td><td>Achetez 2, obtenez 1 gratuit</td></tr>
+  <tr><td><strong>Vente eclair (Flash Sale)</strong></td><td>Remise temporaire qui s'applique a tout le catalogue</td><td>-25% sur tout le site pendant 48h</td></tr>
+</tbody>
+</table>
+<h3>Priorite des promotions</h3>
+
+<p>Quand plusieurs promotions pourraient s'appliquer au meme produit, c'est la <strong>priorite</strong> qui determine laquelle est utilisee. La promotion avec le numero de priorite le plus eleve l'emporte.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Marketing</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong>, cliquez sur <strong>Promotions</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Dans la colonne d'icones tout a gauche, cliquez sur l'icone de la section <strong>Marketing</strong></li>
+<li>Le panneau "Marketing" s'ouvre</li>
+<li>Cliquez sur <strong>Promotions</strong></li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche en haut (ou tapez <code>/</code>)</li>
+<li>Tapez "promotions"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>L'interface est divisee en <strong>4 zones principales</strong> :</p>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouvelle promotion</strong></td><td>Ouvrir le formulaire de creation</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer la promotion selectionnee</td></tr>
+  <tr><td><strong>Planifier</strong></td><td>Ouvrir le formulaire d'edition avec les champs de dates pre-remplis</td></tr>
+  <tr><td><strong>Activer</strong></td><td>Activer la promotion selectionnee</td></tr>
+  <tr><td><strong>Desactiver</strong></td><td>Desactiver la promotion selectionnee</td></tr>
+  <tr><td><strong>Dupliquer</strong></td><td>Creer une copie de la promotion selectionnee</td></tr>
+  <tr><td><strong>Performance</strong></td><td>Afficher un resume statistique de toutes les promotions</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger la liste des promotions en CSV</td></tr>
+</tbody>
+</table>
+<h3>2. Les cartes de statistiques</h3>
+
+<p>4 cartes en haut de la page :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total</strong></td><td>Nombre total de promotions</td></tr>
+  <tr><td><strong>Actives</strong></td><td>Nombre de promotions actuellement actives</td></tr>
+  <tr><td><strong>Ventes eclair</strong></td><td>Nombre de promotions de type Flash Sale</td></tr>
+  <tr><td><strong>Lots</strong></td><td>Nombre de promotions de type Bundle</td></tr>
+</tbody>
+</table>
+<h3>3. La liste des promotions (panneau central)</h3>
+
+<ul>
+<li><strong>Onglets de filtrage</strong> : Toutes, Actives, Reduction produit, Reduction categorie, Ventes eclair, Lots, Achetez X obtenez Y</li>
+<li><strong>Barre de recherche</strong> : Recherchez par nom de promotion</li>
+<li><strong>Chaque promotion affiche</strong> : nom, valeur de la remise, type de promotion (badge colore), statut (actif, inactif, expire), et priorite</li>
+</ul>
+
+<h3>4. Le panneau de detail (panneau droit)</h3>
+
+<p>Quand vous selectionnez une promotion :</p>
+<ul>
+<li><strong>Statut</strong> avec interrupteur pour activer/desactiver</li>
+<li><strong>Remise</strong> : valeur et type (pourcentage ou montant fixe)</li>
+<li><strong>Priorite</strong> : numero de priorite</li>
+<li><strong>Details specifiques au type</strong> : pour "Achetez X obtenez Y", les quantites a acheter et a recevoir ; pour "Lot", le nombre de produits inclus ; pour les types avec quantite minimum, le seuil</li>
+<li><strong>Validite</strong> : dates de debut et de fin</li>
+<li><strong>Cibles</strong> : produits et categories concernes</li>
+<li><strong>Metadonnees</strong> : identifiant, date de creation</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer une nouvelle promotion</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouvelle promotion</strong> dans le ruban ou sur le bouton en haut a droite</li>
+<li>Remplissez le formulaire :</li>
+</ol>
+<ul>
+<li><strong>Nom</strong> (obligatoire) : Un nom descriptif (par exemple "Soldes d'ete 2026")</li>
+<li><strong>Type de promotion</strong> : Choisissez parmi les 5 types disponibles</li>
+<li><strong>Type de remise</strong> : Pourcentage ou Montant fixe</li>
+<li><strong>Valeur</strong> (obligatoire) : Le chiffre de la remise</li>
+<li>Pour <strong>Achetez X obtenez Y</strong> : Saisissez la quantite a acheter et la quantite offerte</li>
+<li>Pour <strong>Lot</strong> ou <strong>Achetez X obtenez Y</strong> : Saisissez la quantite minimum</li>
+<li><strong>Date de debut</strong> : Quand la promotion commence</li>
+<li><strong>Date de fin</strong> : Quand la promotion expire</li>
+<li><strong>S'applique a tous les produits</strong> : Cochez pour une promotion globale (automatiquement coche pour les ventes eclair)</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<p><strong>Validations</strong> :</p>
+<ul>
+<li>Le nom ne peut pas etre vide</li>
+<li>La valeur doit etre superieure a 0</li>
+<li>Un pourcentage ne peut pas depasser 100%</li>
+<li>La date de fin doit etre posterieure a la date de debut</li>
+</ul>
+
+<h3>2. Activer ou desactiver une promotion</h3>
+
+<ol>
+<li>Selectionnez la promotion dans la liste</li>
+<li>Utilisez l'interrupteur dans le panneau de detail</li>
+<li>Le changement est immediat</li>
+</ol>
+
+<h3>3. Planifier une promotion</h3>
+
+<p><strong>Objectif</strong> : Definir ou modifier les dates de debut et de fin.</p>
+
+<ol>
+<li>Selectionnez la promotion</li>
+<li>Cliquez sur <strong>Planifier</strong> dans le ruban</li>
+<li>Le formulaire d'edition s'ouvre avec les champs de dates en focus</li>
+<li>Modifiez les dates</li>
+<li>Sauvegardez</li>
+</ol>
+
+<h3>4. Dupliquer une promotion</h3>
+
+<ol>
+<li>Selectionnez la promotion a copier</li>
+<li>Cliquez sur <strong>Dupliquer</strong> dans le ruban</li>
+<li>Le formulaire de creation s'ouvre avec tous les champs pre-remplis et le nom suffixe par "(copy)"</li>
+<li>Les dates sont remises a zero pour que vous puissiez en definir de nouvelles</li>
+<li>Modifiez les parametres et cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>5. Consulter les statistiques de performance</h3>
+
+<p>Cliquez sur <strong>Performance</strong> dans le ruban. Un toast affiche le total de promotions, le nombre d'actives, le nombre d'expirees, et la repartition par type.</p>
+
+<h3>6. Exporter en CSV</h3>
+
+<ol>
+<li>Appliquez vos filtres</li>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban</li>
+<li>Le fichier se telecharge avec les colonnes : Nom, Type, Remise, Valeur, Active, Date debut, Date fin, Priorite</li>
+</ol>
+
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario A : Creer une vente eclair de 48 heures</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle promotion</strong></li>
+<li>Nom : "Flash Sale Weekend"</li>
+<li>Type de promotion : <strong>Vente eclair</strong></li>
+<li>Type de remise : Pourcentage</li>
+<li>Valeur : 20</li>
+<li>Date de debut : vendredi 18:00</li>
+<li>Date de fin : dimanche 18:00</li>
+<li>La case "S'applique a tous" est automatiquement cochee</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>Scenario B : Configurer une offre "Achetez 2, obtenez 1 gratuit"</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle promotion</strong></li>
+<li>Nom : "Buy 2 Get 1 Free - BPC-157"</li>
+<li>Type de promotion : <strong>Achetez X obtenez Y</strong></li>
+<li>Quantite a acheter : 2</li>
+<li>Quantite offerte : 1</li>
+<li>Type de remise : Pourcentage</li>
+<li>Valeur : 100 (100% = gratuit pour le produit offert)</li>
+<li>Quantite minimum : 2</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>Scenario C : Comparer la performance de differents types de promotions</h3>
+
+<ol>
+<li>Ouvrez la page Promotions</li>
+<li>Cliquez sur <strong>Performance</strong> dans le ruban pour un resume global</li>
+<li>Utilisez les onglets de filtrage pour voir separement les ventes eclair, les lots, etc.</li>
+<li>Exportez en CSV pour une analyse detaillee dans Excel</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Peut-on avoir une promotion et un code promo qui s'appliquent en meme temps ?</strong></p>
+<p>R: Oui, une promotion automatique et un code promo peuvent se cumuler sur la meme commande, a condition que vos regles le permettent. Verifiez les montants resultants pour eviter des remises excessives.</p>
+
+<p><strong>Q: Comment gerer les conflits quand deux promotions s'appliquent au meme produit ?</strong></p>
+<p>R: Le systeme utilise le champ <strong>Priorite</strong>. La promotion avec la priorite la plus elevee l'emporte. Assurez-vous de definir des priorites differentes pour eviter les ambiguites.</p>
+
+<p><strong>Q: Que se passe-t-il quand une promotion expire ?</strong></p>
+<p>R: Le statut passe automatiquement a "Expire" (affiche en rouge). La promotion n'est plus appliquee aux nouvelles commandes. Elle reste visible dans l'admin pour consultation.</p>
+
+<p><strong>Q: Une vente eclair s'applique-t-elle automatiquement a tout le catalogue ?</strong></p>
+<p>R: Oui, quand vous choisissez le type "Vente eclair", la case "S'applique a tous les produits" est automatiquement cochee et ne peut pas etre decochee.</p>
+
+<p><strong>Q: Puis-je creer une promotion sans date de fin ?</strong></p>
+<p>R: Oui, si vous laissez la date de fin vide, la promotion reste active indefiniment (jusqu'a ce que vous la desactiviez manuellement).</p>
+
+<hr>
+
+<h2>Strategie expert : calendrier promotionnel annuel pour peptides</h2>
+
+<h3>Pourquoi planifier un calendrier annuel ?</h3>
+
+<p>Un calendrier promotionnel structure evite les promotions improvisees (qui diluent vos marges) et aligne vos offres avec les cycles d'achat naturels de votre clientele. Pour un e-commerce de peptides au Canada, ces cycles suivent les saisons de sante, de recherche universitaire et les evenements commerciaux majeurs.</p>
+
+<h3>Calendrier recommande</h3>
+
+<table>
+<thead>
+    <tr><th>Mois</th><th>Evenement</th><th>Type de promotion</th><th>Exemple</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Janvier</strong></td><td>Resolutions sante / Nouveau depart</td><td>Reduction categorie "Reparation" + "Longevite"</td><td>-15% sur BPC-157, TB-500, Epitalon pendant 2 semaines</td></tr>
+  <tr><td><strong>Fevrier</strong></td><td>Saint-Valentin (sante en duo)</td><td>Bundle : achete 2 produits = 10% sur le 2e</td><td>Pack "Research Duo"</td></tr>
+  <tr><td><strong>Mars</strong></td><td>Printemps / Detox / Renouveau</td><td>Vente eclair 48h sur peptides "Detox & Recovery"</td><td>Flash Sale -20% GHK-Cu, Thymosin Alpha-1</td></tr>
+  <tr><td><strong>Avril</strong></td><td>Paques / Fin trimestre universitaire</td><td>Code promo newsletter</td><td><code>SPRING15</code> 15% min 100 $CA</td></tr>
+  <tr><td><strong>Mai</strong></td><td>Fete des meres / Bien-etre</td><td>Reduction produit sur peptides collagene</td><td>-10% sur tous les peptides de la categorie "Peau & Collagene"</td></tr>
+  <tr><td><strong>Juin</strong></td><td>Ete fitness / Pre-vacances</td><td>Bundle "Summer Stack"</td><td>Pack BPC-157 + TB-500 + eau bacteriostatique a -20%</td></tr>
+  <tr><td><strong>Juillet</strong></td><td>Soldes mi-annee</td><td>Vente eclair tout le catalogue 72h</td><td>Flash Sale -15% sur tout</td></tr>
+  <tr><td><strong>Aout</strong></td><td>Rentree recherche (universites reprennent)</td><td>Code B2B pour les labos</td><td><code>LABRENTREE</code> 20% premiere commande B2B</td></tr>
+  <tr><td><strong>Septembre</strong></td><td>Rentree generale / Boost immunitaire</td><td>Reduction categorie "Immunitaire"</td><td>-15% Thymosin Alpha-1, BPC-157</td></tr>
+  <tr><td><strong>Octobre</strong></td><td>Halloween (ludique) / Pre-Black Friday teaser</td><td>Loterie code surprise</td><td>Code mystere entre 5% et 25%</td></tr>
+  <tr><td><strong>Novembre</strong></td><td>Black Friday + Cyber Monday</td><td>La plus grosse promo de l'annee</td><td>-25% tout le site 4 jours, max 500 usages</td></tr>
+  <tr><td><strong>Decembre</strong></td><td>Noel / Coffrets cadeaux</td><td>Bundles cadeaux + cartes-cadeaux</td><td>Coffret "Starter Research Kit" a prix reduit</td></tr>
+</tbody>
+</table>
+<h3>Flash Sale : bonnes pratiques</h3>
+
+<p>Les ventes eclair sont les promotions les plus efficaces pour generer un pic de revenu rapide, mais elles doivent etre executees correctement :</p>
+
+<p><strong>Duree optimale</strong> : 24 a 48 heures. Au-dela de 72h, l'effet d'urgence disparait.</p>
+
+<p><strong>Elements d'urgence a activer</strong> :</p>
+<ul>
+<li>Banniere avec compte a rebours en page d'accueil</li>
+<li>Email d'annonce 2h avant le debut</li>
+<li>Email de rappel "Derniere chance" 6h avant la fin</li>
+<li>Mention "Stock limite" sur les produits concernes (si applicable)</li>
+</ul>
+
+<p><strong>Frequence recommandee</strong> : Maximum 1 flash sale par mois. Au-dela, vos clients apprendront a attendre les promotions plutot que d'acheter au prix normal.</p>
+
+<p><strong>Mesure de succes</strong> :</p>
+<ul>
+<li>Revenu pendant la flash sale vs meme periode le mois precedent</li>
+<li>Nombre de nouveaux clients acquis</li>
+<li>Impact sur le panier moyen (il baisse generalement de 10-15% pendant une flash sale, c'est normal)</li>
+<li>Revenus la semaine suivante (attention a l'effet de cannibalisation : les clients qui auraient achete la semaine suivante ont accelere leur achat)</li>
+</ul>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Promotion</strong></td><td>Une remise automatique appliquee sans saisie de code par le client</td></tr>
+  <tr><td><strong>Vente eclair</strong></td><td>Une promotion de courte duree qui s'applique a tout le catalogue (Flash Sale)</td></tr>
+  <tr><td><strong>Lot (Bundle)</strong></td><td>Un groupe de produits vendus ensemble avec une remise</td></tr>
+  <tr><td><strong>Achetez X obtenez Y</strong></td><td>Offre ou l'achat d'une certaine quantite donne droit a des produits supplementaires</td></tr>
+  <tr><td><strong>Priorite</strong></td><td>Numero qui determine quelle promotion s'applique en cas de conflit</td></tr>
+  <tr><td><strong>Reduction produit</strong></td><td>Remise ciblee sur un ou plusieurs produits specifiques</td></tr>
+  <tr><td><strong>Reduction categorie</strong></td><td>Remise sur tous les produits d'une categorie donnee</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/promo-codes">Codes Promo</a> -- Codes de reduction a saisir par le client</li>
+<li><a href="/admin/produits">Produits</a> -- Les produits concernes par les promotions</li>
+<li><a href="/admin/categories">Categories</a> -- Les categories de produits</li>
+<li><a href="/admin/rapports">Rapports marketing</a> -- Analyser l'impact des promotions sur les ventes</li>
+<li><a href="/admin/commandes">Commandes</a> -- Voir les commandes ayant beneficie d'une promotion</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="04-marketing--03-newsletter">
+<h1>Gestion de la Newsletter</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Marketing > Newsletter</p>
+<p><strong>URL</strong>: <code>/admin/newsletter</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~30 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Newsletter</strong> est votre centre de commande pour le marketing par email. Elle regroupe deux volets : la gestion des <strong>abonnes</strong> (les personnes inscrites a votre liste de diffusion) et la gestion des <strong>campagnes</strong> (les emails que vous envoyez).</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir tous vos abonnes avec leur statut (actif, desabonne, rebondi)</li>
+<li>Filtrer et rechercher des abonnes</li>
+<li>Exporter la liste des abonnes en CSV</li>
+<li>Creer des campagnes email (brouillon, envoi immediat, planification)</li>
+<li>Configurer des tests A/B pour optimiser les taux d'ouverture</li>
+<li>Utiliser des segments predefinies pour cibler vos envois</li>
+<li>Consulter les statistiques detaillees de chaque campagne (taux d'ouverture, de clic, de rebond)</li>
+<li>Supprimer des campagnes ou desabonner des contacts</li>
+<li>Respecter automatiquement la conformite CASL (loi canadienne anti-pourriel)</li>
+</ul>
+
+<hr>
+
+<h2>Concepts pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un abonne ?</h3>
+
+<p>Un abonne est une personne qui a donne son consentement pour recevoir vos emails marketing. Les abonnes peuvent provenir de differentes sources :</p>
+<ul>
+<li><strong>Popup</strong> : Via un formulaire popup sur le site web</li>
+<li><strong>Pied de page (Footer)</strong> : Via le formulaire d'inscription dans le bas du site</li>
+<li><strong>Paiement (Checkout)</strong> : Via une case a cocher au moment de la commande</li>
+</ul>
+
+<h3>Les statuts d'un abonne</h3>
+
+<table>
+<thead>
+    <tr><th>Statut</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Actif</strong></td><td>L'abonne recoit vos emails normalement</td></tr>
+  <tr><td><strong>Desabonne</strong></td><td>L'abonne a demande a ne plus recevoir d'emails</td></tr>
+  <tr><td><strong>Rebondi (Bounced)</strong></td><td>L'adresse email n'est plus valide (boite pleine, adresse inexistante)</td></tr>
+</tbody>
+</table>
+<h3>Qu'est-ce qu'une campagne ?</h3>
+
+<p>Une campagne est un email que vous envoyez a vos abonnes. Elle peut etre un brouillon (en cours de redaction), planifiee (envoi programme a une date future), ou envoyee.</p>
+
+<h3>Qu'est-ce qu'un test A/B ?</h3>
+
+<p>Le test A/B consiste a envoyer deux versions legerement differentes d'un email (par exemple, deux objets differents) a un petit echantillon de vos abonnes. Apres un certain temps, le systeme analyse laquelle des deux versions a obtenu les meilleurs resultats, puis envoie automatiquement la version gagnante au reste de la liste.</p>
+
+<h3>Conformite CASL</h3>
+
+<p>La loi canadienne anti-pourriel (CASL) impose des regles strictes pour l'envoi d'emails commerciaux. Le systeme integre automatiquement les exigences CASL : consentement obligatoire, lien de desabonnement dans chaque email, identification de l'expediteur.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Marketing</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong>, cliquez sur <strong>Newsletter</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Cliquez sur l'icone de la section <strong>Marketing</strong> dans le rail</li>
+<li>Cliquez sur <strong>Newsletter</strong></li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche (ou tapez <code>/</code>)</li>
+<li>Tapez "newsletter" ou "email"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouvelle campagne</strong></td><td>Ouvrir le compositeur d'email</td></tr>
+  <tr><td><strong>Envoyer</strong></td><td>Envoyer la campagne selectionnee (avec confirmation)</td></tr>
+  <tr><td><strong>Planifier</strong></td><td>Planifier l'envoi de la campagne selectionnee a une date future</td></tr>
+  <tr><td><strong>Statistiques campagne</strong></td><td>Afficher les statistiques detaillees de la campagne selectionnee</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer la campagne selectionnee</td></tr>
+  <tr><td><strong>Exporter abonnes</strong></td><td>Telecharger la liste des abonnes en CSV</td></tr>
+  <tr><td><strong>Desabonner</strong></td><td>Desabonner manuellement un contact</td></tr>
+  <tr><td><strong>Rafraichir</strong></td><td>Recharger les donnees</td></tr>
+</tbody>
+</table>
+<h3>2. Les onglets principaux</h3>
+
+<p>Deux onglets principaux en haut de la zone de contenu :</p>
+<ul>
+<li><strong>Abonnes</strong> : La liste des personnes inscrites a la newsletter</li>
+<li><strong>Campagnes</strong> : La liste des emails envoyes ou en preparation</li>
+</ul>
+
+<h3>3. Les cartes de statistiques</h3>
+
+<p>Les statistiques changent selon l'onglet actif.</p>
+
+<p><strong>Onglet Abonnes :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total abonnes</strong></td><td>Nombre total de personnes inscrites</td></tr>
+  <tr><td><strong>Actifs</strong></td><td>Nombre d'abonnes qui recoivent les emails</td></tr>
+  <tr><td><strong>Desabonnes</strong></td><td>Nombre de personnes qui se sont desabonnees</td></tr>
+  <tr><td><strong>Rebondis</strong></td><td>Nombre d'adresses email invalides</td></tr>
+</tbody>
+</table>
+<p><strong>Onglet Campagnes :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total campagnes</strong></td><td>Nombre total de campagnes creees</td></tr>
+  <tr><td><strong>Envoyees</strong></td><td>Nombre de campagnes envoyees</td></tr>
+  <tr><td><strong>Planifiees</strong></td><td>Nombre de campagnes en attente d'envoi</td></tr>
+  <tr><td><strong>Brouillons</strong></td><td>Nombre de campagnes en cours de redaction</td></tr>
+</tbody>
+</table>
+<h3>4. La liste (panneau central)</h3>
+
+<ul>
+<li><strong>Onglets de filtrage</strong> : Selon l'onglet actif, differents filtres sont disponibles</li>
+<li><strong>Barre de recherche</strong> : Recherchez par email (abonnes) ou par sujet (campagnes)</li>
+<li><strong>Chaque element affiche</strong> : des badges de statut et les informations pertinentes</li>
+</ul>
+
+<h3>5. Le panneau de detail (panneau droit)</h3>
+
+<p><strong>Pour un abonne</strong> : email, statut, source d'inscription, langue, dates d'inscription et de desabonnement</p>
+
+<p><strong>Pour une campagne</strong> : sujet, contenu, statut, dates d'envoi, nombre de destinataires, taux d'ouverture et de clic, resultats du test A/B le cas echeant, et statistiques email detaillees (pont Email)</p>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Consulter les abonnes</h3>
+
+<ol>
+<li>Assurez-vous que l'onglet <strong>Abonnes</strong> est selectionne</li>
+<li>Parcourez la liste ou utilisez la recherche</li>
+<li>Cliquez sur un abonne pour voir son detail</li>
+<li>Les informations affichees incluent l'email, le statut, la source d'inscription et la langue</li>
+</ol>
+
+<h3>2. Exporter les abonnes</h3>
+
+<ol>
+<li>Onglet Abonnes actif</li>
+<li>Cliquez sur <strong>Exporter abonnes</strong> dans le ruban</li>
+<li>Le fichier CSV se telecharge avec les colonnes : Email, Statut, Source, Langue, Date d'inscription</li>
+</ol>
+
+<h3>3. Desabonner un contact manuellement</h3>
+
+<ol>
+<li>Selectionnez l'abonne dans la liste</li>
+<li>Cliquez sur <strong>Desabonner</strong> dans le ruban</li>
+<li>Confirmez l'action</li>
+</ol>
+
+<p>Cette action est conforme a la loi CASL et met a jour le statut de l'abonne immediatement.</p>
+
+<h3>4. Creer une campagne email</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle campagne</strong> dans le ruban</li>
+<li>Le compositeur d'email s'ouvre avec les champs :</li>
+</ol>
+<ul>
+<li><strong>Objet</strong> (obligatoire) : La ligne d'objet de l'email</li>
+<li><strong>Contenu</strong> (obligatoire) : Le corps du message en HTML</li>
+</ul>
+<ol>
+<li>Optionnel -- configurez un <strong>test A/B</strong> :</li>
+</ol>
+<ul>
+<li>Activez l'interrupteur "Test A/B"</li>
+<li>Choisissez le type de test : <strong>objet</strong> ou <strong>contenu</strong></li>
+<li>Saisissez la variante B (objet alternatif ou contenu alternatif)</li>
+<li>Definissez le pourcentage de l'echantillon test (par defaut 20%)</li>
+<li>Definissez le delai d'attente avant de choisir le gagnant (par defaut 120 minutes)</li>
+<li>Choisissez la metrique gagnante : taux d'ouverture ou taux de clic</li>
+</ul>
+<ol>
+<li>Actions disponibles :</li>
+</ol>
+<ul>
+<li><strong>Sauvegarder comme brouillon</strong> : Enregistre sans envoyer</li>
+<li><strong>Planifier</strong> : Programme l'envoi a une date future</li>
+<li><strong>Envoyer maintenant</strong> : Envoie immediatement</li>
+</ul>
+
+<p><strong>Validations</strong> :</p>
+<ul>
+<li>L'objet ne peut pas etre vide</li>
+<li>Le contenu ne peut pas etre vide</li>
+</ul>
+
+<h3>5. Envoyer une campagne existante</h3>
+
+<ol>
+<li>Onglet Campagnes actif</li>
+<li>Selectionnez un brouillon dans la liste</li>
+<li>Cliquez sur <strong>Envoyer</strong> dans le ruban</li>
+<li>Une fenetre de confirmation apparait (indiquant le nombre de destinataires)</li>
+<li>Confirmez l'envoi</li>
+</ol>
+
+<h3>6. Consulter les statistiques d'une campagne</h3>
+
+<ol>
+<li>Selectionnez une campagne envoyee</li>
+<li>Cliquez sur <strong>Statistiques campagne</strong> dans le ruban</li>
+<li>Une fenetre modale affiche :</li>
+</ol>
+<ul>
+<li>Nombre d'emails envoyes</li>
+<li>Taux d'ouverture</li>
+<li>Taux de clic</li>
+<li>Taux de rebond</li>
+<li>Taux de desabonnement</li>
+<li>Nombre d'ouvertures, de clics, de rebonds et de desabonnements</li>
+<li>Contexte des abonnes (total actifs, total desabonnes)</li>
+</ul>
+<ol>
+<li>Pour les campagnes avec test A/B : les resultats par variante (A et B), le gagnant, et le nombre d'emails envoyes au reste de la liste</li>
+</ol>
+
+<h3>7. Supprimer une campagne</h3>
+
+<ol>
+<li>Selectionnez la campagne</li>
+<li>Cliquez sur <strong>Supprimer</strong> dans le ruban</li>
+<li>Confirmez la suppression</li>
+</ol>
+
+<p>Seuls les brouillons et les campagnes planifiees peuvent etre supprimes. Les campagnes deja envoyees sont conservees pour l'historique.</p>
+
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario A : Envoyer une newsletter mensuelle</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle campagne</strong></li>
+<li>Objet : "Nouveautes mars 2026 - BioCycle Peptides"</li>
+<li>Contenu : Redigez le corps de l'email en HTML (nouveaux produits, offres speciales, actualites)</li>
+<li>Cliquez sur <strong>Envoyer maintenant</strong></li>
+<li>Confirmez l'envoi</li>
+<li>Apres quelques heures, revenez consulter les statistiques (taux d'ouverture, de clic)</li>
+</ol>
+
+<h3>Scenario B : Tester deux lignes d'objet avec un test A/B</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle campagne</strong></li>
+<li>Objet (variante A) : "Decouvrez nos nouveaux peptides"</li>
+<li>Contenu : Votre email</li>
+<li>Activez le <strong>test A/B</strong></li>
+<li>Type de test : <strong>Objet</strong></li>
+<li>Objet variante B : "25% de rabais sur nos nouveaux peptides !"</li>
+<li>Pourcentage test : 20% (20% des abonnes recevront la variante A, 20% la B)</li>
+<li>Delai : 120 minutes (2 heures pour analyser les resultats)</li>
+<li>Metrique gagnante : Taux d'ouverture</li>
+<li>Cliquez sur <strong>Envoyer maintenant</strong></li>
+<li>Apres 2 heures, le systeme determine automatiquement le gagnant et envoie cette version aux 60% restants</li>
+</ol>
+
+<h3>Scenario C : Nettoyer la liste d'abonnes</h3>
+
+<ol>
+<li>Allez sur l'onglet <strong>Abonnes</strong></li>
+<li>Filtrez sur le statut <strong>Rebondi</strong> (Bounced)</li>
+<li>Consultez les adresses invalides</li>
+<li>Exportez la liste en CSV pour archivage</li>
+<li>Utilisez ces informations pour mettre a jour vos bases de contacts</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Comment les gens s'inscrivent-ils a la newsletter ?</strong></p>
+<p>R: Les visiteurs du site peuvent s'inscrire via le popup d'inscription, le formulaire dans le pied de page du site, ou la case a cocher au moment du paiement. Chaque source est tracee dans le systeme.</p>
+
+<p><strong>Q: Le systeme est-il conforme a la loi CASL ?</strong></p>
+<p>R: Oui. Le systeme integre les exigences CASL automatiquement : consentement explicite a l'inscription, lien de desabonnement obligatoire dans chaque email, identification de l'expediteur, et gestion des desabonnements.</p>
+
+<p><strong>Q: Combien de temps faut-il attendre pour obtenir les resultats d'un test A/B ?</strong></p>
+<p>R: Le delai est configurable lors de la creation de la campagne (par defaut 120 minutes). Apres ce delai, le systeme compare les resultats et envoie la version gagnante au reste des abonnes.</p>
+
+<p><strong>Q: Puis-je modifier une campagne deja envoyee ?</strong></p>
+<p>R: Non. Une fois envoyee, la campagne ne peut plus etre modifiee. Vous pouvez en creer une nouvelle si necessaire.</p>
+
+<p><strong>Q: Comment sont calculees les statistiques d'ouverture et de clic ?</strong></p>
+<p>R: Le taux d'ouverture mesure le pourcentage d'emails ouverts par rapport au nombre d'emails envoyes. Le taux de clic mesure le pourcentage de destinataires ayant clique sur un lien dans l'email. Ces donnees sont collectees via des pixels de suivi et des liens traces.</p>
+
+<hr>
+
+<h2>Strategie expert : conformite CASL detaillee</h2>
+
+<h3>Qu'est-ce que la CASL exactement ?</h3>
+
+<p>La Loi canadienne anti-pourriel (CASL, en vigueur depuis 2014) est l'une des legislations anti-spam les plus strictes au monde. Elle s'applique a tout message electronique commercial (MEC) envoye depuis le Canada ou recu au Canada, y compris les emails, SMS et messages sur les reseaux sociaux.</p>
+
+<h3>Les 3 exigences obligatoires pour chaque envoi</h3>
+
+<p><strong>1. Consentement</strong> (le plus important)</p>
+<ul>
+<li><strong>Consentement explicite (opt-in)</strong> : Le destinataire a activement coche une case ou rempli un formulaire pour s'inscrire. La case ne doit PAS etre pre-cochee.</li>
+<li><strong>Consentement implicite</strong> : Existe pour les clients ayant achete dans les 2 derniers ans, ou les personnes ayant fait une demande dans les 6 derniers mois. ATTENTION : le consentement implicite expire. Apres expiration, il faut obtenir un consentement explicite.</li>
+<li><strong>Preuve</strong> : Conservez la date, la methode et le texte exact qui accompagnait la demande de consentement. Koraline enregistre automatiquement ces informations.</li>
+</ul>
+
+<p><strong>2. Identification de l'expediteur</strong></p>
+<ul>
+<li>Nom de l'entreprise : BioCycle Peptides Inc.</li>
+<li>Adresse postale physique (OBLIGATOIRE dans chaque email)</li>
+<li>Coordonnees valides (email, telephone ou URL)</li>
+</ul>
+
+<p><strong>3. Mecanisme de desabonnement</strong></p>
+<ul>
+<li>Lien de desabonnement dans chaque email, visible et fonctionnel</li>
+<li>Traitement de la demande en maximum 10 jours ouvrables (Koraline le fait instantanement)</li>
+<li>Le desabonnement doit etre gratuit et sans condition</li>
+</ul>
+
+<h3>Penalites en cas de non-conformite</h3>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Montant maximum</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Entreprise</strong></td><td>Jusqu'a 10 000 000 $CA par infraction</td></tr>
+  <tr><td><strong>Individu</strong></td><td>Jusqu'a 1 000 000 $CA par infraction</td></tr>
+  <tr><td><strong>Droit d'action prive</strong></td><td>Les destinataires peuvent poursuivre directement</td></tr>
+</tbody>
+</table>
+<p>Le CRTC (Conseil de la radiodiffusion et des telecommunications canadiennes) applique activement cette loi. Des amendes de plusieurs millions ont ete imposees a des entreprises canadiennes.</p>
+
+<h3>Ce que Koraline fait automatiquement pour vous</h3>
+
+<ul>
+<li>Enregistre la preuve de consentement (date, source, methode)</li>
+<li>Insere le lien de desabonnement dans chaque email</li>
+<li>Traite les desabonnements instantanement</li>
+<li>Bloque l'envoi vers les adresses desabonnees ou rebondies</li>
+<li>Ajoute l'adresse physique dans le pied de page</li>
+</ul>
+
+<h3>Ce que vous devez faire vous-meme</h3>
+
+<ul>
+<li>Ne JAMAIS importer une liste d'emails achetee -- c'est illegal sous la CASL</li>
+<li>Verifier que vos formulaires d'inscription ont un texte de consentement clair</li>
+<li>Ne pas pre-cocher la case d'inscription a la newsletter au checkout</li>
+<li>Documenter la source de chaque abonne (popup, footer, checkout)</li>
+</ul>
+
+<h2>Strategie expert : segmentation avancee pour peptides</h2>
+
+<h3>Pourquoi segmenter ?</h3>
+
+<p>Envoyer le meme email a toute votre base est inefficace. Un chercheur en biologie moleculaire n'a pas les memes besoins qu'un athlete qui decouvre les peptides. La segmentation augmente les taux d'ouverture de 40 a 60% et les taux de clic de 50 a 100%.</p>
+
+<h3>Segments recommandes pour BioCycle Peptides</h3>
+
+<table>
+<thead>
+    <tr><th>Segment</th><th>Criteres</th><th>Contenu adapte</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Chercheurs academiques</strong></td><td>Email .edu ou .ca universitaire, achats reguliers, panier moyen > 200 $CA</td><td>Nouvelles publications, certificats d'analyse, promotions sur volumes</td></tr>
+  <tr><td><strong>Acheteurs peptides reparation</strong></td><td>A achete BPC-157, TB-500, ou GHK-Cu</td><td>Cross-sell eau bacteriostatique, seringues, autres peptides reparation</td></tr>
+  <tr><td><strong>Acheteurs peptides performance</strong></td><td>A achete CJC-1295, Ipamorelin, ou GHRP-6</td><td>Cross-sell stacks, guides de reconstitution, nouveaux peptides performance</td></tr>
+  <tr><td><strong>Acheteurs supplements</strong></td><td>Achats uniquement dans la categorie "Supplements"</td><td>Education sur les peptides, offre decouverte premier peptide</td></tr>
+  <tr><td><strong>Gros acheteurs (VIP)</strong></td><td>CLV > 1000 $CA ou > 5 commandes</td><td>Offres exclusives, acces anticipe aux nouveaux produits, service prioritaire</td></tr>
+  <tr><td><strong>Inactifs 60+ jours</strong></td><td>Derniere commande > 60 jours</td><td>Email de reactivation avec code promo 15%</td></tr>
+  <tr><td><strong>Nouveaux inscrits</strong></td><td>Inscription < 7 jours, pas encore achete</td><td>Sequence de bienvenue, guide du debutant, code premiere commande</td></tr>
+  <tr><td><strong>B2B (labos, cliniques)</strong></td><td>Tag "B2B" ou entreprise associee</td><td>Grilles de prix volume, COA en lot, compte dedie</td></tr>
+</tbody>
+</table>
+<h3>Benchmarks industrie sante / supplements au Canada</h3>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Moyenne industrie</th><th>Bon</th><th>Excellent</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Taux d'ouverture</strong></td><td>20-25%</td><td>25-30%</td><td>> 30%</td></tr>
+  <tr><td><strong>Taux de clic</strong></td><td>2-4%</td><td>4-6%</td><td>> 6%</td></tr>
+  <tr><td><strong>Taux de desabonnement</strong></td><td>0.2-0.5%</td><td>< 0.2%</td><td>< 0.1%</td></tr>
+  <tr><td><strong>Taux de rebond</strong></td><td>1-3%</td><td>< 1%</td><td>< 0.5%</td></tr>
+  <tr><td><strong>Revenu par email</strong></td><td>0.10-0.25 $CA</td><td>0.25-0.50 $CA</td><td>> 0.50 $CA</td></tr>
+</tbody>
+</table>
+<p><strong>Frequence d'envoi optimale</strong> : 1 a 2 emails par semaine pour les segments actifs, 1 par mois pour les segments froids. Au-dela de 3 par semaine, le taux de desabonnement augmente significativement.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Abonne</strong></td><td>Une personne inscrite a la liste de diffusion de la newsletter</td></tr>
+  <tr><td><strong>Campagne</strong></td><td>Un email envoye a un groupe d'abonnes dans un but marketing</td></tr>
+  <tr><td><strong>Brouillon</strong></td><td>Une campagne en cours de redaction, pas encore envoyee</td></tr>
+  <tr><td><strong>Planifiee</strong></td><td>Une campagne programmee pour etre envoyee a une date future</td></tr>
+  <tr><td><strong>Test A/B</strong></td><td>Technique consistant a tester deux versions d'un email sur un echantillon avant d'envoyer la meilleure au reste</td></tr>
+  <tr><td><strong>Taux d'ouverture</strong></td><td>Pourcentage d'emails ouverts par les destinataires</td></tr>
+  <tr><td><strong>Taux de clic</strong></td><td>Pourcentage de destinataires ayant clique sur un lien</td></tr>
+  <tr><td><strong>Rebond (Bounce)</strong></td><td>Email non delivre car l'adresse est invalide ou la boite est pleine</td></tr>
+  <tr><td><strong>CASL</strong></td><td>Loi canadienne anti-pourriel (Canadian Anti-Spam Legislation)</td></tr>
+  <tr><td><strong>Segment</strong></td><td>Un sous-groupe d'abonnes defini par des criteres (langue, source, comportement)</td></tr>
+  <tr><td><strong>Variante</strong></td><td>L'une des versions d'un test A/B (variante A ou variante B)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/promo-codes">Codes Promo</a> -- Creer des codes de reduction a partager dans les newsletters</li>
+<li><a href="/admin/blog">Blog</a> -- Publier du contenu a relayer dans les newsletters</li>
+<li><a href="/admin/rapports">Rapports marketing</a> -- Analyser l'impact des campagnes sur les ventes</li>
+<li><a href="/admin/bannieres">Bannieres</a> -- Gerer les visuels promotionnels a inclure dans les emails</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="04-marketing--04-bannieres">
+<h1>Gestion des Bannieres</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Marketing > Bannieres</p>
+<p><strong>URL</strong>: <code>/admin/bannieres</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Bannieres</strong> permet de gerer le <strong>carrousel hero</strong> affiche sur la page d'accueil de votre boutique. Ce sont les grandes images (ou videos) qui occupent toute la largeur en haut du site et qui servent a mettre en avant vos promotions, nouveaux produits ou messages importants.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Creer de nouvelles bannieres (images, videos ou animations)</li>
+<li>Definir le titre, sous-titre, badge et boutons d'action (CTA) pour chaque banniere</li>
+<li>Uploader des images desktop et mobile distinctes</li>
+<li>Configurer l'opacite du voile sombre superpose a l'image</li>
+<li>Personnaliser les boutons d'appel a l'action (texte, URL, style)</li>
+<li>Reordonner les bannieres par glisser-monter/descendre</li>
+<li>Planifier l'affichage avec des dates de debut et de fin</li>
+<li>Activer ou desactiver chaque banniere individuellement</li>
+<li>Dupliquer une banniere existante</li>
+<li>Gerer les traductions dans toutes les langues supportees (22 langues)</li>
+<li>Afficher des statistiques (chiffres cles) directement sur la banniere</li>
+<li>Previsualiser le resultat sur le site en un clic</li>
+</ul>
+
+<hr>
+
+<h2>Concepts pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un carrousel hero ?</h3>
+
+<p>Le carrousel hero est la section la plus visible de votre page d'accueil. Il affiche une succession de bannieres (slides) en grand format. Chaque banniere contient generalement une image de fond, un titre accrocheur, un sous-titre, et un ou deux boutons qui dirigent vers une page specifique (par exemple "Voir les promotions").</p>
+
+<h3>Structure d'une banniere</h3>
+
+<table>
+<thead>
+    <tr><th>Element</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Slug</strong></td><td>Identifiant unique de la banniere (utilise en interne, ex: "soldes-ete-2026")</td></tr>
+  <tr><td><strong>Image de fond</strong></td><td>L'image principale affichee (format desktop)</td></tr>
+  <tr><td><strong>Image mobile</strong></td><td>Version optimisee pour les ecrans de telephone (optionnel)</td></tr>
+  <tr><td><strong>Voile (overlay)</strong></td><td>Un filtre sombre semi-transparent par-dessus l'image pour que le texte soit lisible</td></tr>
+  <tr><td><strong>Badge</strong></td><td>Un petit texte en surbrillance (ex: "Nouveau", "Promotion")</td></tr>
+  <tr><td><strong>Titre</strong></td><td>Le texte principal de la banniere (limite recommandee : 60 caracteres)</td></tr>
+  <tr><td><strong>Sous-titre</strong></td><td>Un texte complementaire (limite recommandee : 120 caracteres)</td></tr>
+  <tr><td><strong>CTA primaire</strong></td><td>Le bouton principal (texte, URL, style)</td></tr>
+  <tr><td><strong>CTA secondaire</strong></td><td>Un second bouton optionnel</td></tr>
+  <tr><td><strong>Statistiques</strong></td><td>Des chiffres cles affiches sur la banniere (ex: "99%+ Purete", "500+ Produits")</td></tr>
+</tbody>
+</table>
+<h3>Ordre d'affichage</h3>
+
+<p>Les bannieres s'affichent dans l'ordre defini par le champ "Ordre de tri". Vous pouvez reorganiser les bannieres en utilisant les fleches haut/bas.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Marketing</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong>, cliquez sur <strong>Bannieres</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Cliquez sur l'icone de la section <strong>Marketing</strong> dans le rail</li>
+<li>Cliquez sur <strong>Bannieres</strong></li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche (ou tapez <code>/</code>)</li>
+<li>Tapez "bannieres" ou "hero"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>Contrairement aux autres pages marketing qui utilisent le layout master/detail, la page Bannieres utilise un layout en <strong>liste verticale</strong> avec des cartes pour chaque banniere.</p>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouvelle banniere</strong></td><td>Ouvrir le formulaire de creation</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Indication pour utiliser le bouton de suppression de chaque banniere</td></tr>
+  <tr><td><strong>Upload image</strong></td><td>Ouvrir le formulaire de creation avec l'onglet Media actif</td></tr>
+  <tr><td><strong>Activer</strong></td><td>Activer la premiere banniere inactive</td></tr>
+  <tr><td><strong>Desactiver</strong></td><td>Desactiver la derniere banniere active</td></tr>
+  <tr><td><strong>Reorganiser</strong></td><td>Indication pour utiliser les fleches de reordonnancement</td></tr>
+  <tr><td><strong>Previsualiser</strong></td><td>Ouvrir la page d'accueil du site dans un nouvel onglet</td></tr>
+</tbody>
+</table>
+<h3>2. Les cartes de statistiques</h3>
+
+<p>3 cartes en haut :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total</strong></td><td>Nombre total de bannieres</td></tr>
+  <tr><td><strong>Actives</strong></td><td>Nombre de bannieres actuellement visibles sur le site</td></tr>
+  <tr><td><strong>Traductions</strong></td><td>Nombre total de traductions sur l'ensemble des bannieres</td></tr>
+</tbody>
+</table>
+<h3>3. La liste des bannieres</h3>
+
+<p>Chaque banniere est affichee sous forme d'une ligne horizontale contenant :</p>
+<ul>
+<li><strong>Fleches de reordonnancement</strong> (haut/bas) a gauche</li>
+<li><strong>Miniature</strong> de l'image de fond (128x80 pixels) avec l'indication du type de media</li>
+<li><strong>Informations</strong> : titre, slug, nombre de traductions, URL du CTA, ordre de tri, et indicateurs de planification (planifiee, expiree)</li>
+<li><strong>Actions</strong> a droite : interrupteur actif/inactif, boutons Modifier, Dupliquer, Supprimer</li>
+</ul>
+
+<h3>4. Le formulaire de creation/edition (fenetre modale)</h3>
+
+<p>Le formulaire est organise en onglets :</p>
+<ul>
+<li><strong>General</strong> : Slug, ordre de tri, titre, sous-titre, badge, activation</li>
+<li><strong>Media</strong> : Type de media, image desktop, image mobile, opacite du voile, gradient</li>
+<li><strong>CTA</strong> : Bouton principal (texte, URL, style), bouton secondaire (texte, URL, style), statistiques JSON</li>
+<li><strong>Planification</strong> : Date de debut, date de fin</li>
+<li><strong>Langues</strong> : Un onglet par langue supportee pour les traductions (badge, titre, sous-titre, texte des CTA, statistiques)</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer une nouvelle banniere</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle banniere</strong> en haut a droite ou dans le ruban</li>
+<li><strong>Onglet General</strong> :</li>
+</ol>
+<ul>
+<li>Slug (obligatoire) : identifiant unique, format URL (ex: "promo-printemps-2026")</li>
+<li>Titre (obligatoire) : texte principal. Un compteur indique le nombre de caracteres (recommande : moins de 60)</li>
+<li>Sous-titre : texte secondaire. Compteur de caracteres (recommande : moins de 120)</li>
+<li>Badge : texte court mis en evidence (ex: "Nouveau")</li>
+<li>Ordre de tri : position dans le carrousel</li>
+<li>Case a cocher Active</li>
+</ul>
+<ol>
+<li><strong>Onglet Media</strong> :</li>
+</ol>
+<ul>
+<li>Type de media : Image, Video ou Animation</li>
+<li>Image de fond (obligatoire) : uploadez votre image via le composant MediaUploader</li>
+<li>Image mobile : version optimisee pour mobile (optionnel)</li>
+<li>Opacite du voile : curseur de 0% (transparent) a 100% (opaque). Valeur par defaut : 70%</li>
+<li>Gradient : classe CSS personnalisee pour le degrade (optionnel)</li>
+</ul>
+<ol>
+<li><strong>Onglet CTA</strong> :</li>
+</ol>
+<ul>
+<li>CTA primaire : texte du bouton, URL de destination, style (Primary, Secondary, Outline)</li>
+<li>CTA secondaire : memes champs (optionnel)</li>
+<li>Statistiques JSON : un tableau JSON pour afficher des chiffres sur la banniere</li>
+</ul>
+<ol>
+<li><strong>Onglet Planification</strong> :</li>
+</ol>
+<ul>
+<li>Date de debut : la banniere devient visible a cette date</li>
+<li>Date de fin : la banniere disparait a cette date</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<p><strong>Validations</strong> :</p>
+<ul>
+<li>Le slug ne peut pas etre vide et doit etre unique (verification en temps reel)</li>
+<li>Le titre ne peut pas etre vide</li>
+<li>L'image de fond ne peut pas etre vide</li>
+<li>Les statistiques JSON doivent etre du JSON valide</li>
+</ul>
+
+<h3>2. Gerer les traductions</h3>
+
+<ol>
+<li>Ouvrez le formulaire d'edition d'une banniere</li>
+<li>Apres les 4 onglets principaux, vous voyez un separateur puis un onglet par langue (EN, FR, ES, DE, etc.)</li>
+<li>Cliquez sur l'onglet de la langue souhaitee</li>
+<li>Remplissez : Badge, Titre, Sous-titre, texte du CTA primaire, texte du CTA secondaire, Statistiques JSON</li>
+<li>Les onglets avec du contenu existant sont affiches en vert</li>
+</ol>
+
+<p>Les traductions sont optionnelles. Si une langue n'a pas de traduction, le texte par defaut (onglet General) est utilise.</p>
+
+<h3>3. Reordonner les bannieres</h3>
+
+<ol>
+<li>Pour monter une banniere : cliquez sur la fleche vers le haut a gauche de la banniere</li>
+<li>Pour descendre une banniere : cliquez sur la fleche vers le bas</li>
+<li>Les modifications sont sauvegardees automatiquement</li>
+</ol>
+
+<h3>4. Dupliquer une banniere</h3>
+
+<ol>
+<li>Cliquez sur le bouton <strong>Dupliquer</strong> (icone de copie) a droite de la banniere</li>
+<li>Le formulaire de creation s'ouvre avec tous les champs pre-remplis</li>
+<li>Le slug est suffixe par "-copy" et le titre par "(copy)"</li>
+<li>La copie est desactivee par defaut</li>
+<li>Modifiez les champs necessaires et sauvegardez</li>
+</ol>
+
+<h3>5. Planifier une banniere</h3>
+
+<ol>
+<li>Ouvrez le formulaire d'edition</li>
+<li>Allez a l'onglet <strong>Planification</strong></li>
+<li>Definissez la date de debut (la banniere apparaitra a cette date)</li>
+<li>Definissez la date de fin (la banniere disparaitra a cette date)</li>
+<li>Sauvegardez</li>
+</ol>
+
+<p>Les bannieres planifiees affichent un indicateur orange avec la date de publication prevue. Les bannieres expirees affichent un indicateur rouge.</p>
+
+<h3>6. Previsualiser le resultat</h3>
+
+<p>Cliquez sur <strong>Previsualiser</strong> dans le ruban. La page d'accueil du site s'ouvre dans un nouvel onglet, ou vous pouvez voir le carrousel avec vos bannieres actives.</p>
+
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario A : Creer une banniere promotionnelle pour le Black Friday</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle banniere</strong></li>
+<li>Slug : "black-friday-2026"</li>
+<li>Titre : "Black Friday - Jusqu'a 50% de rabais"</li>
+<li>Sous-titre : "Offre valable du 27 au 30 novembre"</li>
+<li>Badge : "BLACK FRIDAY"</li>
+<li>Uploadez une image thematique sombre</li>
+<li>Opacite du voile : 60%</li>
+<li>CTA primaire : Texte "Voir les offres", URL "/shop?promo=blackfriday", Style "Primary"</li>
+<li>Planification : debut 27 novembre 00:00, fin 30 novembre 23:59</li>
+<li>Cochez "Active"</li>
+<li>Sauvegardez</li>
+</ol>
+
+<h3>Scenario B : Traduire une banniere existante en francais et espagnol</h3>
+
+<ol>
+<li>Ouvrez la banniere a traduire (bouton Modifier)</li>
+<li>Cliquez sur l'onglet <strong>FR</strong></li>
+<li>Titre : "Peptides de recherche de haute purete"</li>
+<li>Sous-titre : "Livraison gratuite au Canada"</li>
+<li>CTA : "Magasiner"</li>
+<li>Cliquez sur l'onglet <strong>ES</strong></li>
+<li>Titre : "Peptidos de investigacion de alta pureza"</li>
+<li>Sous-titre : "Envio gratis en Canada"</li>
+<li>CTA : "Comprar"</li>
+<li>Sauvegardez</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Quelle taille d'image recommandez-vous pour les bannieres ?</strong></p>
+<p>R: Utilisez des images d'au moins 1920x800 pixels pour le desktop et 750x1000 pixels pour le mobile. Preferez le format WebP ou JPEG compresse pour des temps de chargement rapides.</p>
+
+<p><strong>Q: Combien de bannieres actives recommandez-vous ?</strong></p>
+<p>R: Entre 3 et 5 bannieres actives est ideal. Trop de bannieres dilue le message et augmente le temps de chargement.</p>
+
+<p><strong>Q: Que signifie le champ "Statistiques JSON" ?</strong></p>
+<p>R: C'est un tableau JSON qui permet d'afficher des chiffres cles directement sur la banniere. Exemple : <code>[{"value":"99%+","label":"Purete"},{"value":"500+","label":"Produits"}]</code>. Ces statistiques apparaissent sous forme de badges visuels.</p>
+
+<p><strong>Q: Puis-je utiliser une video au lieu d'une image ?</strong></p>
+<p>R: Oui. Dans l'onglet Media, changez le type de media sur "Video" et fournissez l'URL de la video. Les formats supportes incluent MP4 et WebM.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Carrousel hero</strong></td><td>La section de diaporama en haut de la page d'accueil</td></tr>
+  <tr><td><strong>Slide</strong></td><td>Une banniere individuelle dans le carrousel</td></tr>
+  <tr><td><strong>Slug</strong></td><td>Identifiant textuel unique utilise dans les URL et le code</td></tr>
+  <tr><td><strong>CTA</strong></td><td>Call To Action (Appel a l'action) -- un bouton qui invite le visiteur a cliquer</td></tr>
+  <tr><td><strong>Overlay</strong></td><td>Voile semi-transparent superpose a l'image pour ameliorer la lisibilite du texte</td></tr>
+  <tr><td><strong>MediaUploader</strong></td><td>Le composant d'upload qui permet de telecharger et recadrer des images</td></tr>
+  <tr><td><strong>Ordre de tri</strong></td><td>Numero qui determine la position de la banniere dans le carrousel</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/promotions">Promotions</a> -- Creer les offres mises en avant dans les bannieres</li>
+<li><a href="/admin/promo-codes">Codes Promo</a> -- Les codes de reduction a promouvoir dans les bannieres</li>
+<li><a href="/admin/blog">Blog</a> -- Publier des articles a relayer via les bannieres</li>
+<li><a href="/admin/produits">Produits</a> -- Les produits mis en avant dans les CTA des bannieres</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="04-marketing--05-upsell">
+<h1>Configuration Upsell / Cross-Sell</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Marketing > Upsell</p>
+<p><strong>URL</strong>: <code>/admin/upsell</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Upsell</strong> permet de configurer les regles de vente additionnelle qui s'affichent sur les pages produit de votre boutique. L'objectif est d'inciter le client a augmenter la valeur de son panier, soit en achetant une plus grande quantite (remise volume), soit en souscrivant a un abonnement recurrent.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Definir une configuration globale qui s'applique a tous les produits</li>
+<li>Creer des configurations specifiques par produit (qui remplacent la configuration globale)</li>
+<li>Activer ou desactiver l'affichage des remises volume</li>
+<li>Activer ou desactiver l'affichage des offres d'abonnement</li>
+<li>Choisir la regle d'affichage (toujours, une fois par session, une fois par produit)</li>
+<li>Personnaliser les titres et sous-titres des sections upsell</li>
+<li>Definir la quantite et la frequence d'abonnement suggerees</li>
+<li>Dupliquer une configuration pour l'appliquer a un autre produit</li>
+<li>Exporter les configurations en CSV</li>
+<li>Consulter les statistiques de conversion</li>
+</ul>
+
+<hr>
+
+<h2>Concepts pour les debutants</h2>
+
+<h3>Qu'est-ce que l'upsell ?</h3>
+
+<p>L'upsell (ou "vente incitative") consiste a proposer au client un achat de valeur superieure a ce qu'il envisageait. Par exemple, quand un client regarde un produit a l'unite, lui suggerer d'en acheter 3 avec une remise volume.</p>
+
+<h3>Qu'est-ce que le cross-sell ?</h3>
+
+<p>Le cross-sell (ou "vente croisee") consiste a proposer des produits complementaires. Par exemple, suggerer un peptide de reparation a quelqu'un qui achete un peptide de performance.</p>
+
+<h3>Configuration globale vs par produit</h3>
+
+<p>Le systeme fonctionne avec deux niveaux de configuration :</p>
+<ul>
+<li><strong>Configuration globale</strong> : S'applique a TOUS les produits de la boutique. Il ne peut y en avoir qu'une seule.</li>
+<li><strong>Configuration par produit</strong> : Remplace la configuration globale pour un produit specifique. Utile si un produit necessite des parametres differents.</li>
+</ul>
+
+<h3>Les deux sections upsell</h3>
+
+<p>Sur chaque page produit, deux sections upsell peuvent s'afficher :</p>
+<ol>
+<li><strong>Remise volume (Quantity Discount)</strong> : Propose d'acheter plus d'unites avec un rabais progressif</li>
+<li><strong>Abonnement (Subscription)</strong> : Propose de souscrire a un envoi recurrent a prix reduit</li>
+</ol>
+
+<h3>Regles d'affichage</h3>
+
+<table>
+<thead>
+    <tr><th>Regle</th><th>Comportement</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Toujours</strong></td><td>L'upsell s'affiche a chaque visite de la page produit</td></tr>
+  <tr><td><strong>Une fois par session</strong></td><td>L'upsell s'affiche une seule fois par session de navigation</td></tr>
+  <tr><td><strong>Une fois par produit</strong></td><td>L'upsell s'affiche une seule fois pour chaque produit visite</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Marketing</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong>, cliquez sur <strong>Upsell</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Cliquez sur l'icone de la section <strong>Marketing</strong> dans le rail</li>
+<li>Cliquez sur <strong>Upsell</strong></li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche (ou tapez <code>/</code>)</li>
+<li>Tapez "upsell" ou "vente additionnelle"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>L'interface utilise le layout master/detail Outlook standard.</p>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouvelle regle</strong></td><td>Creer une nouvelle configuration upsell</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer la configuration selectionnee</td></tr>
+  <tr><td><strong>Activer</strong></td><td>Activer la configuration selectionnee</td></tr>
+  <tr><td><strong>Desactiver</strong></td><td>Desactiver la configuration selectionnee</td></tr>
+  <tr><td><strong>Dupliquer</strong></td><td>Creer une copie de la configuration selectionnee</td></tr>
+  <tr><td><strong>Statistiques conversion</strong></td><td>Afficher un resume des configurations actives</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger les configurations en CSV</td></tr>
+</tbody>
+</table>
+<h3>2. Les cartes de statistiques</h3>
+
+<p>3 cartes en haut :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Configs actives</strong></td><td>Nombre de configurations upsell actuellement actives</td></tr>
+  <tr><td><strong>Surcharges produit</strong></td><td>Nombre de configurations specifiques a un produit</td></tr>
+  <tr><td><strong>Statut global</strong></td><td>Indique si la configuration globale est active ou non</td></tr>
+</tbody>
+</table>
+<h3>3. La liste des configurations (panneau central)</h3>
+
+<ul>
+<li><strong>Onglets de filtrage</strong> : Toutes, Actives, Configuration globale, Surcharges produit</li>
+<li><strong>Barre de recherche</strong> : Recherchez par nom de produit</li>
+<li><strong>Chaque configuration affiche</strong> : nom du produit (ou "Global"), regle d'affichage, sections activees (remise volume, abonnement), badge de statut (active en vert, desactivee en rouge), badge "Global" pour la configuration par defaut</li>
+</ul>
+
+<h3>4. Le panneau de detail (panneau droit)</h3>
+
+<p>Quand vous selectionnez une configuration :</p>
+<ul>
+<li><strong>Statut</strong> : badge actif/desactive</li>
+<li><strong>Sections activees</strong> : remise volume (on/off), abonnement (on/off)</li>
+<li><strong>Regle d'affichage</strong> : la regle actuellement en vigueur</li>
+<li><strong>Titres personnalises</strong> : titre et sous-titre de la section remise volume, titre et sous-titre de la section abonnement</li>
+<li><strong>Valeurs suggerees</strong> : quantite suggeree, frequence d'abonnement suggeree</li>
+<li><strong>Image du produit</strong> : si la configuration est liee a un produit specifique</li>
+<li><strong>Metadonnees</strong> : identifiant, slug, dates de creation et de mise a jour</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer une configuration globale</h3>
+
+<p><strong>Objectif</strong> : Definir le comportement upsell par defaut pour tous les produits.</p>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle regle</strong></li>
+<li><strong>Produit</strong> : Laissez le selecteur sur "Global" (ne selectionnez aucun produit)</li>
+<li><strong>Active</strong> : Activez l'interrupteur</li>
+<li><strong>Remise volume</strong> : Activez pour afficher la section de remise volume</li>
+<li><strong>Abonnement</strong> : Activez pour afficher la section d'abonnement</li>
+<li><strong>Regle d'affichage</strong> : Choisissez quand l'upsell s'affiche</li>
+<li><strong>Titres personnalises</strong> (optionnel) :</li>
+</ol>
+<ul>
+<li>Titre remise volume : ex: "Achetez plus, economisez plus"</li>
+<li>Sous-titre remise volume : ex: "Remise progressive sur les quantites"</li>
+<li>Titre abonnement : ex: "Souscrivez et economisez 15%"</li>
+<li>Sous-titre abonnement : ex: "Livraison automatique, annulable a tout moment"</li>
+</ul>
+<ol>
+<li><strong>Valeurs suggerees</strong> (optionnel) :</li>
+</ol>
+<ul>
+<li>Quantite suggeree : ex: 3</li>
+<li>Frequence suggeree : ex: Tous les 2 mois</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<p>Il ne peut y avoir qu'une seule configuration globale. Si une existe deja, modifiez-la plutot que d'en creer une nouvelle.</p>
+
+<h3>2. Creer une surcharge produit</h3>
+
+<p><strong>Objectif</strong> : Definir un comportement upsell different pour un produit specifique.</p>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle regle</strong></li>
+<li><strong>Produit</strong> : Utilisez le champ de recherche pour trouver le produit, puis selectionnez-le dans la liste deroulante</li>
+<li>Remplissez les parametres comme pour la configuration globale</li>
+<li>Les parametres de cette surcharge remplaceront la configuration globale pour ce produit uniquement</li>
+</ol>
+
+<h3>3. Modifier une configuration</h3>
+
+<ol>
+<li>Selectionnez la configuration dans la liste</li>
+<li>Cliquez sur <strong>Modifier</strong> (icone crayon) dans le panneau de detail</li>
+<li>Le formulaire s'ouvre pre-rempli</li>
+<li>Modifiez les parametres souhaites</li>
+<li>Sauvegardez</li>
+</ol>
+
+<h3>4. Dupliquer une configuration</h3>
+
+<ol>
+<li>Selectionnez la configuration source</li>
+<li>Cliquez sur <strong>Dupliquer</strong> dans le ruban</li>
+<li>Le formulaire s'ouvre avec tous les parametres copies</li>
+<li>Le champ produit est remis a vide pour que vous puissiez choisir un autre produit</li>
+<li>Sauvegardez</li>
+</ol>
+
+<h3>5. Consulter les statistiques</h3>
+
+<p>Cliquez sur <strong>Statistiques conversion</strong> dans le ruban. Un toast affiche un resume : nombre de configs actives/desactivees, nombre avec remise volume, nombre avec abonnement, nombre de configs globales et de surcharges produit.</p>
+
+<h3>6. Exporter en CSV</h3>
+
+<ol>
+<li>Appliquez vos filtres</li>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban</li>
+<li>Le fichier CSV se telecharge avec les colonnes : Produit, Active, Remise volume, Abonnement, Regle d'affichage, Quantite suggeree, Frequence suggeree, Derniere mise a jour</li>
+</ol>
+
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario A : Configurer l'upsell global pour tout le site</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle regle</strong></li>
+<li>Laissez le produit sur "Global"</li>
+<li>Activez la remise volume et l'abonnement</li>
+<li>Regle d'affichage : Toujours</li>
+<li>Titre remise volume : "Economisez en achetant plus"</li>
+<li>Titre abonnement : "Abonnez-vous et economisez 15%"</li>
+<li>Quantite suggeree : 3</li>
+<li>Frequence suggeree : Tous les 2 mois</li>
+<li>Sauvegardez</li>
+</ol>
+
+<h3>Scenario B : Desactiver l'abonnement pour un produit specifique</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle regle</strong></li>
+<li>Selectionnez le produit concerne</li>
+<li>Activez la remise volume</li>
+<li>Desactivez l'abonnement</li>
+<li>Gardez les autres parametres identiques au global</li>
+<li>Sauvegardez</li>
+</ol>
+
+<p>Le produit affichera la remise volume mais pas l'option d'abonnement, meme si la configuration globale propose les deux.</p>
+
+<h3>Scenario C : Tester l'impact de l'upsell sur un produit phare</h3>
+
+<ol>
+<li>Creez une surcharge pour votre produit phare</li>
+<li>Activez l'upsell avec un titre personnalise accrocheur</li>
+<li>Definissez la regle sur "Toujours"</li>
+<li>Apres quelques semaines, consultez les rapports marketing pour voir si le panier moyen a augmente</li>
+<li>Comparez avec les produits qui n'ont que la configuration globale</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Que se passe-t-il si je n'ai pas de configuration globale ?</strong></p>
+<p>R: Sans configuration globale, aucun upsell ne s'affiche sur les pages produit (sauf ceux qui ont une surcharge specifique). Il est recommande de toujours avoir une configuration globale active.</p>
+
+<p><strong>Q: Puis-je avoir plusieurs configurations pour le meme produit ?</strong></p>
+<p>R: Non. Chaque produit ne peut avoir qu'une seule surcharge. Le systeme empeche la creation de doublons.</p>
+
+<p><strong>Q: Les titres personnalises sont-ils obligatoires ?</strong></p>
+<p>R: Non. Si vous laissez les titres vides, le systeme utilise des titres par defaut.</p>
+
+<p><strong>Q: Comment sont affichees les remises volume sur le site ?</strong></p>
+<p>R: Un tableau de prix degressifs s'affiche sous le selecteur de quantite sur la page produit, montrant le prix unitaire pour differentes quantites.</p>
+
+<p><strong>Q: Que signifie "Frequence suggeree" ?</strong></p>
+<p>R: C'est la frequence d'abonnement qui sera pre-selectionnee par defaut pour le client (par exemple "Tous les 2 mois"). Le client peut toujours choisir une autre frequence.</p>
+
+<hr>
+
+<h2>Strategie expert : regles de cross-sell specifiques aux peptides</h2>
+
+<h3>Principe fondamental</h3>
+
+<p>Les peptides ne s'utilisent pas seuls. Chaque peptide necessite des accessoires (eau bacteriostatique, seringues) et se combine naturellement avec d'autres peptides pour des "stacks" de recherche. Le cross-sell est donc particulierement pertinent et naturel dans ce domaine -- il s'agit de guider le client vers les produits dont il aura reellement besoin.</p>
+
+<h3>Matrice de cross-sell recommandee</h3>
+
+<table>
+<thead>
+    <tr><th>Produit principal</th><th>Cross-sell prioritaire</th><th>Cross-sell secondaire</th><th>Logique</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>BPC-157</strong></td><td>Eau bacteriostatique, seringues insuline</td><td>TB-500 (stack reparation), GHK-Cu</td><td>Accessoires essentiels + stack complementaire</td></tr>
+  <tr><td><strong>TB-500</strong></td><td>Eau bacteriostatique, seringues</td><td>BPC-157 (stack reparation)</td><td>Le stack BPC+TB est le plus populaire</td></tr>
+  <tr><td><strong>CJC-1295</strong></td><td>Ipamorelin (stack GH), eau bacteriostatique</td><td>GHRP-6, seringues insuline</td><td>Stack synergique hormone de croissance</td></tr>
+  <tr><td><strong>Ipamorelin</strong></td><td>CJC-1295 (stack GH), eau bacteriostatique</td><td>MOD-GRF, seringues</td><td>Stack classique GH release</td></tr>
+  <tr><td><strong>GHK-Cu</strong></td><td>Seringues, eau bacteriostatique</td><td>BPC-157, collagene</td><td>Reparation cutanee et tissulaire</td></tr>
+  <tr><td><strong>Thymosin Alpha-1</strong></td><td>Eau bacteriostatique, seringues</td><td>BPC-157</td><td>Complementarite immunitaire et reparation</td></tr>
+  <tr><td><strong>Eau bacteriostatique</strong></td><td>Seringues insuline, alcool tampons</td><td>Peptide le plus vendu du moment</td><td>Accessoire appele accessoire</td></tr>
+  <tr><td><strong>Seringues insuline</strong></td><td>Eau bacteriostatique, alcool tampons</td><td>Pack de peptides populaires</td><td>Accessoire appele accessoire</td></tr>
+</tbody>
+</table>
+<h3>Moment optimal de l'upsell</h3>
+
+<table>
+<thead>
+    <tr><th>Moment</th><th>Type</th><th>Taux de conversion moyen</th><th>Usage recommande</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Page produit</strong></td><td>Cross-sell lateral ("Souvent achete avec")</td><td>3-5%</td><td>Accessoires indispensables</td></tr>
+  <tr><td><strong>Ajout au panier</strong></td><td>Popup upsell ("Completez votre commande")</td><td>5-8%</td><td>Stacks et bundles</td></tr>
+  <tr><td><strong>Checkout</strong></td><td>Derniere chance ("N'oubliez pas")</td><td>2-4%</td><td>Petits accessoires (tampons, seringues)</td></tr>
+  <tr><td><strong>Post-achat</strong></td><td>Email J+1 ("Pour completer votre recherche")</td><td>8-12%</td><td>Produits complementaires non urgents</td></tr>
+</tbody>
+</table>
+<p>Le post-achat est le moment le plus efficace car le client a deja fait confiance a votre marque. L'email post-achat bien segmente surpasse tous les autres canaux de cross-sell.</p>
+
+<h3>Objectif panier moyen</h3>
+
+<table>
+<thead>
+    <tr><th>Segment</th><th>Panier moyen actuel (estimation)</th><th>Panier moyen cible</th><th>Levier principal</th></tr>
+</thead>
+<tbody>
+  <tr><td>Nouveau client B2C</td><td>80-120 $CA</td><td>140-180 $CA</td><td>Cross-sell accessoires + code bundle</td></tr>
+  <tr><td>Client recurrent B2C</td><td>120-180 $CA</td><td>200-250 $CA</td><td>Stack suggestions + remise volume</td></tr>
+  <tr><td>Client B2B (labo)</td><td>300-600 $CA</td><td>500-1000 $CA</td><td>Grille de prix volume + abonnement</td></tr>
+</tbody>
+</table>
+<h3>Regles d'affichage recommandees par produit</h3>
+
+<ul>
+<li><strong>Peptides a unite (BPC-157, TB-500, etc.)</strong> : Afficher remise volume + cross-sell accessoires. Regle "Toujours".</li>
+<li><strong>Accessoires (eau bact., seringues)</strong> : Afficher cross-sell peptides populaires uniquement. Regle "Une fois par session" pour ne pas surcharger.</li>
+<li><strong>Stacks/Bundles pre-configures</strong> : Desactiver l'upsell (le client achete deja le lot). Regle "Desactive".</li>
+</ul>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Upsell</strong></td><td>Technique de vente incitative qui propose au client un achat de valeur superieure</td></tr>
+  <tr><td><strong>Cross-sell</strong></td><td>Technique de vente croisee qui propose des produits complementaires</td></tr>
+  <tr><td><strong>Configuration globale</strong></td><td>Les parametres upsell par defaut appliques a tous les produits</td></tr>
+  <tr><td><strong>Surcharge produit</strong></td><td>Configuration specifique a un produit qui remplace la globale</td></tr>
+  <tr><td><strong>Remise volume</strong></td><td>Remise progressive accordee en fonction de la quantite achetee</td></tr>
+  <tr><td><strong>Abonnement</strong></td><td>Envoi recurrent automatique d'un produit a intervalles reguliers</td></tr>
+  <tr><td><strong>Regle d'affichage</strong></td><td>Condition qui determine quand l'upsell est visible pour le client</td></tr>
+  <tr><td><strong>Frequence</strong></td><td>L'intervalle entre chaque livraison d'un abonnement</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/produits">Produits</a> -- Les produits concernes par les regles upsell</li>
+<li><a href="/admin/abonnements">Abonnements</a> -- Gerer les abonnements souscrits par les clients</li>
+<li><a href="/admin/commandes">Commandes</a> -- Voir les commandes avec upsell</li>
+<li><a href="/admin/rapports">Rapports marketing</a> -- Analyser l'impact de l'upsell sur le panier moyen</li>
+<li><a href="/admin/promotions">Promotions</a> -- Remises automatiques complementaires a l'upsell</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="04-marketing--06-blog">
+<h1>Gestion du Blog</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Marketing > Blog</p>
+<p><strong>URL</strong>: <code>/admin/blog</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Blog</strong> permet de gerer les articles publies sur la section blog de votre boutique BioCycle Peptides. Le blog est un outil essentiel pour le referencement (SEO) et l'engagement des clients : il attire du trafic organique via les moteurs de recherche et positionne votre marque comme une reference dans le domaine des peptides de recherche.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir la liste de tous les articles (publies et brouillons)</li>
+<li>Rechercher un article par titre ou extrait</li>
+<li>Filtrer les articles par statut (tous, publies, brouillons)</li>
+<li>Creer un nouvel article</li>
+<li>Modifier un article existant</li>
+<li>Previsualiser un article sur le site public</li>
+<li>Consulter l'auteur et la date de publication de chaque article</li>
+</ul>
+
+<hr>
+
+<h2>Concepts pour les debutants</h2>
+
+<h3>Pourquoi tenir un blog ?</h3>
+
+<p>Un blog professionnel sur un site e-commerce sert plusieurs objectifs :</p>
+<ul>
+<li><strong>SEO</strong> (Search Engine Optimization) : Les articles contenant des mots-cles pertinents aident votre site a apparaitre plus haut dans Google</li>
+<li><strong>Credibilite</strong> : Des articles informatifs sur les peptides renforcent la confiance des clients</li>
+<li><strong>Engagement</strong> : Le contenu interessant incite les visiteurs a revenir et a s'inscrire a la newsletter</li>
+<li><strong>Conversion</strong> : Des articles bien rediges peuvent orienter les lecteurs vers vos produits</li>
+</ul>
+
+<h3>Statuts d'un article</h3>
+
+<table>
+<thead>
+    <tr><th>Statut</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Publie</strong></td><td>L'article est visible sur le site public</td></tr>
+  <tr><td><strong>Brouillon</strong></td><td>L'article est en cours de redaction, invisible pour les visiteurs</td></tr>
+</tbody>
+</table>
+<h3>Anatomie d'un article</h3>
+
+<ul>
+<li><strong>Titre</strong> : Le titre principal de l'article</li>
+<li><strong>Slug</strong> : L'identifiant URL de l'article (genere automatiquement a partir du titre)</li>
+<li><strong>Extrait</strong> : Un court resume qui apparait dans les listes d'articles</li>
+<li><strong>Contenu</strong> : Le corps de l'article en format riche</li>
+<li><strong>Auteur</strong> : La personne qui a ecrit l'article</li>
+<li><strong>Date de publication</strong> : La date a laquelle l'article a ete rendu public</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Marketing</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong>, cliquez sur <strong>Blog</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Cliquez sur l'icone de la section <strong>Marketing</strong> dans le rail</li>
+<li>Cliquez sur <strong>Blog</strong></li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche (ou tapez <code>/</code>)</li>
+<li>Tapez "blog" ou "articles"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>La page Blog utilise un layout en <strong>tableau</strong> plutot que le layout master/detail Outlook.</p>
+
+<h3>1. L'en-tete de page</h3>
+
+<p>En haut, vous trouvez :</p>
+<ul>
+<li>Le titre "Blog" et le sous-titre</li>
+<li>Le bouton <strong>Nouvel article</strong> qui ouvre l'editeur de creation</li>
+</ul>
+
+<h3>2. Les filtres et la recherche</h3>
+
+<p>Sous l'en-tete :</p>
+<ul>
+<li><strong>Barre de recherche</strong> : Tapez un mot pour filtrer les articles par titre</li>
+<li><strong>Boutons de filtre</strong> : Trois options</li>
+<li><strong>Tous</strong> : Affiche tous les articles</li>
+<li><strong>Publies</strong> : Affiche uniquement les articles publies</li>
+<li><strong>Brouillons</strong> : Affiche uniquement les brouillons</li>
+</ul>
+
+<h3>3. Le tableau des articles</h3>
+
+<p>Un tableau avec quatre colonnes :</p>
+
+<table>
+<thead>
+    <tr><th>Colonne</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Article</strong></td><td>Titre de l'article et extrait (premiere ligne tronquee)</td></tr>
+  <tr><td><strong>Statut</strong></td><td>Badge "Publie" (vert) ou "Brouillon" (gris)</td></tr>
+  <tr><td><strong>Date</strong></td><td>Date de publication ou de creation</td></tr>
+  <tr><td><strong>Actions</strong></td><td>Boutons pour voir l'article sur le site (oeil) ou le modifier (crayon)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer un nouvel article</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvel article</strong> en haut a droite</li>
+<li>Vous etes redirige vers la page d'edition <code>/admin/blog/new</code></li>
+<li>Remplissez les champs :</li>
+</ol>
+<ul>
+<li>Titre</li>
+<li>Contenu (editeur riche)</li>
+<li>Extrait (resume)</li>
+<li>Categorie</li>
+<li>Mots-cles SEO</li>
+</ul>
+<ol>
+<li>Choisissez de publier immediatement ou de sauvegarder comme brouillon</li>
+<li>Sauvegardez</li>
+</ol>
+
+<h3>2. Modifier un article existant</h3>
+
+<ol>
+<li>Dans le tableau, trouvez l'article a modifier</li>
+<li>Cliquez sur l'icone <strong>crayon</strong> dans la colonne Actions</li>
+<li>Vous etes redirige vers la page d'edition <code>/admin/blog/[id]/edit</code></li>
+<li>Modifiez les champs souhaites</li>
+<li>Sauvegardez</li>
+</ol>
+
+<h3>3. Previsualiser un article sur le site public</h3>
+
+<ol>
+<li>Dans le tableau, trouvez l'article</li>
+<li>Cliquez sur l'icone <strong>oeil</strong> dans la colonne Actions</li>
+<li>L'article s'ouvre dans un nouvel onglet a l'adresse <code>/blog/[slug]</code></li>
+</ol>
+
+<h3>4. Rechercher un article</h3>
+
+<p>Tapez un mot ou une expression dans la barre de recherche. La liste se filtre instantanement. La recherche porte sur le titre de l'article.</p>
+
+<h3>5. Filtrer par statut</h3>
+
+<p>Cliquez sur <strong>Tous</strong>, <strong>Publies</strong> ou <strong>Brouillons</strong> pour afficher uniquement les articles correspondants. Le filtre actif est mis en evidence.</p>
+
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario A : Publier un article sur un nouveau peptide</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvel article</strong></li>
+<li>Titre : "BPC-157 : Guide complet pour la recherche"</li>
+<li>Redigez un contenu detaille avec les proprietes, les protocoles de recherche, et les references scientifiques</li>
+<li>Ajoutez un extrait : "Tout ce que les chercheurs doivent savoir sur le BPC-157, du mecanisme d'action aux protocoles de dosage."</li>
+<li>Publiez l'article</li>
+<li>Partagez le lien dans votre prochaine newsletter</li>
+</ol>
+
+<h3>Scenario B : Gerer les brouillons en attente de relecture</h3>
+
+<ol>
+<li>Filtrez sur <strong>Brouillons</strong></li>
+<li>Parcourez la liste des articles en attente</li>
+<li>Ouvrez chaque brouillon pour le relire et le corriger</li>
+<li>Quand un article est pret, changez son statut en "Publie"</li>
+</ol>
+
+<h3>Scenario C : Verifier le contenu publie sur le site</h3>
+
+<ol>
+<li>Filtrez sur <strong>Publies</strong></li>
+<li>Pour chaque article, cliquez sur l'icone oeil pour le visualiser tel qu'il apparait aux visiteurs</li>
+<li>Verifiez la mise en forme, les liens, et les images</li>
+<li>Si une correction est necessaire, cliquez sur le crayon pour editer</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Le blog est-il disponible dans plusieurs langues ?</strong></p>
+<p>R: Les articles sont rediges dans la langue de votre choix. Le systeme de traduction du site gere les elements d'interface (menus, boutons) dans les 22 langues supportees.</p>
+
+<p><strong>Q: Comment les articles apparaissent-ils sur le site public ?</strong></p>
+<p>R: Les articles publies sont visibles sur la page <code>/blog</code> du site. Chaque article a sa propre URL basee sur son slug (par exemple <code>/blog/bpc-157-guide-complet</code>).</p>
+
+<p><strong>Q: Puis-je programmer la publication d'un article a une date future ?</strong></p>
+<p>R: Le champ "date de publication" permet de definir quand l'article sera considere comme publie. Sauvegardez-le comme brouillon et changez son statut a la date souhaitee, ou utilisez le champ de date de publication.</p>
+
+<p><strong>Q: Comment optimiser mes articles pour le SEO ?</strong></p>
+<p>R: Utilisez des titres descriptifs avec des mots-cles pertinents, redigez un extrait accrocheur, structurez le contenu avec des sous-titres, et incluez des liens vers vos pages produit.</p>
+
+<hr>
+
+<h2>Strategie expert : contenu blog pour un e-commerce de peptides</h2>
+
+<h3>ATTENTION CONFORMITE SANTE CANADA</h3>
+
+<p><strong>REGLE ABSOLUE</strong> : Ne JAMAIS faire de claims medicaux dans les articles de blog. Sante Canada classe les peptides comme des produits de recherche, pas comme des medicaments ou des supplements de sante. Toute affirmation therapeutique ("le BPC-157 guerit les blessures", "l'Ipamorelin fait perdre du poids") peut entrainer des poursuites, des amendes et le retrait de vos produits.</p>
+
+<p><strong>Formulations a utiliser SYSTEMATIQUEMENT</strong> :</p>
+<ul>
+<li>"Pour usage en recherche uniquement" (a inclure dans chaque article)</li>
+<li>"Les etudes suggerent que..." (jamais "le BPC-157 fait...")</li>
+<li>"Dans un contexte de recherche scientifique..." (pas "pour votre sante...")</li>
+<li>"Les chercheurs ont observe que..." (pas "vous constaterez que...")</li>
+<li>"Ce contenu est a titre informatif et ne constitue pas un avis medical"</li>
+</ul>
+
+<p><strong>Avertissement a inserer dans chaque article</strong> :</p>
+<blockquote>
+<p>AVERTISSEMENT : Les peptides vendus par BioCycle Peptides sont destines exclusivement a la recherche scientifique. Ce contenu est fourni a titre educatif et ne constitue pas un avis medical. Consultez un professionnel de la sante pour toute question medicale.</p>
+</blockquote>
+
+<h3>Types de contenu recommandes</h3>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Objectif SEO</th><th>Frequence</th><th>Exemple</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Guide produit</strong></td><td>Mots-cles transactionnels</td><td>2/mois</td><td>"Guide du BPC-157 pour la recherche : proprietes, reconstitution, stockage"</td></tr>
+  <tr><td><strong>Tutoriel pratique</strong></td><td>Mots-cles informationnels</td><td>2/mois</td><td>"Comment reconstituer un peptide lyophilise : guide etape par etape"</td></tr>
+  <tr><td><strong>Revue scientifique</strong></td><td>Autorite et credibilite</td><td>1/mois</td><td>"Etudes recentes sur le GHK-Cu : revue de la litterature 2025-2026"</td></tr>
+  <tr><td><strong>Comparatif</strong></td><td>Mots-cles de decision</td><td>1/mois</td><td>"BPC-157 vs TB-500 : differences, usages en recherche, combinaison"</td></tr>
+  <tr><td><strong>FAQ approfondie</strong></td><td>Featured snippets Google</td><td>1/mois</td><td>"Questions frequentes sur l'eau bacteriostatique"</td></tr>
+  <tr><td><strong>Actualite</strong></td><td>Trafic de tendance</td><td>Au besoin</td><td>"Nouvelle reglementation Sante Canada 2026 : ce que les chercheurs doivent savoir"</td></tr>
+</tbody>
+</table>
+<h3>Calendrier editorial mensuel type</h3>
+
+<table>
+<thead>
+    <tr><th>Semaine</th><th>Type</th><th>Sujet</th><th>Mots-cles cibles</th></tr>
+</thead>
+<tbody>
+  <tr><td>Semaine 1</td><td>Guide produit</td><td>Focus sur un peptide phare</td><td>"acheter [peptide] Canada", "[peptide] recherche"</td></tr>
+  <tr><td>Semaine 2</td><td>Tutoriel pratique</td><td>Manipulation, stockage, reconstitution</td><td>"comment reconstituer peptide", "stockage peptide"</td></tr>
+  <tr><td>Semaine 3</td><td>Revue scientifique ou comparatif</td><td>Synthese d'etudes recentes</td><td>"[peptide] etudes", "[peptide A] vs [peptide B]"</td></tr>
+  <tr><td>Semaine 4</td><td>FAQ ou actualite</td><td>Reponses aux questions courantes</td><td>"peptides Canada legal", "eau bacteriostatique utilisation"</td></tr>
+</tbody>
+</table>
+<h3>Strategie SEO longue traine</h3>
+
+<p>Les mots-cles de longue traine (3 a 6 mots) ont moins de volume mais un taux de conversion beaucoup plus eleve pour un e-commerce de niche :</p>
+
+<table>
+<thead>
+    <tr><th>Mot-cle longue traine</th><th>Volume estime</th><th>Intention</th><th>Article cible</th></tr>
+</thead>
+<tbody>
+  <tr><td>"buy bpc-157 Canada"</td><td>500-1000/mois</td><td>Transactionnelle</td><td>Page produit + guide BPC-157</td></tr>
+  <tr><td>"how to reconstitute peptides"</td><td>2000-5000/mois</td><td>Informationnelle</td><td>Tutoriel reconstitution</td></tr>
+  <tr><td>"bpc-157 vs tb-500 research"</td><td>300-800/mois</td><td>Comparaison</td><td>Article comparatif</td></tr>
+  <tr><td>"bacteriostatic water for peptides"</td><td>1000-3000/mois</td><td>Informationnelle</td><td>Guide eau bacteriostatique</td></tr>
+  <tr><td>"peptide storage temperature"</td><td>500-1500/mois</td><td>Informationnelle</td><td>Guide stockage</td></tr>
+  <tr><td>"peptides for research Canada legal"</td><td>200-500/mois</td><td>Informationnelle</td><td>Article legalite</td></tr>
+</tbody>
+</table>
+<p><strong>Objectif</strong> : Chaque article cible 1 mot-cle principal et 3 a 5 mots-cles secondaires. Incluez le mot-cle principal dans le titre, l'extrait, le premier paragraphe et au moins 2 sous-titres.</p>
+
+<h3>Metriques de performance du blog</h3>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Cible mensuelle</th><th>Mesure dans</th></tr>
+</thead>
+<tbody>
+  <tr><td>Trafic organique blog</td><td>+10% mois/mois</td><td>Blog Analytics</td></tr>
+  <tr><td>Temps moyen sur page</td><td>> 3 minutes</td><td>Blog Analytics</td></tr>
+  <tr><td>Taux de rebond articles</td><td>< 60%</td><td>Blog Analytics</td></tr>
+  <tr><td>Clics vers pages produit depuis articles</td><td>> 5% des lecteurs</td><td>Blog Analytics</td></tr>
+  <tr><td>Inscriptions newsletter depuis blog</td><td>> 2% des lecteurs</td><td>Newsletter</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Blog</strong></td><td>Section du site dediee aux articles informatifs et marketing</td></tr>
+  <tr><td><strong>Article</strong></td><td>Un contenu textuel publie sur le blog</td></tr>
+  <tr><td><strong>Brouillon</strong></td><td>Un article en cours de redaction, non visible sur le site public</td></tr>
+  <tr><td><strong>Slug</strong></td><td>L'identifiant textuel utilise dans l'URL de l'article</td></tr>
+  <tr><td><strong>Extrait</strong></td><td>Un court resume de l'article affiche dans les listes</td></tr>
+  <tr><td><strong>SEO</strong></td><td>Search Engine Optimization -- techniques pour ameliorer le classement dans les moteurs de recherche</td></tr>
+  <tr><td><strong>Editeur riche</strong></td><td>Interface de redaction qui permet de formater le texte (gras, italique, titres, images, liens)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/blog/analytics">Blog Analytics</a> -- Statistiques detaillees du blog</li>
+<li><a href="/admin/newsletter">Newsletter</a> -- Relayer les articles par email</li>
+<li><a href="/admin/bannieres">Bannieres</a> -- Mettre en avant un article dans le carrousel hero</li>
+<li><a href="/admin/rapports">Rapports marketing</a> -- Analyser le trafic genere par le blog</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="04-marketing--07-blog-analytics">
+<h1>Analytiques du Blog</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Marketing > Blog > Analytiques</p>
+<p><strong>URL</strong>: <code>/admin/blog/analytics</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Blog Analytics</strong> offre une vue d'ensemble de la performance de votre blog. Elle regroupe des statistiques cles sur vos articles, l'activite de publication, la repartition par categorie, les contributions des auteurs, et les articles recents.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir le nombre total d'articles, de publications, de brouillons et d'articles en vedette</li>
+<li>Suivre le taux de publication (pourcentage d'articles publies par rapport au total)</li>
+<li>Consulter l'activite de publication de la semaine et du mois en cours</li>
+<li>Analyser la repartition des articles par categorie avec des barres de progression</li>
+<li>Voir quels auteurs contribuent le plus</li>
+<li>Consulter les 10 articles les plus recents avec leur statut, categorie, auteur et temps de lecture</li>
+<li>Rafraichir les donnees a la demande</li>
+</ul>
+
+<hr>
+
+<h2>Concepts pour les debutants</h2>
+
+<h3>Pourquoi suivre les analytiques du blog ?</h3>
+
+<p>Les statistiques du blog vous aident a repondre a plusieurs questions strategiques :</p>
+<ul>
+<li><strong>Est-ce qu'on publie assez ?</strong> L'activite de la semaine et du mois vous donne un rythme de publication.</li>
+<li><strong>Quels sujets couvrons-nous ?</strong> La repartition par categorie revele les themes surrepresentes ou sous-representes.</li>
+<li><strong>Qui contribue ?</strong> Les statistiques par auteur montrent la charge de travail editoriale.</li>
+<li><strong>Quel est notre taux de finalisation ?</strong> Le taux de publication revele combien de brouillons sont finalises.</li>
+</ul>
+
+<h3>Les metriques cles</h3>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total Posts</strong></td><td>Nombre total d'articles (publies + brouillons)</td></tr>
+  <tr><td><strong>Published</strong></td><td>Nombre d'articles actuellement publies sur le site</td></tr>
+  <tr><td><strong>Drafts</strong></td><td>Nombre de brouillons en attente de publication</td></tr>
+  <tr><td><strong>Featured</strong></td><td>Nombre d'articles marques "en vedette" (affiches en priorite)</td></tr>
+  <tr><td><strong>Publish Rate</strong></td><td>Pourcentage d'articles qui ont ete publies sur le total</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Marketing</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong>, cliquez sur <strong>Blog</strong>, puis sur <strong>Analytiques</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Cliquez sur l'icone de la section <strong>Marketing</strong> dans le rail</li>
+<li>Cliquez sur <strong>Blog</strong>, puis sur <strong>Analytiques</strong></li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche (ou tapez <code>/</code>)</li>
+<li>Tapez "blog analytics" ou "analytiques blog"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>La page est organisee en sections verticales, du haut vers le bas.</p>
+
+<h3>1. L'en-tete</h3>
+
+<ul>
+<li>Titre : "Blog Analytics"</li>
+<li>Sous-titre : description de la page</li>
+<li>Bouton <strong>Rafraichir</strong> a droite pour recharger les donnees</li>
+</ul>
+
+<h3>2. Les cartes de statistiques generales</h3>
+
+<p>5 cartes disposees en grille :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Icone</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total Posts</strong></td><td>Document</td><td>Nombre total d'articles dans le systeme</td></tr>
+  <tr><td><strong>Published</strong></td><td>Oeil</td><td>Nombre d'articles publies</td></tr>
+  <tr><td><strong>Drafts</strong></td><td>Crayon</td><td>Nombre de brouillons</td></tr>
+  <tr><td><strong>Featured</strong></td><td>Etoile</td><td>Nombre d'articles en vedette</td></tr>
+  <tr><td><strong>Publish Rate</strong></td><td>Tendance</td><td>Pourcentage d'articles publies (ex: "72%")</td></tr>
+</tbody>
+</table>
+<h3>3. L'activite de publication</h3>
+
+<p>Un panneau avec deux cartes cote a cote :</p>
+<ul>
+<li><strong>Cette semaine</strong> : Nombre d'articles publies durant la semaine en cours</li>
+<li><strong>Ce mois-ci</strong> : Nombre d'articles publies durant le mois en cours</li>
+</ul>
+
+<h3>4. La repartition par categorie</h3>
+
+<p>Un panneau montrant chaque categorie avec :</p>
+<ul>
+<li>Le nom de la categorie</li>
+<li>Une barre de progression proportionnelle au nombre d'articles</li>
+<li>Le nombre d'articles dans cette categorie</li>
+</ul>
+
+<h3>5. Les auteurs</h3>
+
+<p>Un panneau montrant chaque auteur avec :</p>
+<ul>
+<li>Le nombre d'articles ecrits</li>
+<li>Le nom de l'auteur</li>
+</ul>
+
+<p>Les auteurs sont affiches dans des cartes colorees disposees en grille.</p>
+
+<h3>6. Le tableau des articles recents</h3>
+
+<p>Un tableau detaille des 10 articles les plus recents :</p>
+
+<table>
+<thead>
+    <tr><th>Colonne</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Title</strong></td><td>Titre de l'article (avec etoile si en vedette)</td></tr>
+  <tr><td><strong>Category</strong></td><td>Categorie de l'article (ou "Uncategorized")</td></tr>
+  <tr><td><strong>Author</strong></td><td>Nom de l'auteur</td></tr>
+  <tr><td><strong>Status</strong></td><td>Badge "Published" (vert) ou "Draft" (gris)</td></tr>
+  <tr><td><strong>Published</strong></td><td>Date de publication</td></tr>
+  <tr><td><strong>Read Time</strong></td><td>Temps de lecture estime en minutes</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Consulter les statistiques generales</h3>
+
+<p>Les 5 cartes en haut de la page donnent une vue instantanee de l'etat de votre blog. Elles se mettent a jour a chaque chargement de la page ou quand vous cliquez sur Rafraichir.</p>
+
+<h3>2. Suivre le rythme de publication</h3>
+
+<p>La section "Publishing Activity" montre combien d'articles ont ete publies cette semaine et ce mois-ci. Utilisez ces chiffres pour evaluer si votre rythme editorial correspond a vos objectifs.</p>
+
+<h3>3. Analyser la repartition par categorie</h3>
+
+<p>La section "Categories" montre la distribution de vos articles par theme. Les barres de progression permettent de visualiser rapidement quelles categories sont les plus fournies et lesquelles auraient besoin de plus de contenu.</p>
+
+<h3>4. Evaluer les contributions des auteurs</h3>
+
+<p>La section "Authors" montre le nombre d'articles par auteur. Utile pour equilibrer la charge de travail redactionnelle dans une equipe.</p>
+
+<h3>5. Parcourir les articles recents</h3>
+
+<p>Le tableau en bas de page liste les 10 derniers articles. Pour chaque article, vous pouvez voir son titre, sa categorie, son auteur, son statut de publication, sa date et son temps de lecture estime. Les articles en vedette sont marques d'une etoile jaune.</p>
+
+<h3>6. Rafraichir les donnees</h3>
+
+<p>Cliquez sur le bouton <strong>Refresh</strong> en haut a droite pour recharger toutes les donnees de la page sans recharger la page entiere. Un indicateur de chargement s'affiche pendant le rafraichissement.</p>
+
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario A : Etablir un bilan editorial mensuel</h3>
+
+<ol>
+<li>Ouvrez la page Blog Analytics</li>
+<li>Notez le nombre total d'articles publies et de brouillons</li>
+<li>Consultez le taux de publication : si beaucoup de brouillons stagnent, planifiez des sessions de relecture</li>
+<li>Regardez la repartition par categorie : identifiez les categories sous-representees</li>
+<li>Regardez les contributions par auteur : equilibrez si un auteur porte l'essentiel de la charge</li>
+</ol>
+
+<h3>Scenario B : Identifier les categories a developper</h3>
+
+<ol>
+<li>Consultez la section Categories</li>
+<li>Identifiez les categories avec peu d'articles (barres courtes)</li>
+<li>Planifiez la creation d'articles sur ces sujets</li>
+<li>Apres quelques semaines, revenez verifier l'evolution</li>
+</ol>
+
+<h3>Scenario C : Surveiller le rythme hebdomadaire</h3>
+
+<ol>
+<li>Consultez la section "Publishing Activity"</li>
+<li>"This Week" devrait idealement etre superieur ou egal a votre objectif (par exemple 2 articles par semaine)</li>
+<li>Si le chiffre est a zero, relancez votre equipe editoriale</li>
+<li>Comparez avec "This Month" pour voir la tendance</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Les analytiques incluent-elles les vues des articles ?</strong></p>
+<p>R: La page actuelle se concentre sur les metriques editoriales (nombre d'articles, statuts, categories, auteurs). Les statistiques de trafic (pages vues, visiteurs uniques) se trouvent dans les outils d'analyse web (Google Analytics ou equivalent).</p>
+
+<p><strong>Q: Comment un article devient-il "Featured" (en vedette) ?</strong></p>
+<p>R: L'option "en vedette" se configure dans l'editeur d'article. Les articles en vedette apparaissent en priorite sur la page blog du site et sont signales par une etoile dans les analytiques.</p>
+
+<p><strong>Q: Le temps de lecture est-il calcule automatiquement ?</strong></p>
+<p>R: Oui. Le temps de lecture est estime automatiquement en fonction de la longueur du contenu de l'article (environ 200 mots par minute de lecture).</p>
+
+<p><strong>Q: A quelle frequence les donnees sont-elles mises a jour ?</strong></p>
+<p>R: Les donnees sont chargees en temps reel a chaque ouverture de la page. Cliquez sur Rafraichir pour obtenir les donnees les plus recentes sans recharger la page.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Analytiques</strong></td><td>Donnees statistiques permettant de mesurer la performance</td></tr>
+  <tr><td><strong>Taux de publication</strong></td><td>Pourcentage d'articles publies par rapport au total des articles</td></tr>
+  <tr><td><strong>Article en vedette</strong></td><td>Article mis en avant sur le blog (affiche en priorite)</td></tr>
+  <tr><td><strong>Categorie</strong></td><td>Classification thematique des articles (ex: "Peptides de reparation")</td></tr>
+  <tr><td><strong>Temps de lecture</strong></td><td>Estimation du temps necessaire pour lire un article, en minutes</td></tr>
+  <tr><td><strong>Auteur</strong></td><td>La personne creditee pour la redaction d'un article</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/blog">Blog</a> -- Gerer les articles (creer, modifier, publier)</li>
+<li><a href="/admin/rapports">Rapports marketing</a> -- Analyser l'impact du blog sur les ventes</li>
+<li><a href="/admin/newsletter">Newsletter</a> -- Diffuser les articles par email</li>
+<li><a href="/admin/bannieres">Bannieres</a> -- Promouvoir des articles via le carrousel hero</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="04-marketing--08-rapports">
+<h1>Rapports Marketing</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Marketing > Rapports</p>
+<p><strong>URL</strong>: <code>/admin/rapports</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Rapports</strong> est votre tableau de bord d'analyse commerciale. Elle consolide les donnees de ventes en provenance de la comptabilite et les presente sous forme de graphiques et de classements. Vous pouvez suivre le revenu, le nombre de commandes, le panier moyen, les produits les plus vendus, et la repartition geographique des ventes.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Visualiser le revenu total, le nombre de commandes et le panier moyen</li>
+<li>Comparer la periode actuelle avec la periode precedente (tendance en pourcentage)</li>
+<li>Consulter un graphique du revenu quotidien</li>
+<li>Voir le classement des produits les plus vendus</li>
+<li>Analyser la repartition des ventes par region (province, territoire)</li>
+<li>Filtrer les donnees par periode (7 jours, 30 jours, 90 jours, 12 mois)</li>
+<li>Exporter les donnees en CSV ou en PDF</li>
+<li>Imprimer le rapport</li>
+<li>Generer un resume textuel des statistiques</li>
+</ul>
+
+<hr>
+
+<h2>Concepts pour les debutants</h2>
+
+<h3>Pourquoi suivre les rapports marketing ?</h3>
+
+<p>Les rapports marketing repondent a des questions essentielles pour piloter votre activite :</p>
+<ul>
+<li><strong>Combien gagnons-nous ?</strong> Le revenu total vous donne le chiffre d'affaires.</li>
+<li><strong>Combien de commandes recevons-nous ?</strong> Le volume de commandes indique la demande.</li>
+<li><strong>Quel est le panier moyen ?</strong> Le montant moyen par commande revele le comportement d'achat.</li>
+<li><strong>Quels produits se vendent le mieux ?</strong> Le classement des top produits oriente votre strategie.</li>
+<li><strong>D'ou viennent les ventes ?</strong> La repartition geographique aide a cibler vos efforts marketing.</li>
+<li><strong>La tendance est-elle a la hausse ou a la baisse ?</strong> Les pourcentages de variation montrent l'evolution.</li>
+</ul>
+
+<h3>Les periodes d'analyse</h3>
+
+<table>
+<thead>
+    <tr><th>Periode</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>7 jours</strong></td><td>Derniere semaine -- utile pour un suivi quotidien</td></tr>
+  <tr><td><strong>30 jours</strong></td><td>Dernier mois -- la vue la plus courante</td></tr>
+  <tr><td><strong>90 jours</strong></td><td>Dernier trimestre -- pour les tendances moyennes</td></tr>
+  <tr><td><strong>12 mois</strong></td><td>Derniere annee -- pour la vue strategique</td></tr>
+</tbody>
+</table>
+<h3>Comment sont calculees les donnees ?</h3>
+
+<p>Les donnees proviennent de la comptabilite reelle (factures clients). Le systeme interroge les API comptables en temps reel pour construire les rapports. Les montants sont calcules en cents pour eviter les erreurs d'arrondi, puis convertis en dollars pour l'affichage.</p>
+
+<h3>Comparaison avec la periode precedente</h3>
+
+<p>Chaque metrique principale (revenu, commandes, panier moyen) est accompagnee d'un pourcentage de variation par rapport a la meme duree precedente. Par exemple, si vous regardez les 30 derniers jours, la comparaison se fait avec les 30 jours d'avant.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Marketing</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong>, cliquez sur <strong>Rapports</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Cliquez sur l'icone de la section <strong>Marketing</strong> dans le rail</li>
+<li>Cliquez sur <strong>Rapports</strong></li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche (ou tapez <code>/</code>)</li>
+<li>Tapez "rapports" ou "reports"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Generer le rapport</strong></td><td>Recharger les donnees pour la periode selectionnee</td></tr>
+  <tr><td><strong>Resume</strong></td><td>Afficher un resume textuel des statistiques cles</td></tr>
+  <tr><td><strong>Comparer periodes</strong></td><td>Afficher la comparaison detaillee avec la periode precedente</td></tr>
+  <tr><td><strong>Exporter PDF</strong></td><td>Telecharger le rapport comptable en format PDF</td></tr>
+  <tr><td><strong>Exporter Excel</strong></td><td>Telecharger les donnees en fichier CSV</td></tr>
+  <tr><td><strong>Imprimer</strong></td><td>Ouvrir la fenetre d'impression du navigateur</td></tr>
+</tbody>
+</table>
+<h3>2. L'en-tete et le selecteur de periode</h3>
+
+<p>En haut de la page :</p>
+<ul>
+<li>Titre : "Rapports Marketing"</li>
+<li>Sous-titre descriptif</li>
+<li><strong>Selecteur de periode</strong> : Menu deroulant pour choisir 7 jours, 30 jours, 90 jours ou 12 mois</li>
+<li><strong>Bouton Exporter PDF</strong> : Acces rapide a l'export PDF</li>
+</ul>
+
+<h3>3. Les cartes de statistiques principales</h3>
+
+<p>4 cartes disposees en ligne :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th><th>Tendance</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Revenu total</strong></td><td>Chiffre d'affaires pour la periode</td><td>Variation en % vs periode precedente</td></tr>
+  <tr><td><strong>Commandes</strong></td><td>Nombre total de commandes</td><td>Variation en %</td></tr>
+  <tr><td><strong>Panier moyen</strong></td><td>Montant moyen par commande</td><td>Variation en %</td></tr>
+  <tr><td><strong>Factures en attente</strong></td><td>Nombre de factures non reglees</td><td>--</td></tr>
+</tbody>
+</table>
+<p>Les tendances sont affichees en vert (hausse) ou en rouge (baisse) avec un pourcentage.</p>
+
+<h3>4. Le graphique du revenu quotidien</h3>
+
+<p>Un graphique en barres verticales montrant le revenu pour chaque jour de la periode. Les 30 derniers jours sont affiches. Au survol de chaque barre, une infobulle affiche la date, le montant et le nombre de commandes.</p>
+
+<h3>5. Les produits les plus vendus</h3>
+
+<p>Un classement des 10 produits les plus vendus pour la periode, avec :</p>
+<ul>
+<li>Un numero de rang (1 a 10) dans un cercle</li>
+<li>Le nom du produit</li>
+<li>Une barre de progression proportionnelle aux ventes</li>
+<li>Le revenu genere</li>
+<li>Le nombre d'unites vendues</li>
+</ul>
+
+<h3>6. Les ventes par region</h3>
+
+<p>Un classement des regions (provinces/territoires canadiens) avec :</p>
+<ul>
+<li>Le nom de la region</li>
+<li>Une barre de progression proportionnelle au revenu</li>
+<li>Le revenu genere</li>
+<li>Le nombre de commandes</li>
+</ul>
+
+<h3>7. La repartition par region (pourcentage)</h3>
+
+<p>Un second panneau montrant la distribution en pourcentage du revenu par region, avec des barres de progression et le pourcentage exact.</p>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Changer la periode d'analyse</h3>
+
+<ol>
+<li>Cliquez sur le selecteur de periode en haut a droite</li>
+<li>Choisissez parmi : 7 jours, 30 jours, 90 jours, 12 mois</li>
+<li>Les donnees se rechargent automatiquement</li>
+<li>Toutes les cartes, graphiques et tableaux se mettent a jour</li>
+</ol>
+
+<h3>2. Consulter la comparaison avec la periode precedente</h3>
+
+<p><strong>Methode rapide</strong> : Les cartes de statistiques affichent deja le pourcentage de variation.</p>
+
+<p><strong>Methode detaillee</strong> : Cliquez sur <strong>Comparer periodes</strong> dans le ruban. Un toast affiche un resume complet :</p>
+<ul>
+<li>Revenu : montant actuel vs precedent (et variation en %)</li>
+<li>Commandes : nombre actuel vs precedent (et variation en %)</li>
+<li>Panier moyen : montant actuel vs precedent (et variation en %)</li>
+</ul>
+
+<h3>3. Generer un resume textuel</h3>
+
+<p>Cliquez sur <strong>Resume</strong> dans le ruban. Un toast affiche :</p>
+<ul>
+<li>Revenu total de la periode</li>
+<li>Nombre de commandes</li>
+<li>Panier moyen</li>
+<li>Top 3 des produits les plus vendus</li>
+</ul>
+
+<p>Utile pour obtenir rapidement les chiffres cles sans parcourir toute la page.</p>
+
+<h3>4. Exporter en PDF</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter PDF</strong> dans le ruban ou le bouton en haut a droite</li>
+<li>Un nouvel onglet s'ouvre avec le rapport PDF genere par le systeme comptable</li>
+<li>Telechargez ou imprimez le PDF</li>
+</ol>
+
+<p>Le PDF est genere par l'API comptable et contient un rapport de revenus formate pour la periode selectionnee.</p>
+
+<h3>5. Exporter en CSV</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter Excel</strong> dans le ruban</li>
+<li>Le fichier CSV se telecharge automatiquement</li>
+<li>Il contient trois sections :</li>
+</ol>
+<ul>
+<li><strong>Donnees quotidiennes</strong> : date, revenu, commandes, panier moyen</li>
+<li><strong>Produits les plus vendus</strong> : nom, nombre de ventes, revenu</li>
+<li><strong>Ventes par region</strong> : region, commandes, revenu</li>
+</ul>
+
+<h3>6. Imprimer le rapport</h3>
+
+<p>Cliquez sur <strong>Imprimer</strong> dans le ruban. La fenetre d'impression du navigateur s'ouvre. Les styles d'impression sont optimises pour un rendu lisible sur papier.</p>
+
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario A : Bilan mensuel pour l'equipe de direction</h3>
+
+<ol>
+<li>Selectionnez la periode <strong>30 jours</strong></li>
+<li>Notez le revenu total et le nombre de commandes</li>
+<li>Consultez la tendance vs le mois precedent</li>
+<li>Cliquez sur <strong>Resume</strong> pour obtenir les chiffres cles</li>
+<li>Exportez en PDF pour joindre au rapport de direction</li>
+<li>Exportez en CSV pour une analyse plus poussee dans Excel</li>
+</ol>
+
+<h3>Scenario B : Identifier les produits a promouvoir</h3>
+
+<ol>
+<li>Selectionnez la periode <strong>90 jours</strong> pour une vue trimestrielle</li>
+<li>Consultez le classement des produits les plus vendus</li>
+<li>Identifiez les produits qui se vendent bien naturellement : renforcez leurs promotions</li>
+<li>Identifiez les produits absents du top 10 mais a fort potentiel : creez des codes promo ou des bannieres dedies</li>
+<li>Croisez avec les donnees par region pour cibler vos campagnes geographiquement</li>
+</ol>
+
+<h3>Scenario C : Analyser l'impact d'une campagne marketing</h3>
+
+<ol>
+<li>Notez le revenu et les commandes AVANT la campagne (selectionnez la periode precedente)</li>
+<li>Lancez votre campagne (code promo, newsletter, banniere)</li>
+<li>Apres la campagne, consultez les rapports pour la periode couvrant la campagne</li>
+<li>Utilisez <strong>Comparer periodes</strong> pour voir la variation</li>
+<li>Si le revenu a augmente significativement, la campagne est un succes</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: D'ou proviennent les donnees de revenus ?</strong></p>
+<p>R: Les donnees proviennent du module de comptabilite (factures clients). Le systeme interroge les API comptables en temps reel, ce qui garantit que les chiffres sont toujours a jour.</p>
+
+<p><strong>Q: Les taxes sont-elles incluses dans le revenu affiche ?</strong></p>
+<p>R: Le revenu total correspond au total des factures (TTC -- toutes taxes comprises). Les rapports fiscaux detailles sont disponibles dans le module Comptabilite.</p>
+
+<p><strong>Q: Pourquoi le graphique n'affiche-t-il que 30 jours meme si je selectionne 90 jours ?</strong></p>
+<p>R: Le graphique en barres affiche les 30 derniers jours de la periode pour rester lisible. Les cartes de statistiques et les classements, eux, couvrent la totalite de la periode selectionnee.</p>
+
+<p><strong>Q: Comment la tendance est-elle calculee ?</strong></p>
+<p>R: La tendance compare la periode actuelle avec une periode de meme duree juste avant. Par exemple, si vous regardez les 30 derniers jours, le systeme compare avec les 30 jours precedents.</p>
+
+<p><strong>Q: Le fichier PDF est-il le meme que celui de la comptabilite ?</strong></p>
+<p>R: Oui. Le bouton Exporter PDF genere un rapport de revenus via l'API comptable, avec un format professionnel adapte a la transmission a un comptable ou a la direction.</p>
+
+<hr>
+
+<h2>Strategie expert : interpretation des KPIs marketing</h2>
+
+<h3>Les 3 KPIs fondamentaux et leurs seuils de sante</h3>
+
+<p><strong>1. CAC (Cout d'acquisition client)</strong></p>
+
+<p>Le CAC represente combien vous depensez en marketing pour acquerir un nouveau client.</p>
+
+<p><strong>Formule</strong> : <code>CAC = Total depenses marketing / Nombre de nouveaux clients acquis</code></p>
+
+<table>
+<thead>
+    <tr><th>CAC</th><th>Interpretation</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td>< CLV/3</td><td>Sain</td><td>Investir davantage pour accelerer la croissance</td></tr>
+  <tr><td>CLV/3 a CLV/2</td><td>Correct mais a surveiller</td><td>Optimiser les canaux les moins performants</td></tr>
+  <tr><td>> CLV/2</td><td>Dangereux</td><td>Reduire les depenses ou ameliorer la conversion</td></tr>
+  <tr><td>> CLV</td><td>Perte nette</td><td>Stopper les campagnes non rentables immediatement</td></tr>
+</tbody>
+</table>
+<p><strong>Exemple pour BioCycle Peptides</strong> :</p>
+<ul>
+<li>CLV moyenne estimee : 600 $CA (4 commandes x 150 $CA sur 18 mois)</li>
+<li>CAC sain : < 200 $CA (600/3)</li>
+<li>Si votre CAC depasse 300 $CA, reduisez les depenses publicitaires et renforcez le SEO et le contenu organique</li>
+</ul>
+
+<p><strong>2. ROAS (Return On Ad Spend)</strong></p>
+
+<p>Le ROAS mesure le revenu genere pour chaque dollar depense en publicite.</p>
+
+<p><strong>Formule</strong> : <code>ROAS = Revenu genere par la campagne / Cout de la campagne</code></p>
+
+<table>
+<thead>
+    <tr><th>ROAS</th><th>Interpretation</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td>> 5x</td><td>Excellent</td><td>Augmenter le budget de cette campagne</td></tr>
+  <tr><td>3x a 5x</td><td>Rentable</td><td>Maintenir et optimiser</td></tr>
+  <tr><td>2x a 3x</td><td>Correct</td><td>Optimiser le ciblage et les creations</td></tr>
+  <tr><td>1x a 2x</td><td>Marginal</td><td>Revoir la strategie ou stopper</td></tr>
+  <tr><td>< 1x</td><td>Perte</td><td>Stopper immediatement</td></tr>
+</tbody>
+</table>
+<p><strong>3. CLV (Customer Lifetime Value)</strong></p>
+
+<p>La valeur a vie du client mesure le revenu total qu'un client genere pendant toute sa relation avec BioCycle Peptides.</p>
+
+<p><strong>Formule simplifiee</strong> : <code>CLV = Panier moyen x Frequence d'achat annuelle x Duree moyenne de la relation (en annees)</code></p>
+
+<h3>Attribution multi-canal</h3>
+
+<p>Un client interagit avec plusieurs canaux avant d'acheter. L'attribution permet de savoir quel canal a le plus contribue a la conversion.</p>
+
+<table>
+<thead>
+    <tr><th>Modele</th><th>Principe</th><th>Quand l'utiliser</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Dernier clic</strong></td><td>100% du credit au dernier canal avant l'achat</td><td>Analyse simple, decisions rapides</td></tr>
+  <tr><td><strong>Premier clic</strong></td><td>100% du credit au canal de decouverte</td><td>Evaluer l'efficacite d'acquisition</td></tr>
+  <tr><td><strong>Lineaire</strong></td><td>Credit reparti equitablement entre tous les canaux</td><td>Vue equilibree de l'entonnoir</td></tr>
+  <tr><td><strong>En U</strong></td><td>40% premier clic, 40% dernier clic, 20% reparti</td><td>Le plus recommande pour l'e-commerce</td></tr>
+</tbody>
+</table>
+<p><strong>Parcours d'achat typique BioCycle Peptides</strong> :</p>
+<ol>
+<li>Decouverte via Google ("buy peptides Canada") -- SEO/SEA</li>
+<li>Visite du blog (article sur le BPC-157) -- Content marketing</li>
+<li>Inscription newsletter (code BIENVENUE10 recu) -- Email marketing</li>
+<li>Retargeting Facebook/Instagram -- Publicite payante</li>
+<li>Achat avec le code BIENVENUE10 -- Conversion</li>
+</ol>
+
+<p>Dans cet exemple, le modele "dernier clic" crediterait uniquement l'email. Le modele "en U" crediterait surtout le SEO (decouverte) et l'email (conversion), avec une part pour le blog et le retargeting.</p>
+
+<h3>Analyse de cohortes</h3>
+
+<p>L'analyse de cohortes regroupe les clients par date d'acquisition et suit leur comportement dans le temps. C'est l'outil le plus puissant pour mesurer la retention.</p>
+
+<p><strong>Comment lire un tableau de cohortes</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Cohorte</th><th>Mois 0</th><th>Mois 1</th><th>Mois 2</th><th>Mois 3</th><th>Mois 6</th><th>Mois 12</th></tr>
+</thead>
+<tbody>
+  <tr><td>Janvier 2026</td><td>100%</td><td>25%</td><td>20%</td><td>18%</td><td>12%</td><td>8%</td></tr>
+  <tr><td>Fevrier 2026</td><td>100%</td><td>30%</td><td>25%</td><td>22%</td><td>15%</td><td>--</td></tr>
+  <tr><td>Mars 2026</td><td>100%</td><td>35%</td><td>28%</td><td>--</td><td>--</td><td>--</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Mois 0</strong> = premiere commande (toujours 100%)</li>
+<li><strong>Mois 1</strong> = pourcentage de clients qui ont commande a nouveau le mois suivant</li>
+<li><strong>Tendance saine</strong> : les cohortes recentes ont de meilleurs taux de retention (signe que vos efforts marketing et produit s'ameliorent)</li>
+</ul>
+
+<p><strong>Cibles de retention pour peptides (e-commerce de niche)</strong> :</p>
+<table>
+<thead>
+    <tr><th>Periode</th><th>Taux de retention cible</th></tr>
+</thead>
+<tbody>
+  <tr><td>Mois 1</td><td>25-35%</td></tr>
+  <tr><td>Mois 3</td><td>15-25%</td></tr>
+  <tr><td>Mois 6</td><td>10-18%</td></tr>
+  <tr><td>Mois 12</td><td>8-15%</td></tr>
+</tbody>
+</table>
+<p>Si vos taux sont inferieurs, concentrez-vous sur les emails post-achat, les rappels de reapprovisionnement et les programmes de fidelite avant d'investir davantage en acquisition.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Revenu total</strong></td><td>Le chiffre d'affaires cumule pour la periode selectionnee</td></tr>
+  <tr><td><strong>Panier moyen</strong></td><td>Le montant moyen depense par commande (revenu / nombre de commandes)</td></tr>
+  <tr><td><strong>Tendance</strong></td><td>Le pourcentage de variation par rapport a la meme duree de la periode precedente</td></tr>
+  <tr><td><strong>Top produits</strong></td><td>Les produits classes par revenu genere sur la periode</td></tr>
+  <tr><td><strong>Region</strong></td><td>Province ou territoire canadien d'ou provient la commande</td></tr>
+  <tr><td><strong>CSV</strong></td><td>Comma-Separated Values, format tabulaire compatible avec Excel et Google Sheets</td></tr>
+  <tr><td><strong>PDF</strong></td><td>Portable Document Format, format de document non modifiable pour les rapports</td></tr>
+  <tr><td><strong>TTC</strong></td><td>Toutes Taxes Comprises -- montant incluant la TPS/TVQ/TVH</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/commandes">Commandes</a> -- Voir le detail de chaque commande</li>
+<li><a href="/admin/comptabilite">Comptabilite</a> -- Ecritures comptables et rapports fiscaux</li>
+<li><a href="/admin/promo-codes">Codes Promo</a> -- Creer des promotions et mesurer leur impact</li>
+<li><a href="/admin/promotions">Promotions</a> -- Remises automatiques</li>
+<li><a href="/admin/newsletter">Newsletter</a> -- Campagnes email et leur impact sur les ventes</li>
+<li><a href="/admin/blog/analytics">Blog Analytics</a> -- Statistiques du blog</li>
+</ul>
+
+</div>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "project": "Guide Utilisateur Complet Suite Koraline",
+  "started": "2026-03-17T16:45:00",
+  "last_updated": "2026-03-20T15:00:00",
+  "total_sections": 13,
+  "sections_completed": 13,
+  "current_section": "COMPLETE",
+  "current_step": "Enrichissement comptabilite avec connaissances expert",
+  "estimated_pages_doc": 2440,
+  "pages_written": 127,
+  "screenshots_taken": 12,
+
+  "sections": {
+    "00-introduction": { "status": "completed", "pages_written": 1, "pages_total": 1 },
+    "01-dashboard": { "status": "completed", "pages_written": 1, "pages_total": 1 },
+    "02-commerce": { "status": "completed", "pages_written": 7, "pages_total": 7 },
+    "03-catalogue": { "status": "completed", "pages_written": 3, "pages_total": 3 },
+    "04-marketing": { "status": "completed", "pages_written": 8, "pages_total": 8 },
+    "05-communaute": { "status": "completed", "pages_written": 4, "pages_total": 4 },
+    "06-fidelite": { "status": "completed", "pages_written": 2, "pages_total": 2 },
+    "07-media": { "status": "completed", "pages_written": 37, "pages_total": 37 },
+    "08-emails": { "status": "completed", "pages_written": 7, "pages_total": 7 },
+    "09-telephonie": { "status": "completed", "pages_written": 22, "pages_total": 22 },
+    "10-crm": { "status": "completed", "pages_written": 13, "pages_total": 13 },
+    "11-comptabilite": { "status": "enriching", "pages_written": 12, "pages_total": 12, "note": "Enrichissement expert en cours" },
+    "12-systeme": { "status": "completed", "pages_written": 10, "pages_total": 10 }
+  },
+
+  "resume_pour_reprise": "127 pages ecrites. 13/13 sections. Enrichissement comptabilite en cours avec connaissances expert ilot (87 items). Ajout: ordre des operations, pourquoi entrer les donnees, demarches detaillees pour non-comptables."
+}

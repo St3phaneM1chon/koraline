@@ -216,7 +216,7 @@ export function I18nProvider({ children, locale: initialLocale, messages: server
 
   // Formatage de devise (reads user's selected currency from localStorage)
   const formatCurrency = useCallback((amount: number, currency?: string): string => {
-    const cur = currency || (typeof window !== 'undefined' && localStorage.getItem('biocycle-currency')) || 'CAD';
+    const cur = currency || (typeof window !== 'undefined' && localStorage.getItem('attitudes-currency')) || 'CAD';
     return new Intl.NumberFormat(locale, {
       style: 'currency',
       currency: cur,

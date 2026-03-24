@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
  * POST /api/aurelia/voice?action=tts — Convert text to speech (ElevenLabs)
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { withMobileGuard } from '@/lib/mobile-guard';
 import { logger } from '@/lib/logger';
 

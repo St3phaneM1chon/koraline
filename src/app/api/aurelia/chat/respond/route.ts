@@ -11,7 +11,8 @@ import { z } from 'zod';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 
-const DAEMON_KEY = process.env.AURELIA_DAEMON_KEY || 'aurelia-daemon-secret-2026';
+const DAEMON_KEY = process.env.AURELIA_DAEMON_KEY;
+if (!DAEMON_KEY) throw new Error('AURELIA_DAEMON_KEY not configured');
 
 function validateDaemonKey(request: NextRequest): boolean {
   const key = request.headers.get('x-aurelia-daemon-key');

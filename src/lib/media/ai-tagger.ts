@@ -43,7 +43,7 @@ export function generateTags(filename: string, productName?: string, category?: 
   if (productName) tags.add(productName.toLowerCase());
 
   // Always add brand
-  tags.add('biocycle peptides');
+  tags.add((process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP').toLowerCase());
 
   return Array.from(tags);
 }

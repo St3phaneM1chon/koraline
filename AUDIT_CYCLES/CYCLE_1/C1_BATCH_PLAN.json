@@ -1,0 +1,197 @@
+[
+  {
+    "name": "C1.1 - CRITICAL+HIGH Security",
+    "item_count": 82,
+    "items": [
+      {
+        "id": "C1-SEC-S-001",
+        "title": "User.email @unique is global, not tenant-scoped",
+        "priority": "CRITICAL",
+        "file": "prisma/schema/auth.prisma"
+      },
+      {
+        "id": "C1-SEC-S-002",
+        "title": "Bundle.slug @unique is global, not tenant-scoped",
+        "priority": "CRITICAL",
+        "file": "prisma/schema/ecommerce.prisma"
+      },
+      {
+        "id": "C1-SEC-S-003",
+        "title": "Product.slug @unique is global, not tenant-scoped",
+        "priority": "CRITICAL",
+        "file": "prisma/schema/ecommerce.prisma"
+      },
+      {
+        "id": "C1-SEC-S-004",
+        "title": "Order.orderNumber @unique is global, not tenant-scoped",
+        "priority": "CRITICAL",
+        "file": "prisma/schema/ecommerce.prisma"
+      },
+      {
+        "id": "C1-SEC-S-005",
+        "title": "Category.slug @unique is global, not tenant-scoped",
+        "priority": "CRITICAL",
+        "file": "prisma/schema/ecommerce.prisma"
+      },
+      {
+        "...": "and 77 more"
+      }
+    ]
+  },
+  {
+    "name": "C1.2 - HIGH Performance+Architecture",
+    "item_count": 28,
+    "items": [
+      {
+        "id": "C1-ARCH-A-001",
+        "title": "Order model has no soft-delete (deletedAt) field",
+        "priority": "CRITICAL",
+        "file": "prisma/schema/ecommerce.prisma"
+      },
+      {
+        "id": "C1-ARCH-A-052",
+        "title": "Tenant isolation via global variable is not async-safe in concurrent requests",
+        "priority": "CRITICAL",
+        "file": "src/lib/db.ts"
+      },
+      {
+        "id": "C1-ARCH-A-002",
+        "title": "OrderItem has no onDelete specification, defaults to required FK error",
+        "priority": "HIGH",
+        "file": "prisma/schema/ecommerce.prisma"
+      },
+      {
+        "id": "C1-ARCH-A-003",
+        "title": "OrderEvent has no onDelete, orphaned events on order deletion",
+        "priority": "HIGH",
+        "file": "prisma/schema/ecommerce.prisma"
+      },
+      {
+        "id": "C1-ARCH-A-004",
+        "title": "PaymentError has no onDelete, orphaned errors on order deletion",
+        "priority": "HIGH",
+        "file": "prisma/schema/ecommerce.prisma"
+      },
+      {
+        "...": "and 23 more"
+      }
+    ]
+  },
+  {
+    "name": "C1.3 - MEDIUM Compliance+I18N+A11Y",
+    "item_count": 63,
+    "items": [
+      {
+        "id": "C1-COMP-A-057",
+        "title": "Webhook routes (13) have inconsistent signature verification patterns",
+        "priority": "MEDIUM",
+        "file": ""
+      },
+      {
+        "id": "C1-COMP-A-058",
+        "title": "Cron routes use inconsistent auth patterns (some via CRON_SECRET, some via withAdminGuard)",
+        "priority": "MEDIUM",
+        "file": ""
+      },
+      {
+        "id": "C1-COMP-A-059",
+        "title": "Search and product endpoints lack rate limiting (DoS risk)",
+        "priority": "MEDIUM",
+        "file": ""
+      },
+      {
+        "id": "C1-COMP-A-060",
+        "title": "Chat conversation update uses spread operator on validated data (potential mass assignment)",
+        "priority": "MEDIUM",
+        "file": "src/app/api/chat/conversations/[id]/route.ts"
+      },
+      {
+        "id": "C1-COMP-A-061",
+        "title": "Client portal token routes (4) lack rate limiting for token enumeration protection",
+        "priority": "MEDIUM",
+        "file": ""
+      },
+      {
+        "...": "and 58 more"
+      }
+    ]
+  },
+  {
+    "name": "C1.4 - Improvements+Features+LMS",
+    "item_count": 312,
+    "items": [
+      {
+        "id": "C1-UX-A-001",
+        "title": "62 public and shop pages missing SEO metadata",
+        "priority": "HIGH",
+        "file": "62 public/shop pages without metadata"
+      },
+      {
+        "id": "C1-UX-A-009",
+        "title": "Root layout properly sets dynamic lang attribute",
+        "priority": "HIGH",
+        "file": "src/app/layout.tsx"
+      },
+      {
+        "id": "C1-UX-A-018",
+        "title": "Contact page has no metadata despite being key public page",
+        "priority": "HIGH",
+        "file": "src/app/(public)/contact/page.tsx"
+      },
+      {
+        "id": "C1-UX-A-036",
+        "title": "Signup page well-implemented: 6 htmlFor, 6 focus:ring, 15 aria-*",
+        "priority": "HIGH",
+        "file": "src/app/(auth)/auth/signup/page.tsx"
+      },
+      {
+        "id": "C1-FEAT-I-001",
+        "title": "No BullMQ queue health check in /api/health",
+        "priority": "HIGH",
+        "file": "src/app/api/health/route.ts"
+      },
+      {
+        "...": "and 307 more"
+      }
+    ]
+  },
+  {
+    "name": "C1.5 - LOW+Cleanup",
+    "item_count": 204,
+    "items": [
+      {
+        "id": "C1-COMP-A-051",
+        "title": "withAdminGuard is not used by 304 routes (33% of total) including all non-admin routes",
+        "priority": "CRITICAL",
+        "file": "src/lib/admin-api-guard.ts"
+      },
+      {
+        "id": "C1-TEST-A-051",
+        "title": "withAdminGuard has no automated test suite despite protecting 615 routes",
+        "priority": "CRITICAL",
+        "file": "src/lib/admin-api-guard.ts"
+      },
+      {
+        "id": "C1-OPS-A-001",
+        "title": "ignoreBuildErrors: true bypasses all TypeScript safety in CI/CD",
+        "priority": "CRITICAL",
+        "file": "next.config.js"
+      },
+      {
+        "id": "C1-OPS-A-002",
+        "title": "next-auth v5.0.0-beta.4 in production — unstable beta with known issues",
+        "priority": "CRITICAL",
+        "file": "package.json"
+      },
+      {
+        "id": "C1-TEST-A-001",
+        "title": "ZERO unit test files exist — 0% unit test coverage",
+        "priority": "CRITICAL",
+        "file": "src/__tests__/"
+      },
+      {
+        "...": "and 199 more"
+      }
+    ]
+  }
+]

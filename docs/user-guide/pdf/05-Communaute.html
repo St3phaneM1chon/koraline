@@ -1,0 +1,1970 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>05 — Communaute &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 05 — Communaute</span>
+        <span>2026-03-20</span>
+      </div>
+
+<div class="cover" style="min-height: 40vh; padding: 3rem 2rem;">
+  <div class="cover-logo" style="width:80px; height:80px; font-size:1.8rem; border-radius:16px;">K</div>
+  <h1 style="font-size:2rem;">05 — Communaute</h1>
+  <div class="subtitle">Guide Utilisateur &mdash; Suite Koraline</div>
+  <div class="version">
+    4 pages dans cette section<br>
+    2026-03-20
+  </div>
+</div><div class="toc-container" style="margin:1rem 0 2rem;">
+<h2>Contenu de cette section</h2>
+<ul class="toc">
+<ul class="toc-pages">
+<li><a href="#05-communaute--01-avis"><span>Gestion des Avis Clients</span><span class="toc-dots"></span></a></li>
+<li><a href="#05-communaute--02-questions"><span>Gestion des Questions Produits</span><span class="toc-dots"></span></a></li>
+<li><a href="#05-communaute--03-chat"><span>Chat Support en Direct</span><span class="toc-dots"></span></a></li>
+<li><a href="#05-communaute--04-ambassadeurs"><span>Programme Ambassadeurs</span><span class="toc-dots"></span></a></li>
+</ul>
+</ul>
+</div><div id="05-communaute--01-avis">
+<h1>Gestion des Avis Clients</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Communaute > Avis</p>
+<p><strong>URL</strong>: <code>/admin/avis</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Avis</strong> centralise tous les avis et evaluations laisses par vos clients sur les produits de la boutique BioCycle Peptides. Les avis jouent un role essentiel dans la confiance et la conversion : un produit avec des avis positifs se vend nettement mieux qu'un produit sans retour client.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Consulter tous les avis produits en un coup d'oeil</li>
+<li>Moderer les avis (approuver, rejeter, mettre en attente)</li>
+<li>Repondre aux avis clients avec des modeles de reponse predefinis</li>
+<li>Filtrer les avis par statut (en attente, approuve, rejete)</li>
+<li>Rechercher un avis par nom de client, produit ou contenu</li>
+<li>Voir la note moyenne et les statistiques de sentiment (positif, neutre, negatif)</li>
+<li>Identifier les achats verifies grace au badge dedie</li>
+<li>Visualiser les photos jointes aux avis</li>
+<li>Effectuer des actions groupees (approbation ou rejet en masse)</li>
+<li>Exporter la liste des avis au format CSV</li>
+<li>Activer les demandes d'avis automatiques apres achat</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un avis client ?</h3>
+<p>Un avis est un retour ecrit laisse par un client apres l'achat d'un produit. Il comprend generalement une note (de 1 a 5 etoiles), un titre, un commentaire ecrit, et parfois des photos.</p>
+
+<h3>Pourquoi moderer les avis ?</h3>
+<p>Tous les avis ne doivent pas apparaitre sur le site. La moderation permet de :</p>
+<ul>
+<li>Bloquer les avis inappropries, offensants ou faux</li>
+<li>Approuver les avis constructifs et pertinents</li>
+<li>Repondre professionnellement aux avis negatifs pour montrer votre engagement</li>
+</ul>
+
+<h3>Qu'est-ce qu'un "achat verifie" ?</h3>
+<p>Un badge "Achat verifie" apparait quand le systeme confirme que l'auteur de l'avis a bien achete le produit. Cela renforce la credibilite de l'avis aux yeux des autres clients.</p>
+
+<h3>Que sont les modeles de reponse ?</h3>
+<p>Le systeme propose 4 modeles de reponse preecrites pour gagner du temps :</p>
+<ul>
+<li><strong>Remerciement (avis positif)</strong> : pour remercier un client satisfait</li>
+<li><strong>Remerciement (avis constructif)</strong> : pour un retour mitige avec des suggestions</li>
+<li><strong>Excuses et resolution</strong> : pour un avis negatif necessitant un suivi</li>
+<li><strong>Assurance qualite</strong> : pour rappeler vos engagements qualite et les tests en laboratoire</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le rail de navigation</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la colonne d'icones a gauche, cliquez sur l'icone <strong>Communaute</strong> (bulle de discussion)</li>
+<li>Dans le panneau lateral qui s'ouvre, cliquez sur <strong>Avis</strong></li>
+</ol>
+
+<h3>Methode 2 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche en haut (ou tapez <code>/</code>)</li>
+<li>Tapez "avis" ou "reviews"</li>
+<li>Selectionnez le resultat correspondant</li>
+</ol>
+
+<h3>Methode 3 : Acces direct par URL</h3>
+<ol>
+<li>Rendez-vous a l'adresse <code>/admin/avis</code> dans votre navigateur</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>L'interface est organisee en <strong>4 zones principales</strong> :</p>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Icone</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Repondre</strong></td><td>Bulle de message</td><td>Ouvrir la fenetre de reponse pour l'avis selectionne</td></tr>
+  <tr><td><strong>Approuver</strong></td><td>Coche verte</td><td>Approuver l'avis selectionne (le rendre visible sur le site)</td></tr>
+  <tr><td><strong>Rejeter</strong></td><td>Cercle barre rouge</td><td>Rejeter l'avis selectionne (le masquer du site)</td></tr>
+  <tr><td><strong>Signaler le contenu</strong></td><td>Drapeau</td><td>Signaler un avis inapproprie</td></tr>
+  <tr><td><strong>Convertir en temoignage</strong></td><td>Signet</td><td>Convertir un avis positif en temoignage pour la page d'accueil</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger</td><td>Exporter tous les avis au format CSV</td></tr>
+</tbody>
+</table>
+<h3>2. Les cartes statistiques -- sous le ruban</h3>
+
+<p>Quatre indicateurs synthetiques :</p>
+<ul>
+<li><strong>Total des avis</strong> : nombre total d'avis recus</li>
+<li><strong>Note moyenne</strong> : moyenne des notes sur 5 (affiche "-" s'il n'y a aucun avis)</li>
+<li><strong>En attente</strong> : nombre d'avis en attente de moderation</li>
+<li><strong>Approuves</strong> : nombre d'avis publies sur le site</li>
+</ul>
+
+<h3>3. Le panneau de liste (gauche) -- liste maitre</h3>
+
+<p>La colonne de gauche affiche la liste des avis sous forme de fiches resumees. Chaque fiche montre :</p>
+<ul>
+<li>L'avatar ou les initiales du client</li>
+<li>Le nom du client et le nom du produit</li>
+<li>Un apercu du texte de l'avis (premiers caracteres)</li>
+<li>La note en etoiles et la date</li>
+<li>Des badges de statut (En attente / Approuve / Rejete) et de note (couleur verte pour 4-5, bleue pour 3, orange pour 2, rouge pour 1)</li>
+</ul>
+
+<p><strong>Au-dessus de la liste :</strong></p>
+<ul>
+<li>Des <strong>onglets de filtre</strong> : Tous / En attente / Approuves / Rejetes (avec compteur)</li>
+<li>Une <strong>barre de recherche</strong> pour filtrer par mot-cle</li>
+</ul>
+
+<p><strong>En bas de la liste :</strong></p>
+<ul>
+<li>Des <strong>boutons de pagination</strong> (precedent / suivant) avec affichage du numero de page (20 avis par page)</li>
+</ul>
+
+<h3>4. Le panneau de detail (droite) -- detail de l'avis</h3>
+
+<p>Quand vous selectionnez un avis dans la liste, le panneau droit affiche :</p>
+<ul>
+<li>Le nom du client, le produit et la date</li>
+<li>Le badge <strong>Achat verifie</strong> si applicable</li>
+<li>L'analyse de sentiment (Positif / Neutre / Negatif avec icone)</li>
+<li>La note en etoiles (affichage visuel)</li>
+<li>Le contenu complet de l'avis</li>
+<li>Les <strong>photos</strong> jointes (cliquez pour ouvrir en plein ecran)</li>
+<li>La <strong>reponse de l'administrateur</strong> si elle existe deja</li>
+<li>Les informations de contact du client (email)</li>
+<li>Les <strong>informations de pont</strong> (bridge) : achats du client, fiche produit, deals CRM</li>
+<li>Les boutons <strong>Approuver</strong> et <strong>Rejeter</strong> dans la barre d'actions</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Moderer un avis</h3>
+
+<ol>
+<li>Selectionnez un avis dans la liste de gauche</li>
+<li>Lisez le contenu complet dans le panneau de droite</li>
+<li>Cliquez sur <strong>Approuver</strong> (coche verte) pour le publier sur le site, ou <strong>Rejeter</strong> (croix rouge) pour le masquer</li>
+<li>Une boite de dialogue de confirmation s'affiche avant l'action (protection contre les clics accidentels)</li>
+<li>Un message de succes confirme l'action</li>
+</ol>
+
+<h3>Repondre a un avis</h3>
+
+<ol>
+<li>Selectionnez l'avis dans la liste</li>
+<li>Cliquez sur le bouton <strong>Repondre</strong> dans le ruban ou dans le panneau de detail</li>
+<li>La fenetre de reponse s'ouvre avec :</li>
+</ol>
+<ul>
+<li>Un rappel de l'avis du client (nom, produit, texte)</li>
+<li>Un champ de texte pour votre reponse</li>
+<li>Les <strong>modeles de reponse</strong> preecrites (cliquez sur un modele pour l'inserer)</li>
+</ul>
+<ol>
+<li>Redigez ou adaptez votre reponse</li>
+<li>Cliquez sur <strong>Publier la reponse</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong> : utilisez les modeles comme point de depart, puis personnalisez-les avec le nom du client ou des details specifiques au produit.</p>
+</blockquote>
+
+<h3>Actions groupees (bulk)</h3>
+
+<ol>
+<li>Cochez les cases a gauche de chaque avis que vous souhaitez traiter</li>
+<li>Un bandeau d'actions groupees apparait en haut</li>
+<li>Cliquez sur <strong>Approuver la selection</strong> ou <strong>Rejeter la selection</strong></li>
+<li>Le systeme traite tous les avis selectionnes en une seule operation</li>
+</ol>
+
+<h3>Visualiser les photos d'un avis</h3>
+
+<ol>
+<li>Selectionnez un avis contenant des photos (indique par l'icone appareil photo)</li>
+<li>Dans le panneau de detail, les miniatures des photos apparaissent</li>
+<li>Cliquez sur une miniature pour ouvrir la <strong>lightbox</strong> en plein ecran</li>
+<li>Utilisez les fleches gauche/droite pour naviguer entre les images</li>
+<li>Cliquez en dehors de l'image ou appuyez sur Echap pour fermer</li>
+</ol>
+
+<h3>Exporter les avis en CSV</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban</li>
+<li>Un fichier CSV contenant tous les avis est automatiquement telecharge</li>
+<li>Le fichier contient : produit, client, note, statut, contenu, reponse admin, date</li>
+</ol>
+
+<h3>Demandes d'avis automatiques</h3>
+
+<p>Le toggle <strong>Demandes automatiques</strong> dans les cartes statistiques permet d'activer ou desactiver l'envoi automatique d'un email de demande d'avis apres chaque achat. Quand cette option est activee, le systeme envoie un email au client quelques jours apres la livraison pour l'inviter a laisser un avis.</p>
+
+<hr>
+
+<h2>Scenarios courants</h2>
+
+<h3>Scenario 1 : Traitement du matin -- moderer les avis de la nuit</h3>
+
+<ol>
+<li>Ouvrez la page Avis</li>
+<li>Consultez la carte <strong>En attente</strong> pour connaitre le nombre d'avis a traiter</li>
+<li>Cliquez sur l'onglet <strong>En attente</strong> pour afficher uniquement les avis non moderes</li>
+<li>Pour chaque avis :</li>
+</ol>
+<ul>
+<li>Lisez le contenu dans le panneau de detail</li>
+<li>Si l'avis est pertinent et respectueux : cliquez <strong>Approuver</strong></li>
+<li>Si l'avis est inapproprie ou faux : cliquez <strong>Rejeter</strong></li>
+<li>Si l'avis merite une reponse : cliquez <strong>Repondre</strong>, utilisez un modele, personnalisez et publiez</li>
+</ul>
+<ol>
+<li>Une fois tous les avis traites, le compteur "En attente" doit etre a zero</li>
+</ol>
+
+<h3>Scenario 2 : Repondre a un avis negatif urgent</h3>
+
+<ol>
+<li>Filtrez par onglet <strong>En attente</strong> ou parcourez les avis recents</li>
+<li>Reperer l'avis negatif (note 1-2, badge rouge)</li>
+<li>Selectionnez-le et lisez attentivement le detail</li>
+<li>Cliquez sur <strong>Repondre</strong></li>
+<li>Choisissez le modele <strong>Excuses et resolution</strong> comme base</li>
+<li>Personnalisez la reponse en mentionnant le produit concerne et les prochaines etapes</li>
+<li>Publiez la reponse</li>
+<li>Approuvez l'avis (transparence : montrer aux autres clients que vous reagissez)</li>
+<li>Contactez le client par email si necessaire (l'adresse est visible dans le panneau de detail)</li>
+</ol>
+
+<h3>Scenario 3 : Export mensuel pour le rapport qualite</h3>
+
+<ol>
+<li>Assurez-vous que le filtre est sur <strong>Tous</strong> pour inclure l'ensemble des avis</li>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban</li>
+<li>Ouvrez le fichier CSV dans Excel ou Google Sheets</li>
+<li>Analysez la note moyenne, le nombre d'avis par statut, les produits les mieux notes et les plus critiques</li>
+<li>Partagez le rapport avec l'equipe produit pour identifier les axes d'amelioration</li>
+</ol>
+
+<hr>
+
+<h2>Foire aux questions (FAQ)</h2>
+
+<p><strong>Q : Un avis rejete peut-il etre re-approuve plus tard ?</strong></p>
+<p>R : Oui. Selectionnez l'avis rejete dans la liste (utilisez l'onglet "Rejetes" pour le retrouver) et cliquez sur "Approuver". Le statut sera mis a jour et l'avis apparaitra sur le site.</p>
+
+<p><strong>Q : Le client est-il notifie quand je reponds a son avis ?</strong></p>
+<p>R : La reponse de l'administrateur est visible publiquement sous l'avis sur la page produit. Le systeme ne notifie pas automatiquement le client par email, mais ce dernier verra la reponse lors de sa prochaine visite.</p>
+
+<p><strong>Q : Comment differencier un avis authentique d'un faux avis ?</strong></p>
+<p>R : Le badge "Achat verifie" est le meilleur indicateur. Les avis sans ce badge peuvent provenir de personnes n'ayant pas achete le produit. Verifiez egalement les informations de pont (bridge) pour voir l'historique d'achats du client.</p>
+
+<p><strong>Q : La pagination ralentit-elle le chargement ?</strong></p>
+<p>R : Non. Le systeme utilise la pagination cote serveur (20 avis par page), ce qui signifie que seuls les avis de la page courante sont charges en memoire. Cela garantit des performances rapides meme avec des milliers d'avis.</p>
+
+<p><strong>Q : Puis-je modifier le texte d'un avis client ?</strong></p>
+<p>R : Non. Le systeme ne permet pas de modifier le contenu redige par le client, par souci d'integrite. Vous pouvez uniquement moderer (approuver/rejeter) et repondre.</p>
+
+<hr>
+
+<h2>Strategie expert : Sollicitation et gestion des avis pour un e-commerce de peptides</h2>
+
+<h3>Timing optimal de sollicitation</h3>
+
+<p>La demande d'avis doit etre synchronisee avec le cycle d'utilisation du produit. Pour les peptides de recherche, le delai entre la livraison et la capacite du client a evaluer le produit est plus long que pour un bien de consommation classique.</p>
+
+<p><strong>Calendrier recommande pour BioCycle Peptides :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Delai</th><th>Action</th><th>Canal</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Confirmation de livraison</strong></td><td>J+0</td><td>Email transactionnel confirmant la reception</td><td>Email automatique</td></tr>
+  <tr><td><strong>Premiere relance avis</strong></td><td>J+14</td><td>Email de demande d'avis (le client a eu le temps de tester/analyser le produit)</td><td>Email personnalise</td></tr>
+  <tr><td><strong>Rappel doux</strong></td><td>J+21</td><td>Deuxieme relance si aucun avis depose, avec incitatif (50 points fidelite)</td><td>Email + notification compte</td></tr>
+  <tr><td><strong>Derniere chance</strong></td><td>J+30</td><td>Relance finale avec message "Votre opinion compte pour la communaute de recherche"</td><td>Email</td></tr>
+</tbody>
+</table>
+<p><strong>Pourquoi J+14 et pas J+3 ?</strong> Les peptides sont des produits techniques. Contrairement a un vetement ou un accessoire, le client doit souvent analyser la purete, preparer son protocole de recherche et observer des resultats preliminaires avant de donner un avis eclaire. Un avis demande trop tot sera generique ("Livraison rapide") au lieu d'etre technique et utile ("Purete conforme au certificat d'analyse, solubilite excellente dans l'eau bacteriostatique").</p>
+
+<p><strong>Personnalisation du message :</strong> Adapter le texte selon la categorie du produit achete. Pour les peptides therapeutiques, mettre l'accent sur la qualite et la documentation. Pour les peptides cosmetiques, mettre l'accent sur les resultats observes.</p>
+
+<h3>Impact des avis sur la conversion</h3>
+
+<p>Les avis sont le levier de conversion le plus puissant en e-commerce, et c'est encore plus vrai dans le marche des peptides ou la confiance est un enjeu majeur.</p>
+
+<p><strong>Chiffres cles (sources : Spiegel Research Center, BrightLocal, PowerReviews) :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Impact</th><th>Source</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Produit avec 5+ avis vs. 0 avis</strong></td><td>+270% de probabilite d'achat</td><td>Spiegel Research Center</td></tr>
+  <tr><td><strong>Avis avec photos</strong></td><td>+105% de taux de conversion vs. avis texte seul</td><td>PowerReviews</td></tr>
+  <tr><td><strong>Note moyenne ideale</strong></td><td>4.2 a 4.5 (les notes parfaites 5.0 paraissent suspectes)</td><td>Northwestern/Spiegel</td></tr>
+  <tr><td><strong>Avis negatifs visibles</strong></td><td>+67% de confiance (transparence percue)</td><td>Reevoo</td></tr>
+  <tr><td><strong>Reponse du marchand a un avis negatif</strong></td><td>+16% de confiance des lecteurs</td><td>BrightLocal</td></tr>
+  <tr><td><strong>Clients consultant les avis avant achat</strong></td><td>93% des acheteurs en ligne</td><td>BrightLocal 2024</td></tr>
+</tbody>
+</table>
+<p><strong>Pour un marche de niche comme les peptides :</strong> La confiance est encore plus critique car les acheteurs sont souvent des professionnels de recherche ou des consommateurs informes. Un produit sans avis sera systematiquement ecarte au profit d'un concurrent avec des retours verifies.</p>
+
+<h3>Gestion strategique des avis negatifs</h3>
+
+<p>Un avis negatif n'est pas une menace -- c'est une opportunite de demontrer le professionnalisme de BioCycle Peptides. Voici le protocole recommande :</p>
+
+<p><strong>Regle d'or : Repondre en moins de 24 heures.</strong> 53% des clients attendent une reponse dans ce delai (ReviewTrackers).</p>
+
+<p><strong>Matrice de decision :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Type d'avis negatif</th><th>Action</th><th>Exemple de reponse</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Probleme qualite legitime</strong></td><td>Repondre publiquement + contacter en prive + offrir solution</td><td>"Nous prenons votre retour tres au serieux. Notre equipe qualite a ouvert une enquete sur ce lot. Nous vous avons contacte en prive pour resoudre la situation."</td></tr>
+  <tr><td><strong>Probleme logistique</strong> (retard, colis endommage)</td><td>S'excuser + expliquer + compenser</td><td>"Nous sommes desoles pour ce delai. Il etait du a [raison]. Nous avons mis en place [mesure] pour eviter que cela se reproduise. Un credit de X$ a ete applique a votre compte."</td></tr>
+  <tr><td><strong>Incomprehension produit</strong></td><td>Eduquer avec tact + proposer assistance</td><td>"Merci pour votre retour. Les peptides lyophilises doivent etre reconstitues avec de l'eau bacteriostatique avant utilisation. Notre guide est disponible a [lien]. N'hesitez pas a contacter notre support."</td></tr>
+  <tr><td><strong>Avis diffamatoire ou faux</strong></td><td>Signaler pour moderation, rejeter si confirme</td><td>Seul cas ou la suppression est justifiee (conformement aux CGU). Documenter la raison du rejet.</td></tr>
+</tbody>
+</table>
+<p><strong>Ce qu'il ne faut jamais faire :</strong></p>
+<ul>
+<li>Ne jamais supprimer un avis negatif legitime (les clients s'en apercoivent et la confiance chute)</li>
+<li>Ne jamais repondre de facon defensive ou agressive</li>
+<li>Ne jamais ignorer un avis negatif (le silence est pire qu'une mauvaise reponse)</li>
+<li>Ne jamais proposer une compensation en echange du retrait de l'avis (pratique contraire a l'ethique et potentiellement illegale)</li>
+</ul>
+
+<p><strong>Transformer les avis negatifs en atout :</strong></p>
+<p>Quand un probleme souleve dans un avis est corrige, repondre publiquement : "Grace a votre retour, nous avons ameliore [X]. Merci d'avoir contribue a l'amelioration de nos services." Cela demontre aux futurs acheteurs que BioCycle ecoute et agit.</p>
+
+<h3>Objectifs de collecte par produit</h3>
+
+<p>Pour maximiser l'impact sur les ventes, viser un minimum de 5 avis par produit actif. Pour les 20% de produits generant 80% du chiffre d'affaires, viser 15+ avis. Suivre le tableau de bord mensuel :</p>
+
+<table>
+<thead>
+    <tr><th>Indicateur</th><th>Cible</th><th>Seuil d'alerte</th></tr>
+</thead>
+<tbody>
+  <tr><td>Avis par produit actif (moyenne)</td><td>5+</td><td>< 3</td></tr>
+  <tr><td>Taux de reponse aux avis negatifs</td><td>100% en < 24h</td><td>> 48h</td></tr>
+  <tr><td>Note moyenne globale</td><td>4.2 - 4.7</td><td>< 4.0</td></tr>
+  <tr><td>Taux de sollicitation → depot</td><td>8-12%</td><td>< 5%</td></tr>
+  <tr><td>Avis avec photos</td><td>20%+ du total</td><td>< 10%</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Moderation</strong></td><td>Processus de validation des avis avant leur publication sur le site</td></tr>
+  <tr><td><strong>Achat verifie</strong></td><td>Badge confirmant que l'auteur de l'avis a effectivement achete le produit</td></tr>
+  <tr><td><strong>Sentiment</strong></td><td>Analyse du ton de l'avis : positif (4-5 etoiles), neutre (3 etoiles) ou negatif (1-2 etoiles)</td></tr>
+  <tr><td><strong>Modele de reponse</strong></td><td>Texte preecrit que l'administrateur peut utiliser comme base pour repondre a un avis</td></tr>
+  <tr><td><strong>Actions groupees</strong></td><td>Possibilite de traiter plusieurs avis en une seule operation</td></tr>
+  <tr><td><strong>Lightbox</strong></td><td>Fenetre de visualisation des images en plein ecran</td></tr>
+  <tr><td><strong>Bridge</strong></td><td>Liens contextuels vers les commandes, le produit ou le CRM lies a l'auteur de l'avis</td></tr>
+  <tr><td><strong>CSV</strong></td><td>Format de fichier tableur compatible avec Excel et Google Sheets</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/questions">Questions produits</a> -- les questions posees par les clients sur les produits</li>
+<li><a href="/admin/ambassadeurs">Programme ambassadeurs</a> -- les ambassadeurs qui recommandent vos produits</li>
+<li><a href="/admin/fidelite">Programme de fidelite</a> -- les points bonus accordes pour les avis (bonus review)</li>
+<li><a href="/admin/produits">Produits</a> -- la fiche produit ou apparaissent les avis publies</li>
+<li><a href="/admin/customers">Clients</a> -- les profils des clients qui laissent des avis</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="05-communaute--02-questions">
+<h1>Gestion des Questions Produits</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Communaute > Questions</p>
+<p><strong>URL</strong>: <code>/admin/questions</code></p>
+<p><strong>Niveau</strong>: Debutant a intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Questions</strong> regroupe toutes les questions posees par les visiteurs et clients au sujet de vos produits. Ces questions apparaissent sur les fiches produits du site public, dans une section "Questions & Reponses". Repondre rapidement aux questions augmente la confiance des acheteurs potentiels et reduit le nombre de demandes de support.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir toutes les questions clients en un coup d'oeil</li>
+<li>Filtrer par statut (toutes, repondues, en attente de reponse)</li>
+<li>Rechercher une question par mot-cle, nom de client ou produit</li>
+<li>Repondre a une question (ou modifier une reponse existante)</li>
+<li>Basculer la visibilite d'une question entre publique et privee</li>
+<li>Supprimer une question inappropriee</li>
+<li>Convertir une question/reponse en entree FAQ</li>
+<li>Exporter toutes les questions au format CSV</li>
+<li>Marquer une question comme resolue</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Qu'est-ce qu'une question produit ?</h3>
+<p>C'est une question posee par un visiteur ou un client directement depuis la page d'un produit sur le site. Par exemple : "Ce peptide est-il compatible avec un autre supplement ?" ou "Quelle est la duree de conservation apres ouverture ?".</p>
+
+<h3>Pourquoi repondre aux questions ?</h3>
+<p>Les questions sans reponse signalent un manque d'information. Quand vous repondez, votre reponse est visible par tous les visiteurs du site, ce qui :</p>
+<ul>
+<li>Aide les futurs acheteurs a prendre leur decision</li>
+<li>Reduit les demandes de support repetitives</li>
+<li>Demontre votre expertise et votre reactivite</li>
+</ul>
+
+<h3>Quelle est la difference entre publique et privee ?</h3>
+<ul>
+<li><strong>Publique</strong> : la question et sa reponse sont visibles par tous les visiteurs du site</li>
+<li><strong>Privee</strong> : la question est masquee du site public, seul l'administrateur la voit</li>
+</ul>
+
+<h3>Qu'est-ce que la conversion en FAQ ?</h3>
+<p>Quand une question revient souvent, vous pouvez la convertir en entree FAQ. Le systeme copie la question et la reponse dans le presse-papier pour que vous puissiez facilement la coller dans votre section FAQ.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le rail de navigation</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la colonne d'icones a gauche, cliquez sur l'icone <strong>Communaute</strong></li>
+<li>Dans le panneau lateral, cliquez sur <strong>Questions</strong></li>
+</ol>
+
+<h3>Methode 2 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche en haut (ou tapez <code>/</code>)</li>
+<li>Tapez "questions"</li>
+<li>Selectionnez le resultat correspondant</li>
+</ol>
+
+<h3>Methode 3 : Acces direct par URL</h3>
+<ol>
+<li>Rendez-vous a l'adresse <code>/admin/questions</code> dans votre navigateur</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>L'interface suit la disposition maitresse/detail (Outlook-style) avec 4 zones :</p>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Icone</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Repondre</strong></td><td>Bulle de message</td><td>Ouvrir la fenetre de reponse pour la question selectionnee</td></tr>
+  <tr><td><strong>Marquer resolue</strong></td><td>Coche verte</td><td>Marquer la question comme resolue (la rend publique si elle ne l'est pas)</td></tr>
+  <tr><td><strong>Archiver</strong></td><td>Boite d'archive</td><td>Supprimer la question selectionnee (avec confirmation)</td></tr>
+  <tr><td><strong>Signaler le contenu</strong></td><td>Drapeau</td><td>Rendre une question publique privee (contenu inapproprie)</td></tr>
+  <tr><td><strong>Convertir en FAQ</strong></td><td>Signet</td><td>Copier la question et la reponse au format FAQ dans le presse-papier</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger</td><td>Exporter toutes les questions au format CSV</td></tr>
+</tbody>
+</table>
+<h3>2. Les cartes statistiques -- sous le ruban</h3>
+
+<p>Trois indicateurs cles :</p>
+<ul>
+<li><strong>Total des questions</strong> : nombre total de questions recues</li>
+<li><strong>Sans reponse</strong> : nombre de questions en attente de reponse (priorite haute)</li>
+<li><strong>Repondues</strong> : nombre de questions auxquelles vous avez deja repondu</li>
+</ul>
+
+<h3>3. Le panneau de liste (gauche) -- liste maitre</h3>
+
+<p>La colonne de gauche affiche la liste des questions. Chaque entree montre :</p>
+<ul>
+<li>L'avatar ou les initiales du client</li>
+<li>Le nom du client (ou "Utilisateur anonyme" si non identifie)</li>
+<li>Le nom du produit concerne</li>
+<li>Un apercu de la question (80 premiers caracteres)</li>
+<li>La date de soumission</li>
+<li>Des badges : <strong>Repondue</strong> (vert) ou <strong>En attente</strong> (orange), et <strong>Publique</strong> (bleu) ou <strong>Privee</strong> (gris)</li>
+</ul>
+
+<p><strong>Au-dessus de la liste :</strong></p>
+<ul>
+<li>Des <strong>onglets de filtre</strong> : Toutes / Sans reponse / Repondues (avec compteur)</li>
+<li>Une <strong>barre de recherche</strong> pour filtrer par mot-cle</li>
+</ul>
+
+<h3>4. Le panneau de detail (droite)</h3>
+
+<p>Quand vous selectionnez une question dans la liste, le panneau droit affiche :</p>
+<ul>
+<li>Le nom du client et le produit associe avec la date</li>
+<li>Le badge de visibilite <strong>Publique</strong> ou <strong>Privee</strong> (cliquable pour basculer)</li>
+<li>Le badge <strong>En attente de reponse</strong> si aucune reponse n'existe</li>
+<li>La <strong>question complete</strong> du client dans un encadre gris</li>
+<li>La <strong>reponse</strong> de l'administrateur dans un encadre vert (si elle existe)</li>
+<li>Le nom de l'administrateur qui a repondu et la date de la reponse</li>
+<li>Les informations de contact du client (email)</li>
+<li>Les boutons <strong>Repondre / Modifier la reponse</strong> et <strong>Supprimer</strong></li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Repondre a une question</h3>
+
+<ol>
+<li>Selectionnez la question dans la liste de gauche</li>
+<li>Cliquez sur le bouton <strong>Repondre</strong> dans le panneau de detail ou dans le ruban</li>
+<li>La fenetre modale s'ouvre et affiche :</li>
+</ol>
+<ul>
+<li>Le rappel de la question (client, produit, texte)</li>
+<li>Un champ de texte pour votre reponse</li>
+</ul>
+<ol>
+<li>Redigez votre reponse</li>
+<li>Cliquez sur <strong>Publier la reponse</strong></li>
+<li>La question passe au statut "Repondue" et votre reponse apparait sur le site (si la question est publique)</li>
+</ol>
+
+<blockquote>
+<p><strong>Raccourci clavier</strong> : appuyez sur Cmd+Entree (Mac) ou Ctrl+Entree (Windows) pour soumettre la reponse directement depuis le champ de texte.</p>
+</blockquote>
+
+<h3>Modifier une reponse existante</h3>
+
+<ol>
+<li>Selectionnez la question deja repondue</li>
+<li>Cliquez sur <strong>Modifier la reponse</strong> (icone crayon)</li>
+<li>La fenetre de reponse s'ouvre avec le texte existant pre-rempli</li>
+<li>Modifiez le texte selon vos besoins</li>
+<li>Cliquez sur <strong>Publier la reponse</strong> pour sauvegarder</li>
+</ol>
+
+<h3>Basculer la visibilite (publique / privee)</h3>
+
+<ol>
+<li>Selectionnez la question dans la liste</li>
+<li>Dans le panneau de detail, cliquez sur le badge <strong>Publique</strong> ou <strong>Privee</strong></li>
+<li>Le statut bascule immediatement (un indicateur de chargement apparait pendant la mise a jour)</li>
+<li>Une question privee ne sera pas visible sur le site public</li>
+</ol>
+
+<h3>Supprimer une question</h3>
+
+<ol>
+<li>Selectionnez la question a supprimer</li>
+<li>Cliquez sur le bouton <strong>Supprimer</strong> (poubelle rouge) dans le panneau de detail ou sur <strong>Archiver</strong> dans le ruban</li>
+<li>Une boite de confirmation apparait pour prevenir les suppressions accidentelles</li>
+<li>Confirmez la suppression</li>
+<li>La question est retiree de la liste definitivement</li>
+</ol>
+
+<h3>Convertir en FAQ</h3>
+
+<ol>
+<li>Selectionnez une question qui a deja une reponse</li>
+<li>Cliquez sur <strong>Convertir en FAQ</strong> dans le ruban</li>
+<li>Le systeme copie la question et la reponse au format "Q: ... / A: ..." dans votre presse-papier</li>
+<li>Collez le contenu dans votre section FAQ ou dans un document</li>
+</ol>
+
+<h3>Exporter en CSV</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban</li>
+<li>Un fichier CSV contenant toutes les questions est telecharge automatiquement</li>
+<li>Colonnes du fichier : Produit, Client, Question, Reponse, Statut, Publique, Date</li>
+</ol>
+
+<hr>
+
+<h2>Scenarios courants</h2>
+
+<h3>Scenario 1 : Repondre aux questions en attente de la journee</h3>
+
+<ol>
+<li>Ouvrez la page Questions</li>
+<li>Consultez la carte <strong>Sans reponse</strong> pour connaitre le volume</li>
+<li>Cliquez sur l'onglet <strong>Sans reponse</strong> pour afficher uniquement les questions en attente</li>
+<li>Pour chaque question :</li>
+</ol>
+<ul>
+<li>Lisez la question dans le panneau de detail</li>
+<li>Si la question est pertinente : cliquez <strong>Repondre</strong>, redigez votre reponse, publiez</li>
+<li>Si la question est inappropriee : cliquez sur le badge pour la passer en <strong>Privee</strong>, puis supprimez-la si necessaire</li>
+</ul>
+<ol>
+<li>Verifiez que le compteur "Sans reponse" est a zero une fois termine</li>
+</ol>
+
+<h3>Scenario 2 : Identifier les questions recurrentes pour la FAQ</h3>
+
+<ol>
+<li>Filtrez sur <strong>Toutes</strong> les questions</li>
+<li>Utilisez la barre de recherche pour chercher des termes recurrents (ex: "posologie", "conservation", "livraison")</li>
+<li>Pour chaque question frequente ayant une bonne reponse :</li>
+</ol>
+<ul>
+<li>Selectionnez-la</li>
+<li>Cliquez sur <strong>Convertir en FAQ</strong> dans le ruban</li>
+<li>La question et la reponse sont copiees dans votre presse-papier</li>
+</ul>
+<ol>
+<li>Collez le contenu dans la section FAQ de votre site</li>
+<li>Cette demarche reduit les questions futures sur les memes sujets</li>
+</ol>
+
+<hr>
+
+<h2>Foire aux questions (FAQ)</h2>
+
+<p><strong>Q : Les questions anonymes sont-elles frequentes ?</strong></p>
+<p>R : Oui, les visiteurs non connectes peuvent poser des questions. Elles apparaissent avec le nom "Utilisateur anonyme". Vous ne disposerez pas de leur adresse email dans ce cas.</p>
+
+<p><strong>Q : Puis-je modifier le texte de la question du client ?</strong></p>
+<p>R : Non. Seule la reponse de l'administrateur peut etre redigee ou modifiee. Le texte de la question reste intact pour preserver l'authenticite.</p>
+
+<p><strong>Q : La reponse est-elle visible immediatement sur le site ?</strong></p>
+<p>R : Oui, des que vous publiez la reponse, elle apparait sous la question sur la fiche produit -- a condition que la question soit en mode <strong>Publique</strong>.</p>
+
+<p><strong>Q : Que se passe-t-il si je supprime une question qui a deja une reponse ?</strong></p>
+<p>R : La question et sa reponse sont supprimees definitivement du site et de la base de donnees. Cette action est irreversible.</p>
+
+<p><strong>Q : Puis-je etre notifie quand une nouvelle question arrive ?</strong></p>
+<p>R : Le nombre de questions sans reponse est visible dans les cartes statistiques. Le systeme met a jour ce compteur en temps reel.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Question produit</strong></td><td>Question posee par un visiteur depuis la fiche d'un produit sur le site</td></tr>
+  <tr><td><strong>Publique / Privee</strong></td><td>Visibilite de la question sur le site public</td></tr>
+  <tr><td><strong>En attente</strong></td><td>Question qui n'a pas encore recu de reponse de l'administrateur</td></tr>
+  <tr><td><strong>Resolue</strong></td><td>Question repondue et rendue publique</td></tr>
+  <tr><td><strong>FAQ</strong></td><td>Foire aux questions, section du site regroupant les questions frequentes</td></tr>
+  <tr><td><strong>Conversion en FAQ</strong></td><td>Action de copier une question/reponse pour l'integrer dans la section FAQ</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/avis">Avis clients</a> -- les evaluations et notes laissees par les clients</li>
+<li><a href="/admin/chat">Chat support</a> -- les conversations en direct avec les visiteurs</li>
+<li><a href="/admin/produits">Produits</a> -- les fiches produits ou apparaissent les questions</li>
+<li><a href="/admin/contenu">Contenu</a> -- les pages de contenu dont la section FAQ</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="05-communaute--03-chat">
+<h1>Chat Support en Direct</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Communaute > Chat</p>
+<p><strong>URL</strong>: <code>/admin/chat</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Chat</strong> est le centre de messagerie en direct de votre boutique BioCycle Peptides. Elle permet de communiquer en temps reel avec les visiteurs du site qui utilisent le widget de chat integre. C'est l'outil ideal pour repondre instantanement aux questions de pre-achat, resoudre des problemes et offrir un service client reactif.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir toutes les conversations actives, en attente et archivees</li>
+<li>Repondre en temps reel aux visiteurs du site</li>
+<li>Recevoir des notifications quand un visiteur attend une reponse</li>
+<li>Voir la langue du visiteur et beneficier de la traduction automatique</li>
+<li>Envoyer des images et des pieces jointes</li>
+<li>Utiliser des emojis dans vos reponses</li>
+<li>Voir l'indicateur de frappe du visiteur ("est en train d'ecrire...")</li>
+<li>Basculer votre statut entre en ligne et hors ligne</li>
+<li>Fermer, resoudre ou archiver une conversation</li>
+<li>Exporter l'historique d'une conversation en CSV</li>
+<li>Voir la page que le visiteur consulte actuellement</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Qu'est-ce que le chat en direct ?</h3>
+<p>C'est un systeme de messagerie instantanee integre au site web. Les visiteurs voient une petite bulle de chat en bas de leur ecran. En cliquant dessus, ils ouvrent une fenetre de conversation ou ils peuvent poser des questions en temps reel.</p>
+
+<h3>Que signifient les statuts de conversation ?</h3>
+<ul>
+<li><strong>Active</strong> : la conversation est en cours, les deux parties echangent des messages</li>
+<li><strong>En attente admin</strong> : le visiteur a envoye un message et attend votre reponse (prioritaire)</li>
+<li><strong>Resolue</strong> : le probleme du visiteur a ete traite</li>
+<li><strong>Fermee</strong> : la conversation est terminee</li>
+<li><strong>Archivee</strong> : la conversation est archivee pour reference</li>
+</ul>
+
+<h3>Comment fonctionne la traduction automatique ?</h3>
+<p>Le systeme detecte automatiquement la langue du visiteur. Quand vous repondez en francais, votre message est traduit dans la langue du visiteur. Vous pouvez voir le message original via le menu "Voir l'original" sous chaque message traduit.</p>
+
+<h3>Que fait le chatbot automatique ?</h3>
+<p>Quand vous etes hors ligne, un chatbot peut prendre le relais pour repondre aux questions simples. Les messages du bot sont identifies par un badge violet "Bot". Quand vous revenez en ligne, vous prenez la suite de la conversation.</p>
+
+<h3>Que signifie le statut "En ligne / Hors ligne" ?</h3>
+<ul>
+<li><strong>En ligne</strong> : les visiteurs voient que vous etes disponible et peuvent initier une conversation</li>
+<li><strong>Hors ligne</strong> : les visiteurs voient que vous n'etes pas disponible ; le chatbot prend le relais si active</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le rail de navigation</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la colonne d'icones a gauche, cliquez sur l'icone <strong>Communaute</strong></li>
+<li>Dans le panneau lateral, cliquez sur <strong>Chat Support</strong></li>
+<li>Un badge rouge apparait sur l'icone si des conversations sont en attente</li>
+</ol>
+
+<h3>Methode 2 : Via la barre de recherche</h3>
+<ol>
+<li>Tapez "chat" dans la barre de recherche</li>
+<li>Selectionnez le resultat correspondant</li>
+</ol>
+
+<h3>Methode 3 : Acces direct par URL</h3>
+<ol>
+<li>Rendez-vous a l'adresse <code>/admin/chat</code> dans votre navigateur</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>L'interface de chat est divisee en <strong>3 zones principales</strong> (disposition specifique au chat) :</p>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Icone</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau message</strong></td><td>Enveloppe</td><td>Mettre le focus sur le champ de saisie pour repondre rapidement</td></tr>
+  <tr><td><strong>Fermer la conversation</strong></td><td>Cercle X</td><td>Fermer la conversation selectionnee</td></tr>
+  <tr><td><strong>Transferer</strong></td><td>Fleche de transfert</td><td>Transferer la conversation a un autre agent (fonctionnalite a venir)</td></tr>
+  <tr><td><strong>Marquer resolue</strong></td><td>Coche verte</td><td>Marquer la conversation comme resolue</td></tr>
+  <tr><td><strong>Archiver</strong></td><td>Boite d'archive</td><td>Archiver la conversation selectionnee</td></tr>
+  <tr><td><strong>Exporter historique</strong></td><td>Telecharger</td><td>Exporter les messages de la conversation en CSV</td></tr>
+</tbody>
+</table>
+<h3>2. L'en-tete avec statistiques et statut</h3>
+
+<p>En haut a droite de la page :</p>
+<ul>
+<li><strong>Badges de statut</strong> : nombre de conversations actives (vert), en attente (orange clignotant), non lues (rouge)</li>
+<li><strong>Bouton En ligne / Hors ligne</strong> : basculer votre disponibilite d'un clic</li>
+</ul>
+
+<h3>3. La zone de travail a deux panneaux</h3>
+
+<p><strong>Panneau gauche (liste des conversations) :</strong></p>
+<ul>
+<li>Chaque conversation affiche :</li>
+<li>Le nom ou l'email du visiteur (ou un identifiant anonyme)</li>
+<li>Un point vert si le visiteur est actuellement en ligne, gris sinon</li>
+<li>Un apercu du dernier message</li>
+<li>La langue du visiteur (code ISO : FR, EN, DE, etc.)</li>
+<li>Le temps ecoule depuis le dernier message</li>
+<li>Un triangle jaune si la conversation est en attente admin</li>
+<li>Un badge rouge avec le nombre de messages non lus</li>
+</ul>
+
+<p><strong>Panneau droit (fenetre de conversation) :</strong></p>
+<ul>
+<li><strong>En-tete</strong> : nom du visiteur, langue, email, page en cours de consultation, statut en ligne</li>
+<li><strong>Zone de messages</strong> : bulles de conversation (bleu pour l'admin, blanc pour le visiteur, violet pour le bot)</li>
+<li>Chaque message affiche l'expediteur, l'heure, et les coches de lecture (une coche = envoye, double coche = lu)</li>
+<li>Les images envoyees s'affichent directement dans la conversation</li>
+<li>Le lien "Voir l'original" permet de consulter le message avant traduction</li>
+<li><strong>Indicateur de frappe</strong> : "X est en train d'ecrire..." avec animation</li>
+<li><strong>Barre de saisie</strong> : champ de texte, bouton d'envoi d'image, selecteur d'emojis, bouton Envoyer</li>
+<li><strong>Indice de traduction</strong> : rappel que les messages sont traduits automatiquement</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Repondre a un visiteur</h3>
+
+<ol>
+<li>Selectionnez la conversation dans la liste de gauche</li>
+<li>Les messages s'affichent dans le panneau droit</li>
+<li>Tapez votre reponse dans le champ de saisie en bas</li>
+<li>Appuyez sur <strong>Entree</strong> pour envoyer (ou cliquez le bouton Envoyer)</li>
+<li>Votre message apparait immediatement dans la conversation</li>
+<li>Le visiteur recoit la traduction dans sa langue si elle differe de la votre</li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong> : utilisez Shift+Entree pour sauter une ligne sans envoyer le message.</p>
+</blockquote>
+
+<h3>Envoyer une image</h3>
+
+<ol>
+<li>Dans la barre de saisie, cliquez sur l'icone <strong>Image</strong> (a gauche du champ de texte)</li>
+<li>Selectionnez un fichier image depuis votre ordinateur (JPEG, PNG, WebP, GIF)</li>
+<li>L'image est telechargee puis envoyee dans la conversation</li>
+<li>Le visiteur voit l'image directement dans son widget de chat</li>
+</ol>
+
+<h3>Utiliser les emojis</h3>
+
+<ol>
+<li>Cliquez sur l'icone <strong>Smiley</strong> a cote du champ de texte</li>
+<li>Un panneau de 32 emojis courants apparait</li>
+<li>Cliquez sur un emoji pour l'inserer dans votre message</li>
+<li>Le panneau se ferme automatiquement</li>
+</ol>
+
+<h3>Basculer en ligne / hors ligne</h3>
+
+<ol>
+<li>Cliquez sur le bouton <strong>En ligne</strong> (vert) ou <strong>Hors ligne</strong> (gris) en haut a droite</li>
+<li>Le statut est mis a jour immediatement</li>
+<li>Quand vous passez hors ligne, les visiteurs voient un message indiquant que le support n'est pas disponible</li>
+</ol>
+
+<h3>Fermer ou archiver une conversation</h3>
+
+<ol>
+<li>Selectionnez la conversation</li>
+<li>Cliquez sur <strong>Fermer la conversation</strong> (le visiteur voit un message de cloture) ou <strong>Archiver</strong> (la conversation disparait de la liste active)</li>
+<li>Vous pouvez aussi utiliser <strong>Marquer resolue</strong> si le probleme est traite</li>
+</ol>
+
+<h3>Exporter l'historique d'une conversation</h3>
+
+<ol>
+<li>Selectionnez la conversation dont vous souhaitez garder une trace</li>
+<li>Cliquez sur <strong>Exporter historique</strong> dans le ruban</li>
+<li>Un fichier CSV est telecharge avec les colonnes : Date, Expediteur, Langue, Message</li>
+</ol>
+
+<hr>
+
+<h2>Scenarios courants</h2>
+
+<h3>Scenario 1 : Traiter les conversations en attente</h3>
+
+<ol>
+<li>Ouvrez la page Chat</li>
+<li>Passez votre statut sur <strong>En ligne</strong> si vous ne l'etes pas deja</li>
+<li>Identifiez les conversations avec le badge orange "En attente" ou le triangle jaune</li>
+<li>Cliquez sur la premiere conversation en attente</li>
+<li>Lisez le dernier message du visiteur</li>
+<li>Redigez et envoyez votre reponse</li>
+<li>Passez a la conversation suivante</li>
+<li>Une fois toutes les conversations traitees, verifiez que le badge rouge "non lus" a disparu</li>
+</ol>
+
+<h3>Scenario 2 : Aider un client etranger avec la traduction automatique</h3>
+
+<ol>
+<li>Un visiteur envoie un message en allemand (le badge "DE" apparait)</li>
+<li>Selectionnez la conversation</li>
+<li>Le message du visiteur est affiche traduit dans votre langue</li>
+<li>Redigez votre reponse normalement en francais</li>
+<li>Le systeme traduit automatiquement votre reponse en allemand pour le visiteur</li>
+<li>Si la traduction semble imprecise, cliquez sur "Voir l'original" pour verifier le message source</li>
+</ol>
+
+<h3>Scenario 3 : Fin de journee -- cloturer les conversations ouvertes</h3>
+
+<ol>
+<li>Parcourez la liste des conversations actives</li>
+<li>Pour chaque conversation terminee :</li>
+</ol>
+<ul>
+<li>Si le probleme est resolu : cliquez <strong>Marquer resolue</strong></li>
+<li>Si la conversation est inactive depuis longtemps : cliquez <strong>Fermer la conversation</strong></li>
+</ul>
+<ol>
+<li>Passez votre statut sur <strong>Hors ligne</strong></li>
+<li>Le chatbot automatique prendra le relais si il est active</li>
+</ol>
+
+<hr>
+
+<h2>Foire aux questions (FAQ)</h2>
+
+<p><strong>Q : Les conversations sont-elles mises a jour en temps reel ?</strong></p>
+<p>R : Oui. Le systeme utilise le streaming SSE (Server-Sent Events) pour recevoir les nouveaux messages instantanement. Un rafraichissement de secours s'effectue toutes les 30 secondes au cas ou une connexion SSE serait perdue.</p>
+
+<p><strong>Q : Que se passe-t-il si je suis hors ligne et qu'un visiteur envoie un message ?</strong></p>
+<p>R : Si le chatbot est active, il tente de repondre. Sinon, le visiteur voit un message indiquant que le support n'est pas disponible. Les messages sont conserves et vous les retrouverez a votre retour.</p>
+
+<p><strong>Q : La traduction automatique est-elle fiable ?</strong></p>
+<p>R : Elle est suffisante pour des echanges courants. Pour des sujets techniques complexes, verifiez le message original en cliquant sur "Voir l'original" et adaptez votre reponse si necessaire.</p>
+
+<p><strong>Q : Puis-je voir quelle page le visiteur consulte ?</strong></p>
+<p>R : Oui. L'en-tete de la conversation affiche la page en cours de consultation du visiteur (icone de localisation), ce qui vous aide a comprendre le contexte de sa question.</p>
+
+<p><strong>Q : Combien de conversations puis-je gerer simultanement ?</strong></p>
+<p>R : Il n'y a pas de limite technique. Le systeme charge jusqu'a 100 conversations. En pratique, gerer 3 a 5 conversations simultanees est confortable pour maintenir un temps de reponse rapide.</p>
+
+<hr>
+
+<h2>Strategie expert : Scripts de reponse et conversion par chat pour un e-commerce de peptides</h2>
+
+<h3>Temps de reponse cible et impact sur la conversion</h3>
+
+<p>Le chat en direct est le canal de support avec le plus fort taux de conversion en e-commerce. Respecter des temps de reponse stricts est essentiel.</p>
+
+<p><strong>Objectifs de temps de reponse :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Periode</th><th>Temps cible</th><th>Temps maximum acceptable</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Heures ouvrables</strong> (9h-17h EST)</td><td>< 2 minutes</td><td>5 minutes</td></tr>
+  <tr><td><strong>Heures etendues</strong> (17h-21h EST)</td><td>< 5 minutes</td><td>15 minutes</td></tr>
+  <tr><td><strong>Hors heures</strong></td><td>Chatbot immediat + reponse humaine le matin suivant</td><td>Avant 10h le jour ouvrable suivant</td></tr>
+</tbody>
+</table>
+<p><strong>Impact mesure sur la conversion :</strong></p>
+<ul>
+<li>Taux de conversion chat vers vente : 10-15% en moyenne (contre 2-3% pour un visiteur sans interaction)</li>
+<li>Valeur moyenne du panier apres interaction chat : +20% par rapport a la moyenne du site</li>
+<li>Taux de satisfaction client avec chat en direct : 73% (le plus eleve de tous les canaux, LiveChat Inc.)</li>
+</ul>
+
+<h3>Scripts de reponse par situation</h3>
+
+<h4>Situation 1 : Question sur un produit peptide</h4>
+
+<blockquote>
+<p><strong>Client</strong> : "Bonjour, je cherche du BPC-157, est-ce que votre produit est de qualite recherche ?"</p>
+</blockquote>
+<p>></p>
+<blockquote>
+<p><strong>Script recommande</strong> : "Bonjour ! Oui, tous nos peptides sont de qualite recherche, synthetises en conditions GMP et accompagnes d'un certificat d'analyse (CoA) par lot. Pour le BPC-157, nous proposons des flacons de 5mg et 10mg avec une purete superieure a 98%. Souhaitez-vous que je vous envoie le CoA du lot actuellement en stock ?"</p>
+</blockquote>
+
+<p><strong>Points cles :</strong> Toujours mentionner la purete, le certificat d'analyse et la qualite recherche. Ne jamais faire de claims medicaux ou therapeutiques (conformite Sante Canada et FDA).</p>
+
+<h4>Situation 2 : Probleme de livraison</h4>
+
+<blockquote>
+<p><strong>Client</strong> : "Ma commande #12345 aurait du arriver il y a 3 jours, je n'ai rien recu."</p>
+</blockquote>
+<p>></p>
+<blockquote>
+<p><strong>Script recommande</strong> : "Je comprends votre inquietude et je m'en occupe immediatement. Laissez-moi verifier le suivi de votre commande #12345. [Verification] Votre colis a ete expedie le [date] via [transporteur] avec le numero de suivi [numero]. Le dernier scan indique [statut]. Je vais contacter le transporteur pour accelerer la resolution. En attendant, souhaitez-vous que je vous envoie les details de suivi par email ?"</p>
+</blockquote>
+
+<p><strong>Points cles :</strong> Toujours verifier le suivi avant de repondre. Ne jamais blamer le transporteur devant le client. Proposer une action concrete et un suivi proactif.</p>
+
+<h4>Situation 3 : Demande de remboursement</h4>
+
+<blockquote>
+<p><strong>Client</strong> : "Le produit que j'ai recu ne correspond pas a ma commande, je veux un remboursement."</p>
+</blockquote>
+<p>></p>
+<blockquote>
+<p><strong>Script recommande</strong> : "Je suis desole pour cette erreur. C'est tout a fait inacceptable et je comprends votre frustration. Pouvez-vous me preciser quel produit vous avez recu et quel produit etait attendu ? Je vais lancer immediatement la procedure de correction. Vous aurez le choix entre un remplacement en expedition prioritaire ou un remboursement complet. Quelle option preferez-vous ?"</p>
+</blockquote>
+
+<p><strong>Points cles :</strong> S'excuser sincerement sans justification excessive. Donner le choix au client (remplacement ou remboursement). Resoudre en un seul contact si possible.</p>
+
+<h4>Situation 4 : Question technique sur les peptides</h4>
+
+<blockquote>
+<p><strong>Client</strong> : "Comment reconstituer le TB-500 ? Quelle quantite d'eau bacteriostatique utiliser ?"</p>
+</blockquote>
+<p>></p>
+<blockquote>
+<p><strong>Script recommande</strong> : "Excellente question ! Pour les peptides lyophilises comme le TB-500, nous recommandons d'utiliser de l'eau bacteriostatique. Vous trouverez un guide de reconstitution detaille dans la section documentation de votre espace client, ainsi que sur la fiche produit. Pour des dosages specifiques a votre protocole de recherche, je vous recommande de consulter la litterature scientifique pertinente. Avez-vous besoin du lien vers le guide ?"</p>
+</blockquote>
+
+<p><strong>Points cles :</strong> Fournir des informations factuelles sur la manipulation. Rediriger vers la documentation officielle. Ne jamais donner de conseils de dosage a usage humain (conformite reglementaire).</p>
+
+<h3>Regles d'escalade vers le telephone</h3>
+
+<p>Certaines situations ne se pretent pas au chat et doivent etre escaladees vers un appel telephonique :</p>
+
+<table>
+<thead>
+    <tr><th>Declencheur d'escalade</th><th>Raison</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td>Client visiblement frustre apres 3+ echanges</td><td>Le chat amplifie la frustration</td><td>"Puis-je vous appeler directement pour resoudre cela plus efficacement ?"</td></tr>
+  <tr><td>Commande superieure a 500$ avec probleme</td><td>Enjeu financier important</td><td>Proposer un rappel dans les 15 minutes</td></tr>
+  <tr><td>Question technique complexe necesitant discussion</td><td>Le chat n'est pas adapte aux echanges longs</td><td>Proposer un rendez-vous telephonique</td></tr>
+  <tr><td>Plainte potentiellement publique (menace d'avis negatif)</td><td>Desamorcer avant publication</td><td>Appel immediat avec superviseur</td></tr>
+  <tr><td>Client B2B / distributeur / institution</td><td>Relation commerciale strategique</td><td>Transfert vers le responsable commercial</td></tr>
+</tbody>
+</table>
+<h3>Metriques de performance du chat</h3>
+
+<p>Suivre ces indicateurs chaque semaine pour optimiser le canal :</p>
+
+<table>
+<thead>
+    <tr><th>Indicateur</th><th>Cible</th><th>Calcul</th></tr>
+</thead>
+<tbody>
+  <tr><td>Temps de premiere reponse</td><td>< 2 min</td><td>Moyenne du delai entre le premier message client et la premiere reponse agent</td></tr>
+  <tr><td>Taux de resolution au premier contact</td><td>> 80%</td><td>Conversations resolues sans escalade ni suivi</td></tr>
+  <tr><td>Taux de conversion chat vers vente</td><td>10-15%</td><td>Commandes passees dans les 24h suivant une session chat</td></tr>
+  <tr><td>Score de satisfaction (CSAT)</td><td>> 4.5/5</td><td>Sondage post-conversation</td></tr>
+  <tr><td>Conversations par agent par heure</td><td>3-5 simultanees</td><td>Charge de travail optimale sans degradation de qualite</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>SSE</strong></td><td>Server-Sent Events, technologie de communication en temps reel du serveur vers le navigateur</td></tr>
+  <tr><td><strong>Widget de chat</strong></td><td>Bulle de conversation visible par les visiteurs en bas a droite du site</td></tr>
+  <tr><td><strong>Chatbot</strong></td><td>Agent automatise qui repond aux visiteurs quand l'administrateur est hors ligne</td></tr>
+  <tr><td><strong>Traduction automatique</strong></td><td>Traduction instantanee des messages entre la langue de l'admin et celle du visiteur</td></tr>
+  <tr><td><strong>Indicateur de frappe</strong></td><td>Animation montrant que l'autre personne est en train d'ecrire</td></tr>
+  <tr><td><strong>Coches de lecture</strong></td><td>Une coche = message envoye, double coche = message lu par le destinataire</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/avis">Avis clients</a> -- pour les retours post-achat (publics)</li>
+<li><a href="/admin/questions">Questions produits</a> -- pour les questions posees sur les fiches produits</li>
+<li><a href="/admin/emails">Emails</a> -- pour la communication email avec les clients</li>
+<li><a href="/admin/crm">CRM</a> -- pour le suivi des contacts et opportunites commerciales</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="05-communaute--04-ambassadeurs">
+<h1>Programme Ambassadeurs</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Communaute > Ambassadeurs</p>
+<p><strong>URL</strong>: <code>/admin/ambassadeurs</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~30 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Ambassadeurs</strong> gere votre programme de referral B2B. Les ambassadeurs sont des partenaires (professionnels, influenceurs, experts) qui recommandent vos produits BioCycle Peptides a leur reseau via un lien de parrainage unique. En echange, ils reculent une commission sur chaque vente generee par leur lien.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir tous les ambassadeurs et leurs performances (ventes, commissions, referrals)</li>
+<li>Approuver ou rejeter les candidatures d'ambassadeurs</li>
+<li>Modifier le taux de commission individuel de chaque ambassadeur</li>
+<li>Voir l'historique des commissions d'un ambassadeur</li>
+<li>Traiter les paiements de commissions</li>
+<li>Suspendre ou reactiver un ambassadeur</li>
+<li>Configurer les parametres globaux du programme (commission par defaut, seuil de paiement, duree du cookie)</li>
+<li>Filtrer par statut (actif, en attente, suspendu, inactif)</li>
+<li>Suivre les paliers (Bronze, Argent, Or, Platine) bases sur les ventes cumulees</li>
+<li>Exporter la liste des ambassadeurs et leurs statistiques en CSV</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un ambassadeur ?</h3>
+<p>Un ambassadeur est un partenaire qui dispose d'un code de referral unique. Quand un client achete un produit via le lien de l'ambassadeur, ce dernier recoit automatiquement une commission sur la vente.</p>
+
+<h3>Comment fonctionnent les paliers (tiers) ?</h3>
+<p>Les ambassadeurs progressent automatiquement a travers 4 paliers en fonction de leurs ventes cumulees :</p>
+
+<table>
+<thead>
+    <tr><th>Palier</th><th>Ventes cumulees</th><th>Commission par defaut</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Bronze</strong></td><td>0 $ et plus</td><td>5 %</td></tr>
+  <tr><td><strong>Argent</strong></td><td>1 000 $ et plus</td><td>8 %</td></tr>
+  <tr><td><strong>Or</strong></td><td>5 000 $ et plus</td><td>10 %</td></tr>
+  <tr><td><strong>Platine</strong></td><td>15 000 $ et plus</td><td>15 %</td></tr>
+</tbody>
+</table>
+<h3>Qu'est-ce que le "cookie days" ?</h3>
+<p>C'est la duree pendant laquelle le lien de parrainage reste actif apres le clic d'un visiteur. Par exemple, si le cookie est de 30 jours et qu'un visiteur clique sur le lien le 1er mars, tout achat effectue avant le 31 mars sera attribue a l'ambassadeur.</p>
+
+<h3>Qu'est-ce qu'un payout (versement) ?</h3>
+<p>Quand les commissions accumulees d'un ambassadeur depassent le seuil minimum de paiement, vous pouvez traiter un versement. Le systeme calcule le montant total des commissions impayees et genere un paiement.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le rail de navigation</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la colonne d'icones a gauche, cliquez sur l'icone <strong>Communaute</strong></li>
+<li>Dans le panneau lateral, cliquez sur <strong>Ambassadeurs</strong></li>
+</ol>
+
+<h3>Methode 2 : Via la barre de recherche</h3>
+<ol>
+<li>Tapez "ambassadeurs" ou "referral" dans la barre de recherche</li>
+<li>Selectionnez le resultat correspondant</li>
+</ol>
+
+<h3>Methode 3 : Acces direct par URL</h3>
+<ol>
+<li>Rendez-vous a l'adresse <code>/admin/ambassadeurs</code> dans votre navigateur</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>L'interface suit la disposition maitresse/detail (Outlook-style) avec 4 zones :</p>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Icone</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouvel ambassadeur</strong></td><td>Personne +</td><td>Inviter un nouvel ambassadeur au programme</td></tr>
+  <tr><td><strong>Approuver candidature</strong></td><td>Coche verte</td><td>Approuver la candidature selectionnee</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Poubelle rouge</td><td>Retirer l'ambassadeur du programme</td></tr>
+  <tr><td><strong>Gerer commission</strong></td><td>Dollar</td><td>Modifier le taux de commission de l'ambassadeur selectionne</td></tr>
+  <tr><td><strong>Statistiques ventes</strong></td><td>Graphique</td><td>Afficher les statistiques de ventes de l'ambassadeur</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger</td><td>Exporter la liste complete au format CSV</td></tr>
+</tbody>
+</table>
+<h3>2. Les cartes statistiques -- sous le ruban</h3>
+
+<p>Quatre indicateurs cles :</p>
+<ul>
+<li><strong>Total ambassadeurs</strong> : nombre d'ambassadeurs dans le programme (tous statuts confondus)</li>
+<li><strong>Ventes totales</strong> : montant total des ventes generees par les ambassadeurs</li>
+<li><strong>Commissions versees</strong> : total des commissions deja payees</li>
+<li><strong>En attente paiement</strong> : montant des commissions en attente de versement</li>
+</ul>
+
+<h3>3. Le panneau de liste (gauche) -- liste maitre</h3>
+
+<p>La colonne de gauche affiche la liste des ambassadeurs. Chaque entree montre :</p>
+<ul>
+<li>L'avatar ou les initiales de l'ambassadeur</li>
+<li>Le nom et l'email</li>
+<li>Le code de referral</li>
+<li>Le montant total des ventes generees</li>
+<li>Des badges : palier (Bronze/Argent/Or/Platine) et statut (Actif/En attente/Suspendu/Inactif)</li>
+</ul>
+
+<p><strong>Au-dessus de la liste :</strong></p>
+<ul>
+<li>Des <strong>onglets de filtre</strong> : Tous / Actifs / En attente / Suspendus / Inactifs (avec compteur)</li>
+<li>Une <strong>barre de recherche</strong> pour filtrer par nom, email ou code de referral</li>
+</ul>
+
+<h3>4. Le panneau de detail (droite)</h3>
+
+<p>Quand vous selectionnez un ambassadeur, le panneau droit affiche :</p>
+<ul>
+<li>Le nom, l'email et le palier</li>
+<li>Le code de referral personnel</li>
+<li>Le taux de commission actuel</li>
+<li>Les statistiques detaillees :</li>
+<li>Nombre total de referrals</li>
+<li>Montant total des ventes</li>
+<li>Total des gains cumules</li>
+<li>Montant en attente de paiement</li>
+<li>L'<strong>historique des commissions</strong> : liste de chaque commission avec le numero de commande, le montant de la commande, la commission calculee, le statut du paiement et la date</li>
+<li>Les boutons d'action : <strong>Modifier la commission</strong>, <strong>Traiter le paiement</strong>, <strong>Suspendre</strong> ou <strong>Activer</strong></li>
+<li>Les informations du palier (seuil de vente minimum, commission par defaut)</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Approuver une candidature</h3>
+
+<ol>
+<li>Quand un utilisateur demande a devenir ambassadeur, son statut est <strong>En attente</strong></li>
+<li>Un bandeau de notification apparait si des candidatures sont en attente</li>
+<li>Cliquez sur le bouton <strong>Candidatures</strong> ou filtrez par l'onglet <strong>En attente</strong></li>
+<li>Selectionnez le candidat pour voir son profil</li>
+<li>Cliquez sur <strong>Approuver</strong> pour accepter la candidature</li>
+<li>L'ambassadeur passe au statut <strong>Actif</strong> et recoit son code de referral</li>
+</ol>
+
+<h3>Modifier le taux de commission</h3>
+
+<ol>
+<li>Selectionnez l'ambassadeur dans la liste</li>
+<li>Cliquez sur <strong>Modifier la commission</strong> (icone pourcentage)</li>
+<li>La fenetre modale s'ouvre avec le taux actuel</li>
+<li>Saisissez le nouveau taux (entre 0 et 100 %)</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+<li>Le nouveau taux s'applique immediatement aux futures ventes</li>
+</ol>
+
+<h3>Traiter un paiement</h3>
+
+<ol>
+<li>Selectionnez l'ambassadeur dont le montant "En attente de paiement" est superieur au seuil</li>
+<li>Cliquez sur le bouton <strong>Traiter le paiement</strong></li>
+<li>Le systeme calcule le total des commissions impayees</li>
+<li>Un message de confirmation s'affiche avec le montant et le nombre de commissions concernees</li>
+<li>Le solde "En attente" retombe a zero apres le traitement</li>
+</ol>
+
+<blockquote>
+<p><strong>Important</strong> : le bouton est desactive pendant le traitement pour eviter les doubles clics.</p>
+</blockquote>
+
+<h3>Suspendre un ambassadeur</h3>
+
+<ol>
+<li>Selectionnez l'ambassadeur</li>
+<li>Cliquez sur <strong>Suspendre</strong></li>
+<li>Une boite de confirmation apparait</li>
+<li>Confirmez la suspension</li>
+<li>L'ambassadeur ne peut plus generer de commissions tant qu'il est suspendu</li>
+<li>Pour le reactiver, cliquez sur <strong>Activer</strong> dans le panneau de detail</li>
+</ol>
+
+<h3>Configurer les parametres du programme</h3>
+
+<ol>
+<li>Cliquez sur l'icone <strong>Parametres</strong> (engrenage) dans les cartes statistiques ou dans le ruban</li>
+<li>La fenetre de configuration s'ouvre avec les parametres actuels (charges depuis les reglages sauvegards) :</li>
+</ol>
+<ul>
+<li><strong>Commission par defaut</strong> : le taux applique aux nouveaux ambassadeurs</li>
+<li><strong>Seuil minimum de paiement</strong> : montant minimum avant de pouvoir traiter un versement</li>
+<li><strong>Duree du cookie</strong> : nombre de jours pendant lesquels le referral est valide (1 a 365)</li>
+<li><strong>Approbation automatique</strong> : activer/desactiver l'approbation automatique des candidatures</li>
+<li><strong>Programme actif</strong> : activer/desactiver le programme entier</li>
+</ul>
+<ol>
+<li>Modifiez les parametres souhaites</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<h3>Exporter en CSV</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban</li>
+<li>Un fichier CSV contenant tous les ambassadeurs est telecharge</li>
+<li>Colonnes : Nom, Email, Code, Palier, Statut, Commission, Ventes, Gains, En attente, Date d'inscription</li>
+</ol>
+
+<hr>
+
+<h2>Scenarios courants</h2>
+
+<h3>Scenario 1 : Gestion hebdomadaire des candidatures et paiements</h3>
+
+<ol>
+<li>Ouvrez la page Ambassadeurs</li>
+<li>Verifiez si des candidatures sont <strong>En attente</strong> (onglet ou bandeau)</li>
+<li>Pour chaque candidature : examinez le profil, approuvez ou refusez</li>
+<li>Filtrez sur <strong>Actifs</strong> et triez par montant "En attente"</li>
+<li>Pour chaque ambassadeur ayant atteint le seuil de paiement : cliquez <strong>Traiter le paiement</strong></li>
+<li>Verifiez que les soldes sont remis a zero</li>
+</ol>
+
+<h3>Scenario 2 : Promouvoir un ambassadeur performant</h3>
+
+<ol>
+<li>Consultez les cartes statistiques pour identifier les meilleurs vendeurs</li>
+<li>Selectionnez l'ambassadeur le plus performant</li>
+<li>Observez son palier et son taux de commission actuels</li>
+<li>Si ses performances le justifient, modifiez son taux de commission a la hausse</li>
+<li>Envoyez-lui un email de felicitations via la page CRM ou Emails</li>
+</ol>
+
+<h3>Scenario 3 : Suspendre un ambassadeur inactif</h3>
+
+<ol>
+<li>Filtrez par statut <strong>Actifs</strong></li>
+<li>Identifiez les ambassadeurs avec 0 referral ou 0 vente depuis plusieurs mois</li>
+<li>Selectionnez l'ambassadeur concerne</li>
+<li>Cliquez sur <strong>Suspendre</strong> pour geler son compte</li>
+<li>Contactez-le par email pour comprendre la situation et proposer un plan de relance</li>
+</ol>
+
+<hr>
+
+<h2>Foire aux questions (FAQ)</h2>
+
+<p><strong>Q : Un ambassadeur peut-il voir ses propres statistiques ?</strong></p>
+<p>R : Oui. Les ambassadeurs disposent d'un espace personnel accessible depuis le site principal ou ils peuvent consulter leurs ventes, commissions et leur code de referral.</p>
+
+<p><strong>Q : Que se passe-t-il si un ambassadeur est suspendu pendant qu'un cookie est actif ?</strong></p>
+<p>R : Les ventes generees pendant la suspension ne generent pas de commission. Le cookie reste actif cote visiteur, mais la commission n'est pas attribuee.</p>
+
+<p><strong>Q : Puis-je creer un ambassadeur manuellement ?</strong></p>
+<p>R : Oui. Cliquez sur <strong>Nouvel ambassadeur</strong> dans le ruban. Vous pourrez renseigner les informations du partenaire et definir son taux de commission initial.</p>
+
+<p><strong>Q : Les paliers se mettent a jour automatiquement ?</strong></p>
+<p>R : Oui. Le systeme recalcule le palier de chaque ambassadeur en fonction de ses ventes cumulees. La progression est automatique et irreversible (pas de retrogradation).</p>
+
+<p><strong>Q : Comment fonctionne la validation Zod des parametres ?</strong></p>
+<p>R : Quand vous sauvegardez la configuration du programme, le systeme valide les valeurs via un schema strict : la commission doit etre entre 0 et 100, le seuil de paiement doit etre positif, et la duree du cookie doit etre entre 1 et 365 jours. Toute valeur invalide est rejetee avec un message d'erreur.</p>
+
+<hr>
+
+<h2>Strategie expert : Programme ambassadeur B2B pour un e-commerce de peptides</h2>
+
+<h3>Structure de commission optimale pour le marche des peptides</h3>
+
+<p>Le marche des peptides de recherche est un marche B2B de niche ou les ambassadeurs sont typiquement des laboratoires, des chercheurs, des institutions academiques et des professionnels de la sante integrative. La structure de commission doit refleter cette realite.</p>
+
+<p><strong>Grille de commission recommandee :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Type de commission</th><th>Taux</th><th>Conditions</th><th>Justification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Premier achat du referral</strong></td><td>10-15%</td><td>Commission unique sur la premiere commande du client parraine</td><td>Incite a l'acquisition de nouveaux clients</td></tr>
+  <tr><td><strong>Commissions recurrentes</strong></td><td>5%</td><td>Sur toutes les commandes suivantes du client, pendant 12 mois</td><td>Recompense la relation durable et l'accompagnement</td></tr>
+  <tr><td><strong>Bonus volume mensuel</strong></td><td>+2%</td><td>Si les ventes generees depassent 5 000$/mois</td><td>Motive les gros volumes</td></tr>
+  <tr><td><strong>Bonus premier parrainage</strong></td><td>50$ fixe</td><td>Quand l'ambassadeur genere sa premiere vente</td><td>Encourage les nouveaux ambassadeurs a demarrer rapidement</td></tr>
+</tbody>
+</table>
+<p><strong>Paliers de volume avec benefices supplementaires :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Palier</th><th>Ventes cumulees annuelles</th><th>Commission de base</th><th>Avantages supplementaires</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Bronze</strong></td><td>0 - 4 999$</td><td>10% premier / 5% recurrent</td><td>Acces au catalogue complet</td></tr>
+  <tr><td><strong>Argent</strong></td><td>5 000 - 19 999$</td><td>12% premier / 5% recurrent</td><td>+ Echantillons gratuits pour demonstrations</td></tr>
+  <tr><td><strong>Or</strong></td><td>20 000 - 49 999$</td><td>15% premier / 7% recurrent</td><td>+ Exclusivite territoriale partielle + Prix preferentiel personnel</td></tr>
+  <tr><td><strong>Platine</strong></td><td>50 000$+</td><td>15% premier / 8% recurrent</td><td>+ Exclusivite territoriale complete + Co-branding + Ligne directe support</td></tr>
+</tbody>
+</table>
+<h3>Exclusivite territoriale</h3>
+
+<p>L'exclusivite territoriale est un levier puissant pour les ambassadeurs B2B dans le marche des peptides. Elle garantit a l'ambassadeur qu'aucun autre ambassadeur ne sera nomme dans sa region, en echange d'un engagement de volume minimum.</p>
+
+<p><strong>Structure recommandee :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Zone</th><th>Engagement minimum annuel</th><th>Protection</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Region metropolitaine</strong> (ex: Grand Montreal, Grand Quebec)</td><td>25 000$/an</td><td>Aucun autre ambassadeur dans la region</td></tr>
+  <tr><td><strong>Province</strong> (ex: Quebec entier)</td><td>75 000$/an</td><td>Aucun autre ambassadeur dans la province</td></tr>
+  <tr><td><strong>Specialite</strong> (ex: peptides cosmetiques)</td><td>15 000$/an</td><td>Exclusivite sur la categorie, pas la geographie</td></tr>
+</tbody>
+</table>
+<p><strong>Clause de performance :</strong> L'exclusivite est revisee annuellement. Si l'ambassadeur n'atteint pas 70% de son engagement minimum, l'exclusivite est retiree avec un preavis de 90 jours.</p>
+
+<h3>Strategie de recrutement des ambassadeurs</h3>
+
+<p>Le recrutement d'ambassadeurs dans le secteur des peptides necessite une approche ciblee et professionnelle, differente du recrutement d'influenceurs grand public.</p>
+
+<p><strong>Canaux de recrutement par ordre d'efficacite :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Canal</th><th>Cible</th><th>Approche</th><th>Taux de conversion moyen</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>LinkedIn</strong></td><td>Chercheurs, directeurs de labo, professionnels sante integrative</td><td>Message personnalise citant leurs publications ou leur expertise</td><td>5-8%</td></tr>
+  <tr><td><strong>Conferences scientifiques</strong></td><td>Presentateurs et participants (ISPS, ICPS, conferences peptides)</td><td>Stand BioCycle + presentation du programme sur place</td><td>10-15% (contact direct)</td></tr>
+  <tr><td><strong>Publications scientifiques</strong></td><td>Auteurs publiant sur les peptides (PubMed, Google Scholar)</td><td>Email professionnel citant leur article et proposant un partenariat</td><td>3-5%</td></tr>
+  <tr><td><strong>Associations professionnelles</strong></td><td>Membres d'ordres professionnels (chimistes, biochimistes)</td><td>Partenariat avec l'association + offre aux membres</td><td>2-3%</td></tr>
+  <tr><td><strong>Clients existants performants</strong></td><td>Clients avec 5+ commandes et panier moyen > 300$</td><td>Invitation personnalisee par le responsable commercial</td><td>15-25%</td></tr>
+  <tr><td><strong>Distributeurs de fournitures de labo</strong></td><td>Entreprises complementaires (non concurrentes)</td><td>Proposition de co-distribution avec commission croisee</td><td>8-12%</td></tr>
+</tbody>
+</table>
+<p><strong>Template de message de recrutement LinkedIn :</strong></p>
+
+<blockquote>
+<p>"Bonjour [Prenom], je suis [Nom], responsable des partenariats chez BioCycle Peptides. J'ai remarque vos travaux sur [sujet/publication]. Notre programme ambassadeur offre des commissions de 10-15% aux professionnels recommandant nos peptides de recherche (purete >98%, certifies par analyse independante). Seriez-vous interesse par une conversation de 15 minutes pour en discuter ?"</p>
+</blockquote>
+
+<h3>Outils et materiels pour les ambassadeurs</h3>
+
+<p>Chaque ambassadeur doit recevoir un kit complet pour maximiser son efficacite :</p>
+
+<table>
+<thead>
+    <tr><th>Materiel</th><th>Description</th><th>Fourni au palier</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Lien de referral personnalise</strong></td><td>URL unique avec tracking automatique</td><td>Tous</td></tr>
+  <tr><td><strong>Codes promo dedies</strong></td><td>Code de reduction 5-10% pour les clients de l'ambassadeur</td><td>Tous</td></tr>
+  <tr><td><strong>Fiches produits PDF</strong></td><td>Documentation technique complete avec CoA types</td><td>Tous</td></tr>
+  <tr><td><strong>Echantillons</strong></td><td>Flacons echantillons pour demonstrations (usage recherche uniquement)</td><td>Argent+</td></tr>
+  <tr><td><strong>Materiel marketing co-brande</strong></td><td>Brochures, presentations avec logo de l'ambassadeur</td><td>Or+</td></tr>
+  <tr><td><strong>Page partenaire sur le site</strong></td><td>Page dediee sur biocyclepeptides.com</td><td>Or+</td></tr>
+  <tr><td><strong>Acces API catalogue</strong></td><td>Integration directe dans le systeme de l'ambassadeur</td><td>Platine</td></tr>
+</tbody>
+</table>
+<h3>Budget et rentabilite du programme</h3>
+
+<p><strong>Estimation budgetaire annuelle pour un programme de 20 ambassadeurs :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Poste</th><th>Cout annuel estime</th></tr>
+</thead>
+<tbody>
+  <tr><td>Commissions (moy. 8% sur 500 000$ de ventes generees)</td><td>40 000$</td></tr>
+  <tr><td>Echantillons et materiels</td><td>5 000$</td></tr>
+  <tr><td>Gestion du programme (temps interne)</td><td>10 000$</td></tr>
+  <tr><td>Evenements et conferences</td><td>8 000$</td></tr>
+  <tr><td><strong>Total</strong></td><td><strong>63 000$</strong></td></tr>
+  <tr><td><strong>Revenus generes</strong></td><td><strong>500 000$</strong></td></tr>
+  <tr><td><strong>Cout du programme en % des revenus</strong></td><td><strong>12.6%</strong></td></tr>
+</tbody>
+</table>
+<p>Le cout d'acquisition client via le programme ambassadeur est generalement 40-60% inferieur au cout d'acquisition via la publicite payante (Google Ads, Meta Ads). De plus, les clients acquis par referral ont un taux de retention 37% plus eleve (Wharton School of Business).</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Ambassadeur</strong></td><td>Partenaire recommandant vos produits en echange d'une commission sur les ventes</td></tr>
+  <tr><td><strong>Code de referral</strong></td><td>Code unique attribue a chaque ambassadeur pour tracer les ventes qu'il genere</td></tr>
+  <tr><td><strong>Cookie (duree)</strong></td><td>Periode pendant laquelle un clic sur un lien de referral reste actif pour attribuer une vente</td></tr>
+  <tr><td><strong>Palier (tier)</strong></td><td>Niveau de l'ambassadeur (Bronze, Argent, Or, Platine) base sur les ventes cumulees</td></tr>
+  <tr><td><strong>Commission</strong></td><td>Pourcentage du montant de la vente reverse a l'ambassadeur</td></tr>
+  <tr><td><strong>Payout (versement)</strong></td><td>Paiement des commissions accumulees a un ambassadeur</td></tr>
+  <tr><td><strong>Candidature</strong></td><td>Demande d'un utilisateur pour rejoindre le programme ambassadeur</td></tr>
+  <tr><td><strong>Optimistic update</strong></td><td>Technique ou l'interface se met a jour immediatement avant la confirmation du serveur</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/fidelite">Programme de fidelite</a> -- les points de fidelite (bonus referral pour les clients)</li>
+<li><a href="/admin/avis">Avis clients</a> -- les avis produits qui renforcent la credibilite</li>
+<li><a href="/admin/crm">CRM</a> -- le suivi des contacts et relations commerciales</li>
+<li><a href="/admin/customers">Clients</a> -- les acheteurs individuels du site</li>
+<li><a href="/admin/clients">Distributeurs</a> -- les clients B2B (entreprises)</li>
+<li><a href="/admin/rapports">Statistiques</a> -- les rapports de ventes et de performance</li>
+</ul>
+
+</div>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

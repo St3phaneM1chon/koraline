@@ -65,14 +65,14 @@ export default function DisclaimerModal() {
 
   useEffect(() => {
     // Check if user has already accepted
-    const hasAccepted = localStorage.getItem('biocycle_disclaimer_accepted');
+    const hasAccepted = localStorage.getItem('attitudes_disclaimer_accepted');
     if (!hasAccepted) {
       setIsOpen(true);
     }
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem('biocycle_disclaimer_accepted', 'true');
+    localStorage.setItem('attitudes_disclaimer_accepted', 'true');
     setIsOpen(false);
 
     // Dispatch event for newsletter popup to know disclaimer is done

@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
  * GET  /api/aurelia/chat — Get conversation messages (poll for answers)
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { withMobileGuard } from '@/lib/mobile-guard';
 import { prisma } from '@/lib/db';

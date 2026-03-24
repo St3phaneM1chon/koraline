@@ -6,10 +6,10 @@ export const dynamic = 'force-dynamic';
  * POST /api/video/meetings — Create a new meeting room
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { withMobileGuard } from '@/lib/mobile-guard';
-import { prisma } from '@/lib/db';
+// import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { telnyxFetch } from '@/lib/telnyx';
 
@@ -17,7 +17,7 @@ import { telnyxFetch } from '@/lib/telnyx';
  * GET — List video meetings/rooms.
  * Uses Telnyx Video Rooms API if available, otherwise returns from DB.
  */
-export const GET = withMobileGuard(async (request, { session }) => {
+export const GET = withMobileGuard(async (_request, { session }) => {
   try {
     // Try to list Telnyx video rooms
     try {
@@ -38,10 +38,11 @@ export const GET = withMobileGuard(async (request, { session }) => {
         inviteLink: `https://app.telnyx.com/rooms/${room.id}`,
       })) : [];
 
-      return NextResponse.json(mapped);
+      // C3-API-A-002 FIX: Return wrapped object instead of raw array
+      return NextResponse.json({ data: mapped });
     } catch {
       // Telnyx video API not configured or failed — return empty
-      return NextResponse.json([]);
+      return NextResponse.json({ data: [] });
     }
   } catch (error) {
     logger.error('[Video Meetings] GET failed', {
@@ -66,7 +67,7 @@ export const POST = withMobileGuard(async (request, { session }) => {
       return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
     }
 
-    const { title, inviteEmail } = parsed.data;
+    const { title, inviteEmail: _inviteEmail } = parsed.data;
 
     // Create Telnyx video room
     try {

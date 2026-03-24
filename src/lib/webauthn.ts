@@ -1,9 +1,9 @@
 /**
- * WebAuthn Configuration - BioCycle Peptides
+ * WebAuthn Configuration - Attitudes VIP / Koraline SaaS
  * Handles passkey/biometric authentication (Face ID, Touch ID, fingerprint)
  */
 
-export const rpName = 'BioCycle Peptides';
+export const rpName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
 
 // RP ID must match the domain (without protocol or port)
 export const rpID = process.env.NODE_ENV === 'production'

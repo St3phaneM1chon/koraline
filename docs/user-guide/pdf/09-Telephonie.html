@@ -1,0 +1,3952 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>09 — Telephonie &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 09 — Telephonie</span>
+        <span>2026-03-20</span>
+      </div>
+
+<div class="cover" style="min-height: 40vh; padding: 3rem 2rem;">
+  <div class="cover-logo" style="width:80px; height:80px; font-size:1.8rem; border-radius:16px;">K</div>
+  <h1 style="font-size:2rem;">09 — Telephonie</h1>
+  <div class="subtitle">Guide Utilisateur &mdash; Suite Koraline</div>
+  <div class="version">
+    22 pages dans cette section<br>
+    2026-03-20
+  </div>
+</div><div class="toc-container" style="margin:1rem 0 2rem;">
+<h2>Contenu de cette section</h2>
+<ul class="toc">
+<ul class="toc-pages">
+<li><a href="#09-telephonie--01-dashboard"><span>Tableau de bord VoIP</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--02-journal"><span>Journal d'appels</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--03-enregistrements"><span>Enregistrements d'appels</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--04-messagerie"><span>Messagerie vocale</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--05-wallboard"><span>Wallboard du centre d'appels</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--06-conference"><span>Conference telephonique</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--07-campagnes"><span>Campagnes d'appels</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--08-coaching"><span>Coaching des agents</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--09-transferts"><span>Transferts d'appels</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--10-groupes"><span>Groupes de sonnerie</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--11-sondages"><span>Sondages post-appel</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--12-ivr-builder"><span>Constructeur IVR</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--13-webhooks"><span>Webhooks VoIP</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--14-analytics-dashboard"><span>Tableau de bord Analytics</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--15-analytics-appels"><span>Analytics des appels</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--16-analytics-agents"><span>Analytics des agents</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--17-analytics-queues"><span>Analytics des files d'attente</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--18-analytics-speech"><span>Analytics vocales (IA)</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--19-connexions"><span>Connexions VoIP</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--20-numeros"><span>Numeros de telephone</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--21-extensions"><span>Extensions</span><span class="toc-dots"></span></a></li>
+<li><a href="#09-telephonie--22-parametres"><span>Parametres VoIP</span><span class="toc-dots"></span></a></li>
+</ul>
+</ul>
+</div><div id="09-telephonie--01-dashboard">
+<h1>Tableau de bord VoIP</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Tableau de bord</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Le <strong>tableau de bord VoIP</strong> est la page d'accueil du module de telephonie de Koraline. Il offre</p>
+<p>une vue d'ensemble en temps reel de l'activite telephonique de BioCycle Peptides : appels du jour,</p>
+<p>agents connectes, messagerie vocale, et etat des connexions avec le fournisseur VoIP (Telnyx).</p>
+
+<p>Ce tableau de bord est concu pour etre consulte en debut de journee ou a tout moment pour evaluer</p>
+<p>rapidement la charge de travail et identifier les points d'attention (appels manques, messagerie</p>
+<p>vocale non lue, problemes de connexion).</p>
+
+<p>La telephonie de Koraline repose sur le protocole <strong>VoIP</strong> (Voice over Internet Protocol), qui</p>
+<p>permet de passer et recevoir des appels via Internet plutot que par des lignes telephoniques</p>
+<p>traditionnelles. Le fournisseur principal est <strong>Telnyx</strong>, un operateur VoIP canadien.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale gauche.</li>
+<li>La premiere page affichee est le tableau de bord.</li>
+<li>L'URL directe est : <code>/admin/telephonie</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>En-tete</h3>
+<p>Titre "Tableau de bord telephonie" avec sous-titre descriptif.</p>
+
+<h3>Cartes KPI</h3>
+<p>Le composant <strong>CallStats</strong> affiche les indicateurs cles du jour :</p>
+
+<table>
+<thead>
+    <tr><th>KPI</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Appels aujourd'hui</strong></td><td>Nombre total d'appels (entrants + sortants)</td></tr>
+  <tr><td><strong>Appels repondus</strong></td><td>Nombre d'appels decroches avec succes</td></tr>
+  <tr><td><strong>Appels manques</strong></td><td>Nombre d'appels non repondus</td></tr>
+  <tr><td><strong>Duree moyenne</strong></td><td>Duree moyenne des appels du jour</td></tr>
+  <tr><td><strong>Satisfaction</strong></td><td>Score de satisfaction moyen (sondages post-appel)</td></tr>
+  <tr><td><strong>Agents actifs</strong></td><td>Nombre d'agents actuellement connectes</td></tr>
+  <tr><td><strong>Messagerie non lue</strong></td><td>Nombre de messages vocaux non ecoutes</td></tr>
+</tbody>
+</table>
+<h3>Etat des connexions</h3>
+<p>Section affichant les connexions VoIP configurees :</p>
+<ul>
+<li><strong>Telnyx</strong> : Icone de verification verte si active, rouge si desactivee</li>
+<li><strong>Statut de synchronisation</strong> : Derniere mise a jour</li>
+<li>Chaque fournisseur affiche son etat (connecte/deconnecte)</li>
+</ul>
+
+<h3>Appels recents</h3>
+<p>Tableau des 10 derniers appels avec :</p>
+<ul>
+<li><strong>Direction</strong> : Icone fleche entrante (bleu) ou sortante (vert)</li>
+<li><strong>Appelant</strong> : Nom ou numero de l'appelant, avec lien CRM si le client est identifie</li>
+<li><strong>Appele</strong> : Numero compose</li>
+<li><strong>Agent</strong> : Nom et extension de l'agent</li>
+<li><strong>Statut</strong> : Badge colore (Complete, Manque, Messagerie, En cours, Echoue, Transfere, Sonne)</li>
+<li><strong>Duree</strong> : Temps de conversation</li>
+<li><strong>Date</strong> : Horodatage de l'appel</li>
+<li><strong>Satisfaction</strong> : Badge de score si un sondage a ete complete</li>
+</ul>
+
+<p>Un lien <strong>Voir tout</strong> redirige vers le journal d'appels complet.</p>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Indicateurs de statut des appels</h3>
+
+<table>
+<thead>
+    <tr><th>Statut</th><th>Couleur</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>COMPLETED</strong></td><td>Vert</td><td>Appel termine normalement</td></tr>
+  <tr><td><strong>MISSED</strong></td><td>Rouge</td><td>Appel non repondu</td></tr>
+  <tr><td><strong>VOICEMAIL</strong></td><td>Orange</td><td>Appel redirige vers la messagerie vocale</td></tr>
+  <tr><td><strong>IN_PROGRESS</strong></td><td>Bleu</td><td>Appel en cours</td></tr>
+  <tr><td><strong>FAILED</strong></td><td>Gris</td><td>Echec technique de l'appel</td></tr>
+  <tr><td><strong>TRANSFERRED</strong></td><td>Violet</td><td>Appel transfere a un autre agent</td></tr>
+  <tr><td><strong>RINGING</strong></td><td>Jaune</td><td>Appel en train de sonner</td></tr>
+</tbody>
+</table>
+<h3>Badge de satisfaction</h3>
+<p>Le composant <strong>SatisfactionBadge</strong> affiche le score du sondage post-appel :</p>
+<ul>
+<li>Score >= 4/5 : Badge vert</li>
+<li>Score 3/5 : Badge jaune</li>
+<li>Score <= 2/5 : Badge rouge</li>
+<li>Pas de sondage : Aucun badge</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Evaluation matinale de l'activite</h3>
+<ol>
+<li>Ouvrez le tableau de bord telephonie en debut de journee.</li>
+<li>Verifiez le nombre de <strong>messageries non lues</strong> et traitez-les en priorite.</li>
+<li>Consultez les <strong>appels manques</strong> de la veille et rappelez les clients si necessaire.</li>
+<li>Verifiez que les connexions VoIP sont actives (icone verte).</li>
+</ol>
+
+<h3>Workflow 2 : Identifier un probleme de connexion</h3>
+<ol>
+<li>Consultez la section <strong>Etat des connexions</strong>.</li>
+<li>Si une connexion affiche une icone rouge, allez dans <strong>Connexions</strong> pour diagnostiquer.</li>
+<li>Testez la connexion et verifiez les identifiants API.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Les donnees sont-elles en temps reel ?</strong></p>
+<p>R : Les KPI sont calcules a partir des donnees du jour et se mettent a jour a chaque</p>
+<p>rechargement de la page.</p>
+
+<p><strong>Q : Pourquoi la satisfaction affiche "N/A" ?</strong></p>
+<p>R : Les sondages post-appel doivent etre configures et actives. Sans sondage, aucun score</p>
+<p>n'est collecte.</p>
+
+<p><strong>Q : Que faire si la connexion Telnyx est desactivee ?</strong></p>
+<p>R : Allez dans <strong>Connexions</strong> pour verifier les cles API et reactiver la connexion.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>VoIP</strong></td><td>Voice over Internet Protocol, technologie de telephonie par Internet</td></tr>
+  <tr><td><strong>Telnyx</strong></td><td>Fournisseur de services VoIP utilise par BioCycle Peptides</td></tr>
+  <tr><td><strong>KPI</strong></td><td>Key Performance Indicator, indicateur cle de performance</td></tr>
+  <tr><td><strong>SIP</strong></td><td>Session Initiation Protocol, protocole utilise pour les appels VoIP</td></tr>
+  <tr><td><strong>Extension</strong></td><td>Numero interne attribue a un agent pour recevoir des appels</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./02-journal.md">Journal d'appels</a> : Historique complet de tous les appels</li>
+<li><a href="./05-wallboard.md">Wallboard</a> : Vue temps reel du centre d'appels</li>
+<li><a href="./19-connexions.md">Connexions</a> : Configurer les fournisseurs VoIP</li>
+<li><a href="./22-parametres.md">Parametres</a> : Configuration globale de la telephonie</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--02-journal">
+<h1>Journal d'appels</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Journal d'appels</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Le <strong>journal d'appels</strong> (Call Log) est l'historique complet de tous les appels telephoniques</p>
+<p>passes et recus via Koraline. C'est le registre central de l'activite telephonique de BioCycle</p>
+<p>Peptides. Chaque appel y est consigne avec ses details : direction, participants, duree, statut,</p>
+<p>enregistrement audio, transcription IA, et donnees CRM associees.</p>
+
+<p>Le journal se rafraichit automatiquement toutes les 15 secondes pour afficher les nouveaux appels</p>
+<p>en temps reel, sans rechargement de page.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, cliquez sur <strong>Journal d'appels</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/journal</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Barre de filtres</h3>
+<p>En haut de la page, une barre de filtres permet de preciser votre recherche :</p>
+
+<table>
+<thead>
+    <tr><th>Filtre</th><th>Options</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Recherche</strong></td><td>Champ texte pour chercher par nom, numero, ou mot-cle</td></tr>
+  <tr><td><strong>Direction</strong></td><td>Tous, Entrant, Sortant, Interne</td></tr>
+  <tr><td><strong>Statut</strong></td><td>Tous, Complete, Manque, Messagerie, Echoue</td></tr>
+  <tr><td><strong>Date debut</strong></td><td>Selecteur de date</td></tr>
+  <tr><td><strong>Date fin</strong></td><td>Selecteur de date</td></tr>
+</tbody>
+</table>
+<h3>Tableau des appels</h3>
+<p>Le tableau principal affiche les colonnes suivantes :</p>
+<ul>
+<li><strong>Direction</strong> : Icone fleche entrante (bleu), sortante (vert) ou interne (gris)</li>
+<li><strong>Appelant</strong> : Nom et numero, avec lien CRM si le client est identifie</li>
+<li><strong>Appele</strong> : Numero compose</li>
+<li><strong>Agent</strong> : Nom de l'agent et extension</li>
+<li><strong>Statut</strong> : Badge colore (Complete, Manque, Messagerie, Echoue, En cours, Transfere)</li>
+<li><strong>Duree</strong> : Temps de conversation au format mm:ss</li>
+<li><strong>Date</strong> : Date et heure de l'appel</li>
+<li><strong>Satisfaction</strong> : Score du sondage post-appel</li>
+<li><strong>Enregistrement</strong> : Icone indiquant la disponibilite d'un enregistrement</li>
+</ul>
+
+<h3>Pagination</h3>
+<p>Navigation par pages avec affichage du nombre total d'appels (25 par page).</p>
+
+<h3>Panneau de detail (expansion)</h3>
+<p>Cliquez sur une ligne pour afficher le detail de l'appel en dessous :</p>
+
+<ul>
+<li><strong>Enregistrement audio</strong> : Lecteur audio integre avec barre de progression</li>
+<li><strong>Transcription IA</strong> : Resume genere par Whisper avec analyse de sentiment</li>
+<li><strong>Notes de l'agent</strong> : Notes ajoutees manuellement par l'agent</li>
+<li><strong>Deals CRM</strong> : Opportunites commerciales liees au client appelant</li>
+<li><strong>Commandes recentes</strong> : Dernieres commandes du client</li>
+<li><strong>Fidelite</strong> : Niveau et points du programme de fidelite</li>
+<li><strong>Emails recents</strong> : Derniers emails echanges avec ce client</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Recherche en texte libre</h3>
+<p>Le champ de recherche filtre les appels par :</p>
+<ul>
+<li>Nom de l'appelant ou de l'appele</li>
+<li>Numero de telephone</li>
+<li>Nom de l'agent</li>
+</ul>
+
+<h3>Filtrage par date</h3>
+<p>Les selecteurs de date permettent de definir une plage precise. Utile pour les rapports</p>
+<p>d'activite ou la recherche d'un appel specifique.</p>
+
+<h3>Detail enrichi par les ponts inter-modules (Bridges)</h3>
+<p>Le panneau d'expansion tire des donnees de 4 modules differents :</p>
+
+<table>
+<thead>
+    <tr><th>Pont</th><th>Donnees affichees</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>CRM</strong></td><td>Deals associes au client (titre, etape, valeur)</td></tr>
+  <tr><td><strong>Commerce</strong></td><td>Commandes recentes (numero, statut, montant)</td></tr>
+  <tr><td><strong>Fidelite</strong></td><td>Niveau du client et solde de points</td></tr>
+  <tr><td><strong>Emails</strong></td><td>Derniers emails echanges (objet, statut)</td></tr>
+</tbody>
+</table>
+<p>Ces ponts permettent a l'agent d'avoir un contexte complet sans quitter le journal d'appels.</p>
+
+<h3>Lecteur audio integre</h3>
+<p>Le composant <strong>AudioPlayer</strong> offre :</p>
+<ul>
+<li>Lecture / Pause / Arret</li>
+<li>Barre de progression cliquable</li>
+<li>Affichage de la duree totale et du temps ecoule</li>
+</ul>
+
+<h3>Transcription IA</h3>
+<p>Les transcriptions sont generees automatiquement par Whisper et incluent :</p>
+<ul>
+<li><strong>Resume</strong> : Synthese du contenu de l'appel</li>
+<li><strong>Sentiment</strong> : Positif (vert), Neutre (gris), ou Negatif (rouge)</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Retrouver un appel client specifique</h3>
+<ol>
+<li>Tapez le nom ou le numero du client dans le champ de recherche.</li>
+<li>Ajustez la plage de dates si necessaire.</li>
+<li>Cliquez sur l'appel pour afficher les details.</li>
+<li>Ecoutez l'enregistrement ou lisez la transcription.</li>
+</ol>
+
+<h3>Workflow 2 : Revue quotidienne des appels manques</h3>
+<ol>
+<li>Selectionnez le filtre <strong>Statut</strong> > <strong>Manque</strong>.</li>
+<li>Definissez la date du jour.</li>
+<li>Parcourez la liste et rappelez les clients prioritaires.</li>
+<li>Verifiez si des messages vocaux ont ete laisses.</li>
+</ol>
+
+<h3>Workflow 3 : Audit qualite d'un agent</h3>
+<ol>
+<li>Filtrez par le nom de l'agent dans le champ de recherche.</li>
+<li>Definissez la periode souhaitee.</li>
+<li>Ecoutez les enregistrements des appels.</li>
+<li>Consultez les scores de satisfaction.</li>
+<li>Notez vos observations pour la session de coaching.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Tous les appels sont-ils enregistres ?</strong></p>
+<p>R : Cela depend de la politique d'enregistrement configuree dans les parametres</p>
+<p>(tous, entrants uniquement, sortants uniquement, ou aucun).</p>
+
+<p><strong>Q : Les donnees CRM sont-elles en temps reel ?</strong></p>
+<p>R : Les ponts inter-modules chargent les donnees a la demande lorsque vous expandissez</p>
+<p>un appel. Elles refletent l'etat actuel de la base de donnees.</p>
+
+<p><strong>Q : Combien de temps les appels sont-ils conserves ?</strong></p>
+<p>R : Les enregistrements du journal sont conserves indefiniment. Les fichiers audio</p>
+<p>sont stockes sur Azure Blob Storage.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Call Log</strong></td><td>Registre historique de tous les appels telephoniques</td></tr>
+  <tr><td><strong>Direction</strong></td><td>Sens de l'appel : entrant (INBOUND), sortant (OUTBOUND), interne (INTERNAL)</td></tr>
+  <tr><td><strong>Whisper</strong></td><td>Modele d'IA d'OpenAI utilise pour la transcription automatique des appels</td></tr>
+  <tr><td><strong>Pont (Bridge)</strong></td><td>Lien inter-module affichant des donnees d'un autre module dans le contexte actuel</td></tr>
+  <tr><td><strong>SWR</strong></td><td>Bibliotheque de cache et rafraichissement automatique des donnees</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./01-dashboard.md">Tableau de bord</a> : Vue d'ensemble de l'activite telephonique</li>
+<li><a href="./03-enregistrements.md">Enregistrements</a> : Recherche avancee dans les enregistrements</li>
+<li><a href="./04-messagerie.md">Messagerie vocale</a> : Gerer les messages vocaux</li>
+<li><a href="./15-analytics-appels.md">Analytics appels</a> : Statistiques detaillees des appels</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--03-enregistrements">
+<h1>Enregistrements d'appels</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Enregistrements</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>La page <strong>Enregistrements</strong> est un centre de contenu unifie qui regroupe trois types de</p>
+<p>medias : les enregistrements <strong>audio</strong> des appels telephoniques, les enregistrements <strong>video</strong></p>
+<p>des visioconferences, et les transcriptions des conversations <strong>chat</strong>. Elle offre une</p>
+<p>recherche transversale pour retrouver rapidement n'importe quel contenu enregistre.</p>
+
+<p>Les enregistrements audio sont generes automatiquement selon la politique d'enregistrement</p>
+<p>configuree dans les parametres VoIP. Chaque enregistrement est associe a son appel d'origine</p>
+<p>et peut inclure une transcription IA avec analyse de sentiment.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, cliquez sur <strong>Enregistrements</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/enregistrements</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Onglets de type de contenu</h3>
+<p>En haut, quatre onglets permettent de filtrer par type :</p>
+<ul>
+<li><strong>Tous</strong> : Affiche tous les types de contenu</li>
+<li><strong>Audio</strong> : Enregistrements d'appels telephoniques uniquement</li>
+<li><strong>Video</strong> : Enregistrements de visioconferences</li>
+<li><strong>Chat</strong> : Transcriptions de conversations par messagerie</li>
+</ul>
+
+<h3>Barre de recherche</h3>
+<p>Un champ de recherche avec filtre de date permet de trouver un enregistrement par :</p>
+<ul>
+<li>Nom de l'appelant ou de l'appele</li>
+<li>Mot-cle dans la transcription</li>
+<li>Periode de temps</li>
+</ul>
+
+<h3>Liste des enregistrements</h3>
+<p>Chaque enregistrement affiche :</p>
+<ul>
+<li><strong>Titre</strong> : Format "Appelant -> Appele"</li>
+<li><strong>Description</strong> : Resume de la transcription IA si disponible</li>
+<li><strong>Date</strong> : Horodatage de l'enregistrement</li>
+<li><strong>Duree</strong> : Longueur de l'enregistrement</li>
+<li><strong>Sentiment</strong> : Badge de sentiment (positif, neutre, negatif)</li>
+<li><strong>Lecteur audio</strong> : Controles de lecture integres</li>
+<li><strong>Telechargement</strong> : Bouton pour telecharger le fichier</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Recherche par contenu</h3>
+<p>La recherche interroge a la fois les metadonnees (noms, numeros) et le contenu des</p>
+<p>transcriptions. Par exemple, chercher "remboursement" trouvera tous les appels ou ce</p>
+<p>mot a ete prononce.</p>
+
+<h3>Lecteur audio integre</h3>
+<p>Le composant AudioPlayer affiche une barre de progression avec :</p>
+<ul>
+<li>Bouton lecture/pause</li>
+<li>Indication du temps ecoule et de la duree totale</li>
+<li>Barre de progression cliquable pour naviguer dans l'enregistrement</li>
+</ul>
+
+<h3>Telechargement</h3>
+<p>Les fichiers audio peuvent etre telecharges au format d'origine pour archivage</p>
+<p>ou pour une ecoute hors ligne.</p>
+
+<h3>Analyse de sentiment</h3>
+<p>Les enregistrements transcrits par l'IA incluent une analyse automatique du sentiment :</p>
+<ul>
+<li><strong>Positif</strong> : Le client est satisfait</li>
+<li><strong>Neutre</strong> : Conversation factuelle standard</li>
+<li><strong>Negatif</strong> : Le client est mecontent ou frustre</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Chercher un enregistrement specifique</h3>
+<ol>
+<li>Tapez le nom du client ou un mot-cle dans la barre de recherche.</li>
+<li>Filtrez par type (audio, video, chat) si necessaire.</li>
+<li>Definissez la plage de dates.</li>
+<li>Cliquez sur l'enregistrement pour l'ecouter.</li>
+</ol>
+
+<h3>Workflow 2 : Revue qualite des conversations</h3>
+<ol>
+<li>Filtrez les enregistrements par la periode souhaitee.</li>
+<li>Triez par sentiment negatif pour identifier les appels problematiques.</li>
+<li>Ecoutez les enregistrements et notez les points d'amelioration.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Ou sont stockes les fichiers d'enregistrement ?</strong></p>
+<p>R : Les fichiers audio sont stockes sur Azure Blob Storage et accessibles via une URL securisee.</p>
+
+<p><strong>Q : Les enregistrements sont-ils conformes au RGPD ?</strong></p>
+<p>R : Un message d'avertissement est joue en debut d'appel pour informer les parties que</p>
+<p>l'appel est enregistre. La politique d'enregistrement est configurable.</p>
+
+<p><strong>Q : Comment desactiver l'enregistrement pour certains appels ?</strong></p>
+<p>R : La politique d'enregistrement se configure dans <strong>Parametres VoIP</strong>. Vous pouvez choisir</p>
+<p>d'enregistrer tous les appels, uniquement les entrants, uniquement les sortants, ou aucun.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Enregistrement</strong></td><td>Fichier audio ou video capture pendant un appel</td></tr>
+  <tr><td><strong>Transcription IA</strong></td><td>Conversion automatique de la parole en texte par Whisper</td></tr>
+  <tr><td><strong>Sentiment</strong></td><td>Analyse emotionnelle du contenu de l'appel (positif, neutre, negatif)</td></tr>
+  <tr><td><strong>Blob Storage</strong></td><td>Service de stockage de fichiers dans le cloud Azure</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./02-journal.md">Journal d'appels</a> : Voir les enregistrements dans le contexte de l'appel</li>
+<li><a href="./18-analytics-speech.md">Analytics vocales</a> : Analyses IA avancees des conversations</li>
+<li><a href="./22-parametres.md">Parametres</a> : Configurer la politique d'enregistrement</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--04-messagerie">
+<h1>Messagerie vocale</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Messagerie vocale</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>La <strong>messagerie vocale</strong> de Koraline est un systeme de messagerie vocale visuelle qui va</p>
+<p>bien au-dela d'une simple boite vocale. Chaque message est transcrit automatiquement par</p>
+<p>l'IA (Whisper), analyse en termes de sentiment et d'urgence, et associe au contact CRM</p>
+<p>correspondant lorsqu'il est identifie.</p>
+
+<p>Cela permet aux agents de trier et prioriser les messages sans avoir a les ecouter tous :</p>
+<p>un message avec un sentiment negatif et une urgence elevee sera traite en priorite.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, cliquez sur <strong>Messagerie</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/messagerie</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Filtres</h3>
+<p>Trois boutons permettent de filtrer les messages :</p>
+<ul>
+<li><strong>Tous</strong> : Tous les messages vocaux</li>
+<li><strong>Non lus</strong> : Messages pas encore ecoutes</li>
+<li><strong>Lus</strong> : Messages deja consultes</li>
+</ul>
+
+<h3>Liste des messages vocaux</h3>
+<p>Chaque message affiche :</p>
+<ul>
+<li><strong>Icone enveloppe</strong> : Fermee (non lu) ou ouverte (lu)</li>
+<li><strong>Appelant</strong> : Nom ou numero de telephone</li>
+<li><strong>Extension</strong> : Poste sur lequel le message a ete laisse</li>
+<li><strong>Duree</strong> : Longueur du message audio</li>
+<li><strong>Date</strong> : Horodatage du message</li>
+<li><strong>Contact CRM</strong> : Lien vers la fiche client si identifie</li>
+<li><strong>Urgence</strong> : Badge (haute, normale, basse) determine par l'IA</li>
+<li><strong>Sentiment</strong> : Badge (positif, neutre, negatif)</li>
+<li><strong>Mots-cles</strong> : Tags extraits automatiquement du contenu</li>
+</ul>
+
+<h3>Panneau d'expansion</h3>
+<p>Cliquez sur un message pour afficher :</p>
+<ul>
+<li><strong>Lecteur audio</strong> : Ecouter le message</li>
+<li><strong>Transcription</strong> : Texte complet du message</li>
+<li><strong>Resume IA</strong> : Synthese automatique du contenu</li>
+<li><strong>Actions</strong> : Marquer comme lu, Archiver, Rappeler, Supprimer</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Transcription automatique par IA</h3>
+<p>Chaque message vocal est automatiquement transcrit par le modele Whisper. La transcription</p>
+<p>inclut :</p>
+<ul>
+<li>Le texte integral du message</li>
+<li>Un resume concis</li>
+<li>Les mots-cles principaux</li>
+<li>L'analyse de sentiment (positif/neutre/negatif)</li>
+<li>L'evaluation de l'urgence (haute/normale/basse)</li>
+</ul>
+
+<h3>Actions groupees</h3>
+<p>Selectionnez plusieurs messages pour effectuer des actions en lot :</p>
+<ul>
+<li><strong>Marquer comme lu</strong> : Mettre a jour le statut de plusieurs messages</li>
+<li><strong>Archiver</strong> : Deplacer vers les archives</li>
+<li><strong>Supprimer</strong> : Supprimer definitivement</li>
+</ul>
+
+<h3>Rappel direct</h3>
+<p>Un bouton <strong>Rappeler</strong> permet de lancer un appel sortant directement vers le numero</p>
+<p>de l'appelant, sans quitter la page.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Trier les messages du matin</h3>
+<ol>
+<li>Filtrez par <strong>Non lus</strong> pour voir les nouveaux messages.</li>
+<li>Triez par urgence (les messages urgents apparaissent en premier).</li>
+<li>Lisez les transcriptions pour identifier les demandes critiques.</li>
+<li>Rappelez les clients urgents en utilisant le bouton <strong>Rappeler</strong>.</li>
+<li>Marquez les messages traites comme lus.</li>
+</ol>
+
+<h3>Workflow 2 : Archiver les messages anciens</h3>
+<ol>
+<li>Filtrez par <strong>Lus</strong> pour voir les messages deja traites.</li>
+<li>Selectionnez les messages de plus d'un mois.</li>
+<li>Cliquez sur <strong>Archiver</strong> pour les deplacer.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : La transcription est-elle toujours exacte ?</strong></p>
+<p>R : Whisper offre une precision elevee mais peut faire des erreurs sur les noms propres</p>
+<p>ou les termes techniques. Ecoutez l'audio en cas de doute.</p>
+
+<p><strong>Q : Puis-je configurer un message d'accueil personnalise ?</strong></p>
+<p>R : Oui, via le constructeur IVR ou les parametres de l'extension.</p>
+
+<p><strong>Q : Les messages supprimes sont-ils recuperables ?</strong></p>
+<p>R : Non, la suppression est definitive. Archivez plutot les messages que vous pourriez</p>
+<p>vouloir consulter plus tard.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Messagerie vocale visuelle</strong></td><td>Systeme de messagerie affichant les messages avec transcription</td></tr>
+  <tr><td><strong>Whisper</strong></td><td>Modele IA d'OpenAI pour la reconnaissance vocale</td></tr>
+  <tr><td><strong>Urgence</strong></td><td>Niveau de priorite du message determine par l'IA</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./01-dashboard.md">Tableau de bord</a> : Voir le compteur de messages non lus</li>
+<li><a href="./02-journal.md">Journal d'appels</a> : Retrouver l'appel qui a genere le message</li>
+<li><a href="./03-enregistrements.md">Enregistrements</a> : Recherche transversale dans les enregistrements</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--05-wallboard">
+<h1>Wallboard du centre d'appels</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Wallboard</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Le <strong>wallboard</strong> est un tableau de bord temps reel concu pour etre affiche en permanence</p>
+<p>sur un ecran dans le centre d'appels. Il montre instantanement les metriques critiques :</p>
+<p>appels actifs, agents en ligne, file d'attente, SLA, et taux d'abandon.</p>
+
+<p>Le wallboard se rafraichit automatiquement toutes les <strong>10 secondes</strong> et peut aussi etre</p>
+<p>actualise manuellement. Il est optimise pour la lisibilite a distance avec de grands</p>
+<p>chiffres et des codes couleur intuitifs.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, cliquez sur <strong>Wallboard</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/wallboard</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Grille de KPI (9 cartes)</h3>
+
+<table>
+<thead>
+    <tr><th>KPI</th><th>Description</th><th>Code couleur</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Appels actifs</strong></td><td>Nombre d'appels en cours</td><td>Bleu</td></tr>
+  <tr><td><strong>Agents en ligne</strong></td><td>Agents avec statut Online ou Busy</td><td>Vert</td></tr>
+  <tr><td><strong>En file d'attente</strong></td><td>Appels en attente de prise en charge</td><td>Violet</td></tr>
+  <tr><td><strong>Temps d'attente moyen</strong></td><td>Duree moyenne d'attente en file</td><td>Ambre</td></tr>
+  <tr><td><strong>SLA %</strong></td><td>Pourcentage d'appels repondus dans le delai cible</td><td>Vert/Ambre/Rouge</td></tr>
+  <tr><td><strong>Taux d'abandon</strong></td><td>Pourcentage d'appels raccroches avant reponse</td><td>Vert/Ambre/Rouge</td></tr>
+  <tr><td><strong>Appels du jour</strong></td><td>Total des appels de la journee</td><td>Bleu</td></tr>
+  <tr><td><strong>Appels repondus</strong></td><td>Appels decroches avec succes</td><td>Vert</td></tr>
+  <tr><td><strong>Appels manques</strong></td><td>Appels non repondus</td><td>Rouge</td></tr>
+</tbody>
+</table>
+<p>Le SLA est colore selon le seuil : vert (>= 90%), ambre (70-89%), rouge (< 70%).</p>
+<p>Le taux d'abandon est colore : vert (<= 5%), ambre (6-15%), rouge (> 15%).</p>
+
+<h3>Liste des agents</h3>
+<p>Un panneau liste tous les agents avec :</p>
+<ul>
+<li><strong>Avatar</strong> : Initiale du nom</li>
+<li><strong>Indicateur de presence</strong> : Pastille coloree (vert=en ligne, rouge=occupe, orange=ne pas deranger, ambre=absent, gris=hors ligne)</li>
+<li><strong>Nom</strong> de l'agent</li>
+<li><strong>Extension</strong> : Numero de poste</li>
+<li><strong>Statut</strong> : Badge avec le statut actuel</li>
+</ul>
+
+<h3>Liste des files d'attente</h3>
+<p>Un second panneau liste les files (queues) configurees :</p>
+<ul>
+<li><strong>Nom</strong> de la file</li>
+<li><strong>Nombre de membres</strong> et strategie de distribution</li>
+<li><strong>Appels en attente</strong> : Badge si des appels attendent</li>
+<li><strong>Temps d'attente moyen</strong> de la file</li>
+</ul>
+
+<h3>Horodatage du dernier rafraichissement</h3>
+<p>En haut a droite, l'heure du dernier rafraichissement est affichee avec un bouton de</p>
+<p>rafraichissement manuel.</p>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Rafraichissement automatique</h3>
+<p>Le wallboard interroge deux API toutes les 10 secondes :</p>
+<ul>
+<li><strong>Presence de l'equipe</strong> : Statut de chaque agent</li>
+<li><strong>Statistiques du tableau de bord</strong> : Compteurs d'appels du jour</li>
+</ul>
+
+<h3>Statuts des agents</h3>
+
+<table>
+<thead>
+    <tr><th>Statut</th><th>Couleur</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>ONLINE</strong></td><td>Vert</td><td>Agent disponible pour recevoir des appels</td></tr>
+  <tr><td><strong>BUSY</strong></td><td>Rouge</td><td>Agent en conversation</td></tr>
+  <tr><td><strong>DND</strong></td><td>Orange</td><td>Ne pas deranger</td></tr>
+  <tr><td><strong>AWAY</strong></td><td>Ambre</td><td>Agent temporairement absent</td></tr>
+  <tr><td><strong>OFFLINE</strong></td><td>Gris</td><td>Agent deconnecte</td></tr>
+</tbody>
+</table>
+<h3>Indicateurs de performance SLA</h3>
+<p>Le SLA (Service Level Agreement) mesure le pourcentage d'appels repondus dans un delai</p>
+<p>donne (typiquement 20 secondes). Un SLA en dessous de 70% indique un sous-effectif.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Surveillance en temps reel</h3>
+<ol>
+<li>Ouvrez le wallboard sur un ecran dedie dans le centre d'appels.</li>
+<li>Surveillez le nombre d'appels en file d'attente.</li>
+<li>Si la file depasse 5 appels, demandez a des agents supplementaires de se connecter.</li>
+<li>Gardez un oeil sur le taux d'abandon (cible : < 5%).</li>
+</ol>
+
+<h3>Workflow 2 : Diagnostiquer une baisse de SLA</h3>
+<ol>
+<li>Verifiez le nombre d'agents en ligne vs. le volume d'appels.</li>
+<li>Consultez les statuts individuels des agents.</li>
+<li>Identifiez les agents en statut DND ou AWAY qui pourraient etre rappeles.</li>
+<li>Si le temps d'attente moyen depasse 2 minutes, ajustez l'affectation.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Puis-je afficher le wallboard en plein ecran ?</strong></p>
+<p>R : Oui, utilisez la touche F11 de votre navigateur pour passer en mode plein ecran.</p>
+
+<p><strong>Q : Le wallboard fonctionne-t-il sur une tablette ?</strong></p>
+<p>R : Oui, l'interface est responsive et s'adapte aux differentes tailles d'ecran.</p>
+
+<p><strong>Q : Comment changer la frequence de rafraichissement ?</strong></p>
+<p>R : La frequence est fixee a 10 secondes dans le code. Contactez l'administrateur</p>
+<p>pour la modifier.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Wallboard</strong></td><td>Tableau de bord temps reel pour centre d'appels</td></tr>
+  <tr><td><strong>SLA</strong></td><td>Service Level Agreement, objectif de temps de reponse</td></tr>
+  <tr><td><strong>Taux d'abandon</strong></td><td>Pourcentage d'appels raccroches par l'appelant avant reponse</td></tr>
+  <tr><td><strong>File d'attente</strong></td><td>Queue ou les appels attendent d'etre pris par un agent</td></tr>
+  <tr><td><strong>DND</strong></td><td>Do Not Disturb, mode ne pas deranger</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./01-dashboard.md">Tableau de bord</a> : Vue d'ensemble non temps reel</li>
+<li><a href="./10-groupes.md">Groupes de sonnerie</a> : Configurer les files d'attente</li>
+<li><a href="./17-analytics-queues.md">Analytics files</a> : Statistiques historiques des files</li>
+<li><a href="./16-analytics-agents.md">Analytics agents</a> : Performance individuelle des agents</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--06-conference">
+<h1>Conference telephonique</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Conference</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>La page <strong>Conference</strong> permet d'organiser et de gerer des appels conference (appels a</p>
+<p>plusieurs participants) directement depuis Koraline. Une salle de conference virtuelle</p>
+<p>est creee et les participants s'y joignent par telephone ou via le navigateur.</p>
+
+<p>Les conferences sont utiles pour les reunions d'equipe, les consultations client avec</p>
+<p>plusieurs intervenants, ou les sessions de formation interne.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, cliquez sur <strong>Conference</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/conference</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Liste des salles de conference</h3>
+<p>La page principale affiche les salles de conference existantes et actives avec :</p>
+<ul>
+<li><strong>Nom de la salle</strong> : Identifiant unique de la conference</li>
+<li><strong>Participants</strong> : Nombre de participants actuellement connectes</li>
+<li><strong>Statut</strong> : Active ou terminee</li>
+<li><strong>Date de creation</strong> : Quand la conference a ete creee</li>
+</ul>
+
+<h3>Creation d'une conference</h3>
+<p>Un bouton permet de creer une nouvelle salle de conference en definissant :</p>
+<ul>
+<li>Nom de la salle</li>
+<li>Numero d'acces par telephone</li>
+<li>Code PIN optionnel pour securiser l'acces</li>
+</ul>
+
+<h3>Salle de conference (vue detaillee)</h3>
+<p>En entrant dans une salle, vous voyez :</p>
+<ul>
+<li><strong>Liste des participants</strong> avec controles individuels (mute, expulser)</li>
+<li><strong>Controles globaux</strong> (muter tous, enregistrer, terminer)</li>
+<li><strong>Chat integre</strong> pour les messages texte pendant la conference</li>
+<li><strong>Duree</strong> de la conference en cours</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Gestion des participants</h3>
+<ul>
+<li><strong>Inviter</strong> : Ajouter un participant par numero de telephone</li>
+<li><strong>Muter/Demuter</strong> : Couper le micro d'un participant</li>
+<li><strong>Expulser</strong> : Retirer un participant de la conference</li>
+<li><strong>Muter tous</strong> : Couper les micros de tous les participants</li>
+</ul>
+
+<h3>Enregistrement</h3>
+<p>La conference peut etre enregistree. L'enregistrement sera disponible dans la page</p>
+<p><strong>Enregistrements</strong> apres la fin de la conference.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Organiser une conference client</h3>
+<ol>
+<li>Creez une nouvelle salle de conference avec un nom descriptif.</li>
+<li>Partagez le numero d'acces et le code PIN avec les participants.</li>
+<li>Demarrez la conference et attendez que les participants se joignent.</li>
+<li>Gerez les micros selon les besoins.</li>
+<li>Terminez la conference quand la reunion est finie.</li>
+</ol>
+
+<h3>Workflow 2 : Reunion d'equipe hebdomadaire</h3>
+<ol>
+<li>Utilisez une salle de conference recurrente avec le meme nom.</li>
+<li>Les agents se connectent via leur extension SIP.</li>
+<li>Activez l'enregistrement pour garder un compte-rendu.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Combien de participants maximum dans une conference ?</strong></p>
+<p>R : La limite depend du forfait Telnyx. En general, jusqu'a 20 participants.</p>
+
+<p><strong>Q : Les conferences sont-elles facturees ?</strong></p>
+<p>R : Oui, chaque participant genere une minute d'utilisation VoIP facturee par Telnyx.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Conference call</strong></td><td>Appel telephonique avec 3 participants ou plus</td></tr>
+  <tr><td><strong>PIN</strong></td><td>Code numerique personnel pour securiser l'acces a la salle</td></tr>
+  <tr><td><strong>Muter</strong></td><td>Couper le microphone d'un participant</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./01-dashboard.md">Tableau de bord</a> : Vue d'ensemble de l'activite</li>
+<li><a href="./03-enregistrements.md">Enregistrements</a> : Retrouver l'enregistrement de la conference</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--07-campagnes">
+<h1>Campagnes d'appels</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Campagnes</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Les <strong>campagnes d'appels</strong> (ou campagnes de composition automatique) permettent de passer</p>
+<p>des appels sortants en masse vers une liste de contacts. C'est l'outil principal pour la</p>
+<p>prospection telephonique, les relances commerciales, et les sondages telephoniques.</p>
+
+<p>Chaque campagne definit un <strong>Caller ID</strong> (numero affiche chez le destinataire), un <strong>script</strong></p>
+<p>que l'agent doit suivre, un <strong>calendrier</strong> de fonctionnement (horaires et jours actifs), et</p>
+<p>un niveau de <strong>concurrence</strong> (nombre d'appels simultanes).</p>
+
+<p>La detection de repondeur (<strong>AMD</strong> - Answering Machine Detection) permet d'identifier</p>
+<p>automatiquement les repondeurs pour que les agents ne perdent pas de temps avec des</p>
+<p>boites vocales.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, sous <strong>Operations</strong>, cliquez sur <strong>Campagnes</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/campagnes</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Tableau des campagnes</h3>
+<p>Le tableau principal liste toutes les campagnes avec les colonnes :</p>
+<ul>
+<li><strong>Nom</strong> : Nom de la campagne et description</li>
+<li><strong>Statut</strong> : Badge colore (Brouillon, Active, En pause, Terminee, Archivee)</li>
+<li><strong>Contacts</strong> : Nombre total de contacts dans la liste</li>
+<li><strong>Appeles</strong> : Nombre de contacts deja appeles</li>
+<li><strong>Connectes</strong> : Nombre de contacts ayant repondu (avec taux de connexion en %)</li>
+<li><strong>Caller ID</strong> : Numero affiche chez le destinataire</li>
+<li><strong>Horaires</strong> : Plage horaire de fonctionnement</li>
+<li><strong>Actions</strong> : Modifier, Supprimer</li>
+</ul>
+
+<h3>Bouton "Nouvelle campagne"</h3>
+<p>Ouvre le formulaire de creation de campagne.</p>
+
+<h3>Formulaire de campagne (modale)</h3>
+<p>Le formulaire de creation/edition comporte :</p>
+
+<p><strong>Informations generales</strong> :</p>
+<ul>
+<li>Nom de la campagne</li>
+<li>Caller ID (numero de telephone sortant)</li>
+</ul>
+
+<p><strong>Parametres d'appel</strong> :</p>
+<ul>
+<li>Appels simultanes maximum (1-50)</li>
+<li>Detection de repondeur (AMD) active/desactivee</li>
+</ul>
+
+<p><strong>Script de l'agent</strong> :</p>
+<ul>
+<li>Titre du script</li>
+<li>Corps du script (texte que l'agent doit lire/adapter)</li>
+</ul>
+
+<p><strong>Calendrier</strong> :</p>
+<ul>
+<li>Heure de debut et de fin</li>
+<li>Fuseau horaire (America/Montreal par defaut)</li>
+<li>Jours actifs (lundi a dimanche, selectionnable individuellement)</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Statuts des campagnes</h3>
+
+<table>
+<thead>
+    <tr><th>Statut</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Brouillon</strong></td><td>Campagne en preparation, pas encore lancee</td></tr>
+  <tr><td><strong>Active</strong></td><td>Campagne en cours de composition</td></tr>
+  <tr><td><strong>En pause</strong></td><td>Campagne temporairement arretee</td></tr>
+  <tr><td><strong>Terminee</strong></td><td>Tous les contacts ont ete appeles</td></tr>
+  <tr><td><strong>Archivee</strong></td><td>Campagne terminee et archivee</td></tr>
+</tbody>
+</table>
+<h3>Detection de repondeur (AMD)</h3>
+<p>Quand AMD est active, le systeme detecte automatiquement si l'appel est decroche</p>
+<p>par une personne ou un repondeur. Si c'est un repondeur, l'appel peut etre :</p>
+<ul>
+<li>Raccrocher automatiquement</li>
+<li>Laisser un message pre-enregistre</li>
+<li>Transfere a un agent</li>
+</ul>
+
+<h3>Taux de connexion</h3>
+<p>Le taux de connexion est calcule : <code>(contacts connectes / contacts appeles) * 100</code>.</p>
+<p>Un taux superieur a 30% est considere comme bon pour la prospection B2B.</p>
+
+<h3>Fuseau horaire</h3>
+<p>Le calendrier respecte le fuseau horaire configure. La campagne ne passera aucun appel</p>
+<p>en dehors des horaires definis, meme si le serveur est dans un autre fuseau.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Creer une campagne de prospection</h3>
+<ol>
+<li>Cliquez sur <strong>Nouvelle campagne</strong>.</li>
+<li>Nommez la campagne (ex: "Prospection Q2 2026").</li>
+<li>Definissez le Caller ID avec un numero local canadien.</li>
+<li>Activez AMD pour eviter les repondeurs.</li>
+<li>Redigez le script que les agents suivront.</li>
+<li>Definissez les horaires (9h-17h, lundi a vendredi).</li>
+<li>Sauvegardez et importez la liste de contacts.</li>
+<li>Activez la campagne.</li>
+</ol>
+
+<h3>Workflow 2 : Analyser les resultats d'une campagne</h3>
+<ol>
+<li>Consultez le tableau des campagnes.</li>
+<li>Identifiez la campagne souhaitee.</li>
+<li>Verifiez le taux de connexion (contacts connectes / appeles).</li>
+<li>Si le taux est faible (< 20%), verifiez la qualite de la liste de contacts.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Comment importer une liste de contacts ?</strong></p>
+<p>R : Les contacts sont importes via un fichier CSV ou saisis manuellement dans le module CRM.</p>
+
+<p><strong>Q : Les appels sont-ils enregistres pendant les campagnes ?</strong></p>
+<p>R : Oui, selon la politique d'enregistrement globale configuree dans les parametres.</p>
+
+<p><strong>Q : Puis-je respecter la loi sur la Liste nationale de numeros de telecommunication ?</strong></p>
+<p>R : Koraline ne verifie pas automatiquement la LNNTE. Assurez-vous que votre liste de</p>
+<p>contacts est conforme avant de lancer une campagne.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Campagne d'appels</strong></td><td>Ensemble d'appels sortants planifies vers une liste de contacts</td></tr>
+  <tr><td><strong>AMD</strong></td><td>Answering Machine Detection, detection automatique de repondeur</td></tr>
+  <tr><td><strong>Caller ID</strong></td><td>Numero de telephone affiche chez le destinataire</td></tr>
+  <tr><td><strong>Taux de connexion</strong></td><td>Pourcentage de contacts ayant effectivement decroche</td></tr>
+  <tr><td><strong>LNNTE</strong></td><td>Liste nationale de numeros de telecommunication exclus (loi canadienne)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./08-coaching.md">Coaching</a> : Former les agents avant de lancer une campagne</li>
+<li><a href="./10-groupes.md">Groupes de sonnerie</a> : Affecter les agents aux campagnes</li>
+<li><a href="./15-analytics-appels.md">Analytics appels</a> : Statistiques detaillees des appels sortants</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--08-coaching">
+<h1>Coaching des agents</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Coaching</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Le module <strong>Coaching</strong> permet aux superviseurs de former et d'evaluer les agents du centre</p>
+<p>d'appels en temps reel. Trois modes d'intervention sont disponibles pendant un appel en cours :</p>
+
+<ul>
+<li><strong>Ecoute (Listen)</strong> : Le superviseur ecoute l'appel sans que l'agent ou le client ne le sache</li>
+<li><strong>Chuchotement (Whisper)</strong> : Le superviseur parle a l'agent sans que le client n'entende</li>
+<li><strong>Intervention (Barge)</strong> : Le superviseur rejoint la conversation a trois voix</li>
+</ul>
+
+<p>Chaque session de coaching est documentee avec un sujet, des objectifs, et une evaluation</p>
+<p>par criteres ponderes. Cela permet de suivre la progression des agents dans le temps.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, sous <strong>Operations</strong>, cliquez sur <strong>Coaching</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/coaching</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Classement des agents</h3>
+<p>En haut de page, des cartes affichent le classement des agents par score moyen :</p>
+<ul>
+<li>Position (1, 2, 3...)</li>
+<li>Nom de l'agent</li>
+<li>Nombre de sessions completees</li>
+<li>Score moyen sur 10</li>
+<li>Etoiles de notation (1 a 5)</li>
+</ul>
+
+<p>Le premier du classement a un arriere-plan dore.</p>
+
+<h3>Sessions actives</h3>
+<p>La section suivante liste les sessions de coaching en cours ou planifiees :</p>
+<ul>
+<li><strong>Coach</strong> : Nom du superviseur</li>
+<li><strong>Agent</strong> : Nom de l'agent coache</li>
+<li><strong>Statut</strong> : Planifie, En cours, Termine</li>
+<li><strong>Duree</strong> : Temps ecoule depuis le debut</li>
+<li><strong>Sujet</strong> : Theme de la session</li>
+<li><strong>Actions</strong> : Boutons Ecoute, Chuchotement, Intervention, Terminer</li>
+</ul>
+
+<h3>Historique des sessions</h3>
+<p>Un tableau liste les sessions terminees avec :</p>
+<ul>
+<li>Coach et Agent</li>
+<li>Sujet aborde</li>
+<li>Score obtenu (sur 10)</li>
+<li>Date de la session</li>
+</ul>
+
+<h3>Bouton "Nouvelle session"</h3>
+<p>Lance la creation d'une session de coaching.</p>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Modes de coaching</h3>
+
+<table>
+<thead>
+    <tr><th>Mode</th><th>Icone</th><th>Description</th><th>Utilisation</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Ecoute</strong></td><td>Casque</td><td>Ecouter sans etre detecte</td><td>Evaluation silencieuse</td></tr>
+  <tr><td><strong>Chuchotement</strong></td><td>Bulle</td><td>Parler a l'agent uniquement</td><td>Guider pendant un appel difficile</td></tr>
+  <tr><td><strong>Intervention</strong></td><td>Telephone</td><td>Rejoindre la conversation</td><td>Prendre le relais sur un probleme</td></tr>
+</tbody>
+</table>
+<h3>Creation d'une session</h3>
+<p>Le formulaire de nouvelle session demande :</p>
+<ul>
+<li><strong>Agent</strong> : Selection dans la liste des employes</li>
+<li><strong>Sujet</strong> : Theme de la session (ex: "Techniques de vente", "Gestion des plaintes")</li>
+<li><strong>Objectifs</strong> : Ce que l'agent doit pratiquer</li>
+<li><strong>Date/Heure</strong> : Planification de la session</li>
+</ul>
+
+<h3>Notation par criteres</h3>
+<p>Apres la session, le coach attribue des scores par critere :</p>
+<ul>
+<li>Chaque critere a un <strong>poids</strong> (importance relative)</li>
+<li>Le score va de 1 a 10</li>
+<li>Un commentaire optionnel accompagne chaque note</li>
+<li>Certains criteres peuvent etre notes automatiquement par l'IA (<strong>auto-scored</strong>)</li>
+<li>Le score moyen pondere est calcule automatiquement</li>
+</ul>
+
+<h3>Progression des agents</h3>
+<p>Le classement des agents permet de suivre l'evolution dans le temps. Un agent avec un</p>
+<p>score moyen en progression constante valide l'efficacite du programme de coaching.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Session d'ecoute silencieuse</h3>
+<ol>
+<li>Cliquez sur <strong>Nouvelle session</strong>.</li>
+<li>Selectionnez l'agent a evaluer.</li>
+<li>Definissez le sujet (ex: "Evaluation trimestrielle").</li>
+<li>Quand l'agent est en appel, cliquez sur <strong>Ecoute</strong>.</li>
+<li>Prenez des notes pendant l'appel.</li>
+<li>Apres l'appel, cliquez sur <strong>Terminer la session</strong>.</li>
+<li>Completez la grille d'evaluation.</li>
+</ol>
+
+<h3>Workflow 2 : Coaching en temps reel</h3>
+<ol>
+<li>Creez une session avec l'agent.</li>
+<li>Quand l'agent recoit un appel difficile, activez le mode <strong>Chuchotement</strong>.</li>
+<li>Guidez l'agent avec des suggestions que le client n'entend pas.</li>
+<li>Si la situation l'exige, passez en mode <strong>Intervention</strong>.</li>
+<li>Terminez la session et evaluez les points d'amelioration.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : L'agent sait-il qu'il est en mode ecoute ?</strong></p>
+<p>R : Non, le mode ecoute est invisible pour l'agent et le client.</p>
+
+<p><strong>Q : Le chuchotement est-il audible par le client ?</strong></p>
+<p>R : Non, seul l'agent entend le superviseur en mode chuchotement.</p>
+
+<p><strong>Q : Puis-je coacher plusieurs agents simultanement ?</strong></p>
+<p>R : Un superviseur ne peut etre en session active qu'avec un seul agent a la fois.</p>
+
+<hr>
+
+<h2>Strategie expert : Techniques de vente consultative pour les peptides</h2>
+
+<h3>Approche consultative vs. vente agressive</h3>
+
+<p>Dans le marche des peptides de recherche, la vente agressive (hard sell) est contre-productive et potentiellement dangereuse sur le plan reglementaire. L'approche consultative -- ou l'agent se positionne comme un conseiller technique plutot qu'un vendeur -- est la seule strategie viable.</p>
+
+<p><strong>Principes fondamentaux :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Principe</th><th>Vente agressive (a eviter)</th><th>Vente consultative (a adopter)</th></tr>
+</thead>
+<tbody>
+  <tr><td>Posture</td><td>"Achetez notre BPC-157, c'est le meilleur"</td><td>"Quel type de recherche menez-vous ? Je peux vous orienter vers le produit adapte"</td></tr>
+  <tr><td>Objectif</td><td>Fermer la vente rapidement</td><td>Comprendre le besoin et proposer la solution optimale</td></tr>
+  <tr><td>Argumentation</td><td>Centree sur le prix et les promotions</td><td>Centree sur la qualite, la purete et la documentation</td></tr>
+  <tr><td>Resultat long terme</td><td>Vente unique, pas de fidelisation</td><td>Client recurrent, referrals naturels</td></tr>
+</tbody>
+</table>
+<h3>Ecoute active et questions ouvertes</h3>
+
+<p>L'agent doit guider la conversation avec des questions ouvertes qui revelent le besoin reel du client :</p>
+
+<p><strong>Questions de decouverte (dans cet ordre) :</strong></p>
+
+<ol>
+<li>"Quel type de recherche ou d'application visez-vous ?" (comprendre le contexte)</li>
+<li>"Avez-vous deja travaille avec ce type de peptide ?" (evaluer le niveau d'expertise)</li>
+<li>"Quel degre de purete est requis pour votre protocole ?" (orienter vers le bon produit)</li>
+<li>"Quelle quantite estimez-vous necessaire pour votre projet ?" (dimensionner la commande)</li>
+<li>"Avez-vous des contraintes particulieres de stockage ou de livraison ?" (anticiper la logistique)</li>
+</ol>
+
+<p><strong>Techniques d'ecoute active :</strong></p>
+<ul>
+<li>Reformuler : "Si je comprends bien, vous cherchez un peptide de purete >98% pour une etude de stabilite..."</li>
+<li>Valider : "C'est tout a fait pertinent. Beaucoup de nos clients en recherche dermatologique choisissent ce produit pour les memes raisons."</li>
+<li>Approfondir : "Pouvez-vous m'en dire plus sur les volumes que vous anticipez sur les 6 prochains mois ?"</li>
+</ul>
+
+<h3>Education du client (le levier de vente le plus puissant)</h3>
+
+<p>Dans le marche des peptides, eduquer le client EST vendre. Un client qui comprend la difference entre un peptide a 85% de purete et un peptide a 99% de purete achete systematiquement le produit premium.</p>
+
+<p><strong>Points d'education a integrer dans la conversation :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Sujet</th><th>Message cle</th><th>Impact sur la vente</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Purete</strong></td><td>"Notre BPC-157 est teste par HPLC et spectrometrie de masse avec un CoA par lot"</td><td>Justifie le prix premium</td></tr>
+  <tr><td><strong>Stockage</strong></td><td>"Les peptides lyophilises se conservent 24 mois a -20C. Une fois reconstitues, 30 jours au refrigerateur"</td><td>Montre l'expertise, cree confiance</td></tr>
+  <tr><td><strong>Reconstitution</strong></td><td>"Nous fournissons un guide de reconstitution avec chaque commande"</td><td>Reduit l'anxiete du premier achat</td></tr>
+  <tr><td><strong>Documentation</strong></td><td>"Le CoA est disponible avant achat sur simple demande"</td><td>Transparence = confiance</td></tr>
+  <tr><td><strong>Conformite</strong></td><td>"Tous nos produits sont etiquetes 'pour usage de recherche uniquement', conformement a la reglementation"</td><td>Protege l'entreprise et rassure le client</td></tr>
+</tbody>
+</table>
+<h3>Gestion des objections courantes</h3>
+
+<table>
+<thead>
+    <tr><th>Objection</th><th>Mauvaise reponse</th><th>Bonne reponse</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>"C'est cher par rapport a [concurrent]"</strong></td><td>"On peut faire un rabais"</td><td>"Je comprends. Notre prix reflète la purete verifiee par analyse independante et la traçabilite complete du lot. Beaucoup de nos clients ont compare et sont revenus chez nous apres avoir eu des resultats inconsistants avec des produits moins chers. Souhaitez-vous voir le CoA de notre dernier lot ?"</td></tr>
+  <tr><td><strong>"Est-ce legal au Canada ?"</strong></td><td>"Oui, c'est legal" (trop vague)</td><td>"Les peptides de recherche sont legaux a l'achat au Canada pour usage de recherche, et non pour consommation humaine. Nous vendons exclusivement des produits etiquetes 'recherche uniquement' et nous nous conformons a toutes les reglementations applicables de Sante Canada."</td></tr>
+  <tr><td><strong>"Comment etre sur de la purete ?"</strong></td><td>"Faites-nous confiance"</td><td>"Chaque lot est teste par HPLC et spectrometrie de masse dans un laboratoire tiers independant. Le certificat d'analyse est disponible sur la fiche produit et je peux vous l'envoyer par email immediatement. Notre purete garantie est de 98% minimum, et la plupart de nos lots depassent 99%."</td></tr>
+  <tr><td><strong>"Je peux avoir un echantillon ?"</strong></td><td>"Non"</td><td>"Pour les commandes institutionnelles ou les projets de recherche de volume, nous offrons des echantillons aux clients du palier Argent et plus. Si vous etes un nouveau client, je peux vous proposer une remise de premiere commande de 10% pour que vous puissiez tester notre qualite."</td></tr>
+  <tr><td><strong>"La livraison est trop longue"</strong></td><td>"C'est la poste"</td><td>"Je comprends que les delais sont importants pour vos travaux. Nous proposons l'expedition Xpresspost (2-3 jours ouvrables) et Prioritaire (lendemain, grandes villes). Pour les commandes urgentes, je peux verifier la disponibilite de l'expedition le jour meme si la commande est passee avant 14h EST."</td></tr>
+</tbody>
+</table>
+<h3>Criteres d'evaluation specifiques au coaching peptides</h3>
+
+<p>Pour les sessions de coaching, utiliser ces criteres ponderes adaptes au marche des peptides :</p>
+
+<table>
+<thead>
+    <tr><th>Critere</th><th>Poids</th><th>Description</th><th>Score 1-10</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Conformite reglementaire</strong></td><td>25%</td><td>L'agent ne fait jamais de claims medicaux/therapeutiques</td><td>Critique -- score < 7 = echec</td></tr>
+  <tr><td><strong>Connaissance produit</strong></td><td>20%</td><td>L'agent maitrise purete, stockage, reconstitution, CoA</td><td></td></tr>
+  <tr><td><strong>Ecoute et decouverte</strong></td><td>20%</td><td>L'agent pose des questions ouvertes avant de proposer</td><td></td></tr>
+  <tr><td><strong>Gestion des objections</strong></td><td>15%</td><td>L'agent repond aux objections avec des faits, sans pression</td><td></td></tr>
+  <tr><td><strong>Upsell pertinent</strong></td><td>10%</td><td>L'agent propose des produits complementaires logiques (eau bacteriostatique, seringues, etc.)</td><td></td></tr>
+  <tr><td><strong>Cloture naturelle</strong></td><td>10%</td><td>L'agent guide vers la commande sans forcer</td><td></td></tr>
+</tbody>
+</table>
+<p><strong>Score de passage :</strong> 7/10 minimum. Tout agent en dessous de 7 doit suivre un programme de formation supplementaire.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Coaching</strong></td><td>Accompagnement et formation d'un agent par un superviseur</td></tr>
+  <tr><td><strong>Listen (Ecoute)</strong></td><td>Mode d'ecoute silencieuse d'un appel en cours</td></tr>
+  <tr><td><strong>Whisper (Chuchotement)</strong></td><td>Mode ou le coach parle uniquement a l'agent</td></tr>
+  <tr><td><strong>Barge (Intervention)</strong></td><td>Mode ou le coach rejoint la conversation a trois</td></tr>
+  <tr><td><strong>Score pondere</strong></td><td>Note globale calculee en tenant compte de l'importance de chaque critere</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./05-wallboard.md">Wallboard</a> : Identifier les agents actifs pour le coaching</li>
+<li><a href="./16-analytics-agents.md">Analytics agents</a> : Performance individuelle des agents</li>
+<li><a href="./02-journal.md">Journal d'appels</a> : Retrouver les appels pour la revue qualite</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--09-transferts">
+<h1>Transferts d'appels</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Transferts</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>La page <strong>Transferts</strong> permet de configurer des <strong>regles de renvoi d'appel</strong> automatiques</p>
+<p>pour chaque extension. Quand un agent est indisponible, occupe, ou ne repond pas, l'appel</p>
+<p>est automatiquement redirige vers une destination alternative.</p>
+
+<p>Quatre conditions de transfert sont disponibles :</p>
+<ul>
+<li><strong>Toujours</strong> : Tous les appels sont renvoyes sans sonner</li>
+<li><strong>Occupe</strong> : Renvoi quand la ligne est deja en communication</li>
+<li><strong>Non-reponse</strong> : Renvoi apres un delai de sonnerie configurable</li>
+<li><strong>Indisponible</strong> : Renvoi quand l'agent est deconnecte</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale.</li>
+<li>Sous <strong>Operations</strong>, cliquez sur <strong>Transferts</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/transferts</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Tableau des regles de transfert</h3>
+<p>Chaque regle affiche :</p>
+<ul>
+<li><strong>Extension</strong> : Le poste concerne</li>
+<li><strong>Condition</strong> : Toujours, Occupe, Non-reponse, Indisponible</li>
+<li><strong>Destination</strong> : Numero ou extension de redirection</li>
+<li><strong>Duree de sonnerie</strong> : Secondes avant le renvoi (pour la condition non-reponse)</li>
+<li><strong>Actif</strong> : Toggle on/off pour activer/desactiver la regle</li>
+</ul>
+
+<h3>Bouton "Nouvelle regle"</h3>
+<p>Ouvre le formulaire de creation d'une regle de transfert.</p>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Conditions de transfert</h3>
+
+<table>
+<thead>
+    <tr><th>Condition</th><th>Declencheur</th><th>Cas d'usage</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Toujours</strong></td><td>Immediatement, sans sonnerie</td><td>Agent en vacances</td></tr>
+  <tr><td><strong>Occupe</strong></td><td>Ligne deja en communication</td><td>Redirection vers collegue</td></tr>
+  <tr><td><strong>Non-reponse</strong></td><td>Apres X secondes de sonnerie</td><td>Messagerie vocale</td></tr>
+  <tr><td><strong>Indisponible</strong></td><td>Agent hors ligne</td><td>Numero de secours</td></tr>
+</tbody>
+</table>
+<h3>Duree de sonnerie</h3>
+<p>Pour la condition "non-reponse", le delai de sonnerie definit combien de secondes</p>
+<p>l'appel sonne avant d'etre redirige (typiquement 15 a 30 secondes).</p>
+
+<h3>Activation/Desactivation rapide</h3>
+<p>Le toggle permet d'activer ou desactiver une regle sans la supprimer, utile pour</p>
+<p>les regles temporaires (vacances, maladie).</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Configurer le renvoi pendant les vacances</h3>
+<ol>
+<li>Cliquez sur <strong>Nouvelle regle</strong>.</li>
+<li>Selectionnez l'extension de l'agent absent.</li>
+<li>Choisissez la condition <strong>Toujours</strong>.</li>
+<li>Definissez la destination (extension du remplacant ou messagerie).</li>
+<li>Activez la regle. Desactivez-la au retour de l'agent.</li>
+</ol>
+
+<h3>Workflow 2 : Renvoi vers messagerie en cas de non-reponse</h3>
+<ol>
+<li>Creez une regle avec la condition <strong>Non-reponse</strong>.</li>
+<li>Definissez la duree de sonnerie a 20 secondes.</li>
+<li>Configurez la destination vers la messagerie vocale.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Plusieurs regles peuvent-elles s'appliquer a la meme extension ?</strong></p>
+<p>R : Oui, vous pouvez configurer une regle par condition pour la meme extension.</p>
+
+<p><strong>Q : La destination peut-elle etre un numero externe ?</strong></p>
+<p>R : Oui, vous pouvez renvoyer vers un numero de telephone externe.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Renvoi d'appel</strong></td><td>Redirection automatique d'un appel vers une autre destination</td></tr>
+  <tr><td><strong>Extension</strong></td><td>Numero de poste interne d'un agent</td></tr>
+  <tr><td><strong>Toggle</strong></td><td>Interrupteur pour activer/desactiver une fonctionnalite</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./21-extensions.md">Extensions</a> : Gerer les postes internes</li>
+<li><a href="./10-groupes.md">Groupes de sonnerie</a> : Alternative au transfert individuel</li>
+<li><a href="./12-ivr-builder.md">IVR Builder</a> : Transferts automatises via le menu vocal</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--10-groupes">
+<h1>Groupes de sonnerie</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Groupes de sonnerie</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Un <strong>groupe de sonnerie</strong> (Ring Group ou Call Queue) est un ensemble d'agents qui recoivent</p>
+<p>les appels selon une strategie de distribution definie. Au lieu de diriger un appel vers un</p>
+<p>seul poste, le systeme fait sonner plusieurs agents selon la strategie choisie.</p>
+
+<p>Par exemple, l'equipe de support client peut avoir un groupe "Support" qui distribue les</p>
+<p>appels entrants a tous les agents disponibles simultanement. Si personne ne repond dans</p>
+<p>le delai imparti, l'appel est redirige vers la messagerie vocale.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale.</li>
+<li>Sous <strong>Operations</strong>, cliquez sur <strong>Groupes</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/groupes</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Liste des groupes</h3>
+<p>Chaque groupe affiche :</p>
+<ul>
+<li><strong>Nom</strong> du groupe (ex: "Support Client", "Ventes")</li>
+<li><strong>Strategie</strong> de distribution</li>
+<li><strong>Membres</strong> : Nombre et liste des agents</li>
+<li><strong>Delais</strong> : Ring timeout, temps d'attente max, wrap-up time</li>
+<li><strong>Actif</strong> : Toggle on/off</li>
+</ul>
+
+<h3>Bouton "Nouveau groupe"</h3>
+<p>Ouvre le formulaire de creation avec tous les parametres.</p>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Strategies de distribution</h3>
+
+<table>
+<thead>
+    <tr><th>Strategie</th><th>Description</th><th>Cas d'usage</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>RING_ALL</strong></td><td>Tous les agents sonnent simultanement</td><td>Petites equipes, urgences</td></tr>
+  <tr><td><strong>ROUND_ROBIN</strong></td><td>Distribution a tour de role</td><td>Repartition equitable</td></tr>
+  <tr><td><strong>HUNT</strong></td><td>Appels sequentiels par ordre de priorite</td><td>Hierarchie de competences</td></tr>
+  <tr><td><strong>RANDOM</strong></td><td>Distribution aleatoire</td><td>Equipes homogenes</td></tr>
+  <tr><td><strong>LEAST_RECENT</strong></td><td>L'agent ayant le plus ancien dernier appel</td><td>Repartition par charge</td></tr>
+</tbody>
+</table>
+<h3>Parametres temporels</h3>
+<ul>
+<li><strong>Ring Timeout</strong> : Duree de sonnerie avant de passer au prochain agent ou a la messagerie</li>
+<li><strong>Temps d'attente max</strong> : Duree maximale qu'un appelant peut rester en file</li>
+<li><strong>Wrap-up Time</strong> : Pause entre deux appels pour permettre a l'agent de prendre des notes</li>
+</ul>
+
+<h3>Gestion des membres</h3>
+<ul>
+<li><strong>Ajouter un membre</strong> : Selectionnez un utilisateur dans la liste des employes</li>
+<li><strong>Priorite</strong> : Definissez l'ordre de priorite pour la strategie HUNT</li>
+<li><strong>Retirer un membre</strong> : Supprimez un agent du groupe</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Creer un groupe de support</h3>
+<ol>
+<li>Cliquez sur <strong>Nouveau groupe</strong>.</li>
+<li>Nommez-le "Support Client".</li>
+<li>Selectionnez la strategie <strong>RING_ALL</strong> pour maximiser les chances de reponse.</li>
+<li>Definissez le ring timeout a 20 secondes.</li>
+<li>Ajoutez les agents de l'equipe support.</li>
+<li>Activez le groupe.</li>
+</ol>
+
+<h3>Workflow 2 : Configurer une file d'attente commerciale</h3>
+<ol>
+<li>Creez un groupe "Equipe Ventes" avec la strategie <strong>ROUND_ROBIN</strong>.</li>
+<li>Definissez un wrap-up time de 30 secondes entre les appels.</li>
+<li>Configurez le temps d'attente max a 5 minutes.</li>
+<li>Ajoutez les commerciaux avec des priorites egales.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Un agent peut-il appartenir a plusieurs groupes ?</strong></p>
+<p>R : Oui, un agent peut etre membre de plusieurs groupes simultanement.</p>
+
+<p><strong>Q : Que se passe-t-il si aucun agent ne repond ?</strong></p>
+<p>R : Apres le temps d'attente maximum, l'appel est redirige vers la messagerie vocale ou raccroche selon la configuration.</p>
+
+<p><strong>Q : Le wrap-up time est-il obligatoire ?</strong></p>
+<p>R : Non, mais il est recommande pour permettre aux agents de finaliser leurs notes apres chaque appel.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Groupe de sonnerie</strong></td><td>Ensemble d'agents recevant les appels selon une strategie</td></tr>
+  <tr><td><strong>Ring Timeout</strong></td><td>Duree de sonnerie avant escalade</td></tr>
+  <tr><td><strong>Wrap-up Time</strong></td><td>Pause entre deux appels pour prise de notes</td></tr>
+  <tr><td><strong>Round Robin</strong></td><td>Distribution a tour de role equitable</td></tr>
+  <tr><td><strong>Hunt</strong></td><td>Distribution sequentielle par ordre de priorite</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./05-wallboard.md">Wallboard</a> : Voir l'etat des files en temps reel</li>
+<li><a href="./09-transferts.md">Transferts</a> : Renvoi d'appel individuel</li>
+<li><a href="./12-ivr-builder.md">IVR Builder</a> : Diriger les appels vers les groupes via le menu vocal</li>
+<li><a href="./17-analytics-queues.md">Analytics files</a> : Performance des files d'attente</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--11-sondages">
+<h1>Sondages post-appel</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Sondages</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Les <strong>sondages post-appel</strong> mesurent la satisfaction des clients immediatement apres un appel</p>
+<p>telephonique. A la fin de l'appel, le client est invite a repondre a quelques questions</p>
+<p>(par clavier DTMF, par message vocal, ou par SMS).</p>
+
+<p>Les resultats alimentent le score de satisfaction visible dans le journal d'appels, le wallboard,</p>
+<p>et les analytics. Ils sont essentiels pour evaluer la qualite du service client.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale.</li>
+<li>Sous <strong>Operations</strong>, cliquez sur <strong>Sondages</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/sondages</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Liste des sondages</h3>
+<p>Chaque sondage affiche :</p>
+<ul>
+<li><strong>Nom</strong> : Identifiant du sondage</li>
+<li><strong>Cle</strong> : Identifiant technique unique</li>
+<li><strong>Questions</strong> : Nombre de questions configurees</li>
+<li><strong>Methode</strong> : DTMF, SMS, ou appel vocal</li>
+<li><strong>Actif</strong> : Toggle on/off</li>
+<li><strong>Resultats</strong> : Nombre de reponses et score moyen</li>
+</ul>
+
+<h3>Bouton "Nouveau sondage"</h3>
+<p>Ouvre le formulaire de creation d'un sondage.</p>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Types de questions</h3>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Description</th><th>Reponse attendue</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Rating (1-5)</strong></td><td>Evaluation numerique</td><td>Le client appuie sur 1 a 5</td></tr>
+  <tr><td><strong>Yes/No</strong></td><td>Question fermee</td><td>Le client appuie sur 1 (oui) ou 2 (non)</td></tr>
+  <tr><td><strong>Open Text</strong></td><td>Reponse libre</td><td>Le client laisse un message vocal</td></tr>
+  <tr><td><strong>DTMF</strong></td><td>Selection par touches</td><td>Le client appuie sur la touche correspondante</td></tr>
+</tbody>
+</table>
+<h3>Methodes de collecte</h3>
+<ul>
+<li><strong>DTMF</strong> : A la fin de l'appel, un message demande au client d'evaluer sur le clavier</li>
+<li><strong>SMS</strong> : Un SMS est envoye apres l'appel avec un lien vers un formulaire</li>
+<li><strong>Vocal</strong> : Le client enregistre sa reponse vocalement</li>
+</ul>
+
+<h3>Statistiques</h3>
+<p>La page affiche les statistiques globales par methode :</p>
+<ul>
+<li>Nombre de reponses collectees</li>
+<li>Score moyen global</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Creer un sondage CSAT simple</h3>
+<ol>
+<li>Cliquez sur <strong>Nouveau sondage</strong>.</li>
+<li>Nommez-le "Satisfaction client".</li>
+<li>Ajoutez une question de type <strong>Rating (1-5)</strong> : "Comment evaluez-vous notre service?"</li>
+<li>Activez la methode <strong>DTMF</strong>.</li>
+<li>Sauvegardez et activez le sondage.</li>
+</ol>
+
+<h3>Workflow 2 : Analyser les resultats</h3>
+<ol>
+<li>Consultez le score moyen dans la liste des sondages.</li>
+<li>Croisez avec les donnees du journal d'appels pour identifier les agents ou les sujets</li>
+</ol>
+<p>   generant les meilleurs/pires scores.</p>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Le sondage est-il presente automatiquement a chaque appel ?</strong></p>
+<p>R : Oui, quand un sondage est actif, il est propose a la fin de chaque appel.</p>
+
+<p><strong>Q : Le client peut-il refuser de repondre ?</strong></p>
+<p>R : Oui, le client peut raccrocher sans repondre. Cela n'impacte pas les statistiques.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>CSAT</strong></td><td>Customer Satisfaction Score, indicateur de satisfaction client</td></tr>
+  <tr><td><strong>DTMF</strong></td><td>Dual-Tone Multi-Frequency, signaux emis par les touches du telephone</td></tr>
+  <tr><td><strong>NPS</strong></td><td>Net Promoter Score, mesure de la propension a recommander</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./02-journal.md">Journal d'appels</a> : Voir les scores de satisfaction par appel</li>
+<li><a href="./05-wallboard.md">Wallboard</a> : Score de satisfaction en temps reel</li>
+<li><a href="./16-analytics-agents.md">Analytics agents</a> : Satisfaction par agent</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--12-ivr-builder">
+<h1>Constructeur IVR</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > IVR Builder</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>L'<strong>IVR</strong> (Interactive Voice Response) est le menu vocal automatise qui accueille les appelants</p>
+<p>et les dirige vers le bon service. Par exemple : "Appuyez sur 1 pour les ventes, 2 pour le</p>
+<p>support, 3 pour la comptabilite." C'est la premiere interaction telephonique avec votre entreprise.</p>
+
+<p>Le <strong>constructeur IVR</strong> de Koraline permet de creer et modifier ces menus vocaux visuellement,</p>
+<p>sans competences techniques. Chaque menu definit un message d'accueil (texte-a-parole ou fichier</p>
+<p>audio), des options DTMF (touches du clavier), et des actions associees (transfert, sous-menu,</p>
+<p>messagerie, raccrocher).</p>
+
+<p>Les menus peuvent etre imbriques : une option peut pointer vers un sous-menu, permettant</p>
+<p>une arborescence de choix.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale.</li>
+<li>Sous <strong>Avance</strong>, cliquez sur <strong>IVR Builder</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/ivr-builder</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Panneau gauche : Liste des menus</h3>
+<p>La colonne de gauche liste tous les menus IVR existants :</p>
+<ul>
+<li><strong>Nom</strong> du menu</li>
+<li><strong>Nombre d'options</strong> et langue</li>
+<li>Le menu selectionne est surligne en bleu</li>
+</ul>
+
+<h3>Bouton "Nouveau menu"</h3>
+<p>En haut de la liste, un bouton permet de creer un nouveau menu.</p>
+
+<h3>Zone principale : Vue du flow</h3>
+<p>Quand un menu est selectionne, la zone centrale affiche sa structure visuelle :</p>
+
+<p><strong>Carte d'en-tete du menu</strong> :</p>
+<ul>
+<li>Nom et description</li>
+<li>Message d'accueil (texte TTS entre guillemets)</li>
+<li>Parametres : timeout, nombre de tentatives, action sur timeout, langue</li>
+<li>Bouton "Modifier" pour editer</li>
+</ul>
+
+<p><strong>Grille d'options DTMF</strong> :</p>
+<p>Chaque option est une carte affichant :</p>
+<ul>
+<li>Badge numerote (1-9, 0, *, #)</li>
+<li>Libelle de l'option (ex: "Service des ventes")</li>
+<li>Action et destination (ex: "Transfert vers file > Ventes")</li>
+<li>Lien cliquable vers le sous-menu si applicable</li>
+</ul>
+
+<p><strong>Lien heures non ouvrables</strong> :</p>
+<p>Si configure, un bandeau ambre affiche les horaires d'ouverture et le menu utilise</p>
+<p>en dehors de ces heures.</p>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Formulaire d'edition de menu</h3>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nom</strong></td><td>Identifiant du menu (ex: "Menu principal")</td></tr>
+  <tr><td><strong>Description</strong></td><td>Description optionnelle</td></tr>
+  <tr><td><strong>Message d'accueil TTS</strong></td><td>Texte lu par la synthese vocale</td></tr>
+  <tr><td><strong>URL audio</strong></td><td>Fichier audio personnalise (alternative au TTS)</td></tr>
+  <tr><td><strong>Timeout</strong></td><td>Secondes d'attente avant de repeter/agir (1-30s)</td></tr>
+  <tr><td><strong>Tentatives max</strong></td><td>Nombre de repetitions avant l'action de timeout (0-10)</td></tr>
+  <tr><td><strong>Action sur timeout</strong></td><td>Que faire apres les tentatives : Rejouer, Operateur, Messagerie</td></tr>
+</tbody>
+</table>
+<h3>Actions DTMF</h3>
+
+<table>
+<thead>
+    <tr><th>Action</th><th>Description</th><th>Necessite une cible</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Transfert vers extension</strong></td><td>Diriger vers un poste specifique</td><td>Oui (numero d'extension)</td></tr>
+  <tr><td><strong>Transfert vers file</strong></td><td>Diriger vers un groupe de sonnerie</td><td>Oui (nom de la file)</td></tr>
+  <tr><td><strong>Sous-menu</strong></td><td>Aller vers un autre menu IVR</td><td>Oui (ID du menu)</td></tr>
+  <tr><td><strong>Messagerie vocale</strong></td><td>Diriger vers la boite vocale</td><td>Oui (extension cible)</td></tr>
+  <tr><td><strong>Rejouer</strong></td><td>Relire le message d'accueil</td><td>Non</td></tr>
+  <tr><td><strong>Raccrocher</strong></td><td>Terminer l'appel</td><td>Non</td></tr>
+</tbody>
+</table>
+<h3>Touches DTMF disponibles</h3>
+<p>12 touches au total : 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, *, #. Chaque touche ne peut etre</p>
+<p>assignee qu'une fois par menu.</p>
+
+<h3>Menus imbriques</h3>
+<p>L'action "Sous-menu" permet de creer une arborescence. Par exemple :</p>
+<ul>
+<li>Menu principal > Touche 1 > Sous-menu "Ventes"</li>
+<li>Sous-menu Ventes > Touche 1 > "Peptides therapeutiques"</li>
+<li>Sous-menu Ventes > Touche 2 > "Peptides cosmetiques"</li>
+</ul>
+
+<p>Depuis la vue flow, un lien cliquable permet de naviguer directement vers le sous-menu.</p>
+
+<h3>Horaires d'ouverture</h3>
+<p>Chaque menu peut definir des horaires d'ouverture et un menu alternatif pour les</p>
+<p>heures non ouvrables. En dehors des heures definies, les appels sont rediriges</p>
+<p>automatiquement vers le menu alternatif.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Creer le menu principal</h3>
+<ol>
+<li>Cliquez sur <strong>Nouveau menu</strong>.</li>
+<li>Nommez-le "Menu principal".</li>
+<li>Redigez le message d'accueil : "Bienvenue chez BioCycle Peptides. Pour les ventes,</li>
+</ol>
+<p>   appuyez sur 1. Pour le support, appuyez sur 2. Pour laisser un message, appuyez sur 3."</p>
+<ol>
+<li>Ajoutez les options :</li>
+</ol>
+<ul>
+<li>Touche 1 > Transfert vers file > "Ventes"</li>
+<li>Touche 2 > Transfert vers file > "Support"</li>
+<li>Touche 3 > Messagerie vocale</li>
+</ul>
+<ol>
+<li>Definissez le timeout a 5 secondes et 3 tentatives max.</li>
+<li>Sauvegardez.</li>
+</ol>
+
+<h3>Workflow 2 : Ajouter un menu apres les heures</h3>
+<ol>
+<li>Creez un nouveau menu "Hors heures".</li>
+<li>Message d'accueil : "Nos bureaux sont fermes. Pour laisser un message, appuyez sur 1."</li>
+<li>Option 1 > Messagerie vocale.</li>
+<li>Dans le menu principal, configurez les horaires (9h-17h) et associez le menu "Hors heures".</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Puis-je utiliser un fichier audio au lieu du texte-a-parole ?</strong></p>
+<p>R : Oui, vous pouvez fournir une URL vers un fichier audio MP3 ou WAV.</p>
+
+<p><strong>Q : Le texte-a-parole supporte-t-il le francais ?</strong></p>
+<p>R : Oui, le TTS Telnyx supporte le francais canadien.</p>
+
+<p><strong>Q : Combien de niveaux d'imbrication sont possibles ?</strong></p>
+<p>R : Il n'y a pas de limite technique, mais plus de 3 niveaux nuit a l'experience client.</p>
+
+<hr>
+
+<h2>Strategie expert : Conception du menu vocal optimal pour une PME de peptides (1-5 employes)</h2>
+
+<h3>Principes de conception pour une petite equipe</h3>
+
+<p>Avec 1 a 5 employes, la complexite du menu vocal doit rester minimale. Un IVR trop profond frustre les appelants et surcharge inutilement une equipe reduite. La regle absolue : <strong>maximum 4 options au niveau 1, maximum 2 niveaux d'imbrication</strong>.</p>
+
+<p><strong>Regles d'or de l'IVR pour une PME :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Regle</th><th>Justification</th></tr>
+</thead>
+<tbody>
+  <tr><td>Maximum 4 options au niveau 1</td><td>Au-dela, les appelants oublient les premieres options (limite de la memoire de travail)</td></tr>
+  <tr><td>Maximum 2 niveaux de profondeur</td><td>Chaque niveau supplementaire cause 10-15% d'abandon d'appel</td></tr>
+  <tr><td>Option "parler a un humain" toujours disponible</td><td>Les appels B2B veulent souvent un contact direct immediat</td></tr>
+  <tr><td>Duree totale du message d'accueil < 30 secondes</td><td>Les appelants decrochent mentalement apres 30 secondes</td></tr>
+  <tr><td>Pas de musique d'attente generique</td><td>Utiliser un message informatif (horaires, site web, email)</td></tr>
+</tbody>
+</table>
+<h3>Message d'accueil bilingue FR/EN</h3>
+
+<p>Le Quebec impose la primaute du francais (Loi 101 / Charte de la langue francaise), mais la clientele de BioCycle Peptides est souvent bilingue ou anglophone (chercheurs, institutions). Voici la structure recommandee :</p>
+
+<p><strong>Message d'accueil principal (francais en premier, conformement a la Loi 101) :</strong></p>
+
+<blockquote>
+<p>"Bienvenue chez BioCycle Peptides. Pour le service en francais, appuyez sur 1 ou restez en ligne. For service in English, press 2."</p>
+</blockquote>
+
+<p><strong>Apres le choix de langue -- Menu francais :</strong></p>
+
+<blockquote>
+<p>"Pour passer une commande ou pour nos produits, appuyez sur 1. Pour le suivi d'une commande existante, appuyez sur 2. Pour le support technique, appuyez sur 3. Pour laisser un message, appuyez sur 4."</p>
+</blockquote>
+
+<p><strong>Apres le choix de langue -- Menu anglais :</strong></p>
+
+<blockquote>
+<p>"To place an order or for product information, press 1. For order tracking, press 2. For technical support, press 3. To leave a message, press 4."</p>
+</blockquote>
+
+<h3>Structure IVR recommandee pour BioCycle Peptides</h3>
+
+<pre><code>Menu Principal (Niveau 0)
+|
++-- Touche 1 : Francais → Menu FR (Niveau 1)
+|   +-- Touche 1 : Commandes / Produits → File "Ventes" (ou extension directe si 1 vendeur)
+|   +-- Touche 2 : Suivi commande → File "Support" (ou extension directe)
+|   +-- Touche 3 : Support technique → File "Support" (ou extension directe)
+|   +-- Touche 4 : Messagerie vocale → Boite vocale generale
+|
++-- Touche 2 : English → Menu EN (Niveau 1)
+|   +-- (Meme structure qu'en francais, messages en anglais)
+|
++-- Timeout (5 sec, 3 tentatives) → Transfert vers receptionniste ou messagerie</code></pre>
+
+<h3>Parametres techniques recommandes</h3>
+
+<table>
+<thead>
+    <tr><th>Parametre</th><th>Valeur</th><th>Justification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Timeout</strong></td><td>5 secondes</td><td>Assez court pour ne pas frustrer, assez long pour reflenir</td></tr>
+  <tr><td><strong>Tentatives max</strong></td><td>3</td><td>Apres 3 tentatives sans saisie, transferer a un humain</td></tr>
+  <tr><td><strong>Action sur timeout</strong></td><td>Transfert vers operateur (heures ouvrables) / Messagerie (hors heures)</td><td>Ne jamais raccrocher automatiquement</td></tr>
+  <tr><td><strong>Langue TTS</strong></td><td>Francais canadien (fr-CA)</td><td>Important : le francais de France sonne artificiel au Quebec</td></tr>
+  <tr><td><strong>Vitesse TTS</strong></td><td>Normale a legirement lente</td><td>Les appelants doivent comprendre du premier coup</td></tr>
+</tbody>
+</table>
+<h3>Messages d'attente professionnels</h3>
+
+<p>Quand l'appelant est en file d'attente, ne pas utiliser de musique generique. Utiliser des messages informatifs qui reduisent la frustration et renforcent la marque :</p>
+
+<p><strong>Rotation de 3 messages (toutes les 30 secondes) :</strong></p>
+
+<ol>
+<li>"Merci de patienter. Un conseiller sera avec vous sous peu. Saviez-vous que vous pouvez passer commande directement sur notre site biocyclepeptides.com ?"</li>
+</ol>
+
+<ol>
+<li>"Votre appel est important pour nous. En attendant, nous vous rappelons que tous nos peptides sont accompagnes d'un certificat d'analyse verifiable en ligne."</li>
+</ol>
+
+<ol>
+<li>"Nous traitons votre appel dans l'ordre de reception. Pour les questions simples comme le suivi de commande, visitez votre espace client sur biocyclepeptides.com."</li>
+</ol>
+
+<p><strong>Message hors heures d'ouverture :</strong></p>
+
+<blockquote>
+<p>"Merci d'avoir appele BioCycle Peptides. Nos bureaux sont ouverts du lundi au vendredi, de 9 heures a 17 heures, heure de l'Est. Pour passer une commande, visitez biocyclepeptides.com. Pour laisser un message, appuyez sur 1. Nous vous rappellerons le prochain jour ouvrable."</p>
+</blockquote>
+
+<h3>Horaires d'ouverture recommandes</h3>
+
+<table>
+<thead>
+    <tr><th>Jour</th><th>Horaires</th><th>Justification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Lundi - Vendredi</strong></td><td>9h00 - 17h00 EST</td><td>Heures de bureau standard Quebec</td></tr>
+  <tr><td><strong>Samedi</strong></td><td>Ferme (ou 10h-14h si volume le justifie)</td><td>Les clients B2B sont rarement actifs le samedi</td></tr>
+  <tr><td><strong>Dimanche et jours feries</strong></td><td>Ferme</td><td>Message hors heures + messagerie vocale</td></tr>
+</tbody>
+</table>
+<p><strong>Jours feries a configurer dans le systeme :</strong></p>
+<ul>
+<li>Jour de l'An, Vendredi saint, Lundi de Paques, Journee nationale des patriotes, Fete nationale du Quebec (24 juin), Fete du Canada (1er juillet), Fete du Travail, Action de graces, Noel, Lendemain de Noel</li>
+</ul>
+
+<h3>Metriques de performance de l'IVR</h3>
+
+<table>
+<thead>
+    <tr><th>Indicateur</th><th>Cible</th><th>Seuil d'alerte</th></tr>
+</thead>
+<tbody>
+  <tr><td>Taux d'abandon dans l'IVR</td><td>< 5%</td><td>> 10%</td></tr>
+  <tr><td>Temps moyen dans l'IVR avant connexion humaine</td><td>< 45 secondes</td><td>> 90 secondes</td></tr>
+  <tr><td>Taux d'utilisation de la messagerie vocale</td><td>< 15% des appels totaux</td><td>> 25% (indique un sous-effectif)</td></tr>
+  <tr><td>Taux de "0 pour operateur"</td><td>< 20%</td><td>> 35% (le menu est mal concu)</td></tr>
+  <tr><td>Appels raccroches pendant l'attente</td><td>< 8%</td><td>> 15% (attente trop longue)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>IVR</strong></td><td>Interactive Voice Response, menu vocal interactif</td></tr>
+  <tr><td><strong>DTMF</strong></td><td>Dual-Tone Multi-Frequency, signaux des touches telephoniques</td></tr>
+  <tr><td><strong>TTS</strong></td><td>Text-to-Speech, synthese vocale a partir de texte</td></tr>
+  <tr><td><strong>Arborescence</strong></td><td>Structure hierarchique de menus imbriques</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./10-groupes.md">Groupes de sonnerie</a> : Files d'attente ciblees par l'IVR</li>
+<li><a href="./09-transferts.md">Transferts</a> : Renvois individuels en complement</li>
+<li><a href="./04-messagerie.md">Messagerie vocale</a> : Destination finale des appels</li>
+<li><a href="./22-parametres.md">Parametres</a> : Configuration des horaires d'ouverture</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--13-webhooks">
+<h1>Webhooks VoIP</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Webhooks</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Les <strong>webhooks</strong> permettent a Koraline d'envoyer des notifications automatiques vers des</p>
+<p>systemes externes lorsque des evenements telephoniques se produisent. Par exemple, quand</p>
+<p>un appel est termine, Koraline peut envoyer les details de l'appel vers un CRM externe,</p>
+<p>un systeme de ticketing, ou un outil d'analyse.</p>
+
+<p>Chaque webhook est configure avec une URL de destination, une liste d'evenements a surveiller,</p>
+<p>et un <strong>secret</strong> de signature pour securiser les communications.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale.</li>
+<li>Sous <strong>Avance</strong>, cliquez sur <strong>Webhooks</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/webhooks</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Liste des webhooks</h3>
+<p>Chaque webhook affiche :</p>
+<ul>
+<li><strong>URL</strong> de destination</li>
+<li><strong>Evenements</strong> souscrits (badges)</li>
+<li><strong>Secret</strong> de signature (masque par defaut, revelable)</li>
+<li><strong>Actif</strong> : Toggle on/off</li>
+<li><strong>Dernier envoi</strong> : Statut et date du dernier envoi</li>
+<li><strong>Journal</strong> : Historique des livraisons recentes</li>
+<li><strong>Actions</strong> : Modifier, Tester, Supprimer</li>
+</ul>
+
+<h3>Bouton "Nouveau webhook"</h3>
+<p>Ouvre le formulaire de configuration.</p>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Evenements disponibles</h3>
+<p>Les evenements VoIP que vous pouvez surveiller incluent :</p>
+<ul>
+<li>Debut d'appel</li>
+<li>Fin d'appel</li>
+<li>Appel manque</li>
+<li>Message vocal recu</li>
+<li>Transfert d'appel</li>
+<li>Changement de statut d'agent</li>
+<li>Resultat de sondage</li>
+</ul>
+
+<h3>Signature de securite</h3>
+<p>Chaque requete envoyee inclut une signature HMAC-SHA256 calculee avec le secret</p>
+<p>configure. Le systeme destinataire peut verifier cette signature pour s'assurer</p>
+<p>que la requete provient bien de Koraline.</p>
+
+<h3>Journal de livraison</h3>
+<p>Pour chaque webhook, un journal affiche les derniers envois avec :</p>
+<ul>
+<li>Evenement envoye</li>
+<li>Code de statut HTTP recu</li>
+<li>Date et heure de l'envoi</li>
+<li>Indicateur de succes/echec</li>
+</ul>
+
+<h3>Test de livraison</h3>
+<p>Un bouton <strong>Tester</strong> envoie une requete de test a l'URL configuree pour verifier</p>
+<p>que le systeme destinataire repond correctement.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Integrer avec un CRM externe</h3>
+<ol>
+<li>Cliquez sur <strong>Nouveau webhook</strong>.</li>
+<li>Entrez l'URL du CRM (ex: https://crm.example.com/webhooks/calls).</li>
+<li>Selectionnez les evenements : Fin d'appel, Appel manque.</li>
+<li>Generez un secret de signature.</li>
+<li>Testez la connexion avec le bouton <strong>Tester</strong>.</li>
+<li>Activez le webhook.</li>
+</ol>
+
+<h3>Workflow 2 : Diagnostiquer un webhook defaillant</h3>
+<ol>
+<li>Verifiez le statut du dernier envoi dans la liste.</li>
+<li>Consultez le journal de livraison pour voir les codes HTTP.</li>
+<li>Si le code est 500, le probleme est du cote du systeme destinataire.</li>
+<li>Si le code est 0 ou timeout, verifiez que l'URL est accessible.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Combien de webhooks puis-je configurer ?</strong></p>
+<p>R : Il n'y a pas de limite au nombre de webhooks.</p>
+
+<p><strong>Q : Que se passe-t-il si le destinataire ne repond pas ?</strong></p>
+<p>R : La requete est consideree comme echouee et loguee dans le journal.</p>
+
+<p><strong>Q : Le secret est-il obligatoire ?</strong></p>
+<p>R : Techniquement non, mais il est fortement recommande pour la securite.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Webhook</strong></td><td>Notification HTTP envoyee automatiquement lors d'un evenement</td></tr>
+  <tr><td><strong>HMAC-SHA256</strong></td><td>Algorithme de signature cryptographique</td></tr>
+  <tr><td><strong>Payload</strong></td><td>Corps de la requete contenant les donnees de l'evenement</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./19-connexions.md">Connexions</a> : Configurer les fournisseurs VoIP</li>
+<li><a href="./22-parametres.md">Parametres</a> : Configuration globale</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--14-analytics-dashboard">
+<h1>Tableau de bord Analytics</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Analytics</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Le <strong>tableau de bord Analytics</strong> est le point d'entree vers les quatre sous-sections</p>
+<p>d'analyse de la telephonie. Il offre une vue d'ensemble avec les metriques principales</p>
+<p>et des liens directs vers les analyses detaillees.</p>
+
+<p>Ce hub permet de decider rapidement quelle analyse approfondir : performance des agents,</p>
+<p>des files d'attente, des appels en general, ou l'analyse vocale par IA.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale.</li>
+<li>Sous <strong>Avance</strong>, cliquez sur <strong>Analytics</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/analytics</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Cartes de navigation</h3>
+<p>Quatre cartes, chacune representant une sous-section :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th><th>Metrique principale</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Performance des agents</strong></td><td>Metriques individuelles par agent</td><td>Nombre d'agents</td></tr>
+  <tr><td><strong>Analytics files d'attente</strong></td><td>Performance des queues</td><td>Nombre de files</td></tr>
+  <tr><td><strong>Analytics appels</strong></td><td>Statistiques globales des appels</td><td>Total des appels</td></tr>
+  <tr><td><strong>Analytics vocales (IA)</strong></td><td>Analyse de transcription par IA</td><td>Nombre de transcriptions</td></tr>
+</tbody>
+</table>
+<p>Chaque carte affiche :</p>
+<ul>
+<li>Titre et description</li>
+<li>Icone representative</li>
+<li>Metrique principale avec libelle</li>
+<li>Lien "Voir" vers la page detaillee</li>
+</ul>
+
+<h3>Metriques de resume</h3>
+<p>Un score de satisfaction moyen global est calcule a partir des sondages post-appel.</p>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Navigation rapide</h3>
+<p>Cliquez sur n'importe quelle carte pour acceder directement a la section d'analyse</p>
+<p>correspondante. Les donnees affichees sur les cartes sont un resume de la base complete.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Revue hebdomadaire de performance</h3>
+<ol>
+<li>Ouvrez le tableau de bord Analytics.</li>
+<li>Consultez les metriques de resume pour identifier les tendances.</li>
+<li>Cliquez sur <strong>Performance des agents</strong> pour les details individuels.</li>
+<li>Cliquez sur <strong>Analytics files</strong> pour evaluer les temps d'attente.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Les donnees sont-elles en temps reel ?</strong></p>
+<p>R : Les metriques affichees sont calculees a partir de la base de donnees et refletent</p>
+<p>les dernieres donnees disponibles au moment du chargement.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Hub Analytics</strong></td><td>Page de synthese donnant acces aux analyses detaillees</td></tr>
+  <tr><td><strong>KPI</strong></td><td>Key Performance Indicator, indicateur cle de performance</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./15-analytics-appels.md">Analytics appels</a> : Statistiques detaillees des appels</li>
+<li><a href="./16-analytics-agents.md">Analytics agents</a> : Performance individuelle</li>
+<li><a href="./17-analytics-queues.md">Analytics files</a> : Performance des files d'attente</li>
+<li><a href="./18-analytics-speech.md">Analytics vocales</a> : Analyse IA des conversations</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--15-analytics-appels">
+<h1>Analytics des appels</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Analytics > Appels</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>La page <strong>Analytics des appels</strong> fournit des statistiques detaillees sur l'ensemble des</p>
+<p>appels telephoniques : volumes, durees, taux de reponse, heures de pointe, et tendances.</p>
+<p>Ces donnees permettent d'optimiser les effectifs et d'identifier les periodes critiques.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale.</li>
+<li>Sous <strong>Avance</strong>, cliquez sur <strong>Analytics</strong> > <strong>Appels</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/analytics/appels</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Filtres de periode</h3>
+<p>Selecteur de plage de dates pour definir la periode d'analyse.</p>
+
+<h3>Metriques principales</h3>
+<ul>
+<li>Total des appels (entrants, sortants, internes)</li>
+<li>Taux de reponse global</li>
+<li>Duree moyenne des appels</li>
+<li>Appels par heure (graphique)</li>
+<li>Repartition par statut (complete, manque, messagerie, echoue)</li>
+<li>Tendance sur la periode (hausse/baisse par rapport a la periode precedente)</li>
+</ul>
+
+<h3>Graphiques</h3>
+<ul>
+<li>Histogramme des appels par jour/semaine</li>
+<li>Heatmap des heures de pointe</li>
+<li>Repartition par direction (entrant vs sortant)</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Identifier les heures de pointe</h3>
+<ol>
+<li>Selectionnez une periode de 30 jours.</li>
+<li>Consultez le heatmap des heures de pointe.</li>
+<li>Ajustez les plannings des agents pour couvrir les pics.</li>
+</ol>
+
+<h3>Workflow 2 : Rapport mensuel</h3>
+<ol>
+<li>Definissez la plage de dates du mois.</li>
+<li>Exportez les metriques principales.</li>
+<li>Comparez avec le mois precedent.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Les appels internes sont-ils comptes ?</strong></p>
+<p>R : Oui, mais ils peuvent etre filtres pour se concentrer sur les appels clients.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Taux de reponse</strong></td><td>Pourcentage d'appels decroches sur le total des appels recus</td></tr>
+  <tr><td><strong>Heatmap</strong></td><td>Carte thermique montrant l'intensite d'activite par heure/jour</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./16-analytics-agents.md">Analytics agents</a> : Performance par agent</li>
+<li><a href="./17-analytics-queues.md">Analytics files</a> : Performance par file d'attente</li>
+<li><a href="./02-journal.md">Journal d'appels</a> : Detail individuel de chaque appel</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--16-analytics-agents">
+<h1>Analytics des agents</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Analytics > Agents</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>La page <strong>Analytics des agents</strong> mesure la performance individuelle de chaque agent du</p>
+<p>centre d'appels. Elle permet aux superviseurs d'identifier les meilleurs performeurs,</p>
+<p>les agents necessitant du coaching, et de repartir la charge de travail equitablement.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale.</li>
+<li>Sous <strong>Avance</strong>, cliquez sur <strong>Analytics</strong> > <strong>Agents</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/analytics/agents</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Tableau de performance par agent</h3>
+<p>Chaque agent affiche :</p>
+<ul>
+<li>Nom et extension</li>
+<li>Nombre total d'appels traites</li>
+<li>Duree moyenne des appels</li>
+<li>Taux de reponse (appels decroches / appels recus)</li>
+<li>Score de satisfaction moyen (sondages post-appel)</li>
+<li>Temps de connexion total</li>
+<li>Nombre d'appels manques</li>
+<li>Temps moyen de wrap-up</li>
+</ul>
+
+<h3>Classement</h3>
+<p>Les agents sont classes par performance globale avec un code couleur :</p>
+<ul>
+<li>Vert : Performance au-dessus de la moyenne</li>
+<li>Jaune : Performance dans la moyenne</li>
+<li>Rouge : Performance en dessous de la moyenne</li>
+</ul>
+
+<h3>Filtres</h3>
+<ul>
+<li>Periode (jour, semaine, mois, trimestre)</li>
+<li>Groupe/file d'attente</li>
+<li>Direction des appels (entrants/sortants)</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Revue de performance hebdomadaire</h3>
+<ol>
+<li>Selectionnez la periode de la semaine.</li>
+<li>Consultez le classement des agents.</li>
+<li>Identifiez les agents avec un faible taux de reponse.</li>
+<li>Planifiez des sessions de coaching pour les agents en difficulte.</li>
+</ol>
+
+<h3>Workflow 2 : Equilibrer la charge de travail</h3>
+<ol>
+<li>Comparez le nombre d'appels traites par agent.</li>
+<li>Si un desequilibre est constate, ajustez les groupes de sonnerie.</li>
+<li>Modifiez les strategies de distribution (round robin, least recent).</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Le temps de connexion inclut-il les pauses ?</strong></p>
+<p>R : Non, seul le temps ou l'agent est en statut "En ligne" ou "Occupe" est comptabilise.</p>
+
+<p><strong>Q : Comment le score de satisfaction est-il calcule ?</strong></p>
+<p>R : C'est la moyenne des scores de sondage post-appel pour les appels de l'agent.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Taux de reponse</strong></td><td>Pourcentage d'appels repondus par l'agent</td></tr>
+  <tr><td><strong>Temps de wrap-up</strong></td><td>Duree entre la fin d'un appel et la disponibilite pour le suivant</td></tr>
+  <tr><td><strong>Score CSAT</strong></td><td>Score de satisfaction client moyen de l'agent</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./08-coaching.md">Coaching</a> : Former les agents selon les resultats</li>
+<li><a href="./05-wallboard.md">Wallboard</a> : Voir les agents en temps reel</li>
+<li><a href="./15-analytics-appels.md">Analytics appels</a> : Metriques globales des appels</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--17-analytics-queues">
+<h1>Analytics des files d'attente</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Analytics > Files d'attente</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>La page <strong>Analytics des files d'attente</strong> mesure la performance de chaque groupe de</p>
+<p>sonnerie (queue). Elle repond aux questions : combien de temps les clients attendent-ils ?</p>
+<p>Combien d'appels sont perdus dans chaque file ? Le SLA est-il respecte ?</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale.</li>
+<li>Sous <strong>Avance</strong>, cliquez sur <strong>Analytics</strong> > <strong>Files d'attente</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/analytics/queues</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Tableau par file d'attente</h3>
+<p>Chaque file affiche :</p>
+<ul>
+<li>Nom de la file</li>
+<li>Nombre de membres (agents)</li>
+<li>Total des appels recus</li>
+<li>Appels repondus vs. abandonnes</li>
+<li>Temps d'attente moyen</li>
+<li>Temps d'attente maximum</li>
+<li>SLA % (appels repondus dans le delai cible)</li>
+<li>Taux d'abandon</li>
+</ul>
+
+<h3>Graphiques</h3>
+<ul>
+<li>Evolution du SLA dans le temps</li>
+<li>Distribution des temps d'attente</li>
+<li>Comparaison entre files</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Optimiser le SLA d'une file</h3>
+<ol>
+<li>Identifiez la file avec le SLA le plus bas.</li>
+<li>Verifiez le nombre de membres vs. le volume d'appels.</li>
+<li>Ajoutez des agents ou ajustez la strategie de distribution.</li>
+<li>Suivez l'evolution du SLA sur les jours suivants.</li>
+</ol>
+
+<h3>Workflow 2 : Reduire le taux d'abandon</h3>
+<ol>
+<li>Identifiez les files avec un taux d'abandon > 10%.</li>
+<li>Verifiez le temps d'attente moyen (cible : < 60 secondes).</li>
+<li>Envisagez un message d'attente ou une option de rappel.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Qu'est-ce qu'un bon SLA ?</strong></p>
+<p>R : L'objectif standard est de repondre a 80% des appels en moins de 20 secondes (80/20).</p>
+
+<p><strong>Q : Le taux d'abandon inclut-il les appels rediriges vers la messagerie ?</strong></p>
+<p>R : Non, seuls les appels ou l'appelant raccroche activement sont comptes comme abandonnes.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>SLA</strong></td><td>Service Level Agreement, objectif de temps de reponse</td></tr>
+  <tr><td><strong>Taux d'abandon</strong></td><td>Pourcentage d'appelants qui raccrochent avant d'etre servis</td></tr>
+  <tr><td><strong>Temps d'attente moyen (ASA)</strong></td><td>Average Speed of Answer, duree moyenne avant decrochage</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./10-groupes.md">Groupes de sonnerie</a> : Configurer les files d'attente</li>
+<li><a href="./05-wallboard.md">Wallboard</a> : Vue temps reel des files</li>
+<li><a href="./16-analytics-agents.md">Analytics agents</a> : Performance par agent dans chaque file</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--18-analytics-speech">
+<h1>Analytics vocales (IA)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Analytics > Speech</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Les <strong>analytics vocales</strong> utilisent l'intelligence artificielle pour analyser le contenu</p>
+<p>des conversations telephoniques. A partir des transcriptions generees par Whisper, le</p>
+<p>systeme extrait des informations precieuses : sentiment dominant, mots-cles recurrents,</p>
+<p>sujets de preoccupation des clients, et qualite de la communication.</p>
+
+<p>Cette analyse va au-dela des metriques quantitatives (duree, volume) pour mesurer la</p>
+<p><strong>qualite</strong> des interactions. Par exemple, un agent peut avoir un excellent taux de</p>
+<p>reponse mais des conversations a sentiment negatif recurrent.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale.</li>
+<li>Sous <strong>Avance</strong>, cliquez sur <strong>Analytics</strong> > <strong>Speech</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/analytics/speech</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Metriques IA</h3>
+<ul>
+<li>Nombre total de transcriptions analysees</li>
+<li>Repartition des sentiments (positif, neutre, negatif)</li>
+<li>Mots-cles les plus frequents (nuage de mots)</li>
+<li>Sujets principaux identifies</li>
+<li>Evolution du sentiment dans le temps</li>
+</ul>
+
+<h3>Filtres</h3>
+<ul>
+<li>Periode d'analyse</li>
+<li>Agent specifique</li>
+<li>Type de sentiment</li>
+<li>Mot-cle ou sujet</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Analyse de sentiment</h3>
+<p>Chaque transcription est classee :</p>
+<ul>
+<li><strong>Positif</strong> : Client satisfait, remerciements, compliments</li>
+<li><strong>Neutre</strong> : Conversation factuelle, questions d'information</li>
+<li><strong>Negatif</strong> : Plainte, frustration, mecontentement</li>
+</ul>
+
+<h3>Extraction de mots-cles</h3>
+<p>Les termes les plus frequents sont extraits automatiquement, excluant les mots</p>
+<p>courants. Cela permet d'identifier les sujets de preoccupation recurrents.</p>
+
+<h3>Alertes de qualite</h3>
+<p>Le systeme peut signaler automatiquement les conversations a sentiment fortement</p>
+<p>negatif pour une revue par le superviseur.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Detecter les sujets de mecontentement</h3>
+<ol>
+<li>Filtrez par sentiment <strong>Negatif</strong> sur les 30 derniers jours.</li>
+<li>Consultez les mots-cles les plus frequents.</li>
+<li>Identifiez les problemes recurrents (ex: "remboursement", "retard", "qualite").</li>
+<li>Transmettez les constats aux equipes concernees.</li>
+</ol>
+
+<h3>Workflow 2 : Evaluer l'evolution du sentiment client</h3>
+<ol>
+<li>Selectionnez une periode de 90 jours.</li>
+<li>Consultez le graphique d'evolution du sentiment.</li>
+<li>Identifiez les periodes de degradation et correllez avec les evenements.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Toutes les conversations sont-elles analysees ?</strong></p>
+<p>R : Seules les conversations ayant un enregistrement transcrit sont analysees.</p>
+
+<p><strong>Q : L'analyse est-elle disponible en francais ?</strong></p>
+<p>R : Oui, Whisper supporte le francais et l'analyse de sentiment fonctionne dans les</p>
+<p>deux langues (francais et anglais).</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Analyse de sentiment</strong></td><td>Classification automatique de l'emotion dominante d'une conversation</td></tr>
+  <tr><td><strong>Whisper</strong></td><td>Modele d'IA d'OpenAI pour la transcription et l'analyse vocale</td></tr>
+  <tr><td><strong>NLP</strong></td><td>Natural Language Processing, traitement automatique du langage</td></tr>
+  <tr><td><strong>Nuage de mots</strong></td><td>Visualisation des termes les plus frequents par taille de police</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./03-enregistrements.md">Enregistrements</a> : Ecouter les enregistrements source</li>
+<li><a href="./02-journal.md">Journal d'appels</a> : Voir les transcriptions par appel</li>
+<li><a href="./16-analytics-agents.md">Analytics agents</a> : Correler sentiment et performance agent</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--19-connexions">
+<h1>Connexions VoIP</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Connexions</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>La page <strong>Connexions</strong> permet de configurer et gerer les comptes fournisseurs VoIP qui</p>
+<p>alimentent la telephonie de Koraline. Actuellement, deux fournisseurs sont supportes :</p>
+
+<ul>
+<li><strong>Telnyx</strong> : Fournisseur principal de BioCycle Peptides, offrant des appels VoIP, SMS,</li>
+</ul>
+<p>  et numeros de telephone canadiens.</p>
+<ul>
+<li><strong>VoIP.ms</strong> : Fournisseur alternatif offrant des tarifs competitifs pour les appels</li>
+</ul>
+<p>  canadiens et americains.</p>
+
+<p>Chaque connexion est definie par des identifiants API (cle et secret) qui permettent a</p>
+<p>Koraline de passer et recevoir des appels via le fournisseur.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale.</li>
+<li>Sous <strong>Parametres</strong>, cliquez sur <strong>Connexions</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/connexions</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Liste des connexions</h3>
+<p>Chaque fournisseur affiche :</p>
+<ul>
+<li><strong>Nom du fournisseur</strong> (Telnyx, VoIP.ms)</li>
+<li><strong>Statut</strong> : Icone verte (connecte) ou rouge (deconnecte)</li>
+<li><strong>Cle API</strong> : Indique si la cle est configuree (masquee)</li>
+<li><strong>Secret API</strong> : Indique si le secret est configure (masque)</li>
+<li><strong>Derniere synchronisation</strong> : Date et statut de la derniere verification</li>
+<li><strong>Numeros de telephone</strong> : Nombre de numeros associes</li>
+<li><strong>Actions</strong> : Configurer, Tester, Supprimer</li>
+</ul>
+
+<h3>Formulaire de configuration</h3>
+<p>En cliquant sur <strong>Configurer</strong> pour un fournisseur :</p>
+<ul>
+<li><strong>Fournisseur</strong> : Telnyx ou VoIP.ms</li>
+<li><strong>Cle API</strong> : Identifiant d'authentification</li>
+<li><strong>Secret API</strong> : Cle secrete</li>
+<li><strong>Active</strong> : Toggle pour activer/desactiver la connexion</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Test de connexion</h3>
+<p>Le bouton <strong>Tester</strong> envoie une requete de verification au fournisseur pour confirmer</p>
+<p>que les identifiants sont valides et que l'API est accessible. Le resultat est affiche</p>
+<p>immediatement (succes ou erreur avec message).</p>
+
+<h3>Synchronisation</h3>
+<p>La synchronisation met a jour les informations du fournisseur (numeros disponibles,</p>
+<p>solde, statut des lignes). La date de derniere synchronisation est affichee.</p>
+
+<h3>Multi-fournisseur</h3>
+<p>Vous pouvez configurer plusieurs fournisseurs simultanement. Cela permet :</p>
+<ul>
+<li>Un fournisseur principal pour les appels locaux (Telnyx)</li>
+<li>Un fournisseur secondaire pour les appels longue distance</li>
+<li>Un basculement en cas de panne d'un fournisseur</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Configurer Telnyx</h3>
+<ol>
+<li>Connectez-vous au portail Telnyx (portal.telnyx.com).</li>
+<li>Creez une cle API dans les parametres de votre compte.</li>
+<li>Dans Koraline, cliquez sur <strong>Configurer</strong> pour Telnyx.</li>
+<li>Entrez la cle API et le secret.</li>
+<li>Activez la connexion.</li>
+<li>Cliquez sur <strong>Tester</strong> pour verifier la connectivite.</li>
+</ol>
+
+<h3>Workflow 2 : Diagnostiquer une connexion en echec</h3>
+<ol>
+<li>Verifiez le statut de la connexion (icone rouge = probleme).</li>
+<li>Cliquez sur <strong>Tester</strong> pour identifier l'erreur.</li>
+<li>Si "Invalid API key" : verifiez les identifiants dans le portail du fournisseur.</li>
+<li>Si "Connection timeout" : verifiez que l'API du fournisseur est accessible.</li>
+<li>Si "Account suspended" : verifiez le solde du compte.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Mes identifiants API sont-ils stockes de maniere securisee ?</strong></p>
+<p>R : Oui, les cles et secrets sont chiffres dans la base de donnees. Ils ne sont jamais</p>
+<p>affiches en clair dans l'interface.</p>
+
+<p><strong>Q : Puis-je changer de fournisseur principal ?</strong></p>
+<p>R : Oui, desactivez l'ancien fournisseur et configurez le nouveau. Les numeros de</p>
+<p>telephone devront etre migres aupres du nouveau fournisseur.</p>
+
+<p><strong>Q : Que se passe-t-il si la connexion tombe ?</strong></p>
+<p>R : Les appels en cours ne seront pas interrompus, mais les nouveaux appels echoueront</p>
+<p>jusqu'au retablissement de la connexion.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Fournisseur VoIP</strong></td><td>Entreprise qui fournit le service de telephonie par Internet</td></tr>
+  <tr><td><strong>Cle API</strong></td><td>Identifiant d'authentification pour acceder a l'API du fournisseur</td></tr>
+  <tr><td><strong>Secret API</strong></td><td>Cle secrete utilisee pour signer les requetes</td></tr>
+  <tr><td><strong>Telnyx</strong></td><td>Fournisseur VoIP canadien, principal partenaire de BioCycle Peptides</td></tr>
+  <tr><td><strong>SIP Trunk</strong></td><td>Connexion entre le PBX et le fournisseur VoIP</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./20-numeros.md">Numeros de telephone</a> : Gerer les numeros associes aux connexions</li>
+<li><a href="./21-extensions.md">Extensions</a> : Configurer les postes SIP</li>
+<li><a href="./22-parametres.md">Parametres</a> : Configuration globale de la telephonie</li>
+<li><a href="./01-dashboard.md">Tableau de bord</a> : Etat des connexions en un coup d'oeil</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--20-numeros">
+<h1>Numeros de telephone</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Numeros</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>La page <strong>Numeros de telephone</strong> gere les DID (Direct Inward Dialing), c'est-a-dire les</p>
+<p>numeros de telephone publics de BioCycle Peptides. Chaque numero est associe a une</p>
+<p>connexion VoIP (Telnyx) et peut etre configure pour router les appels entrants vers</p>
+<p>un IVR, un groupe de sonnerie, ou une extension specifique.</p>
+
+<p>Les numeros sont loues aupres du fournisseur VoIP et apparaissent comme Caller ID</p>
+<p>lors des appels sortants. Un numero canadien local (+1 514, +1 450, etc.) inspire</p>
+<p>confiance aux clients quebecois.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale.</li>
+<li>Sous <strong>Parametres</strong>, cliquez sur <strong>Numeros</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/numeros</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Liste des numeros</h3>
+<p>Chaque numero affiche :</p>
+<ul>
+<li><strong>Numero</strong> : Format E.164 (ex: +15145551234)</li>
+<li><strong>Nom d'affichage</strong> : Libelle personnalise (ex: "Ligne principale")</li>
+<li><strong>Pays</strong> : Drapeau et code pays (CA, US, etc.)</li>
+<li><strong>Connexion</strong> : Fournisseur VoIP associe</li>
+<li><strong>Actions</strong> : Supprimer</li>
+</ul>
+
+<h3>Bouton "Ajouter un numero"</h3>
+<p>Ouvre le formulaire d'ajout avec :</p>
+<ul>
+<li>Numero de telephone (format E.164)</li>
+<li>Nom d'affichage</li>
+<li>Pays (CA par defaut)</li>
+<li>Connexion VoIP associee</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Ajout d'un numero</h3>
+<p>L'ajout d'un numero dans Koraline l'enregistre dans la base de donnees et l'associe a</p>
+<p>la connexion VoIP. Le numero doit avoir ete prealablement achete ou loue dans le portail</p>
+<p>du fournisseur (Telnyx Portal).</p>
+
+<h3>Routage des appels entrants</h3>
+<p>Une fois le numero ajoute, les appels entrants sur ce numero sont routes selon la</p>
+<p>configuration du menu IVR principal. Sans IVR, les appels sont diriges vers le groupe</p>
+<p>de sonnerie par defaut.</p>
+
+<h3>Suppression d'un numero</h3>
+<p>La suppression retire le numero de Koraline mais ne le resilie pas aupres du fournisseur.</p>
+<p>Vous devez egalement le supprimer dans le portail Telnyx si vous ne souhaitez plus le payer.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Ajouter un nouveau numero</h3>
+<ol>
+<li>Achetez le numero dans le portail Telnyx (portal.telnyx.com).</li>
+<li>Configurez le webhook de l'appel entrant vers Koraline dans Telnyx.</li>
+<li>Dans Koraline, cliquez sur <strong>Ajouter un numero</strong>.</li>
+<li>Entrez le numero, le nom d'affichage, et selectionnez la connexion.</li>
+<li>Sauvegardez. Le numero est maintenant actif.</li>
+</ol>
+
+<h3>Workflow 2 : Configurer un numero pour les ventes</h3>
+<ol>
+<li>Ajoutez le numero avec le nom "Ligne Ventes".</li>
+<li>Configurez un menu IVR dedie pour ce numero.</li>
+<li>Le menu IVR redirige vers le groupe de sonnerie "Ventes".</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Combien de numeros puis-je avoir ?</strong></p>
+<p>R : Il n'y a pas de limite dans Koraline. La limite depend du forfait du fournisseur VoIP.</p>
+
+<p><strong>Q : Puis-je porter mon numero existant ?</strong></p>
+<p>R : Oui, la portabilite de numero est supportee par Telnyx. Contactez leur support pour</p>
+<p>initier le processus de portage.</p>
+
+<p><strong>Q : Le numero est-il affiche comme Caller ID lors des appels sortants ?</strong></p>
+<p>R : Oui, vous pouvez choisir quel numero utiliser comme Caller ID dans les parametres</p>
+<p>de chaque campagne ou extension.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>DID</strong></td><td>Direct Inward Dialing, numero de telephone public</td></tr>
+  <tr><td><strong>E.164</strong></td><td>Format international des numeros (+indicatif + numero)</td></tr>
+  <tr><td><strong>Portabilite</strong></td><td>Processus de transfert d'un numero d'un operateur a un autre</td></tr>
+  <tr><td><strong>Caller ID</strong></td><td>Numero de telephone affiche chez le destinataire</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./19-connexions.md">Connexions</a> : Fournisseurs VoIP associes aux numeros</li>
+<li><a href="./12-ivr-builder.md">IVR Builder</a> : Router les appels entrants sur chaque numero</li>
+<li><a href="./07-campagnes.md">Campagnes</a> : Utiliser un numero comme Caller ID sortant</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--21-extensions">
+<h1>Extensions</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Extensions</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Une <strong>extension</strong> (ou poste SIP) est un numero interne attribue a un agent pour passer</p>
+<p>et recevoir des appels. Chaque extension est associee a un compte SIP (Session Initiation</p>
+<p>Protocol) qui permet de se connecter depuis un telephone IP, un softphone (application),</p>
+<p>ou directement depuis le navigateur web.</p>
+
+<p>Par exemple, l'agent Marie Dupont a l'extension 101. Quand un appel est dirige vers</p>
+<p>l'extension 101, son telephone sonne. Quand elle passe un appel sortant, son extension</p>
+<p>identifie la ligne utilisee.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale.</li>
+<li>Sous <strong>Parametres</strong>, cliquez sur <strong>Extensions</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/extensions</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Liste des extensions</h3>
+<p>Chaque extension affiche :</p>
+<ul>
+<li><strong>Numero d'extension</strong> (ex: 101, 102, 103)</li>
+<li><strong>Domaine SIP</strong> : Serveur PBX (ex: pbx.biocyclepeptides.com)</li>
+<li><strong>Utilisateur</strong> : Nom et email de l'agent associe</li>
+<li><strong>Statut</strong> : En ligne (vert) ou Hors ligne (gris)</li>
+<li><strong>Enregistre</strong> : Indique si le telephone SIP est actuellement connecte</li>
+<li><strong>Actions</strong> : Supprimer</li>
+</ul>
+
+<h3>Bouton "Nouvelle extension"</h3>
+<p>Ouvre le formulaire de creation avec :</p>
+<ul>
+<li><strong>Utilisateur</strong> : Selection de l'employe</li>
+<li><strong>Extension</strong> : Numero du poste (ex: 101)</li>
+<li><strong>Nom d'utilisateur SIP</strong> : Identifiant de connexion SIP</li>
+<li><strong>Mot de passe SIP</strong> : Mot de passe de connexion SIP</li>
+<li><strong>Domaine SIP</strong> : Serveur PBX (pbx.biocyclepeptides.com par defaut)</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Creation d'une extension</h3>
+<p>La creation genere un compte SIP que l'agent utilisera pour se connecter. Les identifiants</p>
+<p>SIP (nom d'utilisateur et mot de passe) doivent etre communiques a l'agent pour configurer</p>
+<p>son telephone ou softphone.</p>
+
+<h3>Statut de connexion</h3>
+<p>Le champ <strong>Enregistre</strong> (isRegistered) indique si le telephone de l'agent est actuellement</p>
+<p>connecte au serveur SIP. Un agent hors ligne ne recevra pas d'appels diriges vers son extension.</p>
+
+<h3>Suppression d'une extension</h3>
+<p>La suppression deconnecte le compte SIP et supprime l'extension. L'agent ne pourra plus</p>
+<p>recevoir ni passer d'appels VoIP.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Creer une extension pour un nouvel agent</h3>
+<ol>
+<li>Cliquez sur <strong>Nouvelle extension</strong>.</li>
+<li>Selectionnez l'employe dans la liste.</li>
+<li>Attribuez un numero d'extension (ex: prochain numero disponible).</li>
+<li>Definissez les identifiants SIP.</li>
+<li>Sauvegardez.</li>
+<li>Communiquez les identifiants SIP a l'agent.</li>
+<li>L'agent configure son softphone avec ces identifiants.</li>
+</ol>
+
+<h3>Workflow 2 : Verifier la connexion d'un agent</h3>
+<ol>
+<li>Consultez la liste des extensions.</li>
+<li>Verifiez le statut "Enregistre" de l'agent.</li>
+<li>Si l'agent est hors ligne, verifiez sa configuration SIP.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Quel softphone recommandez-vous ?</strong></p>
+<p>R : Pour macOS/iOS, Zoiper ou Bria sont recommandes. L'application Koraline iOS</p>
+<p>integre egalement un client SIP via TelnyxRTC SDK.</p>
+
+<p><strong>Q : Plusieurs appareils peuvent-ils utiliser la meme extension ?</strong></p>
+<p>R : Un seul appareil peut etre enregistre par extension a la fois. Pour plusieurs</p>
+<p>appareils, creez une extension par appareil.</p>
+
+<p><strong>Q : Comment changer le mot de passe SIP ?</strong></p>
+<p>R : Supprimez l'extension et recreez-la avec un nouveau mot de passe.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Extension</strong></td><td>Numero de poste interne attribue a un agent</td></tr>
+  <tr><td><strong>SIP</strong></td><td>Session Initiation Protocol, protocole de telephonie VoIP</td></tr>
+  <tr><td><strong>Softphone</strong></td><td>Application logicielle simulant un telephone</td></tr>
+  <tr><td><strong>PBX</strong></td><td>Private Branch Exchange, central telephonique d'entreprise</td></tr>
+  <tr><td><strong>Enregistrement SIP</strong></td><td>Processus de connexion d'un telephone au serveur SIP</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./19-connexions.md">Connexions</a> : Fournisseurs VoIP auxquels les extensions se connectent</li>
+<li><a href="./09-transferts.md">Transferts</a> : Regles de renvoi par extension</li>
+<li><a href="./10-groupes.md">Groupes de sonnerie</a> : Affecter les extensions aux groupes</li>
+<li><a href="./22-parametres.md">Parametres</a> : Configuration SIP globale</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="09-telephonie--22-parametres">
+<h1>Parametres VoIP</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Parametres</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>La page <strong>Parametres</strong> regroupe toute la configuration globale du module de telephonie.</p>
+<p>Elle couvre les codecs audio, la politique d'enregistrement, la musique d'attente, la</p>
+<p>sonnerie, les horaires d'ouverture, le fuseau horaire, et la conformite E911 (urgences).</p>
+
+<p>Ces parametres s'appliquent a l'ensemble du systeme telephonique et affectent tous les</p>
+<p>agents et toutes les lignes. Ils sont generalement configures une fois lors de la mise</p>
+<p>en place initiale, puis ajustes ponctuellement.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale.</li>
+<li>Sous <strong>Parametres</strong>, cliquez sur <strong>Parametres</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/parametres</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Sections de configuration</h3>
+
+<p>L'interface est organisee en sections thematiques, chacune avec un bouton de sauvegarde</p>
+<p>independant :</p>
+
+<p><strong>Audio et codecs</strong> :</p>
+<ul>
+<li>Codecs actives (Opus, G.711, G.722, G.729)</li>
+<li>URL de la musique d'attente</li>
+<li>Selection de la sonnerie (defaut, classique, moderne, douce, urgente)</li>
+</ul>
+
+<p><strong>Enregistrement</strong> :</p>
+<ul>
+<li>Politique d'enregistrement (tous, entrants, sortants, aucun)</li>
+</ul>
+
+<p><strong>Horaires d'ouverture</strong> :</p>
+<ul>
+<li>Fuseau horaire (America/Toronto par defaut)</li>
+<li>Horaires par jour de la semaine (heure de debut et de fin pour chaque jour)</li>
+</ul>
+
+<p><strong>E911 (Urgences)</strong> :</p>
+<ul>
+<li>Active/Desactive</li>
+<li>Adresse physique de l'entreprise</li>
+<li>Ville, Province, Code postal</li>
+<li>Bouton de validation de l'adresse E911</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Codecs audio</h3>
+
+<table>
+<thead>
+    <tr><th>Codec</th><th>Bande passante</th><th>Qualite</th><th>Usage</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Opus</strong></td><td>Variable</td><td>Excellente</td><td>Recommande (defaut)</td></tr>
+  <tr><td><strong>G.711</strong></td><td>64 kbps</td><td>Bonne</td><td>Compatibilite maximale</td></tr>
+  <tr><td><strong>G.722</strong></td><td>64 kbps</td><td>Tres bonne</td><td>HD Voice</td></tr>
+  <tr><td><strong>G.729</strong></td><td>8 kbps</td><td>Acceptable</td><td>Bande passante limitee</td></tr>
+</tbody>
+</table>
+<p>Selectionnez les codecs supportes par votre infrastructure. Opus est recommande pour</p>
+<p>la meilleure qualite avec la bande passante la plus faible.</p>
+
+<h3>Politique d'enregistrement</h3>
+
+<table>
+<thead>
+    <tr><th>Politique</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Tous</strong></td><td>Tous les appels sont enregistres</td></tr>
+  <tr><td><strong>Entrants</strong></td><td>Seuls les appels recus sont enregistres</td></tr>
+  <tr><td><strong>Sortants</strong></td><td>Seuls les appels passes sont enregistres</td></tr>
+  <tr><td><strong>Aucun</strong></td><td>Aucun enregistrement</td></tr>
+</tbody>
+</table>
+<p>Note : L'enregistrement des appels doit etre conforme a la legislation. Au Canada, il</p>
+<p>suffit qu'une des parties consente a l'enregistrement. Neanmoins, il est recommande</p>
+<p>d'informer tous les participants via un message IVR.</p>
+
+<h3>Musique d'attente</h3>
+<p>Fournissez l'URL d'un fichier audio (MP3 ou WAV) joue aux appelants en file d'attente.</p>
+<p>Si aucune URL n'est fournie, un silence est joue.</p>
+
+<h3>Sonneries</h3>
+<p>Cinq presets de sonnerie sont disponibles :</p>
+<ul>
+<li><strong>Defaut</strong> : Sonnerie standard</li>
+<li><strong>Classique</strong> : Sonnerie telephonique traditionnelle</li>
+<li><strong>Moderne</strong> : Melodie contemporaine</li>
+<li><strong>Douce</strong> : Son discret pour environnement calme</li>
+<li><strong>Urgente</strong> : Son insistant pour appels prioritaires</li>
+</ul>
+
+<h3>Horaires d'ouverture</h3>
+<p>Definissez les heures d'ouverture pour chaque jour de la semaine. En dehors de ces</p>
+<p>horaires, les appels sont rediriges vers le menu IVR "hors heures" ou la messagerie.</p>
+
+<p>Les jours sont configurables individuellement (lundi a dimanche). Chaque jour a une</p>
+<p>heure de debut et de fin.</p>
+
+<h3>Fuseau horaire</h3>
+<p>Le fuseau horaire affecte :</p>
+<ul>
+<li>Les horaires d'ouverture</li>
+<li>Les timestamps dans le journal d'appels</li>
+<li>Les plages horaires des campagnes d'appels</li>
+</ul>
+
+<p>Fuseaux supportes : Montreal, Toronto, Vancouver, Winnipeg, Edmonton, Halifax,</p>
+<p>New York, Chicago, Denver, Los Angeles, Paris, Londres, UTC.</p>
+
+<h3>Configuration E911</h3>
+<p>Le E911 (Enhanced 911) est le systeme d'urgence nord-americain. La configuration de</p>
+<p>l'adresse E911 permet aux services d'urgence de localiser votre entreprise si un</p>
+<p>appel 911 est passe depuis une ligne VoIP.</p>
+
+<p>La validation verifie que l'adresse est reconnue par le systeme E911 et la lie a</p>
+<p>votre compte Telnyx. <em></em>Cette configuration est obligatoire pour les entreprises</p>
+<p>canadiennes utilisant la VoIP.<em></em></p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Configuration initiale</h3>
+<ol>
+<li>Selectionnez les codecs audio (Opus + G.711 recommandes).</li>
+<li>Definissez la politique d'enregistrement (tous, pour le controle qualite).</li>
+<li>Configurez le fuseau horaire (America/Montreal).</li>
+<li>Definissez les horaires d'ouverture (lundi-vendredi 9h-17h).</li>
+<li>Remplissez l'adresse E911 et validez-la.</li>
+<li>Sauvegardez chaque section.</li>
+</ol>
+
+<h3>Workflow 2 : Modifier les horaires pour une periode speciale</h3>
+<ol>
+<li>Ouvrez la section <strong>Horaires d'ouverture</strong>.</li>
+<li>Ajustez les heures pour les jours concernes.</li>
+<li>Par exemple, pour les fetes : fermez le samedi et le dimanche, reduisez les horaires.</li>
+<li>Sauvegardez. N'oubliez pas de restaurer les horaires normaux apres la periode.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Le E911 est-il obligatoire ?</strong></p>
+<p>R : Oui, au Canada, tout fournisseur de services VoIP doit offrir l'acces au 911.</p>
+<p>La configuration de l'adresse E911 est requise pour la conformite.</p>
+
+<p><strong>Q : Puis-je avoir des horaires differents par numero de telephone ?</strong></p>
+<p>R : Les horaires globaux s'appliquent a tout le systeme. Pour des horaires differents</p>
+<p>par ligne, utilisez les menus IVR avec leur propre configuration d'horaires.</p>
+
+<p><strong>Q : Le changement de codec affecte-t-il les appels en cours ?</strong></p>
+<p>R : Non, le changement de codec s'applique uniquement aux nouveaux appels.</p>
+
+<p><strong>Q : La musique d'attente doit-elle etre libre de droits ?</strong></p>
+<p>R : Oui, vous etes responsable des droits sur la musique utilisee. Des bibliotheques</p>
+<p>de musique d'attente libre de droits sont disponibles en ligne.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Codec</strong></td><td>Algorithme de compression/decompression audio</td></tr>
+  <tr><td><strong>Opus</strong></td><td>Codec audio moderne offrant la meilleure qualite/bande passante</td></tr>
+  <tr><td><strong>G.711</strong></td><td>Codec audio standard, compatibilite universelle</td></tr>
+  <tr><td><strong>E911</strong></td><td>Enhanced 911, systeme d'urgence avec localisation de l'appelant</td></tr>
+  <tr><td><strong>TTS</strong></td><td>Text-to-Speech, synthese vocale a partir de texte</td></tr>
+  <tr><td><strong>PBX</strong></td><td>Private Branch Exchange, central telephonique d'entreprise</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./19-connexions.md">Connexions</a> : Configurer les fournisseurs VoIP</li>
+<li><a href="./21-extensions.md">Extensions</a> : Gerer les comptes SIP</li>
+<li><a href="./20-numeros.md">Numeros</a> : Gerer les numeros de telephone</li>
+<li><a href="./12-ivr-builder.md">IVR Builder</a> : Configurer le menu vocal (utilise les horaires)</li>
+<li><a href="./01-dashboard.md">Tableau de bord</a> : Vue d'ensemble du systeme</li>
+</ul>
+
+</div>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

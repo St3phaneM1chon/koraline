@@ -1,12 +1,12 @@
 export const dynamic = 'force-dynamic';
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { withMobileGuard } from '@/lib/mobile-guard';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { z } from 'zod';
 
-export const GET = withMobileGuard(async (request, { session }) => {
+export const GET = withMobileGuard(async (_request, { session }) => {
   try {
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },

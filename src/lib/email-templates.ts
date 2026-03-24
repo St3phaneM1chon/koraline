@@ -63,7 +63,7 @@ interface BackInStockData {
 // Configuration email de base
 const emailConfig = {
   companyName: process.env.BUSINESS_NAME || 'Formations Pro',
-  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@biocyclepeptides.com',
+  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@attitudes.vip',
   logoUrl: process.env.LOGO_URL || '',
   primaryColor: '#333333',
   baseUrl: process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || 'https://attitudes.vip',

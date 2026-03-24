@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Abonnements &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 02 — Commerce</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion des Abonnements</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Commerce > Abonnements</p>
+<p><strong>URL</strong>: <code>/admin/abonnements</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Abonnements</strong> vous permet de gerer les commandes recurrentes de vos clients. Un abonnement, c'est un client qui a choisi de recevoir automatiquement un produit a intervalle regulier (tous les 2, 4, 6 ou 12 mois) avec une reduction.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir tous les abonnements en cours, en pause ou annules</li>
+<li>Filtrer par statut (Actif, En pause, Annule)</li>
+<li>Rechercher un abonnement par nom de client, email ou produit</li>
+<li>Consulter le detail complet de chaque abonnement (produit, format, frequence, prix, remise)</li>
+<li>Suspendre temporairement un abonnement (le client garde son compte, mais pas de livraison)</li>
+<li>Reactiver un abonnement en pause</li>
+<li>Annuler definitivement un abonnement</li>
+<li>Modifier les parametres d'un abonnement (frequence, quantite, remise, prochaine livraison)</li>
+<li>Configurer les options globales (remise par defaut, livraison gratuite, rappels, pauses autorisees)</li>
+<li>Voir les statistiques : nombre total, actifs, en pause, revenu mensuel estime (MRR)</li>
+<li>Calculer le MRR et l'ARR (revenu annuel recurrent) via le bouton Stats MRR</li>
+<li>Exporter la liste des abonnements en CSV</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un abonnement ?</h3>
+<p>Un abonnement est un engagement du client a recevoir un produit de facon reguliere. Au lieu de recommander manuellement a chaque fois, le systeme genere automatiquement une commande selon la frequence choisie.</p>
+
+<h3>Les frequences disponibles</h3>
+<table>
+<thead>
+    <tr><th>Frequence</th><th>Description</th><th>Livraisons par an</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Tous les 2 mois</strong></td><td>Frequence la plus courte</td><td>6 livraisons</td></tr>
+  <tr><td><strong>Tous les 4 mois</strong></td><td>Frequence trimestrielle</td><td>3 livraisons</td></tr>
+  <tr><td><strong>Tous les 6 mois</strong></td><td>Frequence semestrielle</td><td>2 livraisons</td></tr>
+  <tr><td><strong>Tous les 12 mois</strong></td><td>Frequence annuelle</td><td>1 livraison</td></tr>
+</tbody>
+</table>
+<h3>Les statuts d'un abonnement</h3>
+<table>
+<thead>
+    <tr><th>Statut</th><th>Couleur</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Actif</strong></td><td>Vert</td><td>L'abonnement fonctionne normalement, les livraisons sont planifiees</td></tr>
+  <tr><td><strong>En pause</strong></td><td>Jaune/Orange</td><td>L'abonnement est temporairement suspendu (pas de livraison prevue)</td></tr>
+  <tr><td><strong>Annule</strong></td><td>Rouge</td><td>L'abonnement est definitivement arrete (irreversible)</td></tr>
+</tbody>
+</table>
+<h3>Qu'est-ce que le MRR ?</h3>
+<p>Le <strong>MRR</strong> (Monthly Recurring Revenue / Revenu Mensuel Recurrent) est le montant total que vous recevez chaque mois grace aux abonnements actifs. C'est un indicateur cle pour mesurer la sante financiere de votre business recurrent.</p>
+
+<p><strong>Exemple</strong> : Un client abonne a un produit a 100$ tous les 2 mois genere un MRR de 50$/mois (100$ / 2 mois).</p>
+
+<p>L'<strong>ARR</strong> (Annual Recurring Revenue) est simplement le MRR x 12.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Commerce</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong> qui apparait, cliquez sur <strong>Abonnements</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Dans la colonne d'icones tout a gauche de l'ecran, cliquez sur l'icone <strong>panier</strong> (Commerce)</li>
+<li>Le panneau "Commerce" s'ouvre avec la liste des sous-pages</li>
+<li>Cliquez sur <strong>Abonnements</strong> (4e element de la liste)</li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche en haut au centre (ou tapez <code>/</code>)</li>
+<li>Tapez "abonnements"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Page Abonnements]</div>
+
+<p>L'interface est divisee en <strong>5 zones principales</strong> :</p>
+
+<h3>1. La barre de ruban (Ribbon) — en haut</h3>
+<p>C'est la barre d'outils contextuelle. Pour les abonnements, elle contient :</p>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Icone</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouvel abonnement</strong></td><td>+ vert</td><td>Informe que les abonnements se creent depuis la boutique (cote client)</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Poubelle rouge</td><td>Annuler definitivement l'abonnement selectionne</td></tr>
+  <tr><td><strong>Suspendre</strong></td><td>Pause</td><td>Mettre en pause l'abonnement selectionne</td></tr>
+  <tr><td><strong>Reactiver</strong></td><td>Play</td><td>Reactiver un abonnement en pause</td></tr>
+  <tr><td><strong>Rembourser</strong></td><td>Fleche retour</td><td>Redirige vers Stripe pour le remboursement</td></tr>
+  <tr><td><strong>Stats MRR</strong></td><td>Graphique</td><td>Affiche un toast avec le MRR, l'ARR et le nombre d'abonnements actifs</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger</td><td>Exporter tous les abonnements au format CSV</td></tr>
+</tbody>
+</table>
+<h3>2. Les cartes de statistiques (4 cartes)</h3>
+<p>En haut de la zone principale, 4 indicateurs cles :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total</strong></td><td>Nombre total d'abonnements (tous statuts confondus)</td></tr>
+  <tr><td><strong>Actifs</strong></td><td>Nombre d'abonnements actuellement actifs (fond vert)</td></tr>
+  <tr><td><strong>En pause</strong></td><td>Nombre d'abonnements temporairement suspendus (fond jaune)</td></tr>
+  <tr><td><strong>Revenu mensuel estime</strong></td><td>MRR calcule en dollars canadiens (fond indigo)</td></tr>
+</tbody>
+</table>
+<h3>3. La section Configuration</h3>
+<p>Un encadre blanc affiche les 4 parametres globaux actuels :</p>
+
+<table>
+<thead>
+    <tr><th>Parametre</th><th>Valeur par defaut</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Reduction abonnes</strong></td><td>15%</td><td>Pourcentage de remise applique a chaque livraison d'abonnement</td></tr>
+  <tr><td><strong>Livraison abonnes</strong></td><td>GRATUITE</td><td>Les abonnes beneficient de la livraison gratuite</td></tr>
+  <tr><td><strong>Rappel avant livraison</strong></td><td>3 jours</td><td>Le client recoit un rappel X jours avant sa prochaine livraison</td></tr>
+  <tr><td><strong>Pause autorisee</strong></td><td>1 pause/an</td><td>Nombre maximum de fois qu'un client peut mettre son abonnement en pause par annee</td></tr>
+</tbody>
+</table>
+<h3>4. Les onglets de filtre + recherche</h3>
+<p>Sous la configuration, une barre avec :</p>
+<ul>
+<li><strong>Onglets</strong> : Tous les statuts | Actif | En pause | Annule (avec compteurs)</li>
+<li><strong>Barre de recherche</strong> : Filtrer par nom, email ou produit</li>
+</ul>
+
+<h3>5. La liste maitre/detail (Outlook style)</h3>
+<p>L'interface est divisee en deux panneaux :</p>
+<ul>
+<li><strong>Panneau gauche</strong> : Liste des abonnements filtres</li>
+<li><strong>Panneau droit</strong> : Detail de l'abonnement selectionne</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>1. Consulter un abonnement</h3>
+
+<ol>
+<li>Cliquez sur un abonnement dans la liste de gauche</li>
+<li>Le panneau de droite affiche toutes les informations :</li>
+</ol>
+<ul>
+<li><strong>Statut</strong> : Badge colore (Actif / En pause / Annule)</li>
+<li><strong>Client</strong> : Nom complet et adresse email</li>
+<li><strong>Produit</strong> : Nom du produit et format (ex: "BPC-157 - 5mg x2")</li>
+<li><strong>Frequence</strong> : Tous les 2/4/6/12 mois</li>
+<li><strong>Prix</strong> : Montant apres remise, avec indication du pourcentage de reduction</li>
+<li><strong>Date de creation</strong> : Quand l'abonnement a ete souscrit</li>
+<li><strong>Prochaine livraison</strong> : Date prevue pour la prochaine expedition (ou "-" si en pause/annule)</li>
+</ul>
+
+<h3>2. Suspendre un abonnement</h3>
+
+<p>Suspendre = mettre en pause temporairement. Le client ne sera pas facture et ne recevra pas de livraison pendant la pause.</p>
+
+<p><strong>Depuis le panneau de detail :</strong></p>
+<ol>
+<li>Selectionnez un abonnement <strong>Actif</strong></li>
+<li>Cliquez sur le bouton <strong>Pause</strong> dans le panneau de detail (en haut a droite)</li>
+<li>Le statut passe a "En pause" (badge jaune)</li>
+</ol>
+
+<p><strong>Depuis le ruban :</strong></p>
+<ol>
+<li>Selectionnez un abonnement <strong>Actif</strong> dans la liste</li>
+<li>Cliquez sur <strong>Suspendre</strong> dans la barre de ruban en haut</li>
+<li>Le statut change immediatement</li>
+</ol>
+
+<blockquote>
+<p><strong>Attention</strong> : Chaque client a un nombre limite de pauses par annee (configurable, 1 par defaut). Au-dela, il devra annuler ou maintenir son abonnement.</p>
+</blockquote>
+
+<h3>3. Reactiver un abonnement</h3>
+
+<ol>
+<li>Selectionnez un abonnement <strong>En pause</strong></li>
+<li>Cliquez sur <strong>Reprendre</strong> dans le panneau de detail, OU <strong>Reactiver</strong> dans le ruban</li>
+<li>Le statut repasse a "Actif"</li>
+</ol>
+
+<blockquote>
+<p><strong>Note</strong> : Un abonnement <strong>Annule</strong> ne peut PAS etre reactive. L'annulation est definitive. Le client devra souscrire un nouvel abonnement depuis la boutique.</p>
+</blockquote>
+
+<h3>4. Annuler un abonnement</h3>
+
+<p>L'annulation est <strong>irreversible</strong>. Utilisez cette action uniquement quand vous etes certain.</p>
+
+<ol>
+<li>Selectionnez l'abonnement a annuler</li>
+<li>Cliquez sur <strong>Annuler</strong> (panneau de detail, bouton rouge) OU <strong>Supprimer</strong> (ruban)</li>
+<li>Une <strong>boite de confirmation</strong> apparait : "Etes-vous sur de vouloir annuler cet abonnement ?"</li>
+<li>Confirmez l'annulation</li>
+<li>Le statut passe a "Annule" (badge rouge)</li>
+</ol>
+
+<h3>5. Modifier un abonnement</h3>
+
+<p>Vous pouvez ajuster les parametres d'un abonnement individuel sans l'annuler.</p>
+
+<ol>
+<li>Selectionnez un abonnement dans la liste</li>
+<li>Cliquez sur le bouton <strong>Modifier</strong> (icone crayon) dans le panneau de detail</li>
+<li>Une fenetre modale s'ouvre avec 4 champs editables :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Description</th><th>Plage</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Frequence</strong></td><td>Changer l'intervalle de livraison</td><td>Tous les 2/4/6/12 mois</td></tr>
+  <tr><td><strong>Quantite</strong></td><td>Ajuster le nombre d'unites par livraison</td><td>1 a 99</td></tr>
+  <tr><td><strong>Remise</strong></td><td>Modifier le pourcentage de reduction</td><td>0% a 100%</td></tr>
+  <tr><td><strong>Prochaine livraison</strong></td><td>Reporter ou avancer la date de la prochaine livraison</td><td>Calendrier</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Modifiez les champs souhaites</li>
+<li>Cliquez sur <strong>Enregistrer</strong></li>
+<li>Les modifications sont appliquees immediatement</li>
+</ol>
+
+<h3>6. Configurer les options globales</h3>
+
+<p>Ces parametres s'appliquent a TOUS les abonnements.</p>
+
+<ol>
+<li>Cliquez sur le bouton <strong>Configurer les options</strong> (en haut a droite, bouton bleu)</li>
+<li>Une fenetre modale s'ouvre avec 4 parametres :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Parametre</th><th>Description</th><th>Defaut</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Reduction par defaut</strong></td><td>Pourcentage de remise pour les nouveaux abonnements</td><td>15%</td></tr>
+  <tr><td><strong>Livraison gratuite</strong></td><td>Activer/desactiver la livraison gratuite pour les abonnes (interrupteur)</td><td>Active</td></tr>
+  <tr><td><strong>Jours de rappel</strong></td><td>Nombre de jours avant la livraison pour envoyer un rappel au client</td><td>3</td></tr>
+  <tr><td><strong>Pauses max par annee</strong></td><td>Nombre de fois qu'un client peut suspendre son abonnement en 12 mois</td><td>1</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Ajustez les valeurs</li>
+<li>Cliquez sur <strong>Enregistrer</strong></li>
+<li>Un message de confirmation apparait</li>
+</ol>
+
+<blockquote>
+<p><strong>Important</strong> : Modifier la reduction par defaut n'affecte PAS les abonnements existants. Seuls les nouveaux abonnements utiliseront le nouveau pourcentage. Pour modifier un abonnement existant, utilisez la fonction "Modifier" individuelle.</p>
+</blockquote>
+
+<h3>7. Voir les statistiques MRR/ARR</h3>
+
+<ol>
+<li>Cliquez sur <strong>Stats MRR</strong> dans la barre de ruban</li>
+<li>Un toast apparait avec :</li>
+</ol>
+<ul>
+<li><strong>MRR</strong> : Revenu mensuel recurrent (somme des prix mensuels de tous les abonnements actifs)</li>
+<li><strong>ARR</strong> : Revenu annuel recurrent (MRR x 12)</li>
+<li><strong>Nombre d'abonnements actifs</strong></li>
+</ul>
+
+<p><strong>Comment le MRR est-il calcule ?</strong></p>
+<p>Pour chaque abonnement actif :</p>
+<ul>
+<li>Prix apres remise = Prix x (1 - Remise/100)</li>
+<li>Contribution mensuelle = Prix apres remise / nombre de mois entre livraisons</li>
+<li>MRR total = somme de toutes les contributions mensuelles</li>
+</ul>
+
+<h3>8. Exporter les abonnements</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter</strong> dans la barre de ruban</li>
+<li>Un fichier CSV est telecharge automatiquement</li>
+<li>Le fichier contient : Client, Email, Produit, Format, Quantite, Frequence, Prix, Remise, Statut, Prochaine livraison, Date de creation</li>
+<li>Le fichier est encode en UTF-8 avec BOM (compatible Excel)</li>
+</ol>
+
+<blockquote>
+<p><strong>Note</strong> : L'export inclut TOUS les abonnements, pas seulement ceux filtres a l'ecran.</p>
+</blockquote>
+
+<hr>
+
+<h2>Workflows complets</h2>
+
+<h3>Scenario 1 : Un client veut mettre en pause son abonnement</h3>
+
+<p><strong>Contexte</strong> : Le client part en voyage et ne sera pas la pour recevoir sa livraison.</p>
+
+<ol>
+<li>Le client vous contacte (email, chat, telephone)</li>
+<li>Allez dans <strong>Commerce > Abonnements</strong></li>
+<li>Recherchez le client par nom ou email</li>
+<li>Selectionnez son abonnement</li>
+<li>Verifiez qu'il n'a pas deja utilise sa pause annuelle</li>
+<li>Cliquez sur <strong>Pause</strong> dans le panneau de detail</li>
+<li>Confirmez au client que son abonnement est suspendu</li>
+<li>Quand le client revient : selectionnez l'abonnement et cliquez sur <strong>Reprendre</strong></li>
+</ol>
+
+<h3>Scenario 2 : Un client veut changer la frequence de son abonnement</h3>
+
+<p><strong>Contexte</strong> : Le client consomme son produit plus vite que prevu et veut recevoir plus souvent.</p>
+
+<ol>
+<li>Allez dans <strong>Commerce > Abonnements</strong></li>
+<li>Trouvez et selectionnez l'abonnement du client</li>
+<li>Cliquez sur <strong>Modifier</strong> (icone crayon)</li>
+<li>Changez la frequence (ex: de "Tous les 4 mois" a "Tous les 2 mois")</li>
+<li>Optionnel : ajustez la date de prochaine livraison si necessaire</li>
+<li>Cliquez sur <strong>Enregistrer</strong></li>
+<li>Confirmez au client</li>
+</ol>
+
+<h3>Scenario 3 : Rapport mensuel des abonnements</h3>
+
+<p><strong>Contexte</strong> : Vous voulez savoir combien rapportent vos abonnements chaque mois.</p>
+
+<ol>
+<li>Allez dans <strong>Commerce > Abonnements</strong></li>
+<li>Regardez la carte <strong>Revenu mensuel estime</strong> en haut</li>
+<li>Pour plus de details, cliquez sur <strong>Stats MRR</strong> dans le ruban</li>
+<li>Pour un rapport complet, cliquez sur <strong>Exporter</strong> et ouvrez le CSV dans Excel</li>
+<li>Dans Excel, filtrez par statut "ACTIVE" et calculez les totaux par produit</li>
+</ol>
+
+<h3>Scenario 4 : Un client veut annuler son abonnement</h3>
+
+<p><strong>Contexte</strong> : Le client ne souhaite plus recevoir le produit.</p>
+
+<ol>
+<li>Allez dans <strong>Commerce > Abonnements</strong></li>
+<li>Trouvez et selectionnez l'abonnement du client</li>
+<li><strong>Avant d'annuler</strong>, considerez : proposer une pause temporaire ou un changement de frequence</li>
+<li>Si le client confirme l'annulation : cliquez sur <strong>Annuler</strong> (bouton rouge)</li>
+<li>Confirmez dans la boite de dialogue</li>
+<li>L'abonnement passe au statut "Annule" — c'est irreversible</li>
+</ol>
+
+<hr>
+
+<h2>FAQ — Questions frequentes</h2>
+
+<h3>Q : Les clients creent-ils leurs abonnements eux-memes ?</h3>
+<p><strong>R</strong> : Oui. Les abonnements sont crees par les clients lors de leur achat sur la boutique en ligne. La page admin ne permet pas de creer un abonnement manuellement (le bouton "Nouvel abonnement" affiche un message informatif).</p>
+
+<h3>Q : Si je change la reduction par defaut de 15% a 20%, les abonnements existants sont-ils affectes ?</h3>
+<p><strong>R</strong> : Non. La modification ne s'applique qu'aux nouveaux abonnements. Pour modifier un abonnement existant, utilisez le bouton "Modifier" sur l'abonnement individuel.</p>
+
+<h3>Q : Un client peut-il reactiver lui-meme un abonnement annule ?</h3>
+<p><strong>R</strong> : Non. L'annulation est definitive. Le client devra creer un nouvel abonnement depuis la boutique.</p>
+
+<h3>Q : Comment fonctionne le remboursement ?</h3>
+<p><strong>R</strong> : Le bouton "Rembourser" dans le ruban vous redirige vers le dashboard Stripe pour effectuer le remboursement. Les remboursements ne sont pas geres directement dans l'interface Koraline.</p>
+
+<h3>Q : Que se passe-t-il quand la prochaine livraison arrive ?</h3>
+<p><strong>R</strong> : Le systeme genere automatiquement une commande, debite le client, et l'ajoute a la file d'expedition. Vous la verrez apparaitre dans <strong>Commerce > Commandes</strong> comme une commande normale.</p>
+
+<h3>Q : Combien de pauses un client peut-il prendre ?</h3>
+<p><strong>R</strong> : Par defaut, 1 pause par annee. Ce nombre est configurable dans <strong>Configurer les options</strong>. Si un client a deja utilise toutes ses pauses, il devra choisir entre maintenir ou annuler son abonnement.</p>
+
+<hr>
+
+<h2>Strategie expert : Pricing des abonnements et optimisation du MRR</h2>
+
+<h3>Remise optimale pour les abonnements</h3>
+
+<p>La remise est le levier principal pour convaincre un client de souscrire un abonnement plutot que de commander ponctuellement. Mais une remise trop elevee erode la marge.</p>
+
+<p><strong>Benchmarks du secteur supplements/peptides</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Remise</th><th>Impact sur la conversion</th><th>Impact sur la marge</th><th>Recommandation</th></tr>
+</thead>
+<tbody>
+  <tr><td>5%</td><td>Faible : insuffisant pour motiver</td><td>Negligeable</td><td>Trop faible, ne pas utiliser</td></tr>
+  <tr><td>10%</td><td>Moyen : attire les clients sensibles au prix</td><td>Acceptable</td><td>Minimum recommande</td></tr>
+  <tr><td>15%</td><td>Fort : bon equilibre conversion/marge</td><td>Modere</td><td>Ideal pour BioCycle (defaut actuel)</td></tr>
+  <tr><td>20%</td><td>Tres fort : maximise les inscriptions</td><td>Significatif</td><td>A reserver aux periodes promotionnelles</td></tr>
+  <tr><td>25%+</td><td>Maximum : diminishing returns</td><td>Critique</td><td>A eviter sauf offre de lancement temporaire</td></tr>
+</tbody>
+</table>
+<p><strong>Recommandation BioCycle</strong> : maintenir la remise par defaut a 15%. Utiliser 20% pour des campagnes d'acquisition limitees dans le temps (ex: "Abonnez-vous en janvier, profitez de 20% les 3 premiers mois").</p>
+
+<h3>Offres de lancement recommandees</h3>
+
+<table>
+<thead>
+    <tr><th>Strategie</th><th>Description</th><th>Duree</th></tr>
+</thead>
+<tbody>
+  <tr><td>Premiere livraison -25%, puis -15%</td><td>Forte incitation initiale, puis marge standard</td><td>Permanent</td></tr>
+  <tr><td>3 mois a -20%, puis -15%</td><td>Engagement initial plus doux</td><td>Campagne trimestrielle</td></tr>
+  <tr><td>Livraison gratuite permanente</td><td>Inclus dans l'abonnement (deja actif par defaut)</td><td>Permanent</td></tr>
+  <tr><td>Cadeau a la 3e livraison</td><td>Eau bacteriostatique gratuite a la 3e livraison</td><td>Permanent</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Strategie expert : Gestion du churn et tactiques anti-churn</h2>
+
+<h3>Taux de churn : reperes par industrie</h3>
+
+<p>Le <strong>churn</strong> (taux d'attrition) est le pourcentage d'abonnes qui annulent chaque mois.</p>
+
+<table>
+<thead>
+    <tr><th>Industrie</th><th>Churn mensuel moyen</th><th>Churn acceptable</th></tr>
+</thead>
+<tbody>
+  <tr><td>SaaS B2B</td><td>3-5%</td><td>Moins de 3%</td></tr>
+  <tr><td>Supplements alimentaires</td><td>8-12%</td><td>Moins de 8%</td></tr>
+  <tr><td>Peptides de recherche</td><td>5-8% (estime)</td><td>Moins de 5%</td></tr>
+  <tr><td>Box mensuelles</td><td>10-15%</td><td>Moins de 10%</td></tr>
+</tbody>
+</table>
+<p><strong>Cible BioCycle</strong> : maintenir le churn mensuel en dessous de 5%. Avec 100 abonnes, cela signifie perdre moins de 5 abonnes par mois.</p>
+
+<h3>Calcul de l'impact du churn sur le MRR</h3>
+
+<pre><code>Perte mensuelle MRR = MRR actuel x Taux de churn
+Mois pour perdre 50% des abonnes = ln(0.5) / ln(1 - taux_churn)</code></pre>
+
+<p><strong>Exemple concret</strong> :</p>
+<ul>
+<li>MRR actuel : 5 000 $CA (100 abonnes a 50 $CA/mois en moyenne)</li>
+<li>Churn 5%/mois : perte de 250 $CA/mois ; il faut 13,5 mois pour perdre la moitie des abonnes</li>
+<li>Churn 10%/mois : perte de 500 $CA/mois ; il faut 6,6 mois pour perdre la moitie</li>
+</ul>
+
+<p>La difference entre 5% et 10% de churn represente <strong>3 000 $CA de MRR</strong> perdu en 12 mois.</p>
+
+<h3>Tactiques anti-churn (a appliquer dans Koraline)</h3>
+
+<h4>1. Proposer la pause avant l'annulation</h4>
+
+<p>Quand un client clique sur "Annuler" sur la boutique, ou quand il vous contacte pour annuler :</p>
+<ul>
+<li><strong>Premiere proposition</strong> : "Voulez-vous plutot mettre en pause votre abonnement ? Vous pouvez reprendre quand vous voulez."</li>
+<li>Augmenter le nombre de pauses autorisees de 1 a 2 par an si le taux de churn est eleve</li>
+</ul>
+
+<h4>2. Proposer un changement de frequence</h4>
+
+<p>Si le client annule parce qu'il a "trop de stock" :</p>
+<ul>
+<li>Proposer de passer a une frequence moins elevee (de 2 mois a 4 mois, par exemple)</li>
+<li>La modification se fait via le bouton <strong>Modifier</strong> dans le panneau de detail</li>
+</ul>
+
+<h4>3. Offrir un upgrade ou un downgrade</h4>
+
+<p>Si le client annule pour des raisons de budget :</p>
+<ul>
+<li>Proposer un format plus petit (5mg au lieu de 10mg) a prix reduit</li>
+<li>Ou proposer un autre peptide moins couteux</li>
+</ul>
+
+<h4>4. Sondage de depart (obligatoire)</h4>
+
+<p>Quand un abonnement est annule, enregistrer la raison dans une note interne. Les raisons typiques :</p>
+<ul>
+<li>Trop cher (solution : offre de remise temporaire)</li>
+<li>Trop de stock accumule (solution : changement de frequence)</li>
+<li>Ne voit pas de resultats (solution : contenu educatif, support)</li>
+<li>Probleme de qualite (solution : investigation immediate, remplacement)</li>
+<li>Raison personnelle / temporaire (solution : pause)</li>
+</ul>
+
+<h3>Suivi mensuel du churn</h3>
+
+<p>Creer un tableau de bord mensuel avec ces indicateurs :</p>
+
+<table>
+<thead>
+    <tr><th>Indicateur</th><th>Formule</th><th>Cible</th></tr>
+</thead>
+<tbody>
+  <tr><td>Taux de churn</td><td>Annulations du mois / Abonnes debut de mois</td><td>Moins de 5%</td></tr>
+  <tr><td>Croissance nette des abonnes</td><td>Nouveaux abonnes - Annulations</td><td>Positif chaque mois</td></tr>
+  <tr><td>Taux de reactivation des pauses</td><td>Pauses reprises / Total des pauses</td><td>Plus de 60%</td></tr>
+  <tr><td>MRR net</td><td>MRR nouveaux - MRR perdus + MRR upgrades</td><td>En croissance</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Abonnement</strong></td><td>Commande recurrente automatique pour un produit, a une frequence et un prix definis</td></tr>
+  <tr><td><strong>MRR</strong></td><td>Monthly Recurring Revenue — revenu mensuel recurrent genere par les abonnements actifs</td></tr>
+  <tr><td><strong>ARR</strong></td><td>Annual Recurring Revenue — revenu annuel recurrent (MRR x 12)</td></tr>
+  <tr><td><strong>Frequence</strong></td><td>Intervalle entre chaque livraison (2, 4, 6 ou 12 mois)</td></tr>
+  <tr><td><strong>Remise</strong></td><td>Pourcentage de reduction applique au prix normal du produit pour les abonnes</td></tr>
+  <tr><td><strong>Pause</strong></td><td>Suspension temporaire d'un abonnement sans l'annuler</td></tr>
+  <tr><td><strong>CSV</strong></td><td>Format de fichier tableur (Comma Separated Values), compatible avec Excel et Google Sheets</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="01-commandes.md">Commandes</a> — Les commandes generees par les abonnements apparaissent ici</li>
+<li><a href="02-clients.md">Clients</a> — Voir le profil complet des clients abonnes</li>
+<li><a href="05-inventaire.md">Inventaire</a> — Verifier que le stock couvre les abonnements a venir</li>
+<li><a href="06-fournisseurs.md">Fournisseurs</a> — Commander les produits necessaires aux abonnements</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

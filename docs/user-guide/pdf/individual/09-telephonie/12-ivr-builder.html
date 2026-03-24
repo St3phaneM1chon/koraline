@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Constructeur IVR &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 09 — Telephonie</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Constructeur IVR</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > IVR Builder</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>L'<strong>IVR</strong> (Interactive Voice Response) est le menu vocal automatise qui accueille les appelants</p>
+<p>et les dirige vers le bon service. Par exemple : "Appuyez sur 1 pour les ventes, 2 pour le</p>
+<p>support, 3 pour la comptabilite." C'est la premiere interaction telephonique avec votre entreprise.</p>
+
+<p>Le <strong>constructeur IVR</strong> de Koraline permet de creer et modifier ces menus vocaux visuellement,</p>
+<p>sans competences techniques. Chaque menu definit un message d'accueil (texte-a-parole ou fichier</p>
+<p>audio), des options DTMF (touches du clavier), et des actions associees (transfert, sous-menu,</p>
+<p>messagerie, raccrocher).</p>
+
+<p>Les menus peuvent etre imbriques : une option peut pointer vers un sous-menu, permettant</p>
+<p>une arborescence de choix.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale.</li>
+<li>Sous <strong>Avance</strong>, cliquez sur <strong>IVR Builder</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/ivr-builder</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Panneau gauche : Liste des menus</h3>
+<p>La colonne de gauche liste tous les menus IVR existants :</p>
+<ul>
+<li><strong>Nom</strong> du menu</li>
+<li><strong>Nombre d'options</strong> et langue</li>
+<li>Le menu selectionne est surligne en bleu</li>
+</ul>
+
+<h3>Bouton "Nouveau menu"</h3>
+<p>En haut de la liste, un bouton permet de creer un nouveau menu.</p>
+
+<h3>Zone principale : Vue du flow</h3>
+<p>Quand un menu est selectionne, la zone centrale affiche sa structure visuelle :</p>
+
+<p><strong>Carte d'en-tete du menu</strong> :</p>
+<ul>
+<li>Nom et description</li>
+<li>Message d'accueil (texte TTS entre guillemets)</li>
+<li>Parametres : timeout, nombre de tentatives, action sur timeout, langue</li>
+<li>Bouton "Modifier" pour editer</li>
+</ul>
+
+<p><strong>Grille d'options DTMF</strong> :</p>
+<p>Chaque option est une carte affichant :</p>
+<ul>
+<li>Badge numerote (1-9, 0, *, #)</li>
+<li>Libelle de l'option (ex: "Service des ventes")</li>
+<li>Action et destination (ex: "Transfert vers file > Ventes")</li>
+<li>Lien cliquable vers le sous-menu si applicable</li>
+</ul>
+
+<p><strong>Lien heures non ouvrables</strong> :</p>
+<p>Si configure, un bandeau ambre affiche les horaires d'ouverture et le menu utilise</p>
+<p>en dehors de ces heures.</p>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Formulaire d'edition de menu</h3>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nom</strong></td><td>Identifiant du menu (ex: "Menu principal")</td></tr>
+  <tr><td><strong>Description</strong></td><td>Description optionnelle</td></tr>
+  <tr><td><strong>Message d'accueil TTS</strong></td><td>Texte lu par la synthese vocale</td></tr>
+  <tr><td><strong>URL audio</strong></td><td>Fichier audio personnalise (alternative au TTS)</td></tr>
+  <tr><td><strong>Timeout</strong></td><td>Secondes d'attente avant de repeter/agir (1-30s)</td></tr>
+  <tr><td><strong>Tentatives max</strong></td><td>Nombre de repetitions avant l'action de timeout (0-10)</td></tr>
+  <tr><td><strong>Action sur timeout</strong></td><td>Que faire apres les tentatives : Rejouer, Operateur, Messagerie</td></tr>
+</tbody>
+</table>
+<h3>Actions DTMF</h3>
+
+<table>
+<thead>
+    <tr><th>Action</th><th>Description</th><th>Necessite une cible</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Transfert vers extension</strong></td><td>Diriger vers un poste specifique</td><td>Oui (numero d'extension)</td></tr>
+  <tr><td><strong>Transfert vers file</strong></td><td>Diriger vers un groupe de sonnerie</td><td>Oui (nom de la file)</td></tr>
+  <tr><td><strong>Sous-menu</strong></td><td>Aller vers un autre menu IVR</td><td>Oui (ID du menu)</td></tr>
+  <tr><td><strong>Messagerie vocale</strong></td><td>Diriger vers la boite vocale</td><td>Oui (extension cible)</td></tr>
+  <tr><td><strong>Rejouer</strong></td><td>Relire le message d'accueil</td><td>Non</td></tr>
+  <tr><td><strong>Raccrocher</strong></td><td>Terminer l'appel</td><td>Non</td></tr>
+</tbody>
+</table>
+<h3>Touches DTMF disponibles</h3>
+<p>12 touches au total : 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, *, #. Chaque touche ne peut etre</p>
+<p>assignee qu'une fois par menu.</p>
+
+<h3>Menus imbriques</h3>
+<p>L'action "Sous-menu" permet de creer une arborescence. Par exemple :</p>
+<ul>
+<li>Menu principal > Touche 1 > Sous-menu "Ventes"</li>
+<li>Sous-menu Ventes > Touche 1 > "Peptides therapeutiques"</li>
+<li>Sous-menu Ventes > Touche 2 > "Peptides cosmetiques"</li>
+</ul>
+
+<p>Depuis la vue flow, un lien cliquable permet de naviguer directement vers le sous-menu.</p>
+
+<h3>Horaires d'ouverture</h3>
+<p>Chaque menu peut definir des horaires d'ouverture et un menu alternatif pour les</p>
+<p>heures non ouvrables. En dehors des heures definies, les appels sont rediriges</p>
+<p>automatiquement vers le menu alternatif.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Creer le menu principal</h3>
+<ol>
+<li>Cliquez sur <strong>Nouveau menu</strong>.</li>
+<li>Nommez-le "Menu principal".</li>
+<li>Redigez le message d'accueil : "Bienvenue chez BioCycle Peptides. Pour les ventes,</li>
+</ol>
+<p>   appuyez sur 1. Pour le support, appuyez sur 2. Pour laisser un message, appuyez sur 3."</p>
+<ol>
+<li>Ajoutez les options :</li>
+</ol>
+<ul>
+<li>Touche 1 > Transfert vers file > "Ventes"</li>
+<li>Touche 2 > Transfert vers file > "Support"</li>
+<li>Touche 3 > Messagerie vocale</li>
+</ul>
+<ol>
+<li>Definissez le timeout a 5 secondes et 3 tentatives max.</li>
+<li>Sauvegardez.</li>
+</ol>
+
+<h3>Workflow 2 : Ajouter un menu apres les heures</h3>
+<ol>
+<li>Creez un nouveau menu "Hors heures".</li>
+<li>Message d'accueil : "Nos bureaux sont fermes. Pour laisser un message, appuyez sur 1."</li>
+<li>Option 1 > Messagerie vocale.</li>
+<li>Dans le menu principal, configurez les horaires (9h-17h) et associez le menu "Hors heures".</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Puis-je utiliser un fichier audio au lieu du texte-a-parole ?</strong></p>
+<p>R : Oui, vous pouvez fournir une URL vers un fichier audio MP3 ou WAV.</p>
+
+<p><strong>Q : Le texte-a-parole supporte-t-il le francais ?</strong></p>
+<p>R : Oui, le TTS Telnyx supporte le francais canadien.</p>
+
+<p><strong>Q : Combien de niveaux d'imbrication sont possibles ?</strong></p>
+<p>R : Il n'y a pas de limite technique, mais plus de 3 niveaux nuit a l'experience client.</p>
+
+<hr>
+
+<h2>Strategie expert : Conception du menu vocal optimal pour une PME de peptides (1-5 employes)</h2>
+
+<h3>Principes de conception pour une petite equipe</h3>
+
+<p>Avec 1 a 5 employes, la complexite du menu vocal doit rester minimale. Un IVR trop profond frustre les appelants et surcharge inutilement une equipe reduite. La regle absolue : <strong>maximum 4 options au niveau 1, maximum 2 niveaux d'imbrication</strong>.</p>
+
+<p><strong>Regles d'or de l'IVR pour une PME :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Regle</th><th>Justification</th></tr>
+</thead>
+<tbody>
+  <tr><td>Maximum 4 options au niveau 1</td><td>Au-dela, les appelants oublient les premieres options (limite de la memoire de travail)</td></tr>
+  <tr><td>Maximum 2 niveaux de profondeur</td><td>Chaque niveau supplementaire cause 10-15% d'abandon d'appel</td></tr>
+  <tr><td>Option "parler a un humain" toujours disponible</td><td>Les appels B2B veulent souvent un contact direct immediat</td></tr>
+  <tr><td>Duree totale du message d'accueil < 30 secondes</td><td>Les appelants decrochent mentalement apres 30 secondes</td></tr>
+  <tr><td>Pas de musique d'attente generique</td><td>Utiliser un message informatif (horaires, site web, email)</td></tr>
+</tbody>
+</table>
+<h3>Message d'accueil bilingue FR/EN</h3>
+
+<p>Le Quebec impose la primaute du francais (Loi 101 / Charte de la langue francaise), mais la clientele de BioCycle Peptides est souvent bilingue ou anglophone (chercheurs, institutions). Voici la structure recommandee :</p>
+
+<p><strong>Message d'accueil principal (francais en premier, conformement a la Loi 101) :</strong></p>
+
+<blockquote>
+<p>"Bienvenue chez BioCycle Peptides. Pour le service en francais, appuyez sur 1 ou restez en ligne. For service in English, press 2."</p>
+</blockquote>
+
+<p><strong>Apres le choix de langue -- Menu francais :</strong></p>
+
+<blockquote>
+<p>"Pour passer une commande ou pour nos produits, appuyez sur 1. Pour le suivi d'une commande existante, appuyez sur 2. Pour le support technique, appuyez sur 3. Pour laisser un message, appuyez sur 4."</p>
+</blockquote>
+
+<p><strong>Apres le choix de langue -- Menu anglais :</strong></p>
+
+<blockquote>
+<p>"To place an order or for product information, press 1. For order tracking, press 2. For technical support, press 3. To leave a message, press 4."</p>
+</blockquote>
+
+<h3>Structure IVR recommandee pour BioCycle Peptides</h3>
+
+<pre><code>Menu Principal (Niveau 0)
+|
++-- Touche 1 : Francais → Menu FR (Niveau 1)
+|   +-- Touche 1 : Commandes / Produits → File "Ventes" (ou extension directe si 1 vendeur)
+|   +-- Touche 2 : Suivi commande → File "Support" (ou extension directe)
+|   +-- Touche 3 : Support technique → File "Support" (ou extension directe)
+|   +-- Touche 4 : Messagerie vocale → Boite vocale generale
+|
++-- Touche 2 : English → Menu EN (Niveau 1)
+|   +-- (Meme structure qu'en francais, messages en anglais)
+|
++-- Timeout (5 sec, 3 tentatives) → Transfert vers receptionniste ou messagerie</code></pre>
+
+<h3>Parametres techniques recommandes</h3>
+
+<table>
+<thead>
+    <tr><th>Parametre</th><th>Valeur</th><th>Justification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Timeout</strong></td><td>5 secondes</td><td>Assez court pour ne pas frustrer, assez long pour reflenir</td></tr>
+  <tr><td><strong>Tentatives max</strong></td><td>3</td><td>Apres 3 tentatives sans saisie, transferer a un humain</td></tr>
+  <tr><td><strong>Action sur timeout</strong></td><td>Transfert vers operateur (heures ouvrables) / Messagerie (hors heures)</td><td>Ne jamais raccrocher automatiquement</td></tr>
+  <tr><td><strong>Langue TTS</strong></td><td>Francais canadien (fr-CA)</td><td>Important : le francais de France sonne artificiel au Quebec</td></tr>
+  <tr><td><strong>Vitesse TTS</strong></td><td>Normale a legirement lente</td><td>Les appelants doivent comprendre du premier coup</td></tr>
+</tbody>
+</table>
+<h3>Messages d'attente professionnels</h3>
+
+<p>Quand l'appelant est en file d'attente, ne pas utiliser de musique generique. Utiliser des messages informatifs qui reduisent la frustration et renforcent la marque :</p>
+
+<p><strong>Rotation de 3 messages (toutes les 30 secondes) :</strong></p>
+
+<ol>
+<li>"Merci de patienter. Un conseiller sera avec vous sous peu. Saviez-vous que vous pouvez passer commande directement sur notre site biocyclepeptides.com ?"</li>
+</ol>
+
+<ol>
+<li>"Votre appel est important pour nous. En attendant, nous vous rappelons que tous nos peptides sont accompagnes d'un certificat d'analyse verifiable en ligne."</li>
+</ol>
+
+<ol>
+<li>"Nous traitons votre appel dans l'ordre de reception. Pour les questions simples comme le suivi de commande, visitez votre espace client sur biocyclepeptides.com."</li>
+</ol>
+
+<p><strong>Message hors heures d'ouverture :</strong></p>
+
+<blockquote>
+<p>"Merci d'avoir appele BioCycle Peptides. Nos bureaux sont ouverts du lundi au vendredi, de 9 heures a 17 heures, heure de l'Est. Pour passer une commande, visitez biocyclepeptides.com. Pour laisser un message, appuyez sur 1. Nous vous rappellerons le prochain jour ouvrable."</p>
+</blockquote>
+
+<h3>Horaires d'ouverture recommandes</h3>
+
+<table>
+<thead>
+    <tr><th>Jour</th><th>Horaires</th><th>Justification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Lundi - Vendredi</strong></td><td>9h00 - 17h00 EST</td><td>Heures de bureau standard Quebec</td></tr>
+  <tr><td><strong>Samedi</strong></td><td>Ferme (ou 10h-14h si volume le justifie)</td><td>Les clients B2B sont rarement actifs le samedi</td></tr>
+  <tr><td><strong>Dimanche et jours feries</strong></td><td>Ferme</td><td>Message hors heures + messagerie vocale</td></tr>
+</tbody>
+</table>
+<p><strong>Jours feries a configurer dans le systeme :</strong></p>
+<ul>
+<li>Jour de l'An, Vendredi saint, Lundi de Paques, Journee nationale des patriotes, Fete nationale du Quebec (24 juin), Fete du Canada (1er juillet), Fete du Travail, Action de graces, Noel, Lendemain de Noel</li>
+</ul>
+
+<h3>Metriques de performance de l'IVR</h3>
+
+<table>
+<thead>
+    <tr><th>Indicateur</th><th>Cible</th><th>Seuil d'alerte</th></tr>
+</thead>
+<tbody>
+  <tr><td>Taux d'abandon dans l'IVR</td><td>< 5%</td><td>> 10%</td></tr>
+  <tr><td>Temps moyen dans l'IVR avant connexion humaine</td><td>< 45 secondes</td><td>> 90 secondes</td></tr>
+  <tr><td>Taux d'utilisation de la messagerie vocale</td><td>< 15% des appels totaux</td><td>> 25% (indique un sous-effectif)</td></tr>
+  <tr><td>Taux de "0 pour operateur"</td><td>< 20%</td><td>> 35% (le menu est mal concu)</td></tr>
+  <tr><td>Appels raccroches pendant l'attente</td><td>< 8%</td><td>> 15% (attente trop longue)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>IVR</strong></td><td>Interactive Voice Response, menu vocal interactif</td></tr>
+  <tr><td><strong>DTMF</strong></td><td>Dual-Tone Multi-Frequency, signaux des touches telephoniques</td></tr>
+  <tr><td><strong>TTS</strong></td><td>Text-to-Speech, synthese vocale a partir de texte</td></tr>
+  <tr><td><strong>Arborescence</strong></td><td>Structure hierarchique de menus imbriques</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./10-groupes.md">Groupes de sonnerie</a> : Files d'attente ciblees par l'IVR</li>
+<li><a href="./09-transferts.md">Transferts</a> : Renvois individuels en complement</li>
+<li><a href="./04-messagerie.md">Messagerie vocale</a> : Destination finale des appels</li>
+<li><a href="./22-parametres.md">Parametres</a> : Configuration des horaires d'ouverture</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

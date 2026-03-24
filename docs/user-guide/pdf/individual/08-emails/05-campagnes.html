@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campagnes email &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 08 — Emails</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Campagnes email</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Emails > Campagnes</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Les <strong>campagnes email</strong> permettent d'envoyer un meme email a un grand nombre de destinataires</p>
+<p>en une seule operation. C'est l'outil principal pour les communications marketing de BioCycle</p>
+<p>Peptides : promotions, lancements de produits, newsletters, offres speciales.</p>
+
+<p>Chaque campagne passe par un cycle de vie : elle est creee en tant que <strong>brouillon</strong>, editee</p>
+<p>avec le contenu souhaite, puis <strong>envoyee</strong> ou <strong>planifiee</strong> pour un envoi ulterieur. Apres</p>
+<p>l'envoi, les statistiques de performance (ouvertures, clics, rebonds, revenus) sont collectees</p>
+<p>automatiquement.</p>
+
+<p>Koraline offre un editeur visuel riche avec mode visuel (WYSIWYG), mode code HTML, et mode</p>
+<p>apercu. Les variables dynamiques permettent de personnaliser chaque email avec le prenom du</p>
+<p>destinataire, son entreprise, etc.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Emails</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, sous <strong>Gestion</strong>, cliquez sur <strong>Campagnes</strong>.</li>
+<li>L'URL directe est : <code>/admin/emails?tab=campaigns</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Liste des campagnes</h3>
+<p>L'ecran principal affiche toutes les campagnes sous forme de cartes, chacune avec :</p>
+<ul>
+<li><strong>Nom</strong> de la campagne</li>
+<li><strong>Statut</strong> : Brouillon, Planifiee, En cours d'envoi, Envoyee, Annulee</li>
+<li><strong>Objet</strong> de l'email</li>
+<li><strong>Date de creation</strong> et date d'envoi</li>
+<li><strong>Statistiques</strong> (pour les campagnes envoyees) : envoyes, ouverts, cliques, rebondis, revenus</li>
+</ul>
+
+<h3>Bouton "Nouvelle campagne"</h3>
+<p>Cree une nouvelle campagne en brouillon avec un nom et un objet par defaut.</p>
+
+<h3>Badges de statut</h3>
+
+<table>
+<thead>
+    <tr><th>Statut</th><th>Couleur</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Brouillon</strong></td><td>Gris</td><td>Campagne en cours de preparation</td></tr>
+  <tr><td><strong>Planifiee</strong></td><td>Bleu</td><td>Campagne programmee pour un envoi futur</td></tr>
+  <tr><td><strong>En cours</strong></td><td>Jaune</td><td>Campagne en train d'etre envoyee</td></tr>
+  <tr><td><strong>Envoyee</strong></td><td>Vert</td><td>Campagne entierement envoyee</td></tr>
+  <tr><td><strong>Annulee</strong></td><td>Rouge</td><td>Campagne annulee avant l'envoi</td></tr>
+</tbody>
+</table>
+<h3>Actions par campagne</h3>
+<ul>
+<li><strong>Envoyer</strong> (icone avion) : Envoyer la campagne (brouillons uniquement)</li>
+<li><strong>Modifier</strong> (icone crayon) : Ouvrir l'editeur de campagne</li>
+<li><strong>Supprimer</strong> (icone corbeille) : Supprimer la campagne</li>
+<li><strong>Statistiques</strong> (icone graphique) : Voir les metriques (campagnes envoyees)</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Editeur de campagne</h3>
+<p>L'editeur de campagne est l'outil central de creation de contenu. Il offre trois modes :</p>
+
+<ol>
+<li><strong>Mode visuel</strong> : Editeur WYSIWYG avec barre d'outils complete (gras, italique, liens,</li>
+</ol>
+<p>   images, alignement, listes). Modifier le contenu directement comme dans un traitement de texte.</p>
+
+<ol>
+<li><strong>Mode code</strong> : Editeur HTML brut pour un controle total du rendu. Utile pour les</li>
+</ol>
+<p>   utilisateurs avances ou pour coller du HTML depuis un outil externe.</p>
+
+<ol>
+<li><strong>Mode apercu</strong> : Visualisation du rendu final avec les variables remplacees par des</li>
+</ol>
+<p>   valeurs d'exemple.</p>
+
+<h3>Barre d'outils (mode visuel)</h3>
+<p>La barre d'outils EmailToolbar offre :</p>
+<ul>
+<li>Mise en forme : Gras, Italique, Souligne, Barre</li>
+<li>Listes : A puces, Numerotees</li>
+<li>Alignement : Gauche, Centre, Droite</li>
+<li>Insertion : Liens, Images</li>
+<li>Variables : Menu deroulant pour inserer <code>{{prenom}}</code>, <code>{{email}}</code>, <code>{{nom}}</code>, <code>{{company}}</code></li>
+</ul>
+
+<h3>Variables dynamiques</h3>
+<p>Les variables sont inserees avec la syntaxe <code>{{variable}}</code> et remplacees automatiquement :</p>
+<ul>
+<li><code>{{prenom}}</code> : Prenom du client</li>
+<li><code>{{email}}</code> : Adresse email du client</li>
+<li><code>{{nom}}</code> : Nom de famille</li>
+<li><code>{{company}}</code> : Nom de l'entreprise</li>
+</ul>
+
+<h3>Version texte</h3>
+<p>En bas de l'editeur, une section pliable permet de definir une <strong>version texte brut</strong> de l'email.</p>
+<p>Cette version est utilisee par les clients email qui n'affichent pas le HTML.</p>
+
+<h3>Statistiques post-envoi</h3>
+<p>Apres l'envoi, la campagne affiche des metriques en temps reel :</p>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Envoyes</strong></td><td>Nombre d'emails expedies</td></tr>
+  <tr><td><strong>Ouverts</strong></td><td>Nombre de destinataires ayant ouvert l'email</td></tr>
+  <tr><td><strong>Cliques</strong></td><td>Nombre de clics sur les liens</td></tr>
+  <tr><td><strong>Rebondis</strong></td><td>Nombre d'emails non delivres</td></tr>
+  <tr><td><strong>Revenus</strong></td><td>Revenus generes par la campagne (suivi des conversions)</td></tr>
+</tbody>
+</table>
+<h3>Confirmation d'envoi</h3>
+<p>Avant chaque envoi, une boite de dialogue demande confirmation. Cette precaution empeche</p>
+<p>les envois accidentels.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Creer et envoyer une campagne promotionnelle</h3>
+<ol>
+<li>Cliquez sur <strong>Nouvelle campagne</strong> pour creer un brouillon.</li>
+<li>Dans l'editeur, modifiez le <strong>nom</strong> (ex: "Promo printemps 2026").</li>
+<li>Definissez l'<strong>objet</strong> (ex: "20% sur les peptides cette semaine!").</li>
+<li>Composez le contenu en mode visuel, en utilisant les variables pour personnaliser.</li>
+<li>Cliquez sur <strong>Apercu</strong> pour verifier le rendu.</li>
+<li>Cliquez sur <strong>Sauvegarder</strong> puis <strong>Envoyer</strong>.</li>
+<li>Confirmez l'envoi dans la boite de dialogue.</li>
+</ol>
+
+<h3>Workflow 2 : Analyser les performances d'une campagne</h3>
+<ol>
+<li>Dans la liste des campagnes, trouvez une campagne avec le statut <strong>Envoyee</strong>.</li>
+<li>Consultez les statistiques affichees directement sur la carte (envoyes, ouverts, cliques,</li>
+</ol>
+<p>   rebondis, revenus).</p>
+<ol>
+<li>Cliquez sur l'icone graphique pour des metriques plus detaillees.</li>
+<li>Comparez avec vos benchmarks (taux d'ouverture cible > 20%, taux de clic > 3%).</li>
+</ol>
+
+<h3>Workflow 3 : Dupliquer et adapter une campagne</h3>
+<ol>
+<li>Creez une nouvelle campagne.</li>
+<li>Dans l'editeur en mode code, copiez le HTML d'une campagne precedente.</li>
+<li>Adaptez le contenu (objet, texte, variables).</li>
+<li>Verifiez via l'apercu et envoyez.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Puis-je planifier une campagne pour un envoi futur ?</strong></p>
+<p>R : Oui, le champ de planification permet de definir une date et heure d'envoi automatique.</p>
+
+<p><strong>Q : A qui est envoyee la campagne ?</strong></p>
+<p>R : Par defaut, la campagne est envoyee a la liste de diffusion (mailing list). Vous pouvez</p>
+<p>definir un segment specifique via les criteres de segmentation.</p>
+
+<p><strong>Q : Puis-je annuler une campagne en cours d'envoi ?</strong></p>
+<p>R : Les campagnes en statut <strong>Brouillon</strong> ou <strong>Planifiee</strong> peuvent etre annulees. Une fois</p>
+<p>l'envoi commence, il ne peut pas etre interrompu.</p>
+
+<p><strong>Q : Comment eviter le spam ?</strong></p>
+<p>R : Koraline integre la conformite CASL (loi anti-pourriel canadienne). Chaque email</p>
+<p>inclut un lien de desabonnement et respecte les preferences des destinataires.</p>
+
+<hr>
+
+<h2>Strategie expert : calendrier email annuel pour BioCycle Peptides</h2>
+
+<h3>Planification sur 12 mois</h3>
+
+<p>Un calendrier email structure garantit une communication reguliere sans submerger vos abonnes. Prevoyez 2 a 3 emails par mois minimum : 1 newsletter educative, 1 promotion, et 1 email de contenu (blog, guide, actualite).</p>
+
+<table>
+<thead>
+    <tr><th>Mois</th><th>Theme principal</th><th>Type de campagne</th><th>Objet email suggere</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Janvier</strong></td><td>Resolutions sante / Bien-etre</td><td>Promotion -15% peptides reparation</td><td>"Nouvelle annee, nouvelle recherche : 15% sur les peptides reparation"</td></tr>
+  <tr><td><strong>Fevrier</strong></td><td>Guides pour debutants</td><td>Contenu educatif</td><td>"Votre premier peptide : le guide complet de reconstitution"</td></tr>
+  <tr><td><strong>Mars</strong></td><td>Printemps / Renouveau</td><td>Flash sale 48h</td><td>"Flash Sale Printemps : 48h pour economiser 20%"</td></tr>
+  <tr><td><strong>Avril</strong></td><td>Nouveaux produits</td><td>Lancement produit</td><td>"Nouveau : [peptide] maintenant disponible chez BioCycle"</td></tr>
+  <tr><td><strong>Mai</strong></td><td>Temoignages / Etudes</td><td>Social proof + contenu</td><td>"Ce que les chercheurs disent du BPC-157 en 2026"</td></tr>
+  <tr><td><strong>Juin</strong></td><td>Ete fitness</td><td>Bundle promotion</td><td>"Summer Stack : BPC-157 + TB-500 a -20%"</td></tr>
+  <tr><td><strong>Juillet</strong></td><td>Soldes mi-annee</td><td>Promotion generale</td><td>"Soldes d'ete : jusqu'a 25% sur tout le catalogue"</td></tr>
+  <tr><td><strong>Aout</strong></td><td>Rentree labos</td><td>Campagne B2B</td><td>"Labos et universites : votre tarif recherche rentre en vigueur"</td></tr>
+  <tr><td><strong>Septembre</strong></td><td>Immunitaire / Automne</td><td>Contenu + promotion</td><td>"Preparez votre recherche automnale : focus peptides immunitaires"</td></tr>
+  <tr><td><strong>Octobre</strong></td><td>Pre-Black Friday</td><td>Teaser + liste VIP</td><td>"Black Friday arrive : inscrivez-vous pour un acces anticipe"</td></tr>
+  <tr><td><strong>Novembre</strong></td><td>Black Friday / Cyber Monday</td><td>Promotion majeure</td><td>"BLACK FRIDAY : -25% sur TOUT - 4 jours seulement"</td></tr>
+  <tr><td><strong>Decembre</strong></td><td>Coffrets / Fin d'annee</td><td>Coffrets cadeaux + bilan</td><td>"Coffret Starter Research Kit : l'idee cadeau parfaite"</td></tr>
+</tbody>
+</table>
+<h3>Conformite CASL : rappel essentiel pour chaque campagne</h3>
+
+<p>Avant chaque envoi de campagne, verifiez ces 5 points :</p>
+
+<ol>
+<li><strong>Consentement valide</strong> : Chaque destinataire a donne son consentement explicite (opt-in actif) ou implicite (achat < 2 ans, demande < 6 mois)</li>
+<li><strong>Identification</strong> : Le nom de BioCycle Peptides et l'adresse postale physique apparaissent dans l'email</li>
+<li><strong>Desabonnement</strong> : Le lien de desabonnement est visible, fonctionnel et gratuit</li>
+<li><strong>Objet non trompeur</strong> : L'objet de l'email decrit fidelement le contenu (pas de fausses urgences ou de sujets misleading)</li>
+<li><strong>Registre a jour</strong> : Les desabonnements recents ont ete traites (Koraline le fait automatiquement, mais verifiez si vous importez des listes externes)</li>
+</ol>
+
+<p><strong>Penalites</strong> : Jusqu'a 10 000 000 $CA par infraction pour les entreprises. Le CRTC audite activement les e-commerces canadiens.</p>
+
+<h3>A/B testing : guide pratique</h3>
+
+<p>Le A/B testing est la methode la plus fiable pour ameliorer vos performances email. Testez UN SEUL element a la fois pour des resultats mesurables.</p>
+
+<p><strong>Elements a tester par ordre d'impact</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Element</th><th>Impact potentiel</th><th>Exemple de test</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Objet</strong></td><td>+20 a +50% taux d'ouverture</td><td>"20% de rabais sur les peptides" vs "Votre code exclusif : PEPTIDE20"</td></tr>
+  <tr><td><strong>Heure d'envoi</strong></td><td>+10 a +25% taux d'ouverture</td><td>Mardi 10h vs Jeudi 14h</td></tr>
+  <tr><td><strong>CTA (appel a l'action)</strong></td><td>+15 a +30% taux de clic</td><td>"Magasiner" vs "Voir les offres" vs "Profitez maintenant"</td></tr>
+  <tr><td><strong>Personnalisation</strong></td><td>+10 a +20% taux d'ouverture</td><td>"Offre speciale" vs "{{prenom}}, offre speciale pour vous"</td></tr>
+  <tr><td><strong>Longueur</strong></td><td>+5 a +15% taux de clic</td><td>Email court (3 paragraphes) vs email long (8 paragraphes)</td></tr>
+</tbody>
+</table>
+<p><strong>Protocole de test</strong> :</p>
+<ol>
+<li>Definissez l'hypothese : "Un objet avec le prenom augmente le taux d'ouverture"</li>
+<li>Creez 2 variantes identiques sauf l'element teste</li>
+<li>Envoyez a 20% de votre liste (10% variante A, 10% variante B)</li>
+<li>Attendez 2 a 4 heures (Koraline le fait automatiquement)</li>
+<li>Envoyez la variante gagnante aux 80% restants</li>
+<li>Documentez le resultat pour vos prochaines campagnes</li>
+</ol>
+
+<p><strong>Heures d'envoi optimales pour le marche canadien</strong> :</p>
+<ul>
+<li><strong>B2C</strong> : Mardi et jeudi, 10h-11h EST (meilleur taux d'ouverture)</li>
+<li><strong>B2B</strong> : Mardi et mercredi, 8h-9h EST (avant les reunions)</li>
+<li><strong>Weekend</strong> : Samedi 9h-10h EST (moins de concurrence dans la boite de reception, mais volume plus faible)</li>
+</ul>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Campagne</strong></td><td>Envoi en masse d'un email a une liste de destinataires</td></tr>
+  <tr><td><strong>WYSIWYG</strong></td><td>Editeur visuel "What You See Is What You Get"</td></tr>
+  <tr><td><strong>Taux d'ouverture</strong></td><td>Pourcentage de destinataires ayant ouvert l'email</td></tr>
+  <tr><td><strong>Taux de clic</strong></td><td>Pourcentage de destinataires ayant clique sur un lien</td></tr>
+  <tr><td><strong>Rebond (bounce)</strong></td><td>Email non delivre au destinataire</td></tr>
+  <tr><td><strong>CASL</strong></td><td>Canadian Anti-Spam Legislation, loi federale canadienne sur les courriels</td></tr>
+  <tr><td><strong>Segmentation</strong></td><td>Ciblage d'un sous-ensemble de destinataires selon des criteres</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./04-templates.md">Templates</a> : Creer des modeles reutilisables pour les campagnes</li>
+<li><a href="./06-flows.md">Flows</a> : Automatiser l'envoi d'emails bases sur des evenements</li>
+<li><a href="./07-analytics.md">Analytics emails</a> : Tableau de bord complet des metriques</li>
+<li><a href="./01-inbox.md">Boite de reception</a> : Gerer les reponses des clients</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

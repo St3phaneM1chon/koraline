@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
  * PUT /api/aurelia/requests/[id] — Update request status
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { withMobileGuard } from '@/lib/mobile-guard';
 import { prisma } from '@/lib/db';
@@ -14,7 +14,7 @@ import { logger } from '@/lib/logger';
 /**
  * PUT — Update an Aurelia request (status, response, etc.)
  */
-export const PUT = withMobileGuard(async (request, { session, params }) => {
+export const PUT = withMobileGuard(async (request, { session: _session, params }) => {
   try {
     const id = params?.id;
     if (!id) {

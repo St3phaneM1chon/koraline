@@ -159,7 +159,7 @@ async function cdpRequest(
         ...payload,
         timestamp: payload.timestamp || new Date().toISOString(),
         context: {
-          library: { name: 'biocycle-crm', version: '1.0.0' },
+          library: { name: 'attitudes-crm', version: '1.0.0' },
           ...(payload.context as Record<string, unknown> || {}),
         },
       }),

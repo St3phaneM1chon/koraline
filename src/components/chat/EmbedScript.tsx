@@ -4,7 +4,7 @@
  * EmbedScript - Shows embed code snippet for embedding the chat widget on external websites
  *
  * Provides a copyable script tag and iframe option that third-party sites can use
- * to embed the BioCycle Peptides chat widget on their own pages.
+ * to embed the Attitudes VIP chat widget on their own pages.
  */
 
 import { useState } from 'react';
@@ -41,7 +41,7 @@ export default function EmbedScript({
 
   const resolvedBaseUrl = baseUrl || (typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'));
 
-  const scriptEmbedCode = `<!-- BioCycle Peptides Chat Widget -->
+  const scriptEmbedCode = `<!-- Attitudes VIP Chat Widget -->
 <script>
   (function() {
     var w = document.createElement('script');
@@ -56,12 +56,12 @@ export default function EmbedScript({
   })();
 </script>`;
 
-  const iframeEmbedCode = `<!-- BioCycle Peptides Chat Widget (iframe) -->
+  const iframeEmbedCode = `<!-- Attitudes VIP Chat Widget (iframe) -->
 <iframe
   src="${resolvedBaseUrl}/embed/chat?color=${encodeURIComponent(widgetColor)}&position=${position}"
   style="position:fixed;${position === 'bottom-right' ? 'right:0;bottom:0;' : 'left:0;bottom:0;'}width:420px;height:600px;border:none;z-index:9999;pointer-events:none;"
   allow="clipboard-write"
-  title="BioCycle Peptides Chat"
+  title="Attitudes VIP Chat"
 ></iframe>`;
 
   const handleCopy = async (method: EmbedMethod) => {

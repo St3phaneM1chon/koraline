@@ -5,7 +5,7 @@ export const runtime = 'edge';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const title = searchParams.get('title') || 'BioCycle Peptides';
+  const title = searchParams.get('title') || 'Attitudes VIP';
   const subtitle = searchParams.get('subtitle') || 'Research-Grade Peptides';
   const type = searchParams.get('type') || 'default'; // default | product | category | article
 

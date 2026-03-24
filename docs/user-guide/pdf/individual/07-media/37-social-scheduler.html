@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planificateur de Reseaux Sociaux &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 07 — Media</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Planificateur de Reseaux Sociaux</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Media > Gestion de Contenu > Planificateur Social</p>
+<p><strong>URL</strong>: <code>/admin/media/social-scheduler</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>Le <strong>Planificateur de Reseaux Sociaux</strong> permet de creer, planifier, publier et suivre vos publications sur les reseaux sociaux (Instagram, Facebook, X/Twitter, TikTok, LinkedIn) depuis une interface unique.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir toutes les publications planifiees, brouillons, publiees et echouees</li>
+<li>Creer une nouvelle publication avec choix de plateforme, contenu et image</li>
+<li>Planifier la publication pour une date et heure specifiques</li>
+<li>Basculer entre vue liste et vue calendrier</li>
+<li>Filtrer par plateforme et par statut</li>
+<li>Publier immediatement une publication planifiee ou un brouillon</li>
+<li>Generer des legendes avec l'aide de l'IA</li>
+<li>Supprimer des publications</li>
+<li>Voir le lien externe vers la publication sur la plateforme</li>
+<li>Naviguer entre les mois dans la vue calendrier</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Publication (Post)</strong></td><td>Contenu texte + image planifie pour un reseau social</td></tr>
+  <tr><td><strong>Brouillon (Draft)</strong></td><td>Publication sauvegardee mais pas encore planifiee</td></tr>
+  <tr><td><strong>Planifie (Scheduled)</strong></td><td>Publication programmee pour une date future</td></tr>
+  <tr><td><strong>Publie (Published)</strong></td><td>Publication envoyee sur le reseau social</td></tr>
+  <tr><td><strong>Echoue (Failed)</strong></td><td>Publication dont l'envoi a echoue (erreur API, token expire, etc.)</td></tr>
+  <tr><td><strong>Legende (Caption)</strong></td><td>Texte accompagnant la publication</td></tr>
+  <tr><td><strong>IA Caption</strong></td><td>Texte genere automatiquement par l'intelligence artificielle</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Allez dans <strong>Media</strong> dans la barre de navigation</li>
+<li>Cliquez sur <strong>Planificateur Social</strong> dans le panneau lateral</li>
+<li>Ou naviguez vers <code>/admin/media/social-scheduler</code></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. En-tete</h3>
+<ul>
+<li>Titre <strong>Planificateur Social</strong> avec icone calendrier</li>
+<li>Description du planificateur</li>
+<li>Bouton de bascule <strong>Vue calendrier / Vue liste</strong></li>
+<li>Bouton <strong>Rafraichir</strong> pour recharger les donnees</li>
+<li>Bouton <strong>Nouveau post</strong> pour creer une publication</li>
+</ul>
+
+<h3>2. Cartes de statistiques (4 indicateurs)</h3>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Couleur</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Planifies</strong></td><td>Indigo</td><td>Publications en attente d'envoi</td></tr>
+  <tr><td><strong>Brouillons</strong></td><td>Gris</td><td>Publications sauvegardees non planifiees</td></tr>
+  <tr><td><strong>Publies</strong></td><td>Vert</td><td>Publications envoyees avec succes</td></tr>
+  <tr><td><strong>Echoues</strong></td><td>Rouge</td><td>Publications dont l'envoi a echoue</td></tr>
+</tbody>
+</table>
+<h3>3. Pont Media-Marketing</h3>
+<p>Une carte de lien entre la section Media et la section Marketing, montrant la correlation entre publications sociales et campagnes marketing.</p>
+
+<h3>4. Filtres</h3>
+<ul>
+<li>Filtre par <strong>plateforme</strong> : Toutes, Instagram, Facebook, X/Twitter, TikTok, LinkedIn</li>
+<li>Filtre par <strong>statut</strong> : Tous, Brouillon, Planifie, Publie, Echoue</li>
+</ul>
+
+<h3>5. Compositeur de publication</h3>
+<p>Quand vous cliquez sur <strong>Nouveau post</strong>, un panneau de composition s'ouvre :</p>
+
+<h4>Selecteur de plateforme</h4>
+<p>5 boutons avec icones et couleurs :</p>
+
+<table>
+<thead>
+    <tr><th>Plateforme</th><th>Limite de caracteres</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Instagram</strong></td><td>2 200 caracteres</td></tr>
+  <tr><td><strong>Facebook</strong></td><td>63 206 caracteres</td></tr>
+  <tr><td><strong>X/Twitter</strong></td><td>280 caracteres</td></tr>
+  <tr><td><strong>TikTok</strong></td><td>2 200 caracteres</td></tr>
+  <tr><td><strong>LinkedIn</strong></td><td>3 000 caracteres</td></tr>
+</tbody>
+</table>
+<h4>Champs du compositeur</h4>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Texte</strong></td><td>Zone de texte avec compteur de caracteres et limite selon la plateforme</td></tr>
+  <tr><td><strong>URL d'image</strong></td><td>Lien vers l'image a joindre a la publication</td></tr>
+  <tr><td><strong>Date et heure</strong></td><td>Selecteur de date/heure pour la planification</td></tr>
+  <tr><td><strong>Statut</strong></td><td>Planifie ou Brouillon</td></tr>
+  <tr><td><strong>IA Caption</strong></td><td>Bouton pour generer une legende automatiquement</td></tr>
+</tbody>
+</table>
+<h4>Boutons d'action</h4>
+<ul>
+<li><strong>IA Caption</strong> (violet) : genere une legende BioCycle Peptides</li>
+<li><strong>Annuler</strong> : ferme le compositeur</li>
+<li><strong>Planifier</strong> : sauvegarde et planifie la publication</li>
+</ul>
+
+<h3>6. Vue Calendrier</h3>
+<p>Un calendrier mensuel montrant :</p>
+<ul>
+<li>Navigation mois precedent / mois suivant</li>
+<li>Jours de la semaine (Dim, Lun, Mar, etc.)</li>
+<li>Chaque jour affiche les publications prevues (3 max + compteur)</li>
+<li>Les publications sont codees par couleur selon la plateforme</li>
+</ul>
+
+<h3>7. Vue Liste</h3>
+<p>Chaque publication est une carte avec :</p>
+<ul>
+<li><strong>Icone de plateforme</strong> (cercle colore)</li>
+<li><strong>Nom de la plateforme</strong> et <strong>badge de statut</strong></li>
+<li><strong>Contenu</strong> du texte (3 lignes max)</li>
+<li><strong>URL d'image</strong> si presente</li>
+<li><strong>Date planifiee</strong></li>
+<li><strong>Lien externe</strong> vers la publication (si publiee)</li>
+<li><strong>Message d'erreur</strong> (si echouee, en rouge)</li>
+<li><strong>Boutons d'action</strong> : Publier maintenant, Supprimer</li>
+</ul>
+
+<h3>8. Pagination</h3>
+<p>Navigation par pages en bas de la liste.</p>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>Creer et planifier une publication</h3>
+<ol>
+<li>Cliquez sur <strong>Nouveau post</strong></li>
+<li>Selectionnez la plateforme cible (ex: Instagram)</li>
+<li>Redigez votre texte (attention a la limite de caracteres)</li>
+<li>Optionnellement, ajoutez une URL d'image</li>
+<li>Selectionnez la date et l'heure de publication</li>
+<li>Choisissez le statut (Planifie = sera publie automatiquement, Brouillon = a valider)</li>
+<li>Cliquez sur <strong>Planifier</strong></li>
+</ol>
+
+<h3>Generer une legende IA</h3>
+<ol>
+<li>Dans le compositeur, cliquez sur le bouton <strong>IA Caption</strong> (violet)</li>
+<li>Une legende adaptee a BioCycle Peptides est generee automatiquement</li>
+<li>La legende inclut des hashtags pertinents</li>
+<li>Modifiez-la selon vos besoins avant de planifier</li>
+</ol>
+
+<h3>Publier immediatement</h3>
+<ol>
+<li>Sur une publication planifiee, un brouillon ou un post echoue</li>
+<li>Cliquez sur l'icone <strong>Envoyer</strong> (fleche)</li>
+<li>La publication est envoyee immediatement a la plateforme</li>
+<li>Le statut passe a "Publie" (ou "Echoue" si erreur)</li>
+</ol>
+
+<h3>Supprimer une publication</h3>
+<ol>
+<li>Cliquez sur l'icone <strong>Poubelle</strong> sur la carte de la publication</li>
+<li>La publication est supprimee definitivement</li>
+<li>Si la publication etait deja publiee sur la plateforme, elle n'est PAS supprimee de la plateforme</li>
+</ol>
+
+<h3>Naviguer dans le calendrier</h3>
+<ol>
+<li>Basculez en vue calendrier via le bouton en haut a droite</li>
+<li>Utilisez les fleches gauche/droite pour changer de mois</li>
+<li>Chaque jour montre les publications prevues sous forme de badges colores</li>
+<li>Si un jour a plus de 3 publications, un compteur "+X" s'affiche</li>
+</ol>
+
+<hr>
+
+<h2>Limites de caracteres par plateforme</h2>
+
+<table>
+<thead>
+    <tr><th>Plateforme</th><th>Limite</th><th>Recommandation</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Instagram</strong></td><td>2 200</td><td>Les 125 premiers caracteres sont les plus importants (avant "voir plus")</td></tr>
+  <tr><td><strong>Facebook</strong></td><td>63 206</td><td>Posts courts (100-250 caracteres) performent mieux</td></tr>
+  <tr><td><strong>X/Twitter</strong></td><td>280</td><td>Utiliser les threads pour les contenus longs</td></tr>
+  <tr><td><strong>TikTok</strong></td><td>2 200</td><td>Les 100 premiers caracteres sont visibles en apercu</td></tr>
+  <tr><td><strong>LinkedIn</strong></td><td>3 000</td><td>Posts entre 1 300 et 2 000 caracteres sont optimaux</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Flux de travail recommandes</h2>
+
+<h3>Planification hebdomadaire</h3>
+<ol>
+<li>Chaque lundi, ouvrez le planificateur social</li>
+<li>Consultez les publications prevues cette semaine (vue calendrier)</li>
+<li>Creez les publications manquantes pour un rythme regulier</li>
+<li>Utilisez l'IA Caption comme point de depart</li>
+<li>Ajustez le texte pour chaque plateforme</li>
+<li>Planifiez aux heures optimales de publication</li>
+</ol>
+
+<h3>Heures optimales de publication (Canada)</h3>
+
+<table>
+<thead>
+    <tr><th>Plateforme</th><th>Meilleurs moments</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Instagram</strong></td><td>Mardi 11h, Mercredi 11h, Vendredi 10h</td></tr>
+  <tr><td><strong>Facebook</strong></td><td>Mardi-Jeudi 8h-12h</td></tr>
+  <tr><td><strong>X/Twitter</strong></td><td>Lundi-Vendredi 8h-10h</td></tr>
+  <tr><td><strong>LinkedIn</strong></td><td>Mardi-Jeudi 10h-12h</td></tr>
+  <tr><td><strong>TikTok</strong></td><td>Mardi 9h, Jeudi 12h, Vendredi 17h</td></tr>
+</tbody>
+</table>
+<h3>Gestion des echecs</h3>
+<ol>
+<li>Filtrez par statut "Echoue"</li>
+<li>Lisez le message d'erreur (en rouge sous la publication)</li>
+<li>Causes courantes : token API expire, contenu bloque par la plateforme, image inaccessible</li>
+<li>Corrigez le probleme et cliquez sur <strong>Publier maintenant</strong></li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes</h2>
+
+<p><strong>Q : Les publications sont-elles envoyees automatiquement a l'heure planifiee ?</strong></p>
+<p>R : Oui, un processus de publication automatique envoie les publications a la plateforme a la date et heure definies. Le delai peut etre de quelques minutes.</p>
+
+<p><strong>Q : L'IA Caption genere toujours le meme texte ?</strong></p>
+<p>R : Non, le generateur produit des variantes aleatoires parmi un ensemble de modeles adaptes a BioCycle Peptides. Chaque clic genere un texte different.</p>
+
+<p><strong>Q : Puis-je publier la meme chose sur plusieurs plateformes ?</strong></p>
+<p>R : Pas en un seul clic. Creez une publication par plateforme et adaptez le texte aux specificites de chacune (longueur, hashtags, ton).</p>
+
+<p><strong>Q : Que se passe-t-il si je supprime un post deja publie ?</strong></p>
+<p>R : La publication est supprimee de Koraline, mais elle reste sur la plateforme (Instagram, Facebook, etc.). Vous devez la supprimer manuellement sur la plateforme si necessaire.</p>
+
+<p><strong>Q : Puis-je voir les statistiques de mes publications ?</strong></p>
+<p>R : Les statistiques d'engagement sont visibles dans la page <a href="./02-analytics.md">Analytique Media</a> qui agrege les donnees de toutes les plateformes.</p>
+
+<hr>
+
+<h2>Strategie expert : Frequence de publication et types de contenu pour un e-commerce de peptides</h2>
+
+<h3>Frequence de publication optimale par plateforme</h3>
+
+<p>La regularite prime sur le volume. Mieux vaut publier 3 fois par semaine avec du contenu de qualite que 7 fois avec du contenu mediocre. Voici les frequences recommandees specifiquement pour le marche des peptides de recherche :</p>
+
+<table>
+<thead>
+    <tr><th>Plateforme</th><th>Frequence recommandee</th><th>Minimum acceptable</th><th>Maximum utile</th><th>Meilleurs jours</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Instagram</strong></td><td>3-5 publications/semaine</td><td>2/semaine</td><td>1/jour</td><td>Mardi, Mercredi, Vendredi</td></tr>
+  <tr><td><strong>LinkedIn</strong></td><td>2-3 publications/semaine</td><td>1/semaine</td><td>5/semaine</td><td>Mardi, Mercredi, Jeudi</td></tr>
+  <tr><td><strong>X/Twitter</strong></td><td>1-2 publications/jour</td><td>3/semaine</td><td>5/jour</td><td>Lundi a Vendredi</td></tr>
+  <tr><td><strong>TikTok</strong></td><td>3-5 publications/semaine</td><td>2/semaine</td><td>2/jour</td><td>Mardi, Jeudi, Vendredi</td></tr>
+  <tr><td><strong>Facebook</strong></td><td>2-3 publications/semaine</td><td>1/semaine</td><td>1/jour</td><td>Mardi, Jeudi</td></tr>
+</tbody>
+</table>
+<p><strong>Pourquoi ces frequences ?</strong> Les algorithmes de chaque plateforme favorisent les comptes qui publient regulierement. Mais publier trop souvent dilue l'engagement par post (le denominateur augmente plus vite que le numerateur). Pour un marche de niche comme les peptides, la qualite et la pertinence du contenu sont plus importantes que le volume.</p>
+
+<h3>Repartition des types de contenu (regle 40/20/20/20)</h3>
+
+<p>Le contenu d'un e-commerce de peptides doit equilibrer education, transparence, preuve sociale et promotion. La repartition recommandee :</p>
+
+<table>
+<thead>
+    <tr><th>Type de contenu</th><th>%</th><th>Exemples</th><th>Objectif</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Educatif</strong></td><td>40%</td><td>Explication des peptides, guide de reconstitution, comprendre un CoA, actualites scientifiques, differences entre peptides</td><td>Etablir l'autorite et la confiance</td></tr>
+  <tr><td><strong>Behind-the-scenes / Laboratoire</strong></td><td>20%</td><td>Visite du labo, processus de controle qualite, equipe au travail, reception de matieres premieres, tests HPLC</td><td>Humaniser la marque et demontrer la qualite</td></tr>
+  <tr><td><strong>Temoignages et preuve sociale</strong></td><td>20%</td><td>Avis clients, cas d'etude de laboratoires utilisant BioCycle, citations de chercheurs, nombre de commandes traitees</td><td>Creer la confiance par la preuve</td></tr>
+  <tr><td><strong>Promotions et produits</strong></td><td>20%</td><td>Nouveau produit, promotion flash, livraison gratuite, programme de fidelite, code promo ambassadeur</td><td>Generer des ventes directes</td></tr>
+</tbody>
+</table>
+<p><strong>Pourquoi seulement 20% de promotion ?</strong> Les plateformes sociales penalisent les comptes qui ne publient que du contenu promotionnel. De plus, les acheteurs de peptides sont des professionnels informes qui reagissent mieux a l'education et a la transparence qu'aux promotions agressives.</p>
+
+<h3>Idees de contenu par plateforme</h3>
+
+<p><strong>Instagram (visuel + education) :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Semaine</th><th>Lundi</th><th>Mercredi</th><th>Vendredi</th></tr>
+</thead>
+<tbody>
+  <tr><td>S1</td><td>Infographie : "Peptide du mois : BPC-157"</td><td>Photo labo : controle qualite en cours</td><td>Temoignage client (capture d'ecran avis)</td></tr>
+  <tr><td>S2</td><td>Carrousel : "5 criteres pour choisir un fournisseur de peptides"</td><td>Reel : reconstitution d'un peptide (timelapse)</td><td>Annonce nouveau produit</td></tr>
+  <tr><td>S3</td><td>Infographie : "Purete 95% vs 99% : la difference"</td><td>Story : journee type chez BioCycle</td><td>Promotion : code promo weekend</td></tr>
+  <tr><td>S4</td><td>Carrousel : "Comment lire un certificat d'analyse"</td><td>Photo : equipe BioCycle</td><td>Recap mensuel : produits les plus populaires</td></tr>
+</tbody>
+</table>
+<p><strong>LinkedIn (professionnel + B2B) :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Frequence</th><th>Exemple</th></tr>
+</thead>
+<tbody>
+  <tr><td>Article long format</td><td>1/mois</td><td>"L'importance de la traçabilite dans la chaine d'approvisionnement des peptides"</td></tr>
+  <tr><td>Post court + image</td><td>2/semaine</td><td>Nouveau produit, actualite reglementaire, recrutement</td></tr>
+  <tr><td>Partage d'etude</td><td>1/semaine</td><td>Lien vers une publication scientifique pertinente avec commentaire BioCycle</td></tr>
+  <tr><td>Temoignage B2B</td><td>2/mois</td><td>"Le laboratoire X utilise BioCycle pour ses recherches depuis 2 ans"</td></tr>
+</tbody>
+</table>
+<p><strong>X/Twitter (actualite + engagement rapide) :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Matin (8h-10h)</th><th>Midi (12h)</th><th>Apres-midi (15h)</th></tr>
+</thead>
+<tbody>
+  <tr><td>Actualite scientifique + commentaire</td><td>Question a la communaute</td><td>Astuce produit ou lien vers article</td></tr>
+</tbody>
+</table>
+<p><strong>TikTok (video courte + education accessible) :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Type de video</th><th>Duree</th><th>Exemple</th></tr>
+</thead>
+<tbody>
+  <tr><td>Education rapide</td><td>15-30s</td><td>"En 15 secondes : pourquoi la purete du peptide compte"</td></tr>
+  <tr><td>Behind-the-scenes</td><td>30-60s</td><td>"Une journee au labo BioCycle"</td></tr>
+  <tr><td>Tendance adaptee</td><td>15-30s</td><td>Reprendre un format tendance avec un angle peptides/science</td></tr>
+  <tr><td>Reponse a commentaire</td><td>15-30s</td><td>Repondre a une question frequente en video</td></tr>
+</tbody>
+</table>
+<h3>Hashtags recommandes par plateforme</h3>
+
+<p><strong>Instagram :</strong></p>
+<ul>
+<li>Generaux : #peptides #researchpeptides #peptideresearch #lablife #science</li>
+<li>Specifiques : #BPC157 #TB500 #peptidequality #certificateofanalysis</li>
+<li>Marque : #BioCyclePeptides #BioCycleResearch #PeptidesMadeInCanada</li>
+<li>Limite : 10-15 hashtags par post (au-dela, l'algorithme penalise)</li>
+</ul>
+
+<p><strong>LinkedIn :</strong></p>
+<ul>
+<li>#PeptideResearch #Biotechnology #LabSupply #QualityControl #ScienceCanada</li>
+<li>Limite : 3-5 hashtags par post</li>
+</ul>
+
+<p><strong>TikTok :</strong></p>
+<ul>
+<li>#PeptideTok #ScienceTok #LabLife #Research #Biohacking #Peptides</li>
+<li>Limite : 5-8 hashtags</li>
+</ul>
+
+<h3>Calendrier editorial mensuel type</h3>
+
+<table>
+<thead>
+    <tr><th>Semaine</th><th>Instagram (3x)</th><th>LinkedIn (2x)</th><th>X/Twitter (quotidien)</th><th>TikTok (3x)</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>S1</strong></td><td>Educatif + Labo + Promo</td><td>Article + Post produit</td><td>Actu + Questions + Tips</td><td>Education + BTS + Tendance</td></tr>
+  <tr><td><strong>S2</strong></td><td>Educatif + Temoignage + Labo</td><td>Etude + Temoignage B2B</td><td>Actu + Engagement + Tips</td><td>Education + Reponse + BTS</td></tr>
+  <tr><td><strong>S3</strong></td><td>Educatif + Labo + Temoignage</td><td>Post produit + Actu reglementaire</td><td>Actu + Questions + Promo</td><td>Education + Tendance + BTS</td></tr>
+  <tr><td><strong>S4</strong></td><td>Educatif + Promo + Recap</td><td>Article + Recap mensuel</td><td>Actu + Engagement + Recap</td><td>Education + Recap + BTS</td></tr>
+</tbody>
+</table>
+<h3>Metriques de performance des reseaux sociaux</h3>
+
+<table>
+<thead>
+    <tr><th>Indicateur</th><th>Instagram</th><th>LinkedIn</th><th>X/Twitter</th><th>TikTok</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Taux d'engagement cible</strong></td><td>2-5%</td><td>2-4%</td><td>0.5-2%</td><td>3-8%</td></tr>
+  <tr><td><strong>Croissance abonnes/mois</strong></td><td>3-5%</td><td>5-10%</td><td>2-5%</td><td>5-15%</td></tr>
+  <tr><td><strong>Clics vers le site/mois</strong></td><td>50-200</td><td>30-100</td><td>20-80</td><td>30-150</td></tr>
+  <tr><td><strong>Meilleur indicateur</strong></td><td>Sauvegardes + partages</td><td>Clics + commentaires</td><td>Retweets + reponses</td><td>Partages + completions video</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Post</strong></td><td>Publication sur un reseau social</td></tr>
+  <tr><td><strong>Caption</strong></td><td>Legende textuelle accompagnant une image ou video</td></tr>
+  <tr><td><strong>Hashtag</strong></td><td>Mot-cle precede de # pour la categorisation sur les reseaux sociaux</td></tr>
+  <tr><td><strong>Scheduler</strong></td><td>Systeme de planification automatique des publications</td></tr>
+  <tr><td><strong>Thread</strong></td><td>Serie de publications liees (surtout utilise sur X/Twitter)</td></tr>
+  <tr><td><strong>Engagement</strong></td><td>Interactions des utilisateurs avec votre contenu (likes, commentaires, partages)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<table>
+<thead>
+    <tr><th>Page</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><a href="./02-analytics.md">Analytique Media</a></td><td>Statistiques d'engagement</td></tr>
+  <tr><td><a href="./36-brand-kit.md">Brand Kit</a></td><td>Couleurs et visuels de marque</td></tr>
+  <tr><td><a href="./34-images.md">Images</a></td><td>Visuels pour les publications</td></tr>
+  <tr><td><a href="./13-ads-meta.md">Publicites Meta</a></td><td>Campagnes payantes Facebook/Instagram</td></tr>
+  <tr><td><a href="./12-ads-linkedin.md">Publicites LinkedIn</a></td><td>Campagnes payantes LinkedIn</td></tr>
+</tbody>
+</table>
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Bundles (Lots de produits) &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 03 — Catalogue</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion des Bundles (Lots de produits)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Catalogue > Bundles</p>
+<p><strong>URL</strong>: <code>/admin/bundles</code></p>
+<p><strong>Niveau</strong>: Debutant a intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~12 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Bundles</strong> permet de creer des <strong>lots de produits</strong> vendus ensemble a prix reduit. C'est une strategie commerciale puissante pour augmenter le panier moyen et ecouler des produits complementaires.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir tous les bundles existants avec leur prix, nombre de produits et statut</li>
+<li>Creer un nouveau bundle (nom, description, produits inclus, prix special)</li>
+<li>Modifier un bundle existant</li>
+<li>Publier ou depublier un bundle</li>
+<li>Dupliquer un bundle</li>
+<li>Exporter la liste des bundles</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un bundle ?</h3>
+<p>Un bundle (ou lot), c'est un ensemble de produits vendus ensemble a un prix inferieur a la somme des prix individuels. Par exemple :</p>
+<ul>
+<li><strong>Kit Recuperation</strong> : BPC-157 (40$) + TB-500 (55$) + Eau bacteriostatique (15$)</li>
+<li>Prix individuel total : 110$</li>
+<li>Prix bundle : 89,99$ (<strong>economie de 20$</strong>)</li>
+</ul>
+
+<h3>Prix compare vs prix du bundle</h3>
+<table>
+<thead>
+    <tr><th>Terme</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Prix du bundle</strong></td><td>Le prix reel que le client paie</td></tr>
+  <tr><td><strong>Prix compare</strong></td><td>Le prix "barre" affiche (somme des prix individuels) — montre l'economie</td></tr>
+</tbody>
+</table>
+<h3>Pourquoi creer des bundles ?</h3>
+<ul>
+<li><strong>Augmenter le panier moyen</strong> — Les clients achetent plus en un seul achat</li>
+<li><strong>Ventes croisees</strong> — Faire decouvrir des produits complementaires</li>
+<li><strong>Ecouler du stock</strong> — Inclure des produits a faible rotation dans un bundle attractif</li>
+<li><strong>Simplifier l'achat</strong> — Le client n'a pas a chercher les produits un par un</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans la <strong>barre de navigation horizontale</strong>, cliquez sur <strong>Catalogue</strong></li>
+<li>Dans le <strong>panneau lateral</strong>, cliquez sur <strong>Bundles</strong> (3e element)</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Page Bundles]</div>
+
+<p>L'interface est simple :</p>
+<ul>
+<li>Un <strong>titre</strong> avec sous-titre explicatif</li>
+<li>Un bouton <strong>Nouveau bundle</strong> en haut a droite</li>
+<li>Si aucun bundle : un message d'etat vide avec un bouton pour creer le premier</li>
+<li>Si des bundles existent : une <strong>grille de cartes</strong> (1 carte par bundle)</li>
+</ul>
+
+<h3>La barre de ruban</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau produit</strong></td><td>Creer un nouveau bundle (redirige vers <code>/admin/bundles/new</code>)</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer le bundle selectionne</td></tr>
+  <tr><td><strong>Dupliquer</strong></td><td>Copier un bundle existant</td></tr>
+  <tr><td><strong>Publier</strong></td><td>Rendre le bundle visible sur la boutique</td></tr>
+  <tr><td><strong>Depublier</strong></td><td>Cacher le bundle de la boutique</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger la liste en CSV</td></tr>
+</tbody>
+</table>
+<h3>Carte d'un bundle</h3>
+<p>Chaque bundle est affiche sous forme de carte avec :</p>
+<ul>
+<li><strong>Nom</strong> du bundle</li>
+<li><strong>Description</strong> courte</li>
+<li><strong>Prix</strong> du bundle + prix compare (barre)</li>
+<li><strong>Nombre de produits</strong> inclus</li>
+<li><strong>Statut</strong> : Actif (visible) ou Inactif</li>
+<li><strong>Boutons</strong> : Modifier, Voir sur la boutique</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>1. Creer un bundle</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouveau bundle</strong> (bouton bleu en haut a droite)</li>
+<li>Vous etes redirige vers <code>/admin/bundles/new</code></li>
+<li>Remplissez le formulaire :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Obligatoire</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nom</strong></td><td>Oui</td><td>Nom du bundle affiche sur la boutique (ex: "Kit Recuperation Pro")</td></tr>
+  <tr><td><strong>Slug</strong></td><td>Auto-genere</td><td>URL du bundle</td></tr>
+  <tr><td><strong>Description</strong></td><td>Non</td><td>Description marketing du bundle</td></tr>
+  <tr><td><strong>Prix</strong></td><td>Oui</td><td>Prix de vente du bundle (inferieur a la somme des produits)</td></tr>
+  <tr><td><strong>Prix compare</strong></td><td>Non</td><td>Prix barre affiche a cote (montre l'economie au client)</td></tr>
+  <tr><td><strong>Produits</strong></td><td>Oui</td><td>Selectionnez les produits a inclure dans le bundle</td></tr>
+  <tr><td><strong>Actif</strong></td><td>Oui</td><td>Visible sur la boutique ?</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Cliquez sur <strong>Enregistrer</strong></li>
+</ol>
+
+<h3>2. Modifier un bundle</h3>
+
+<ol>
+<li>Cliquez sur l'icone <strong>Modifier</strong> (crayon) sur la carte du bundle</li>
+<li>Le formulaire de modification s'ouvre</li>
+<li>Ajustez les champs (prix, produits inclus, description)</li>
+<li>Enregistrez</li>
+</ol>
+
+<h3>3. Publier / Depublier</h3>
+
+<ul>
+<li>Cliquez sur <strong>Publier</strong> dans le ruban pour rendre le bundle visible</li>
+<li>Cliquez sur <strong>Depublier</strong> pour le cacher temporairement</li>
+</ul>
+
+<hr>
+
+<h2>Workflows complets</h2>
+
+<h3>Scenario : Creer un bundle promotionnel pour le Black Friday</h3>
+
+<ol>
+<li>Allez dans <strong>Catalogue > Bundles</strong></li>
+<li>Cliquez sur <strong>Nouveau bundle</strong></li>
+<li>Nom : "Black Friday — Pack Peptides Essentiels"</li>
+<li>Description : "3 de nos meilleurs peptides au prix de 2 ! Offre limitee."</li>
+<li>Ajoutez les produits : BPC-157 + TB-500 + CJC-1295</li>
+<li>Prix compare : 165$ (somme des prix individuels)</li>
+<li>Prix bundle : 109,99$</li>
+<li>Laissez "Inactif" pour le moment</li>
+<li>Enregistrez</li>
+<li>Le jour du Black Friday : revenez et cliquez sur <strong>Publier</strong></li>
+<li>Apres l'evenement : cliquez sur <strong>Depublier</strong></li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<h3>Q : Combien de produits puis-je mettre dans un bundle ?</h3>
+<p><strong>R</strong> : Il n'y a pas de limite technique. Cependant, pour des raisons marketing, 2 a 5 produits est ideal.</p>
+
+<h3>Q : Le stock est-il decremente pour chaque produit du bundle quand un client achete ?</h3>
+<p><strong>R</strong> : Oui. Chaque produit du bundle est decremente individuellement dans l'inventaire.</p>
+
+<h3>Q : Puis-je inclure le meme produit plusieurs fois dans un bundle ?</h3>
+<p><strong>R</strong> : Oui, avec des quantites differentes si necessaire.</p>
+
+<h3>Q : Les bundles apparaissent-ils dans les categories de produits ?</h3>
+<p><strong>R</strong> : Les bundles ont leur propre section sur la boutique, mais peuvent aussi etre lies a une categorie "Bundles".</p>
+
+<hr>
+
+<h2>Strategie expert : Psychologie du pricing des bundles</h2>
+
+<h3>Ancrage de prix</h3>
+
+<p>L'ancrage est un biais cognitif ou le client utilise la premiere information de prix comme reference pour evaluer les suivantes. Pour les bundles, cela se traduit par :</p>
+
+<ol>
+<li><strong>Toujours afficher le prix individuel barre</strong> : le client voit d'abord le prix total "normal" (ex: 165 $CA), puis le prix bundle (109,99 $CA). L'economie percue est immediate.</li>
+<li><strong>Afficher l'economie en dollars ET en pourcentage</strong> : "Economisez 55,01 $CA (33%)" est plus percutant que seulement l'un des deux.</li>
+<li><strong>Utiliser des prix se terminant par ,99 ou ,95</strong> : psychologiquement, 109,99 $CA est percu comme significativement moins cher que 110,00 $CA (effet de chiffre de gauche).</li>
+</ol>
+
+<h3>Effet de rarete</h3>
+
+<p>La rarete augmente la valeur percue et l'urgence d'achat. Appliquer ces techniques aux bundles :</p>
+
+<table>
+<thead>
+    <tr><th>Technique</th><th>Exemple</th><th>Impact sur les ventes</th></tr>
+</thead>
+<tbody>
+  <tr><td>Offre limitee dans le temps</td><td>"Bundle disponible jusqu'au 31 mars"</td><td>Augmente l'urgence, +15-25% de conversions</td></tr>
+  <tr><td>Quantite limitee</td><td>"Seulement 50 kits disponibles"</td><td>Cree l'exclusivite, +10-20% de conversions</td></tr>
+  <tr><td>Saisonnier</td><td>"Pack Ete — disponible uniquement en mai-juin"</td><td>Nouveaute et exclusivite combinee</td></tr>
+  <tr><td>Bonus temporaire</td><td>"Commandez ce bundle cette semaine : seringues offertes"</td><td>Incitation supplementaire, +20-30%</td></tr>
+</tbody>
+</table>
+<h3>Structure de prix optimale pour les bundles</h3>
+
+<table>
+<thead>
+    <tr><th>Nombre de produits</th><th>Remise recommandee</th><th>Marge preservee</th></tr>
+</thead>
+<tbody>
+  <tr><td>2 produits</td><td>10-15%</td><td>Bonne</td></tr>
+  <tr><td>3 produits</td><td>15-20%</td><td>Acceptable</td></tr>
+  <tr><td>4-5 produits</td><td>20-25%</td><td>Attention a la marge</td></tr>
+  <tr><td>6+ produits</td><td>25-30%</td><td>Marge faible, utiliser comme produit d'appel uniquement</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Strategie expert : Cross-sell eprouve pour les peptides</h2>
+
+<h3>Combinaisons de produits a forte synergie</h3>
+
+<p>Les bundles les plus performants combinent des produits que les clients acheteraient naturellement ensemble. Voici les combinaisons eprouvees pour le marche des peptides.</p>
+
+<table>
+<thead>
+    <tr><th>Bundle</th><th>Produits inclus</th><th>Logique</th><th>Prix individuel</th><th>Prix bundle suggere</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Kit Demarrage Recherche</strong></td><td>1 peptide au choix + eau bacteriostatique + seringues</td><td>Le debutant a besoin de tout le materiel</td><td>70-85 $CA</td><td>59,99 $CA</td></tr>
+  <tr><td><strong>Kit Recuperation Avancee</strong></td><td>BPC-157 5mg + TB-500 5mg + eau bacteriostatique</td><td>Synergie recherche reparation</td><td>110-120 $CA</td><td>89,99 $CA</td></tr>
+  <tr><td><strong>Kit Croissance Complet</strong></td><td>CJC-1295 + Ipamorelin + seringues</td><td>Combinaison classique GH research</td><td>130-150 $CA</td><td>109,99 $CA</td></tr>
+  <tr><td><strong>Kit Anti-Age Premium</strong></td><td>Epitalon + GHK-Cu + eau bacteriostatique</td><td>Recherche longevite</td><td>140-160 $CA</td><td>119,99 $CA</td></tr>
+  <tr><td><strong>Pack Reapprovisionnement</strong></td><td>3x BPC-157 5mg + 2x eau bacteriostatique</td><td>Economie de volume pour les clients reguliers</td><td>135-150 $CA</td><td>109,99 $CA</td></tr>
+</tbody>
+</table>
+<h3>Accessoires a inclure systematiquement</h3>
+
+<p>L'inclusion d'accessoires dans les bundles est une strategie doublement efficace : elle augmente la valeur percue du bundle tout en eliminant un frein a l'achat (le client n'a pas besoin de chercher les accessoires separement).</p>
+
+<table>
+<thead>
+    <tr><th>Accessoire</th><th>Cout pour BioCycle</th><th>Valeur percue client</th><th>A inclure dans</th></tr>
+</thead>
+<tbody>
+  <tr><td>Eau bacteriostatique 30ml</td><td>3-5 $CA</td><td>12-15 $CA</td><td>Tout bundle avec peptides lyophilises</td></tr>
+  <tr><td>Seringues insuline (pack de 10)</td><td>2-4 $CA</td><td>8-12 $CA</td><td>Kits demarrage</td></tr>
+  <tr><td>Tampons alcool (pack de 20)</td><td>1-2 $CA</td><td>5 $CA</td><td>Tous les bundles (cout negligeable)</td></tr>
+  <tr><td>Fiole vide sterile</td><td>1-3 $CA</td><td>5-8 $CA</td><td>Bundles avec peptides en poudre libre</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Strategie expert : Saisonnalite des promotions bundles</h2>
+
+<h3>Calendrier promotionnel annuel</h3>
+
+<p>Le marche des peptides de recherche et supplements suit un calendrier saisonnier previsible. Planifiez vos bundles promotionnels en consequence.</p>
+
+<table>
+<thead>
+    <tr><th>Periode</th><th>Evenement</th><th>Type de bundle a promouvoir</th><th>Remise suggeree</th></tr>
+</thead>
+<tbody>
+  <tr><td>Janvier</td><td>Resolutions du Nouvel An</td><td>Kits demarrage, bundles "decouverte", kits complets</td><td>15-20%</td></tr>
+  <tr><td>Fevrier</td><td>Periode creuse</td><td>Bundle fidelite (offre reservee aux clients existants)</td><td>10% + livraison gratuite</td></tr>
+  <tr><td>Mars-Avril</td><td>Printemps, preparation ete</td><td>Bundles metabolisme et composition</td><td>15%</td></tr>
+  <tr><td>Mai</td><td>Pre-ete</td><td>Bundles melanotane, performance</td><td>15-20%</td></tr>
+  <tr><td>Juin-Aout</td><td>Ete</td><td>Bundles populaires (BPC-157, TB-500), moins de promotions necessaires</td><td>10% ou aucune remise</td></tr>
+  <tr><td>Septembre</td><td>Rentree</td><td>Nouveaux bundles, nouvelles gammes</td><td>Prix de lancement</td></tr>
+  <tr><td>Octobre</td><td>Pre-Black Friday</td><td>Teaser : "inscrivez-vous pour acceder aux offres Black Friday"</td><td>Pas de remise encore</td></tr>
+  <tr><td>Novembre</td><td>Black Friday / Cyber Monday</td><td>Meilleurs bundles de l'annee, remises maximales</td><td>25-30%</td></tr>
+  <tr><td>Decembre</td><td>Fetes, cadeaux</td><td>Coffrets cadeaux, bundles premium</td><td>15-20%</td></tr>
+</tbody>
+</table>
+<h3>Regles de gestion des bundles saisonniers dans Koraline</h3>
+
+<ol>
+<li><strong>Preparer le bundle a l'avance</strong> : creer le bundle 2-3 semaines avant la date prevue avec le statut <strong>Inactif</strong></li>
+<li><strong>Publier le jour J</strong> : cliquer sur <strong>Publier</strong> dans le ruban le jour du lancement de la promotion</li>
+<li><strong>Depublier a la fin</strong> : des que la promotion est terminee, cliquer sur <strong>Depublier</strong> pour retirer le bundle de la boutique</li>
+<li><strong>Ne pas supprimer</strong> : garder les bundles saisonniers inactifs pour pouvoir les reutiliser l'annee suivante en les dupliquant et ajustant les prix</li>
+<li><strong>Analyser les resultats</strong> : apres chaque promotion, verifier combien de bundles ont ete vendus via <strong>Commerce > Commandes</strong> pour decider si l'offre sera reconduite</li>
+</ol>
+
+<h3>Mesure de performance des bundles</h3>
+
+<table>
+<thead>
+    <tr><th>Indicateur</th><th>Comment le calculer</th><th>Cible</th></tr>
+</thead>
+<tbody>
+  <tr><td>Taux de conversion bundle</td><td>Ventes bundle / Visites page bundle</td><td>Plus de 5%</td></tr>
+  <tr><td>Part des bundles dans le CA</td><td>CA bundles / CA total</td><td>15-25%</td></tr>
+  <tr><td>Augmentation du panier moyen</td><td>Panier moyen avec bundles - Panier moyen sans</td><td>Plus de 20% d'augmentation</td></tr>
+  <tr><td>Taux de cannibalisation</td><td>Ventes produit individuel pendant la promo vs periode normale</td><td>Moins de 15% de baisse</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Bundle</strong></td><td>Lot de produits vendus ensemble a prix reduit</td></tr>
+  <tr><td><strong>Prix compare</strong></td><td>Prix original barre (montre l'economie au client)</td></tr>
+  <tr><td><strong>Vente croisee</strong></td><td>Strategie de vente de produits complementaires</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="01-produits.md">Produits</a> — Les produits individuels qui composent les bundles</li>
+<li><a href="02-categories.md">Categories</a> — Categorie "Bundles" dans le catalogue</li>
+<li><a href="../02-commerce/01-commandes.md">Commandes</a> — Commandes contenant des bundles</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

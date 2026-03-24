@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>03 — Catalogue &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 03 — Catalogue</span>
+        <span>2026-03-20</span>
+      </div>
+
+<div class="cover" style="min-height: 40vh; padding: 3rem 2rem;">
+  <div class="cover-logo" style="width:80px; height:80px; font-size:1.8rem; border-radius:16px;">K</div>
+  <h1 style="font-size:2rem;">03 — Catalogue</h1>
+  <div class="subtitle">Guide Utilisateur &mdash; Suite Koraline</div>
+  <div class="version">
+    3 pages dans cette section<br>
+    2026-03-20
+  </div>
+</div><div class="toc-container" style="margin:1rem 0 2rem;">
+<h2>Contenu de cette section</h2>
+<ul class="toc">
+<ul class="toc-pages">
+<li><a href="#03-catalogue--01-produits"><span>Gestion des Produits</span><span class="toc-dots"></span></a></li>
+<li><a href="#03-catalogue--02-categories"><span>Gestion des Categories</span><span class="toc-dots"></span></a></li>
+<li><a href="#03-catalogue--03-bundles"><span>Gestion des Bundles (Lots de produits)</span><span class="toc-dots"></span></a></li>
+</ul>
+</ul>
+</div><div id="03-catalogue--01-produits">
+<h1>Gestion des Produits</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Catalogue > Produits</p>
+<p><strong>URL</strong>: <code>/admin/produits</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~30 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Produits</strong> est le catalogue complet de tout ce que vous vendez. C'est ici que vous creez, modifiez, publiez et organisez vos peptides, supplements et accessoires.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir tous vos produits avec leur statut, prix, stock et categorie</li>
+<li>Basculer entre vue liste et vue grille</li>
+<li>Filtrer par categorie, statut (actif/total), type (peptides/supplements)</li>
+<li>Rechercher un produit par nom</li>
+<li>Creer un nouveau produit avec tous ses details (nom, description, prix, formats, images, SEO)</li>
+<li>Modifier un produit existant</li>
+<li>Dupliquer un produit (gain de temps pour des produits similaires)</li>
+<li>Publier ou depublier un produit (le rendre visible ou invisible sur la boutique)</li>
+<li>Supprimer un produit</li>
+<li>Importer des produits depuis un fichier CSV</li>
+<li>Exporter le catalogue au format CSV</li>
+<li>Generer un catalogue PDF</li>
+<li>Voir les pages les plus populaires du catalogue</li>
+<li>Voir la classification ABC (quels produits generent le plus de revenus)</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Types de produits</h3>
+<p>BioCycle Peptides vend 3 types de produits :</p>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Icone</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Peptide</strong></td><td>Fiole</td><td>Peptides synthetiques pour la recherche (BPC-157, TB-500, etc.)</td></tr>
+  <tr><td><strong>Supplement</strong></td><td>Pilule</td><td>Supplements nutritionnels</td></tr>
+  <tr><td><strong>Accessoire</strong></td><td>Outil</td><td>Accessoires (seringues, eau bacteriostatique, etc.)</td></tr>
+</tbody>
+</table>
+<h3>Formats</h3>
+<p>Un produit peut avoir <strong>plusieurs formats</strong> (variantes). Par exemple, le BPC-157 peut exister en :</p>
+<ul>
+<li>5mg Vial — 40,00 $CA</li>
+<li>10mg Vial — 70,00 $CA</li>
+</ul>
+
+<p>Chaque format a son propre prix, stock, SKU et disponibilite.</p>
+
+<h3>Classification ABC</h3>
+<p>Le systeme classe automatiquement vos produits selon leur contribution au revenu :</p>
+<ul>
+<li><strong>A</strong> (etoile) : Les 20% de produits qui generent 80% du revenu — vos meilleurs vendeurs</li>
+<li><strong>B</strong> : Les produits a contribution moyenne</li>
+<li><strong>C</strong> : Les produits a faible contribution — a surveiller</li>
+</ul>
+
+<h3>Statuts d'un produit</h3>
+<table>
+<thead>
+    <tr><th>Statut</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Actif</strong></td><td>Visible sur la boutique, les clients peuvent l'acheter</td></tr>
+  <tr><td><strong>Inactif</strong></td><td>Cache de la boutique, invisible pour les clients</td></tr>
+  <tr><td><strong>En vedette</strong></td><td>Mis en avant sur la page d'accueil ou dans les recommandations</td></tr>
+  <tr><td><strong>Nouveau</strong></td><td>Marque comme nouveau produit (badge "Nouveau" sur la boutique)</td></tr>
+  <tr><td><strong>Bestseller</strong></td><td>Marque comme produit populaire</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans la <strong>barre de navigation horizontale</strong>, cliquez sur <strong>Catalogue</strong></li>
+<li>Dans le <strong>panneau lateral</strong>, cliquez sur <strong>Produits</strong> (1er element)</li>
+</ol>
+
+<p>Ou cliquez directement sur l'icone <strong>Catalogue</strong> (3e icone) dans le rail de navigation a gauche.</p>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Page Produits]</div>
+
+<h3>La barre de ruban (Ribbon)</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau produit</strong></td><td>Creer un nouveau produit</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer le produit selectionne</td></tr>
+  <tr><td><strong>Dupliquer</strong></td><td>Creer une copie du produit selectionne</td></tr>
+  <tr><td><strong>Publier</strong></td><td>Activer le produit selectionne (visible sur la boutique)</td></tr>
+  <tr><td><strong>Depublier</strong></td><td>Desactiver le produit (cache de la boutique)</td></tr>
+  <tr><td><strong>Categories</strong></td><td>Filtrer par categorie (menu deroulant)</td></tr>
+  <tr><td><strong>Pages populaires</strong></td><td>Voir les produits les plus visites</td></tr>
+  <tr><td><strong>PDF Catalogue</strong></td><td>Generer un catalogue PDF de tous les produits</td></tr>
+  <tr><td><strong>Import CSV</strong></td><td>Importer des produits depuis un fichier CSV</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger la liste des produits en CSV</td></tr>
+</tbody>
+</table>
+<h3>Les cartes de statistiques (4 cartes)</h3>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total</strong></td><td>Nombre total de produits</td></tr>
+  <tr><td><strong>Peptides</strong></td><td>Nombre de peptides</td></tr>
+  <tr><td><strong>Supplements</strong></td><td>Nombre de supplements</td></tr>
+  <tr><td><strong>Accessoires</strong></td><td>Nombre d'accessoires</td></tr>
+</tbody>
+</table>
+<h3>Vue liste / Vue grille</h3>
+<p>Deux boutons en haut a droite permettent de basculer :</p>
+<ul>
+<li><strong>Vue liste</strong> (icone lignes) : Affichage maitre/detail avec panneau de detail a droite</li>
+<li><strong>Vue grille</strong> (icone grille) : Affichage en cartes, plus visuel</li>
+</ul>
+
+<h3>Selecteur de categorie</h3>
+<p>Un menu deroulant "Toutes les categories" permet de filtrer par categorie.</p>
+
+<h3>Onglets de filtre</h3>
+<ul>
+<li><strong>Total</strong> — Tous les produits</li>
+<li><strong>Actif</strong> — Seulement les produits publies</li>
+<li><strong>Peptides</strong> — Seulement les peptides</li>
+<li><strong>Supplements</strong> — Seulement les supplements</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>1. Consulter un produit</h3>
+
+<ol>
+<li>Cliquez sur un produit dans la liste</li>
+<li>Le panneau de detail a droite affiche :</li>
+</ol>
+<ul>
+<li><strong>Image</strong> du produit</li>
+<li><strong>Nom</strong> et categorie</li>
+<li><strong>Prix</strong> de base</li>
+<li><strong>Badges</strong> : En stock/Rupture, Vedette, Classification ABC</li>
+<li><strong>Formats</strong> : Liste de toutes les variantes avec prix, stock, disponibilite</li>
+<li><strong>Boutons d'action</strong> : Modifier, Voir sur la boutique, Supprimer</li>
+</ul>
+
+<h3>2. Creer un nouveau produit</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouveau produit</strong> dans le ruban (ou le bouton bleu en haut a droite)</li>
+<li>Vous etes redirige vers la page de creation <code>/admin/produits/new</code></li>
+<li>Remplissez les champs :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Section</th><th>Champs</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Informations generales</strong></td><td>Nom, Description, Type (Peptide/Supplement/Accessoire), Categorie</td></tr>
+  <tr><td><strong>Prix et formats</strong></td><td>Prix de base, Formats (nom, prix, SKU, stock), Seuil d'alerte stock</td></tr>
+  <tr><td><strong>Images</strong></td><td>Image principale, Galerie d'images</td></tr>
+  <tr><td><strong>Marqueurs</strong></td><td>Actif, En vedette, Nouveau, Bestseller, Purete (%)</td></tr>
+  <tr><td><strong>SEO</strong></td><td>Slug (URL), Meta title, Meta description</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Cliquez sur <strong>Enregistrer</strong></li>
+</ol>
+
+<h3>3. Modifier un produit</h3>
+
+<ol>
+<li>Selectionnez le produit dans la liste</li>
+<li>Cliquez sur <strong>Modifier</strong> (icone crayon) dans le panneau de detail</li>
+<li>Vous etes redirige vers <code>/admin/produits/{id}/edit</code></li>
+<li>Modifiez les champs souhaites</li>
+<li>Enregistrez</li>
+</ol>
+
+<h3>4. Dupliquer un produit</h3>
+
+<p>Utile pour creer des produits similaires sans tout re-saisir.</p>
+
+<ol>
+<li>Selectionnez le produit a dupliquer</li>
+<li>Cliquez sur <strong>Dupliquer</strong> dans le ruban</li>
+<li>Une copie est creee avec le suffixe "(copie)" dans le nom</li>
+<li>Modifiez le nom, prix et autres details specifiques</li>
+<li>Enregistrez</li>
+</ol>
+
+<h3>5. Publier / Depublier</h3>
+
+<ul>
+<li><strong>Publier</strong> : Rend le produit visible sur la boutique. Les clients peuvent le voir et l'acheter.</li>
+<li><strong>Depublier</strong> : Cache le produit de la boutique. Il reste dans l'admin mais est invisible pour les clients.</li>
+</ul>
+
+<ol>
+<li>Selectionnez le produit</li>
+<li>Cliquez sur <strong>Publier</strong> ou <strong>Depublier</strong> dans le ruban</li>
+</ol>
+
+<h3>6. Importer depuis CSV</h3>
+
+<p>Pour ajouter plusieurs produits d'un coup.</p>
+
+<ol>
+<li>Cliquez sur <strong>Import CSV</strong> dans le ruban (ou le bouton en haut a droite)</li>
+<li>Selectionnez votre fichier CSV</li>
+<li>Le systeme valide et importe les produits</li>
+<li>Un rapport d'import s'affiche (produits crees, erreurs eventuelles)</li>
+</ol>
+
+<h3>7. Exporter le catalogue</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban (ou le bouton en haut a droite)</li>
+<li>Un fichier CSV est telecharge avec tous les produits et leurs details</li>
+</ol>
+
+<h3>8. Generer un catalogue PDF</h3>
+
+<ol>
+<li>Cliquez sur <strong>PDF Catalogue</strong> dans le ruban</li>
+<li>Un PDF professionnel est genere avec tous les produits actifs</li>
+<li>Utile pour envoyer a des distributeurs ou afficher en salon</li>
+</ol>
+
+<hr>
+
+<h2>Workflows complets</h2>
+
+<h3>Scenario 1 : Ajouter un nouveau peptide au catalogue</h3>
+
+<ol>
+<li>Allez dans <strong>Catalogue > Produits</strong></li>
+<li>Cliquez sur <strong>Nouveau produit</strong></li>
+<li>Selectionnez le type <strong>Peptide</strong></li>
+<li>Renseignez nom, description scientifique, categorie</li>
+<li>Ajoutez les formats : 5mg (40$), 10mg (70$)</li>
+<li>Uploadez l'image du produit</li>
+<li>Cochez "En vedette" si c'est un nouveau produit phare</li>
+<li>Remplissez les champs SEO (slug, meta description)</li>
+<li>Enregistrez</li>
+<li>Verifiez sur la boutique que le produit apparait correctement</li>
+</ol>
+
+<h3>Scenario 2 : Identifier les produits a faible performance</h3>
+
+<ol>
+<li>Allez dans <strong>Catalogue > Produits</strong></li>
+<li>Regardez la classification ABC dans les badges de chaque produit</li>
+<li>Les produits classes <strong>C</strong> sont ceux qui generent le moins de revenus</li>
+<li>Pour chaque produit C, decidez :</li>
+</ol>
+<ul>
+<li><strong>Garder</strong> : Le produit a une valeur strategique malgre les faibles ventes</li>
+<li><strong>Promouvoir</strong> : Creer une campagne marketing pour booster les ventes</li>
+<li><strong>Retirer</strong> : Depublier le produit s'il n'a aucun interet strategique</li>
+</ul>
+
+<h3>Scenario 3 : Mettre a jour les prix de tous les produits</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter</strong> pour obtenir le CSV actuel</li>
+<li>Ouvrez le CSV dans Excel</li>
+<li>Modifiez les prix</li>
+<li>Sauvegardez le CSV</li>
+<li>Cliquez sur <strong>Import CSV</strong> pour re-importer les donnees mises a jour</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<h3>Q : Quelle est la difference entre "prix de base" et "prix du format" ?</h3>
+<p><strong>R</strong> : Le prix de base est le prix affiche par defaut. Les formats ont chacun leur propre prix qui peut etre different. C'est le prix du format qui est facture au client.</p>
+
+<h3>Q : Si je depublie un produit, les commandes en cours sont-elles affectees ?</h3>
+<p><strong>R</strong> : Non. Les commandes existantes ne sont pas impactees. Seules les nouvelles commandes sont impossibles.</p>
+
+<h3>Q : Comment les produits "En vedette" sont-ils affiches ?</h3>
+<p><strong>R</strong> : Ils apparaissent dans la section mise en avant sur la page d'accueil de la boutique et dans les recommandations.</p>
+
+<h3>Q : Le stock est-il gere ici ou dans Inventaire ?</h3>
+<p><strong>R</strong> : Le stock est visible ici (dans les formats), mais la gestion complete (ajustements, reappro, reconciliation) se fait dans <strong>Commerce > Inventaire</strong>.</p>
+
+<hr>
+
+<h2>Strategie expert : Guide de redaction des fiches produits peptides</h2>
+
+<h3>Structure d'une fiche produit optimale</h3>
+
+<p>Une fiche produit de peptide doit contenir deux types de description : scientifique (pour la credibilite) et marketing (pour la conversion).</p>
+
+<h4>Description scientifique (section technique)</h4>
+
+<p>Chaque fiche peptide doit inclure les informations suivantes :</p>
+<ul>
+<li><strong>Nom complet</strong> : nom courant + nom IUPAC si disponible (ex: BPC-157, Body Protection Compound-157)</li>
+<li><strong>Sequence d'acides amines</strong> : sequence complete en code a une lettre (ex: Gly-Glu-Pro-Pro-Pro-Gly-Lys-Pro-Ala-Asp-Asp-Ala-Gly-Leu-Val)</li>
+<li><strong>Poids moleculaire</strong> : en Daltons (ex: 1 419,53 Da)</li>
+<li><strong>Formule moleculaire</strong> : (ex: C62H98N16O22)</li>
+<li><strong>Purete</strong> : pourcentage minimum garanti (ex: superieure ou egale a 98% par HPLC)</li>
+<li><strong>Forme physique</strong> : poudre lyophilisee blanche</li>
+<li><strong>Solubilite</strong> : solvants compatibles (ex: soluble dans l'eau bacteriostatique, solution saline)</li>
+<li><strong>Conditions de stockage</strong> : temperature, humidite, lumiere</li>
+<li><strong>Numero CAS</strong> : si disponible (ex: 137525-51-0 pour le BPC-157)</li>
+</ul>
+
+<h4>Description marketing (section commerciale)</h4>
+
+<p>La description marketing doit etre claire, factuelle et orientee vers les benefices de recherche :</p>
+<ul>
+<li><strong>Titre accrocheur</strong> : "BPC-157 — Le peptide de reference pour la recherche en reparation tissulaire"</li>
+<li><strong>Introduction</strong> (2-3 phrases) : resumer le peptide, son origine et son domaine de recherche principal</li>
+<li><strong>Domaines de recherche</strong> (liste a puces) : lister les axes de recherche publies (avec references si possible)</li>
+<li><strong>Formats disponibles</strong> : tableau avec dosages, prix et quantites</li>
+<li><strong>Instructions de manipulation</strong> : reconstitution, stockage post-reconstitution</li>
+<li><strong>Avertissement reglementaire</strong> : mention obligatoire (voir section Conformite ci-dessous)</li>
+</ul>
+
+<h3>Modele de description type</h3>
+
+<pre><code>[NOM DU PEPTIDE] — [PHRASE D'ACCROCHE]
+
+Le [nom] est un peptide synthetique de [nombre] acides amines etudie dans le
+cadre de recherches sur [domaine]. Identifie pour la premiere fois par [reference],
+il fait l'objet de nombreuses publications scientifiques.
+
+Domaines de recherche :
+- [Domaine 1] : [description courte de l'axe de recherche]
+- [Domaine 2] : [description courte]
+- [Domaine 3] : [description courte]
+
+Specifications techniques :
+- Sequence : [sequence]
+- Poids moleculaire : [poids] Da
+- Purete : ≥98% (HPLC)
+- Forme : Poudre lyophilisee
+
+Ce produit est destine exclusivement a la recherche scientifique in vitro et in vivo.
+Il n'est pas approuve pour un usage humain ou veterinaire.</code></pre>
+
+<hr>
+
+<h2>Strategie expert : Optimisation SEO des fiches produits</h2>
+
+<h3>Recherche de mots-cles longue traine</h3>
+
+<p>Les clients potentiels cherchent des peptides avec des requetes tres specifiques. Voici les patterns de mots-cles les plus performants pour le marche canadien.</p>
+
+<table>
+<thead>
+    <tr><th>Pattern de recherche</th><th>Exemples</th><th>Volume relatif</th></tr>
+</thead>
+<tbody>
+  <tr><td>[peptide] + [dosage] + [format]</td><td>"BPC-157 5mg vial"</td><td>Eleve</td></tr>
+  <tr><td>[peptide] + "buy" + [pays]</td><td>"buy TB-500 Canada"</td><td>Eleve</td></tr>
+  <tr><td>[peptide] + "research" + [domaine]</td><td>"CJC-1295 research muscle growth"</td><td>Moyen</td></tr>
+  <tr><td>[peptide] + "vs" + [autre peptide]</td><td>"BPC-157 vs TB-500"</td><td>Moyen</td></tr>
+  <tr><td>[peptide] + "purity" + [pourcentage]</td><td>"BPC-157 99% purity"</td><td>Moyen</td></tr>
+  <tr><td>[peptide] + "review"</td><td>"Ipamorelin review 2026"</td><td>Moyen a eleve</td></tr>
+  <tr><td>"peptides for research" + [pays/ville]</td><td>"peptides for research Quebec"</td><td>Faible mais qualifie</td></tr>
+</tbody>
+</table>
+<h3>Optimisation des champs SEO dans Koraline</h3>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Regle</th><th>Exemple pour BPC-157 5mg</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Slug</strong></td><td>Nom du peptide + format, tout en minuscules, tirets</td><td><code>bpc-157-5mg-vial</code></td></tr>
+  <tr><td><strong>Meta title</strong></td><td>[Peptide] [Dosage] — [Benefice] — BioCycle Peptides (moins de 60 caracteres)</td><td>"BPC-157 5mg Vial — Research Peptide — BioCycle Peptides"</td></tr>
+  <tr><td><strong>Meta description</strong></td><td>150-160 caracteres, inclure le peptide, le dosage, la purete et un appel a l'action</td><td>"Buy BPC-157 5mg vial, 98%+ purity HPLC tested. Fast shipping across Canada. Research-grade peptides by BioCycle Peptides."</td></tr>
+</tbody>
+</table>
+<h3>Contenu supplementaire pour le SEO</h3>
+
+<p>Pour chaque peptide populaire, creer du contenu additionnel :</p>
+<ol>
+<li><strong>Article de blog</strong> : "Guide complet du [peptide] pour la recherche" (1 500-2 000 mots)</li>
+<li><strong>FAQ produit</strong> : 5-10 questions frequentes specifiques au peptide</li>
+<li><strong>Comparatif</strong> : "[Peptide A] vs [Peptide B] : lequel choisir pour votre recherche ?"</li>
+</ol>
+
+<hr>
+
+<h2>Strategie expert : Pricing par format</h2>
+
+<h3>Strategie de prix par dosage</h3>
+
+<p>Le pricing par format suit generalement une logique de <strong>remise au volume</strong> : le prix au milligramme diminue quand le dosage augmente, incitant le client a acheter le plus grand format.</p>
+
+<table>
+<thead>
+    <tr><th>Format</th><th>Prix</th><th>Prix/mg</th><th>Remise implicite</th></tr>
+</thead>
+<tbody>
+  <tr><td>2mg</td><td>25 $CA</td><td>12,50 $CA/mg</td><td>Prix de base (reference)</td></tr>
+  <tr><td>5mg</td><td>40 $CA</td><td>8,00 $CA/mg</td><td>-36% par rapport au 2mg</td></tr>
+  <tr><td>10mg</td><td>70 $CA</td><td>7,00 $CA/mg</td><td>-44% par rapport au 2mg</td></tr>
+  <tr><td>20mg</td><td>120 $CA</td><td>6,00 $CA/mg</td><td>-52% par rapport au 2mg</td></tr>
+</tbody>
+</table>
+<p><strong>Regle de base</strong> : chaque passage au format superieur doit offrir une economie de 10-15% par unite de mesure. Cela motive le client a acheter un format plus grand tout en preservant la marge.</p>
+
+<h3>Pricing strategique par type de produit</h3>
+
+<table>
+<thead>
+    <tr><th>Type de produit</th><th>Marge brute cible</th><th>Strategie</th></tr>
+</thead>
+<tbody>
+  <tr><td>Peptides populaires (BPC-157, TB-500)</td><td>50-60%</td><td>Prix competitifs, volume eleve</td></tr>
+  <tr><td>Peptides specialises (rares, nouveaux)</td><td>65-75%</td><td>Prix premium, positionnement expert</td></tr>
+  <tr><td>Accessoires (seringues, eau bacterio)</td><td>40-50%</td><td>Prix bas, produits d'appel pour les bundles</td></tr>
+  <tr><td>Supplements</td><td>55-65%</td><td>Prix moyen, marge stable</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Strategie expert : Conformite Sante Canada</h2>
+
+<h3>Regle fondamentale</h3>
+
+<p>Les peptides vendus par BioCycle Peptides sont destines <strong>exclusivement a la recherche scientifique</strong>. Il est <strong>interdit par la loi</strong> de faire des claims (allegations) medicaux, therapeutiques ou de sante sur ces produits.</p>
+
+<h3>Ce qu'il ne faut JAMAIS ecrire</h3>
+
+<table>
+<thead>
+    <tr><th>Interdit</th><th>Pourquoi</th><th>Alternative autorisee</th></tr>
+</thead>
+<tbody>
+  <tr><td>"Guerit les blessures"</td><td>Claim medical</td><td>"Etudie dans le cadre de la recherche sur la reparation tissulaire"</td></tr>
+  <tr><td>"Aide a perdre du poids"</td><td>Claim de sante</td><td>"Objet de recherches dans le domaine du metabolisme"</td></tr>
+  <tr><td>"Augmente la masse musculaire"</td><td>Claim de performance</td><td>"Etudie pour son role potentiel dans la croissance des tissus"</td></tr>
+  <tr><td>"Traite l'inflammation"</td><td>Claim therapeutique</td><td>"Utilise en recherche scientifique sur les processus inflammatoires"</td></tr>
+  <tr><td>"Anti-age"</td><td>Claim cosmetique</td><td>"Etudie pour ses proprietes dans la recherche sur le vieillissement cellulaire"</td></tr>
+</tbody>
+</table>
+<h3>Mentions obligatoires sur chaque fiche produit</h3>
+
+<p>Chaque fiche produit doit afficher de maniere visible :</p>
+
+<ol>
+<li><strong>"Pour usage en recherche uniquement"</strong> ("For research use only")</li>
+<li><strong>"Non approuve pour usage humain ou veterinaire"</strong> ("Not approved for human or veterinary use")</li>
+<li><strong>"Non destine a la consommation"</strong> ("Not for human consumption")</li>
+</ol>
+
+<p>Ces mentions doivent apparaitre :</p>
+<ul>
+<li>Dans la description du produit</li>
+<li>Sur l'etiquette physique du produit</li>
+<li>Sur la facture et le bon de livraison</li>
+<li>Dans les emails de confirmation de commande</li>
+</ul>
+
+<h3>Risques en cas de non-conformite</h3>
+
+<ul>
+<li>Avertissement de Sante Canada</li>
+<li>Saisie des produits</li>
+<li>Amende pouvant atteindre 5 millions de dollars</li>
+<li>Poursuites penales dans les cas graves</li>
+<li>Perte de la capacite a operer en tant que vendeur de peptides</li>
+</ul>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>SKU</strong></td><td>Stock Keeping Unit — code unique pour un format de produit</td></tr>
+  <tr><td><strong>Slug</strong></td><td>Partie de l'URL du produit (ex: "bpc-157" dans /produits/bpc-157)</td></tr>
+  <tr><td><strong>Format</strong></td><td>Variante d'un produit (taille, dosage, conditionnement)</td></tr>
+  <tr><td><strong>Classification ABC</strong></td><td>Classement des produits par contribution au revenu (A=80%, B=15%, C=5%)</td></tr>
+  <tr><td><strong>En vedette</strong></td><td>Produit mis en avant sur la page d'accueil</td></tr>
+  <tr><td><strong>Meta description</strong></td><td>Texte court affiche dans les resultats Google</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="02-categories.md">Categories</a> — Organiser les produits par categories</li>
+<li><a href="03-bundles.md">Bundles</a> — Creer des lots de produits a prix reduit</li>
+<li><a href="../02-commerce/05-inventaire.md">Inventaire</a> — Gestion du stock</li>
+<li><a href="../02-commerce/01-commandes.md">Commandes</a> — Commandes contenant ces produits</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="03-catalogue--02-categories">
+<h1>Gestion des Categories</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Catalogue > Categories</p>
+<p><strong>URL</strong>: <code>/admin/categories</code></p>
+<p><strong>Niveau</strong>: Debutant a intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Categories</strong> organise vos produits en groupes logiques. Les categories apparaissent dans le menu de la boutique et permettent aux clients de trouver facilement les produits qui les interessent.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir toutes les categories avec leur nombre de produits, ordre d'affichage et statut</li>
+<li>Creer une nouvelle categorie (avec nom, slug, description, image)</li>
+<li>Creer des sous-categories (hierarchie parent-enfant)</li>
+<li>Modifier une categorie existante</li>
+<li>Supprimer une categorie (si elle n'a pas de produits)</li>
+<li>Reorganiser l'ordre d'affichage (monter/descendre)</li>
+<li>Activer/desactiver une categorie</li>
+<li>Exporter la liste au format CSV</li>
+<li>Voir les statistiques de visites par categorie</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Qu'est-ce qu'une categorie ?</h3>
+<p>Une categorie, c'est un dossier qui regroupe des produits similaires. Par exemple :</p>
+<ul>
+<li><strong>Peptides</strong> — Tous les peptides synthetiques</li>
+<li><strong>Recuperation & Reparation</strong> — Peptides pour la guerison (BPC-157, TB-500)</li>
+<li><strong>Croissance Musculaire</strong> — Peptides anabolisants</li>
+<li><strong>Supplements</strong> — Supplements nutritionnels</li>
+<li><strong>Accessoires</strong> — Materiel de laboratoire</li>
+</ul>
+
+<h3>Hierarchie parent/enfant</h3>
+<p>Les categories peuvent avoir des <strong>sous-categories</strong>. Par exemple :</p>
+<ul>
+<li><strong>Peptides</strong> (categorie parente)</li>
+<li>Recuperation & Reparation (sous-categorie)</li>
+<li>Croissance Musculaire (sous-categorie)</li>
+<li>Sante Cognitive (sous-categorie)</li>
+</ul>
+
+<h3>Le slug</h3>
+<p>Le slug est la partie de l'URL qui identifie la categorie. Par exemple :</p>
+<ul>
+<li>Categorie "Recuperation & Reparation" → slug: <code>recovery-repair</code></li>
+<li>URL complete: <code>biocyclepeptides.com/categorie/recovery-repair</code></li>
+</ul>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Page Categories]</div>
+
+<h3>La barre de ruban</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouvelle categorie</strong></td><td>Creer une categorie de premier niveau</td></tr>
+  <tr><td><strong>Nouvelle sous-categorie</strong></td><td>Creer une sous-categorie de la categorie selectionnee</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer la categorie selectionnee</td></tr>
+  <tr><td><strong>Stats visites</strong></td><td>Voir combien de fois chaque categorie est visitee</td></tr>
+  <tr><td><strong>Reorganiser</strong></td><td>Activer le mode reorganisation (deplacer les categories)</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger la liste en CSV</td></tr>
+</tbody>
+</table>
+<h3>Le tableau des categories</h3>
+
+<table>
+<thead>
+    <tr><th>Colonne</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Categorie</strong></td><td>Nom + slug + image (miniature)</td></tr>
+  <tr><td><strong>Produits</strong></td><td>Nombre de produits dans cette categorie</td></tr>
+  <tr><td><strong>Ordre</strong></td><td>Position d'affichage (1 = premier)</td></tr>
+  <tr><td><strong>Actif</strong></td><td>Coche verte si la categorie est visible</td></tr>
+  <tr><td><strong>Actions</strong></td><td>+ Sous, Modifier, Supprimer</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>1. Creer une categorie</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle categorie</strong> (ruban ou bouton en haut a droite)</li>
+<li>Un formulaire modal s'ouvre :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Obligatoire</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nom</strong></td><td>Oui</td><td>Nom affiche sur la boutique (ex: "Sante Cognitive")</td></tr>
+  <tr><td><strong>Slug</strong></td><td>Auto-genere</td><td>URL de la categorie (se genere a partir du nom)</td></tr>
+  <tr><td><strong>Description</strong></td><td>Non</td><td>Texte affiche sur la page de la categorie</td></tr>
+  <tr><td><strong>Image</strong></td><td>Non</td><td>Image de couverture (via upload ou URL)</td></tr>
+  <tr><td><strong>Ordre</strong></td><td>Oui</td><td>Position dans le menu (defaut: apres la derniere)</td></tr>
+  <tr><td><strong>Categorie parente</strong></td><td>Non</td><td>Si rempli, devient une sous-categorie</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Cliquez sur <strong>Enregistrer</strong></li>
+</ol>
+
+<h3>2. Creer une sous-categorie</h3>
+
+<ol>
+<li>Sur la ligne de la categorie parente, cliquez sur <strong>+ Sous</strong></li>
+<li>Le formulaire s'ouvre avec la categorie parente pre-selectionnee</li>
+<li>Renseignez nom, description, image</li>
+<li>Enregistrez</li>
+</ol>
+
+<h3>3. Modifier une categorie</h3>
+
+<ol>
+<li>Sur la ligne de la categorie, cliquez sur <strong>Modifier</strong> (icone crayon)</li>
+<li>Le formulaire s'ouvre pre-rempli</li>
+<li>Modifiez les champs souhaites</li>
+<li>Enregistrez</li>
+</ol>
+
+<h3>4. Reorganiser l'ordre</h3>
+
+<ol>
+<li>Cliquez sur <strong>Reorganiser</strong> dans le ruban (ou le bouton en haut a droite)</li>
+<li>Le mode reorganisation s'active — des fleches haut/bas apparaissent</li>
+<li>Cliquez sur les fleches pour monter ou descendre une categorie</li>
+<li>Le nouvel ordre est sauvegarde automatiquement</li>
+</ol>
+
+<h3>5. Supprimer une categorie</h3>
+
+<ol>
+<li>Cliquez sur l'icone <strong>Poubelle</strong> sur la ligne de la categorie</li>
+<li>Confirmez la suppression</li>
+</ol>
+
+<blockquote>
+<p><strong>Attention</strong> : Vous ne pouvez pas supprimer une categorie qui contient des produits. Deplacez d'abord les produits vers une autre categorie.</p>
+</blockquote>
+
+<hr>
+
+<h2>Workflows complets</h2>
+
+<h3>Scenario : Ajouter une nouvelle gamme de produits</h3>
+
+<ol>
+<li>Allez dans <strong>Catalogue > Categories</strong></li>
+<li>Cliquez sur <strong>Nouvelle categorie</strong></li>
+<li>Nom: "Sante Hormonale", Description: "Peptides pour l'equilibre hormonal"</li>
+<li>Uploadez une image representative</li>
+<li>Enregistrez</li>
+<li>Allez dans <strong>Catalogue > Produits</strong> et assignez les produits concernes a cette categorie</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<h3>Q : Combien de niveaux de sous-categories puis-je creer ?</h3>
+<p><strong>R</strong> : Le systeme supporte 2 niveaux : categorie parente et sous-categorie. Pas de sous-sous-categorie.</p>
+
+<h3>Q : Si je desactive une categorie, ses produits disparaissent-ils ?</h3>
+<p><strong>R</strong> : Oui, la categorie et ses produits sont caches de la boutique. Mais les produits restent accessibles dans l'admin.</p>
+
+<h3>Q : Les images de categories sont-elles obligatoires ?</h3>
+<p><strong>R</strong> : Non, mais recommandees. Les categories sans image affichent une icone de dossier par defaut.</p>
+
+<hr>
+
+<h2>Strategie expert : Architecture d'information optimale pour la conversion</h2>
+
+<h3>Principes fondamentaux</h3>
+
+<p>L'architecture de vos categories est l'equivalent de l'organisation des rayons dans un magasin physique. Une bonne architecture aide le client a trouver rapidement ce qu'il cherche, reduit le taux de rebond et augmente le taux de conversion.</p>
+
+<h3>Regles d'or de la categorisation e-commerce</h3>
+
+<table>
+<thead>
+    <tr><th>Regle</th><th>Explication</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Maximum 7 a 9 categories principales</strong></td><td>Au-dela de 9, le client est submerge de choix (paradoxe du choix). En dessous de 5, les categories sont trop larges et peu utiles.</td></tr>
+  <tr><td><strong>Noms clairs et descriptifs</strong></td><td>"Recuperation et Reparation" est meilleur que "Categorie 1" ou "Divers". Le client doit comprendre en une seconde ce qu'il trouvera dans la categorie.</td></tr>
+  <tr><td><strong>Ordre par popularite</strong></td><td>Les categories les plus visitees et les plus vendues doivent apparaitre en premier dans le menu. Utilisez le bouton <strong>Stats visites</strong> pour identifier les categories populaires.</td></tr>
+  <tr><td><strong>Maximum 2 niveaux</strong></td><td>Categories parentes et sous-categories. Ne pas creer de sous-sous-categories (Koraline ne le supporte pas, et c'est une bonne pratique).</td></tr>
+  <tr><td><strong>Pas de categories vides</strong></td><td>Une categorie avec 0 produit desoriente le client. Desactivez les categories sans produit ou ajoutez un produit "bientot disponible".</td></tr>
+  <tr><td><strong>Pas de doublons</strong></td><td>Un produit ne devrait idealement appartenir qu'a une seule categorie. Si un peptide est pertinent pour deux categories, choisir la plus specifique.</td></tr>
+</tbody>
+</table>
+<h3>Taxonomie recommandee pour BioCycle Peptides</h3>
+
+<p>Voici une architecture de categories optimisee pour un e-commerce de peptides de recherche au Canada, classee par usage de recherche.</p>
+
+<p><strong>Niveau 1 : Categories principales (7 categories)</strong></p>
+
+<table>
+<thead>
+    <tr><th>Ordre</th><th>Categorie</th><th>Description</th><th>Produits typiques</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td><strong>Recuperation et Reparation</strong></td><td>Peptides etudies pour la regeneration tissulaire</td><td>BPC-157, TB-500, TB4-FRAG</td></tr>
+  <tr><td>2</td><td><strong>Croissance et Performance</strong></td><td>Peptides de recherche sur la croissance des tissus</td><td>CJC-1295, Ipamorelin, GHRP-6, MK-677</td></tr>
+  <tr><td>3</td><td><strong>Sante Cognitive</strong></td><td>Peptides etudies pour les fonctions neurologiques</td><td>Semax, Selank, Dihexa, BPC-157</td></tr>
+  <tr><td>4</td><td><strong>Metabolisme et Composition</strong></td><td>Recherche sur le metabolisme et la composition corporelle</td><td>AOD-9604, Fragment 176-191, Tesamorelin</td></tr>
+  <tr><td>5</td><td><strong>Anti-Age et Longevite</strong></td><td>Recherche sur le vieillissement cellulaire</td><td>Epitalon, GHK-Cu, Thymosin Alpha-1</td></tr>
+  <tr><td>6</td><td><strong>Supplements</strong></td><td>Supplements nutritionnels complementaires</td><td>Vitamines, mineraux, cofacteurs</td></tr>
+  <tr><td>7</td><td><strong>Accessoires</strong></td><td>Materiel de laboratoire et accessoires</td><td>Eau bacteriostatique, seringues, fioles vides</td></tr>
+</tbody>
+</table>
+<p><strong>Niveau 2 : Sous-categories (exemples)</strong></p>
+
+<p>Sous "Croissance et Performance" :</p>
+<ul>
+<li>Secretagogues de GH (CJC-1295, Ipamorelin, GHRP-2, GHRP-6)</li>
+<li>Modulateurs selectifs (MK-677, LGD-4033)</li>
+<li>Peptides de croissance (IGF-1 LR3, MGF)</li>
+</ul>
+
+<h3>Erreurs courantes a eviter</h3>
+
+<table>
+<thead>
+    <tr><th>Erreur</th><th>Probleme</th><th>Solution</th></tr>
+</thead>
+<tbody>
+  <tr><td>Trop de categories principales (15+)</td><td>Navigation confuse, client perd ses reperes</td><td>Fusionner les categories similaires</td></tr>
+  <tr><td>Categories par format ("5mg", "10mg")</td><td>Melange la classification par usage et par format</td><td>Les formats sont des variantes de produit, pas des categories</td></tr>
+  <tr><td>Noms trop techniques</td><td>"Secretagogues de GH" est incomprehensible pour un debutant</td><td>Utiliser "Croissance et Performance" avec les termes techniques en sous-description</td></tr>
+  <tr><td>Categories alphabetiques</td><td>L'ordre alphabetique ne reflete pas la popularite</td><td>Ordonner par popularite (utiliser les stats)</td></tr>
+</tbody>
+</table>
+<h3>Impact sur le SEO</h3>
+
+<p>Chaque categorie genere une page indexable par Google. Optimiser les categories pour le SEO :</p>
+<ul>
+<li><strong>Slug</strong> : court et descriptif (ex: <code>recovery-repair</code>, <code>growth-performance</code>)</li>
+<li><strong>Description</strong> : 150-300 mots uniques, incluant les mots-cles pertinents</li>
+<li><strong>Image</strong> : image representative de haute qualite avec attribut alt descriptif</li>
+</ul>
+
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="01-produits.md">Produits</a> — Les produits organises dans ces categories</li>
+<li><a href="03-bundles.md">Bundles</a> — Lots de produits multi-categories</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="03-catalogue--03-bundles">
+<h1>Gestion des Bundles (Lots de produits)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Catalogue > Bundles</p>
+<p><strong>URL</strong>: <code>/admin/bundles</code></p>
+<p><strong>Niveau</strong>: Debutant a intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~12 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Bundles</strong> permet de creer des <strong>lots de produits</strong> vendus ensemble a prix reduit. C'est une strategie commerciale puissante pour augmenter le panier moyen et ecouler des produits complementaires.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir tous les bundles existants avec leur prix, nombre de produits et statut</li>
+<li>Creer un nouveau bundle (nom, description, produits inclus, prix special)</li>
+<li>Modifier un bundle existant</li>
+<li>Publier ou depublier un bundle</li>
+<li>Dupliquer un bundle</li>
+<li>Exporter la liste des bundles</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un bundle ?</h3>
+<p>Un bundle (ou lot), c'est un ensemble de produits vendus ensemble a un prix inferieur a la somme des prix individuels. Par exemple :</p>
+<ul>
+<li><strong>Kit Recuperation</strong> : BPC-157 (40$) + TB-500 (55$) + Eau bacteriostatique (15$)</li>
+<li>Prix individuel total : 110$</li>
+<li>Prix bundle : 89,99$ (<strong>economie de 20$</strong>)</li>
+</ul>
+
+<h3>Prix compare vs prix du bundle</h3>
+<table>
+<thead>
+    <tr><th>Terme</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Prix du bundle</strong></td><td>Le prix reel que le client paie</td></tr>
+  <tr><td><strong>Prix compare</strong></td><td>Le prix "barre" affiche (somme des prix individuels) — montre l'economie</td></tr>
+</tbody>
+</table>
+<h3>Pourquoi creer des bundles ?</h3>
+<ul>
+<li><strong>Augmenter le panier moyen</strong> — Les clients achetent plus en un seul achat</li>
+<li><strong>Ventes croisees</strong> — Faire decouvrir des produits complementaires</li>
+<li><strong>Ecouler du stock</strong> — Inclure des produits a faible rotation dans un bundle attractif</li>
+<li><strong>Simplifier l'achat</strong> — Le client n'a pas a chercher les produits un par un</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans la <strong>barre de navigation horizontale</strong>, cliquez sur <strong>Catalogue</strong></li>
+<li>Dans le <strong>panneau lateral</strong>, cliquez sur <strong>Bundles</strong> (3e element)</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Page Bundles]</div>
+
+<p>L'interface est simple :</p>
+<ul>
+<li>Un <strong>titre</strong> avec sous-titre explicatif</li>
+<li>Un bouton <strong>Nouveau bundle</strong> en haut a droite</li>
+<li>Si aucun bundle : un message d'etat vide avec un bouton pour creer le premier</li>
+<li>Si des bundles existent : une <strong>grille de cartes</strong> (1 carte par bundle)</li>
+</ul>
+
+<h3>La barre de ruban</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau produit</strong></td><td>Creer un nouveau bundle (redirige vers <code>/admin/bundles/new</code>)</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer le bundle selectionne</td></tr>
+  <tr><td><strong>Dupliquer</strong></td><td>Copier un bundle existant</td></tr>
+  <tr><td><strong>Publier</strong></td><td>Rendre le bundle visible sur la boutique</td></tr>
+  <tr><td><strong>Depublier</strong></td><td>Cacher le bundle de la boutique</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger la liste en CSV</td></tr>
+</tbody>
+</table>
+<h3>Carte d'un bundle</h3>
+<p>Chaque bundle est affiche sous forme de carte avec :</p>
+<ul>
+<li><strong>Nom</strong> du bundle</li>
+<li><strong>Description</strong> courte</li>
+<li><strong>Prix</strong> du bundle + prix compare (barre)</li>
+<li><strong>Nombre de produits</strong> inclus</li>
+<li><strong>Statut</strong> : Actif (visible) ou Inactif</li>
+<li><strong>Boutons</strong> : Modifier, Voir sur la boutique</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>1. Creer un bundle</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouveau bundle</strong> (bouton bleu en haut a droite)</li>
+<li>Vous etes redirige vers <code>/admin/bundles/new</code></li>
+<li>Remplissez le formulaire :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Obligatoire</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nom</strong></td><td>Oui</td><td>Nom du bundle affiche sur la boutique (ex: "Kit Recuperation Pro")</td></tr>
+  <tr><td><strong>Slug</strong></td><td>Auto-genere</td><td>URL du bundle</td></tr>
+  <tr><td><strong>Description</strong></td><td>Non</td><td>Description marketing du bundle</td></tr>
+  <tr><td><strong>Prix</strong></td><td>Oui</td><td>Prix de vente du bundle (inferieur a la somme des produits)</td></tr>
+  <tr><td><strong>Prix compare</strong></td><td>Non</td><td>Prix barre affiche a cote (montre l'economie au client)</td></tr>
+  <tr><td><strong>Produits</strong></td><td>Oui</td><td>Selectionnez les produits a inclure dans le bundle</td></tr>
+  <tr><td><strong>Actif</strong></td><td>Oui</td><td>Visible sur la boutique ?</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Cliquez sur <strong>Enregistrer</strong></li>
+</ol>
+
+<h3>2. Modifier un bundle</h3>
+
+<ol>
+<li>Cliquez sur l'icone <strong>Modifier</strong> (crayon) sur la carte du bundle</li>
+<li>Le formulaire de modification s'ouvre</li>
+<li>Ajustez les champs (prix, produits inclus, description)</li>
+<li>Enregistrez</li>
+</ol>
+
+<h3>3. Publier / Depublier</h3>
+
+<ul>
+<li>Cliquez sur <strong>Publier</strong> dans le ruban pour rendre le bundle visible</li>
+<li>Cliquez sur <strong>Depublier</strong> pour le cacher temporairement</li>
+</ul>
+
+<hr>
+
+<h2>Workflows complets</h2>
+
+<h3>Scenario : Creer un bundle promotionnel pour le Black Friday</h3>
+
+<ol>
+<li>Allez dans <strong>Catalogue > Bundles</strong></li>
+<li>Cliquez sur <strong>Nouveau bundle</strong></li>
+<li>Nom : "Black Friday — Pack Peptides Essentiels"</li>
+<li>Description : "3 de nos meilleurs peptides au prix de 2 ! Offre limitee."</li>
+<li>Ajoutez les produits : BPC-157 + TB-500 + CJC-1295</li>
+<li>Prix compare : 165$ (somme des prix individuels)</li>
+<li>Prix bundle : 109,99$</li>
+<li>Laissez "Inactif" pour le moment</li>
+<li>Enregistrez</li>
+<li>Le jour du Black Friday : revenez et cliquez sur <strong>Publier</strong></li>
+<li>Apres l'evenement : cliquez sur <strong>Depublier</strong></li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<h3>Q : Combien de produits puis-je mettre dans un bundle ?</h3>
+<p><strong>R</strong> : Il n'y a pas de limite technique. Cependant, pour des raisons marketing, 2 a 5 produits est ideal.</p>
+
+<h3>Q : Le stock est-il decremente pour chaque produit du bundle quand un client achete ?</h3>
+<p><strong>R</strong> : Oui. Chaque produit du bundle est decremente individuellement dans l'inventaire.</p>
+
+<h3>Q : Puis-je inclure le meme produit plusieurs fois dans un bundle ?</h3>
+<p><strong>R</strong> : Oui, avec des quantites differentes si necessaire.</p>
+
+<h3>Q : Les bundles apparaissent-ils dans les categories de produits ?</h3>
+<p><strong>R</strong> : Les bundles ont leur propre section sur la boutique, mais peuvent aussi etre lies a une categorie "Bundles".</p>
+
+<hr>
+
+<h2>Strategie expert : Psychologie du pricing des bundles</h2>
+
+<h3>Ancrage de prix</h3>
+
+<p>L'ancrage est un biais cognitif ou le client utilise la premiere information de prix comme reference pour evaluer les suivantes. Pour les bundles, cela se traduit par :</p>
+
+<ol>
+<li><strong>Toujours afficher le prix individuel barre</strong> : le client voit d'abord le prix total "normal" (ex: 165 $CA), puis le prix bundle (109,99 $CA). L'economie percue est immediate.</li>
+<li><strong>Afficher l'economie en dollars ET en pourcentage</strong> : "Economisez 55,01 $CA (33%)" est plus percutant que seulement l'un des deux.</li>
+<li><strong>Utiliser des prix se terminant par ,99 ou ,95</strong> : psychologiquement, 109,99 $CA est percu comme significativement moins cher que 110,00 $CA (effet de chiffre de gauche).</li>
+</ol>
+
+<h3>Effet de rarete</h3>
+
+<p>La rarete augmente la valeur percue et l'urgence d'achat. Appliquer ces techniques aux bundles :</p>
+
+<table>
+<thead>
+    <tr><th>Technique</th><th>Exemple</th><th>Impact sur les ventes</th></tr>
+</thead>
+<tbody>
+  <tr><td>Offre limitee dans le temps</td><td>"Bundle disponible jusqu'au 31 mars"</td><td>Augmente l'urgence, +15-25% de conversions</td></tr>
+  <tr><td>Quantite limitee</td><td>"Seulement 50 kits disponibles"</td><td>Cree l'exclusivite, +10-20% de conversions</td></tr>
+  <tr><td>Saisonnier</td><td>"Pack Ete — disponible uniquement en mai-juin"</td><td>Nouveaute et exclusivite combinee</td></tr>
+  <tr><td>Bonus temporaire</td><td>"Commandez ce bundle cette semaine : seringues offertes"</td><td>Incitation supplementaire, +20-30%</td></tr>
+</tbody>
+</table>
+<h3>Structure de prix optimale pour les bundles</h3>
+
+<table>
+<thead>
+    <tr><th>Nombre de produits</th><th>Remise recommandee</th><th>Marge preservee</th></tr>
+</thead>
+<tbody>
+  <tr><td>2 produits</td><td>10-15%</td><td>Bonne</td></tr>
+  <tr><td>3 produits</td><td>15-20%</td><td>Acceptable</td></tr>
+  <tr><td>4-5 produits</td><td>20-25%</td><td>Attention a la marge</td></tr>
+  <tr><td>6+ produits</td><td>25-30%</td><td>Marge faible, utiliser comme produit d'appel uniquement</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Strategie expert : Cross-sell eprouve pour les peptides</h2>
+
+<h3>Combinaisons de produits a forte synergie</h3>
+
+<p>Les bundles les plus performants combinent des produits que les clients acheteraient naturellement ensemble. Voici les combinaisons eprouvees pour le marche des peptides.</p>
+
+<table>
+<thead>
+    <tr><th>Bundle</th><th>Produits inclus</th><th>Logique</th><th>Prix individuel</th><th>Prix bundle suggere</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Kit Demarrage Recherche</strong></td><td>1 peptide au choix + eau bacteriostatique + seringues</td><td>Le debutant a besoin de tout le materiel</td><td>70-85 $CA</td><td>59,99 $CA</td></tr>
+  <tr><td><strong>Kit Recuperation Avancee</strong></td><td>BPC-157 5mg + TB-500 5mg + eau bacteriostatique</td><td>Synergie recherche reparation</td><td>110-120 $CA</td><td>89,99 $CA</td></tr>
+  <tr><td><strong>Kit Croissance Complet</strong></td><td>CJC-1295 + Ipamorelin + seringues</td><td>Combinaison classique GH research</td><td>130-150 $CA</td><td>109,99 $CA</td></tr>
+  <tr><td><strong>Kit Anti-Age Premium</strong></td><td>Epitalon + GHK-Cu + eau bacteriostatique</td><td>Recherche longevite</td><td>140-160 $CA</td><td>119,99 $CA</td></tr>
+  <tr><td><strong>Pack Reapprovisionnement</strong></td><td>3x BPC-157 5mg + 2x eau bacteriostatique</td><td>Economie de volume pour les clients reguliers</td><td>135-150 $CA</td><td>109,99 $CA</td></tr>
+</tbody>
+</table>
+<h3>Accessoires a inclure systematiquement</h3>
+
+<p>L'inclusion d'accessoires dans les bundles est une strategie doublement efficace : elle augmente la valeur percue du bundle tout en eliminant un frein a l'achat (le client n'a pas besoin de chercher les accessoires separement).</p>
+
+<table>
+<thead>
+    <tr><th>Accessoire</th><th>Cout pour BioCycle</th><th>Valeur percue client</th><th>A inclure dans</th></tr>
+</thead>
+<tbody>
+  <tr><td>Eau bacteriostatique 30ml</td><td>3-5 $CA</td><td>12-15 $CA</td><td>Tout bundle avec peptides lyophilises</td></tr>
+  <tr><td>Seringues insuline (pack de 10)</td><td>2-4 $CA</td><td>8-12 $CA</td><td>Kits demarrage</td></tr>
+  <tr><td>Tampons alcool (pack de 20)</td><td>1-2 $CA</td><td>5 $CA</td><td>Tous les bundles (cout negligeable)</td></tr>
+  <tr><td>Fiole vide sterile</td><td>1-3 $CA</td><td>5-8 $CA</td><td>Bundles avec peptides en poudre libre</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Strategie expert : Saisonnalite des promotions bundles</h2>
+
+<h3>Calendrier promotionnel annuel</h3>
+
+<p>Le marche des peptides de recherche et supplements suit un calendrier saisonnier previsible. Planifiez vos bundles promotionnels en consequence.</p>
+
+<table>
+<thead>
+    <tr><th>Periode</th><th>Evenement</th><th>Type de bundle a promouvoir</th><th>Remise suggeree</th></tr>
+</thead>
+<tbody>
+  <tr><td>Janvier</td><td>Resolutions du Nouvel An</td><td>Kits demarrage, bundles "decouverte", kits complets</td><td>15-20%</td></tr>
+  <tr><td>Fevrier</td><td>Periode creuse</td><td>Bundle fidelite (offre reservee aux clients existants)</td><td>10% + livraison gratuite</td></tr>
+  <tr><td>Mars-Avril</td><td>Printemps, preparation ete</td><td>Bundles metabolisme et composition</td><td>15%</td></tr>
+  <tr><td>Mai</td><td>Pre-ete</td><td>Bundles melanotane, performance</td><td>15-20%</td></tr>
+  <tr><td>Juin-Aout</td><td>Ete</td><td>Bundles populaires (BPC-157, TB-500), moins de promotions necessaires</td><td>10% ou aucune remise</td></tr>
+  <tr><td>Septembre</td><td>Rentree</td><td>Nouveaux bundles, nouvelles gammes</td><td>Prix de lancement</td></tr>
+  <tr><td>Octobre</td><td>Pre-Black Friday</td><td>Teaser : "inscrivez-vous pour acceder aux offres Black Friday"</td><td>Pas de remise encore</td></tr>
+  <tr><td>Novembre</td><td>Black Friday / Cyber Monday</td><td>Meilleurs bundles de l'annee, remises maximales</td><td>25-30%</td></tr>
+  <tr><td>Decembre</td><td>Fetes, cadeaux</td><td>Coffrets cadeaux, bundles premium</td><td>15-20%</td></tr>
+</tbody>
+</table>
+<h3>Regles de gestion des bundles saisonniers dans Koraline</h3>
+
+<ol>
+<li><strong>Preparer le bundle a l'avance</strong> : creer le bundle 2-3 semaines avant la date prevue avec le statut <strong>Inactif</strong></li>
+<li><strong>Publier le jour J</strong> : cliquer sur <strong>Publier</strong> dans le ruban le jour du lancement de la promotion</li>
+<li><strong>Depublier a la fin</strong> : des que la promotion est terminee, cliquer sur <strong>Depublier</strong> pour retirer le bundle de la boutique</li>
+<li><strong>Ne pas supprimer</strong> : garder les bundles saisonniers inactifs pour pouvoir les reutiliser l'annee suivante en les dupliquant et ajustant les prix</li>
+<li><strong>Analyser les resultats</strong> : apres chaque promotion, verifier combien de bundles ont ete vendus via <strong>Commerce > Commandes</strong> pour decider si l'offre sera reconduite</li>
+</ol>
+
+<h3>Mesure de performance des bundles</h3>
+
+<table>
+<thead>
+    <tr><th>Indicateur</th><th>Comment le calculer</th><th>Cible</th></tr>
+</thead>
+<tbody>
+  <tr><td>Taux de conversion bundle</td><td>Ventes bundle / Visites page bundle</td><td>Plus de 5%</td></tr>
+  <tr><td>Part des bundles dans le CA</td><td>CA bundles / CA total</td><td>15-25%</td></tr>
+  <tr><td>Augmentation du panier moyen</td><td>Panier moyen avec bundles - Panier moyen sans</td><td>Plus de 20% d'augmentation</td></tr>
+  <tr><td>Taux de cannibalisation</td><td>Ventes produit individuel pendant la promo vs periode normale</td><td>Moins de 15% de baisse</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Bundle</strong></td><td>Lot de produits vendus ensemble a prix reduit</td></tr>
+  <tr><td><strong>Prix compare</strong></td><td>Prix original barre (montre l'economie au client)</td></tr>
+  <tr><td><strong>Vente croisee</strong></td><td>Strategie de vente de produits complementaires</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="01-produits.md">Produits</a> — Les produits individuels qui composent les bundles</li>
+<li><a href="02-categories.md">Categories</a> — Categorie "Bundles" dans le catalogue</li>
+<li><a href="../02-commerce/01-commandes.md">Commandes</a> — Commandes contenant des bundles</li>
+</ul>
+
+</div>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

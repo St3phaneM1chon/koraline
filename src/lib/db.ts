@@ -217,10 +217,10 @@ const basePrisma =
             const tenantId = getCurrentTenantIdFromContext();
             if (tenantId) {
               if (Array.isArray(args.data)) {
-                args.data = args.data.map((item: Record<string, unknown>) => ({
+                args.data = (args.data as Record<string, unknown>[]).map((item: Record<string, unknown>) => ({
                   ...item,
                   tenantId: item.tenantId || tenantId,
-                }));
+                })) as typeof args.data;
               } else {
                 const data = args.data as Record<string, unknown>;
                 if (!data.tenantId) {

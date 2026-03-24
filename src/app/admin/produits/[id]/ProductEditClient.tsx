@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Plus, Trash2, ExternalLink, FileText, ImageIcon, Video, Link2, Globe, Check, AlertTriangle, Pencil, ClipboardList, FileEdit, Package, ShoppingCart, Tag, Film, Loader2, Star, Briefcase, Settings2, X, GripVertical, ChevronUp, ChevronDown } from 'lucide-react';
+import { ArrowLeft, Plus, Trash2, ExternalLink, FileText, ImageIcon, Video, Link2, Globe, Check, AlertTriangle, Pencil, ClipboardList, FileEdit, Package, ShoppingCart, Tag, Film, Loader2, Star, Briefcase, Settings2, X, ChevronUp, ChevronDown } from 'lucide-react';
 import { getFormatTypes, getProductTypes, fetchProductTypes, getAvailabilityOptions, VOLUME_OPTIONS, getStockDisplay, fetchFormatTypes } from '../product-constants';
 import { MediaUploader } from '@/components/admin/MediaUploader';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';

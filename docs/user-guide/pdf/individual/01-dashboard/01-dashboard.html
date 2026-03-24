@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tableau de Bord &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 01 — Tableau de bord</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Tableau de Bord</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Tableau de bord</p>
+<p><strong>URL</strong>: <code>/admin/dashboard</code></p>
+<p><strong>Niveau</strong>: Debutant</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>Le <strong>Tableau de bord</strong> est la premiere page que vous voyez en vous connectant a l'administration Koraline. C'est votre vue d'ensemble quotidienne : combien de commandes, combien de revenus, quelles alertes necessitent votre attention.</p>
+
+<p><strong>En un coup d'oeil, vous voyez :</strong></p>
+<ul>
+<li>Le nombre de commandes totales et en attente</li>
+<li>Le revenu du mois en dollars canadiens</li>
+<li>Le nombre d'alertes de stock</li>
+<li>Le nombre de clients B2B et individuels</li>
+<li>Le nombre de produits actifs</li>
+<li>Les priorites du jour (via le briefing IA)</li>
+<li>Les insights IA (analyse automatique de vos donnees)</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<p>Le tableau de bord est la <strong>page par defaut</strong> apres la connexion. Vous pouvez aussi y revenir a tout moment :</p>
+
+<h3>Methode 1 : Cliquer sur le logo</h3>
+<p>Cliquez sur le logo <strong>Kor@line</strong> en haut a gauche.</p>
+
+<h3>Methode 2 : Via le rail de navigation</h3>
+<p>Cliquez sur la premiere icone (grille de 4 carres) dans la colonne d'icones a gauche.</p>
+
+<h3>Methode 3 : Via l'onglet Accueil</h3>
+<p>Cliquez sur <strong>Accueil</strong> dans la barre de navigation horizontale en haut.</p>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Tableau de bord]</div>
+
+<h3>La barre de ruban</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Actualiser</strong></td><td>Recharger toutes les donnees du tableau de bord</td></tr>
+  <tr><td><strong>Exporter tableau de bord</strong></td><td>Telecharger un resume en CSV ou PDF</td></tr>
+</tbody>
+</table>
+<h3>Les cartes de statistiques (7 indicateurs)</h3>
+
+<p><strong>Ligne 1 — Activite commerciale :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Commandes totales</strong></td><td>Nombre de commandes recues depuis le debut</td></tr>
+  <tr><td><strong>Revenu du mois (CAD)</strong></td><td>Total des ventes du mois en cours, en dollars canadiens</td></tr>
+  <tr><td><strong>Commandes en attente</strong></td><td>Commandes pas encore traitees (a expedier)</td></tr>
+  <tr><td><strong>Alertes stock</strong></td><td>Nombre de produits en stock bas ou en rupture</td></tr>
+</tbody>
+</table>
+<p><strong>Ligne 2 — Base de donnees :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Clients B2B</strong></td><td>Nombre de distributeurs/ambassadeurs inscrits</td></tr>
+  <tr><td><strong>Clients</strong></td><td>Nombre de clients individuels (B2C)</td></tr>
+  <tr><td><strong>Produits actifs</strong></td><td>Nombre de produits publies sur la boutique</td></tr>
+</tbody>
+</table>
+<p>Chaque carte a une petite icone de graphique qui, en cliquant, montre la tendance.</p>
+
+<h3>Raccourcis rapides (en haut a droite)</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Commandes</strong></td><td>Aller directement a la page des commandes</td></tr>
+  <tr><td><strong>Nouveau produit</strong></td><td>Creer un nouveau produit immediatement</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>1. Briefing IA quotidien</h3>
+
+<p>Le bloc <strong>"Que dois-je faire ?"</strong> a gauche est votre assistant de priorites :</p>
+
+<ol>
+<li>Cliquez sur <strong>Obtenir le Briefing</strong></li>
+<li>L'IA analyse vos donnees (commandes en attente, stock bas, emails non lus, etc.)</li>
+<li>Elle vous donne une liste de priorites pour la journee</li>
+</ol>
+
+<p><strong>Exemple de briefing :</strong></p>
+<ul>
+<li>"2 commandes en attente depuis plus de 24h — a traiter en priorite"</li>
+<li>"Stock de BPC-157 sous le seuil d'alerte — commander chez le fournisseur"</li>
+<li>"3 avis clients non moderes — a approuver ou rejeter"</li>
+</ul>
+
+<h3>2. Insights IA</h3>
+
+<p>Le bloc <strong>"Insights IA"</strong> a droite fournit une analyse automatique :</p>
+<ul>
+<li>Mini-cartes avec commandes du jour, revenu du mois, commandes en attente, alertes stock</li>
+<li>Analyse textuelle : que signifient les chiffres ? quelles actions recommandees ?</li>
+<li>Mis a jour automatiquement (l'heure de derniere mise a jour est affichee)</li>
+</ul>
+
+<p>Les insights incluent :</p>
+<ul>
+<li>Analyse des tendances de vente</li>
+<li>Detection d'anomalies (baisse soudaine, pic inhabituel)</li>
+<li>Recommandations concretes (reapprovisionner, lancer une promo, etc.)</li>
+</ul>
+
+<h3>3. Actualiser les donnees</h3>
+
+<p>Les donnees du tableau de bord sont chargees a l'ouverture. Pour les mettre a jour sans recharger la page :</p>
+<ol>
+<li>Cliquez sur <strong>Actualiser</strong> dans la barre de ruban</li>
+<li>Toutes les cartes se mettent a jour avec les donnees les plus recentes</li>
+</ol>
+
+<h3>4. Exporter le tableau de bord</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter tableau de bord</strong> dans le ruban</li>
+<li>Un fichier est telecharge avec toutes les statistiques affichees</li>
+<li>Utile pour les rapports hebdomadaires ou les reunions d'equipe</li>
+</ol>
+
+<hr>
+
+<h2>Workflows complets</h2>
+
+<h3>Scenario 1 : Routine matinale du gestionnaire</h3>
+
+<ol>
+<li>Connectez-vous a <code>/admin</code></li>
+<li>Le tableau de bord s'affiche automatiquement</li>
+<li>Regardez les <strong>commandes en attente</strong> — si > 0, allez traiter les commandes</li>
+<li>Verifiez les <strong>alertes stock</strong> — si > 0, planifiez un reapprovisionnement</li>
+<li>Cliquez sur <strong>Obtenir le Briefing</strong> pour voir les priorites IA</li>
+<li>Traitez les priorites dans l'ordre recommande</li>
+</ol>
+
+<h3>Scenario 2 : Rapport hebdomadaire pour l'equipe</h3>
+
+<ol>
+<li>Chaque lundi, ouvrez le tableau de bord</li>
+<li>Cliquez sur <strong>Exporter tableau de bord</strong></li>
+<li>Ouvrez le fichier dans Excel</li>
+<li>Comparez avec la semaine precedente</li>
+<li>Identifiez les tendances (hausse/baisse ventes, nouveaux clients)</li>
+<li>Partagez avec l'equipe</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<h3>Q : Les donnees sont-elles en temps reel ?</h3>
+<p><strong>R</strong> : Les donnees sont chargees a l'ouverture de la page. Pour obtenir les donnees les plus recentes, cliquez sur <strong>Actualiser</strong> dans le ruban.</p>
+
+<h3>Q : Le revenu inclut-il les taxes ?</h3>
+<p><strong>R</strong> : Oui, le "Revenu du mois" inclut les taxes. C'est le montant total facture aux clients.</p>
+
+<h3>Q : Le briefing IA est-il fiable ?</h3>
+<p><strong>R</strong> : Le briefing est base sur vos donnees reelles. Il identifie les priorites objectives (commandes en retard, stock bas). Les recommandations strategiques sont des suggestions, pas des obligations.</p>
+
+<h3>Q : Puis-je personnaliser les cartes affichees ?</h3>
+<p><strong>R</strong> : Pas encore. Les 7 cartes sont fixes. Une future mise a jour pourrait permettre la personnalisation.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>B2B</strong></td><td>Business-to-Business — ventes entre entreprises (distributeurs, ambassadeurs)</td></tr>
+  <tr><td><strong>B2C</strong></td><td>Business-to-Consumer — ventes aux clients individuels</td></tr>
+  <tr><td><strong>CAD</strong></td><td>Dollar canadien</td></tr>
+  <tr><td><strong>Briefing IA</strong></td><td>Rapport de priorites genere automatiquement par l'intelligence artificielle</td></tr>
+  <tr><td><strong>Insights</strong></td><td>Analyses et tendances extraites automatiquement des donnees</td></tr>
+  <tr><td><strong>Alerte stock</strong></td><td>Notification quand un produit est en dessous de son seuil d'alerte</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="../02-commerce/01-commandes.md">Commandes</a> — Gerer les commandes en attente</li>
+<li><a href="../02-commerce/05-inventaire.md">Inventaire</a> — Traiter les alertes de stock</li>
+<li><a href="../03-catalogue/01-produits.md">Produits</a> — Voir les produits actifs</li>
+<li><a href="../02-commerce/02-clients.md">Clients</a> — Details des clients</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

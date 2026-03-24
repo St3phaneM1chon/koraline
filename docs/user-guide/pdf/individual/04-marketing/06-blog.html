@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion du Blog &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 04 — Marketing</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion du Blog</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Marketing > Blog</p>
+<p><strong>URL</strong>: <code>/admin/blog</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Blog</strong> permet de gerer les articles publies sur la section blog de votre boutique BioCycle Peptides. Le blog est un outil essentiel pour le referencement (SEO) et l'engagement des clients : il attire du trafic organique via les moteurs de recherche et positionne votre marque comme une reference dans le domaine des peptides de recherche.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir la liste de tous les articles (publies et brouillons)</li>
+<li>Rechercher un article par titre ou extrait</li>
+<li>Filtrer les articles par statut (tous, publies, brouillons)</li>
+<li>Creer un nouvel article</li>
+<li>Modifier un article existant</li>
+<li>Previsualiser un article sur le site public</li>
+<li>Consulter l'auteur et la date de publication de chaque article</li>
+</ul>
+
+<hr>
+
+<h2>Concepts pour les debutants</h2>
+
+<h3>Pourquoi tenir un blog ?</h3>
+
+<p>Un blog professionnel sur un site e-commerce sert plusieurs objectifs :</p>
+<ul>
+<li><strong>SEO</strong> (Search Engine Optimization) : Les articles contenant des mots-cles pertinents aident votre site a apparaitre plus haut dans Google</li>
+<li><strong>Credibilite</strong> : Des articles informatifs sur les peptides renforcent la confiance des clients</li>
+<li><strong>Engagement</strong> : Le contenu interessant incite les visiteurs a revenir et a s'inscrire a la newsletter</li>
+<li><strong>Conversion</strong> : Des articles bien rediges peuvent orienter les lecteurs vers vos produits</li>
+</ul>
+
+<h3>Statuts d'un article</h3>
+
+<table>
+<thead>
+    <tr><th>Statut</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Publie</strong></td><td>L'article est visible sur le site public</td></tr>
+  <tr><td><strong>Brouillon</strong></td><td>L'article est en cours de redaction, invisible pour les visiteurs</td></tr>
+</tbody>
+</table>
+<h3>Anatomie d'un article</h3>
+
+<ul>
+<li><strong>Titre</strong> : Le titre principal de l'article</li>
+<li><strong>Slug</strong> : L'identifiant URL de l'article (genere automatiquement a partir du titre)</li>
+<li><strong>Extrait</strong> : Un court resume qui apparait dans les listes d'articles</li>
+<li><strong>Contenu</strong> : Le corps de l'article en format riche</li>
+<li><strong>Auteur</strong> : La personne qui a ecrit l'article</li>
+<li><strong>Date de publication</strong> : La date a laquelle l'article a ete rendu public</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Marketing</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong>, cliquez sur <strong>Blog</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Cliquez sur l'icone de la section <strong>Marketing</strong> dans le rail</li>
+<li>Cliquez sur <strong>Blog</strong></li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche (ou tapez <code>/</code>)</li>
+<li>Tapez "blog" ou "articles"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>La page Blog utilise un layout en <strong>tableau</strong> plutot que le layout master/detail Outlook.</p>
+
+<h3>1. L'en-tete de page</h3>
+
+<p>En haut, vous trouvez :</p>
+<ul>
+<li>Le titre "Blog" et le sous-titre</li>
+<li>Le bouton <strong>Nouvel article</strong> qui ouvre l'editeur de creation</li>
+</ul>
+
+<h3>2. Les filtres et la recherche</h3>
+
+<p>Sous l'en-tete :</p>
+<ul>
+<li><strong>Barre de recherche</strong> : Tapez un mot pour filtrer les articles par titre</li>
+<li><strong>Boutons de filtre</strong> : Trois options</li>
+<li><strong>Tous</strong> : Affiche tous les articles</li>
+<li><strong>Publies</strong> : Affiche uniquement les articles publies</li>
+<li><strong>Brouillons</strong> : Affiche uniquement les brouillons</li>
+</ul>
+
+<h3>3. Le tableau des articles</h3>
+
+<p>Un tableau avec quatre colonnes :</p>
+
+<table>
+<thead>
+    <tr><th>Colonne</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Article</strong></td><td>Titre de l'article et extrait (premiere ligne tronquee)</td></tr>
+  <tr><td><strong>Statut</strong></td><td>Badge "Publie" (vert) ou "Brouillon" (gris)</td></tr>
+  <tr><td><strong>Date</strong></td><td>Date de publication ou de creation</td></tr>
+  <tr><td><strong>Actions</strong></td><td>Boutons pour voir l'article sur le site (oeil) ou le modifier (crayon)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer un nouvel article</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvel article</strong> en haut a droite</li>
+<li>Vous etes redirige vers la page d'edition <code>/admin/blog/new</code></li>
+<li>Remplissez les champs :</li>
+</ol>
+<ul>
+<li>Titre</li>
+<li>Contenu (editeur riche)</li>
+<li>Extrait (resume)</li>
+<li>Categorie</li>
+<li>Mots-cles SEO</li>
+</ul>
+<ol>
+<li>Choisissez de publier immediatement ou de sauvegarder comme brouillon</li>
+<li>Sauvegardez</li>
+</ol>
+
+<h3>2. Modifier un article existant</h3>
+
+<ol>
+<li>Dans le tableau, trouvez l'article a modifier</li>
+<li>Cliquez sur l'icone <strong>crayon</strong> dans la colonne Actions</li>
+<li>Vous etes redirige vers la page d'edition <code>/admin/blog/[id]/edit</code></li>
+<li>Modifiez les champs souhaites</li>
+<li>Sauvegardez</li>
+</ol>
+
+<h3>3. Previsualiser un article sur le site public</h3>
+
+<ol>
+<li>Dans le tableau, trouvez l'article</li>
+<li>Cliquez sur l'icone <strong>oeil</strong> dans la colonne Actions</li>
+<li>L'article s'ouvre dans un nouvel onglet a l'adresse <code>/blog/[slug]</code></li>
+</ol>
+
+<h3>4. Rechercher un article</h3>
+
+<p>Tapez un mot ou une expression dans la barre de recherche. La liste se filtre instantanement. La recherche porte sur le titre de l'article.</p>
+
+<h3>5. Filtrer par statut</h3>
+
+<p>Cliquez sur <strong>Tous</strong>, <strong>Publies</strong> ou <strong>Brouillons</strong> pour afficher uniquement les articles correspondants. Le filtre actif est mis en evidence.</p>
+
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario A : Publier un article sur un nouveau peptide</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvel article</strong></li>
+<li>Titre : "BPC-157 : Guide complet pour la recherche"</li>
+<li>Redigez un contenu detaille avec les proprietes, les protocoles de recherche, et les references scientifiques</li>
+<li>Ajoutez un extrait : "Tout ce que les chercheurs doivent savoir sur le BPC-157, du mecanisme d'action aux protocoles de dosage."</li>
+<li>Publiez l'article</li>
+<li>Partagez le lien dans votre prochaine newsletter</li>
+</ol>
+
+<h3>Scenario B : Gerer les brouillons en attente de relecture</h3>
+
+<ol>
+<li>Filtrez sur <strong>Brouillons</strong></li>
+<li>Parcourez la liste des articles en attente</li>
+<li>Ouvrez chaque brouillon pour le relire et le corriger</li>
+<li>Quand un article est pret, changez son statut en "Publie"</li>
+</ol>
+
+<h3>Scenario C : Verifier le contenu publie sur le site</h3>
+
+<ol>
+<li>Filtrez sur <strong>Publies</strong></li>
+<li>Pour chaque article, cliquez sur l'icone oeil pour le visualiser tel qu'il apparait aux visiteurs</li>
+<li>Verifiez la mise en forme, les liens, et les images</li>
+<li>Si une correction est necessaire, cliquez sur le crayon pour editer</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Le blog est-il disponible dans plusieurs langues ?</strong></p>
+<p>R: Les articles sont rediges dans la langue de votre choix. Le systeme de traduction du site gere les elements d'interface (menus, boutons) dans les 22 langues supportees.</p>
+
+<p><strong>Q: Comment les articles apparaissent-ils sur le site public ?</strong></p>
+<p>R: Les articles publies sont visibles sur la page <code>/blog</code> du site. Chaque article a sa propre URL basee sur son slug (par exemple <code>/blog/bpc-157-guide-complet</code>).</p>
+
+<p><strong>Q: Puis-je programmer la publication d'un article a une date future ?</strong></p>
+<p>R: Le champ "date de publication" permet de definir quand l'article sera considere comme publie. Sauvegardez-le comme brouillon et changez son statut a la date souhaitee, ou utilisez le champ de date de publication.</p>
+
+<p><strong>Q: Comment optimiser mes articles pour le SEO ?</strong></p>
+<p>R: Utilisez des titres descriptifs avec des mots-cles pertinents, redigez un extrait accrocheur, structurez le contenu avec des sous-titres, et incluez des liens vers vos pages produit.</p>
+
+<hr>
+
+<h2>Strategie expert : contenu blog pour un e-commerce de peptides</h2>
+
+<h3>ATTENTION CONFORMITE SANTE CANADA</h3>
+
+<p><strong>REGLE ABSOLUE</strong> : Ne JAMAIS faire de claims medicaux dans les articles de blog. Sante Canada classe les peptides comme des produits de recherche, pas comme des medicaments ou des supplements de sante. Toute affirmation therapeutique ("le BPC-157 guerit les blessures", "l'Ipamorelin fait perdre du poids") peut entrainer des poursuites, des amendes et le retrait de vos produits.</p>
+
+<p><strong>Formulations a utiliser SYSTEMATIQUEMENT</strong> :</p>
+<ul>
+<li>"Pour usage en recherche uniquement" (a inclure dans chaque article)</li>
+<li>"Les etudes suggerent que..." (jamais "le BPC-157 fait...")</li>
+<li>"Dans un contexte de recherche scientifique..." (pas "pour votre sante...")</li>
+<li>"Les chercheurs ont observe que..." (pas "vous constaterez que...")</li>
+<li>"Ce contenu est a titre informatif et ne constitue pas un avis medical"</li>
+</ul>
+
+<p><strong>Avertissement a inserer dans chaque article</strong> :</p>
+<blockquote>
+<p>AVERTISSEMENT : Les peptides vendus par BioCycle Peptides sont destines exclusivement a la recherche scientifique. Ce contenu est fourni a titre educatif et ne constitue pas un avis medical. Consultez un professionnel de la sante pour toute question medicale.</p>
+</blockquote>
+
+<h3>Types de contenu recommandes</h3>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Objectif SEO</th><th>Frequence</th><th>Exemple</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Guide produit</strong></td><td>Mots-cles transactionnels</td><td>2/mois</td><td>"Guide du BPC-157 pour la recherche : proprietes, reconstitution, stockage"</td></tr>
+  <tr><td><strong>Tutoriel pratique</strong></td><td>Mots-cles informationnels</td><td>2/mois</td><td>"Comment reconstituer un peptide lyophilise : guide etape par etape"</td></tr>
+  <tr><td><strong>Revue scientifique</strong></td><td>Autorite et credibilite</td><td>1/mois</td><td>"Etudes recentes sur le GHK-Cu : revue de la litterature 2025-2026"</td></tr>
+  <tr><td><strong>Comparatif</strong></td><td>Mots-cles de decision</td><td>1/mois</td><td>"BPC-157 vs TB-500 : differences, usages en recherche, combinaison"</td></tr>
+  <tr><td><strong>FAQ approfondie</strong></td><td>Featured snippets Google</td><td>1/mois</td><td>"Questions frequentes sur l'eau bacteriostatique"</td></tr>
+  <tr><td><strong>Actualite</strong></td><td>Trafic de tendance</td><td>Au besoin</td><td>"Nouvelle reglementation Sante Canada 2026 : ce que les chercheurs doivent savoir"</td></tr>
+</tbody>
+</table>
+<h3>Calendrier editorial mensuel type</h3>
+
+<table>
+<thead>
+    <tr><th>Semaine</th><th>Type</th><th>Sujet</th><th>Mots-cles cibles</th></tr>
+</thead>
+<tbody>
+  <tr><td>Semaine 1</td><td>Guide produit</td><td>Focus sur un peptide phare</td><td>"acheter [peptide] Canada", "[peptide] recherche"</td></tr>
+  <tr><td>Semaine 2</td><td>Tutoriel pratique</td><td>Manipulation, stockage, reconstitution</td><td>"comment reconstituer peptide", "stockage peptide"</td></tr>
+  <tr><td>Semaine 3</td><td>Revue scientifique ou comparatif</td><td>Synthese d'etudes recentes</td><td>"[peptide] etudes", "[peptide A] vs [peptide B]"</td></tr>
+  <tr><td>Semaine 4</td><td>FAQ ou actualite</td><td>Reponses aux questions courantes</td><td>"peptides Canada legal", "eau bacteriostatique utilisation"</td></tr>
+</tbody>
+</table>
+<h3>Strategie SEO longue traine</h3>
+
+<p>Les mots-cles de longue traine (3 a 6 mots) ont moins de volume mais un taux de conversion beaucoup plus eleve pour un e-commerce de niche :</p>
+
+<table>
+<thead>
+    <tr><th>Mot-cle longue traine</th><th>Volume estime</th><th>Intention</th><th>Article cible</th></tr>
+</thead>
+<tbody>
+  <tr><td>"buy bpc-157 Canada"</td><td>500-1000/mois</td><td>Transactionnelle</td><td>Page produit + guide BPC-157</td></tr>
+  <tr><td>"how to reconstitute peptides"</td><td>2000-5000/mois</td><td>Informationnelle</td><td>Tutoriel reconstitution</td></tr>
+  <tr><td>"bpc-157 vs tb-500 research"</td><td>300-800/mois</td><td>Comparaison</td><td>Article comparatif</td></tr>
+  <tr><td>"bacteriostatic water for peptides"</td><td>1000-3000/mois</td><td>Informationnelle</td><td>Guide eau bacteriostatique</td></tr>
+  <tr><td>"peptide storage temperature"</td><td>500-1500/mois</td><td>Informationnelle</td><td>Guide stockage</td></tr>
+  <tr><td>"peptides for research Canada legal"</td><td>200-500/mois</td><td>Informationnelle</td><td>Article legalite</td></tr>
+</tbody>
+</table>
+<p><strong>Objectif</strong> : Chaque article cible 1 mot-cle principal et 3 a 5 mots-cles secondaires. Incluez le mot-cle principal dans le titre, l'extrait, le premier paragraphe et au moins 2 sous-titres.</p>
+
+<h3>Metriques de performance du blog</h3>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Cible mensuelle</th><th>Mesure dans</th></tr>
+</thead>
+<tbody>
+  <tr><td>Trafic organique blog</td><td>+10% mois/mois</td><td>Blog Analytics</td></tr>
+  <tr><td>Temps moyen sur page</td><td>> 3 minutes</td><td>Blog Analytics</td></tr>
+  <tr><td>Taux de rebond articles</td><td>< 60%</td><td>Blog Analytics</td></tr>
+  <tr><td>Clics vers pages produit depuis articles</td><td>> 5% des lecteurs</td><td>Blog Analytics</td></tr>
+  <tr><td>Inscriptions newsletter depuis blog</td><td>> 2% des lecteurs</td><td>Newsletter</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Blog</strong></td><td>Section du site dediee aux articles informatifs et marketing</td></tr>
+  <tr><td><strong>Article</strong></td><td>Un contenu textuel publie sur le blog</td></tr>
+  <tr><td><strong>Brouillon</strong></td><td>Un article en cours de redaction, non visible sur le site public</td></tr>
+  <tr><td><strong>Slug</strong></td><td>L'identifiant textuel utilise dans l'URL de l'article</td></tr>
+  <tr><td><strong>Extrait</strong></td><td>Un court resume de l'article affiche dans les listes</td></tr>
+  <tr><td><strong>SEO</strong></td><td>Search Engine Optimization -- techniques pour ameliorer le classement dans les moteurs de recherche</td></tr>
+  <tr><td><strong>Editeur riche</strong></td><td>Interface de redaction qui permet de formater le texte (gras, italique, titres, images, liens)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/blog/analytics">Blog Analytics</a> -- Statistiques detaillees du blog</li>
+<li><a href="/admin/newsletter">Newsletter</a> -- Relayer les articles par email</li>
+<li><a href="/admin/bannieres">Bannieres</a> -- Mettre en avant un article dans le carrousel hero</li>
+<li><a href="/admin/rapports">Rapports marketing</a> -- Analyser le trafic genere par le blog</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

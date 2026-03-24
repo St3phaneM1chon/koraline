@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automatisations, Workflows et Sequences &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 10 — CRM</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Automatisations, Workflows et Sequences</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Automatisation</p>
+<p><strong>URL</strong>: <code>/admin/crm/workflows</code>, <code>/admin/crm/campaigns</code>, <code>/admin/crm/sms-campaigns</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~30 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La section <strong>Automatisation</strong> regroupe tous les outils pour automatiser vos processus commerciaux : envoi d'emails, creation de taches, attribution de leads, sequences de nurturing, campagnes marketing, et controle qualite.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Creer des workflows automatises (si X alors Y)</li>
+<li>Configurer des sequences d'emails pour les leads et clients</li>
+<li>Lancer des campagnes email et SMS ciblees</li>
+<li>Automatiser l'attribution des leads aux representants</li>
+<li>Definir des regles de conformite et de controle qualite</li>
+<li>Creer des formulaires web capturant des leads</li>
+<li>Gerer des playbooks (guides de vente standardises)</li>
+<li>Suivre les performances des workflows et campagnes</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un workflow ?</h3>
+
+<p>Un <strong>workflow</strong> est une serie d'actions automatiques declenchees par un evenement. C'est comme un assistant invisible qui execute des taches a votre place.</p>
+
+<p><strong>Exemple concret</strong> :</p>
+<pre><code>EVENEMENT: Un nouveau lead est cree
+  → ACTION 1: Attribuer au representant de garde
+  → ACTION 2: Envoyer un email de bienvenue
+  → ATTENDRE: 2 jours
+  → CONDITION: Le lead a-t-il ouvert l'email ?
+    → OUI: Creer une tache "Appeler le lead"
+    → NON: Envoyer un deuxieme email</code></pre>
+
+<h3>Qu'est-ce qu'une sequence ?</h3>
+
+<p>Une <strong>sequence</strong> est une serie d'emails envoyes automatiquement a intervalle regulier. C'est un workflow simplifie, specialise dans l'email.</p>
+
+<p><strong>Exemple</strong> :</p>
+<ul>
+<li>Jour 0 : Email de bienvenue + presentation BioCycle</li>
+<li>Jour 3 : Email educatif sur les peptides</li>
+<li>Jour 7 : Temoignages de clients satisfaits</li>
+<li>Jour 14 : Offre speciale premiere commande</li>
+</ul>
+
+<h3>Qu'est-ce qu'une campagne ?</h3>
+
+<p>Une <strong>campagne</strong> est un envoi ponctuel d'un email ou SMS a un groupe de contacts. Contrairement a une sequence (automatique et continue), une campagne est un envoi unique, a une date precise.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<p>Les sous-pages de la section Automatisation sont dans le groupe <strong>Automatisation</strong> du panneau CRM :</p>
+
+<table>
+<thead>
+    <tr><th>Page</th><th>URL</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Workflows</strong></td><td><code>/admin/crm/workflows</code></td><td>Generateur de workflows</td></tr>
+  <tr><td><strong>Campagnes email</strong></td><td><code>/admin/crm/campaigns</code></td><td>Campagnes d'email marketing</td></tr>
+  <tr><td><strong>Campagnes SMS</strong></td><td><code>/admin/crm/sms-campaigns</code></td><td>Campagnes SMS</td></tr>
+  <tr><td><strong>Modeles SMS</strong></td><td><code>/admin/crm/sms-templates</code></td><td>Modeles de messages SMS</td></tr>
+  <tr><td><strong>Snippets</strong></td><td><code>/admin/crm/snippets</code></td><td>Blocs de texte reutilisables</td></tr>
+  <tr><td><strong>Base de connaissances</strong></td><td><code>/admin/crm/knowledge-base</code></td><td>Articles d'aide pour l'equipe</td></tr>
+  <tr><td><strong>Tickets</strong></td><td><code>/admin/crm/tickets</code></td><td>Support client integre</td></tr>
+  <tr><td><strong>Conformite</strong></td><td><code>/admin/crm/compliance</code></td><td>Regles de conformite (Loi 25, LPRPDE)</td></tr>
+  <tr><td><strong>Controle qualite</strong></td><td><code>/admin/crm/qa</code></td><td>Evaluation de la qualite des interactions</td></tr>
+  <tr><td><strong>Formulaires</strong></td><td><code>/admin/crm/forms</code></td><td>Formulaires web capturant des leads</td></tr>
+  <tr><td><strong>Playbooks</strong></td><td><code>/admin/crm/playbooks</code></td><td>Guides de vente standardises</td></tr>
+  <tr><td><strong>Analyse workflows</strong></td><td><code>/admin/crm/workflow-analytics</code></td><td>Performances des automatisations</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer un workflow</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/workflows</code></p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau workflow</strong></li>
+<li>Choisissez un <strong>declencheur</strong> (trigger) :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Declencheur</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau lead</strong></td><td>Quand un lead est cree</td></tr>
+  <tr><td><strong>Deal change d'etape</strong></td><td>Quand un deal passe a une nouvelle etape</td></tr>
+  <tr><td><strong>Contact modifie</strong></td><td>Quand les informations d'un contact changent</td></tr>
+  <tr><td><strong>Tag ajoute</strong></td><td>Quand un tag specifique est ajoute a un contact</td></tr>
+  <tr><td><strong>Formulaire soumis</strong></td><td>Quand un formulaire web est rempli</td></tr>
+  <tr><td><strong>Commande passee</strong></td><td>Quand un client passe une commande</td></tr>
+  <tr><td><strong>Inactivite</strong></td><td>Quand un contact est inactif depuis X jours</td></tr>
+  <tr><td><strong>Score atteint</strong></td><td>Quand le lead scoring atteint un seuil</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Ajoutez des <strong>actions</strong> en sequence :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Action</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Envoyer email</strong></td><td>Envoyer un email automatique (choisir un modele)</td></tr>
+  <tr><td><strong>Envoyer SMS</strong></td><td>Envoyer un SMS (necessite un modele SMS)</td></tr>
+  <tr><td><strong>Creer tache</strong></td><td>Creer une tache pour un representant</td></tr>
+  <tr><td><strong>Modifier contact</strong></td><td>Mettre a jour un champ du contact</td></tr>
+  <tr><td><strong>Ajouter tag</strong></td><td>Ajouter un tag au contact</td></tr>
+  <tr><td><strong>Assigner</strong></td><td>Attribuer le contact a un representant</td></tr>
+  <tr><td><strong>Notifier</strong></td><td>Envoyer une notification a un membre de l'equipe</td></tr>
+  <tr><td><strong>Attendre</strong></td><td>Pause de X minutes/heures/jours avant l'action suivante</td></tr>
+  <tr><td><strong>Condition</strong></td><td>Branchement si/sinon selon un critere</td></tr>
+  <tr><td><strong>Webhook</strong></td><td>Appeler un service externe</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Connectez les actions entre elles en glissant-deposant les connecteurs</li>
+<li>Cliquez sur <strong>Sauvegarder</strong> puis <strong>Activer</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Attention</strong> : Testez toujours un workflow avec un contact de test avant de l'activer pour tous.</p>
+</blockquote>
+
+<h3>2. Creer une campagne email</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/campaigns</code></p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouvelle campagne</strong></li>
+<li>Definissez les parametres :</li>
+</ol>
+<ul>
+<li><strong>Nom</strong> de la campagne</li>
+<li><strong>Expediteur</strong> : nom et email de l'expediteur</li>
+<li><strong>Objet</strong> : la ligne d'objet de l'email</li>
+<li><strong>Audience</strong> : selectionnez une liste ou un segment</li>
+</ul>
+<ol>
+<li>Redigez le contenu :</li>
+</ol>
+<ul>
+<li>Utilisez l'editeur visuel (drag & drop)</li>
+<li>Ou collez du HTML pour les utilisateurs avances</li>
+<li>Inserez des variables de personnalisation ({prenom}, {entreprise}, etc.)</li>
+</ul>
+<ol>
+<li><strong>Previsualiser</strong> : verifiez le rendu sur desktop et mobile</li>
+<li><strong>Tester</strong> : envoyez-vous un email de test</li>
+<li><strong>Planifier</strong> ou <strong>Envoyer maintenant</strong></li>
+</ol>
+
+<p><strong>Metriques suivies apres l'envoi</strong> :</p>
+<ul>
+<li>Taux d'ouverture (%)</li>
+<li>Taux de clic (%)</li>
+<li>Taux de desabonnement (%)</li>
+<li>Taux de rebond (emails invalides)</li>
+<li>Conversions (si lien vers la boutique)</li>
+</ul>
+
+<h3>3. Creer une campagne SMS</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/sms-campaigns</code></p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouvelle campagne SMS</strong></li>
+<li>Selectionnez un <strong>modele SMS</strong> ou redigez le message (max 160 caracteres)</li>
+<li>Choisissez l'<strong>audience</strong> (liste ou segment)</li>
+<li>Planifiez l'envoi</li>
+<li>Le systeme verifie que les contacts ont un numero de telephone valide</li>
+</ol>
+
+<blockquote>
+<p><strong>Important</strong> : Les SMS sont soumis a la legislation canadienne (LPRPDE/Loi 25). Le consentement du contact est obligatoire avant l'envoi.</p>
+</blockquote>
+
+<h3>4. Conformite et consentement</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/compliance</code></p>
+
+<p>Cette page gere :</p>
+<ul>
+<li><strong>Consentements</strong> : quels contacts ont accepte de recevoir des communications</li>
+<li><strong>Loi 25 (Quebec)</strong> : gestion des preferences de confidentialite</li>
+<li><strong>LPRPDE (federal)</strong> : conformite a la loi canadienne sur la protection des renseignements</li>
+<li><strong>Desabonnements</strong> : traitement automatique des demandes de retrait</li>
+<li><strong>Journal d'audit</strong> : tracabilite de tous les consentements (quand, comment, par qui)</li>
+</ul>
+
+<h3>5. Playbooks de vente</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/playbooks</code></p>
+
+<p>Un <strong>playbook</strong> est un guide standardise que vos representants suivent pour un processus specifique :</p>
+<ul>
+<li><strong>Playbook premier appel</strong> : quoi dire, quelles questions poser</li>
+<li><strong>Playbook objections prix</strong> : reponses aux objections courantes</li>
+<li><strong>Playbook upsell</strong> : comment proposer des produits complementaires</li>
+<li><strong>Playbook reactivation</strong> : comment recuperer un client inactif</li>
+</ul>
+
+<h3>6. Boite de reception unifiee</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/inbox</code></p>
+
+<p>La boite de reception centralise :</p>
+<ul>
+<li>Emails recus des contacts</li>
+<li>Messages de formulaires web</li>
+<li>Conversations chat en direct</li>
+<li>Reponses aux campagnes</li>
+</ul>
+
+<p>Chaque message est automatiquement associe a la fiche contact correspondante.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Sequence de bienvenue nouveau client</h3>
+<ol>
+<li><strong>Declencheur</strong> : Premiere commande passee</li>
+<li><strong>Jour 0</strong> : Email de remerciement + confirmation commande</li>
+<li><strong>Jour 3</strong> : Email "Comment utiliser vos peptides" (guide)</li>
+<li><strong>Jour 7</strong> : Email demandant un avis sur le produit</li>
+<li><strong>Jour 30</strong> : Email avec offre de reabonnement</li>
+</ol>
+
+<h3>Workflow d'attribution automatique des leads</h3>
+<ol>
+<li><strong>Declencheur</strong> : Nouveau lead cree</li>
+<li><strong>Condition</strong> : Source du lead ?</li>
+</ol>
+<ul>
+<li>Si formulaire B2B → assigner au representant B2B</li>
+<li>Si boutique en ligne → assigner en round-robin</li>
+<li>Si salon professionnel → assigner au representant terrain</li>
+</ul>
+<ol>
+<li><strong>Action</strong> : Creer une tache "Premier contact" echeance 24h</li>
+<li><strong>Action</strong> : Envoyer un email de confirmation au lead</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Combien de workflows puis-je avoir actifs en meme temps ?</strong></p>
+<p>R : Il n'y a pas de limite technique. Cependant, il est recommande de garder vos workflows organises et de desactiver ceux qui ne sont plus pertinents.</p>
+
+<p><strong>Q : Comment savoir si mes campagnes sont efficaces ?</strong></p>
+<p>R : Consultez la page Analyse workflows (<code>/admin/crm/workflow-analytics</code>) pour les workflows, et les statistiques de chaque campagne (taux d'ouverture, clics, conversions).</p>
+
+<p><strong>Q : Les emails sont-ils envoyes immediatement ?</strong></p>
+<p>R : Les campagnes planifiees sont envoyees a l'heure prevue. Les emails de workflow sont envoyes en temps reel quand le declencheur se produit. L'action "Attendre" permet de retarder l'envoi.</p>
+
+<p><strong>Q : Comment eviter de spammer mes contacts ?</strong></p>
+<p>R : Le systeme inclut des protections : un meme contact ne recevra pas plus d'un email automatique par jour (configurable). Les contacts desabonnes sont automatiquement exclus.</p>
+
+<hr>
+
+<h2>Strategie expert : les 10 automatisations essentielles pour une PME e-commerce</h2>
+
+<h3>Vue d'ensemble</h3>
+
+<p>Ces 10 automatisations couvrent les besoins fondamentaux d'une PME e-commerce de peptides au Quebec. Implementez-les dans cet ordre de priorite (les premieres generent le plus de valeur le plus rapidement).</p>
+
+<h3>1. Bienvenue nouveau inscrit</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Inscription newsletter ou creation de compte</li>
+<li><strong>Actions</strong> : Email bienvenue (immediat) → Delai 3j → Email educatif → Delai 4j → Email code promo premiere commande</li>
+<li><strong>Impact</strong> : Conversion inscrit → acheteur de 10-15%</li>
+</ul>
+
+<h3>2. Abandon de panier</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Produit en panier, pas de checkout en 1 heure</li>
+<li><strong>Actions</strong> : Email rappel (H+1) → Delai 23h → Email avec FAQ produit (H+24) → Delai 48h → Email avec 10% (H+72)</li>
+<li><strong>Impact</strong> : Recuperation de 5-15% des paniers abandonnes</li>
+</ul>
+
+<h3>3. Post-achat et cross-sell</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Commande confirmee</li>
+<li><strong>Actions</strong> : Email merci (J+1) → Delai 6j → Email guide utilisation + cross-sell (J+7) → Delai 23j → Email rappel reachat (J+30)</li>
+<li><strong>Impact</strong> : Augmentation du taux de reachat de 20-30%</li>
+</ul>
+
+<h3>4. Rappel de reapprovisionnement</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Delai estime depuis le dernier achat (30, 60, 90 jours selon le produit)</li>
+<li><strong>Actions</strong> : Email "Il est temps de reapprovisionner votre [peptide]" avec bouton de recommande rapide</li>
+<li><strong>Impact</strong> : 8-12% de taux de conversion, revenu recurrent previsible</li>
+</ul>
+
+<h3>5. Reactivation client inactif</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Pas de commande depuis 60 jours ET au moins 1 commande passee</li>
+<li><strong>Actions</strong> : Email "Vous nous manquez" + 15% (J+60) → Delai 15j → Email derniere chance (J+75)</li>
+<li><strong>Impact</strong> : Reactivation de 3-8% des clients dormants</li>
+</ul>
+
+<h3>6. Attribution automatique des leads</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Nouveau lead cree (formulaire, import, scraper)</li>
+<li><strong>Actions</strong> : Condition source → Si B2B : assigner au representant B2B. Si B2C : round-robin entre representants. Creer tache "Premier contact" echeance 24h</li>
+<li><strong>Impact</strong> : Reduction du temps de premier contact de 72h a < 24h</li>
+</ul>
+
+<h3>7. Demande d'avis apres livraison</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Commande livree (statut = delivered)</li>
+<li><strong>Actions</strong> : Delai 5j → Email demande d'avis avec lien direct. Si pas d'avis apres 7j → Rappel avec incitatif (5% prochaine commande)</li>
+<li><strong>Impact</strong> : Social proof, amelioration du taux de conversion page produit</li>
+</ul>
+
+<h3>8. Alerte stock bas pour clients interesses</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Stock d'un produit < seuil defini</li>
+<li><strong>Actions</strong> : Notifier l'equipe interne → Si "Alerte stock" activee sur la fiche contact, envoyer un email "Stock limite : commandez maintenant"</li>
+<li><strong>Impact</strong> : Urgence naturelle, acceleration des achats</li>
+</ul>
+
+<h3>9. Notification interne pour commandes VIP</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Commande > 500 $CA OU client tag "VIP" commande</li>
+<li><strong>Actions</strong> : Notification Slack/email a l'equipe → Creer tache "Suivi personnalise" pour le representant</li>
+<li><strong>Impact</strong> : Service client haut de gamme pour les meilleurs clients</li>
+</ul>
+
+<h3>10. Anniversaire et dates cles</h3>
+
+<ul>
+<li><strong>Declencheur</strong> : Date d'anniversaire du client OU anniversaire de premiere commande</li>
+<li><strong>Actions</strong> : Email personnalise + code promo exclusif 20% valide 7 jours</li>
+<li><strong>Impact</strong> : Taux de conversion de 10-15%, renforcement de la relation</li>
+</ul>
+
+<h2>Strategie expert : conformite Loi 25 du Quebec</h2>
+
+<h3>Qu'est-ce que la Loi 25 ?</h3>
+
+<p>La Loi 25 (anciennement Projet de loi 64) est la loi quebecoise modernisant la protection des renseignements personnels. Entree en vigueur par etapes depuis 2022, elle impose des obligations strictes aux entreprises qui collectent, utilisent ou communiquent des renseignements personnels de residants du Quebec.</p>
+
+<h3>Obligations principales pour BioCycle Peptides</h3>
+
+<p><strong>1. Responsable de la protection des renseignements personnels</strong></p>
+<ul>
+<li>Designez une personne responsable (par defaut : le dirigeant de l'entreprise)</li>
+<li>Publiez son titre et ses coordonnees sur le site web</li>
+<li>Cette personne supervise la conformite et repond aux demandes des individus</li>
+</ul>
+
+<p><strong>2. Consentement clair et eclaire</strong></p>
+<ul>
+<li>Le consentement doit etre donne pour chaque finalite separement (marketing, newsletter, profil client)</li>
+<li>Le consentement doit etre explicite (pas de cases pre-cochees)</li>
+<li>L'individu peut retirer son consentement a tout moment</li>
+<li>Conservez la preuve du consentement (date, methode, texte presente)</li>
+</ul>
+
+<p><strong>3. Politique de confidentialite obligatoire</strong></p>
+<ul>
+<li>Accessible en langage clair sur votre site</li>
+<li>Doit decrire : quels renseignements sont collectes, pourquoi, comment, combien de temps, avec qui ils sont partages</li>
+<li>Mise a jour obligatoire a chaque changement</li>
+</ul>
+
+<p><strong>4. Droit d'acces et de rectification</strong></p>
+<ul>
+<li>Tout individu peut demander : quels renseignements vous detenez sur lui, les corriger, ou les faire supprimer</li>
+<li>Delai de reponse : 30 jours</li>
+<li>Ce droit s'exerce via un formulaire ou un email a la personne responsable</li>
+</ul>
+
+<p><strong>5. Droit a l'oubli (desindexation)</strong></p>
+<ul>
+<li>Un individu peut demander que ses renseignements soient desindexes ou anonymises</li>
+<li>Si les renseignements ne sont plus necessaires a la finalite initiale, vous devez les supprimer</li>
+</ul>
+
+<p><strong>6. Registre des incidents de confidentialite</strong></p>
+<ul>
+<li>OBLIGATOIRE : tenir un registre de tout incident impliquant un acces non autorise a des renseignements personnels</li>
+<li>Un "incident" inclut : fuite de donnees, acces non autorise, perte de donnees, envoi d'email au mauvais destinataire</li>
+<li>Notification obligatoire a la Commission d'acces a l'information du Quebec (CAI) et aux personnes concernees si l'incident presente un "risque serieux de prejudice"</li>
+</ul>
+
+<h3>Actions dans Koraline pour la conformite</h3>
+
+<table>
+<thead>
+    <tr><th>Obligation</th><th>Fonctionnalite Koraline</th><th>Emplacement</th></tr>
+</thead>
+<tbody>
+  <tr><td>Consentement</td><td>Champ "Consentement CASL/Loi 25" sur chaque contact avec date et methode</td><td>CRM > Contacts > Fiche contact</td></tr>
+  <tr><td>Droit d'acces</td><td>Exporter les donnees d'un contact en CSV</td><td>CRM > Contacts > Exporter</td></tr>
+  <tr><td>Droit a l'oubli</td><td>Anonymiser un contact (remplacer les donnees par des placeholders)</td><td>CRM > Contacts > Menu actions</td></tr>
+  <tr><td>Desabonnement</td><td>Traitement automatique et instantane</td><td>Automatique via lien desabonnement</td></tr>
+  <tr><td>Registre des incidents</td><td>Page dediee dans la section Conformite</td><td>CRM > Automatisation > Conformite</td></tr>
+  <tr><td>Audit trail</td><td>Journal de tous les consentements et modifications</td><td>CRM > Automatisation > Conformite</td></tr>
+</tbody>
+</table>
+<h3>Penalites Loi 25</h3>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Montant maximum</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Personne physique</strong></td><td>50 000 $CA</td></tr>
+  <tr><td><strong>Entreprise (sanction administrative)</strong></td><td>10 000 000 $CA ou 2% du chiffre d'affaires mondial</td></tr>
+  <tr><td><strong>Entreprise (sanction penale)</strong></td><td>25 000 000 $CA ou 4% du chiffre d'affaires mondial</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Workflow</strong></td><td>Serie d'actions automatiques declenchees par un evenement</td></tr>
+  <tr><td><strong>Declencheur</strong></td><td>L'evenement qui lance un workflow (trigger)</td></tr>
+  <tr><td><strong>Sequence</strong></td><td>Serie d'emails automatiques envoyes a intervalle regulier</td></tr>
+  <tr><td><strong>Campagne</strong></td><td>Envoi ponctuel d'un email/SMS a un groupe de contacts</td></tr>
+  <tr><td><strong>Playbook</strong></td><td>Guide standardise pour un processus de vente</td></tr>
+  <tr><td><strong>Nurturing</strong></td><td>Processus de "nourrissage" d'un lead par du contenu regulier</td></tr>
+  <tr><td><strong>A/B testing</strong></td><td>Tester deux versions d'un email pour voir laquelle performe mieux</td></tr>
+  <tr><td><strong>Snippet</strong></td><td>Bloc de texte reutilisable dans les emails</td></tr>
+  <tr><td><strong>Conformite</strong></td><td>Respect des lois sur la protection des donnees (Loi 25, LPRPDE)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/lists">Listes et Segments</a> : Audiences pour les campagnes</li>
+<li><a href="/admin/crm/contacts">Contacts</a> : Destinataires des communications</li>
+<li><a href="/admin/crm/leads">Leads</a> : Prospects a nourrir par sequences</li>
+<li><a href="/admin/crm/dialer">Centre d'appels</a> : Appels integres aux workflows</li>
+<li><a href="/admin/crm/analytics">Rapports</a> : Performances des campagnes et workflows</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

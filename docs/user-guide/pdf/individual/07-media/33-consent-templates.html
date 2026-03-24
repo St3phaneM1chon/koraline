@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modeles de Consentement &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 07 — Media</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Modeles de Consentement</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Media > Gestion de Contenu > Modeles de Consentement</p>
+<p><strong>URL</strong>: <code>/admin/media/consent-templates</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Modeles de Consentement</strong> permet de creer, modifier et gerer les formulaires de consentement envoyes a vos clients. Chaque modele definit les questions posees, le texte legal et le type de consentement.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir tous les modeles de consentement existants avec leur statut</li>
+<li>Creer un nouveau modele avec un constructeur de questions visuel</li>
+<li>Modifier un modele existant (nom, description, questions, texte legal)</li>
+<li>Activer ou desactiver un modele</li>
+<li>Supprimer un modele inutilise (sans consentements associes)</li>
+<li>Gerer les versions des modeles</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Modele (Template)</strong></td><td>Formulaire pre-configure reutilisable pour les demandes de consentement</td></tr>
+  <tr><td><strong>Question</strong></td><td>Element du formulaire (case a cocher, champ texte ou signature)</td></tr>
+  <tr><td><strong>Texte legal</strong></td><td>Clause juridique affichee au client avant la signature</td></tr>
+  <tr><td><strong>Version</strong></td><td>Numero de version du modele (incremente a chaque modification)</td></tr>
+  <tr><td><strong>Actif/Inactif</strong></td><td>Un modele actif est disponible pour de nouvelles demandes</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Allez dans <strong>Media</strong> dans la barre de navigation</li>
+<li>Cliquez sur <strong>Modeles de Consentement</strong> dans le panneau lateral</li>
+<li>Ou naviguez vers <code>/admin/media/consent-templates</code></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. En-tete</h3>
+<ul>
+<li>Titre <strong>Modeles de Consentement</strong> avec icone</li>
+<li>Bouton <strong>Creer un modele</strong> pour en ajouter un nouveau</li>
+</ul>
+
+<h3>2. Formulaire de creation/modification</h3>
+<p>Quand vous creez ou modifiez un modele, un formulaire detaille apparait :</p>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Description</th><th>Obligatoire</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nom</strong></td><td>Nom du modele (ex: "Consentement video standard")</td><td>Oui</td></tr>
+  <tr><td><strong>Type</strong></td><td>Apparition video, Temoignage, Photo, Etude de cas, Marketing, Autre</td><td>Oui</td></tr>
+  <tr><td><strong>Description</strong></td><td>Description interne du modele</td><td>Non</td></tr>
+  <tr><td><strong>Questions</strong></td><td>Liste de questions configurables (voir ci-dessous)</td><td>Oui (min. 1)</td></tr>
+  <tr><td><strong>Texte legal</strong></td><td>Clause juridique en format libre</td><td>Non</td></tr>
+  <tr><td><strong>Actif</strong></td><td>Case a cocher pour rendre le modele disponible</td><td>Oui</td></tr>
+</tbody>
+</table>
+<h3>3. Constructeur de questions</h3>
+<p>Chaque question comprend :</p>
+
+<table>
+<thead>
+    <tr><th>Element</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Texte de la question</strong></td><td>Le libelle affiche au client</td></tr>
+  <tr><td><strong>Type</strong></td><td>Case a cocher (checkbox), Champ texte (text) ou Signature (signature)</td></tr>
+  <tr><td><strong>Obligatoire</strong></td><td>Si le client doit obligatoirement repondre</td></tr>
+  <tr><td><strong>Poignee de deplacement</strong></td><td>Pour reorganiser l'ordre des questions</td></tr>
+  <tr><td><strong>Bouton supprimer</strong></td><td>Pour retirer une question</td></tr>
+</tbody>
+</table>
+<h3>4. Liste des modeles existants</h3>
+<p>Chaque modele affiche :</p>
+<ul>
+<li>Nom et badge de type</li>
+<li>Badge actif/inactif</li>
+<li>Numero de version</li>
+<li>Description (si definie)</li>
+<li>Nombre de questions et de consentements utilisant ce modele</li>
+<li>Date de creation</li>
+<li>Boutons modifier et supprimer</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>Creer un modele</h3>
+<ol>
+<li>Cliquez sur <strong>Creer un modele</strong></li>
+<li>Remplissez le nom (ex: "Consentement temoignage BioCycle")</li>
+<li>Selectionnez le type (ex: "Temoignage")</li>
+<li>Ajoutez les questions une par une :</li>
+</ol>
+<ul>
+<li>Cliquez sur <strong>Ajouter une question</strong></li>
+<li>Tapez le texte (ex: "J'autorise BioCycle Peptides a utiliser mon temoignage video")</li>
+<li>Choisissez le type (case a cocher pour les autorisations, signature pour la fin)</li>
+<li>Cochez "Obligatoire" si necessaire</li>
+</ul>
+<ol>
+<li>Redigez le texte legal</li>
+<li>Cochez "Actif" pour rendre le modele disponible</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>Modifier un modele</h3>
+<ol>
+<li>Cliquez sur l'icone crayon a cote du modele</li>
+<li>Le formulaire se remplit avec les valeurs actuelles</li>
+<li>Modifiez les champs souhaites</li>
+<li>Cliquez sur <strong>Mettre a jour</strong></li>
+<li>La version est automatiquement incrementee</li>
+</ol>
+
+<h3>Supprimer un modele</h3>
+<ol>
+<li>Cliquez sur l'icone poubelle</li>
+<li>Confirmez la suppression</li>
+<li><strong>Attention</strong> : un modele avec des consentements associes ne peut pas etre supprime (le bouton est desactive)</li>
+</ol>
+
+<hr>
+
+<h2>Types de questions</h2>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Utilisation</th><th>Exemple</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Checkbox</strong></td><td>Autorisation explicite par case a cocher</td><td>"J'accepte que mon image soit utilisee"</td></tr>
+  <tr><td><strong>Text</strong></td><td>Reponse libre du client</td><td>"Precisions sur le contexte d'utilisation"</td></tr>
+  <tr><td><strong>Signature</strong></td><td>Signature electronique du client</td><td>"Signature du client"</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Flux de travail recommandes</h2>
+
+<h3>Configuration initiale</h3>
+<p>Creez au minimum ces 3 modeles :</p>
+
+<ol>
+<li><strong>Consentement video standard</strong></li>
+</ol>
+<ul>
+<li>Type : VIDEO_APPEARANCE</li>
+<li>Questions : autorisation d'enregistrement + autorisation de diffusion + signature</li>
+<li>Texte legal : clauses de droit a l'image</li>
+</ul>
+
+<ol>
+<li><strong>Consentement temoignage</strong></li>
+</ol>
+<ul>
+<li>Type : TESTIMONIAL</li>
+<li>Questions : autorisation d'utilisation + autorisation de publication + precisions + signature</li>
+<li>Texte legal : clauses de temoignage commercial</li>
+</ul>
+
+<ol>
+<li><strong>Consentement marketing</strong></li>
+</ol>
+<ul>
+<li>Type : MARKETING</li>
+<li>Questions : autorisation nom/image + duree + canaux + signature</li>
+<li>Texte legal : clauses de marketing et publicite</li>
+</ul>
+
+<hr>
+
+<h2>Questions frequentes</h2>
+
+<p><strong>Q : Puis-je modifier un modele deja utilise par des consentements ?</strong></p>
+<p>R : Oui, les modifications s'appliquent aux futurs consentements. Les consentements existants conservent la version du modele au moment de la demande.</p>
+
+<p><strong>Q : Le texte legal est-il obligatoire ?</strong></p>
+<p>R : Non techniquement, mais fortement recommande pour la validite juridique du consentement. Consultez un avocat pour le contenu.</p>
+
+<p><strong>Q : Comment associer un modele a une demande de consentement ?</strong></p>
+<p>R : Les modeles sont utilises automatiquement lors de la creation d'un consentement. Le type du modele correspond au type de consentement demande.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Signature electronique</strong></td><td>Validation numerique ayant valeur juridique</td></tr>
+  <tr><td><strong>Clause</strong></td><td>Article juridique d'un contrat ou formulaire</td></tr>
+  <tr><td><strong>Formulaire</strong></td><td>Document structure avec des champs a remplir</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<table>
+<thead>
+    <tr><th>Page</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><a href="./32-consents.md">Consentements</a></td><td>Suivi des consentements individuels</td></tr>
+  <tr><td><a href="./27-videos.md">Videos</a></td><td>Videos associees aux consentements</td></tr>
+</tbody>
+</table>
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

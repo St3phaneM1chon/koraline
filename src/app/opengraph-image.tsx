@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
-export const alt = 'BioCycle Peptides - Research-Grade Peptides';
+export const alt = 'Attitudes VIP - Research-Grade Peptides';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -38,7 +38,7 @@ export default function OGImage() {
             BC
           </div>
           <div style={{ color: 'white', fontSize: '28px', fontWeight: 600 }}>
-            BioCycle Peptides
+            Attitudes VIP
           </div>
         </div>
 

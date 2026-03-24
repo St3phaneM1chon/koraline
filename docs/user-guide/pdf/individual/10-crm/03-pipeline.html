@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline des Ventes et Deals &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 10 — CRM</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Pipeline des Ventes et Deals</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Pipeline / Deals</p>
+<p><strong>URL</strong>: <code>/admin/crm/pipeline</code>, <code>/admin/crm/pipelines</code>, <code>/admin/crm/deals</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>Le <strong>Pipeline des ventes</strong> est la representation visuelle du parcours de vos opportunites commerciales, de la premiere prise de contact jusqu'a la conclusion de la vente. Les <strong>Deals</strong> sont les opportunites individuelles qui progressent dans ce pipeline.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Visualiser toutes vos opportunites de vente sous forme de colonnes (kanban)</li>
+<li>Creer de nouvelles opportunites (deals) et les faire progresser</li>
+<li>Configurer plusieurs pipelines pour differents processus de vente</li>
+<li>Suivre la valeur monetaire a chaque etape</li>
+<li>Identifier les deals bloques ou en retard</li>
+<li>Prevoir les revenus futurs grace aux probabilites par etape</li>
+<li>Glisser-deposer les deals entre les etapes</li>
+<li>Filtrer par representant, montant, date de cloture prevue</li>
+<li>Consulter les soumissions et contrats associes a un deal</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un pipeline ?</h3>
+
+<p>Imaginez un entonnoir (ou un parcours) avec plusieurs etapes. Chaque nouveau prospect entre en haut, et a mesure qu'il progresse (il montre de l'interet, recoit une proposition, negocie), il descend dans les etapes. A la fin, il sort soit comme un <strong>deal gagne</strong> (il achete), soit comme un <strong>deal perdu</strong> (il renonce).</p>
+
+<h3>Les etapes typiques d'un pipeline</h3>
+
+<pre><code>Prospection → Qualification → Proposition → Negociation → Conclusion
+   (100)         (60)           (30)          (15)          (5)</code></pre>
+
+<p>Les chiffres representent un exemple : sur 100 prospects, environ 5 deviendront clients. C'est normal. Le but du CRM est d'optimiser chaque etape pour augmenter ce chiffre.</p>
+
+<h3>Qu'est-ce qu'un deal ?</h3>
+
+<p>Un <strong>deal</strong> (ou opportunite) est une vente potentielle avec un montant estime et une date de cloture prevue. Exemples :</p>
+<ul>
+<li>"Clinique Sante Plus - Commande initiale peptides collagene - 3 500 $CA"</li>
+<li>"Dr. Martin - Abonnement annuel BPC-157 - 8 400 $CA"</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Page Pipeline (vue kanban)</h3>
+<ol>
+<li>CRM > <strong>Pipeline</strong> dans le panneau lateral</li>
+<li>URL directe : <code>/admin/crm/pipeline</code></li>
+</ol>
+
+<h3>Page Pipelines (configuration des pipelines)</h3>
+<ol>
+<li>CRM > <strong>Pipelines</strong> dans le panneau lateral</li>
+<li>URL directe : <code>/admin/crm/pipelines</code></li>
+</ol>
+
+<h3>Page Deals (vue liste)</h3>
+<ol>
+<li>CRM > <strong>Deals</strong> dans le panneau lateral</li>
+<li>URL directe : <code>/admin/crm/deals</code></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>Vue Pipeline (Kanban)</h3>
+
+<p>L'interface affiche les deals sous forme de <strong>colonnes</strong> correspondant aux etapes :</p>
+
+<table>
+<thead>
+    <tr><th>Colonne</th><th>Description</th><th>Probabilite</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Prospection</strong></td><td>Premier contact etabli</td><td>10%</td></tr>
+  <tr><td><strong>Qualification</strong></td><td>Besoin confirme, budget identifie</td><td>25%</td></tr>
+  <tr><td><strong>Proposition</strong></td><td>Offre envoyee au prospect</td><td>50%</td></tr>
+  <tr><td><strong>Negociation</strong></td><td>Discussion sur les termes, prix, conditions</td><td>75%</td></tr>
+  <tr><td><strong>Gagne</strong></td><td>Vente conclue avec succes</td><td>100%</td></tr>
+  <tr><td><strong>Perdu</strong></td><td>Opportunite abandonee ou refusee</td><td>0%</td></tr>
+</tbody>
+</table>
+<p>Chaque <strong>carte de deal</strong> dans une colonne affiche :</p>
+<ul>
+<li>Nom du deal et contact associe</li>
+<li>Montant estime</li>
+<li>Date de cloture prevue</li>
+<li>Representant assigne</li>
+<li>Tags et indicateurs de priorite</li>
+</ul>
+
+<h3>En-tete du pipeline</h3>
+
+<p>En haut de chaque colonne :</p>
+<ul>
+<li><strong>Nombre de deals</strong> dans l'etape</li>
+<li><strong>Valeur totale</strong> de l'etape (somme des montants)</li>
+<li><strong>Valeur ponderee</strong> (montant x probabilite de l'etape)</li>
+</ul>
+
+<h3>Vue Deals (Liste)</h3>
+
+<p>Une vue tabulaire avec colonnes :</p>
+<ul>
+<li>Nom du deal</li>
+<li>Contact et entreprise</li>
+<li>Montant</li>
+<li>Etape actuelle</li>
+<li>Date de cloture prevue</li>
+<li>Representant</li>
+<li>Derniere activite</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer un nouveau deal</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau deal</strong> dans le ruban</li>
+<li>Remplissez les champs :</li>
+</ol>
+<ul>
+<li><strong>Nom du deal</strong> : description courte (ex: "Commande initiale - Clinique Sante Plus")</li>
+<li><strong>Contact</strong> : la personne associee (recherche par nom ou email)</li>
+<li><strong>Entreprise</strong> : l'entreprise associee (si B2B)</li>
+<li><strong>Montant</strong> : valeur estimee en $CA</li>
+<li><strong>Pipeline</strong> : quel pipeline utiliser (si vous en avez plusieurs)</li>
+<li><strong>Etape</strong> : l'etape initiale (generalement "Prospection")</li>
+<li><strong>Date de cloture prevue</strong> : quand vous esperez conclure</li>
+<li><strong>Representant</strong> : qui est en charge</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>2. Faire progresser un deal</h3>
+
+<p><strong>Methode glisser-deposer</strong> :</p>
+<ol>
+<li>Cliquez sur la carte du deal dans le kanban</li>
+<li>Maintenez le clic et faites-la glisser vers la colonne suivante</li>
+<li>Relacher : le deal est maintenant a la nouvelle etape</li>
+</ol>
+
+<p><strong>Methode manuelle</strong> :</p>
+<ol>
+<li>Cliquez sur le deal pour ouvrir son detail</li>
+<li>Dans le champ <strong>Etape</strong>, selectionnez la nouvelle etape</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Note</strong> : Chaque changement d'etape est enregistre dans l'historique du deal et peut declencher des automatisations (email au client, notification a l'equipe, etc.).</p>
+</blockquote>
+
+<h3>3. Marquer un deal comme gagne ou perdu</h3>
+
+<p><strong>Deal gagne</strong> :</p>
+<ol>
+<li>Glissez le deal dans la colonne <strong>Gagne</strong>, ou changez l'etape</li>
+<li>Le systeme vous demandera de confirmer et d'indiquer le montant final</li>
+<li>Le deal est archive et le revenu est comptabilise</li>
+</ol>
+
+<p><strong>Deal perdu</strong> :</p>
+<ol>
+<li>Glissez le deal dans la colonne <strong>Perdu</strong></li>
+<li>Selectionnez une raison de perte (prix, timing, concurrent, pas de besoin, etc.)</li>
+<li>Ajoutez un commentaire optionnel</li>
+<li>Le deal est archive avec la raison de perte pour analyse future</li>
+</ol>
+
+<h3>4. Configurer un pipeline personnalise</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/pipelines</code></p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau pipeline</strong></li>
+<li>Donnez-lui un nom (ex: "Pipeline B2B Cliniques", "Pipeline Abonnements")</li>
+<li>Ajoutez les etapes avec leur nom et probabilite</li>
+<li>Ordonnez les etapes par glisser-deposer</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong> : Vous pouvez avoir un pipeline different pour la vente directe (individus) et la vente B2B (cliniques, pharmacies). Chaque pipeline a ses propres etapes et probabilites.</p>
+</blockquote>
+
+<h3>5. Soumissions et contrats</h3>
+
+<p><strong>Soumissions</strong> (<code>/admin/crm/quotes</code>) :</p>
+<ul>
+<li>Creez des devis professionnels lies a un deal</li>
+<li>Envoyez-les directement par email</li>
+<li>Suivez si le client les a ouverts et acceptes</li>
+</ul>
+
+<p><strong>Contrats</strong> (<code>/admin/crm/contracts</code>) :</p>
+<ul>
+<li>Generez des contrats a partir de modeles</li>
+<li>Suivi des signatures et dates d'echeance</li>
+<li>Association automatique au deal</li>
+</ul>
+
+<h3>6. Previsions de vente</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/forecast</code></p>
+
+<p>La page Forecast calcule automatiquement :</p>
+<ul>
+<li><strong>Revenu prevu</strong> : somme des montants x probabilite par etape</li>
+<li><strong>Revenu pondere par mois</strong> : projection temporelle</li>
+<li><strong>Objectifs vs realisation</strong> : progression vers vos cibles</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Traitement d'un nouveau lead entrant</h3>
+<ol>
+<li>Un lead est cree (formulaire web, import, scraper)</li>
+<li>Creez un deal associe dans le pipeline, etape "Prospection"</li>
+<li>Effectuez un premier appel ou envoyez un email d'introduction</li>
+<li>Si le besoin est confirme, passez a "Qualification"</li>
+<li>Envoyez une proposition → etape "Proposition"</li>
+<li>Negociez les termes → etape "Negociation"</li>
+<li>Concluez la vente → etape "Gagne"</li>
+</ol>
+
+<h3>Revue hebdomadaire du pipeline</h3>
+<ol>
+<li>Ouvrez la vue pipeline</li>
+<li>Filtrez par representant (votre equipe)</li>
+<li>Identifiez les deals bloques (meme etape depuis longtemps)</li>
+<li>Pour chaque deal bloque, verifiez la derniere activite</li>
+<li>Reassignez ou fermez les deals sans espoir</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Combien de pipelines puis-je creer ?</strong></p>
+<p>R : Autant que necessaire. Il est recommande d'avoir au moins un pipeline par type de vente (B2C, B2B, abonnements).</p>
+
+<p><strong>Q : Que se passe-t-il quand je marque un deal comme gagne ?</strong></p>
+<p>R : Le montant est comptabilise dans vos rapports de revenu, le contact est marque comme client actif, et les automatisations associees se declenchent (email de bienvenue, creation de commande, etc.).</p>
+
+<p><strong>Q : Puis-je modifier les etapes d'un pipeline existant ?</strong></p>
+<p>R : Oui, mais avec precaution. Si des deals sont dans une etape que vous supprimez, ils seront deplaces vers l'etape precedente. Il est recommande de vider l'etape avant de la supprimer.</p>
+
+<p><strong>Q : Comment suivre les raisons de perte ?</strong></p>
+<p>R : Les raisons sont collectees quand un deal est marque comme perdu. Consultez les rapports d'analyse de l'entonnoir (Funnel Analysis) pour une vue d'ensemble des raisons les plus frequentes.</p>
+
+<hr>
+
+<h2>Strategie expert : pipeline B2B adapte aux peptides de recherche</h2>
+
+<h3>Pourquoi un pipeline B2B specifique ?</h3>
+
+<p>Le cycle de vente B2B pour les peptides de recherche est fondamentalement different du B2C. Les clients B2B (universites, laboratoires de recherche, cliniques) ont des processus d'achat plus longs, necessitent des certificats d'analyse (COA), et commandent des volumes significatifs. Un pipeline B2B dedie permet de suivre ces ventes complexes.</p>
+
+<h3>Etapes du pipeline B2B peptides</h3>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Description</th><th>Duree moyenne</th><th>Probabilite</th><th>Actions cles</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Premier contact</strong></td><td>Le laboratoire ou la clinique a ete identifie et un premier echange a eu lieu (email, formulaire, salon)</td><td>1-2 semaines</td><td>10%</td><td>Qualifier le besoin, identifier le decideur, envoyer la presentation BioCycle</td></tr>
+  <tr><td><strong>Echantillon/COA envoye</strong></td><td>Un echantillon gratuit ou un certificat d'analyse a ete envoye pour evaluation</td><td>2-4 semaines</td><td>25%</td><td>Envoyer COA, echantillon si politique le permet, repondre aux questions techniques</td></tr>
+  <tr><td><strong>Commande test (500 $CA+)</strong></td><td>Le client passe une premiere commande de test pour valider la qualite</td><td>1-3 semaines</td><td>50%</td><td>Livraison prioritaire, suivi qualite, appel de satisfaction a J+7</td></tr>
+  <tr><td><strong>Compte regulier</strong></td><td>Le client commande regulierement (mensuel ou trimestriel)</td><td>Continu</td><td>75%</td><td>Grille de prix volume, representant dedie, relance automatique de reapprovisionnement</td></tr>
+  <tr><td><strong>Contrat annuel</strong></td><td>Engagement formel avec volumes et prix negocies sur 12 mois</td><td>2-4 semaines de negociation</td><td>90%</td><td>Contrat signe, conditions de paiement net 30, prix bloque, livraison planifiee</td></tr>
+  <tr><td><strong>Gagne</strong></td><td>Contrat signe et premiere livraison effectuee</td><td>--</td><td>100%</td><td>Transition vers gestion de compte, onboarding B2B</td></tr>
+  <tr><td><strong>Perdu</strong></td><td>Le prospect a choisi un concurrent ou n'a plus besoin</td><td>--</td><td>0%</td><td>Documenter la raison, planifier un suivi dans 6 mois</td></tr>
+</tbody>
+</table>
+<h3>Duree totale du cycle de vente B2B</h3>
+
+<table>
+<thead>
+    <tr><th>Type de client</th><th>Cycle court</th><th>Cycle moyen</th><th>Cycle long</th></tr>
+</thead>
+<tbody>
+  <tr><td>Clinique privee</td><td>2 semaines</td><td>4-6 semaines</td><td>3 mois</td></tr>
+  <tr><td>Laboratoire universitaire</td><td>4 semaines</td><td>8-12 semaines</td><td>6 mois (subventions)</td></tr>
+  <tr><td>Entreprise pharmaceutique</td><td>8 semaines</td><td>16-24 semaines</td><td>12 mois</td></tr>
+</tbody>
+</table>
+<p>Les laboratoires universitaires ont souvent des cycles longs car ils dependent de l'approbation de subventions de recherche (CRSNG, IRSC, FRQNT au Quebec).</p>
+
+<h3>Taux de conversion par etape (benchmarks)</h3>
+
+<table>
+<thead>
+    <tr><th>Transition</th><th>Taux attendu</th><th>Signe d'alerte si <</th></tr>
+</thead>
+<tbody>
+  <tr><td>Premier contact → Echantillon/COA</td><td>40-50%</td><td>25% (mauvais ciblage)</td></tr>
+  <tr><td>Echantillon/COA → Commande test</td><td>30-40%</td><td>20% (probleme de qualite ou de prix)</td></tr>
+  <tr><td>Commande test → Compte regulier</td><td>50-60%</td><td>35% (experience client deficiente)</td></tr>
+  <tr><td>Compte regulier → Contrat annuel</td><td>25-35%</td><td>15% (offre de contrat mal presentee)</td></tr>
+</tbody>
+</table>
+<h3>Metriques pipeline a surveiller</h3>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Calcul</th><th>Cible</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Valeur totale pipeline</strong></td><td>Somme de tous les deals ouverts</td><td>> 3x votre objectif de revenu mensuel</td></tr>
+  <tr><td><strong>Valeur ponderee</strong></td><td>Somme (montant x probabilite) par deal</td><td>> 1.5x votre objectif mensuel</td></tr>
+  <tr><td><strong>Velocity</strong></td><td>Jours moyens pour passer de Premier contact a Gagne</td><td>< 60 jours (cliniques), < 120 jours (labos)</td></tr>
+  <tr><td><strong>Deals bloques</strong></td><td>Deals sans activite depuis > 14 jours</td><td>< 20% du pipeline total</td></tr>
+  <tr><td><strong>Win rate</strong></td><td>Deals gagnes / (Deals gagnes + Deals perdus)</td><td>> 25%</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Deal</strong></td><td>Opportunite de vente avec un montant et une date de cloture estimee</td></tr>
+  <tr><td><strong>Pipeline</strong></td><td>Succession d'etapes representant le processus de vente</td></tr>
+  <tr><td><strong>Etape</strong></td><td>Phase specifique dans le pipeline (ex: Qualification)</td></tr>
+  <tr><td><strong>Kanban</strong></td><td>Mode d'affichage en colonnes, chaque colonne etant une etape</td></tr>
+  <tr><td><strong>Probabilite</strong></td><td>Chance estimee de conclure le deal a cette etape</td></tr>
+  <tr><td><strong>Forecast</strong></td><td>Prevision des revenus bases sur le pipeline et les probabilites</td></tr>
+  <tr><td><strong>Soumission</strong></td><td>Devis formel envoye au prospect</td></tr>
+  <tr><td><strong>Deal gagne</strong></td><td>Opportunite conclue avec succes, vente realisee</td></tr>
+  <tr><td><strong>Deal perdu</strong></td><td>Opportunite qui n'a pas abouti</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/contacts">Contacts</a> : Fiches des contacts associes aux deals</li>
+<li><a href="/admin/crm/leads">Leads</a> : Prospects a convertir en deals</li>
+<li><a href="/admin/crm/forecast">Previsions</a> : Projections de revenus</li>
+<li><a href="/admin/crm/quotes">Soumissions</a> : Creation de devis</li>
+<li><a href="/admin/crm/contracts">Contrats</a> : Gestion des contrats</li>
+<li><a href="/admin/crm/leaderboard">Leaderboard</a> : Performance des representants</li>
+<li><a href="/admin/crm/funnel-analysis">Analyse d'entonnoir</a> : Rapports sur le pipeline</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

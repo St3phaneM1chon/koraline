@@ -1,5 +1,5 @@
 /**
- * SHARED CONSTANTS - BioCycle Peptides
+ * SHARED CONSTANTS - Attitudes VIP / Koraline SaaS
  * Central place for application-wide constants
  */
 

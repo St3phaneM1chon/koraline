@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>00 — Introduction &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 00 — Introduction</span>
+        <span>2026-03-20</span>
+      </div>
+
+<div class="cover" style="min-height: 40vh; padding: 3rem 2rem;">
+  <div class="cover-logo" style="width:80px; height:80px; font-size:1.8rem; border-radius:16px;">K</div>
+  <h1 style="font-size:2rem;">00 — Introduction</h1>
+  <div class="subtitle">Guide Utilisateur &mdash; Suite Koraline</div>
+  <div class="version">
+    1 page dans cette section<br>
+    2026-03-20
+  </div>
+</div><div id="00-introduction--01-introduction">
+<h1>Introduction a la Suite Koraline</h1>
+
+<blockquote>
+<p><strong>Temps de lecture</strong>: ~10 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>Bienvenue dans Koraline</h2>
+
+<p><strong>Koraline</strong> est la suite d'administration complete de BioCycle Peptides. C'est votre outil central pour gerer l'ensemble de votre entreprise : ventes, produits, clients, marketing, emails, telephonie, comptabilite, et bien plus.</p>
+
+<p>Ce guide utilisateur vous accompagne pas a pas dans chaque fonctionnalite. Que vous soyez debutant ou avance, chaque page est documentee avec des explications claires, des captures d'ecran et des scenarios concrets.</p>
+
+<hr>
+
+<h2>A qui s'adresse ce guide ?</h2>
+
+<table>
+<thead>
+    <tr><th>Profil</th><th>Ce que vous trouverez</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Proprietaire (Owner)</strong></td><td>Acces complet a toutes les sections, y compris la comptabilite et le systeme</td></tr>
+  <tr><td><strong>Employe (Employee)</strong></td><td>Acces aux operations quotidiennes : commandes, produits, clients, marketing</td></tr>
+  <tr><td><strong>Nouveau venu</strong></td><td>Chaque concept est explique simplement, avec un glossaire a chaque page</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Organisation de la suite Koraline</h2>
+
+<p>Koraline est organisee en <strong>12 sections</strong> accessibles depuis la barre de navigation :</p>
+
+<table>
+<thead>
+    <tr><th>#</th><th>Section</th><th>Description</th><th>Pages</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td><strong>Tableau de bord</strong></td><td>Vue d'ensemble de l'activite (ventes, commandes, alertes)</td><td>1</td></tr>
+  <tr><td>2</td><td><strong>Commerce</strong></td><td>Commandes, clients, distributeurs, abonnements, inventaire, fournisseurs, paiements</td><td>7</td></tr>
+  <tr><td>3</td><td><strong>Catalogue</strong></td><td>Produits, categories, bundles</td><td>3</td></tr>
+  <tr><td>4</td><td><strong>Marketing</strong></td><td>Codes promo, promotions, newsletter, bannieres, upsell, blog, rapports</td><td>8</td></tr>
+  <tr><td>5</td><td><strong>Communaute</strong></td><td>Avis clients, questions, chat support, ambassadeurs</td><td>4</td></tr>
+  <tr><td>6</td><td><strong>Fidelite</strong></td><td>Programme de points, webinaires</td><td>2</td></tr>
+  <tr><td>7</td><td><strong>Media</strong></td><td>Visioconference, plateformes sociales, publicites, gestion de contenu</td><td>37</td></tr>
+  <tr><td>8</td><td><strong>Emails</strong></td><td>Boite de reception, campagnes, templates, flows automatises</td><td>7</td></tr>
+  <tr><td>9</td><td><strong>Telephonie</strong></td><td>Appels, journal, messagerie, IVR, analytics, campagnes</td><td>22</td></tr>
+  <tr><td>10</td><td><strong>CRM</strong></td><td>Pipeline de ventes, leads, automatisations, scraper, leaderboard</td><td>50</td></tr>
+  <tr><td>11</td><td><strong>Comptabilite</strong></td><td>Plan comptable, journal, factures, depenses, rapports financiers</td><td>46</td></tr>
+  <tr><td>12</td><td><strong>Systeme</strong></td><td>Utilisateurs, roles, parametres, audit, traductions, integrations</td><td>24</td></tr>
+</tbody>
+</table>
+<p><strong>Total : 223 pages d'administration</strong></p>
+
+<hr>
+
+<h2>L'interface Koraline — Style Outlook</h2>
+
+<p>L'interface de Koraline est inspiree de <strong>Microsoft Outlook</strong>. Voici les zones principales :</p>
+
+<h3>1. Barre de navigation horizontale (en haut)</h3>
+<p>Les 12 sections sont accessibles via des boutons-onglets en haut de l'ecran. Cliquez sur une section pour l'ouvrir.</p>
+
+<h3>2. Barre de ruban (Ribbon)</h3>
+<p>Juste en dessous, la barre de ruban contient les <strong>actions contextuelles</strong> de la page en cours. Les boutons changent selon la page. Par exemple, sur la page Commandes, vous aurez "Nouvelle commande", "Supprimer", "Exporter".</p>
+
+<h3>3. Rail de navigation (colonne d'icones a gauche)</h3>
+<p>Une colonne etroite avec des icones pour chaque section. Cliquez sur une icone pour ouvrir la section correspondante.</p>
+
+<h3>4. Panneau de section (sidebar gauche)</h3>
+<p>Quand une section est ouverte, un panneau lateral affiche la liste des sous-pages. Par exemple, la section Commerce affiche : Commandes, Clients, Distributeurs, Abonnements, Inventaire, Fournisseurs.</p>
+
+<h3>5. Zone principale (maitre/detail)</h3>
+<p>La majorite des pages utilisent une disposition en deux panneaux :</p>
+<ul>
+<li><strong>Panneau gauche (maitre)</strong> : Liste des elements (commandes, produits, contacts...)</li>
+<li><strong>Panneau droit (detail)</strong> : Detail complet de l'element selectionne</li>
+</ul>
+
+<h3>6. Barre d'outils superieure</h3>
+<p>En haut a droite, des boutons utilitaires :</p>
+<ul>
+<li><strong>Copilote IA</strong> : Assistant intelligent (Aurelia)</li>
+<li><strong>Densite d'affichage</strong> : Compact ou confortable</li>
+<li><strong>Mode sombre/clair</strong> : Changer le theme visuel</li>
+<li><strong>Notifications</strong> : Alertes en temps reel</li>
+<li><strong>Commandes rapides</strong> : Acces direct aux commandes</li>
+<li><strong>Chat support</strong> : Acces direct au chat</li>
+</ul>
+
+<hr>
+
+<h2>Comment utiliser ce guide</h2>
+
+<h3>Lire dans l'ordre</h3>
+<p>Si vous decouvrez Koraline, nous recommandons de commencer par :</p>
+<ol>
+<li><strong>Tableau de bord</strong> — pour comprendre l'interface</li>
+<li><strong>Commerce > Commandes</strong> — la page la plus utilisee</li>
+<li><strong>Catalogue > Produits</strong> — gerer vos produits</li>
+<li>Puis explorez les autres sections selon vos besoins</li>
+</ol>
+
+<h3>Lire par besoin</h3>
+<p>Chaque page est independante. Si vous cherchez comment faire une action specifique, allez directement a la page concernee.</p>
+
+<h3>Structure de chaque guide</h3>
+<p>Chaque page de ce guide suit le meme format :</p>
+<ol>
+<li><strong>A quoi sert cette page</strong> — Resume rapide</li>
+<li><strong>Concepts cles</strong> — Explications pour debutants</li>
+<li><strong>Comment y acceder</strong> — 2-3 methodes de navigation</li>
+<li><strong>Vue d'ensemble</strong> — Capture d'ecran + description des zones</li>
+<li><strong>Fonctions detaillees</strong> — Chaque bouton et action explique</li>
+<li><strong>Workflows</strong> — Scenarios business complets</li>
+<li><strong>FAQ</strong> — Questions frequentes</li>
+<li><strong>Glossaire</strong> — Definitions des termes techniques</li>
+<li><strong>Pages liees</strong> — Liens vers les pages associees</li>
+</ol>
+
+<hr>
+
+<h2>Se connecter a Koraline</h2>
+
+<ol>
+<li>Ouvrez votre navigateur web</li>
+<li>Allez a l'adresse de votre boutique suivie de <code>/admin</code> (ex: <code>biocyclepeptides.com/admin</code>)</li>
+<li>Connectez-vous avec votre email et mot de passe</li>
+<li>Ou utilisez l'un des boutons de connexion sociale (Google, Microsoft, Apple, X)</li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong> : Mettez la page <code>/admin</code> en favoris dans votre navigateur pour y acceder rapidement.</p>
+</blockquote>
+
+<hr>
+
+<h2>Obtenir de l'aide</h2>
+
+<ul>
+<li><strong>Dans l'application</strong> : Cliquez sur le bouton <strong>Copilote IA</strong> en haut a droite pour poser une question a Aurelia</li>
+<li><strong>Ce guide</strong> : Consultez la page correspondante a votre question</li>
+<li><strong>Support</strong> : Utilisez le chat support ou envoyez un email a l'equipe technique</li>
+</ul>
+
+</div>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

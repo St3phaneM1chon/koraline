@@ -111,7 +111,7 @@ export default function PrivacyFR({ siteName }: { siteName: string }) {
           <li><strong>Plainte:</strong> deposer une plainte aupres de la Commission d&apos;acces a l&apos;information du Quebec</li>
         </ul>
         <p style={{ marginTop: '16px' }}>
-          Pour exercer ces droits, contactez-nous a: <strong>privacy@biocyclepeptides.com</strong>
+          Pour exercer ces droits, contactez-nous a: <strong>privacy@attitudes.vip</strong>
         </p>
       </Section>
 
@@ -150,7 +150,7 @@ export default function PrivacyFR({ siteName }: { siteName: string }) {
           contacter notre responsable de la protection des donnees:
         </p>
         <ul style={{ listStyle: 'none', padding: 0 }}>
-          <li>privacy@biocyclepeptides.com</li>
+          <li>privacy@attitudes.vip</li>
           <li>Montreal, Quebec, Canada</li>
         </ul>
       </Section>

@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bilan (Balance Sheet) &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 11 — Comptabilite</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Bilan (Balance Sheet)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Comptabilite > Etats financiers > Bilan</p>
+<p><strong>URL</strong>: <code>/admin/comptabilite/etats-financiers</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~35 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>Pourquoi cette page est importante</h2>
+
+<p>Le bilan est une <strong>photographie de la sante financiere</strong> de BioCycle Peptides a un moment precis. Il repond a trois questions fondamentales : que possede l'entreprise, que doit-elle, et combien vaut-elle nette ? C'est le document que les banques, les investisseurs et les gouvernements examinent en premier.</p>
+
+<p><strong>Obligations legales</strong> :</p>
+<ul>
+<li>Toute societe par actions au Canada doit produire un bilan annuel conforme aux NCECF (Normes Comptables pour les Entreprises a Capital Ferme) ou aux IFRS.</li>
+<li>Le bilan est un composant obligatoire de la declaration T2 (federal) et CO-17 (Quebec), rempli via les codes GIFI.</li>
+<li>La banque exige un bilan a jour pour tout renouvellement de marge de credit ou demande de pret.</li>
+<li>Les actionnaires ont un droit legal de recevoir les etats financiers annuels, dont le bilan.</li>
+</ul>
+
+<p><strong>Impact concret</strong> :</p>
+<ul>
+<li>Un bilan solide (actifs elevees, dettes faibles) facilite l'acces au financement bancaire.</li>
+<li>Un bilan faible (trop de dettes, pas assez de liquidites) peut entrainer le refus d'un pret ou le rappel d'une marge de credit.</li>
+<li>Les ratios calcules a partir du bilan (liquidite, endettement) sont utilises par les banques dans leurs decisions de credit.</li>
+<li>Le bilan d'ouverture de chaque annee est le bilan de cloture de l'annee precedente -- une erreur se propage d'annee en annee.</li>
+</ul>
+
+<hr>
+
+<h2>Cycle comptable complet -- Ou se situe cette page</h2>
+
+<pre><code>1. Plan comptable → 2. Journal → 3. Ecritures → 4. Grand livre/Balance
+ ↓
+[5. BILAN] ← VOUS ETES ICI (etat financier #1)
+ ↓
+ 6. Etat des resultats (etat financier #2)
+ ↓
+ 7-12. Factures, depenses, taxes, rapprochement, budget, rapports</code></pre>
+
+<p>Le bilan est l'etape 5 du cycle comptable. Il est genere automatiquement a partir du grand livre : les comptes d'actifs, de passifs et de capitaux propres sont regroupes et totalises. Le bilan ne peut etre produit que si la balance de verification (etape 4) est equilibree.</p>
+
+<p><strong>Lien avec l'etat des resultats</strong> : Le benefice net de l'etat des resultats (etape 6) se retrouve dans les Benefices Non Repartis (BNR) du bilan. Les deux etats financiers sont indissociables.</p>
+
+<hr>
+
+<h2>Ordre des operations</h2>
+
+<ol>
+<li><strong>Toutes les ecritures du mois sont publiees</strong> (pas de brouillons en attente)</li>
+<li><strong>Les ecritures d'ajustement sont passees</strong> (amortissement, provisions, charges a payer)</li>
+<li><strong>Le rapprochement bancaire est termine</strong> (le solde bancaire correspond au grand livre)</li>
+<li><strong>La balance de verification est equilibree</strong> (total debits = total credits)</li>
+<li><strong>Generer le bilan</strong> a la date souhaitee</li>
+<li><strong>Verifier l'equation fondamentale</strong> : Actifs = Passifs + Capitaux propres</li>
+<li><strong>Comparer avec la periode precedente</strong> pour detecter les anomalies</li>
+<li><strong>Exporter</strong> si necessaire (pour la banque, le comptable, les actionnaires)</li>
+</ol>
+
+<hr>
+
+<h2>L'equation du bilan</h2>
+
+<pre><code>ACTIFS = PASSIFS + CAPITAUX PROPRES</code></pre>
+
+<p>Cette equation est <strong>toujours equilibree</strong>. Si votre entreprise possede 200 000 $ d'actifs et doit 80 000 $, alors les capitaux propres sont de 120 000 $. C'est mathematique : tout ce que l'entreprise possede provient soit de la dette (passifs) soit des fonds propres (capitaux propres).</p>
+
+<hr>
+
+<h2>Comment entrer les donnees</h2>
+
+<p>Le bilan est <strong>genere automatiquement</strong> -- vous n'entrez rien directement. Toutes les donnees proviennent du grand livre. Votre role est de vous assurer que les ecritures sous-jacentes sont correctes et completes.</p>
+
+<h3>Generer le bilan</h3>
+
+<ol>
+<li>Ouvrez la page <strong>Etats financiers</strong> > onglet <strong>Bilan</strong></li>
+<li>Choisissez la <strong>date</strong> (ex: 31 mars 2026)</li>
+<li>Le bilan se genere instantanement</li>
+<li>Chaque montant est cliquable : cliquez pour voir le detail des transactions dans le grand livre</li>
+</ol>
+
+<h3>Les controles disponibles</h3>
+
+<table>
+<thead>
+    <tr><th>Controle</th><th>Description</th><th>Quand l'utiliser</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Date</strong></td><td>A quelle date generer le bilan</td><td>Par defaut aujourd'hui ; choisir la fin du mois ou de l'annee</td></tr>
+  <tr><td><strong>Comparaison</strong></td><td>Ajouter une deuxieme date</td><td>Pour voir l'evolution (mars vs decembre, par ex.)</td></tr>
+  <tr><td><strong>Format</strong></td><td>Detaille (tous les comptes) ou resume (sous-totaux)</td><td>Detaille pour l'analyse interne, resume pour la banque</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>PDF, Excel, CSV</td><td>PDF pour la banque, Excel pour le comptable</td></tr>
+</tbody>
+</table>
+<h3>Comparer deux periodes</h3>
+
+<ol>
+<li>Activez le mode <strong>Comparaison</strong></li>
+<li>Selectionnez la date de reference (31 mars 2026) et la date de comparaison (31 decembre 2025)</li>
+<li>Le bilan affiche deux colonnes avec l'ecart en valeur et en pourcentage</li>
+</ol>
+
+<h3>Explorer un poste</h3>
+
+<ol>
+<li>Cliquez sur n'importe quel montant du bilan (ex: "Comptes clients : 12 350 $")</li>
+<li>Le grand livre s'ouvre filtre sur ce compte</li>
+<li>Vous voyez toutes les transactions qui composent ce solde</li>
+<li>Utile pour verifier un montant qui semble anormal</li>
+</ol>
+
+<hr>
+
+<h2>Pourquoi entrer ces donnees (dans le grand livre)</h2>
+
+<p>Chaque poste du bilan a une raison d'etre et un impact fiscal ou managerial :</p>
+
+<h3>Actifs courants (realises en moins de 12 mois)</h3>
+
+<table>
+<thead>
+    <tr><th>Poste</th><th>Ce que ca represente</th><th>Pourquoi c'est important</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Tresorerie</strong> (1010, 1020)</td><td>Argent en banque en CAD et USD</td><td>Mesure la capacite a payer les obligations immediates. La banque le surveille pour la marge de credit.</td></tr>
+  <tr><td><strong>Comptes clients</strong> (1100)</td><td>Factures B2B impayees</td><td>Argent gagne mais pas encore encaisse. Si trop eleve : clients lents a payer. Si negatif : erreur.</td></tr>
+  <tr><td><strong>Stock</strong> (1200)</td><td>Peptides en inventaire + emballage</td><td>Argent immobilise dans l'inventaire. Trop eleve = capital bloque. Trop bas = risque de rupture.</td></tr>
+  <tr><td><strong>TPS/TVQ a recuperer</strong> (1150, 1160)</td><td>Credits d'intrants non encore reclames</td><td>Argent que les gouvernements vous doivent. Se reclame a chaque declaration trimestrielle.</td></tr>
+  <tr><td><strong>Charges payees d'avance</strong> (1300)</td><td>Assurance, abonnements payes en avance</td><td>Portion non consommee = actif. Se transforme en charge mois par mois.</td></tr>
+</tbody>
+</table>
+<h3>Actifs non courants (a long terme)</h3>
+
+<table>
+<thead>
+    <tr><th>Poste</th><th>Ce que ca represente</th><th>Pourquoi c'est important</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Equipement</strong> (1400)</td><td>Materiel de laboratoire (cout d'acquisition)</td><td>Immobilisation amortie sur sa duree de vie. Deductible fiscalement via la DPA.</td></tr>
+  <tr><td><strong>Mobilier</strong> (1410)</td><td>Mobilier du bureau</td><td>Meme principe que l'equipement.</td></tr>
+  <tr><td><strong>Amortissement cumule</strong> (1450, 1460)</td><td>Depreciation totale accumulee</td><td>Montant negatif qui reduit la valeur des actifs. Reflete l'usure des equipements.</td></tr>
+</tbody>
+</table>
+<h3>Passifs courants (payables en moins de 12 mois)</h3>
+
+<table>
+<thead>
+    <tr><th>Poste</th><th>Ce que ca represente</th><th>Pourquoi c'est important</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Comptes fournisseurs</strong> (2010)</td><td>Factures fournisseurs impayees</td><td>Dettes commerciales courantes. Si trop eleve : on retarde les paiements.</td></tr>
+  <tr><td><strong>TPS/TVQ a remettre</strong> (2100, 2110)</td><td>Taxes collectees pour le gouvernement</td><td>Pas votre argent -- vous le gardez temporairement. A remettre a chaque declaration.</td></tr>
+  <tr><td><strong>Salaires a payer</strong> (2200)</td><td>Paie du mois en cours pas encore versee</td><td>Se regle en debut du mois suivant.</td></tr>
+  <tr><td><strong>Retenues salariales</strong> (2150)</td><td>Impots et cotisations retenus sur les paies</td><td>A remettre aux gouvernements dans les 15 jours.</td></tr>
+</tbody>
+</table>
+<h3>Passifs non courants (a long terme)</h3>
+
+<table>
+<thead>
+    <tr><th>Poste</th><th>Ce que ca represente</th><th>Pourquoi c'est important</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Emprunt bancaire</strong> (2500)</td><td>Dette a long terme envers la banque</td><td>La portion payable dans les 12 prochains mois va dans les passifs courants (2300).</td></tr>
+</tbody>
+</table>
+<h3>Capitaux propres</h3>
+
+<table>
+<thead>
+    <tr><th>Poste</th><th>Ce que ca represente</th><th>Pourquoi c'est important</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Capital-actions</strong> (3100)</td><td>Montant investi par les actionnaires</td><td>Ne change que si de nouvelles actions sont emises ou rachetees.</td></tr>
+  <tr><td><strong>BNR</strong> (3200)</td><td>Profits accumules depuis la creation</td><td>Augmente chaque annee si l'entreprise est rentable. Diminue si dividendes verses ou pertes.</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Lecture complete d'un bilan -- Exemple BioCycle</h2>
+
+<pre><code>BILAN
+BioCycle Peptides Inc.
+Au 31 mars 2026
+
+ACTIFS
+  Actifs courants
+    Tresorerie (banques)                         88 993 $
+    Comptes clients                              12 350 $
+    Provision pour creances douteuses              (500 $)
+    Stocks                                       45 000 $
+    TPS/TVQ a recuperer                           6 429 $
+    Charges payees d'avance                       1 200 $
+  Total actifs courants                         153 472 $
+
+  Actifs non courants
+    Equipement de laboratoire                    30 000 $
+    Mobilier et equipement de bureau              5 000 $
+    Materiel informatique                         3 000 $
+    Amortissement cumule                        (8 000 $)
+  Total actifs non courants                      30 000 $
+
+TOTAL ACTIFS                                    183 472 $
+
+PASSIFS
+  Passifs courants
+    Comptes fournisseurs                          8 200 $
+    TPS a remettre                                6 410 $
+    TVQ a remettre                               12 764 $
+    Salaires et retenues a payer                  7 000 $
+    Portion courante emprunt                      5 000 $
+  Total passifs courants                         39 374 $
+
+  Passifs non courants
+    Emprunt bancaire (net de portion courante)   20 000 $
+  Total passifs non courants                     20 000 $
+
+TOTAL PASSIFS                                    59 374 $
+
+CAPITAUX PROPRES
+    Capital-actions                              50 000 $
+    Benefices non repartis                       74 098 $
+TOTAL CAPITAUX PROPRES                          124 098 $
+
+TOTAL PASSIFS + CAPITAUX PROPRES                183 472 $
+                                                ========
+Verification : 183 472 $ = 183 472 $            EQUILIBRE</code></pre>
+
+<h3>Ce que revelent les ratios</h3>
+
+<table>
+<thead>
+    <tr><th>Ratio</th><th>Formule</th><th>Valeur BioCycle</th><th>Interpretation</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Ratio de liquidite generale</strong></td><td>Actifs courants / Passifs courants</td><td>153 472 / 39 374 = <strong>3,90</strong></td><td>Excellent. L'entreprise peut payer ses dettes a court terme presque 4 fois. Sain si > 1,5</td></tr>
+  <tr><td><strong>Ratio de liquidite rapide</strong></td><td>(Actifs courants - Stocks) / Passifs courants</td><td>108 472 / 39 374 = <strong>2,75</strong></td><td>Tres bon. Meme sans vendre de stock, l'entreprise peut payer ses dettes. Sain si > 1</td></tr>
+  <tr><td><strong>Ratio d'endettement</strong></td><td>Total passifs / Total actifs</td><td>59 374 / 183 472 = <strong>32%</strong></td><td>Sain. Moins d'un tiers de l'entreprise est finance par la dette. Sain si < 50%</td></tr>
+  <tr><td><strong>Valeur comptable par action</strong></td><td>Capitaux propres / Nombre d'actions</td><td>Selon le capital emis</td><td>Mesure la valeur theorique d'une action de l'entreprise</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comprendre l'evolution du bilan dans le temps</h2>
+
+<h3>Comment le bilan evolue d'un mois a l'autre</h3>
+
+<p>Le bilan change chaque jour avec chaque transaction. Voici les mouvements typiques pour BioCycle :</p>
+
+<table>
+<thead>
+    <tr><th>Transaction</th><th>Impact sur les actifs</th><th>Impact sur les passifs</th><th>Impact sur les capitaux propres</th></tr>
+</thead>
+<tbody>
+  <tr><td>Vente de peptides (credit)</td><td>+Comptes clients</td><td>+TPS/TVQ a remettre</td><td>+BNR (via revenu)</td></tr>
+  <tr><td>Encaissement client</td><td>+Banque, -Clients</td><td>Aucun</td><td>Aucun</td></tr>
+  <tr><td>Achat fournisseur</td><td>+Stock, +TPS intrants</td><td>+Fournisseurs</td><td>Aucun</td></tr>
+  <tr><td>Paiement fournisseur</td><td>-Banque</td><td>-Fournisseurs</td><td>Aucun</td></tr>
+  <tr><td>Paiement salaires</td><td>-Banque</td><td>-Salaires a payer</td><td>-BNR (via charge)</td></tr>
+  <tr><td>Amortissement</td><td>-Amort. cumule (actif net baisse)</td><td>Aucun</td><td>-BNR (via charge)</td></tr>
+  <tr><td>Versement dividende</td><td>-Banque</td><td>Aucun</td><td>-BNR</td></tr>
+  <tr><td>Remboursement emprunt</td><td>-Banque</td><td>-Emprunt</td><td>Aucun</td></tr>
+  <tr><td>Provision creance douteuse</td><td>-Provision (actif net baisse)</td><td>Aucun</td><td>-BNR (via charge)</td></tr>
+</tbody>
+</table>
+<h3>Le lien bilan -- etat des resultats</h3>
+
+<p>Le benefice net de l'etat des resultats se retrouve dans le BNR du bilan. Voici comment :</p>
+
+<pre><code>BNR au 1er janvier 2026 :                    47 458 $
++ Benefice net de l'annee 2026 :             460 000 $
+- Dividendes verses en 2026 :              (100 000 $)
+= BNR au 31 decembre 2026 :                 407 458 $</code></pre>
+
+<p>Si le BNR au bilan ne correspond pas au BNR d'ouverture + benefice net - dividendes, il y a une erreur.</p>
+
+<h3>Les categories DPA pour BioCycle</h3>
+
+<p>Pour bien calculer l'amortissement au bilan, il faut connaitre les taux de DPA (Deduction pour Amortissement) par categorie :</p>
+
+<table>
+<thead>
+    <tr><th>Categorie DPA</th><th>Description</th><th>Taux</th><th>Exemples BioCycle</th><th>Methode</th></tr>
+</thead>
+<tbody>
+  <tr><td>Categorie 8</td><td>Mobilier et equipement</td><td>20%</td><td>Bureau, etageres, comptoirs</td><td>Degressif</td></tr>
+  <tr><td>Categorie 10</td><td>Vehicules</td><td>30%</td><td>Vehicule de livraison</td><td>Degressif</td></tr>
+  <tr><td>Categorie 12</td><td>Logiciels</td><td>100%</td><td>Licences logicielles</td><td>Immediat</td></tr>
+  <tr><td>Categorie 50</td><td>Materiel informatique</td><td>55%</td><td>Ordinateurs, serveurs</td><td>Degressif</td></tr>
+  <tr><td>Categorie 43</td><td>Equipement de fabrication</td><td>30%</td><td>Equipement de laboratoire</td><td>Degressif</td></tr>
+</tbody>
+</table>
+<p><strong>Regle du demi-taux</strong> : L'annee d'acquisition, vous ne pouvez deduire que la moitie du taux normal. Pour un ordinateur de 3 000 $ (categorie 50, taux 55%), la DPA de la premiere annee est : 3 000 x 55% x 50% = 825 $.</p>
+
+<hr>
+
+<h2>Erreurs courantes a eviter</h2>
+
+<table>
+<thead>
+    <tr><th>Erreur</th><th>Consequence</th><th>Comment eviter</th></tr>
+</thead>
+<tbody>
+  <tr><td>Generer le bilan sans avoir termine les ajustements</td><td>Amortissement manquant, provisions absentes, bilan incomplet</td><td>Suivre la checklist de cloture de mois AVANT de generer le bilan</td></tr>
+  <tr><td>Ne pas verifier l'equilibre</td><td>Si Actifs =/= Passifs + Capitaux propres, tout est faux</td><td>Toujours verifier la ligne d'equilibre en bas du bilan</td></tr>
+  <tr><td>Oublier de reclasser la portion courante de la dette</td><td>L'emprunt entier apparait dans les passifs non courants, faussant le ratio de liquidite</td><td>Chaque annee, reclasser la portion payable dans les 12 mois en passif courant</td></tr>
+  <tr><td>Ne pas provisionner les creances douteuses</td><td>Les comptes clients affichent un montant irrealiste</td><td>Revoir l'anciennete des comptes clients chaque mois et provisionner selon la politique</td></tr>
+  <tr><td>Comparer des bilans a des dates non comparables</td><td>Conclusions erronees (ex: comparer le 15 mars au 31 decembre)</td><td>Toujours comparer des dates de fin de mois ou de fin d'annee</td></tr>
+  <tr><td>Ne pas inclure les charges a payer</td><td>Le passif est sous-evalue, les capitaux propres sont surevalues</td><td>Passer les ecritures de charges a payer avant de generer le bilan</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Quand faire cette operation</h2>
+
+<table>
+<thead>
+    <tr><th>Frequence</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Mensuelle</strong></td><td>Generer le bilan a la fin de chaque mois. Comparer avec le mois precedent. Verifier les ratios.</td></tr>
+  <tr><td><strong>Trimestrielle</strong></td><td>Bilan trimestriel pour la direction. Analyse approfondie des tendances.</td></tr>
+  <tr><td><strong>Annuelle</strong></td><td>Bilan de cloture au 31 decembre. Document officiel pour le comptable, la banque, l'ARC.</td></tr>
+  <tr><td><strong>Sur demande</strong></td><td>Quand la banque le demande, quand un investisseur le demande, quand un partenaire B2B le demande.</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Le bilan est-il genere automatiquement ?</strong></p>
+<p>R : Oui, a 100%. Il est calcule en temps reel a partir des ecritures du grand livre. Vous n'avez rien a saisir manuellement dans le bilan lui-meme. Votre travail est de vous assurer que les ecritures sous-jacentes sont correctes.</p>
+
+<p><strong>Q : A quelle frequence dois-je regarder le bilan ?</strong></p>
+<p>R : Au minimum chaque mois pour une entreprise en croissance comme BioCycle. Chaque trimestre au strict minimum.</p>
+
+<p><strong>Q : Que signifie un bilan "non equilibre" ?</strong></p>
+<p>R : C'est une erreur grave qui indique un probleme dans les ecritures. En pratique, avec Koraline, c'est quasi impossible car le systeme force l'equilibre a chaque ecriture. Si cela arrive, c'est probablement un probleme technique -- contactez le support.</p>
+
+<p><strong>Q : Mon comptable me demande le "bilan d'ouverture" -- qu'est-ce que c'est ?</strong></p>
+<p>R : C'est le bilan au tout premier jour de l'exercice comptable. Pour 2026, c'est le bilan au 1er janvier 2026, qui est identique au bilan de cloture du 31 decembre 2025.</p>
+
+<p><strong>Q : Le bilan inclut-il les commandes en cours (non livrees) ?</strong></p>
+<p>R : Non. Seules les transactions enregistrees dans les livres comptables apparaissent au bilan. Une commande non encore facturee n'y figure pas.</p>
+
+<p><strong>Q : Que se passe-t-il si je verse des dividendes ?</strong></p>
+<p>R : Les dividendes reduisent les BNR. L'ecriture est : Debit 3300 (Dividendes) / Credit 1010 (Banque). Les dividendes ne sont PAS une charge -- ils ne passent pas par l'etat des resultats.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition comptable</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Bilan</strong></td><td>Etat financier presentant les actifs, passifs et capitaux propres de l'entreprise a une date precise. Photographie de la situation financiere.</td></tr>
+  <tr><td><strong>Actifs courants</strong></td><td>Biens et droits convertibles en argent dans les 12 prochains mois (tresorerie, clients, stock, taxes recuperables).</td></tr>
+  <tr><td><strong>Actifs non courants</strong></td><td>Biens a long terme utilises dans les operations (equipement, mobilier, vehicules). Aussi appeles immobilisations.</td></tr>
+  <tr><td><strong>Passifs courants</strong></td><td>Dettes payables dans les 12 prochains mois (fournisseurs, taxes, salaires, portion courante emprunt).</td></tr>
+  <tr><td><strong>Passifs non courants</strong></td><td>Dettes a long terme (emprunt bancaire, hypotheque).</td></tr>
+  <tr><td><strong>Capitaux propres</strong></td><td>Valeur nette de l'entreprise = Actifs - Passifs. Comprend le capital investi et les profits accumules.</td></tr>
+  <tr><td><strong>BNR</strong></td><td>Benefices Non Repartis. Profits accumules depuis la creation de l'entreprise, moins les dividendes verses.</td></tr>
+  <tr><td><strong>Ratio de liquidite</strong></td><td>Actifs courants / Passifs courants. Mesure la capacite a payer les obligations a court terme. > 1,5 est sain.</td></tr>
+  <tr><td><strong>Ratio d'endettement</strong></td><td>Passifs / Actifs. Proportion de l'entreprise financee par la dette. < 50% est sain.</td></tr>
+  <tr><td><strong>Amortissement cumule</strong></td><td>Montant total de depreciation enregistre depuis l'acquisition d'un actif. C'est un contre-actif (solde crediteur) qui reduit la valeur brute.</td></tr>
+  <tr><td><strong>DPA</strong></td><td>Deduction Pour Amortissement. Taux fiscal etabli par l'ARC pour chaque categorie d'immobilisation. Determine le montant deductible annuellement.</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="06-resultats.md">Etat des resultats</a> : L'autre etat financier principal (profits/pertes sur une periode)</li>
+<li><a href="04-grand-livre.md">Grand livre</a> : Detail des transactions qui composent chaque poste du bilan</li>
+<li><a href="01-plan-comptable.md">Plan comptable</a> : Structure des comptes d'actifs, passifs et capitaux propres</li>
+<li><a href="11-budget.md">Budget</a> : Previsions vs realite financiere</li>
+<li><a href="12-rapports.md">Rapports</a> : Ratios financiers et analyses derivees du bilan</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

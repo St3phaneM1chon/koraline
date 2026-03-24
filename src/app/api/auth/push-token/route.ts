@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
  * POST /api/auth/push-token — Register iOS device token for push notifications
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { withMobileGuard } from '@/lib/mobile-guard';
 import { prisma } from '@/lib/db';

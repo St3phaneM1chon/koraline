@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rapports Marketing &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 04 — Marketing</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Rapports Marketing</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Marketing > Rapports</p>
+<p><strong>URL</strong>: <code>/admin/rapports</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Rapports</strong> est votre tableau de bord d'analyse commerciale. Elle consolide les donnees de ventes en provenance de la comptabilite et les presente sous forme de graphiques et de classements. Vous pouvez suivre le revenu, le nombre de commandes, le panier moyen, les produits les plus vendus, et la repartition geographique des ventes.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Visualiser le revenu total, le nombre de commandes et le panier moyen</li>
+<li>Comparer la periode actuelle avec la periode precedente (tendance en pourcentage)</li>
+<li>Consulter un graphique du revenu quotidien</li>
+<li>Voir le classement des produits les plus vendus</li>
+<li>Analyser la repartition des ventes par region (province, territoire)</li>
+<li>Filtrer les donnees par periode (7 jours, 30 jours, 90 jours, 12 mois)</li>
+<li>Exporter les donnees en CSV ou en PDF</li>
+<li>Imprimer le rapport</li>
+<li>Generer un resume textuel des statistiques</li>
+</ul>
+
+<hr>
+
+<h2>Concepts pour les debutants</h2>
+
+<h3>Pourquoi suivre les rapports marketing ?</h3>
+
+<p>Les rapports marketing repondent a des questions essentielles pour piloter votre activite :</p>
+<ul>
+<li><strong>Combien gagnons-nous ?</strong> Le revenu total vous donne le chiffre d'affaires.</li>
+<li><strong>Combien de commandes recevons-nous ?</strong> Le volume de commandes indique la demande.</li>
+<li><strong>Quel est le panier moyen ?</strong> Le montant moyen par commande revele le comportement d'achat.</li>
+<li><strong>Quels produits se vendent le mieux ?</strong> Le classement des top produits oriente votre strategie.</li>
+<li><strong>D'ou viennent les ventes ?</strong> La repartition geographique aide a cibler vos efforts marketing.</li>
+<li><strong>La tendance est-elle a la hausse ou a la baisse ?</strong> Les pourcentages de variation montrent l'evolution.</li>
+</ul>
+
+<h3>Les periodes d'analyse</h3>
+
+<table>
+<thead>
+    <tr><th>Periode</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>7 jours</strong></td><td>Derniere semaine -- utile pour un suivi quotidien</td></tr>
+  <tr><td><strong>30 jours</strong></td><td>Dernier mois -- la vue la plus courante</td></tr>
+  <tr><td><strong>90 jours</strong></td><td>Dernier trimestre -- pour les tendances moyennes</td></tr>
+  <tr><td><strong>12 mois</strong></td><td>Derniere annee -- pour la vue strategique</td></tr>
+</tbody>
+</table>
+<h3>Comment sont calculees les donnees ?</h3>
+
+<p>Les donnees proviennent de la comptabilite reelle (factures clients). Le systeme interroge les API comptables en temps reel pour construire les rapports. Les montants sont calcules en cents pour eviter les erreurs d'arrondi, puis convertis en dollars pour l'affichage.</p>
+
+<h3>Comparaison avec la periode precedente</h3>
+
+<p>Chaque metrique principale (revenu, commandes, panier moyen) est accompagnee d'un pourcentage de variation par rapport a la meme duree precedente. Par exemple, si vous regardez les 30 derniers jours, la comparaison se fait avec les 30 jours d'avant.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Marketing</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong>, cliquez sur <strong>Rapports</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Cliquez sur l'icone de la section <strong>Marketing</strong> dans le rail</li>
+<li>Cliquez sur <strong>Rapports</strong></li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche (ou tapez <code>/</code>)</li>
+<li>Tapez "rapports" ou "reports"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Generer le rapport</strong></td><td>Recharger les donnees pour la periode selectionnee</td></tr>
+  <tr><td><strong>Resume</strong></td><td>Afficher un resume textuel des statistiques cles</td></tr>
+  <tr><td><strong>Comparer periodes</strong></td><td>Afficher la comparaison detaillee avec la periode precedente</td></tr>
+  <tr><td><strong>Exporter PDF</strong></td><td>Telecharger le rapport comptable en format PDF</td></tr>
+  <tr><td><strong>Exporter Excel</strong></td><td>Telecharger les donnees en fichier CSV</td></tr>
+  <tr><td><strong>Imprimer</strong></td><td>Ouvrir la fenetre d'impression du navigateur</td></tr>
+</tbody>
+</table>
+<h3>2. L'en-tete et le selecteur de periode</h3>
+
+<p>En haut de la page :</p>
+<ul>
+<li>Titre : "Rapports Marketing"</li>
+<li>Sous-titre descriptif</li>
+<li><strong>Selecteur de periode</strong> : Menu deroulant pour choisir 7 jours, 30 jours, 90 jours ou 12 mois</li>
+<li><strong>Bouton Exporter PDF</strong> : Acces rapide a l'export PDF</li>
+</ul>
+
+<h3>3. Les cartes de statistiques principales</h3>
+
+<p>4 cartes disposees en ligne :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th><th>Tendance</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Revenu total</strong></td><td>Chiffre d'affaires pour la periode</td><td>Variation en % vs periode precedente</td></tr>
+  <tr><td><strong>Commandes</strong></td><td>Nombre total de commandes</td><td>Variation en %</td></tr>
+  <tr><td><strong>Panier moyen</strong></td><td>Montant moyen par commande</td><td>Variation en %</td></tr>
+  <tr><td><strong>Factures en attente</strong></td><td>Nombre de factures non reglees</td><td>--</td></tr>
+</tbody>
+</table>
+<p>Les tendances sont affichees en vert (hausse) ou en rouge (baisse) avec un pourcentage.</p>
+
+<h3>4. Le graphique du revenu quotidien</h3>
+
+<p>Un graphique en barres verticales montrant le revenu pour chaque jour de la periode. Les 30 derniers jours sont affiches. Au survol de chaque barre, une infobulle affiche la date, le montant et le nombre de commandes.</p>
+
+<h3>5. Les produits les plus vendus</h3>
+
+<p>Un classement des 10 produits les plus vendus pour la periode, avec :</p>
+<ul>
+<li>Un numero de rang (1 a 10) dans un cercle</li>
+<li>Le nom du produit</li>
+<li>Une barre de progression proportionnelle aux ventes</li>
+<li>Le revenu genere</li>
+<li>Le nombre d'unites vendues</li>
+</ul>
+
+<h3>6. Les ventes par region</h3>
+
+<p>Un classement des regions (provinces/territoires canadiens) avec :</p>
+<ul>
+<li>Le nom de la region</li>
+<li>Une barre de progression proportionnelle au revenu</li>
+<li>Le revenu genere</li>
+<li>Le nombre de commandes</li>
+</ul>
+
+<h3>7. La repartition par region (pourcentage)</h3>
+
+<p>Un second panneau montrant la distribution en pourcentage du revenu par region, avec des barres de progression et le pourcentage exact.</p>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Changer la periode d'analyse</h3>
+
+<ol>
+<li>Cliquez sur le selecteur de periode en haut a droite</li>
+<li>Choisissez parmi : 7 jours, 30 jours, 90 jours, 12 mois</li>
+<li>Les donnees se rechargent automatiquement</li>
+<li>Toutes les cartes, graphiques et tableaux se mettent a jour</li>
+</ol>
+
+<h3>2. Consulter la comparaison avec la periode precedente</h3>
+
+<p><strong>Methode rapide</strong> : Les cartes de statistiques affichent deja le pourcentage de variation.</p>
+
+<p><strong>Methode detaillee</strong> : Cliquez sur <strong>Comparer periodes</strong> dans le ruban. Un toast affiche un resume complet :</p>
+<ul>
+<li>Revenu : montant actuel vs precedent (et variation en %)</li>
+<li>Commandes : nombre actuel vs precedent (et variation en %)</li>
+<li>Panier moyen : montant actuel vs precedent (et variation en %)</li>
+</ul>
+
+<h3>3. Generer un resume textuel</h3>
+
+<p>Cliquez sur <strong>Resume</strong> dans le ruban. Un toast affiche :</p>
+<ul>
+<li>Revenu total de la periode</li>
+<li>Nombre de commandes</li>
+<li>Panier moyen</li>
+<li>Top 3 des produits les plus vendus</li>
+</ul>
+
+<p>Utile pour obtenir rapidement les chiffres cles sans parcourir toute la page.</p>
+
+<h3>4. Exporter en PDF</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter PDF</strong> dans le ruban ou le bouton en haut a droite</li>
+<li>Un nouvel onglet s'ouvre avec le rapport PDF genere par le systeme comptable</li>
+<li>Telechargez ou imprimez le PDF</li>
+</ol>
+
+<p>Le PDF est genere par l'API comptable et contient un rapport de revenus formate pour la periode selectionnee.</p>
+
+<h3>5. Exporter en CSV</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter Excel</strong> dans le ruban</li>
+<li>Le fichier CSV se telecharge automatiquement</li>
+<li>Il contient trois sections :</li>
+</ol>
+<ul>
+<li><strong>Donnees quotidiennes</strong> : date, revenu, commandes, panier moyen</li>
+<li><strong>Produits les plus vendus</strong> : nom, nombre de ventes, revenu</li>
+<li><strong>Ventes par region</strong> : region, commandes, revenu</li>
+</ul>
+
+<h3>6. Imprimer le rapport</h3>
+
+<p>Cliquez sur <strong>Imprimer</strong> dans le ruban. La fenetre d'impression du navigateur s'ouvre. Les styles d'impression sont optimises pour un rendu lisible sur papier.</p>
+
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario A : Bilan mensuel pour l'equipe de direction</h3>
+
+<ol>
+<li>Selectionnez la periode <strong>30 jours</strong></li>
+<li>Notez le revenu total et le nombre de commandes</li>
+<li>Consultez la tendance vs le mois precedent</li>
+<li>Cliquez sur <strong>Resume</strong> pour obtenir les chiffres cles</li>
+<li>Exportez en PDF pour joindre au rapport de direction</li>
+<li>Exportez en CSV pour une analyse plus poussee dans Excel</li>
+</ol>
+
+<h3>Scenario B : Identifier les produits a promouvoir</h3>
+
+<ol>
+<li>Selectionnez la periode <strong>90 jours</strong> pour une vue trimestrielle</li>
+<li>Consultez le classement des produits les plus vendus</li>
+<li>Identifiez les produits qui se vendent bien naturellement : renforcez leurs promotions</li>
+<li>Identifiez les produits absents du top 10 mais a fort potentiel : creez des codes promo ou des bannieres dedies</li>
+<li>Croisez avec les donnees par region pour cibler vos campagnes geographiquement</li>
+</ol>
+
+<h3>Scenario C : Analyser l'impact d'une campagne marketing</h3>
+
+<ol>
+<li>Notez le revenu et les commandes AVANT la campagne (selectionnez la periode precedente)</li>
+<li>Lancez votre campagne (code promo, newsletter, banniere)</li>
+<li>Apres la campagne, consultez les rapports pour la periode couvrant la campagne</li>
+<li>Utilisez <strong>Comparer periodes</strong> pour voir la variation</li>
+<li>Si le revenu a augmente significativement, la campagne est un succes</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: D'ou proviennent les donnees de revenus ?</strong></p>
+<p>R: Les donnees proviennent du module de comptabilite (factures clients). Le systeme interroge les API comptables en temps reel, ce qui garantit que les chiffres sont toujours a jour.</p>
+
+<p><strong>Q: Les taxes sont-elles incluses dans le revenu affiche ?</strong></p>
+<p>R: Le revenu total correspond au total des factures (TTC -- toutes taxes comprises). Les rapports fiscaux detailles sont disponibles dans le module Comptabilite.</p>
+
+<p><strong>Q: Pourquoi le graphique n'affiche-t-il que 30 jours meme si je selectionne 90 jours ?</strong></p>
+<p>R: Le graphique en barres affiche les 30 derniers jours de la periode pour rester lisible. Les cartes de statistiques et les classements, eux, couvrent la totalite de la periode selectionnee.</p>
+
+<p><strong>Q: Comment la tendance est-elle calculee ?</strong></p>
+<p>R: La tendance compare la periode actuelle avec une periode de meme duree juste avant. Par exemple, si vous regardez les 30 derniers jours, le systeme compare avec les 30 jours precedents.</p>
+
+<p><strong>Q: Le fichier PDF est-il le meme que celui de la comptabilite ?</strong></p>
+<p>R: Oui. Le bouton Exporter PDF genere un rapport de revenus via l'API comptable, avec un format professionnel adapte a la transmission a un comptable ou a la direction.</p>
+
+<hr>
+
+<h2>Strategie expert : interpretation des KPIs marketing</h2>
+
+<h3>Les 3 KPIs fondamentaux et leurs seuils de sante</h3>
+
+<p><strong>1. CAC (Cout d'acquisition client)</strong></p>
+
+<p>Le CAC represente combien vous depensez en marketing pour acquerir un nouveau client.</p>
+
+<p><strong>Formule</strong> : <code>CAC = Total depenses marketing / Nombre de nouveaux clients acquis</code></p>
+
+<table>
+<thead>
+    <tr><th>CAC</th><th>Interpretation</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td>< CLV/3</td><td>Sain</td><td>Investir davantage pour accelerer la croissance</td></tr>
+  <tr><td>CLV/3 a CLV/2</td><td>Correct mais a surveiller</td><td>Optimiser les canaux les moins performants</td></tr>
+  <tr><td>> CLV/2</td><td>Dangereux</td><td>Reduire les depenses ou ameliorer la conversion</td></tr>
+  <tr><td>> CLV</td><td>Perte nette</td><td>Stopper les campagnes non rentables immediatement</td></tr>
+</tbody>
+</table>
+<p><strong>Exemple pour BioCycle Peptides</strong> :</p>
+<ul>
+<li>CLV moyenne estimee : 600 $CA (4 commandes x 150 $CA sur 18 mois)</li>
+<li>CAC sain : < 200 $CA (600/3)</li>
+<li>Si votre CAC depasse 300 $CA, reduisez les depenses publicitaires et renforcez le SEO et le contenu organique</li>
+</ul>
+
+<p><strong>2. ROAS (Return On Ad Spend)</strong></p>
+
+<p>Le ROAS mesure le revenu genere pour chaque dollar depense en publicite.</p>
+
+<p><strong>Formule</strong> : <code>ROAS = Revenu genere par la campagne / Cout de la campagne</code></p>
+
+<table>
+<thead>
+    <tr><th>ROAS</th><th>Interpretation</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td>> 5x</td><td>Excellent</td><td>Augmenter le budget de cette campagne</td></tr>
+  <tr><td>3x a 5x</td><td>Rentable</td><td>Maintenir et optimiser</td></tr>
+  <tr><td>2x a 3x</td><td>Correct</td><td>Optimiser le ciblage et les creations</td></tr>
+  <tr><td>1x a 2x</td><td>Marginal</td><td>Revoir la strategie ou stopper</td></tr>
+  <tr><td>< 1x</td><td>Perte</td><td>Stopper immediatement</td></tr>
+</tbody>
+</table>
+<p><strong>3. CLV (Customer Lifetime Value)</strong></p>
+
+<p>La valeur a vie du client mesure le revenu total qu'un client genere pendant toute sa relation avec BioCycle Peptides.</p>
+
+<p><strong>Formule simplifiee</strong> : <code>CLV = Panier moyen x Frequence d'achat annuelle x Duree moyenne de la relation (en annees)</code></p>
+
+<h3>Attribution multi-canal</h3>
+
+<p>Un client interagit avec plusieurs canaux avant d'acheter. L'attribution permet de savoir quel canal a le plus contribue a la conversion.</p>
+
+<table>
+<thead>
+    <tr><th>Modele</th><th>Principe</th><th>Quand l'utiliser</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Dernier clic</strong></td><td>100% du credit au dernier canal avant l'achat</td><td>Analyse simple, decisions rapides</td></tr>
+  <tr><td><strong>Premier clic</strong></td><td>100% du credit au canal de decouverte</td><td>Evaluer l'efficacite d'acquisition</td></tr>
+  <tr><td><strong>Lineaire</strong></td><td>Credit reparti equitablement entre tous les canaux</td><td>Vue equilibree de l'entonnoir</td></tr>
+  <tr><td><strong>En U</strong></td><td>40% premier clic, 40% dernier clic, 20% reparti</td><td>Le plus recommande pour l'e-commerce</td></tr>
+</tbody>
+</table>
+<p><strong>Parcours d'achat typique BioCycle Peptides</strong> :</p>
+<ol>
+<li>Decouverte via Google ("buy peptides Canada") -- SEO/SEA</li>
+<li>Visite du blog (article sur le BPC-157) -- Content marketing</li>
+<li>Inscription newsletter (code BIENVENUE10 recu) -- Email marketing</li>
+<li>Retargeting Facebook/Instagram -- Publicite payante</li>
+<li>Achat avec le code BIENVENUE10 -- Conversion</li>
+</ol>
+
+<p>Dans cet exemple, le modele "dernier clic" crediterait uniquement l'email. Le modele "en U" crediterait surtout le SEO (decouverte) et l'email (conversion), avec une part pour le blog et le retargeting.</p>
+
+<h3>Analyse de cohortes</h3>
+
+<p>L'analyse de cohortes regroupe les clients par date d'acquisition et suit leur comportement dans le temps. C'est l'outil le plus puissant pour mesurer la retention.</p>
+
+<p><strong>Comment lire un tableau de cohortes</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Cohorte</th><th>Mois 0</th><th>Mois 1</th><th>Mois 2</th><th>Mois 3</th><th>Mois 6</th><th>Mois 12</th></tr>
+</thead>
+<tbody>
+  <tr><td>Janvier 2026</td><td>100%</td><td>25%</td><td>20%</td><td>18%</td><td>12%</td><td>8%</td></tr>
+  <tr><td>Fevrier 2026</td><td>100%</td><td>30%</td><td>25%</td><td>22%</td><td>15%</td><td>--</td></tr>
+  <tr><td>Mars 2026</td><td>100%</td><td>35%</td><td>28%</td><td>--</td><td>--</td><td>--</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Mois 0</strong> = premiere commande (toujours 100%)</li>
+<li><strong>Mois 1</strong> = pourcentage de clients qui ont commande a nouveau le mois suivant</li>
+<li><strong>Tendance saine</strong> : les cohortes recentes ont de meilleurs taux de retention (signe que vos efforts marketing et produit s'ameliorent)</li>
+</ul>
+
+<p><strong>Cibles de retention pour peptides (e-commerce de niche)</strong> :</p>
+<table>
+<thead>
+    <tr><th>Periode</th><th>Taux de retention cible</th></tr>
+</thead>
+<tbody>
+  <tr><td>Mois 1</td><td>25-35%</td></tr>
+  <tr><td>Mois 3</td><td>15-25%</td></tr>
+  <tr><td>Mois 6</td><td>10-18%</td></tr>
+  <tr><td>Mois 12</td><td>8-15%</td></tr>
+</tbody>
+</table>
+<p>Si vos taux sont inferieurs, concentrez-vous sur les emails post-achat, les rappels de reapprovisionnement et les programmes de fidelite avant d'investir davantage en acquisition.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Revenu total</strong></td><td>Le chiffre d'affaires cumule pour la periode selectionnee</td></tr>
+  <tr><td><strong>Panier moyen</strong></td><td>Le montant moyen depense par commande (revenu / nombre de commandes)</td></tr>
+  <tr><td><strong>Tendance</strong></td><td>Le pourcentage de variation par rapport a la meme duree de la periode precedente</td></tr>
+  <tr><td><strong>Top produits</strong></td><td>Les produits classes par revenu genere sur la periode</td></tr>
+  <tr><td><strong>Region</strong></td><td>Province ou territoire canadien d'ou provient la commande</td></tr>
+  <tr><td><strong>CSV</strong></td><td>Comma-Separated Values, format tabulaire compatible avec Excel et Google Sheets</td></tr>
+  <tr><td><strong>PDF</strong></td><td>Portable Document Format, format de document non modifiable pour les rapports</td></tr>
+  <tr><td><strong>TTC</strong></td><td>Toutes Taxes Comprises -- montant incluant la TPS/TVQ/TVH</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/commandes">Commandes</a> -- Voir le detail de chaque commande</li>
+<li><a href="/admin/comptabilite">Comptabilite</a> -- Ecritures comptables et rapports fiscaux</li>
+<li><a href="/admin/promo-codes">Codes Promo</a> -- Creer des promotions et mesurer leur impact</li>
+<li><a href="/admin/promotions">Promotions</a> -- Remises automatiques</li>
+<li><a href="/admin/newsletter">Newsletter</a> -- Campagnes email et leur impact sur les ventes</li>
+<li><a href="/admin/blog/analytics">Blog Analytics</a> -- Statistiques du blog</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

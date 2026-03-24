@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Produits &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 03 — Catalogue</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion des Produits</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Catalogue > Produits</p>
+<p><strong>URL</strong>: <code>/admin/produits</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~30 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Produits</strong> est le catalogue complet de tout ce que vous vendez. C'est ici que vous creez, modifiez, publiez et organisez vos peptides, supplements et accessoires.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir tous vos produits avec leur statut, prix, stock et categorie</li>
+<li>Basculer entre vue liste et vue grille</li>
+<li>Filtrer par categorie, statut (actif/total), type (peptides/supplements)</li>
+<li>Rechercher un produit par nom</li>
+<li>Creer un nouveau produit avec tous ses details (nom, description, prix, formats, images, SEO)</li>
+<li>Modifier un produit existant</li>
+<li>Dupliquer un produit (gain de temps pour des produits similaires)</li>
+<li>Publier ou depublier un produit (le rendre visible ou invisible sur la boutique)</li>
+<li>Supprimer un produit</li>
+<li>Importer des produits depuis un fichier CSV</li>
+<li>Exporter le catalogue au format CSV</li>
+<li>Generer un catalogue PDF</li>
+<li>Voir les pages les plus populaires du catalogue</li>
+<li>Voir la classification ABC (quels produits generent le plus de revenus)</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Types de produits</h3>
+<p>BioCycle Peptides vend 3 types de produits :</p>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Icone</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Peptide</strong></td><td>Fiole</td><td>Peptides synthetiques pour la recherche (BPC-157, TB-500, etc.)</td></tr>
+  <tr><td><strong>Supplement</strong></td><td>Pilule</td><td>Supplements nutritionnels</td></tr>
+  <tr><td><strong>Accessoire</strong></td><td>Outil</td><td>Accessoires (seringues, eau bacteriostatique, etc.)</td></tr>
+</tbody>
+</table>
+<h3>Formats</h3>
+<p>Un produit peut avoir <strong>plusieurs formats</strong> (variantes). Par exemple, le BPC-157 peut exister en :</p>
+<ul>
+<li>5mg Vial — 40,00 $CA</li>
+<li>10mg Vial — 70,00 $CA</li>
+</ul>
+
+<p>Chaque format a son propre prix, stock, SKU et disponibilite.</p>
+
+<h3>Classification ABC</h3>
+<p>Le systeme classe automatiquement vos produits selon leur contribution au revenu :</p>
+<ul>
+<li><strong>A</strong> (etoile) : Les 20% de produits qui generent 80% du revenu — vos meilleurs vendeurs</li>
+<li><strong>B</strong> : Les produits a contribution moyenne</li>
+<li><strong>C</strong> : Les produits a faible contribution — a surveiller</li>
+</ul>
+
+<h3>Statuts d'un produit</h3>
+<table>
+<thead>
+    <tr><th>Statut</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Actif</strong></td><td>Visible sur la boutique, les clients peuvent l'acheter</td></tr>
+  <tr><td><strong>Inactif</strong></td><td>Cache de la boutique, invisible pour les clients</td></tr>
+  <tr><td><strong>En vedette</strong></td><td>Mis en avant sur la page d'accueil ou dans les recommandations</td></tr>
+  <tr><td><strong>Nouveau</strong></td><td>Marque comme nouveau produit (badge "Nouveau" sur la boutique)</td></tr>
+  <tr><td><strong>Bestseller</strong></td><td>Marque comme produit populaire</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans la <strong>barre de navigation horizontale</strong>, cliquez sur <strong>Catalogue</strong></li>
+<li>Dans le <strong>panneau lateral</strong>, cliquez sur <strong>Produits</strong> (1er element)</li>
+</ol>
+
+<p>Ou cliquez directement sur l'icone <strong>Catalogue</strong> (3e icone) dans le rail de navigation a gauche.</p>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Page Produits]</div>
+
+<h3>La barre de ruban (Ribbon)</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau produit</strong></td><td>Creer un nouveau produit</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer le produit selectionne</td></tr>
+  <tr><td><strong>Dupliquer</strong></td><td>Creer une copie du produit selectionne</td></tr>
+  <tr><td><strong>Publier</strong></td><td>Activer le produit selectionne (visible sur la boutique)</td></tr>
+  <tr><td><strong>Depublier</strong></td><td>Desactiver le produit (cache de la boutique)</td></tr>
+  <tr><td><strong>Categories</strong></td><td>Filtrer par categorie (menu deroulant)</td></tr>
+  <tr><td><strong>Pages populaires</strong></td><td>Voir les produits les plus visites</td></tr>
+  <tr><td><strong>PDF Catalogue</strong></td><td>Generer un catalogue PDF de tous les produits</td></tr>
+  <tr><td><strong>Import CSV</strong></td><td>Importer des produits depuis un fichier CSV</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger la liste des produits en CSV</td></tr>
+</tbody>
+</table>
+<h3>Les cartes de statistiques (4 cartes)</h3>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total</strong></td><td>Nombre total de produits</td></tr>
+  <tr><td><strong>Peptides</strong></td><td>Nombre de peptides</td></tr>
+  <tr><td><strong>Supplements</strong></td><td>Nombre de supplements</td></tr>
+  <tr><td><strong>Accessoires</strong></td><td>Nombre d'accessoires</td></tr>
+</tbody>
+</table>
+<h3>Vue liste / Vue grille</h3>
+<p>Deux boutons en haut a droite permettent de basculer :</p>
+<ul>
+<li><strong>Vue liste</strong> (icone lignes) : Affichage maitre/detail avec panneau de detail a droite</li>
+<li><strong>Vue grille</strong> (icone grille) : Affichage en cartes, plus visuel</li>
+</ul>
+
+<h3>Selecteur de categorie</h3>
+<p>Un menu deroulant "Toutes les categories" permet de filtrer par categorie.</p>
+
+<h3>Onglets de filtre</h3>
+<ul>
+<li><strong>Total</strong> — Tous les produits</li>
+<li><strong>Actif</strong> — Seulement les produits publies</li>
+<li><strong>Peptides</strong> — Seulement les peptides</li>
+<li><strong>Supplements</strong> — Seulement les supplements</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>1. Consulter un produit</h3>
+
+<ol>
+<li>Cliquez sur un produit dans la liste</li>
+<li>Le panneau de detail a droite affiche :</li>
+</ol>
+<ul>
+<li><strong>Image</strong> du produit</li>
+<li><strong>Nom</strong> et categorie</li>
+<li><strong>Prix</strong> de base</li>
+<li><strong>Badges</strong> : En stock/Rupture, Vedette, Classification ABC</li>
+<li><strong>Formats</strong> : Liste de toutes les variantes avec prix, stock, disponibilite</li>
+<li><strong>Boutons d'action</strong> : Modifier, Voir sur la boutique, Supprimer</li>
+</ul>
+
+<h3>2. Creer un nouveau produit</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouveau produit</strong> dans le ruban (ou le bouton bleu en haut a droite)</li>
+<li>Vous etes redirige vers la page de creation <code>/admin/produits/new</code></li>
+<li>Remplissez les champs :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Section</th><th>Champs</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Informations generales</strong></td><td>Nom, Description, Type (Peptide/Supplement/Accessoire), Categorie</td></tr>
+  <tr><td><strong>Prix et formats</strong></td><td>Prix de base, Formats (nom, prix, SKU, stock), Seuil d'alerte stock</td></tr>
+  <tr><td><strong>Images</strong></td><td>Image principale, Galerie d'images</td></tr>
+  <tr><td><strong>Marqueurs</strong></td><td>Actif, En vedette, Nouveau, Bestseller, Purete (%)</td></tr>
+  <tr><td><strong>SEO</strong></td><td>Slug (URL), Meta title, Meta description</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Cliquez sur <strong>Enregistrer</strong></li>
+</ol>
+
+<h3>3. Modifier un produit</h3>
+
+<ol>
+<li>Selectionnez le produit dans la liste</li>
+<li>Cliquez sur <strong>Modifier</strong> (icone crayon) dans le panneau de detail</li>
+<li>Vous etes redirige vers <code>/admin/produits/{id}/edit</code></li>
+<li>Modifiez les champs souhaites</li>
+<li>Enregistrez</li>
+</ol>
+
+<h3>4. Dupliquer un produit</h3>
+
+<p>Utile pour creer des produits similaires sans tout re-saisir.</p>
+
+<ol>
+<li>Selectionnez le produit a dupliquer</li>
+<li>Cliquez sur <strong>Dupliquer</strong> dans le ruban</li>
+<li>Une copie est creee avec le suffixe "(copie)" dans le nom</li>
+<li>Modifiez le nom, prix et autres details specifiques</li>
+<li>Enregistrez</li>
+</ol>
+
+<h3>5. Publier / Depublier</h3>
+
+<ul>
+<li><strong>Publier</strong> : Rend le produit visible sur la boutique. Les clients peuvent le voir et l'acheter.</li>
+<li><strong>Depublier</strong> : Cache le produit de la boutique. Il reste dans l'admin mais est invisible pour les clients.</li>
+</ul>
+
+<ol>
+<li>Selectionnez le produit</li>
+<li>Cliquez sur <strong>Publier</strong> ou <strong>Depublier</strong> dans le ruban</li>
+</ol>
+
+<h3>6. Importer depuis CSV</h3>
+
+<p>Pour ajouter plusieurs produits d'un coup.</p>
+
+<ol>
+<li>Cliquez sur <strong>Import CSV</strong> dans le ruban (ou le bouton en haut a droite)</li>
+<li>Selectionnez votre fichier CSV</li>
+<li>Le systeme valide et importe les produits</li>
+<li>Un rapport d'import s'affiche (produits crees, erreurs eventuelles)</li>
+</ol>
+
+<h3>7. Exporter le catalogue</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter</strong> dans le ruban (ou le bouton en haut a droite)</li>
+<li>Un fichier CSV est telecharge avec tous les produits et leurs details</li>
+</ol>
+
+<h3>8. Generer un catalogue PDF</h3>
+
+<ol>
+<li>Cliquez sur <strong>PDF Catalogue</strong> dans le ruban</li>
+<li>Un PDF professionnel est genere avec tous les produits actifs</li>
+<li>Utile pour envoyer a des distributeurs ou afficher en salon</li>
+</ol>
+
+<hr>
+
+<h2>Workflows complets</h2>
+
+<h3>Scenario 1 : Ajouter un nouveau peptide au catalogue</h3>
+
+<ol>
+<li>Allez dans <strong>Catalogue > Produits</strong></li>
+<li>Cliquez sur <strong>Nouveau produit</strong></li>
+<li>Selectionnez le type <strong>Peptide</strong></li>
+<li>Renseignez nom, description scientifique, categorie</li>
+<li>Ajoutez les formats : 5mg (40$), 10mg (70$)</li>
+<li>Uploadez l'image du produit</li>
+<li>Cochez "En vedette" si c'est un nouveau produit phare</li>
+<li>Remplissez les champs SEO (slug, meta description)</li>
+<li>Enregistrez</li>
+<li>Verifiez sur la boutique que le produit apparait correctement</li>
+</ol>
+
+<h3>Scenario 2 : Identifier les produits a faible performance</h3>
+
+<ol>
+<li>Allez dans <strong>Catalogue > Produits</strong></li>
+<li>Regardez la classification ABC dans les badges de chaque produit</li>
+<li>Les produits classes <strong>C</strong> sont ceux qui generent le moins de revenus</li>
+<li>Pour chaque produit C, decidez :</li>
+</ol>
+<ul>
+<li><strong>Garder</strong> : Le produit a une valeur strategique malgre les faibles ventes</li>
+<li><strong>Promouvoir</strong> : Creer une campagne marketing pour booster les ventes</li>
+<li><strong>Retirer</strong> : Depublier le produit s'il n'a aucun interet strategique</li>
+</ul>
+
+<h3>Scenario 3 : Mettre a jour les prix de tous les produits</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter</strong> pour obtenir le CSV actuel</li>
+<li>Ouvrez le CSV dans Excel</li>
+<li>Modifiez les prix</li>
+<li>Sauvegardez le CSV</li>
+<li>Cliquez sur <strong>Import CSV</strong> pour re-importer les donnees mises a jour</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<h3>Q : Quelle est la difference entre "prix de base" et "prix du format" ?</h3>
+<p><strong>R</strong> : Le prix de base est le prix affiche par defaut. Les formats ont chacun leur propre prix qui peut etre different. C'est le prix du format qui est facture au client.</p>
+
+<h3>Q : Si je depublie un produit, les commandes en cours sont-elles affectees ?</h3>
+<p><strong>R</strong> : Non. Les commandes existantes ne sont pas impactees. Seules les nouvelles commandes sont impossibles.</p>
+
+<h3>Q : Comment les produits "En vedette" sont-ils affiches ?</h3>
+<p><strong>R</strong> : Ils apparaissent dans la section mise en avant sur la page d'accueil de la boutique et dans les recommandations.</p>
+
+<h3>Q : Le stock est-il gere ici ou dans Inventaire ?</h3>
+<p><strong>R</strong> : Le stock est visible ici (dans les formats), mais la gestion complete (ajustements, reappro, reconciliation) se fait dans <strong>Commerce > Inventaire</strong>.</p>
+
+<hr>
+
+<h2>Strategie expert : Guide de redaction des fiches produits peptides</h2>
+
+<h3>Structure d'une fiche produit optimale</h3>
+
+<p>Une fiche produit de peptide doit contenir deux types de description : scientifique (pour la credibilite) et marketing (pour la conversion).</p>
+
+<h4>Description scientifique (section technique)</h4>
+
+<p>Chaque fiche peptide doit inclure les informations suivantes :</p>
+<ul>
+<li><strong>Nom complet</strong> : nom courant + nom IUPAC si disponible (ex: BPC-157, Body Protection Compound-157)</li>
+<li><strong>Sequence d'acides amines</strong> : sequence complete en code a une lettre (ex: Gly-Glu-Pro-Pro-Pro-Gly-Lys-Pro-Ala-Asp-Asp-Ala-Gly-Leu-Val)</li>
+<li><strong>Poids moleculaire</strong> : en Daltons (ex: 1 419,53 Da)</li>
+<li><strong>Formule moleculaire</strong> : (ex: C62H98N16O22)</li>
+<li><strong>Purete</strong> : pourcentage minimum garanti (ex: superieure ou egale a 98% par HPLC)</li>
+<li><strong>Forme physique</strong> : poudre lyophilisee blanche</li>
+<li><strong>Solubilite</strong> : solvants compatibles (ex: soluble dans l'eau bacteriostatique, solution saline)</li>
+<li><strong>Conditions de stockage</strong> : temperature, humidite, lumiere</li>
+<li><strong>Numero CAS</strong> : si disponible (ex: 137525-51-0 pour le BPC-157)</li>
+</ul>
+
+<h4>Description marketing (section commerciale)</h4>
+
+<p>La description marketing doit etre claire, factuelle et orientee vers les benefices de recherche :</p>
+<ul>
+<li><strong>Titre accrocheur</strong> : "BPC-157 — Le peptide de reference pour la recherche en reparation tissulaire"</li>
+<li><strong>Introduction</strong> (2-3 phrases) : resumer le peptide, son origine et son domaine de recherche principal</li>
+<li><strong>Domaines de recherche</strong> (liste a puces) : lister les axes de recherche publies (avec references si possible)</li>
+<li><strong>Formats disponibles</strong> : tableau avec dosages, prix et quantites</li>
+<li><strong>Instructions de manipulation</strong> : reconstitution, stockage post-reconstitution</li>
+<li><strong>Avertissement reglementaire</strong> : mention obligatoire (voir section Conformite ci-dessous)</li>
+</ul>
+
+<h3>Modele de description type</h3>
+
+<pre><code>[NOM DU PEPTIDE] — [PHRASE D'ACCROCHE]
+
+Le [nom] est un peptide synthetique de [nombre] acides amines etudie dans le
+cadre de recherches sur [domaine]. Identifie pour la premiere fois par [reference],
+il fait l'objet de nombreuses publications scientifiques.
+
+Domaines de recherche :
+- [Domaine 1] : [description courte de l'axe de recherche]
+- [Domaine 2] : [description courte]
+- [Domaine 3] : [description courte]
+
+Specifications techniques :
+- Sequence : [sequence]
+- Poids moleculaire : [poids] Da
+- Purete : ≥98% (HPLC)
+- Forme : Poudre lyophilisee
+
+Ce produit est destine exclusivement a la recherche scientifique in vitro et in vivo.
+Il n'est pas approuve pour un usage humain ou veterinaire.</code></pre>
+
+<hr>
+
+<h2>Strategie expert : Optimisation SEO des fiches produits</h2>
+
+<h3>Recherche de mots-cles longue traine</h3>
+
+<p>Les clients potentiels cherchent des peptides avec des requetes tres specifiques. Voici les patterns de mots-cles les plus performants pour le marche canadien.</p>
+
+<table>
+<thead>
+    <tr><th>Pattern de recherche</th><th>Exemples</th><th>Volume relatif</th></tr>
+</thead>
+<tbody>
+  <tr><td>[peptide] + [dosage] + [format]</td><td>"BPC-157 5mg vial"</td><td>Eleve</td></tr>
+  <tr><td>[peptide] + "buy" + [pays]</td><td>"buy TB-500 Canada"</td><td>Eleve</td></tr>
+  <tr><td>[peptide] + "research" + [domaine]</td><td>"CJC-1295 research muscle growth"</td><td>Moyen</td></tr>
+  <tr><td>[peptide] + "vs" + [autre peptide]</td><td>"BPC-157 vs TB-500"</td><td>Moyen</td></tr>
+  <tr><td>[peptide] + "purity" + [pourcentage]</td><td>"BPC-157 99% purity"</td><td>Moyen</td></tr>
+  <tr><td>[peptide] + "review"</td><td>"Ipamorelin review 2026"</td><td>Moyen a eleve</td></tr>
+  <tr><td>"peptides for research" + [pays/ville]</td><td>"peptides for research Quebec"</td><td>Faible mais qualifie</td></tr>
+</tbody>
+</table>
+<h3>Optimisation des champs SEO dans Koraline</h3>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Regle</th><th>Exemple pour BPC-157 5mg</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Slug</strong></td><td>Nom du peptide + format, tout en minuscules, tirets</td><td><code>bpc-157-5mg-vial</code></td></tr>
+  <tr><td><strong>Meta title</strong></td><td>[Peptide] [Dosage] — [Benefice] — BioCycle Peptides (moins de 60 caracteres)</td><td>"BPC-157 5mg Vial — Research Peptide — BioCycle Peptides"</td></tr>
+  <tr><td><strong>Meta description</strong></td><td>150-160 caracteres, inclure le peptide, le dosage, la purete et un appel a l'action</td><td>"Buy BPC-157 5mg vial, 98%+ purity HPLC tested. Fast shipping across Canada. Research-grade peptides by BioCycle Peptides."</td></tr>
+</tbody>
+</table>
+<h3>Contenu supplementaire pour le SEO</h3>
+
+<p>Pour chaque peptide populaire, creer du contenu additionnel :</p>
+<ol>
+<li><strong>Article de blog</strong> : "Guide complet du [peptide] pour la recherche" (1 500-2 000 mots)</li>
+<li><strong>FAQ produit</strong> : 5-10 questions frequentes specifiques au peptide</li>
+<li><strong>Comparatif</strong> : "[Peptide A] vs [Peptide B] : lequel choisir pour votre recherche ?"</li>
+</ol>
+
+<hr>
+
+<h2>Strategie expert : Pricing par format</h2>
+
+<h3>Strategie de prix par dosage</h3>
+
+<p>Le pricing par format suit generalement une logique de <strong>remise au volume</strong> : le prix au milligramme diminue quand le dosage augmente, incitant le client a acheter le plus grand format.</p>
+
+<table>
+<thead>
+    <tr><th>Format</th><th>Prix</th><th>Prix/mg</th><th>Remise implicite</th></tr>
+</thead>
+<tbody>
+  <tr><td>2mg</td><td>25 $CA</td><td>12,50 $CA/mg</td><td>Prix de base (reference)</td></tr>
+  <tr><td>5mg</td><td>40 $CA</td><td>8,00 $CA/mg</td><td>-36% par rapport au 2mg</td></tr>
+  <tr><td>10mg</td><td>70 $CA</td><td>7,00 $CA/mg</td><td>-44% par rapport au 2mg</td></tr>
+  <tr><td>20mg</td><td>120 $CA</td><td>6,00 $CA/mg</td><td>-52% par rapport au 2mg</td></tr>
+</tbody>
+</table>
+<p><strong>Regle de base</strong> : chaque passage au format superieur doit offrir une economie de 10-15% par unite de mesure. Cela motive le client a acheter un format plus grand tout en preservant la marge.</p>
+
+<h3>Pricing strategique par type de produit</h3>
+
+<table>
+<thead>
+    <tr><th>Type de produit</th><th>Marge brute cible</th><th>Strategie</th></tr>
+</thead>
+<tbody>
+  <tr><td>Peptides populaires (BPC-157, TB-500)</td><td>50-60%</td><td>Prix competitifs, volume eleve</td></tr>
+  <tr><td>Peptides specialises (rares, nouveaux)</td><td>65-75%</td><td>Prix premium, positionnement expert</td></tr>
+  <tr><td>Accessoires (seringues, eau bacterio)</td><td>40-50%</td><td>Prix bas, produits d'appel pour les bundles</td></tr>
+  <tr><td>Supplements</td><td>55-65%</td><td>Prix moyen, marge stable</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Strategie expert : Conformite Sante Canada</h2>
+
+<h3>Regle fondamentale</h3>
+
+<p>Les peptides vendus par BioCycle Peptides sont destines <strong>exclusivement a la recherche scientifique</strong>. Il est <strong>interdit par la loi</strong> de faire des claims (allegations) medicaux, therapeutiques ou de sante sur ces produits.</p>
+
+<h3>Ce qu'il ne faut JAMAIS ecrire</h3>
+
+<table>
+<thead>
+    <tr><th>Interdit</th><th>Pourquoi</th><th>Alternative autorisee</th></tr>
+</thead>
+<tbody>
+  <tr><td>"Guerit les blessures"</td><td>Claim medical</td><td>"Etudie dans le cadre de la recherche sur la reparation tissulaire"</td></tr>
+  <tr><td>"Aide a perdre du poids"</td><td>Claim de sante</td><td>"Objet de recherches dans le domaine du metabolisme"</td></tr>
+  <tr><td>"Augmente la masse musculaire"</td><td>Claim de performance</td><td>"Etudie pour son role potentiel dans la croissance des tissus"</td></tr>
+  <tr><td>"Traite l'inflammation"</td><td>Claim therapeutique</td><td>"Utilise en recherche scientifique sur les processus inflammatoires"</td></tr>
+  <tr><td>"Anti-age"</td><td>Claim cosmetique</td><td>"Etudie pour ses proprietes dans la recherche sur le vieillissement cellulaire"</td></tr>
+</tbody>
+</table>
+<h3>Mentions obligatoires sur chaque fiche produit</h3>
+
+<p>Chaque fiche produit doit afficher de maniere visible :</p>
+
+<ol>
+<li><strong>"Pour usage en recherche uniquement"</strong> ("For research use only")</li>
+<li><strong>"Non approuve pour usage humain ou veterinaire"</strong> ("Not approved for human or veterinary use")</li>
+<li><strong>"Non destine a la consommation"</strong> ("Not for human consumption")</li>
+</ol>
+
+<p>Ces mentions doivent apparaitre :</p>
+<ul>
+<li>Dans la description du produit</li>
+<li>Sur l'etiquette physique du produit</li>
+<li>Sur la facture et le bon de livraison</li>
+<li>Dans les emails de confirmation de commande</li>
+</ul>
+
+<h3>Risques en cas de non-conformite</h3>
+
+<ul>
+<li>Avertissement de Sante Canada</li>
+<li>Saisie des produits</li>
+<li>Amende pouvant atteindre 5 millions de dollars</li>
+<li>Poursuites penales dans les cas graves</li>
+<li>Perte de la capacite a operer en tant que vendeur de peptides</li>
+</ul>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>SKU</strong></td><td>Stock Keeping Unit — code unique pour un format de produit</td></tr>
+  <tr><td><strong>Slug</strong></td><td>Partie de l'URL du produit (ex: "bpc-157" dans /produits/bpc-157)</td></tr>
+  <tr><td><strong>Format</strong></td><td>Variante d'un produit (taille, dosage, conditionnement)</td></tr>
+  <tr><td><strong>Classification ABC</strong></td><td>Classement des produits par contribution au revenu (A=80%, B=15%, C=5%)</td></tr>
+  <tr><td><strong>En vedette</strong></td><td>Produit mis en avant sur la page d'accueil</td></tr>
+  <tr><td><strong>Meta description</strong></td><td>Texte court affiche dans les resultats Google</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="02-categories.md">Categories</a> — Organiser les produits par categories</li>
+<li><a href="03-bundles.md">Bundles</a> — Creer des lots de produits a prix reduit</li>
+<li><a href="../02-commerce/05-inventaire.md">Inventaire</a> — Gestion du stock</li>
+<li><a href="../02-commerce/01-commandes.md">Commandes</a> — Commandes contenant ces produits</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

@@ -12,21 +12,21 @@
 
 export const EMAIL_ADDRESSES = {
   /** Default sender for transactional emails */
-  noreply: process.env.SMTP_FROM || 'noreply@biocyclepeptides.com',
+  noreply: process.env.SMTP_FROM || 'noreply@attitudes.vip',
   /** Customer support */
-  support: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@biocyclepeptides.com',
+  support: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@attitudes.vip',
   /** Privacy / RGPD inquiries */
-  privacy: process.env.PRIVACY_EMAIL || 'privacy@biocyclepeptides.com',
+  privacy: process.env.PRIVACY_EMAIL || 'privacy@attitudes.vip',
   /** Legal department */
-  legal: process.env.LEGAL_EMAIL || 'legal@biocyclepeptides.com',
+  legal: process.env.LEGAL_EMAIL || 'legal@attitudes.vip',
   /** General info */
-  info: process.env.INFO_EMAIL || 'info@biocyclepeptides.com',
+  info: process.env.INFO_EMAIL || 'info@attitudes.vip',
   /** Admin alerts */
-  admin: process.env.ADMIN_EMAIL || 'admin@biocyclepeptides.com',
+  admin: process.env.ADMIN_EMAIL || 'admin@attitudes.vip',
   /** Billing */
-  billing: process.env.BILLING_EMAIL || 'billing@biocyclepeptides.com',
+  billing: process.env.BILLING_EMAIL || 'billing@attitudes.vip',
   /** List-Unsubscribe mailto */
-  unsubscribe: process.env.UNSUBSCRIBE_EMAIL || 'unsubscribe@biocyclepeptides.com',
+  unsubscribe: process.env.UNSUBSCRIBE_EMAIL || 'unsubscribe@attitudes.vip',
 } as const;
 
 /** Company name used in email sender fields — reads from env or defaults to platform name */

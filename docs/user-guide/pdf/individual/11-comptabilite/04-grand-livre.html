@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grand Livre et Balance de Verification &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 11 — Comptabilite</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Grand Livre et Balance de Verification</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Comptabilite > Grand livre</p>
+<p><strong>URL</strong>: <code>/admin/comptabilite/grand-livre</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~30 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>Pourquoi cette page est importante</h2>
+
+<p>Le grand livre est le <strong>coeur de votre systeme comptable</strong>. C'est le registre qui regroupe toutes les transactions par compte, permettant de voir l'historique complet et le solde de chaque compte a tout moment. La balance de verification, derivee du grand livre, est le controle de qualite ultime : elle prouve que vos livres sont equilibres et que les etats financiers seront corrects.</p>
+
+<p><strong>Obligations legales</strong> :</p>
+<ul>
+<li>L'ARC considere le grand livre comme un document fondamental lors des verifications fiscales. Il doit etre disponible, complet et exact pour les 6 dernieres annees.</li>
+<li>La balance de verification est le point de depart que votre comptable utilise pour preparer les etats financiers annuels et les declarations T2/CO-17.</li>
+<li>En cas de litige ou de verification, la capacite de produire un grand livre detaille par compte est une obligation legale.</li>
+</ul>
+
+<p><strong>Impact concret</strong> : Si votre grand livre est desordonne ou incomplet, votre comptable devra passer des heures supplementaires (et vous facturer) pour reconstituer les informations. Si la balance de verification ne s'equilibre pas, les etats financiers ne peuvent pas etre produits et la declaration d'impots est impossible.</p>
+
+<hr>
+
+<h2>Cycle comptable complet -- Ou se situe cette page</h2>
+
+<pre><code>1. Plan comptable (structure des comptes)
+ ↓
+ 2. Journal general (enregistrement chronologique)
+ ↓
+ 3. Ecritures de journal (debits et credits)
+ ↓
+[4. GRAND LIVRE ET BALANCE DE VERIFICATION] ← VOUS ETES ICI
+ ↓
+ 5. Bilan (derive des comptes d'actifs, passifs, capitaux propres)
+ ↓
+ 6. Etat des resultats (derive des comptes de revenus et charges)
+ ↓
+ 7-12. Factures, depenses, taxes, rapprochement, budget, rapports</code></pre>
+
+<p>Le grand livre est l'etape 4 du cycle. Les ecritures de journal (etape 3) sont automatiquement reportees dans le grand livre, organisees par compte. La balance de verification est ensuite generee a partir du grand livre pour verifier l'equilibre avant de produire les etats financiers (etapes 5 et 6).</p>
+
+<p><strong>Sequence critique</strong> :</p>
+<ol>
+<li>Toutes les ecritures du mois sont publiees (etape 3)</li>
+<li>Le grand livre est a jour (automatique)</li>
+<li>La balance de verification est generee et verifiee (etape 4)</li>
+<li>Si equilibree : produire le bilan et l'etat des resultats (etapes 5-6)</li>
+<li>Si desequilibree : trouver et corriger l'erreur AVANT de produire les etats financiers</li>
+</ol>
+
+<hr>
+
+<h2>Ordre des operations</h2>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Action</th><th>Quand</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>S'assurer que toutes les ecritures du mois sont publiees (pas de brouillons oublies)</td><td>Fin de mois</td></tr>
+  <tr><td>2</td><td>Passer les ecritures d'ajustement (amortissement, provisions)</td><td>Fin de mois</td></tr>
+  <tr><td>3</td><td>Verifier le grand livre compte par compte pour les anomalies</td><td>Fin de mois</td></tr>
+  <tr><td>4</td><td>Generer la balance de verification</td><td>Fin de mois</td></tr>
+  <tr><td>5</td><td>Verifier que Total Debits = Total Credits</td><td>Fin de mois</td></tr>
+  <tr><td>6</td><td>Si desequilibre : investiguer et corriger</td><td>Immediat</td></tr>
+  <tr><td>7</td><td>Comparer avec le mois precedent pour detecter les anomalies</td><td>Fin de mois</td></tr>
+  <tr><td>8</td><td>Archiver la balance de verification</td><td>Fin de mois</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Concepts fondamentaux</h2>
+
+<h3>Grand livre -- Le detail par compte</h3>
+
+<p>Pour chaque compte du plan comptable, le grand livre affiche toutes les transactions avec un solde cumulatif :</p>
+
+<pre><code>Compte : 1010 - Banque TD Operations
+Periode : Mars 2026
+
+Date       Reference     Description                      Debit       Credit      Solde
+------------------------------------------------------------------------------------------
+01/03      Solde ouverture                                                       82 450,00
+03/03      PAY-0451      Paiement Stripe (CMD-0891)     2 345,67                84 795,67
+05/03      DEP-0122      Loyer bureau mars                           2 000,00   82 795,67
+05/03      DEP-0122b     TPS sur loyer                                 100,00   82 695,67
+05/03      DEP-0122c     TVQ sur loyer                                 199,50   82 496,17
+08/03      PAY-0452      Paiement Stripe (CMD-0892)     1 149,75                83 645,92
+12/03      DEP-0123      Google Ads mars                             1 724,63   81 921,29
+15/03      PAY-0453      Virement B2B Clinique Sante     4 598,50                86 519,79
+20/03      SAL-0026      Paie employes mars                          8 500,00   78 019,79
+25/03      DEP-0124      Fournisseur peptides bruts                  5 748,75   72 271,04
+28/03      PAY-0454      Paiements Stripe multiples      8 234,15                80 505,19
+31/03      FRB-0003      Frais bancaires TD                             12,50   80 492,69
+                                                       ---------    ---------
+           Total du mois                                16 328,07   18 285,38
+31/03      Solde final                                                          80 492,69</code></pre>
+
+<h3>Balance de verification -- Le controle de sante</h3>
+
+<p>La balance de verification liste tous les comptes du plan comptable avec leur solde. C'est le test ultime de l'integrite de vos livres.</p>
+
+<p><strong>Regle absolue</strong> : Le total des soldes debiteurs doit EGALISER le total des soldes crediteurs. Si ce n'est pas le cas, il y a une erreur.</p>
+
+<pre><code>BALANCE DE VERIFICATION
+BioCycle Peptides Inc.
+Au 31 mars 2026
+
+Compte                              Debit          Credit
+----------------------------------------------------------
+1010 - Banque TD Operations        80 492,69 $
+1020 - Banque BMO USD               8 500,00 $
+1100 - Comptes clients             12 350,00 $
+1109 - Provision creances dout.                       500,00 $
+1150 - TPS intrants                 2 150,00 $
+1160 - TVQ intrants                 4 278,75 $
+1201 - Stock peptides              42 000,00 $
+1202 - Stock emballage              3 000,00 $
+1400 - Equipement labo             30 000,00 $
+1450 - Amort. cumule equip.                        6 500,00 $
+1410 - Mobilier bureau              5 000,00 $
+1460 - Amort. cumule mobilier                       1 500,00 $
+2010 - Comptes fournisseurs                         8 200,00 $
+2100 - TPS a remettre                               6 410,00 $
+2110 - TVQ a remettre                              12 764,00 $
+2200 - Salaires a payer                             3 500,00 $
+2500 - Emprunt bancaire                            25 000,00 $
+3100 - Capital-actions                             50 000,00 $
+3200 - BNR                                         70 223,00 $
+4010 - Ventes peptides                            128 200,00 $
+4040 - Frais livraison factures                     3 200,00 $
+5011 - Achats matieres premieres   32 000,00 $
+5012 - Emballage                    4 500,00 $
+5013 - Frais livraison sortants     5 800,00 $
+5021 - Salaires                    28 000,00 $
+5030 - Loyer                        3 500,00 $
+5041 - Google Ads                   5 200,00 $
+5042 - Facebook Ads                 3 000,00 $
+5060 - Frais bancaires Stripe       3 845,00 $
+5070 - Assurances                   1 200,00 $
+5076 - Azure hebergement              350,00 $
+5090 - Honoraires comptable         1 500,00 $
+5200 - Amortissement                   800,00 $
+5300 - Interets                        250,00 $
+                                  -----------    -----------
+TOTAL                             277 716,44 $   315 997,00 $
+ECART                                              38 280,56 $</code></pre>
+
+<p><strong>Attention</strong> : L'exemple ci-dessus montre un desequilibre volontaire pour illustrer. Dans Koraline, un tel desequilibre est quasi impossible car le systeme force l'equilibre a chaque ecriture. Un desequilibre indiquerait un probleme technique grave.</p>
+
+<hr>
+
+<h2>Comment entrer les donnees</h2>
+
+<h3>Acceder au grand livre</h3>
+
+<ol>
+<li>Comptabilite > <strong>Grand livre</strong> dans le panneau lateral</li>
+<li>URL directe : <code>/admin/comptabilite/grand-livre</code></li>
+</ol>
+
+<h3>Naviguer dans le grand livre par compte</h3>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Action</th><th>Detail</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>Selectionnez un compte dans le filtre ou l'arborescence</td><td>Exemple : "1010 - Banque TD"</td></tr>
+  <tr><td>2</td><td>Definissez la periode</td><td>Exemple : 1er mars au 31 mars 2026</td></tr>
+  <tr><td>3</td><td>Les transactions s'affichent avec le solde cumulatif</td><td>Chaque ligne est cliquable</td></tr>
+  <tr><td>4</td><td>Cliquez sur une transaction pour voir le detail du journal</td><td>Voir les lignes debit/credit completes</td></tr>
+</tbody>
+</table>
+<h3>Generer la balance de verification</h3>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Action</th><th>Detail</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>Selectionnez la periode souhaitee</td><td>Exemple : Mars 2026 ou Q1 2026</td></tr>
+  <tr><td>2</td><td>Cliquez sur le mode <strong>Balance de verification</strong></td><td>Bascule de la vue Grand livre a la vue Balance</td></tr>
+  <tr><td>3</td><td>Le rapport s'affiche avec tous les comptes et leurs soldes</td><td>Debiteurs a gauche, crediteurs a droite</td></tr>
+  <tr><td>4</td><td>Verifiez que les totaux sont equilibres</td><td>Ligne "Total" en bas -- les deux colonnes doivent etre identiques</td></tr>
+  <tr><td>5</td><td>Si desequilibre : le systeme met en surbrillance le probleme</td><td>Cliquez pour investiguer</td></tr>
+</tbody>
+</table>
+<h3>Comparer deux periodes</h3>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Action</th><th>Detail</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>Selectionnez la premiere periode</td><td>Exemple : Mars 2026</td></tr>
+  <tr><td>2</td><td>Activez le mode <strong>Comparaison</strong></td><td>Bouton dans la barre de ruban</td></tr>
+  <tr><td>3</td><td>Selectionnez la deuxieme periode</td><td>Exemple : Fevrier 2026</td></tr>
+  <tr><td>4</td><td>Le tableau affiche deux colonnes avec l'ecart en valeur et en pourcentage</td><td>Les variations significatives sont surlignees</td></tr>
+</tbody>
+</table>
+<p><strong>Exemple de comparaison</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Compte</th><th>Mars 2026</th><th>Fevrier 2026</th><th>Ecart</th><th>%</th></tr>
+</thead>
+<tbody>
+  <tr><td>1010 - Banque</td><td>80 493 $</td><td>82 450 $</td><td>-1 957 $</td><td>-2,4%</td></tr>
+  <tr><td>1201 - Stock</td><td>42 000 $</td><td>48 000 $</td><td>-6 000 $</td><td>-12,5%</td></tr>
+  <tr><td>4010 - Ventes</td><td>128 200 $</td><td>115 800 $</td><td>+12 400 $</td><td>+10,7%</td></tr>
+  <tr><td>5041 - Google Ads</td><td>5 200 $</td><td>4 800 $</td><td>+400 $</td><td>+8,3%</td></tr>
+</tbody>
+</table>
+<p>Cette comparaison revele que les ventes sont en hausse de 10,7% tandis que le stock a diminue de 12,5% -- signe que les ventes depassent les reapprovisionnements. Il faut verifier si une commande fournisseur est en cours.</p>
+
+<h3>Analyser l'anciennete des comptes (Aging)</h3>
+
+<p><strong>URL</strong> : <code>/admin/comptabilite/aging</code></p>
+
+<p>L'analyse d'anciennete montre les soldes clients et fournisseurs par tranche d'age :</p>
+
+<table>
+<thead>
+    <tr><th>Tranche</th><th>Clients (a recevoir)</th><th>Fournisseurs (a payer)</th></tr>
+</thead>
+<tbody>
+  <tr><td>0-30 jours</td><td>8 500 $</td><td>5 200 $</td></tr>
+  <tr><td>31-60 jours</td><td>2 800 $</td><td>2 500 $</td></tr>
+  <tr><td>61-90 jours</td><td>700 $</td><td>500 $</td></tr>
+  <tr><td>90+ jours</td><td>350 $</td><td>0 $</td></tr>
+  <tr><td><strong>Total</strong></td><td><strong>12 350 $</strong></td><td><strong>8 200 $</strong></td></tr>
+</tbody>
+</table>
+<p><strong>Utilite</strong> :</p>
+<ul>
+<li>Les 350 $ a 90+ jours chez les clients signalent un risque de creance douteuse -- il faut peut-etre provisionner.</li>
+<li>Les fournisseurs sont payes dans les 90 jours -- c'est correct pour la plupart des conditions de paiement.</li>
+</ul>
+
+<hr>
+
+<h2>Pourquoi entrer ces donnees</h2>
+
+<h3>La balance de verification sert a 5 fins essentielles</h3>
+
+<ol>
+<li><strong>Detecter les erreurs</strong> : Si les totaux ne s'equilibrent pas, une erreur d'ecriture s'est glissee quelque part.</li>
+<li><strong>Preparer les etats financiers</strong> : Le bilan et l'etat des resultats sont directement derives de la balance de verification.</li>
+<li><strong>Preparer les declarations fiscales</strong> : Le comptable utilise la balance pour remplir le T2 et le CO-17.</li>
+<li><strong>Audit</strong> : Les verificateurs (internes ou externes) commencent toujours par la balance de verification.</li>
+<li><strong>Suivi de gestion</strong> : La comparaison mensuelle des balances revele les tendances et les anomalies.</li>
+</ol>
+
+<h3>Le grand livre sert a tracer chaque montant</h3>
+
+<p>Quand votre comptable ou l'ARC questionne un montant dans les etats financiers, le grand livre fournit la reponse : "Le poste Marketing de 8 200 $ est compose de 5 200 $ Google Ads + 3 000 $ Facebook Ads, voici les ecritures detaillees avec les pieces justificatives."</p>
+
+<h3>L'anciennete sert a gerer le risque</h3>
+
+<p>L'analyse d'anciennete vous aide a :</p>
+<ul>
+<li><strong>Relancer les clients</strong> qui tardent a payer (avant que la creance ne devienne irrecuperable)</li>
+<li><strong>Prioriser les paiements</strong> fournisseurs (payer d'abord ceux qui sont proches de l'echeance ou qui offrent des escomptes)</li>
+<li><strong>Provisionner les creances douteuses</strong> selon une politique claire (ex: 25% a 60 jours, 50% a 90 jours, 100% a 120+ jours)</li>
+</ul>
+
+<hr>
+
+<h2>Erreurs courantes a eviter</h2>
+
+<table>
+<thead>
+    <tr><th>Erreur</th><th>Consequence</th><th>Comment eviter</th></tr>
+</thead>
+<tbody>
+  <tr><td>Ne pas generer la balance avant les etats financiers</td><td>Produire des etats financiers a partir de donnees desequilibrees</td><td>Toujours generer et verifier la balance AVANT bilan et resultats</td></tr>
+  <tr><td>Ignorer un petit ecart dans la balance</td><td>Les petits ecarts s'accumulent et deviennent des gros problemes en fin d'annee</td><td>Traiter chaque ecart immediatement, meme de 0,01 $</td></tr>
+  <tr><td>Ne pas comparer avec le mois precedent</td><td>Rater des anomalies (compte qui double subitement, transaction en double)</td><td>Comparer systematiquement chaque mois avec le precedent</td></tr>
+  <tr><td>Ne pas regarder l'anciennete des comptes clients</td><td>Des creances deviennent irrecuperables sans qu'on s'en rende compte</td><td>Verifier l'anciennete chaque mois et relancer a 30 jours</td></tr>
+  <tr><td>Publier les brouillons en retard</td><td>La balance du mois est incomplete, les rapports sont faux</td><td>Publier tous les brouillons avant de generer la balance</td></tr>
+  <tr><td>Oublier les ecritures d'ajustement avant la balance</td><td>L'amortissement, les provisions et les charges a payer manquent</td><td>Passer les ajustements AVANT de generer la balance</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Quand faire cette operation</h2>
+
+<table>
+<thead>
+    <tr><th>Frequence</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Hebdomadaire</strong></td><td>Consulter le grand livre du compte bancaire pour verifier les transactions recentes</td></tr>
+  <tr><td><strong>Fin de mois</strong></td><td>1) Publier tous les brouillons. 2) Passer les ecritures d'ajustement. 3) Generer la balance de verification. 4) Verifier l'equilibre. 5) Comparer avec le mois precedent.</td></tr>
+  <tr><td><strong>Fin de trimestre</strong></td><td>Generer la balance de verification trimestrielle pour la declaration TPS/TVQ. Verifier l'anciennete clients et fournisseurs.</td></tr>
+  <tr><td><strong>Fin d'annee</strong></td><td>Generer la balance de verification annuelle. La remettre au comptable pour la preparation des etats financiers et de la declaration T2/CO-17.</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages connexes du module</h2>
+
+<h3>Notes de credit (<code>/admin/comptabilite/notes-credit</code>)</h3>
+<ul>
+<li>Creez des notes de credit pour les remboursements ou ajustements clients</li>
+<li>Chaque note de credit genere une ecriture dans le grand livre (inverse de la facture originale)</li>
+</ul>
+
+<h3>Immobilisations (<code>/admin/comptabilite/immobilisations</code>)</h3>
+<ul>
+<li>Registre des actifs a long terme (equipement de laboratoire, mobilier, materiel informatique)</li>
+<li>Calcul automatique de l'amortissement selon les taux de la DPA (deduction pour amortissement)</li>
+<li>Les ecritures d'amortissement periodiques apparaissent dans le grand livre</li>
+</ul>
+
+<h3>Inventaire comptable (<code>/admin/comptabilite/inventaire</code>)</h3>
+<ul>
+<li>Suivi de la valeur comptable du stock de peptides et d'emballage</li>
+<li>Methode du cout moyen pondere (obligatoire pour BioCycle)</li>
+<li>Les ajustements d'inventaire (casse, peremption, differences de decompte) generent des ecritures dans le grand livre</li>
+</ul>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Que faire si la balance de verification ne s'equilibre pas ?</strong></p>
+<p>R : Avec Koraline, c'est extremement rare car le systeme force l'equilibre a chaque ecriture. Si cela arrive, verifiez d'abord les ecritures importees (CSV) ou les modifications manuelles de la base de donnees. Le systeme indique les ecritures desequilibrees en les surlignant en rouge.</p>
+
+<p><strong>Q : A quelle frequence generer la balance de verification ?</strong></p>
+<p>R : Au minimum chaque mois, apres le rapprochement bancaire et avant de generer les etats financiers. Idealement, generez-la aussi apres chaque lot important d'ecritures.</p>
+
+<p><strong>Q : Quelle est la difference entre le grand livre et le bilan ?</strong></p>
+<p>R : Le grand livre contient TOUTES les transactions en detail. Le bilan est un RESUME a une date donnee, montrant uniquement les totaux des actifs, passifs et capitaux propres. Le bilan est derive du grand livre.</p>
+
+<p><strong>Q : Comment savoir si un solde est "normal" ?</strong></p>
+<p>R : Chaque type de compte a un solde normal : les actifs et charges sont normalement debiteurs, les passifs, revenus et capitaux propres sont normalement crediteurs. Un solde anormal (ex: compte bancaire avec solde crediteur) indique generalement une erreur ou un decouvert.</p>
+
+<p><strong>Q : Puis-je exporter le grand livre pour mon comptable ?</strong></p>
+<p>R : Oui. Utilisez le bouton Exporter et choisissez le format Excel. Votre comptable l'utilisera pour preparer les etats financiers de fin d'annee et les declarations fiscales.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition comptable</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Grand livre</strong></td><td>Registre detaille de toutes les transactions financieres, organise par compte. Chaque compte montre ses debits, credits et solde cumulatif.</td></tr>
+  <tr><td><strong>Balance de verification</strong></td><td>Rapport de controle listant tous les comptes avec leurs soldes debiteurs et crediteurs. Le total des deux colonnes doit etre identique.</td></tr>
+  <tr><td><strong>Solde debiteur</strong></td><td>Quand la somme des debits depasse la somme des credits dans un compte. Normal pour les actifs et les charges.</td></tr>
+  <tr><td><strong>Solde crediteur</strong></td><td>Quand la somme des credits depasse la somme des debits dans un compte. Normal pour les passifs, les revenus et les capitaux propres.</td></tr>
+  <tr><td><strong>Aging (anciennete)</strong></td><td>Analyse qui classe les soldes clients ou fournisseurs par tranche d'age (0-30 jours, 31-60, 61-90, 90+). Outil de gestion du risque de credit.</td></tr>
+  <tr><td><strong>Note de credit</strong></td><td>Document comptable qui reduit le montant du a un fournisseur ou par un client. Inverse d'une facture.</td></tr>
+  <tr><td><strong>Immobilisation</strong></td><td>Actif a long terme (equipement, mobilier, vehicule, logiciel) dont le cout est reparti sur sa duree de vie utile par l'amortissement.</td></tr>
+  <tr><td><strong>DPA</strong></td><td>Deduction pour amortissement. Taux fiscal fixe par l'ARC pour chaque categorie d'actif (ex: materiel informatique = 55%/an degressif).</td></tr>
+  <tr><td><strong>Cout moyen pondere</strong></td><td>Methode de valorisation de l'inventaire qui calcule le cout moyen de toutes les unites en stock apres chaque achat.</td></tr>
+  <tr><td><strong>Solde d'ouverture</strong></td><td>Solde d'un compte au debut d'une periode. C'est le solde de cloture de la periode precedente.</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="01-plan-comptable.md">Plan comptable</a> : Structure des comptes qui composent le grand livre</li>
+<li><a href="03-ecritures.md">Ecritures</a> : Saisie des transactions qui alimentent le grand livre</li>
+<li><a href="05-bilan.md">Bilan</a> : Etat financier derive des comptes d'actifs, passifs et capitaux propres du grand livre</li>
+<li><a href="06-resultats.md">Etat des resultats</a> : Etat financier derive des comptes de revenus et charges du grand livre</li>
+<li><a href="10-rapprochement.md">Rapprochement</a> : Verification du grand livre contre le releve bancaire</li>
+<li><a href="12-rapports.md">Rapports</a> : Rapports financiers generes a partir du grand livre</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

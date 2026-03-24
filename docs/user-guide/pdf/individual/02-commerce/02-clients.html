@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Clients (Acheteurs) &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 02 — Commerce</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion des Clients (Acheteurs)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Commerce > Clients</p>
+<p><strong>URL</strong>: <code>/admin/customers</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Clients</strong> regroupe tous les <strong>acheteurs finaux</strong> — c'est-a-dire toutes les personnes qui ont cree un compte ou passe une commande sur votre boutique BioCycle Peptides.</p>
+
+<blockquote>
+<p><strong>Difference entre Clients et Distributeurs</strong> :</p>
+<p>- <strong>Clients</strong> (cette page) = les consommateurs individuels, le grand public</p>
+<p>- <strong>Distributeurs</strong> (<code>/admin/clients</code>) = les entreprises, revendeurs, partenaires B2B</p>
+</blockquote>
+
+<p><strong>Ce que vous pouvez faire ici</strong> :</p>
+<ul>
+<li>Voir la liste de tous vos clients avec leurs statistiques</li>
+<li>Filtrer par niveau de fidelite (Bronze, Silver, Gold, Platinum, Diamond)</li>
+<li>Rechercher un client par nom ou email</li>
+<li>Consulter la fiche complete d'un client (achats, points, niveau, segmentation)</li>
+<li>Analyser vos clients avec la segmentation RFM (outil marketing avance)</li>
+<li>Voir vos meilleurs clients VIP en un coup d'oeil</li>
+<li>Exporter la liste complete en CSV</li>
+<li>Consulter les statistiques globales de votre base clients</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans la barre de navigation, cliquez sur <strong>Commerce</strong></li>
+<li>Dans le panneau lateral, cliquez sur <strong>Clients</strong></li>
+</ol>
+
+<p>Ou directement via l'URL : <code>/admin/customers</code></p>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Page Clients]</div>
+
+<h3>Les 4 cartes de statistiques</h3>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th><th>Utilite</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total clients</strong></td><td>Nombre total de clients inscrits</td><td>Mesure la taille de votre base clients</td></tr>
+  <tr><td><strong>Revenus totaux</strong></td><td>Somme de tous les achats de tous les clients</td><td>Chiffre d'affaires global genere par vos clients</td></tr>
+  <tr><td><strong>Panier moyen</strong></td><td>Montant moyen depense par client</td><td>Indicateur de la valeur moyenne d'un client</td></tr>
+  <tr><td><strong>VIP (Gold+)</strong></td><td>Nombre de clients Gold, Platinum ou Diamond</td><td>Vos meilleurs clients, ceux qui generent le plus de revenus</td></tr>
+</tbody>
+</table>
+<h3>Les onglets de filtrage par niveau</h3>
+
+<p>Les clients sont classes automatiquement par niveau de fidelite selon leurs achats et leurs points :</p>
+
+<table>
+<thead>
+    <tr><th>Niveau</th><th>Qui sont-ils</th><th>Comment y acceder</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Tous les niveaux</strong></td><td>Tous vos clients</td><td>Onglet par defaut</td></tr>
+  <tr><td><strong>Bronze</strong></td><td>Nouveaux clients ou achats occasionnels (0+ points)</td><td>Clients debutants</td></tr>
+  <tr><td><strong>Silver</strong></td><td>Clients reguliers (500+ points)</td><td>Acheteurs qui reviennent</td></tr>
+  <tr><td><strong>Gold</strong></td><td>Bons clients (2 000+ points)</td><td>Clients fideles</td></tr>
+  <tr><td><strong>Platinum</strong></td><td>Tres bons clients (5 000+ points)</td><td>Clients tres actifs</td></tr>
+  <tr><td><strong>Diamond</strong></td><td>Meilleurs clients (10 000+ points)</td><td>Top clients, VIP absolus</td></tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Pour les neophytes</strong> : Les points de fidelite s'accumulent automatiquement a chaque achat (1 point par dollar depense par defaut). Plus un client achete, plus son niveau monte, et plus il beneficie d'avantages (multiplicateur de points, livraison gratuite, etc.)</p>
+</blockquote>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Consulter la fiche d'un client</h3>
+
+<p><strong>Objectif</strong> : Voir toutes les informations sur un client specifique.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Trouvez le client dans la liste (recherche ou filtrage)</li>
+<li>Cliquez sur son nom</li>
+<li>Le panneau de detail s'ouvre a droite</li>
+</ol>
+
+<p><strong>Informations disponibles</strong> :</p>
+<ul>
+<li><strong>Identite</strong> : Nom, email, telephone</li>
+<li><strong>Niveau fidelite</strong> : Badge colore (Bronze/Silver/Gold/Platinum/Diamond)</li>
+<li><strong>Points</strong> : Points actuels, points a vie, points utilises</li>
+<li><strong>Achats</strong> : Nombre de commandes, montant total depense</li>
+<li><strong>Segmentation RFM</strong> : Score et segment (voir section 4)</li>
+<li><strong>Code de parrainage</strong> : Si le client est ambassadeur</li>
+<li><strong>Date d'inscription</strong> : Depuis quand le client est inscrit</li>
+</ul>
+
+<hr>
+
+<h3>2. Rechercher un client</h3>
+
+<p><strong>Methodes</strong> :</p>
+<ul>
+<li><strong>Par nom</strong> : Tapez "Jean" pour trouver tous les Jean</li>
+<li><strong>Par email</strong> : Tapez "gmail" pour voir tous les clients Gmail</li>
+<li>La recherche est instantanee et insensible a la casse</li>
+</ul>
+
+<hr>
+
+<h3>3. Le panneau VIP</h3>
+
+<p><strong>Objectif</strong> : Voir rapidement vos meilleurs clients classes par chiffre d'affaires.</p>
+
+<p>Le panneau VIP affiche les clients tries par montant total depense, du plus gros au plus petit. Pour chaque client VIP, vous voyez :</p>
+<ul>
+<li>Nom et email</li>
+<li>Montant total depense</li>
+<li>Niveau de fidelite actuel</li>
+<li>Score RFM</li>
+</ul>
+
+<blockquote>
+<p><strong>Pourquoi c'est important</strong> : La regle des 80/20 s'applique souvent — 20% de vos clients generent 80% de vos revenus. Ce panneau identifie ces clients cles pour que vous puissiez les choyer !</p>
+</blockquote>
+
+<hr>
+
+<h3>4. La segmentation RFM (outil marketing avance)</h3>
+
+<p><strong>Qu'est-ce que le RFM ?</strong></p>
+
+<p>RFM est un outil d'analyse marketing utilise par les grandes entreprises pour segmenter leurs clients. Il est base sur 3 criteres :</p>
+
+<table>
+<thead>
+    <tr><th>Lettre</th><th>Signification</th><th>Question posee</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>R</strong> - Recence</td><td>Quand a-t-il achete pour la derniere fois ?</td><td>Plus c'est recent, mieux c'est</td></tr>
+  <tr><td><strong>F</strong> - Frequence</td><td>Combien de fois a-t-il achete ?</td><td>Plus c'est frequent, mieux c'est</td></tr>
+  <tr><td><strong>M</strong> - Montant</td><td>Combien a-t-il depense au total ?</td><td>Plus c'est eleve, mieux c'est</td></tr>
+</tbody>
+</table>
+<p>Chaque critere est note de 1 a 5. Le score final combine les trois notes.</p>
+
+<p><strong>Segments RFM typiques</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Segment</th><th>Description</th><th>Action recommandee</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Champions</strong></td><td>Achetent souvent, depensent beaucoup, recemment</td><td>Les recompenser, programme VIP</td></tr>
+  <tr><td><strong>Clients fideles</strong></td><td>Achetent regulierement</td><td>Offrir des avantages exclusifs</td></tr>
+  <tr><td><strong>Clients potentiels</strong></td><td>Achats recents mais pas encore reguliers</td><td>Encourager la deuxieme commande</td></tr>
+  <tr><td><strong>A risque</strong></td><td>Bons clients qui n'ont pas achete recemment</td><td>Email de reactivation, offre speciale</td></tr>
+  <tr><td><strong>Perdus</strong></td><td>N'ont pas achete depuis longtemps</td><td>Campagne de reconquete ou accepter la perte</td></tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Pour les neophytes</strong> : Vous n'avez rien a configurer ! Le systeme calcule automatiquement le score RFM de chaque client. Utilisez-le pour savoir qui merite une attention particuliere.</p>
+</blockquote>
+
+<hr>
+
+<h3>5. Actions du ruban (barre d'outils)</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th><th>Ce qu'il fait</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau customer</strong></td><td>Creer un client manuellement</td><td>Ouvre un formulaire pour ajouter un client sans qu'il passe par l'inscription en ligne</td></tr>
+  <tr><td><strong>Stats ventes</strong></td><td>Statistiques de ventes</td><td>Affiche un resume: revenu total, nombre d'achats, panier moyen</td></tr>
+  <tr><td><strong>Stats type</strong></td><td>Repartition par niveau</td><td>Montre combien de clients dans chaque niveau (Diamond, Platinum, Gold, etc.)</td></tr>
+  <tr><td><strong>Stats avis</strong></td><td>Top clients par depenses</td><td>Liste les 3 meilleurs clients avec leurs montants</td></tr>
+  <tr><td><strong>Stats ambassadeur</strong></td><td>Statistiques de parrainage</td><td>Nombre de clients avec code de parrainage, total de points, VIP</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Export CSV</td><td>Telecharge un fichier avec toutes les donnees clients</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h3>6. Exporter les donnees clients en CSV</h3>
+
+<p><strong>Objectif</strong> : Obtenir un fichier tabulaire de tous vos clients pour analyse ou import dans un autre outil.</p>
+
+<p><strong>Colonnes exportees</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Colonne</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td>Name</td><td>Nom du client</td></tr>
+  <tr><td>Email</td><td>Adresse email</td></tr>
+  <tr><td>Phone</td><td>Numero de telephone</td></tr>
+  <tr><td>Loyalty Tier</td><td>Niveau de fidelite</td></tr>
+  <tr><td>Loyalty Points</td><td>Points actuels</td></tr>
+  <tr><td>Lifetime Points</td><td>Points a vie (incluant les points utilises)</td></tr>
+  <tr><td>Total Spent</td><td>Montant total depense</td></tr>
+  <tr><td>Purchases</td><td>Nombre d'achats</td></tr>
+  <tr><td>Referral Code</td><td>Code de parrainage (si ambassadeur)</td></tr>
+  <tr><td>Registered</td><td>Date d'inscription</td></tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Astuce</strong> : Exportez regulierement (1x/mois) pour garder un historique de l'evolution de votre base clients.</p>
+</blockquote>
+
+<hr>
+
+<h2>Workflow recommande : Gerer sa base clients</h2>
+
+<h3>Quotidien</h3>
+<ol>
+<li>Ouvrez la page Clients</li>
+<li>Verifiez si de nouveaux clients se sont inscrits</li>
+<li>Consultez le panneau VIP pour identifier les gros acheteurs recents</li>
+</ol>
+
+<h3>Hebdomadaire</h3>
+<ol>
+<li>Filtrez sur <strong>Gold+</strong> pour voir vos VIP</li>
+<li>Verifiez les segments RFM "A risque" — ces bons clients qui n'achetent plus</li>
+<li>Envoyez-leur un email personnalise via la section Marketing > Newsletter</li>
+</ol>
+
+<h3>Mensuel</h3>
+<ol>
+<li>Exportez en CSV pour analyse</li>
+<li>Comparez avec le mois precedent : croissance de la base, evolution du panier moyen</li>
+<li>Identifiez les tendances (plus de Diamond ? Moins de Bronze ?)</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Un client peut-il changer de niveau de fidelite ?</strong></p>
+<p>R: Oui, automatiquement. Quand ses points atteignent le seuil du niveau superieur, il est promu. Les niveaux ne descendent pas.</p>
+
+<p><strong>Q: Comment creer un client manuellement ?</strong></p>
+<p>R: Cliquez sur "Nouveau customer" dans le ruban. Utile pour les commandes telephoniques ou les clients qui ne veulent pas s'inscrire en ligne.</p>
+
+<p><strong>Q: Quelle est la difference entre "Points" et "Points a vie" ?</strong></p>
+<p>R: Les "Points" sont le solde actuel utilisable. Les "Points a vie" incluent tous les points gagnes depuis l'inscription, meme ceux deja echanges contre des recompenses.</p>
+
+<p><strong>Q: Comment savoir si un client est ambassadeur ?</strong></p>
+<p>R: Il aura un "Code de parrainage" dans sa fiche. Cliquez sur "Stats ambassadeur" dans le ruban pour voir le nombre total d'ambassadeurs.</p>
+
+<hr>
+
+<h2>Strategie expert : Segmentation RFM appliquee aux peptides</h2>
+
+<h3>Cycles d'achat typiques dans le marche des peptides</h3>
+
+<p>Le marche des peptides de recherche a des cycles d'achat specifiques qui different des produits de consommation classiques. Comprendre ces cycles permet d'ajuster la segmentation RFM.</p>
+
+<table>
+<thead>
+    <tr><th>Profil client</th><th>Cycle d'achat typique</th><th>Panier moyen</th><th>Comportement</th></tr>
+</thead>
+<tbody>
+  <tr><td>Chercheur debutant</td><td>Premier achat exploratoire, puis retour a 3-6 mois</td><td>50-100 $CA</td><td>Achete 1-2 peptides, explore</td></tr>
+  <tr><td>Chercheur regulier</td><td>Tous les 2-3 mois</td><td>100-200 $CA</td><td>Commande les memes peptides + essaie des nouveaux</td></tr>
+  <tr><td>Chercheur avance</td><td>Tous les 1-2 mois</td><td>200-400 $CA</td><td>Achete en plus grands formats, commande des combinaisons</td></tr>
+  <tr><td>Client professionnel (labo)</td><td>Mensuel ou bimensuel</td><td>400-1 500 $CA</td><td>Commandes regulieres, volumes importants, sensible au prix</td></tr>
+  <tr><td>Revendeur / distributeur</td><td>Hebdomadaire a bimensuel</td><td>1 500+ $CA</td><td>Commandes en gros, negociation de prix, compte B2B</td></tr>
+</tbody>
+</table>
+<h3>Ajustement des seuils RFM pour BioCycle Peptides</h3>
+
+<p>Les seuils RFM par defaut (bases sur le e-commerce general) ne conviennent pas aux peptides. Voici les seuils recommandes :</p>
+
+<p><strong>Recence (R)</strong> : derniere commande</p>
+<table>
+<thead>
+    <tr><th>Score</th><th>E-commerce general</th><th>Peptides BioCycle (recommande)</th></tr>
+</thead>
+<tbody>
+  <tr><td>5</td><td>Moins de 7 jours</td><td>Moins de 30 jours</td></tr>
+  <tr><td>4</td><td>8-30 jours</td><td>31-60 jours</td></tr>
+  <tr><td>3</td><td>31-90 jours</td><td>61-120 jours</td></tr>
+  <tr><td>2</td><td>91-180 jours</td><td>121-240 jours</td></tr>
+  <tr><td>1</td><td>Plus de 180 jours</td><td>Plus de 240 jours</td></tr>
+</tbody>
+</table>
+<p><strong>Frequence (F)</strong> : nombre de commandes sur 12 mois</p>
+<table>
+<thead>
+    <tr><th>Score</th><th>Seuil recommande</th></tr>
+</thead>
+<tbody>
+  <tr><td>5</td><td>8+ commandes</td></tr>
+  <tr><td>4</td><td>5-7 commandes</td></tr>
+  <tr><td>3</td><td>3-4 commandes</td></tr>
+  <tr><td>2</td><td>2 commandes</td></tr>
+  <tr><td>1</td><td>1 commande</td></tr>
+</tbody>
+</table>
+<p><strong>Montant (M)</strong> : depenses totales sur 12 mois</p>
+<table>
+<thead>
+    <tr><th>Score</th><th>Seuil recommande</th></tr>
+</thead>
+<tbody>
+  <tr><td>5</td><td>1 500+ $CA</td></tr>
+  <tr><td>4</td><td>800-1 499 $CA</td></tr>
+  <tr><td>3</td><td>400-799 $CA</td></tr>
+  <tr><td>2</td><td>150-399 $CA</td></tr>
+  <tr><td>1</td><td>Moins de 150 $CA</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Strategie expert : Calcul du CLV (Customer Lifetime Value)</h2>
+
+<h3>Formule de base</h3>
+
+<p>Le CLV mesure la valeur totale qu'un client genere pour votre entreprise sur toute la duree de sa relation avec vous.</p>
+
+<pre><code>CLV = Panier moyen x Frequence annuelle x Duree de vie client (en annees) x Marge brute</code></pre>
+
+<h3>Exemple chiffre pour BioCycle Peptides</h3>
+
+<p>Prenons un client "Chercheur regulier" typique :</p>
+<ul>
+<li><strong>Panier moyen</strong> : 150 $CA</li>
+<li><strong>Frequence annuelle</strong> : 5 commandes par an (tous les 2,5 mois)</li>
+<li><strong>Duree de vie client</strong> : 3 ans (moyenne observee dans le marche des supplements/peptides)</li>
+<li><strong>Marge brute</strong> : 55% (marge typique pour les peptides de recherche)</li>
+</ul>
+
+<pre><code>CLV = 150 x 5 x 3 x 0,55 = 1 237,50 $CA</code></pre>
+
+<p>Cela signifie que chaque client regulier vaut en moyenne <strong>1 237,50 $CA</strong> de marge brute sur sa vie client.</p>
+
+<h3>Implications strategiques du CLV</h3>
+
+<table>
+<thead>
+    <tr><th>CLV estime</th><th>Budget acquisition acceptable</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td>Moins de 200 $CA</td><td>20-40 $CA par client</td><td>Acquisition par contenu SEO et referencement organique</td></tr>
+  <tr><td>200-500 $CA</td><td>40-100 $CA par client</td><td>Google Ads, campagnes Facebook ciblees</td></tr>
+  <tr><td>500-1 500 $CA</td><td>100-300 $CA par client</td><td>Campagnes multicanal, parrainage, offre premiere commande</td></tr>
+  <tr><td>Plus de 1 500 $CA</td><td>300-500 $CA par client</td><td>Compte-cle, service personnalise, commercial dedie</td></tr>
+</tbody>
+</table>
+<p><strong>Regle pratique</strong> : votre cout d'acquisition client (CAC) ne devrait jamais depasser 25-30% du CLV. Si votre CLV moyen est de 1 237 $CA, votre CAC maximum est d'environ 310 $CA.</p>
+
+<hr>
+
+<h2>Strategie expert : Scripts de relance client inactif</h2>
+
+<h3>Strategie de retention post-achat par email</h3>
+
+<p>La retention est plus rentable que l'acquisition. Voici une sequence d'emails automatises adaptee au cycle d'achat des peptides.</p>
+
+<h3>Sequence post-premier-achat (onboarding)</h3>
+
+<table>
+<thead>
+    <tr><th>Jour</th><th>Email</th><th>Objet</th><th>Objectif</th></tr>
+</thead>
+<tbody>
+  <tr><td>J+1</td><td>Confirmation et bienvenue</td><td>"Votre commande est confirmee — bienvenue chez BioCycle"</td><td>Rassurer, presenter la marque</td></tr>
+  <tr><td>J+3</td><td>Expedition + conseil</td><td>"Votre colis est en route + Guide de stockage peptides"</td><td>Eduquer, montrer l'expertise</td></tr>
+  <tr><td>J+10</td><td>Satisfaction</td><td>"Tout va bien avec votre commande ?"</td><td>Detecter les problemes, demander un avis</td></tr>
+  <tr><td>J+30</td><td>Relance educative</td><td>"3 erreurs courantes avec les peptides de recherche"</td><td>Maintenir l'engagement, positionner comme expert</td></tr>
+  <tr><td>J+60</td><td>Offre de fidelite</td><td>"Votre recompense de fidelite vous attend (150 points bonus)"</td><td>Inciter le deuxieme achat</td></tr>
+  <tr><td>J+90</td><td>Relance produit</td><td>"Vos peptides arrivent a leur date optimale — il est temps de renouveler"</td><td>Declencher le reachat</td></tr>
+</tbody>
+</table>
+<h3>Sequence de reactivation (client inactif)</h3>
+
+<p>Un client est considere "inactif" s'il n'a pas commande depuis plus de 120 jours (2 cycles d'achat standard).</p>
+
+<table>
+<thead>
+    <tr><th>Jour</th><th>Email</th><th>Objet</th><th>Offre</th></tr>
+</thead>
+<tbody>
+  <tr><td>J+120</td><td>Premier rappel</td><td>"Vous nous manquez — voici 10% sur votre prochaine commande"</td><td>10% de remise, validite 14 jours</td></tr>
+  <tr><td>J+150</td><td>Deuxieme rappel</td><td>"Nouveautes chez BioCycle + votre remise expire bientot"</td><td>Meme 10%, rappel d'urgence</td></tr>
+  <tr><td>J+180</td><td>Offre speciale</td><td>"Offre exclusive : 15% + livraison gratuite, seulement pour vous"</td><td>15% + livraison gratuite, validite 7 jours</td></tr>
+  <tr><td>J+240</td><td>Dernier essai</td><td>"On se dit au revoir ? Votre derniere offre speciale"</td><td>20% de remise, sondage de depart</td></tr>
+  <tr><td>J+365</td><td>Nettoyage</td><td>(Pas d'email, archivage automatique)</td><td>Retirer des listes actives pour proteger la reputation email</td></tr>
+</tbody>
+</table>
+<h3>Indicateurs cles a surveiller</h3>
+
+<table>
+<thead>
+    <tr><th>Indicateur</th><th>Cible saine</th><th>Signal d'alerte</th></tr>
+</thead>
+<tbody>
+  <tr><td>Taux d'ouverture emails relance</td><td>Plus de 20%</td><td>Moins de 10% : objet a retravailler</td></tr>
+  <tr><td>Taux de clic</td><td>Plus de 3%</td><td>Moins de 1% : offre pas assez attractive</td></tr>
+  <tr><td>Taux de reactivation (J+120 a J+240)</td><td>15-25% des inactifs</td><td>Moins de 10% : revoir la strategie</td></tr>
+  <tr><td>Taux de desabonnement post-relance</td><td>Moins de 1%</td><td>Plus de 2% : frequence trop elevee</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Client</strong></td><td>Personne physique qui a achete ou cree un compte sur la boutique</td></tr>
+  <tr><td><strong>Distributeur</strong></td><td>Entreprise partenaire qui achete en gros (B2B)</td></tr>
+  <tr><td><strong>RFM</strong></td><td>Methode de segmentation marketing (Recence, Frequence, Montant)</td></tr>
+  <tr><td><strong>Niveau de fidelite</strong></td><td>Rang du client dans le programme de recompenses (Bronze→Diamond)</td></tr>
+  <tr><td><strong>Panier moyen</strong></td><td>Montant moyen depense par commande ou par client</td></tr>
+  <tr><td><strong>VIP</strong></td><td>Client de niveau Gold ou superieur</td></tr>
+  <tr><td><strong>Parrainage</strong></td><td>Systeme ou un client existant invite un nouveau client et les deux recoivent une recompense</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/commandes">Commandes</a> — Les commandes passees par ces clients</li>
+<li><a href="/admin/clients">Distributeurs B2B</a> — Les clients professionnels</li>
+<li><a href="/admin/fidelite">Programme de fidelite</a> — Configurer les niveaux et recompenses</li>
+<li><a href="/admin/ambassadeurs">Ambassadeurs</a> — Le programme de parrainage</li>
+<li><a href="/admin/newsletter">Newsletter</a> — Envoyer des campagnes email a vos clients</li>
+</ul>
+
+<hr>
+
+<h2>Bugs connus</h2>
+
+<table>
+<thead>
+    <tr><th>Bug</th><th>Severite</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td>BUG-CUST-01</td><td>Moyenne</td><td>Le bouton ribbon affiche "Nouveau <strong>customer</strong>" au lieu de "Nouveau <strong>client</strong>" (mot anglais non traduit)</td></tr>
+  <tr><td>BUG-CUST-02</td><td>Basse</td><td>Le label sidebar "admin.nav.paymentReconcilia..." est tronque</td></tr>
+</tbody>
+</table>
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

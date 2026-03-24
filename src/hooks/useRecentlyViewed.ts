@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 
-const STORAGE_KEY = 'biocycle-recently-viewed';
+const STORAGE_KEY = 'attitudes-recently-viewed';
 const MAX_ITEMS = 10;
 const DEBOUNCE_MS = 500;
 

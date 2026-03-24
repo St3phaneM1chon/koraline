@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taxes TPS/TVQ et Declarations Fiscales &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 11 — Comptabilite</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Taxes TPS/TVQ et Declarations Fiscales</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Comptabilite > Conformite > Declaration TPS/TVQ</p>
+<p><strong>URL</strong>: <code>/admin/comptabilite/declaration-tps-tvq</code>, <code>/admin/fiscal</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~45 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>Pourquoi cette page est importante</h2>
+
+<p>La conformite fiscale en matiere de TPS/TVQ est <strong>l'obligation legale la plus critique</strong> pour BioCycle Peptides. Vous agissez comme agent de perception pour les gouvernements : vous collectez les taxes sur vos ventes et vous les remettez. En contrepartie, vous pouvez recuperer les taxes payees sur vos achats. Un seul trimestre de retard ou une erreur de calcul peut entrainer des penalites, des interets et meme une verification fiscale.</p>
+
+<p><strong>Obligations legales</strong> :</p>
+<ul>
+<li>Toute entreprise dont le chiffre d'affaires depasse 30 000 $ sur 4 trimestres consecutifs DOIT s'inscrire aux fichiers de la TPS et de la TVQ et percevoir les taxes.</li>
+<li>Les taxes percues sur les ventes ne vous appartiennent PAS -- vous les gardez en fiducie pour les gouvernements.</li>
+<li>Les declarations doivent etre produites et les montants remis aux dates limites, sous peine de penalites de 1% par mois de retard + interets composes.</li>
+<li>L'ARC et Revenu Quebec peuvent effectuer des verifications a tout moment. Vous devez pouvoir justifier chaque montant declare avec des pieces justificatives pendant 6 ans.</li>
+<li>Le defaut de percevoir les taxes est une infraction qui peut entrainer des penalites egales au montant de la taxe non percue.</li>
+</ul>
+
+<p><strong>Impact financier concret</strong> :</p>
+<ul>
+<li>Sur 128 200 $ de ventes mensuelles, BioCycle collecte environ 19 188 $ de taxes (6 410 $ TPS + 12 778 $ TVQ). C'est de l'argent que vous gardez temporairement mais que vous devez absolument remettre.</li>
+<li>En contrepartie, sur environ 42 000 $ d'achats mensuels, BioCycle recupere environ 6 289 $ de credits (2 100 $ CTI + 4 189 $ RTI).</li>
+<li>Le montant net a remettre chaque trimestre est d'environ 38 697 $ (TPS nette + TVQ nette). Un retard genere des penalites et interets significatifs.</li>
+</ul>
+
+<hr>
+
+<h2>Cycle comptable complet -- Ou se situe cette page</h2>
+
+<pre><code>1. Plan comptable → 2. Journal → 3. Ecritures → 4. Grand livre/Balance
+ ↓
+ 5. Bilan → 6. Etat des resultats
+ ↓
+ 7. Factures (source des taxes collectees)
+ ↓
+ 8. Depenses (source des credits d'intrants)
+ ↓
+[9. TAXES TPS/TVQ] ← VOUS ETES ICI (declaration et remise)
+ ↓
+10. Rapprochement bancaire
+ ↓
+11. Budget → 12. Rapports</code></pre>
+
+<p>Les taxes sont alimentees par deux sources :</p>
+<ol>
+<li><strong>Les factures clients</strong> (etape 7) generent les taxes collectees (TPS et TVQ a remettre)</li>
+<li><strong>Les depenses et factures fournisseurs</strong> (etape 8) generent les credits d'intrants (CTI et RTI)</li>
+</ol>
+
+<p>La declaration de taxes est le calcul net : taxes collectees - credits d'intrants = montant a remettre (ou remboursement si les credits depassent la collecte).</p>
+
+<hr>
+
+<h2>Ordre des operations</h2>
+
+<h3>Avant chaque declaration (mensuelle ou trimestrielle)</h3>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Action</th><th>Pourquoi</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>Verifier que toutes les factures clients de la periode sont publiees</td><td>Sinon, les taxes collectees seront sous-declarees</td></tr>
+  <tr><td>2</td><td>Verifier que toutes les factures fournisseurs et depenses sont saisies</td><td>Sinon, les CTI/RTI seront sous-reclames (vous payez trop)</td></tr>
+  <tr><td>3</td><td>Verifier que les pieces justificatives sont jointes a chaque depense</td><td>Sans piece, le CTI/RTI peut etre refuse</td></tr>
+  <tr><td>4</td><td>Generer le rapport de declaration dans Koraline</td><td>Calcul automatique du montant net</td></tr>
+  <tr><td>5</td><td>Verifier les chiffres (comparer avec le trimestre precedent)</td><td>Detecter les anomalies</td></tr>
+  <tr><td>6</td><td>Exporter le rapport pour votre comptable (si applicable)</td><td>Validation professionnelle</td></tr>
+  <tr><td>7</td><td>Soumettre la declaration en ligne (ARC + Revenu Quebec)</td><td>Obligation legale</td></tr>
+  <tr><td>8</td><td>Effectuer le paiement du montant du</td><td>Avant la date limite</td></tr>
+  <tr><td>9</td><td>Enregistrer le paiement dans Koraline</td><td>Pour que les comptes de taxes soient a jour</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Le systeme de taxes au Quebec -- Explication complete</h2>
+
+<h3>Les deux taxes</h3>
+
+<table>
+<thead>
+    <tr><th>Taxe</th><th>Nom complet</th><th>Taux</th><th>Percepteur</th><th>Formulaire</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>TPS</strong></td><td>Taxe sur les Produits et Services</td><td><strong>5%</strong></td><td>ARC (federal)</td><td>GST34 / FP-500</td></tr>
+  <tr><td><strong>TVQ</strong></td><td>Taxe de Vente du Quebec</td><td><strong>9,975%</strong></td><td>Revenu Quebec</td><td>VD-400</td></tr>
+</tbody>
+</table>
+<p><strong>Total combine</strong> : 14,975% (pas 15% -- c'est une erreur courante)</p>
+
+<h3>Calcul detaille sur une transaction</h3>
+
+<p>Prenons une vente de peptides a 1 000 $ :</p>
+
+<pre><code>Prix de vente HT :                     1 000,00 $
+TPS (5% x 1 000,00) :                     50,00 $
+TVQ (9,975% x 1 000,00) :                 99,75 $
+                                       ---------
+Total TTC :                            1 149,75 $</code></pre>
+
+<p><strong>Point critique</strong> : La TVQ se calcule sur le montant avant TPS (1 000 $), PAS sur le montant incluant la TPS. C'est une erreur extremement courante. Depuis 2013, la TVQ ne se calcule plus sur le montant incluant la TPS.</p>
+
+<h3>Les 4 comptes de taxes dans le plan comptable</h3>
+
+<table>
+<thead>
+    <tr><th>Compte</th><th>Nom</th><th>Type</th><th>Solde normal</th><th>Role</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>1150</strong></td><td>TPS payee sur achats</td><td>Actif</td><td>Debiteur</td><td>Taxes federales recuperables (CTI)</td></tr>
+  <tr><td><strong>1160</strong></td><td>TVQ payee sur achats</td><td>Actif</td><td>Debiteur</td><td>Taxes provinciales recuperables (RTI)</td></tr>
+  <tr><td><strong>2100</strong></td><td>TPS a remettre</td><td>Passif</td><td>Crediteur</td><td>Taxes federales collectees sur les ventes</td></tr>
+  <tr><td><strong>2110</strong></td><td>TVQ a remettre</td><td>Passif</td><td>Crediteur</td><td>Taxes provinciales collectees sur les ventes</td></tr>
+</tbody>
+</table>
+<h3>Comment ca fonctionne -- Le cycle complet</h3>
+
+<p><strong>1. Vous VENDEZ un produit (100 $ + taxes)</strong></p>
+
+<pre><code>Le client vous paie 114,975 $
+Dont 5 $ de TPS → va dans le compte 2100 (TPS a remettre) -- passif
+Dont 9,975 $ de TVQ → va dans le compte 2110 (TVQ a remettre) -- passif</code></pre>
+
+<p><strong>2. Vous ACHETEZ un service (200 $ + taxes)</strong></p>
+
+<pre><code>Vous payez 229,95 $
+Dont 10 $ de TPS → va dans le compte 1150 (TPS intrants) -- actif
+Dont 19,95 $ de TVQ → va dans le compte 1160 (TVQ intrants) -- actif</code></pre>
+
+<p><strong>3. A la DECLARATION, vous faites le calcul net</strong></p>
+
+<pre><code>TPS a remettre :    5,00 $  (compte 2100)
+- TPS recuperable : 10,00 $  (compte 1150)
+= TPS nette :      (5,00 $) ← L'ARC vous doit 5 $ (remboursement)
+
+TVQ a remettre :    9,975 $  (compte 2110)
+- TVQ recuperable : 19,95 $  (compte 1160)
+= TVQ nette :      (9,975 $) ← Revenu Quebec vous doit 9,975 $ (remboursement)</code></pre>
+
+<p><strong>4. Vous RECEVEZ un remboursement ou PAYEZ le montant du</strong></p>
+
+<p>Si le montant net est positif : vous devez de l'argent au gouvernement → payez avant l'echeance.</p>
+<p>Si le montant net est negatif : le gouvernement vous doit un remboursement → il sera verse dans 4 a 8 semaines.</p>
+
+<hr>
+
+<h2>Comment entrer les donnees</h2>
+
+<h3>Acceder a la page des declarations</h3>
+
+<table>
+<thead>
+    <tr><th>Page</th><th>URL</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Declaration TPS/TVQ</strong></td><td><code>/admin/comptabilite/declaration-tps-tvq</code></td><td>Calcul et preparation</td></tr>
+  <tr><td><strong>Gestion fiscale</strong></td><td><code>/admin/fiscal</code></td><td>Vue d'ensemble fiscale</td></tr>
+  <tr><td><strong>Rapports fiscaux</strong></td><td><code>/admin/fiscal/reports</code></td><td>Rapports detailles</td></tr>
+  <tr><td><strong>Calendrier fiscal</strong></td><td><code>/admin/comptabilite/calendrier-fiscal</code></td><td>Dates limites</td></tr>
+</tbody>
+</table>
+<h3>Calculer la declaration</h3>
+
+<ol>
+<li>Selectionnez la <strong>periode de declaration</strong> (trimestre ou mois)</li>
+<li>Le systeme calcule automatiquement :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Element</th><th>Source</th><th>Trimestre Q1 2026</th></tr>
+</thead>
+<tbody>
+  <tr><td>TPS collectee sur ventes</td><td>Factures clients publiees</td><td>6 410,00 $</td></tr>
+  <tr><td>TPS sur credits d'intrants</td><td>Factures fournisseurs + depenses</td><td>(2 150,00 $)</td></tr>
+  <tr><td><strong>TPS nette a remettre</strong></td><td></td><td><strong>4 260,00 $</strong></td></tr>
+  <tr><td>TVQ collectee sur ventes</td><td>Factures clients publiees</td><td>12 764,00 $</td></tr>
+  <tr><td>TVQ sur credits d'intrants</td><td>Factures fournisseurs + depenses</td><td>(4 278,75 $)</td></tr>
+  <tr><td><strong>TVQ nette a remettre</strong></td><td></td><td><strong>8 485,25 $</strong></td></tr>
+  <tr><td><strong>TOTAL a remettre</strong></td><td></td><td><strong>12 745,25 $</strong></td></tr>
+</tbody>
+</table>
+<ol>
+<li>Verifiez les chiffres en cliquant sur chaque montant pour voir le detail</li>
+<li>Cliquez sur <strong>Preparer la declaration</strong></li>
+</ol>
+
+<h3>Verifier les details -- Etape critique</h3>
+
+<p><strong>Avant de soumettre, verifiez</strong> :</p>
+
+<table>
+<thead>
+    <tr><th>Verification</th><th>Comment</th><th>Quoi chercher</th></tr>
+</thead>
+<tbody>
+  <tr><td>Toutes les ventes sont incluses</td><td>Cliquez sur "TPS collectee" → voir la liste</td><td>Aucune facture du trimestre ne doit manquer</td></tr>
+  <tr><td>Tous les credits sont reclames</td><td>Cliquez sur "TPS intrants" → voir la liste</td><td>Chaque depense taxable doit avoir un CTI/RTI</td></tr>
+  <tr><td>Pas de doublons</td><td>Comparer avec le trimestre precedent</td><td>Un montant inhabituellement eleve peut indiquer un doublon</td></tr>
+  <tr><td>Les montants sont logiques</td><td>Comparer TPS collectee / TVQ collectee (ratio ~1:2)</td><td>Le ratio TPS:TVQ devrait etre constant (5:9,975)</td></tr>
+  <tr><td>Les exclusions sont correctes</td><td>Verifier que les ventes detaxees (export) sont bien a 0%</td><td>Les ventes a l'etranger ne doivent pas avoir de TPS/TVQ</td></tr>
+</tbody>
+</table>
+<h3>Exporter pour le comptable</h3>
+
+<ol>
+<li>Cliquez sur <strong>Exporter</strong></li>
+<li>Choisissez le format :</li>
+</ol>
+<ul>
+<li><strong>PDF resume</strong> : tableau de synthese (pour votre dossier)</li>
+<li><strong>Excel detaille</strong> : toutes les transactions avec taxes (pour le comptable)</li>
+<li><strong>Format ARC</strong> : compatible avec les systemes de l'ARC (Mon dossier d'entreprise)</li>
+</ul>
+<ol>
+<li>Envoyez a votre comptable pour validation</li>
+</ol>
+
+<h3>Soumettre la declaration</h3>
+
+<p>Koraline <strong>prepare</strong> les chiffres mais ne soumet pas directement aux gouvernements. La soumission se fait sur :</p>
+
+<table>
+<thead>
+    <tr><th>Gouvernement</th><th>Portail</th><th>URL</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>ARC (federal)</strong></td><td>Mon dossier d'entreprise</td><td><code>https://www.canada.ca/fr/agence-revenu/services/services-electroniques/services-electroniques-entreprises/mon-dossier-entreprise.html</code></td></tr>
+  <tr><td><strong>Revenu Quebec</strong></td><td>Mon dossier pour les entreprises</td><td><code>https://www.revenuquebec.ca/fr/services-en-ligne/mon-dossier/</code></td></tr>
+</tbody>
+</table>
+<h3>Enregistrer le paiement de la declaration</h3>
+
+<p>Apres avoir soumis et paye, enregistrez dans Koraline :</p>
+
+<pre><code>Ecriture pour le paiement de la TPS nette (4 260 $) :
+Debit  2100 - TPS a remettre         6 410,00 $
+Credit 1150 - TPS intrants                         2 150,00 $
+Credit 1010 - Banque TD                             4 260,00 $
+
+Ecriture pour le paiement de la TVQ nette (8 485,25 $) :
+Debit  2110 - TVQ a remettre        12 764,00 $
+Credit 1160 - TVQ intrants                         4 278,75 $
+Credit 1010 - Banque TD                             8 485,25 $</code></pre>
+
+<p>Ces ecritures remettent les comptes de taxes a zero pour la nouvelle periode.</p>
+
+<hr>
+
+<h2>Pourquoi entrer ces donnees</h2>
+
+<h3>Chaque chiffre de la declaration a des consequences legales</h3>
+
+<table>
+<thead>
+    <tr><th>Chiffre</th><th>Si trop haut (surdeclare)</th><th>Si trop bas (sous-declare)</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>TPS/TVQ collectee</strong></td><td>Vous payez plus que du</td><td>L'ARC peut imposer des penalites + interets + verif</td></tr>
+  <tr><td><strong>Credits d'intrants (CTI/RTI)</strong></td><td>L'ARC peut refuser les credits excessifs et imposer des penalites</td><td>Vous payez plus de taxes que necessaire</td></tr>
+  <tr><td><strong>Total a remettre</strong></td><td>Paiement en trop (remboursable mais immobilise votre tresorerie)</td><td>Retard de paiement = 1%/mois de penalite + interets</td></tr>
+</tbody>
+</table>
+<h3>Les credits d'intrants -- Ne laissez pas d'argent sur la table</h3>
+
+<p>Les CTI/RTI sont un droit, pas un privilege. Voici les erreurs qui font perdre des credits :</p>
+
+<table>
+<thead>
+    <tr><th>Erreur</th><th>Argent perdu</th><th>Solution</th></tr>
+</thead>
+<tbody>
+  <tr><td>Depense sans recu</td><td>14,975% du montant HT</td><td>Scanner tous les recus immediatement</td></tr>
+  <tr><td>Depense sans numero TPS/TVQ du fournisseur</td><td>Tout le CTI/RTI de cette facture</td><td>Verifier que chaque fournisseur a un numero valide</td></tr>
+  <tr><td>Depense classee comme exempte par erreur</td><td>Le CTI/RTI n'est pas calcule</td><td>Verifier la categorie de chaque depense</td></tr>
+  <tr><td>Credit d'intrant non reclame</td><td>Le credit est perdu apres 4 ans (TPS) ou 4 ans (TVQ)</td><td>Reclamer systematiquement a chaque declaration</td></tr>
+  <tr><td>Repas a 100% au lieu de 50%</td><td>L'ARC desavoue 50% du credit</td><td>Utiliser la categorie "Repas d'affaires" (automatiquement limite a 50%)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Frequence de declaration</h2>
+
+<h3>Comment determiner votre frequence</h3>
+
+<p>L'ARC et Revenu Quebec assignent la frequence selon le chiffre d'affaires annuel de l'entreprise :</p>
+
+<table>
+<thead>
+    <tr><th>Chiffre d'affaires annuel</th><th>Frequence TPS</th><th>Frequence TVQ</th></tr>
+</thead>
+<tbody>
+  <tr><td>Moins de 1 500 000 $</td><td>Annuelle (option trimestrielle)</td><td>Annuelle (option trimestrielle)</td></tr>
+  <tr><td>1 500 000 $ a 6 000 000 $</td><td>Trimestrielle</td><td>Trimestrielle</td></tr>
+  <tr><td>Plus de 6 000 000 $</td><td>Mensuelle</td><td>Mensuelle</td></tr>
+</tbody>
+</table>
+<p><strong>BioCycle Peptides</strong> avec un CA projete d'environ 1 440 000 $ est en declaration <strong>trimestrielle</strong> (ou peut choisir cette option meme si le CA est sous 1,5M$). La declaration trimestrielle est recommandee car elle :</p>
+<ul>
+<li>Regularise les paiements (pas de gros montant en une fois)</li>
+<li>Accelere les remboursements si les credits depassent la collecte</li>
+<li>Simplifie le suivi (4 declarations au lieu de 12)</li>
+</ul>
+
+<h3>Dates limites des declarations trimestrielles</h3>
+
+<table>
+<thead>
+    <tr><th>Trimestre</th><th>Periode</th><th>Date limite declaration</th><th>Date limite paiement</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Q1</strong></td><td>Janvier - Mars</td><td>30 avril</td><td>30 avril</td></tr>
+  <tr><td><strong>Q2</strong></td><td>Avril - Juin</td><td>31 juillet</td><td>31 juillet</td></tr>
+  <tr><td><strong>Q3</strong></td><td>Juillet - Septembre</td><td>31 octobre</td><td>31 octobre</td></tr>
+  <tr><td><strong>Q4</strong></td><td>Octobre - Decembre</td><td>31 janvier</td><td>31 janvier</td></tr>
+</tbody>
+</table>
+<p><strong>Attention</strong> : La date limite de la declaration ET du paiement est la meme. Un paiement recu apres cette date genere des penalites et interets.</p>
+
+<h3>Penalites de retard</h3>
+
+<table>
+<thead>
+    <tr><th>Situation</th><th>Penalite</th></tr>
+</thead>
+<tbody>
+  <tr><td>Declaration en retard</td><td>1% du montant du + 0,25% par mois de retard supplementaire (max 12 mois)</td></tr>
+  <tr><td>Paiement en retard</td><td>Interets composes quotidiens au taux prescrit (actuellement ~6-8% annuel)</td></tr>
+  <tr><td>Non-inscription aux fichiers TPS/TVQ</td><td>Penalite egale au montant de la taxe non percue</td></tr>
+  <tr><td>Declaration fausse ou trompeuse</td><td>Penalite de 50% du montant sous-declare + interets</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Cas particuliers</h2>
+
+<h3>Ventes interprovinciales (hors Quebec)</h3>
+
+<p>Si BioCycle vend a un client en Ontario ou dans une autre province :</p>
+
+<table>
+<thead>
+    <tr><th>Province du client</th><th>TPS</th><th>TVQ</th><th>TVH</th></tr>
+</thead>
+<tbody>
+  <tr><td>Quebec</td><td>5%</td><td>9,975%</td><td>N/A</td></tr>
+  <tr><td>Ontario</td><td>N/A</td><td>N/A</td><td>13% (TVH)</td></tr>
+  <tr><td>Colombie-Britannique</td><td>5% (TPS)</td><td>N/A</td><td>+ 7% PST (par le client)</td></tr>
+  <tr><td>Alberta</td><td>5% (TPS)</td><td>N/A</td><td>Pas de taxe provinciale</td></tr>
+  <tr><td>Nouveau-Brunswick</td><td>N/A</td><td>N/A</td><td>15% (TVH)</td></tr>
+</tbody>
+</table>
+<p>Koraline gere automatiquement le taux applicable selon l'adresse de livraison du client.</p>
+
+<h3>Ventes internationales (hors Canada)</h3>
+
+<p>Les ventes a l'etranger (USA, Europe, etc.) sont <strong>detaxees</strong> (taux de 0%) :</p>
+<ul>
+<li>Pas de TPS, pas de TVQ</li>
+<li>Le client ne paie que le prix HT</li>
+<li><strong>Les credits d'intrants restent reclamables</strong> -- c'est un avantage majeur de l'exportation</li>
+</ul>
+
+<h3>Fournitures detaxees vs exemptes -- Distinction critique</h3>
+
+<table>
+<thead>
+    <tr><th>Categorie</th><th>Taux de taxe</th><th>CTI/RTI reclamables ?</th><th>Exemples</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Taxable</strong></td><td>5% TPS + 9,975% TVQ</td><td>Oui</td><td>La plupart des biens et services, peptides</td></tr>
+  <tr><td><strong>Detaxe</strong></td><td>0%</td><td><strong>Oui</strong></td><td>Exportations, produits alimentaires de base, medicaments sur ordonnance</td></tr>
+  <tr><td><strong>Exempte</strong></td><td>0%</td><td><strong>Non</strong></td><td>Services financiers, assurances, services de sante, loyer residentiel</td></tr>
+</tbody>
+</table>
+<p><strong>La difference est cruciale</strong> : Si un produit est detaxe, vous ne facturez pas de taxes MAIS vous pouvez quand meme reclamer les CTI/RTI sur vos achats. Si un produit est exempte, vous ne facturez pas de taxes ET vous ne pouvez PAS reclamer les CTI/RTI proportionnels.</p>
+
+<h3>Classification des peptides</h3>
+
+<p>Le statut fiscal des peptides depends de leur classification :</p>
+<ul>
+<li><strong>Supplements alimentaires</strong> : Taxable (TPS + TVQ)</li>
+<li><strong>Produits de sante naturels (NPN)</strong> : Detaxe si homologue par Sante Canada</li>
+<li><strong>Medicaments sur ordonnance</strong> : Detaxe</li>
+</ul>
+
+<p><strong>Consultez votre comptable</strong> pour confirmer la classification exacte de chaque produit. Une mauvaise classification peut entrainer des penalites retroactives.</p>
+
+<h3>Methode rapide (optionnelle pour les PME)</h3>
+
+<p>L'ARC offre une methode simplifiee pour les entreprises dont le CA est inferieur a 400 000 $ :</p>
+<ul>
+<li>Vous remettez un pourcentage fixe de vos ventes TTC au lieu du calcul detaille</li>
+<li>Le taux fixe est inferieur au taux reel, ce qui peut generer des economies</li>
+<li>Vous ne calculez pas les CTI/RTI individuellement</li>
+</ul>
+
+<p><strong>Pour BioCycle</strong> (CA > 400 000 $) : La methode rapide n'est probablement pas applicable. Mais consultez votre comptable si le CA est pres du seuil.</p>
+
+<hr>
+
+<h2>Cloture de periode fiscale</h2>
+
+<p><strong>URL</strong> : <code>/admin/comptabilite/cloture</code></p>
+
+<p>Apres avoir soumis la declaration et paye le montant du :</p>
+
+<ol>
+<li>Verifiez que toutes les ecritures de la periode sont publiees</li>
+<li>Verifiez que le rapprochement bancaire est termine</li>
+<li>Cliquez sur <strong>Cloturer la periode</strong></li>
+<li>La periode est verrouilllee : plus aucune ecriture ne peut etre ajoutee ou modifiee</li>
+</ol>
+
+<p><strong>Attention</strong> : La cloture est irreversible. En cas d'erreur decouverte apres la cloture, vous devrez passer une ecriture de correction dans la periode suivante ET produire une declaration modifiee.</p>
+
+<hr>
+
+<h2>Le calendrier fiscal complet de BioCycle</h2>
+
+<h3>Declarations TPS/TVQ (trimestrielles)</h3>
+
+<table>
+<thead>
+    <tr><th>Date</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td>30 avril</td><td>Declaration et paiement Q1 (jan-mar)</td></tr>
+  <tr><td>31 juillet</td><td>Declaration et paiement Q2 (avr-jun)</td></tr>
+  <tr><td>31 octobre</td><td>Declaration et paiement Q3 (jul-sep)</td></tr>
+  <tr><td>31 janvier</td><td>Declaration et paiement Q4 (oct-dec)</td></tr>
+</tbody>
+</table>
+<h3>Declarations annuelles</h3>
+
+<table>
+<thead>
+    <tr><th>Date</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td>30 juin (annee+1)</td><td>Declaration T2 (impot federal societes) si fin d'exercice le 31 decembre</td></tr>
+  <tr><td>30 juin (annee+1)</td><td>Declaration CO-17 (impot provincial societes)</td></tr>
+  <tr><td>Dernier jour de fevrier</td><td>T4 (feuillets d'emploi) et Releve 1 (Quebec) pour les employes</td></tr>
+  <tr><td>28 fevrier</td><td>Sommaire des retenues a la source</td></tr>
+</tbody>
+</table>
+<h3>Acomptes provisionnels (si applicable)</h3>
+
+<p>Si BioCycle doit plus de 3 000 $ d'impots federal ou plus de 1 800 $ d'impots provincial, des acomptes trimestriels sont exiges :</p>
+
+<table>
+<thead>
+    <tr><th>Date</th><th>Acompte</th></tr>
+</thead>
+<tbody>
+  <tr><td>15 mars</td><td>1er acompte</td></tr>
+  <tr><td>15 juin</td><td>2e acompte</td></tr>
+  <tr><td>15 septembre</td><td>3e acompte</td></tr>
+  <tr><td>15 decembre</td><td>4e acompte</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Credits et programmes speciaux</h2>
+
+<h3>RS&DE (Recherche Scientifique et Developpement Experimental)</h3>
+
+<p><strong>URL</strong> : <code>/admin/comptabilite/rsde</code></p>
+
+<p>Si BioCycle fait de la recherche sur les peptides, les depenses de R&D peuvent etre admissibles au programme RS&DE :</p>
+
+<table>
+<thead>
+    <tr><th>Element</th><th>Detail</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Credit federal</strong></td><td>35% des depenses admissibles (SPCC, premiers 3M$)</td></tr>
+  <tr><td><strong>Credit provincial (Quebec)</strong></td><td>14% a 30% selon la taille de l'entreprise</td></tr>
+  <tr><td><strong>Depenses admissibles</strong></td><td>Salaires chercheurs, matieres consommees en R&D, contrats de recherche</td></tr>
+  <tr><td><strong>Non admissible</strong></td><td>Marketing, ventes, administration, acquisition de technologies existantes</td></tr>
+</tbody>
+</table>
+<p>Ce credit peut representer un montant significatif. Consultez un specialiste RS&DE.</p>
+
+<h3>CDAE (Credit d'impot pour le developpement des affaires electroniques)</h3>
+
+<p>Si BioCycle developpe des logiciels (Koraline est un logiciel), certains salaires peuvent etre admissibles au CDAE du Quebec :</p>
+<ul>
+<li>24% des salaires admissibles (devs, designers, analystes)</li>
+<li>Maximum de 25 000 $ par employe admissible</li>
+<li>Combine avec le RS&DE si applicable</li>
+</ul>
+
+<hr>
+
+<h2>Verification avant soumission -- Checklist complete</h2>
+
+<p>Avant de soumettre votre declaration TPS/TVQ, passez en revue cette checklist :</p>
+
+<table>
+<thead>
+    <tr><th>#</th><th>Verification</th><th>Comment</th><th>Fait ?</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>Toutes les factures clients du trimestre sont publiees</td><td>Ecritures > filtre "Brouillon" = 0</td><td>[ ]</td></tr>
+  <tr><td>2</td><td>Toutes les factures fournisseurs sont saisies</td><td>Comparer avec le releve bancaire</td><td>[ ]</td></tr>
+  <tr><td>3</td><td>Toutes les depenses sont saisies avec pieces jointes</td><td>Depenses > filtre "Sans recu" = 0</td><td>[ ]</td></tr>
+  <tr><td>4</td><td>Les ventes detaxees sont bien a 0%</td><td>Verifier les ventes a l'etranger</td><td>[ ]</td></tr>
+  <tr><td>5</td><td>Les services exemptes n'ont pas de CTI/RTI</td><td>Frais bancaires, assurances = 0%</td><td>[ ]</td></tr>
+  <tr><td>6</td><td>Les repas sont a 50%</td><td>Categorie "Repas d'affaires" correcte</td><td>[ ]</td></tr>
+  <tr><td>7</td><td>Le ratio TPS:TVQ est coherent (~1:2)</td><td>TPS / TVQ devrait etre ~0,501</td><td>[ ]</td></tr>
+  <tr><td>8</td><td>Les montants sont logiques vs trimestre precedent</td><td>Pas de variation > 30% inexpliquee</td><td>[ ]</td></tr>
+  <tr><td>9</td><td>Les numeros TPS/TVQ des fournisseurs sont valides</td><td>Verifier sur le site de l'ARC si nouveau fournisseur</td><td>[ ]</td></tr>
+  <tr><td>10</td><td>Le rapprochement bancaire du trimestre est fait</td><td>Les montants correspondent au releve</td><td>[ ]</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Erreurs courantes a eviter</h2>
+
+<table>
+<thead>
+    <tr><th>Erreur</th><th>Consequence</th><th>Comment eviter</th></tr>
+</thead>
+<tbody>
+  <tr><td>Calculer la TVQ sur le montant incluant la TPS</td><td>TVQ surevaluee, vous collectez trop, le client paie trop</td><td>Depuis 2013 : TVQ = 9,975% x montant HT (pas x montant avec TPS)</td></tr>
+  <tr><td>Oublier de saisir une facture fournisseur</td><td>CTI/RTI non reclames, vous payez 14,975% de trop</td><td>Saisir les factures fournisseurs des leur reception</td></tr>
+  <tr><td>Declarer en retard</td><td>1% penalite + 0,25%/mois + interets composes</td><td>Mettre les dates limites dans le calendrier avec rappels</td></tr>
+  <tr><td>Ne pas conserver les pieces justificatives</td><td>CTI/RTI refuses lors de verification</td><td>Scanner et joindre tous les recus dans Koraline</td></tr>
+  <tr><td>Reclamer des CTI sur des services exemptes</td><td>Credits refuses + penalites</td><td>Les frais bancaires et l'assurance sont exemptes : pas de CTI/RTI</td></tr>
+  <tr><td>Ne pas distinguer detaxe et exempte</td><td>Perte de CTI/RTI sur les produits exemptes vs conservation des CTI/RTI sur les produits detaxes</td><td>Utiliser les bonnes categories dans Koraline</td></tr>
+  <tr><td>Oublier de declarer les ventes interprovinciales</td><td>Sous-declaration, penalites</td><td>Configurer les taux par province dans Koraline</td></tr>
+  <tr><td>Reclamer les repas a 100%</td><td>CTI/RTI excessifs, 50% sera refuse par l'ARC</td><td>Utiliser la categorie "Repas d'affaires" (limite auto a 50%)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Quand faire cette operation</h2>
+
+<table>
+<thead>
+    <tr><th>Frequence</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Quotidien</strong></td><td>Saisir les depenses avec les taxes correctes</td></tr>
+  <tr><td><strong>Hebdomadaire</strong></td><td>Verifier que les factures fournisseurs sont saisies avec les CTI/RTI</td></tr>
+  <tr><td><strong>Mensuel</strong></td><td>Verifier les comptes de taxes (2100, 2110, 1150, 1160) dans le grand livre</td></tr>
+  <tr><td><strong>Trimestriel</strong></td><td>Preparer la declaration, verifier les details, soumettre et payer</td></tr>
+  <tr><td><strong>Annuel</strong></td><td>Revue annuelle avec le comptable, verifier les credits speciaux (RS&DE, CDAE)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Koraline fait-il la declaration TPS/TVQ directement avec l'ARC et Revenu Quebec ?</strong></p>
+<p>R : Non. Koraline prepare les chiffres et genere les rapports. La soumission se fait sur les portails en ligne de l'ARC (Mon dossier d'entreprise) et de Revenu Quebec (Mon dossier pour les entreprises). Votre comptable peut aussi la soumettre pour vous.</p>
+
+<p><strong>Q : Que se passe-t-il si je declare en retard ?</strong></p>
+<p>R : Des penalites et des interets s'appliquent immediatement. La penalite de base est de 1% du montant du, plus 0,25% par mois de retard supplementaire, jusqu'a un maximum de 12 mois. Les interets composes s'ajoutent au taux prescrit par l'ARC.</p>
+
+<p><strong>Q : Les ventes Stripe sont-elles automatiquement incluses dans la declaration ?</strong></p>
+<p>R : Oui. Chaque vente en ligne qui genere une facture avec TPS/TVQ est automatiquement incluse dans le calcul de la declaration. Verifiez quand meme le total pour vous assurer que rien ne manque.</p>
+
+<p><strong>Q : Comment recuperer les credits d'intrants si je n'ai pas de recu ?</strong></p>
+<p>R : Vous ne pouvez pas. L'ARC exige des pieces justificatives conformes pour tout CTI/RTI. Sans recu avec le numero de TPS/TVQ du fournisseur, le credit sera refuse lors d'une verification. Conservez toujours vos recus -- la version numerique est acceptee.</p>
+
+<p><strong>Q : Puis-je reclamer des CTI/RTI sur des achats personnels ?</strong></p>
+<p>R : Non. Seules les depenses engagees pour gagner un revenu d'entreprise sont admissibles. Les achats personnels payes avec la carte d'entreprise doivent etre enregistres comme "Avance a l'actionnaire" et ne generent aucun credit.</p>
+
+<p><strong>Q : Que se passe-t-il si mes credits depassent mes taxes collectees ?</strong></p>
+<p>R : Vous avez droit a un remboursement. C'est courant en periode d'investissement (beaucoup d'achats, peu de ventes). Le remboursement est generalement verse en 4 a 8 semaines. La declaration trimestrielle accelere ce processus.</p>
+
+<p><strong>Q : Le RS&DE (credit de recherche et developpement) est-il gere dans Koraline ?</strong></p>
+<p>R : Oui, la page <code>/admin/comptabilite/rsde</code> aide a identifier les depenses admissibles au programme RS&DE. Cependant, la preparation de la demande RS&DE est complexe et devrait etre confiee a un specialiste.</p>
+
+<p><strong>Q : Dois-je facturer des taxes sur les ventes aux USA ?</strong></p>
+<p>R : Non. Les ventes a l'etranger sont detaxees (0%). Vous ne facturez ni TPS ni TVQ. Mais vous conservez le droit de reclamer les CTI/RTI sur vos achats.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition comptable</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>TPS</strong></td><td>Taxe sur les Produits et Services. Taxe federale de 5% percue par l'ARC sur la plupart des biens et services au Canada.</td></tr>
+  <tr><td><strong>TVQ</strong></td><td>Taxe de Vente du Quebec. Taxe provinciale de 9,975% percue par Revenu Quebec. Se calcule sur le montant HT (pas sur le montant incluant la TPS).</td></tr>
+  <tr><td><strong>TVH</strong></td><td>Taxe de Vente Harmonisee. Combine la TPS et la composante provinciale en un seul taux dans certaines provinces (Ontario 13%, NB 15%, etc.). Ne s'applique pas au Quebec.</td></tr>
+  <tr><td><strong>CTI</strong></td><td>Credit de Taxe sur les Intrants. Montant de TPS paye sur les achats commerciaux que l'entreprise recupere dans sa declaration. Droit, pas privilege.</td></tr>
+  <tr><td><strong>RTI</strong></td><td>Remboursement de Taxe de Vente du Quebec sur les Intrants. Equivalent provincial du CTI pour la TVQ.</td></tr>
+  <tr><td><strong>ARC</strong></td><td>Agence du Revenu du Canada. Administration fiscale federale qui administre la TPS, l'impot sur le revenu et les cotisations sociales.</td></tr>
+  <tr><td><strong>Revenu Quebec</strong></td><td>Administration fiscale provinciale du Quebec. Administre la TVQ, l'impot provincial et les cotisations sociales quebecoises.</td></tr>
+  <tr><td><strong>Taxable</strong></td><td>Bien ou service sur lequel la TPS et la TVQ doivent etre percues. La majorite des biens et services, incluant les peptides.</td></tr>
+  <tr><td><strong>Detaxe</strong></td><td>Bien ou service taxe a 0%. Pas de taxes facturees, MAIS le vendeur conserve le droit aux CTI/RTI. Exemples : exportations, medicaments sur ordonnance.</td></tr>
+  <tr><td><strong>Exempte</strong></td><td>Bien ou service non assujetti aux taxes. Pas de taxes facturees ET pas de CTI/RTI reclamables. Exemples : services financiers, assurances.</td></tr>
+  <tr><td><strong>RS&DE</strong></td><td>Recherche Scientifique et Developpement Experimental. Programme de credits d'impot pour les depenses de R&D. Peut representer 35-50% des depenses admissibles.</td></tr>
+  <tr><td><strong>CDAE</strong></td><td>Credit d'impot pour le Developpement des Affaires Electroniques. Credit quebecois de 24% sur les salaires de developpeurs et designers.</td></tr>
+  <tr><td><strong>Methode rapide</strong></td><td>Methode simplifiee de calcul de la TPS/TVQ pour les PME (CA < 400 000 $). Taux fixe au lieu du calcul detaille.</td></tr>
+  <tr><td><strong>Acompte provisionnel</strong></td><td>Paiement anticipe d'impots exige trimestriellement si les impots annuels depassent 3 000 $ (federal) ou 1 800 $ (provincial).</td></tr>
+  <tr><td><strong>T2</strong></td><td>Declaration de revenus des societes federale. Doit etre produite dans les 6 mois suivant la fin de l'exercice.</td></tr>
+  <tr><td><strong>CO-17</strong></td><td>Declaration de revenus des societes du Quebec. Equivalent provincial du T2.</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="07-factures.md">Factures clients</a> : Source des taxes collectees (TPS/TVQ a remettre)</li>
+<li><a href="08-depenses.md">Depenses</a> : Source des credits d'intrants (CTI/RTI)</li>
+<li><a href="01-plan-comptable.md">Plan comptable</a> : Structure des comptes de taxes (1150, 1160, 2100, 2110)</li>
+<li><a href="10-rapprochement.md">Rapprochement</a> : Verification des paiements de taxes</li>
+<li><a href="12-rapports.md">Rapports</a> : Rapports fiscaux detailles</li>
+<li><a href="06-resultats.md">Etat des resultats</a> : Impact des taxes sur la rentabilite</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

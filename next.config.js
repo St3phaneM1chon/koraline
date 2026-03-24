@@ -11,7 +11,7 @@ const nextConfig = {
   // TypeScript: 0 errors as of 2026-03-16 (was ~958 on 2026-02-20, all fixed)
   // Kept true to prevent CI failures from transient type generation issues
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   // ESLint: enabled - catches actual bugs (no-assign-module, no-namespace, etc.)
   eslint: {

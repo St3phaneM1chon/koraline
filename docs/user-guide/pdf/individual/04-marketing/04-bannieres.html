@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Bannieres &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 04 — Marketing</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion des Bannieres</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Marketing > Bannieres</p>
+<p><strong>URL</strong>: <code>/admin/bannieres</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Bannieres</strong> permet de gerer le <strong>carrousel hero</strong> affiche sur la page d'accueil de votre boutique. Ce sont les grandes images (ou videos) qui occupent toute la largeur en haut du site et qui servent a mettre en avant vos promotions, nouveaux produits ou messages importants.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Creer de nouvelles bannieres (images, videos ou animations)</li>
+<li>Definir le titre, sous-titre, badge et boutons d'action (CTA) pour chaque banniere</li>
+<li>Uploader des images desktop et mobile distinctes</li>
+<li>Configurer l'opacite du voile sombre superpose a l'image</li>
+<li>Personnaliser les boutons d'appel a l'action (texte, URL, style)</li>
+<li>Reordonner les bannieres par glisser-monter/descendre</li>
+<li>Planifier l'affichage avec des dates de debut et de fin</li>
+<li>Activer ou desactiver chaque banniere individuellement</li>
+<li>Dupliquer une banniere existante</li>
+<li>Gerer les traductions dans toutes les langues supportees (22 langues)</li>
+<li>Afficher des statistiques (chiffres cles) directement sur la banniere</li>
+<li>Previsualiser le resultat sur le site en un clic</li>
+</ul>
+
+<hr>
+
+<h2>Concepts pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un carrousel hero ?</h3>
+
+<p>Le carrousel hero est la section la plus visible de votre page d'accueil. Il affiche une succession de bannieres (slides) en grand format. Chaque banniere contient generalement une image de fond, un titre accrocheur, un sous-titre, et un ou deux boutons qui dirigent vers une page specifique (par exemple "Voir les promotions").</p>
+
+<h3>Structure d'une banniere</h3>
+
+<table>
+<thead>
+    <tr><th>Element</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Slug</strong></td><td>Identifiant unique de la banniere (utilise en interne, ex: "soldes-ete-2026")</td></tr>
+  <tr><td><strong>Image de fond</strong></td><td>L'image principale affichee (format desktop)</td></tr>
+  <tr><td><strong>Image mobile</strong></td><td>Version optimisee pour les ecrans de telephone (optionnel)</td></tr>
+  <tr><td><strong>Voile (overlay)</strong></td><td>Un filtre sombre semi-transparent par-dessus l'image pour que le texte soit lisible</td></tr>
+  <tr><td><strong>Badge</strong></td><td>Un petit texte en surbrillance (ex: "Nouveau", "Promotion")</td></tr>
+  <tr><td><strong>Titre</strong></td><td>Le texte principal de la banniere (limite recommandee : 60 caracteres)</td></tr>
+  <tr><td><strong>Sous-titre</strong></td><td>Un texte complementaire (limite recommandee : 120 caracteres)</td></tr>
+  <tr><td><strong>CTA primaire</strong></td><td>Le bouton principal (texte, URL, style)</td></tr>
+  <tr><td><strong>CTA secondaire</strong></td><td>Un second bouton optionnel</td></tr>
+  <tr><td><strong>Statistiques</strong></td><td>Des chiffres cles affiches sur la banniere (ex: "99%+ Purete", "500+ Produits")</td></tr>
+</tbody>
+</table>
+<h3>Ordre d'affichage</h3>
+
+<p>Les bannieres s'affichent dans l'ordre defini par le champ "Ordre de tri". Vous pouvez reorganiser les bannieres en utilisant les fleches haut/bas.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Marketing</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong>, cliquez sur <strong>Bannieres</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation (icones a gauche)</h3>
+<ol>
+<li>Cliquez sur l'icone de la section <strong>Marketing</strong> dans le rail</li>
+<li>Cliquez sur <strong>Bannieres</strong></li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche (ou tapez <code>/</code>)</li>
+<li>Tapez "bannieres" ou "hero"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>Contrairement aux autres pages marketing qui utilisent le layout master/detail, la page Bannieres utilise un layout en <strong>liste verticale</strong> avec des cartes pour chaque banniere.</p>
+
+<h3>1. La barre de ruban (Ribbon) -- en haut</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouvelle banniere</strong></td><td>Ouvrir le formulaire de creation</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Indication pour utiliser le bouton de suppression de chaque banniere</td></tr>
+  <tr><td><strong>Upload image</strong></td><td>Ouvrir le formulaire de creation avec l'onglet Media actif</td></tr>
+  <tr><td><strong>Activer</strong></td><td>Activer la premiere banniere inactive</td></tr>
+  <tr><td><strong>Desactiver</strong></td><td>Desactiver la derniere banniere active</td></tr>
+  <tr><td><strong>Reorganiser</strong></td><td>Indication pour utiliser les fleches de reordonnancement</td></tr>
+  <tr><td><strong>Previsualiser</strong></td><td>Ouvrir la page d'accueil du site dans un nouvel onglet</td></tr>
+</tbody>
+</table>
+<h3>2. Les cartes de statistiques</h3>
+
+<p>3 cartes en haut :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total</strong></td><td>Nombre total de bannieres</td></tr>
+  <tr><td><strong>Actives</strong></td><td>Nombre de bannieres actuellement visibles sur le site</td></tr>
+  <tr><td><strong>Traductions</strong></td><td>Nombre total de traductions sur l'ensemble des bannieres</td></tr>
+</tbody>
+</table>
+<h3>3. La liste des bannieres</h3>
+
+<p>Chaque banniere est affichee sous forme d'une ligne horizontale contenant :</p>
+<ul>
+<li><strong>Fleches de reordonnancement</strong> (haut/bas) a gauche</li>
+<li><strong>Miniature</strong> de l'image de fond (128x80 pixels) avec l'indication du type de media</li>
+<li><strong>Informations</strong> : titre, slug, nombre de traductions, URL du CTA, ordre de tri, et indicateurs de planification (planifiee, expiree)</li>
+<li><strong>Actions</strong> a droite : interrupteur actif/inactif, boutons Modifier, Dupliquer, Supprimer</li>
+</ul>
+
+<h3>4. Le formulaire de creation/edition (fenetre modale)</h3>
+
+<p>Le formulaire est organise en onglets :</p>
+<ul>
+<li><strong>General</strong> : Slug, ordre de tri, titre, sous-titre, badge, activation</li>
+<li><strong>Media</strong> : Type de media, image desktop, image mobile, opacite du voile, gradient</li>
+<li><strong>CTA</strong> : Bouton principal (texte, URL, style), bouton secondaire (texte, URL, style), statistiques JSON</li>
+<li><strong>Planification</strong> : Date de debut, date de fin</li>
+<li><strong>Langues</strong> : Un onglet par langue supportee pour les traductions (badge, titre, sous-titre, texte des CTA, statistiques)</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer une nouvelle banniere</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle banniere</strong> en haut a droite ou dans le ruban</li>
+<li><strong>Onglet General</strong> :</li>
+</ol>
+<ul>
+<li>Slug (obligatoire) : identifiant unique, format URL (ex: "promo-printemps-2026")</li>
+<li>Titre (obligatoire) : texte principal. Un compteur indique le nombre de caracteres (recommande : moins de 60)</li>
+<li>Sous-titre : texte secondaire. Compteur de caracteres (recommande : moins de 120)</li>
+<li>Badge : texte court mis en evidence (ex: "Nouveau")</li>
+<li>Ordre de tri : position dans le carrousel</li>
+<li>Case a cocher Active</li>
+</ul>
+<ol>
+<li><strong>Onglet Media</strong> :</li>
+</ol>
+<ul>
+<li>Type de media : Image, Video ou Animation</li>
+<li>Image de fond (obligatoire) : uploadez votre image via le composant MediaUploader</li>
+<li>Image mobile : version optimisee pour mobile (optionnel)</li>
+<li>Opacite du voile : curseur de 0% (transparent) a 100% (opaque). Valeur par defaut : 70%</li>
+<li>Gradient : classe CSS personnalisee pour le degrade (optionnel)</li>
+</ul>
+<ol>
+<li><strong>Onglet CTA</strong> :</li>
+</ol>
+<ul>
+<li>CTA primaire : texte du bouton, URL de destination, style (Primary, Secondary, Outline)</li>
+<li>CTA secondaire : memes champs (optionnel)</li>
+<li>Statistiques JSON : un tableau JSON pour afficher des chiffres sur la banniere</li>
+</ul>
+<ol>
+<li><strong>Onglet Planification</strong> :</li>
+</ol>
+<ul>
+<li>Date de debut : la banniere devient visible a cette date</li>
+<li>Date de fin : la banniere disparait a cette date</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<p><strong>Validations</strong> :</p>
+<ul>
+<li>Le slug ne peut pas etre vide et doit etre unique (verification en temps reel)</li>
+<li>Le titre ne peut pas etre vide</li>
+<li>L'image de fond ne peut pas etre vide</li>
+<li>Les statistiques JSON doivent etre du JSON valide</li>
+</ul>
+
+<h3>2. Gerer les traductions</h3>
+
+<ol>
+<li>Ouvrez le formulaire d'edition d'une banniere</li>
+<li>Apres les 4 onglets principaux, vous voyez un separateur puis un onglet par langue (EN, FR, ES, DE, etc.)</li>
+<li>Cliquez sur l'onglet de la langue souhaitee</li>
+<li>Remplissez : Badge, Titre, Sous-titre, texte du CTA primaire, texte du CTA secondaire, Statistiques JSON</li>
+<li>Les onglets avec du contenu existant sont affiches en vert</li>
+</ol>
+
+<p>Les traductions sont optionnelles. Si une langue n'a pas de traduction, le texte par defaut (onglet General) est utilise.</p>
+
+<h3>3. Reordonner les bannieres</h3>
+
+<ol>
+<li>Pour monter une banniere : cliquez sur la fleche vers le haut a gauche de la banniere</li>
+<li>Pour descendre une banniere : cliquez sur la fleche vers le bas</li>
+<li>Les modifications sont sauvegardees automatiquement</li>
+</ol>
+
+<h3>4. Dupliquer une banniere</h3>
+
+<ol>
+<li>Cliquez sur le bouton <strong>Dupliquer</strong> (icone de copie) a droite de la banniere</li>
+<li>Le formulaire de creation s'ouvre avec tous les champs pre-remplis</li>
+<li>Le slug est suffixe par "-copy" et le titre par "(copy)"</li>
+<li>La copie est desactivee par defaut</li>
+<li>Modifiez les champs necessaires et sauvegardez</li>
+</ol>
+
+<h3>5. Planifier une banniere</h3>
+
+<ol>
+<li>Ouvrez le formulaire d'edition</li>
+<li>Allez a l'onglet <strong>Planification</strong></li>
+<li>Definissez la date de debut (la banniere apparaitra a cette date)</li>
+<li>Definissez la date de fin (la banniere disparaitra a cette date)</li>
+<li>Sauvegardez</li>
+</ol>
+
+<p>Les bannieres planifiees affichent un indicateur orange avec la date de publication prevue. Les bannieres expirees affichent un indicateur rouge.</p>
+
+<h3>6. Previsualiser le resultat</h3>
+
+<p>Cliquez sur <strong>Previsualiser</strong> dans le ruban. La page d'accueil du site s'ouvre dans un nouvel onglet, ou vous pouvez voir le carrousel avec vos bannieres actives.</p>
+
+<hr>
+
+<h2>Scenarios concrets</h2>
+
+<h3>Scenario A : Creer une banniere promotionnelle pour le Black Friday</h3>
+
+<ol>
+<li>Cliquez sur <strong>Nouvelle banniere</strong></li>
+<li>Slug : "black-friday-2026"</li>
+<li>Titre : "Black Friday - Jusqu'a 50% de rabais"</li>
+<li>Sous-titre : "Offre valable du 27 au 30 novembre"</li>
+<li>Badge : "BLACK FRIDAY"</li>
+<li>Uploadez une image thematique sombre</li>
+<li>Opacite du voile : 60%</li>
+<li>CTA primaire : Texte "Voir les offres", URL "/shop?promo=blackfriday", Style "Primary"</li>
+<li>Planification : debut 27 novembre 00:00, fin 30 novembre 23:59</li>
+<li>Cochez "Active"</li>
+<li>Sauvegardez</li>
+</ol>
+
+<h3>Scenario B : Traduire une banniere existante en francais et espagnol</h3>
+
+<ol>
+<li>Ouvrez la banniere a traduire (bouton Modifier)</li>
+<li>Cliquez sur l'onglet <strong>FR</strong></li>
+<li>Titre : "Peptides de recherche de haute purete"</li>
+<li>Sous-titre : "Livraison gratuite au Canada"</li>
+<li>CTA : "Magasiner"</li>
+<li>Cliquez sur l'onglet <strong>ES</strong></li>
+<li>Titre : "Peptidos de investigacion de alta pureza"</li>
+<li>Sous-titre : "Envio gratis en Canada"</li>
+<li>CTA : "Comprar"</li>
+<li>Sauvegardez</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: Quelle taille d'image recommandez-vous pour les bannieres ?</strong></p>
+<p>R: Utilisez des images d'au moins 1920x800 pixels pour le desktop et 750x1000 pixels pour le mobile. Preferez le format WebP ou JPEG compresse pour des temps de chargement rapides.</p>
+
+<p><strong>Q: Combien de bannieres actives recommandez-vous ?</strong></p>
+<p>R: Entre 3 et 5 bannieres actives est ideal. Trop de bannieres dilue le message et augmente le temps de chargement.</p>
+
+<p><strong>Q: Que signifie le champ "Statistiques JSON" ?</strong></p>
+<p>R: C'est un tableau JSON qui permet d'afficher des chiffres cles directement sur la banniere. Exemple : <code>[{"value":"99%+","label":"Purete"},{"value":"500+","label":"Produits"}]</code>. Ces statistiques apparaissent sous forme de badges visuels.</p>
+
+<p><strong>Q: Puis-je utiliser une video au lieu d'une image ?</strong></p>
+<p>R: Oui. Dans l'onglet Media, changez le type de media sur "Video" et fournissez l'URL de la video. Les formats supportes incluent MP4 et WebM.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Carrousel hero</strong></td><td>La section de diaporama en haut de la page d'accueil</td></tr>
+  <tr><td><strong>Slide</strong></td><td>Une banniere individuelle dans le carrousel</td></tr>
+  <tr><td><strong>Slug</strong></td><td>Identifiant textuel unique utilise dans les URL et le code</td></tr>
+  <tr><td><strong>CTA</strong></td><td>Call To Action (Appel a l'action) -- un bouton qui invite le visiteur a cliquer</td></tr>
+  <tr><td><strong>Overlay</strong></td><td>Voile semi-transparent superpose a l'image pour ameliorer la lisibilite du texte</td></tr>
+  <tr><td><strong>MediaUploader</strong></td><td>Le composant d'upload qui permet de telecharger et recadrer des images</td></tr>
+  <tr><td><strong>Ordre de tri</strong></td><td>Numero qui determine la position de la banniere dans le carrousel</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="/admin/promotions">Promotions</a> -- Creer les offres mises en avant dans les bannieres</li>
+<li><a href="/admin/promo-codes">Codes Promo</a> -- Les codes de reduction a promouvoir dans les bannieres</li>
+<li><a href="/admin/blog">Blog</a> -- Publier des articles a relayer via les bannieres</li>
+<li><a href="/admin/produits">Produits</a> -- Les produits mis en avant dans les CTA des bannieres</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

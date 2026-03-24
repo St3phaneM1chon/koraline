@@ -24,7 +24,7 @@ export default function CookiesEN() {
 
   const savePreferences = () => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem('biocycle-cookie-preferences', JSON.stringify(preferences));
+      localStorage.setItem('attitudes-cookie-preferences', JSON.stringify(preferences));
       setShowPreferences(false);
       alert('Your cookie preferences have been saved.');
     }
@@ -46,7 +46,7 @@ export default function CookiesEN() {
           Essential Cookies (required)
         </h3>
         <p>
-          These cookies are necessary for the BioCycle Peptides site to function:
+          These cookies are necessary for the Attitudes VIP site to function:
         </p>
         <ul>
           <li>Authentication and session security</li>
@@ -228,7 +228,7 @@ export default function CookiesEN() {
       <Section title="7. Contact">
         <p>For any questions about our use of cookies:</p>
         <ul style={{ listStyle: 'none', padding: 0 }}>
-          <li>privacy@biocyclepeptides.com</li>
+          <li>privacy@attitudes.vip</li>
         </ul>
       </Section>
     </div>

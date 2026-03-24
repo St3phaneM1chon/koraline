@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journal d'appels &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 09 — Telephonie</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Journal d'appels</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Telephonie > Journal d'appels</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Le <strong>journal d'appels</strong> (Call Log) est l'historique complet de tous les appels telephoniques</p>
+<p>passes et recus via Koraline. C'est le registre central de l'activite telephonique de BioCycle</p>
+<p>Peptides. Chaque appel y est consigne avec ses details : direction, participants, duree, statut,</p>
+<p>enregistrement audio, transcription IA, et donnees CRM associees.</p>
+
+<p>Le journal se rafraichit automatiquement toutes les 15 secondes pour afficher les nouveaux appels</p>
+<p>en temps reel, sans rechargement de page.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Telephone</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, cliquez sur <strong>Journal d'appels</strong>.</li>
+<li>L'URL directe est : <code>/admin/telephonie/journal</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Barre de filtres</h3>
+<p>En haut de la page, une barre de filtres permet de preciser votre recherche :</p>
+
+<table>
+<thead>
+    <tr><th>Filtre</th><th>Options</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Recherche</strong></td><td>Champ texte pour chercher par nom, numero, ou mot-cle</td></tr>
+  <tr><td><strong>Direction</strong></td><td>Tous, Entrant, Sortant, Interne</td></tr>
+  <tr><td><strong>Statut</strong></td><td>Tous, Complete, Manque, Messagerie, Echoue</td></tr>
+  <tr><td><strong>Date debut</strong></td><td>Selecteur de date</td></tr>
+  <tr><td><strong>Date fin</strong></td><td>Selecteur de date</td></tr>
+</tbody>
+</table>
+<h3>Tableau des appels</h3>
+<p>Le tableau principal affiche les colonnes suivantes :</p>
+<ul>
+<li><strong>Direction</strong> : Icone fleche entrante (bleu), sortante (vert) ou interne (gris)</li>
+<li><strong>Appelant</strong> : Nom et numero, avec lien CRM si le client est identifie</li>
+<li><strong>Appele</strong> : Numero compose</li>
+<li><strong>Agent</strong> : Nom de l'agent et extension</li>
+<li><strong>Statut</strong> : Badge colore (Complete, Manque, Messagerie, Echoue, En cours, Transfere)</li>
+<li><strong>Duree</strong> : Temps de conversation au format mm:ss</li>
+<li><strong>Date</strong> : Date et heure de l'appel</li>
+<li><strong>Satisfaction</strong> : Score du sondage post-appel</li>
+<li><strong>Enregistrement</strong> : Icone indiquant la disponibilite d'un enregistrement</li>
+</ul>
+
+<h3>Pagination</h3>
+<p>Navigation par pages avec affichage du nombre total d'appels (25 par page).</p>
+
+<h3>Panneau de detail (expansion)</h3>
+<p>Cliquez sur une ligne pour afficher le detail de l'appel en dessous :</p>
+
+<ul>
+<li><strong>Enregistrement audio</strong> : Lecteur audio integre avec barre de progression</li>
+<li><strong>Transcription IA</strong> : Resume genere par Whisper avec analyse de sentiment</li>
+<li><strong>Notes de l'agent</strong> : Notes ajoutees manuellement par l'agent</li>
+<li><strong>Deals CRM</strong> : Opportunites commerciales liees au client appelant</li>
+<li><strong>Commandes recentes</strong> : Dernieres commandes du client</li>
+<li><strong>Fidelite</strong> : Niveau et points du programme de fidelite</li>
+<li><strong>Emails recents</strong> : Derniers emails echanges avec ce client</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Recherche en texte libre</h3>
+<p>Le champ de recherche filtre les appels par :</p>
+<ul>
+<li>Nom de l'appelant ou de l'appele</li>
+<li>Numero de telephone</li>
+<li>Nom de l'agent</li>
+</ul>
+
+<h3>Filtrage par date</h3>
+<p>Les selecteurs de date permettent de definir une plage precise. Utile pour les rapports</p>
+<p>d'activite ou la recherche d'un appel specifique.</p>
+
+<h3>Detail enrichi par les ponts inter-modules (Bridges)</h3>
+<p>Le panneau d'expansion tire des donnees de 4 modules differents :</p>
+
+<table>
+<thead>
+    <tr><th>Pont</th><th>Donnees affichees</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>CRM</strong></td><td>Deals associes au client (titre, etape, valeur)</td></tr>
+  <tr><td><strong>Commerce</strong></td><td>Commandes recentes (numero, statut, montant)</td></tr>
+  <tr><td><strong>Fidelite</strong></td><td>Niveau du client et solde de points</td></tr>
+  <tr><td><strong>Emails</strong></td><td>Derniers emails echanges (objet, statut)</td></tr>
+</tbody>
+</table>
+<p>Ces ponts permettent a l'agent d'avoir un contexte complet sans quitter le journal d'appels.</p>
+
+<h3>Lecteur audio integre</h3>
+<p>Le composant <strong>AudioPlayer</strong> offre :</p>
+<ul>
+<li>Lecture / Pause / Arret</li>
+<li>Barre de progression cliquable</li>
+<li>Affichage de la duree totale et du temps ecoule</li>
+</ul>
+
+<h3>Transcription IA</h3>
+<p>Les transcriptions sont generees automatiquement par Whisper et incluent :</p>
+<ul>
+<li><strong>Resume</strong> : Synthese du contenu de l'appel</li>
+<li><strong>Sentiment</strong> : Positif (vert), Neutre (gris), ou Negatif (rouge)</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Retrouver un appel client specifique</h3>
+<ol>
+<li>Tapez le nom ou le numero du client dans le champ de recherche.</li>
+<li>Ajustez la plage de dates si necessaire.</li>
+<li>Cliquez sur l'appel pour afficher les details.</li>
+<li>Ecoutez l'enregistrement ou lisez la transcription.</li>
+</ol>
+
+<h3>Workflow 2 : Revue quotidienne des appels manques</h3>
+<ol>
+<li>Selectionnez le filtre <strong>Statut</strong> > <strong>Manque</strong>.</li>
+<li>Definissez la date du jour.</li>
+<li>Parcourez la liste et rappelez les clients prioritaires.</li>
+<li>Verifiez si des messages vocaux ont ete laisses.</li>
+</ol>
+
+<h3>Workflow 3 : Audit qualite d'un agent</h3>
+<ol>
+<li>Filtrez par le nom de l'agent dans le champ de recherche.</li>
+<li>Definissez la periode souhaitee.</li>
+<li>Ecoutez les enregistrements des appels.</li>
+<li>Consultez les scores de satisfaction.</li>
+<li>Notez vos observations pour la session de coaching.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Tous les appels sont-ils enregistres ?</strong></p>
+<p>R : Cela depend de la politique d'enregistrement configuree dans les parametres</p>
+<p>(tous, entrants uniquement, sortants uniquement, ou aucun).</p>
+
+<p><strong>Q : Les donnees CRM sont-elles en temps reel ?</strong></p>
+<p>R : Les ponts inter-modules chargent les donnees a la demande lorsque vous expandissez</p>
+<p>un appel. Elles refletent l'etat actuel de la base de donnees.</p>
+
+<p><strong>Q : Combien de temps les appels sont-ils conserves ?</strong></p>
+<p>R : Les enregistrements du journal sont conserves indefiniment. Les fichiers audio</p>
+<p>sont stockes sur Azure Blob Storage.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Call Log</strong></td><td>Registre historique de tous les appels telephoniques</td></tr>
+  <tr><td><strong>Direction</strong></td><td>Sens de l'appel : entrant (INBOUND), sortant (OUTBOUND), interne (INTERNAL)</td></tr>
+  <tr><td><strong>Whisper</strong></td><td>Modele d'IA d'OpenAI utilise pour la transcription automatique des appels</td></tr>
+  <tr><td><strong>Pont (Bridge)</strong></td><td>Lien inter-module affichant des donnees d'un autre module dans le contexte actuel</td></tr>
+  <tr><td><strong>SWR</strong></td><td>Bibliotheque de cache et rafraichissement automatique des donnees</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./01-dashboard.md">Tableau de bord</a> : Vue d'ensemble de l'activite telephonique</li>
+<li><a href="./03-enregistrements.md">Enregistrements</a> : Recherche avancee dans les enregistrements</li>
+<li><a href="./04-messagerie.md">Messagerie vocale</a> : Gerer les messages vocaux</li>
+<li><a href="./15-analytics-appels.md">Analytics appels</a> : Statistiques detaillees des appels</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

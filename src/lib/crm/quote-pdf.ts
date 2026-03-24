@@ -1,5 +1,5 @@
 /**
- * Quote PDF Generator - BioCycle Peptides
+ * Quote PDF Generator - Attitudes VIP
  *
  * Generates a professional PDF for CRM quotes using jsPDF.
  * Includes: company header, client info, line items table,
@@ -63,10 +63,10 @@ interface QuotePdfData {
 // Constants
 // ---------------------------------------------------------------------------
 
-const COMPANY_NAME = 'BioCycle Peptides';
+const COMPANY_NAME = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
 const COMPANY_TAGLINE = 'Research-Grade Peptides';
 const COMPANY_ADDRESS = 'Canada';
-const COMPANY_EMAIL = process.env.INFO_EMAIL || 'info@biocyclepeptides.com';
+const COMPANY_EMAIL = process.env.INFO_EMAIL || 'info@attitudes.vip';
 const COMPANY_WEBSITE = process.env.NEXT_PUBLIC_DOMAIN || 'attitudes.vip';
 
 // Colors (RGB tuples)

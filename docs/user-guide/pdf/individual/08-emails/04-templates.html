@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Templates d'email &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 08 — Emails</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Templates d'email</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Emails > Templates</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>Les <strong>templates d'email</strong> (modeles) sont des gabarits reutilisables qui permettent de creer</p>
+<p>rapidement des emails professionnels sans repartir de zero a chaque fois. Dans Koraline, le</p>
+<p>constructeur de templates fonctionne par <strong>blocs</strong> : vous assemblez visuellement des elements</p>
+<p>(en-tete, texte, image, grille de produits, bouton d'action, separateur) pour composer votre email.</p>
+
+<p>Chaque template peut contenir des <strong>variables dynamiques</strong> (comme <code>{{prenom}}</code>, <code>{{email}}</code>,</p>
+<p><code>{{nom}}</code>) qui seront remplacees automatiquement par les donnees du destinataire lors de l'envoi.</p>
+<p>Cela permet de personnaliser les emails a grande echelle.</p>
+
+<p>Les templates servent de base aux campagnes email, aux flows automatises, et aux reponses rapides</p>
+<p>de l'equipe. Un bon jeu de templates reduit considerablement le temps de preparation des</p>
+<p>communications.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Emails</strong> dans la barre laterale gauche.</li>
+<li>Dans le panneau de navigation, sous <strong>Gestion</strong>, cliquez sur <strong>Templates</strong>.</li>
+<li>L'URL directe est : <code>/admin/emails?tab=templates</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Liste des templates</h3>
+<p>L'interface principale affiche tous les templates existants sous forme de cartes ou de tableau.</p>
+<p>Chaque template affiche :</p>
+<ul>
+<li><strong>Nom</strong> du template (ex: "welcome-new-customer")</li>
+<li><strong>Objet</strong> de l'email</li>
+<li><strong>Date de creation</strong> et de derniere modification</li>
+<li><strong>Apercu</strong> visuel du rendu</li>
+</ul>
+
+<h3>Bouton "Nouveau template"</h3>
+<p>En haut a droite, un bouton permet de creer un nouveau template.</p>
+
+<h3>Constructeur de template (Template Builder)</h3>
+<p>Le constructeur se divise en trois zones :</p>
+
+<ol>
+<li><strong>Palette de blocs</strong> (gauche) : Liste des types de blocs disponibles</li>
+<li><strong>Canevas</strong> (centre) : Zone de composition ou les blocs sont empiles</li>
+<li><strong>Panneau de proprietes</strong> (droite) : Options de configuration du bloc selectionne</li>
+</ol>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Types de blocs disponibles</h3>
+
+<table>
+<thead>
+    <tr><th>Bloc</th><th>Description</th><th>Utilisation typique</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>En-tete</strong></td><td>Titre avec alignement configurable</td><td>Titre principal de l'email</td></tr>
+  <tr><td><strong>Texte</strong></td><td>Paragraphe de texte libre</td><td>Corps du message, explications</td></tr>
+  <tr><td><strong>Image</strong></td><td>Image avec URL, texte alternatif et largeur</td><td>Banniere, photo de produit</td></tr>
+  <tr><td><strong>Grille produits</strong></td><td>Grille de 1 a 8 produits</td><td>Recommandations, nouveautes</td></tr>
+  <tr><td><strong>Bouton CTA</strong></td><td>Bouton d'appel a l'action colore</td><td>"Acheter maintenant", "Voir les produits"</td></tr>
+  <tr><td><strong>Separateur</strong></td><td>Ligne horizontale de separation</td><td>Organisation visuelle</td></tr>
+</tbody>
+</table>
+<h3>Manipulation des blocs</h3>
+<ul>
+<li><strong>Ajouter</strong> : Cliquez sur un type de bloc dans la palette pour l'ajouter en bas du canevas</li>
+<li><strong>Selectionner</strong> : Cliquez sur un bloc dans le canevas pour le selectionner</li>
+<li><strong>Deplacer</strong> : Utilisez les fleches haut/bas pour reordonner les blocs</li>
+<li><strong>Supprimer</strong> : Cliquez sur l'icone corbeille a gauche du bloc</li>
+<li><strong>Configurer</strong> : Modifiez les proprietes dans le panneau de droite</li>
+</ul>
+
+<h3>Variables dynamiques</h3>
+<p>Inserez des variables dans le texte avec la syntaxe <code>{{nomVariable}}</code> :</p>
+<ul>
+<li><code>{{prenom}}</code> ou <code>{{firstName}}</code> : Prenom du destinataire</li>
+<li><code>{{nom}}</code> : Nom de famille</li>
+<li><code>{{email}}</code> : Adresse email</li>
+<li><code>{{company}}</code> : Nom de l'entreprise</li>
+</ul>
+
+<p>Le systeme detecte automatiquement les variables utilisees et les affiche lors de la sauvegarde.</p>
+
+<h3>Mode apercu</h3>
+<p>Cliquez sur le bouton <strong>Apercu</strong> pour visualiser le rendu final de l'email tel qu'il apparaitra</p>
+<p>dans la boite de reception du destinataire. Le mode apercu montre le HTML compile.</p>
+
+<h3>Sauvegarde</h3>
+<ul>
+<li><strong>Nouveau template</strong> : Renseignez le nom et l'objet, puis cliquez sur <strong>Sauvegarder</strong></li>
+<li><strong>Template existant</strong> : Cliquez sur <strong>Mettre a jour</strong> pour enregistrer les modifications</li>
+</ul>
+
+<p>Le contenu est compile en HTML compatible email (tables, styles inline) et le JSON des blocs</p>
+<p>est conserve pour permettre l'edition ulterieure.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Creer un template de bienvenue</h3>
+<ol>
+<li>Cliquez sur <strong>Nouveau template</strong>.</li>
+<li>Nommez-le "welcome-new-customer" et definissez l'objet "Bienvenue chez BioCycle Peptides!".</li>
+<li>Ajoutez un bloc <strong>En-tete</strong> avec le texte "BioCycle Peptides".</li>
+<li>Ajoutez un bloc <strong>Texte</strong> avec : "Bonjour {{prenom}}, Decouvrez nos peptides de qualite pharmaceutique!"</li>
+<li>Ajoutez un bloc <strong>Grille produits</strong> pour montrer 4 produits recommandes.</li>
+<li>Ajoutez un bloc <strong>Bouton CTA</strong> "Voir les produits" pointant vers biocyclepeptides.com/products.</li>
+<li>Cliquez sur <strong>Sauvegarder</strong>.</li>
+</ol>
+
+<h3>Workflow 2 : Modifier un template existant</h3>
+<ol>
+<li>Dans la liste des templates, cliquez sur celui a modifier.</li>
+<li>Le constructeur s'ouvre avec les blocs existants pre-charges.</li>
+<li>Ajoutez, supprimez ou modifiez les blocs selon vos besoins.</li>
+<li>Verifiez le rendu via le bouton <strong>Apercu</strong>.</li>
+<li>Cliquez sur <strong>Mettre a jour</strong>.</li>
+</ol>
+
+<h3>Workflow 3 : Utiliser un template dans une campagne</h3>
+<ol>
+<li>Creez un template avec le contenu souhaite.</li>
+<li>Allez dans <strong>Campagnes</strong> et creez une nouvelle campagne.</li>
+<li>Dans l'editeur de campagne, selectionnez le template comme base.</li>
+<li>Personnalisez si necessaire, puis envoyez.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Les templates supportent-ils le HTML personnalise ?</strong></p>
+<p>R : Le constructeur genere du HTML compatible email automatiquement. Pour un controle total,</p>
+<p>l'editeur de campagne offre un mode <strong>Code</strong> pour editer le HTML directement.</p>
+
+<p><strong>Q : Comment tester un template avant de l'utiliser ?</strong></p>
+<p>R : Utilisez le mode <strong>Apercu</strong> dans le constructeur. Pour un test reel, creez une campagne</p>
+<p>de test avec votre propre adresse email comme destinataire.</p>
+
+<p><strong>Q : Les images sont-elles hebergees par Koraline ?</strong></p>
+<p>R : Non, vous devez fournir l'URL de l'image. Utilisez la mediatheque de Koraline ou un CDN</p>
+<p>pour heberger vos images.</p>
+
+<p><strong>Q : Combien de templates puis-je creer ?</strong></p>
+<p>R : Il n'y a pas de limite au nombre de templates.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Template</strong></td><td>Modele d'email reutilisable compose de blocs</td></tr>
+  <tr><td><strong>Bloc</strong></td><td>Element de base du template (texte, image, bouton, etc.)</td></tr>
+  <tr><td><strong>Variable dynamique</strong></td><td>Placeholder remplace par les donnees du destinataire lors de l'envoi</td></tr>
+  <tr><td><strong>CTA (Call-to-Action)</strong></td><td>Bouton incitant le destinataire a effectuer une action</td></tr>
+  <tr><td><strong>Canevas</strong></td><td>Zone centrale du constructeur ou les blocs sont assembles</td></tr>
+  <tr><td><strong>HTML compatible email</strong></td><td>Code HTML utilisant des tables et styles inline pour un affichage uniforme</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./05-campagnes.md">Campagnes</a> : Utiliser les templates dans des envois en masse</li>
+<li><a href="./06-flows.md">Flows</a> : Integrer les templates dans des sequences automatisees</li>
+<li><a href="./01-inbox.md">Boite de reception</a> : Gerer les reponses aux emails envoyes</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

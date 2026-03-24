@@ -38,7 +38,7 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-const CART_STORAGE_KEY = 'biocycle-cart';
+const CART_STORAGE_KEY = 'attitudes-cart';
 const CART_TTL_MS = 86400000; // 24 hours in milliseconds
 
 interface StoredCart {

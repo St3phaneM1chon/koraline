@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 
-const STORAGE_KEY = 'biocycle-compare-products';
+const STORAGE_KEY = 'attitudes-compare-products';
 const MAX_PRODUCTS = 4;
 
 export function useCompare() {

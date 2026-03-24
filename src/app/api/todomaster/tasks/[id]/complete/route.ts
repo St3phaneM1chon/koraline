@@ -5,13 +5,13 @@ export const dynamic = 'force-dynamic';
  * POST /api/todomaster/tasks/[id]/complete — Mark task as complete
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { withMobileGuard } from '@/lib/mobile-guard';
 import { logger } from '@/lib/logger';
 
 const TODOMASTER_URL = process.env.TODOMASTER_URL || 'http://localhost:8002';
 
-export const POST = withMobileGuard(async (request, { session, params }) => {
+export const POST = withMobileGuard(async (_request, { session: _session, params }) => {
   try {
     const id = params?.id;
     if (!id) {

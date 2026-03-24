@@ -18,8 +18,8 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 /**
  * Résout le tenant à partir d'un hostname.
  * Ordre de résolution:
- *   1. Domaine custom exact (biocyclepeptides.com)
- *   2. Sous-domaine koraline.app (biocycle.koraline.app)
+ *   1. Domaine custom exact (tenant's custom domain)
+ *   2. Sous-domaine koraline.app (tenant.koraline.app)
  *   3. Slug par défaut (localhost, attitudes.vip)
  */
 export async function resolveTenantByHost(hostname: string): Promise<{ tenantId: string; slug: string } | null> {
@@ -32,7 +32,7 @@ export async function resolveTenantByHost(hostname: string): Promise<{ tenantId:
     return { tenantId: cached.tenantId, slug: cached.slug };
   }
 
-  // Cas spéciaux: localhost et dev → tenant par défaut (biocycle pour l'instant)
+  // Cas spéciaux: localhost et dev → tenant par défaut (premier tenant actif)
   if (cleanHost === 'localhost' || cleanHost === '127.0.0.1') {
     const defaultTenant = await getDefaultTenant();
     if (defaultTenant) {

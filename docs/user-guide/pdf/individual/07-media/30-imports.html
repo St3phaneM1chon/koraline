@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Importations d'Enregistrements &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 07 — Media</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Importations d'Enregistrements</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Media > Gestion de Contenu > Importations</p>
+<p><strong>URL</strong>: <code>/admin/media/imports</code></p>
+<p><strong>Niveau</strong>: Intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Importations</strong> affiche la file d'attente des enregistrements detectes sur vos plateformes connectees (Zoom, Teams, Google Meet, Webex, YouTube). C'est ici que vous decidez quels enregistrements importer dans votre bibliotheque video.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir tous les enregistrements detectes avec leur plateforme, titre, date et duree</li>
+<li>Filtrer par plateforme et par statut (en attente, en cours, termine, echoue, ignore)</li>
+<li>Synchroniser manuellement pour detecter les nouveaux enregistrements</li>
+<li>Importer un enregistrement individuellement</li>
+<li>Importer plusieurs enregistrements en lot (selection multiple)</li>
+<li>Ignorer un enregistrement (skip) pour ne pas le traiter</li>
+<li>Reessayer un import echoue</li>
+<li>Voir les videos creees a partir des imports reussis</li>
+<li>Suivre les consentements associes</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Enregistrement</strong></td><td>Fichier video genere par une plateforme de visioconference</td></tr>
+  <tr><td><strong>Synchronisation</strong></td><td>Action de recuperer la liste des enregistrements depuis les plateformes</td></tr>
+  <tr><td><strong>Import</strong></td><td>Action de telecharger et integrer un enregistrement dans la bibliotheque video</td></tr>
+  <tr><td><strong>Skip (Ignorer)</strong></td><td>Marquer un enregistrement comme "a ne pas importer"</td></tr>
+  <tr><td><strong>Consentement</strong></td><td>Autorisation des participants pour utiliser l'enregistrement</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Allez dans <strong>Media</strong> dans la barre de navigation</li>
+<li>Cliquez sur <strong>Importations</strong> dans le panneau lateral</li>
+<li>Ou naviguez vers <code>/admin/media/imports</code></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. En-tete</h3>
+<ul>
+<li>Titre <strong>Importations d'enregistrements</strong> avec description</li>
+<li>Bouton <strong>Importer en lot</strong> (si des enregistrements sont selectionnes)</li>
+<li>Bouton <strong>Synchroniser maintenant</strong> pour lancer une detection</li>
+</ul>
+
+<h3>2. Filtres</h3>
+<ul>
+<li>Filtre par <strong>plateforme</strong> (Zoom, Teams, Meet, Webex, YouTube)</li>
+<li>Filtre par <strong>statut</strong> (en attente, en cours, termine, echoue, ignore)</li>
+<li>Compteur total d'enregistrements</li>
+</ul>
+
+<h3>3. Tableau des enregistrements</h3>
+
+<table>
+<thead>
+    <tr><th>Colonne</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Case a cocher</strong></td><td>Selection pour import en lot (uniquement pour les "en attente")</td></tr>
+  <tr><td><strong>Plateforme</strong></td><td>Badge avec le nom de la plateforme (Zoom, Teams, etc.)</td></tr>
+  <tr><td><strong>Reunion</strong></td><td>Titre de la reunion et email de l'hote</td></tr>
+  <tr><td><strong>Date</strong></td><td>Date de l'enregistrement</td></tr>
+  <tr><td><strong>Duree</strong></td><td>Duree de l'enregistrement et taille du fichier</td></tr>
+  <tr><td><strong>Statut</strong></td><td>Badge colore (en attente, en cours, termine, echoue, ignore)</td></tr>
+  <tr><td><strong>Consentement</strong></td><td>Badge du statut de consentement (accorde, en attente)</td></tr>
+  <tr><td><strong>Actions</strong></td><td>Boutons d'action contextuels</td></tr>
+</tbody>
+</table>
+<h3>4. Statuts possibles</h3>
+
+<table>
+<thead>
+    <tr><th>Statut</th><th>Badge</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>En attente (pending)</strong></td><td>Gris</td><td>Detecte mais pas encore importe</td></tr>
+  <tr><td><strong>En cours (downloading)</strong></td><td>Indigo pulse</td><td>Import en cours de telechargement</td></tr>
+  <tr><td><strong>En traitement (processing)</strong></td><td>Jaune tournant</td><td>Post-traitement en cours</td></tr>
+  <tr><td><strong>Termine (completed)</strong></td><td>Vert</td><td>Import reussi, video creee</td></tr>
+  <tr><td><strong>Echoue (failed)</strong></td><td>Rouge</td><td>Erreur lors de l'import</td></tr>
+  <tr><td><strong>Ignore (skipped)</strong></td><td>Gris clair</td><td>Deliberement ignore par l'administrateur</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>Synchroniser les enregistrements</h3>
+<ol>
+<li>Cliquez sur <strong>Synchroniser maintenant</strong></li>
+<li>Koraline interroge toutes les plateformes connectees</li>
+<li>Les nouveaux enregistrements apparaissent avec le statut "En attente"</li>
+<li>Un message indique le nombre de nouveaux enregistrements detectes</li>
+</ol>
+
+<h3>Importer un enregistrement</h3>
+<ol>
+<li>Sur la ligne de l'enregistrement, cliquez sur <strong>Importer</strong> (icone lecture)</li>
+<li>L'enregistrement passe en statut "En cours"</li>
+<li>Le fichier est telecharge et une video est creee dans la bibliotheque</li>
+<li>Le statut passe a "Termine" avec un lien vers la video</li>
+</ol>
+
+<h3>Import en lot</h3>
+<ol>
+<li>Cochez les enregistrements souhaites (cases a cocher a gauche)</li>
+<li>Le bouton <strong>Importer en lot</strong> apparait en haut avec le compteur</li>
+<li>Cliquez sur le bouton</li>
+<li>Tous les enregistrements selectionnes sont importes en sequence</li>
+<li>Un message resume le nombre de succes et d'echecs</li>
+</ol>
+
+<h3>Ignorer un enregistrement</h3>
+<ol>
+<li>Cliquez sur <strong>Ignorer</strong> (icone skip) sur la ligne</li>
+<li>L'enregistrement passe en statut "Ignore"</li>
+<li>Il ne sera plus propose pour import</li>
+</ol>
+
+<h3>Reessayer un import echoue</h3>
+<ol>
+<li>Sur une ligne en statut "Echoue", cliquez sur <strong>Reessayer</strong></li>
+<li>Le message d'erreur est affiche sous le statut pour vous aider a diagnostiquer</li>
+</ol>
+
+<h3>Voir la video creee</h3>
+<ol>
+<li>Sur une ligne en statut "Termine", cliquez sur <strong>Voir la video</strong> (icone video verte)</li>
+<li>Vous etes redirige vers la page de detail de la video</li>
+</ol>
+
+<hr>
+
+<h2>Flux de travail recommandes</h2>
+
+<h3>Apres chaque reunion Zoom</h3>
+<ol>
+<li>Attendez quelques minutes apres la fin de la reunion (Zoom genere l'enregistrement)</li>
+<li>Cliquez sur <strong>Synchroniser maintenant</strong></li>
+<li>Le nouvel enregistrement apparait en "En attente"</li>
+<li>Verifiez le titre et la duree</li>
+<li>Si pertinent, cliquez sur <strong>Importer</strong></li>
+<li>Allez ensuite dans <a href="./27-videos.md">Videos</a> pour editer la video importee</li>
+</ol>
+
+<h3>Traitement en lot hebdomadaire</h3>
+<ol>
+<li>En debut de semaine, synchronisez les enregistrements</li>
+<li>Passez en revue tous les enregistrements "En attente"</li>
+<li>Selectionnez ceux a importer et importez en lot</li>
+<li>Ignorez les enregistrements non pertinents (tests, reunions internes)</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes</h2>
+
+<p><strong>Q : L'enregistrement n'apparait pas apres la synchronisation</strong></p>
+<p>R : Certaines plateformes (Zoom) mettent quelques minutes a rendre les enregistrements disponibles. Attendez 5 minutes et resynchronisez.</p>
+
+<p><strong>Q : L'import a echoue, que faire ?</strong></p>
+<p>R : Consultez le message d'erreur sous le statut. Les causes courantes sont : fichier trop volumineux, token expire (reconnectez la plateforme), ou probleme reseau. Cliquez sur <strong>Reessayer</strong> apres avoir corrige.</p>
+
+<p><strong>Q : Les enregistrements ignores peuvent-ils etre reimportes ?</strong></p>
+<p>R : Oui, les enregistrements ignores restent dans la liste. Vous pouvez les reimporter ulterieurement.</p>
+
+<hr>
+
+<h2>Pages associees</h2>
+
+<table>
+<thead>
+    <tr><th>Page</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><a href="./29-connections.md">Connexions</a></td><td>Configurer les plateformes pour la detection</td></tr>
+  <tr><td><a href="./27-videos.md">Videos</a></td><td>Gerer les videos importees</td></tr>
+  <tr><td><a href="./32-consents.md">Consentements</a></td><td>Verifier les consentements des participants</td></tr>
+  <tr><td><a href="./31-sessions.md">Sessions Video</a></td><td>Planifier des sessions d'enregistrement</td></tr>
+</tbody>
+</table>
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

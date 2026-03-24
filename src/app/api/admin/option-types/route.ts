@@ -10,7 +10,7 @@ export const GET = withAdminGuard(async (request) => {
   const { searchParams } = new URL(request.url);
   const activeOnly = searchParams.get('active') !== 'false';
 
-  const types = await prisma.optionTypeOption.findMany({
+  const types = await prisma.formatTypeOption.findMany({
     where: activeOnly ? { isActive: true } : undefined,
     orderBy: { sortOrder: 'asc' },
   });
@@ -29,23 +29,23 @@ export const POST = withAdminGuard(async (request) => {
   const body = await request.json();
   const parsed = createSchema.safeParse(body);
   if (!parsed.success) {
-    return apiError('Validation error', 400, { details: parsed.error.flatten().fieldErrors });
+    return apiError('Validation error', 'VALIDATION_ERROR', { details: parsed.error.flatten().fieldErrors });
   }
 
   const { value, label, sortOrder } = parsed.data;
 
   // Check uniqueness
-  const existing = await prisma.optionTypeOption.findUnique({ where: { value } });
+  const existing = await prisma.formatTypeOption.findUnique({ where: { value } });
   if (existing) {
-    return apiError('Ce type existe déjà', 409);
+    return apiError('Ce type existe déjà', 'CONFLICT', { status: 409 });
   }
 
   // Auto sort order if not provided
-  const finalSort = sortOrder ?? (await prisma.optionTypeOption.count()) + 1;
+  const finalSort = sortOrder ?? (await prisma.formatTypeOption.count()) + 1;
 
-  const created = await prisma.optionTypeOption.create({
+  const created = await prisma.formatTypeOption.create({
     data: { value, label, sortOrder: finalSort },
   });
 
   return apiSuccess(created, { request, status: 201 });
-}, { requiredPermission: 'manage_products' });
+}, { requiredPermission: 'products.manage_options' });

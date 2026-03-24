@@ -12,7 +12,7 @@ import { prisma } from '@/lib/db';
 
 export async function GET(request: NextRequest) {
   try {
-    const tenantSlug = request.headers.get('x-tenant-slug') || 'biocycle';
+    const tenantSlug = request.headers.get('x-tenant-slug') || 'attitudes';
 
     const tenant = await prisma.tenant.findUnique({
       where: { slug: tenantSlug },

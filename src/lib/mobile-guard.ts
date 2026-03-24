@@ -12,7 +12,6 @@ export const dynamic = 'force-dynamic';
 
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth-jwt';
-import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 
 // ---------------------------------------------------------------------------

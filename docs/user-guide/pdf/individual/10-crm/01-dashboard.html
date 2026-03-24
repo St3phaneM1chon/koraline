@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tableau de Bord CRM &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 10 — CRM</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Tableau de Bord CRM</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Tableau de bord</p>
+<p><strong>URL</strong>: <code>/admin/crm</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>Le <strong>Tableau de bord CRM</strong> est votre centre de commande pour toute l'activite commerciale de BioCycle Peptides. Il offre une vue synthetique de la relation client, des opportunites de vente et de la performance de votre equipe.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir les indicateurs cles de performance (KPIs) en un coup d'oeil</li>
+<li>Suivre le nombre de contacts, leads et deals actifs</li>
+<li>Consulter le pipeline des ventes en temps reel</li>
+<li>Identifier les opportunites qui progressent et celles qui stagnent</li>
+<li>Visualiser les revenus generes par periode (jour, semaine, mois, trimestre)</li>
+<li>Suivre l'activite de votre equipe (appels, emails, taches completees)</li>
+<li>Acceder rapidement aux actions prioritaires (leads chauds, taches en retard)</li>
+<li>Comparer les performances entre periodes</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un CRM ?</h3>
+
+<p>Un CRM (Customer Relationship Management, ou Gestion de la Relation Client) est un outil qui centralise toutes les interactions entre votre entreprise et ses clients ou prospects. Imaginez un carnet d'adresses ultra-intelligent qui se souvient de chaque conversation, chaque achat, chaque email echange.</p>
+
+<h3>Pourquoi c'est important ?</h3>
+
+<ul>
+<li><strong>Rien ne se perd</strong> : chaque interaction est enregistree</li>
+<li><strong>Suivi structure</strong> : vous savez exactement ou en est chaque prospect</li>
+<li><strong>Meilleure conversion</strong> : en suivant un processus, vous vendez plus</li>
+<li><strong>Vision globale</strong> : la direction voit la sante commerciale en temps reel</li>
+</ul>
+
+<h3>Vocabulaire essentiel</h3>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Contact</strong></td><td>Une personne physique dans votre base (client ou prospect)</td></tr>
+  <tr><td><strong>Lead</strong></td><td>Un contact qui a montre de l'interet mais n'a pas encore achete</td></tr>
+  <tr><td><strong>Deal</strong></td><td>Une opportunite de vente en cours de negociation</td></tr>
+  <tr><td><strong>Pipeline</strong></td><td>L'ensemble des etapes par lesquelles passe un deal, de la decouverte a la conclusion</td></tr>
+  <tr><td><strong>Conversion</strong></td><td>Le passage d'un prospect a un client (il a achete)</td></tr>
+  <tr><td><strong>Churn</strong></td><td>Un client qui cesse d'acheter ou se desabonne</td></tr>
+  <tr><td><strong>CLV</strong></td><td>Customer Lifetime Value : valeur totale qu'un client genere dans sa vie</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>CRM</strong></li>
+<li>Le tableau de bord s'affiche automatiquement (c'est la page par defaut de la section)</li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation</h3>
+<ol>
+<li>Dans la colonne d'icones a gauche, cliquez sur l'icone <strong>CRM</strong> (entonnoir ou cible)</li>
+<li>Le panneau CRM s'ouvre, le tableau de bord est la premiere option</li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Cliquez sur la barre de recherche en haut (ou tapez <code>/</code>)</li>
+<li>Tapez "CRM" ou "tableau de bord CRM"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>L'interface du tableau de bord CRM est divisee en <strong>4 zones principales</strong> :</p>
+
+<h3>1. Les cartes de KPIs (en haut)</h3>
+
+<p>Cinq cartes resumant l'etat de votre CRM :</p>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Contacts totaux</strong></td><td>Nombre total de contacts dans votre base</td></tr>
+  <tr><td><strong>Leads actifs</strong></td><td>Nombre de leads en cours de qualification</td></tr>
+  <tr><td><strong>Deals ouverts</strong></td><td>Nombre d'opportunites en cours dans le pipeline</td></tr>
+  <tr><td><strong>Revenu pipeline</strong></td><td>Valeur totale des deals ouverts (en $CA)</td></tr>
+  <tr><td><strong>Taux de conversion</strong></td><td>Pourcentage de leads convertis en clients</td></tr>
+</tbody>
+</table>
+<p>Chaque carte affiche egalement la <strong>variation</strong> par rapport a la periode precedente (fleche verte pour une hausse, rouge pour une baisse).</p>
+
+<h3>2. Le graphique de pipeline (au centre)</h3>
+
+<p>Un graphique en entonnoir ou en barres montrant la repartition des deals par etape :</p>
+<ul>
+<li><strong>Prospection</strong> : premiers contacts, decouverte</li>
+<li><strong>Qualification</strong> : besoin identifie, budget confirme</li>
+<li><strong>Proposition</strong> : offre envoyee</li>
+<li><strong>Negociation</strong> : discussion sur les termes</li>
+<li><strong>Conclusion</strong> : deal gagne ou perdu</li>
+</ul>
+
+<h3>3. Les activites recentes (colonne droite)</h3>
+
+<p>Un fil d'actualite montrant les dernieres actions :</p>
+<ul>
+<li>Nouveaux leads entrants</li>
+<li>Deals qui ont change d'etape</li>
+<li>Taches completees par l'equipe</li>
+<li>Emails envoyes et recus</li>
+<li>Appels effectues</li>
+</ul>
+
+<h3>4. Les listes prioritaires (en bas)</h3>
+
+<ul>
+<li><strong>Leads chauds</strong> : les prospects avec le meilleur score, a contacter en priorite</li>
+<li><strong>Taches en retard</strong> : les actions qui auraient du etre completees</li>
+<li><strong>Deals proches de la cloture</strong> : opportunites a finaliser rapidement</li>
+<li><strong>Relances a faire</strong> : contacts qui n'ont pas ete sollicites depuis un moment</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Filtrer par periode</h3>
+
+<p><strong>Objectif</strong> : Comparer les performances sur differentes periodes.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>En haut a droite du tableau de bord, trouvez le selecteur de periode</li>
+<li>Choisissez parmi : Aujourd'hui, Cette semaine, Ce mois, Ce trimestre, Cette annee, Personnalise</li>
+<li>Les KPIs et graphiques se mettent a jour automatiquement</li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong> : Le mode "Personnalise" permet de definir une plage de dates precise, utile pour comparer des campagnes specifiques.</p>
+</blockquote>
+
+<h3>2. Naviguer rapidement vers une section</h3>
+
+<p><strong>Objectif</strong> : Acceder directement a une sous-section du CRM depuis le tableau de bord.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur le titre de n'importe quelle carte de KPI pour acceder a la page correspondante</li>
+<li>Par exemple, cliquer sur "Leads actifs" vous emmene directement a la page Leads</li>
+<li>Cliquer sur "Deals ouverts" ouvre la page Pipeline</li>
+</ol>
+
+<h3>3. Personnaliser les widgets</h3>
+
+<p><strong>Objectif</strong> : Adapter le tableau de bord a vos besoins.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur le bouton <strong>Personnaliser</strong> (icone engrenage) en haut a droite</li>
+<li>Glissez-deposez les widgets pour reorganiser l'affichage</li>
+<li>Activez ou desactivez les widgets selon vos preferences</li>
+<li>Cliquez sur <strong>Sauvegarder la disposition</strong></li>
+</ol>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Revue matinale des ventes</h3>
+<ol>
+<li>Ouvrez le tableau de bord CRM</li>
+<li>Verifiez les <strong>leads chauds</strong> : y a-t-il de nouveaux prospects a contacter ?</li>
+<li>Consultez les <strong>taches en retard</strong> : quelles actions sont prioritaires ?</li>
+<li>Regardez les <strong>deals proches de la cloture</strong> : quelles ventes peuvent etre finalisees ?</li>
+<li>Parcourez les <strong>activites recentes</strong> : que s'est-il passe hier ?</li>
+</ol>
+
+<h3>Revue hebdomadaire de performance</h3>
+<ol>
+<li>Selectionnez la periode "Cette semaine"</li>
+<li>Comparez le taux de conversion avec la semaine precedente</li>
+<li>Verifiez la valeur du pipeline : est-elle en croissance ?</li>
+<li>Identifiez les deals bloques depuis plus de 7 jours</li>
+<li>Planifiez les actions de la semaine suivante</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Les donnees du tableau de bord sont-elles en temps reel ?</strong></p>
+<p>R : Oui, les KPIs se mettent a jour en temps reel. Les graphiques et rapports se rafraichissent automatiquement toutes les quelques minutes.</p>
+
+<p><strong>Q : Puis-je exporter les donnees du tableau de bord ?</strong></p>
+<p>R : Oui, utilisez le bouton <strong>Exporter</strong> en haut a droite pour telecharger un rapport PDF ou CSV des KPIs affiches.</p>
+
+<p><strong>Q : Le tableau de bord est-il le meme pour tous les utilisateurs ?</strong></p>
+<p>R : Par defaut oui, mais chaque utilisateur peut personnaliser sa disposition. Les administrateurs peuvent aussi creer des tableaux de bord partages via le Dashboard Builder (voir page dediee).</p>
+
+<p><strong>Q : Que signifie un taux de conversion en baisse ?</strong></p>
+<p>R : Cela peut indiquer plusieurs choses : leads de moindre qualite, processus de vente trop long, manque de suivi. Utilisez les rapports detailles pour diagnostiquer la cause.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>KPI</strong></td><td>Key Performance Indicator, indicateur cle de performance</td></tr>
+  <tr><td><strong>Pipeline</strong></td><td>Representation visuelle du parcours d'un deal de la prospection a la conclusion</td></tr>
+  <tr><td><strong>Lead scoring</strong></td><td>Note automatique attribuee a un prospect selon ses actions et son profil</td></tr>
+  <tr><td><strong>Taux de conversion</strong></td><td>Pourcentage de prospects qui deviennent clients</td></tr>
+  <tr><td><strong>Revenu pipeline</strong></td><td>Somme des montants de tous les deals ouverts</td></tr>
+  <tr><td><strong>Churn rate</strong></td><td>Taux d'attrition, pourcentage de clients qui partent</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/contacts">Contacts</a> : Gestion des fiches contacts</li>
+<li><a href="/admin/crm/pipeline">Pipeline</a> : Vue detaillee du pipeline des ventes</li>
+<li><a href="/admin/crm/leads">Leads</a> : Gestion et qualification des prospects</li>
+<li><a href="/admin/crm/tasks">Taches</a> : Suivi des actions a realiser</li>
+<li><a href="/admin/crm/analytics">Rapports CRM</a> : Analyses et rapports detailles</li>
+<li><a href="/admin/crm/dashboard-builder">Dashboard Builder</a> : Creation de tableaux de bord personnalises</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

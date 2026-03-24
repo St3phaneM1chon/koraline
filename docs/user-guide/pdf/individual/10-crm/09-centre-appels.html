@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Centre d'Appels, SMS et WhatsApp &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 10 — CRM</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Centre d'Appels, SMS et WhatsApp</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Centre d'appels</p>
+<p><strong>URL</strong>: <code>/admin/crm/dialer</code>, <code>/admin/crm/wallboard</code>, <code>/admin/crm/agents/performance</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>Le <strong>Centre d'appels</strong> integre dans le CRM permet a votre equipe de passer et recevoir des appels telephoniques directement depuis l'interface Koraline, sans quitter le navigateur. Il integre aussi les campagnes SMS et les communications multicanal.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Passer des appels depuis le navigateur (softphone integre)</li>
+<li>Recevoir des appels entrants avec identification du contact</li>
+<li>Enregistrer les appels pour le controle qualite</li>
+<li>Suivre les performances des agents en temps reel (wallboard)</li>
+<li>Lancer des campagnes d'appels sortants (power dialer)</li>
+<li>Gerer les files d'attente et les horaires</li>
+<li>Analyser les metriques du centre d'appels (temps d'attente, duree, abandons)</li>
+<li>Envoyer des SMS et campagnes SMS depuis la plateforme</li>
+<li>Planifier les equipes et suivre l'adherence aux horaires</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un softphone ?</h3>
+
+<p>Un <strong>softphone</strong> est un telephone logiciel qui fonctionne dans votre navigateur. Pas besoin d'un telephone physique : vous utilisez le micro et les haut-parleurs de votre ordinateur (ou un casque) pour passer et recevoir des appels.</p>
+
+<h3>Comment ca marche techniquement ?</h3>
+
+<p>BioCycle Peptides utilise <strong>Telnyx</strong> comme fournisseur de telephonie VoIP. Les appels transitent par Internet, ce qui permet :</p>
+<ul>
+<li>Des couts d'appel reduits</li>
+<li>L'integration directe avec le CRM (identification du contact, historique)</li>
+<li>L'enregistrement des conversations</li>
+<li>Des numeros locaux canadiens</li>
+</ul>
+
+<h3>Les differents modes d'appel</h3>
+
+<table>
+<thead>
+    <tr><th>Mode</th><th>Description</th><th>Usage</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Click-to-call</strong></td><td>Cliquez sur un numero pour appeler</td><td>Appels individuels depuis une fiche contact</td></tr>
+  <tr><td><strong>Power dialer</strong></td><td>Le systeme appelle automatiquement une liste de contacts</td><td>Campagnes de prospection</td></tr>
+  <tr><td><strong>Preview dialer</strong></td><td>Affiche la fiche avant de lancer l'appel</td><td>Appels de suivi personnalises</td></tr>
+  <tr><td><strong>Appels entrants</strong></td><td>Les appels arrivent dans la file d'attente</td><td>Service client, support</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<p>Les pages du centre d'appels sont dans le groupe <strong>Centre d'appels</strong> du panneau CRM :</p>
+
+<table>
+<thead>
+    <tr><th>Page</th><th>URL</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Dialeur</strong></td><td><code>/admin/crm/dialer</code></td><td>Interface de gestion des appels</td></tr>
+  <tr><td><strong>Wallboard</strong></td><td><code>/admin/crm/wallboard</code></td><td>Ecran de supervision en temps reel</td></tr>
+  <tr><td><strong>Performance agents</strong></td><td><code>/admin/crm/agents/performance</code></td><td>Metriques individuelles des agents</td></tr>
+  <tr><td><strong>Representants 360</strong></td><td><code>/admin/crm/reps</code></td><td>Vue complete d'un representant</td></tr>
+  <tr><td><strong>Analytique appels</strong></td><td><code>/admin/crm/call-analytics</code></td><td>Rapports detailles sur les appels</td></tr>
+  <tr><td><strong>KPIs centre d'appels</strong></td><td><code>/admin/crm/call-center-kpis</code></td><td>Indicateurs cles du centre</td></tr>
+  <tr><td><strong>Planification</strong></td><td><code>/admin/crm/scheduling</code></td><td>Gestion des horaires et quarts</td></tr>
+  <tr><td><strong>Adherence</strong></td><td><code>/admin/crm/adherence</code></td><td>Suivi du respect des horaires</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>Page Dialeur (<code>/admin/crm/dialer</code>)</h3>
+
+<p>L'interface principale du centre d'appels avec :</p>
+
+<p><strong>Zone gauche</strong> : Liste des contacts a appeler</p>
+<ul>
+<li>File d'attente des appels entrants</li>
+<li>Liste de campagne (pour le power dialer)</li>
+<li>Historique des appels recents</li>
+</ul>
+
+<p><strong>Zone centrale</strong> : Le softphone</p>
+<ul>
+<li>Pave numerique</li>
+<li>Boutons : appeler, raccrocher, mettre en attente, transferer, muet</li>
+<li>Timer de duree d'appel</li>
+<li>Indicateur de qualite audio</li>
+</ul>
+
+<p><strong>Zone droite</strong> : Fiche contact</p>
+<ul>
+<li>Informations du contact (identifie automatiquement pour les appels entrants)</li>
+<li>Historique des interactions</li>
+<li>Notes d'appel</li>
+<li>Deals et commandes associes</li>
+</ul>
+
+<h3>Wallboard (<code>/admin/crm/wallboard</code>)</h3>
+
+<p>Ecran de supervision concu pour etre affiche sur un ecran TV ou moniteur :</p>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Appels en cours</strong></td><td>Nombre d'appels actifs en ce moment</td></tr>
+  <tr><td><strong>En attente</strong></td><td>Nombre d'appelants dans la file d'attente</td></tr>
+  <tr><td><strong>Temps attente moyen</strong></td><td>Combien de temps les appelants attendent</td></tr>
+  <tr><td><strong>Agents disponibles</strong></td><td>Nombre d'agents prets a prendre un appel</td></tr>
+  <tr><td><strong>Agents en appel</strong></td><td>Nombre d'agents actuellement en conversation</td></tr>
+  <tr><td><strong>Agents en pause</strong></td><td>Nombre d'agents en pause</td></tr>
+  <tr><td><strong>Appels traites aujourd'hui</strong></td><td>Compteur du jour</td></tr>
+  <tr><td><strong>Taux d'abandon</strong></td><td>Pourcentage d'appelants qui raccrochent avant d'etre servis</td></tr>
+  <tr><td><strong>SLA</strong></td><td>Pourcentage d'appels repondus dans le delai cible (ex: 80% en 20 sec)</td></tr>
+</tbody>
+</table>
+<h3>Performance agents (<code>/admin/crm/agents/performance</code>)</h3>
+
+<p>Metriques individuelles :</p>
+<ul>
+<li>Nombre d'appels traites (entrants + sortants)</li>
+<li>Duree moyenne de conversation</li>
+<li>Temps moyen de traitement post-appel</li>
+<li>Taux de resolution au premier appel</li>
+<li>Score qualite (si evaluation QA activee)</li>
+<li>Adherence aux horaires (%)</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Passer un appel</h3>
+
+<p><strong>Methode click-to-call</strong> :</p>
+<ol>
+<li>Ouvrez la fiche d'un contact</li>
+<li>Cliquez sur le numero de telephone (lien cliquable)</li>
+<li>Le softphone se lance automatiquement</li>
+<li>Attendez que le contact decroche</li>
+<li>Pendant l'appel, prenez des notes dans le champ prevu</li>
+<li>Apres l'appel, ajoutez un resume et une disposition (resultat)</li>
+</ol>
+
+<p><strong>Dispositions d'appel</strong> :</p>
+<table>
+<thead>
+    <tr><th>Disposition</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Repondu - Interesse</strong></td><td>Le contact est interesse, prochaine etape definie</td></tr>
+  <tr><td><strong>Repondu - Pas interesse</strong></td><td>Contact non interesse</td></tr>
+  <tr><td><strong>Repondu - Rappeler</strong></td><td>Demande d'etre rappele plus tard</td></tr>
+  <tr><td><strong>Messagerie vocale</strong></td><td>Tombe sur la boite vocale</td></tr>
+  <tr><td><strong>Pas de reponse</strong></td><td>Personne n'a decroche</td></tr>
+  <tr><td><strong>Numero invalide</strong></td><td>Numero hors service ou incorrect</td></tr>
+  <tr><td><strong>Occupe</strong></td><td>Ligne occupee</td></tr>
+</tbody>
+</table>
+<h3>2. Recevoir un appel entrant</h3>
+
+<ol>
+<li>Un appel arrive dans le systeme</li>
+<li>Le systeme identifie le numero et affiche la fiche contact (si existant)</li>
+<li>Une notification apparait avec le nom du contact</li>
+<li>Cliquez sur <strong>Accepter</strong> pour repondre</li>
+<li>La fiche contact s'ouvre automatiquement</li>
+<li>Apres l'appel, ajoutez notes et disposition</li>
+</ol>
+
+<h3>3. Lancer une campagne d'appels (Power Dialer)</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Preparez une liste de contacts a appeler (ou utilisez un segment)</li>
+<li>Allez dans le dialeur</li>
+<li>Cliquez sur <strong>Campagne</strong> et selectionnez votre liste</li>
+<li>Configurez :</li>
+</ol>
+<ul>
+<li>Nombre de lignes simultanees (1 a 3 par agent)</li>
+<li>Script d'appel (texte que l'agent peut suivre)</li>
+<li>Dispositions disponibles</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Lancer la campagne</strong></li>
+<li>Le systeme appelle automatiquement le prochain contact quand l'agent est disponible</li>
+</ol>
+
+<h3>4. Gerer les campagnes SMS</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/sms-campaigns</code></p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouvelle campagne SMS</strong></li>
+<li>Selectionnez un modele SMS ou redigez le message</li>
+<li>Personnalisez avec des variables ({prenom}, {nom_produit})</li>
+<li>Selectionnez l'audience (liste ou segment)</li>
+<li>Planifiez ou envoyez immediatement</li>
+<li>Suivez les taux de livraison et les reponses</li>
+</ol>
+
+<h3>5. Planifier les equipes</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/scheduling</code></p>
+
+<ul>
+<li>Creez des quarts de travail (shifts)</li>
+<li>Assignez les agents aux quarts</li>
+<li>Gerez les pauses et les conges</li>
+<li>Le systeme optimise la couverture selon les volumes prevus</li>
+</ul>
+
+<h3>6. Suivi de l'adherence</h3>
+
+<p><strong>URL</strong> : <code>/admin/crm/adherence</code></p>
+
+<ul>
+<li>Comparez le planning prevu vs le temps reel</li>
+<li>Identifiez les agents en retard ou absents</li>
+<li>Mesurez le taux de conformite aux horaires</li>
+<li>Generez des rapports pour la gestion des ressources humaines</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Journee type d'un agent du centre d'appels</h3>
+<ol>
+<li>Connexion au systeme : passez en statut "Disponible"</li>
+<li>Traitez les appels entrants de la file d'attente</li>
+<li>Entre les appels, travaillez la campagne sortante</li>
+<li>Prenez des pauses planifiees (passez en statut "Pause")</li>
+<li>En fin de journee, passez en statut "Hors ligne"</li>
+</ol>
+
+<h3>Mise en place d'une campagne de prospection B2B</h3>
+<ol>
+<li>Creez un segment "Cliniques Quebec sans commande"</li>
+<li>Creez une campagne d'appels avec un script adapte</li>
+<li>Assignez 2-3 agents a la campagne</li>
+<li>Lancez le power dialer</li>
+<li>Suivez les resultats sur le wallboard</li>
+<li>Analysez les dispositions : combien d'interesses ?</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Ai-je besoin d'un casque ?</strong></p>
+<p>R : Fortement recommande. Un casque avec microphone offre une bien meilleure qualite audio que les haut-parleurs de l'ordinateur, et evite les echos.</p>
+
+<p><strong>Q : Les appels sont-ils enregistres ?</strong></p>
+<p>R : Oui, si la fonctionnalite est activee dans les parametres. Au Canada, la loi exige d'informer l'interlocuteur qu'il est enregistre (un message automatique peut etre joue en debut d'appel).</p>
+
+<p><strong>Q : Combien coute un appel ?</strong></p>
+<p>R : Les tarifs dependent du plan Telnyx. En general : appels locaux canadiens ~0.01 $CA/min, interurbains ~0.02 $CA/min. Les appels entrants sont generalement gratuits.</p>
+
+<p><strong>Q : Puis-je utiliser mon numero de telephone personnel ?</strong></p>
+<p>R : Non. Le systeme utilise des numeros Telnyx dedies configures dans la section Telephonie. C'est necessaire pour l'identification, l'enregistrement et la conformite.</p>
+
+<hr>
+
+<h2>Strategie expert : scripts d'appel adaptes au commerce de peptides</h2>
+
+<h3>Principes generaux</h3>
+
+<p>Un bon script d'appel n'est pas un texte rigide lu mot a mot. C'est un guide structurant qui assure la coherence et la qualite de chaque interaction, tout en laissant de la place a la conversation naturelle. Pour les peptides de recherche, le ton doit etre professionnel et technique -- vos interlocuteurs sont souvent des scientifiques.</p>
+
+<h3>Script appel entrant : accueil et qualification</h3>
+
+<p><strong>Salutation bilingue</strong> (OBLIGATOIRE pour le Quebec) :</p>
+<blockquote>
+<p>"BioCycle Peptides, bonjour! BioCycle Peptides, hello! Comment puis-je vous aider? How can I help you?"</p>
+</blockquote>
+
+<p><em>Continuer dans la langue choisie par l'appelant.</em></p>
+
+<p><strong>Phase 1 : Identification (30 secondes)</strong></p>
+<blockquote>
+<p>"Puis-je avoir votre nom et votre adresse email pour que je consulte votre dossier?"</p>
+</blockquote>
+
+<p><em>Rechercher le contact dans Koraline. Si existant, la fiche s'ouvre automatiquement.</em></p>
+
+<p><strong>Phase 2 : Qualification du besoin (1-2 minutes)</strong></p>
+<blockquote>
+<p>"D'accord [prenom]. Comment puis-je vous aider aujourd'hui?"</p>
+</blockquote>
+
+<p><em>Ecouter activement. Identifier si c'est :</em></p>
+<ul>
+<li>Une question sur un produit → Transferer vers le guide produit</li>
+<li>Un probleme de commande → Ouvrir la commande dans le systeme</li>
+<li>Une question technique (reconstitution, dosage) → Fournir les informations ou proposer le guide PDF</li>
+<li>Une demande B2B (volume, COA, compte) → Transferer au representant B2B</li>
+</ul>
+
+<p><strong>Phase 3 : Resolution et fermeture</strong></p>
+<blockquote>
+<p>"Y a-t-il autre chose que je puisse faire pour vous? Merci d'avoir appele BioCycle Peptides. Bonne journee!"</p>
+</blockquote>
+
+<p><em>Ajouter les notes dans la fiche contact. Selectionner la disposition d'appel.</em></p>
+
+<h3>Script relance panier abandonne</h3>
+
+<p>Ce script est utilise quand l'equipe appelle un client qui a abandonne un panier de valeur significative (> 150 $CA).</p>
+
+<p><strong>Timing optimal</strong> : 2 a 4 heures apres l'abandon. Au-dela de 24h, le taux de conversion chute drastiquement.</p>
+
+<p><strong>Taux de conversion attendu</strong> : 5 a 15% (nettement superieur aux emails de relance).</p>
+
+<p><strong>Script</strong> :</p>
+<blockquote>
+<p>"Bonjour [prenom], ici [votre nom] de BioCycle Peptides. Je vous appelle car j'ai vu que vous aviez commence une commande sur notre site plus tot aujourd'hui. Je voulais m'assurer que tout s'etait bien passe -- avez-vous rencontre un probleme technique ou avez-vous des questions sur les produits?"</p>
+</blockquote>
+
+<p><em>Scenarii de reponse :</em></p>
+
+<table>
+<thead>
+    <tr><th>Reponse client</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td>"J'ai eu un probleme technique"</td><td>Aider a finaliser la commande par telephone ou renvoyer un lien de panier</td></tr>
+  <tr><td>"J'hesite sur le produit"</td><td>Repondre aux questions, proposer un COA, rassurer sur la qualite</td></tr>
+  <tr><td>"C'est trop cher"</td><td>Proposer le code promo abandon panier (10%) ou suggerer une quantite plus petite</td></tr>
+  <tr><td>"Je n'ai plus besoin"</td><td>Remercier, proposer de rester informe des promotions</td></tr>
+  <tr><td>"Je vais revenir plus tard"</td><td>Confirmer que le panier est sauvegarde, envoyer un rappel par email</td></tr>
+</tbody>
+</table>
+<p><strong>Fermeture</strong> :</p>
+<blockquote>
+<p>"Parfait! N'hesitez pas a nous appeler si vous avez d'autres questions. Vous pouvez aussi nous joindre par email a support@biocyclepeptides.com. Merci et bonne journee!"</p>
+</blockquote>
+
+<h3>Script prospection B2B (appel sortant)</h3>
+
+<p>Pour les appels vers des laboratoires ou cliniques identifies comme prospects :</p>
+
+<blockquote>
+<p>"Bonjour, ici [votre nom] de BioCycle Peptides. Nous sommes un fournisseur canadien de peptides de recherche de haute purete. Je contacte votre laboratoire car nous avons vu que vous travaillez sur [domaine de recherche -- si connu]. Est-ce que [nom du PI] est disponible?"</p>
+</blockquote>
+
+<p><em>Si le PI est disponible :</em></p>
+<blockquote>
+<p>"Docteur [nom], je serai bref. BioCycle Peptides fournit des peptides de recherche avec une purete de 98%+ et des COA complets. Nous offrons des prix competitifs pour les laboratoires canadiens, avec livraison en 2-3 jours. Puis-je vous envoyer notre catalogue et un COA d'echantillon?"</p>
+</blockquote>
+
+<h3>Metriques de performance appels</h3>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Cible equipe</th><th>Cible agent individuel</th></tr>
+</thead>
+<tbody>
+  <tr><td>Taux de reponse appels entrants</td><td>> 85% en < 20 secondes</td><td>--</td></tr>
+  <tr><td>Duree moyenne appel entrant</td><td>3-5 minutes</td><td>3-5 minutes</td></tr>
+  <tr><td>Taux de resolution au premier appel</td><td>> 70%</td><td>> 70%</td></tr>
+  <tr><td>Appels sortants par jour (prospection)</td><td>--</td><td>20-30 appels</td></tr>
+  <tr><td>Taux de contact (sortant)</td><td>--</td><td>30-40%</td></tr>
+  <tr><td>Taux de conversion panier abandonne (appel)</td><td>5-15%</td><td>> 8%</td></tr>
+  <tr><td>Score qualite (evaluation QA)</td><td>> 80/100</td><td>> 80/100</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Softphone</strong></td><td>Telephone logiciel fonctionnant dans le navigateur</td></tr>
+  <tr><td><strong>VoIP</strong></td><td>Voice over IP, appels telephoniques via Internet</td></tr>
+  <tr><td><strong>Wallboard</strong></td><td>Ecran de supervision en temps reel du centre d'appels</td></tr>
+  <tr><td><strong>Power dialer</strong></td><td>Systeme appelant automatiquement une liste de contacts</td></tr>
+  <tr><td><strong>Disposition</strong></td><td>Resultat d'un appel (repondu, messagerie, pas de reponse, etc.)</td></tr>
+  <tr><td><strong>SLA</strong></td><td>Service Level Agreement, objectif de temps de reponse</td></tr>
+  <tr><td><strong>Adherence</strong></td><td>Respect des horaires planifies par les agents</td></tr>
+  <tr><td><strong>File d'attente</strong></td><td>Queue dans laquelle les appels entrants attendent un agent</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/telephonie">Telephonie</a> : Configuration des connexions VoIP et numeros</li>
+<li><a href="/admin/crm/contacts">Contacts</a> : Fiches des contacts appeles</li>
+<li><a href="/admin/crm/workflows">Automatisations</a> : Workflows incluant des appels</li>
+<li><a href="/admin/crm/sms-campaigns">Campagnes SMS</a> : Envoi de SMS marketing</li>
+<li><a href="/admin/crm/call-analytics">Rapports</a> : Analytique detaillee des appels</li>
+<li><a href="/admin/crm/leaderboard">Leaderboard</a> : Classement des performances</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

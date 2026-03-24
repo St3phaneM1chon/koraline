@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,11 +22,21 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@/components/*": ["./src/components/*"],
-      "@/lib/*": ["./src/lib/*"],
-      "@/utils/*": ["./src/utils/*"],
-      "@/types/*": ["./src/types/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@/components/*": [
+        "./src/components/*"
+      ],
+      "@/lib/*": [
+        "./src/lib/*"
+      ],
+      "@/utils/*": [
+        "./src/utils/*"
+      ],
+      "@/types/*": [
+        "./src/types/*"
+      ]
     },
     "target": "ES2022",
     "forceConsistentCasingInFileNames": true,
@@ -31,6 +45,17 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "e2e", "playwright.config.ts"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "e2e",
+    "node_modules",
+    "playwright.config.ts",
+    "prisma/*.ts",
+    "scripts"
+  ]
 }

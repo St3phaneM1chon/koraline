@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rapports Financiers et Exports &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 11 — Comptabilite</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Rapports Financiers et Exports</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Comptabilite > Rapports</p>
+<p><strong>URL</strong>: <code>/admin/comptabilite/rapports</code>, <code>/admin/comptabilite/rapports-personnalises</code>, <code>/admin/comptabilite/exports</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~30 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>Pourquoi cette page est importante</h2>
+
+<p>Les rapports financiers transforment les donnees brutes de la comptabilite en <strong>informations utiles pour la prise de decision</strong>. Chaque rapport repond a une question specifique : "Suis-je rentable ?", "Puis-je payer mes dettes ?", "Ou va mon argent ?", "Est-ce que je respecte mon budget ?". Sans rapports, les milliers d'ecritures dans le grand livre sont une masse de donnees indigerables.</p>
+
+<p><strong>Obligations legales</strong> :</p>
+<ul>
+<li>Les etats financiers annuels (bilan + etat des resultats) sont obligatoires pour toute societe par actions. Ils doivent etre produits dans les 6 mois suivant la fin de l'exercice.</li>
+<li>La balance de verification est exigee par les verificateurs et les comptables pour la preparation de la declaration T2/CO-17.</li>
+<li>L'ARC et Revenu Quebec peuvent exiger n'importe quel rapport detaille lors d'une verification fiscale.</li>
+<li>Les banques exigent des rapports periodiques (mensuels ou trimestriels) pour le suivi des covenants de pret.</li>
+</ul>
+
+<p><strong>Impact concret</strong> :</p>
+<ul>
+<li>Un rapport de rentabilite par produit revele que les ventes B2C de BPC-157 ont une marge de 72% tandis que les ventes B2B de TB-500 n'ont qu'une marge de 45%. Cette information oriente les investissements marketing.</li>
+<li>Un rapport d'anciennete des comptes clients montre 12 350 $ a recevoir dont 350 $ a plus de 90 jours -- il faut relancer ou provisionner.</li>
+<li>L'export annuel complet pour le comptable lui fait gagner des heures, ce qui reduit votre facture comptable.</li>
+</ul>
+
+<hr>
+
+<h2>Cycle comptable complet -- Ou se situe cette page</h2>
+
+<pre><code>1. Plan comptable → 2. Journal → 3. Ecritures → 4. Grand livre/Balance
+ ↓
+ 5. Bilan → 6. Etat des resultats
+ ↓
+ 7. Factures → 8. Depenses → 9. Taxes → 10. Rapprochement → 11. Budget
+ ↓
+[12. RAPPORTS FINANCIERS] ← VOUS ETES ICI (analyse et export)</code></pre>
+
+<p>Les rapports sont l'etape finale du cycle comptable. Toutes les etapes precedentes alimentent les rapports. Si les ecritures (etape 3) sont correctes, le rapprochement (etape 10) est termine, et les ajustements (etape 3) sont passes, alors les rapports (etape 12) sont fiables et exploitables.</p>
+
+<hr>
+
+<h2>Ordre des operations</h2>
+
+<h3>Avant de generer des rapports</h3>
+
+<ol>
+<li><strong>Toutes les ecritures du mois sont publiees</strong> (pas de brouillons)</li>
+<li><strong>Les ecritures d'ajustement sont passees</strong> (amortissement, provisions)</li>
+<li><strong>Le rapprochement bancaire est termine</strong> (soldes verifies)</li>
+<li><strong>La balance de verification est equilibree</strong> (debits = credits)</li>
+</ol>
+
+<h3>Quels rapports generer et quand</h3>
+
+<table>
+<thead>
+    <tr><th>Rapport</th><th>Frequence</th><th>Pour qui</th><th>Question cle</th></tr>
+</thead>
+<tbody>
+  <tr><td>Etat des resultats</td><td>Mensuel</td><td>Proprietaire, direction</td><td>"Suis-je rentable ce mois ?"</td></tr>
+  <tr><td>Bilan</td><td>Mensuel</td><td>Proprietaire, banque</td><td>"Quelle est ma situation financiere ?"</td></tr>
+  <tr><td>Balance de verification</td><td>Mensuel</td><td>Comptable</td><td>"Mes livres sont-ils equilibres ?"</td></tr>
+  <tr><td>Budget vs reel</td><td>Mensuel</td><td>Direction</td><td>"Est-ce que je respecte mes plans ?"</td></tr>
+  <tr><td>Anciennete clients</td><td>Mensuel</td><td>Credit, recouvrement</td><td>"Qui me doit de l'argent et depuis quand ?"</td></tr>
+  <tr><td>Rapport de TPS/TVQ</td><td>Trimestriel</td><td>Comptable, ARC</td><td>"Combien de taxes dois-je remettre ?"</td></tr>
+  <tr><td>Flux de tresorerie</td><td>Trimestriel</td><td>Direction, banque</td><td>"D'ou vient et ou va mon argent ?"</td></tr>
+  <tr><td>Ratios financiers</td><td>Trimestriel</td><td>Banque, investisseurs</td><td>"L'entreprise est-elle en bonne sante ?"</td></tr>
+  <tr><td>Export annuel complet</td><td>Annuel</td><td>Comptable externe</td><td>"Voici toutes les donnees pour la declaration"</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment entrer les donnees</h2>
+
+<p>Les rapports sont <strong>generes automatiquement</strong> a partir des donnees existantes. Vous n'entrez rien de nouveau. Votre role est de les configurer, les generer, les analyser et les distribuer.</p>
+
+<h3>Generer un rapport standard</h3>
+
+<p><strong>URL</strong> : <code>/admin/comptabilite/rapports</code></p>
+
+<ol>
+<li>Selectionnez le type de rapport dans la liste</li>
+<li>Configurez les parametres :</li>
+</ol>
+
+<table>
+<thead>
+    <tr><th>Parametre</th><th>Options</th><th>Exemple</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Periode</strong></td><td>Mois, trimestre, annee, personnalisee</td><td>Mars 2026</td></tr>
+  <tr><td><strong>Format</strong></td><td>Detaille (tous les comptes) ou resume (sous-totaux)</td><td>Detaille pour analyse, resume pour direction</td></tr>
+  <tr><td><strong>Comparaison</strong></td><td>Periode precedente, meme periode annee precedente, budget</td><td>vs fevrier 2026</td></tr>
+  <tr><td><strong>Filtre</strong></td><td>Par departement, par produit, par canal</td><td>Ventes B2C seulement</td></tr>
+</tbody>
+</table>
+<ol>
+<li>Cliquez sur <strong>Generer</strong></li>
+<li>Le rapport s'affiche a l'ecran</li>
+<li>Exportez si necessaire : PDF (presentation), Excel (analyse), CSV (import)</li>
+</ol>
+
+<h3>Creer un rapport personnalise</h3>
+
+<p><strong>URL</strong> : <code>/admin/comptabilite/rapports-personnalises</code></p>
+
+<ol>
+<li>Cliquez sur <strong>Nouveau rapport</strong></li>
+<li>Selectionnez les <strong>sources de donnees</strong> :</li>
+</ol>
+<ul>
+<li>Comptes du plan comptable (selectionner les comptes specifiques)</li>
+<li>Factures (clients ou fournisseurs)</li>
+<li>Depenses (par categorie)</li>
+<li>Transactions bancaires</li>
+</ul>
+<ol>
+<li>Definissez les <strong>colonnes</strong> :</li>
+</ol>
+<ul>
+<li>Periodes (mois par mois, trimestre par trimestre)</li>
+<li>Montants (debit, credit, solde net)</li>
+<li>Comparaisons (% variation, ecart vs budget)</li>
+</ul>
+<ol>
+<li>Ajoutez des <strong>filtres</strong> :</li>
+</ol>
+<ul>
+<li>Par categorie de produit, par client, par fournisseur, par canal</li>
+</ul>
+<ol>
+<li>Choisissez la <strong>visualisation</strong> : tableau, graphique en barres, courbe de tendance, camembert</li>
+<li><strong>Sauvegardez</strong> le rapport (reutilisable chaque mois)</li>
+</ol>
+
+<h3>Exporter pour le comptable externe</h3>
+
+<p><strong>URL</strong> : <code>/admin/comptabilite/exports</code></p>
+
+<table>
+<thead>
+    <tr><th>Format</th><th>Usage</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>CSV</strong></td><td>Universel</td><td>Compatible avec tout logiciel comptable</td></tr>
+  <tr><td><strong>Excel (.xlsx)</strong></td><td>Comptable</td><td>Fichier avec mise en forme et formules</td></tr>
+  <tr><td><strong>PDF</strong></td><td>Presentation</td><td>Version imprimable professionnelle</td></tr>
+  <tr><td><strong>Sage 50</strong></td><td>Logiciel Sage</td><td>Format IIF compatible Sage 50</td></tr>
+  <tr><td><strong>QuickBooks</strong></td><td>Logiciel QuickBooks</td><td>Format IIF pour QuickBooks</td></tr>
+</tbody>
+</table>
+<p><strong>Export annuel complet</strong> :</p>
+<ol>
+<li>Selectionnez <strong>Export annuel complet</strong></li>
+<li>Choisissez l'annee fiscale (2026)</li>
+<li>Koraline genere un package contenant :</li>
+</ol>
+<ul>
+<li>Grand livre complet de l'annee</li>
+<li>Balance de verification au 31 decembre</li>
+<li>Bilan de cloture</li>
+<li>Etat des resultats annuel</li>
+<li>Sommaire des taxes (TPS/TVQ collectees et payees)</li>
+<li>Liste des immobilisations et amortissements</li>
+<li>Anciennete des comptes clients et fournisseurs</li>
+</ul>
+<ol>
+<li>Telechargez le package ZIP</li>
+<li>Envoyez a votre comptable</li>
+</ol>
+
+<h3>Planifier des rapports automatiques</h3>
+
+<ol>
+<li>Generez le rapport souhaite avec les bons parametres</li>
+<li>Cliquez sur <strong>Planifier l'envoi</strong></li>
+<li>Configurez :</li>
+</ol>
+<ul>
+<li><strong>Frequence</strong> : hebdomadaire, mensuelle, trimestrielle</li>
+<li><strong>Destinataires</strong> : votre email, celui du comptable, de la direction</li>
+<li><strong>Format</strong> : PDF ou Excel</li>
+</ul>
+<ol>
+<li>Le rapport sera genere et envoye automatiquement a la date prevue</li>
+</ol>
+
+<hr>
+
+<h2>Pourquoi entrer ces donnees</h2>
+
+<h3>Chaque rapport a un public et un usage specifique</h3>
+
+<table>
+<thead>
+    <tr><th>Public</th><th>Rapport</th><th>Ce qu'il en fait</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Proprietaire (Stephane)</strong></td><td>Etat des resultats mensuel, Budget vs reel</td><td>Prendre des decisions operationnelles</td></tr>
+  <tr><td><strong>Comptable externe</strong></td><td>Balance de verification, Grand livre, Export annuel</td><td>Preparer les etats financiers officiels et les declarations T2/CO-17</td></tr>
+  <tr><td><strong>Banque</strong></td><td>Bilan, Ratios financiers</td><td>Evaluer la solvabilite pour le renouvellement de la marge de credit</td></tr>
+  <tr><td><strong>ARC / Revenu Quebec</strong></td><td>Sommaire des ventes taxables, Detail des intrants</td><td>Verifier la conformite des declarations TPS/TVQ</td></tr>
+  <tr><td><strong>Investisseurs</strong></td><td>Etat des resultats, Flux de tresorerie, Previsions</td><td>Evaluer le potentiel de retour sur investissement</td></tr>
+  <tr><td><strong>Direction interne</strong></td><td>Rentabilite par produit, Analyse des couts</td><td>Optimiser le mix produits et les depenses marketing</td></tr>
+</tbody>
+</table>
+<h3>Les ratios financiers -- Ce qu'ils revelent</h3>
+
+<p>Koraline calcule automatiquement les ratios financiers cles :</p>
+
+<h4>Ratios de liquidite (payer les dettes a court terme)</h4>
+
+<table>
+<thead>
+    <tr><th>Ratio</th><th>Formule</th><th>BioCycle</th><th>Seuil sain</th><th>Ce que ca signifie</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Ratio courant</strong></td><td>Actifs courants / Passifs courants</td><td>3,90</td><td>> 1,5</td><td>BioCycle peut payer ses dettes CT presque 4 fois. Excellent.</td></tr>
+  <tr><td><strong>Ratio rapide</strong></td><td>(Actifs courants - Stock) / Passifs courants</td><td>2,75</td><td>> 1,0</td><td>Meme sans vendre le stock, BioCycle couvre ses dettes. Tres bon.</td></tr>
+  <tr><td><strong>Ratio de tresorerie</strong></td><td>Tresorerie / Passifs courants</td><td>2,26</td><td>> 0,5</td><td>L'argent en banque seul couvre plus de 2 fois les dettes CT.</td></tr>
+</tbody>
+</table>
+<h4>Ratios de rentabilite (generer des profits)</h4>
+
+<table>
+<thead>
+    <tr><th>Ratio</th><th>Formule</th><th>BioCycle</th><th>Seuil sain</th><th>Ce que ca signifie</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Marge brute</strong></td><td>Benefice brut / Revenus</td><td>67%</td><td>50-70% e-com</td><td>Les peptides degagent une bonne marge.</td></tr>
+  <tr><td><strong>Marge nette</strong></td><td>Benefice net / Revenus</td><td>20,8%</td><td>10-20%</td><td>Chaque dollar de vente genere 0,21 $ de profit net. Excellent.</td></tr>
+  <tr><td><strong>ROE</strong></td><td>Benefice net / Capitaux propres</td><td>21,5%</td><td>> 15%</td><td>Bon rendement pour les actionnaires.</td></tr>
+  <tr><td><strong>ROA</strong></td><td>Benefice net / Total actifs</td><td>14,5%</td><td>> 10%</td><td>Les actifs sont utilises efficacement.</td></tr>
+</tbody>
+</table>
+<h4>Ratios d'endettement (structure financiere)</h4>
+
+<table>
+<thead>
+    <tr><th>Ratio</th><th>Formule</th><th>BioCycle</th><th>Seuil sain</th><th>Ce que ca signifie</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Endettement</strong></td><td>Passifs / Actifs</td><td>32%</td><td>< 50%</td><td>Structure saine, peu de dette.</td></tr>
+  <tr><td><strong>Couverture interets</strong></td><td>Benefice exploitation / Interets</td><td>140x</td><td>> 3x</td><td>Les profits couvrent largement les interets.</td></tr>
+  <tr><td><strong>Levier financier</strong></td><td>Actifs / Capitaux propres</td><td>1,48</td><td>< 2,5</td><td>Faible recours a la dette.</td></tr>
+</tbody>
+</table>
+<h4>Ratios d'efficacite (gestion des operations)</h4>
+
+<table>
+<thead>
+    <tr><th>Ratio</th><th>Formule</th><th>BioCycle</th><th>Seuil sain</th><th>Ce que ca signifie</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Rotation des stocks</strong></td><td>CMV / Stock moyen</td><td>11,3x/an</td><td>> 6x</td><td>Le stock se renouvelle environ chaque mois. Bon.</td></tr>
+  <tr><td><strong>Delai de recouvrement</strong></td><td>Comptes clients / (Revenus/365)</td><td>35 jours</td><td>< 45j</td><td>Les clients paient en moyenne en 35 jours. Correct pour B2B.</td></tr>
+  <tr><td><strong>Delai de paiement</strong></td><td>Comptes fournisseurs / (CMV/365)</td><td>40 jours</td><td>30-45j</td><td>BioCycle paie ses fournisseurs en 40 jours. Normal.</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Les rapports essentiels pour BioCycle</h2>
+
+<h3>1. Rapport de cloture mensuelle (checklist)</h3>
+
+<p>Le rapport mensuel devrait inclure :</p>
+<ul>
+<li>Balance de verification (livres equilibres ?)</li>
+<li>Rapprochement bancaire (soldes concordent ?)</li>
+<li>Etat des resultats du mois (rentabilite ?)</li>
+<li>Comparaison avec le budget (ecarts ?)</li>
+<li>Anciennete des comptes clients (creances a risque ?)</li>
+<li>Anciennete des comptes fournisseurs (paiements a faire ?)</li>
+</ul>
+
+<h3>2. Rapport de preparation annuelle (pour le comptable)</h3>
+
+<p>Le package annuel devrait contenir :</p>
+<ul>
+<li>Grand livre complet (12 mois)</li>
+<li>Balance de verification au 31 decembre</li>
+<li>Bilan d'ouverture et de cloture</li>
+<li>Etat des resultats annuel</li>
+<li>Sommaire des taxes TPS/TVQ (4 trimestres)</li>
+<li>Liste des immobilisations avec amortissement</li>
+<li>Rapprochements bancaires des 12 mois</li>
+<li>Anciennete des comptes clients au 31 decembre</li>
+<li>Detail des provisions (creances douteuses, etc.)</li>
+<li>Releve des transactions intercompagnies ou actionnaires</li>
+</ul>
+
+<h3>3. Rapport pour la banque</h3>
+
+<p>La banque demande typiquement :</p>
+<ul>
+<li>Bilan date de moins de 3 mois</li>
+<li>Etat des resultats des 12 derniers mois</li>
+<li>Prevision de tresorerie sur 12 mois</li>
+<li>Ratios de liquidite et d'endettement</li>
+<li>Confirmation que les covenants sont respectes</li>
+</ul>
+
+<hr>
+
+<h2>Workflows de cloture</h2>
+
+<h3>Cloture de fin de mois (checklist complete)</h3>
+
+<table>
+<thead>
+    <tr><th>#</th><th>Etape</th><th>Verification</th><th>Page Koraline</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>Publier tous les brouillons</td><td>Aucun brouillon en attente</td><td>Ecritures</td></tr>
+  <tr><td>2</td><td>Saisir les ecritures recurrentes</td><td>Loyer, amortissement, assurance</td><td>Ecritures recurrentes</td></tr>
+  <tr><td>3</td><td>Saisir les ecritures d'ajustement</td><td>Provisions, charges a payer</td><td>Ecritures</td></tr>
+  <tr><td>4</td><td>Rapprocher les comptes bancaires</td><td>Soldes correspondent</td><td>Rapprochement</td></tr>
+  <tr><td>5</td><td>Verifier l'anciennete des comptes clients</td><td>Relancer les retards</td><td>Grand livre > Aging</td></tr>
+  <tr><td>6</td><td>Generer la balance de verification</td><td>Equilibree (debits = credits)</td><td>Grand livre</td></tr>
+  <tr><td>7</td><td>Generer le bilan</td><td>Actifs = Passifs + CP</td><td>Etats financiers</td></tr>
+  <tr><td>8</td><td>Generer l'etat des resultats</td><td>Analyser les marges</td><td>Etats financiers</td></tr>
+  <tr><td>9</td><td>Comparer avec le budget</td><td>Identifier les ecarts > 10%</td><td>Budget</td></tr>
+  <tr><td>10</td><td>Archiver les rapports</td><td>PDF + Excel dans le dossier du mois</td><td>Rapports > Exporter</td></tr>
+</tbody>
+</table>
+<h3>Cloture de fin d'annee (etapes supplementaires)</h3>
+
+<table>
+<thead>
+    <tr><th>#</th><th>Etape</th><th>Detail</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>Completer la cloture de chaque mois (1-10 ci-dessus)</td><td>Les 12 mois doivent etre clos</td></tr>
+  <tr><td>2</td><td>Faire le decompte physique de l'inventaire</td><td>Comparer avec le stock comptable, passer les ajustements</td></tr>
+  <tr><td>3</td><td>Passer les ecritures de cloture</td><td>Fermer revenus et charges vers BNR</td></tr>
+  <tr><td>4</td><td>Generer l'export annuel complet</td><td>Package ZIP pour le comptable</td></tr>
+  <tr><td>5</td><td>Envoyer au comptable externe</td><td>Avec les pieces justificatives</td></tr>
+  <tr><td>6</td><td>Preparer les feuillets T4 et Releve 1</td><td>Avant le 28 fevrier</td></tr>
+  <tr><td>7</td><td>Preparer les declarations T2 et CO-17</td><td>Avant le 30 juin (si fin d'exercice dec.)</td></tr>
+  <tr><td>8</td><td>Ouvrir le nouvel exercice</td><td>Le bilan de cloture devient le bilan d'ouverture</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Erreurs courantes a eviter</h2>
+
+<table>
+<thead>
+    <tr><th>Erreur</th><th>Consequence</th><th>Comment eviter</th></tr>
+</thead>
+<tbody>
+  <tr><td>Generer des rapports sans avoir termine le rapprochement</td><td>Les soldes bancaires sont faux, le bilan est inexact</td><td>Toujours rapprocher AVANT de generer les etats financiers</td></tr>
+  <tr><td>Ne pas comparer avec les periodes precedentes</td><td>Rater des anomalies et des tendances</td><td>Toujours activer le mode comparaison</td></tr>
+  <tr><td>Envoyer des rapports non verifies a la banque</td><td>Perte de credibilite, questions embarrassantes</td><td>Verifier la balance de verification et le rapprochement d'abord</td></tr>
+  <tr><td>Ne pas archiver les rapports mensuels</td><td>Impossible de retracer l'historique en cas de verification</td><td>Exporter en PDF chaque mois et archiver dans un dossier dedie</td></tr>
+  <tr><td>Ignorer les ratios financiers</td><td>Rater les signaux d'alerte (liquidite en baisse, endettement en hausse)</td><td>Consulter les ratios chaque trimestre, comparer avec les seuils</td></tr>
+  <tr><td>Exporter le mauvais format pour le comptable</td><td>Perte de temps, re-travail</td><td>Demander a votre comptable quel format il prefere</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Quand faire cette operation</h2>
+
+<table>
+<thead>
+    <tr><th>Frequence</th><th>Rapports a generer</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Mensuel</strong></td><td>Etat des resultats, bilan, balance de verification, budget vs reel, anciennete clients</td></tr>
+  <tr><td><strong>Trimestriel</strong></td><td>Rapport TPS/TVQ, flux de tresorerie, ratios financiers, rapport pour la banque</td></tr>
+  <tr><td><strong>Annuel</strong></td><td>Export annuel complet, rapports pour T2/CO-17, bilan d'ouverture du nouvel exercice</td></tr>
+  <tr><td><strong>Sur demande</strong></td><td>Rapports personnalises selon les besoins (rentabilite par produit, analyse de couts)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Quel rapport dois-je regarder en priorite ?</strong></p>
+<p>R : L'etat des resultats mensuel. Il repond a la question la plus importante : "Est-ce que je fais de l'argent ce mois-ci ?" Ensuite, le rapport Budget vs Reel pour voir si vous etes sur la bonne voie.</p>
+
+<p><strong>Q : Mon comptable utilise Sage -- peut-il importer mes donnees ?</strong></p>
+<p>R : Oui. Utilisez l'export au format Sage dans la section Exports. Si votre comptable utilise un autre logiciel, l'export CSV est universel et peut etre importe dans n'importe quel systeme.</p>
+
+<p><strong>Q : Puis-je generer des rapports pour une partie de l'entreprise ?</strong></p>
+<p>R : Oui, avec les rapports personnalises. Filtrez par categorie de produit (peptides vs abonnements), par canal de vente (B2C vs B2B), ou par type de depense.</p>
+
+<p><strong>Q : Les rapports sont-ils en temps reel ?</strong></p>
+<p>R : Oui, ils refletent les dernieres ecritures publiees. Les brouillons ne sont pas inclus. Si vous publiez une ecriture et regenerez le rapport immediatement, le nouveau montant apparait.</p>
+
+<p><strong>Q : Combien coute un comptable externe pour une entreprise comme BioCycle ?</strong></p>
+<p>R : En moyenne au Quebec, un comptable CPA facture entre 5 000 $ et 15 000 $ par an pour la tenue de livres, les etats financiers et les declarations T2/CO-17. Avec Koraline qui automatise la saisie et genere les exports, la facture devrait etre vers le bas de cette fourchette.</p>
+
+<p><strong>Q : L'etat des flux de tresorerie est-il genere automatiquement ?</strong></p>
+<p>R : Oui. Koraline utilise la methode indirecte : il part du benefice net et ajuste pour les elements non monetaires (amortissement, variation des comptes clients/fournisseurs/stock) pour arriver aux flux de tresorerie reels.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition comptable</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Balance de verification</strong></td><td>Liste de tous les comptes avec leurs soldes pour verifier que le total des debits egalise le total des credits. Premier controle de qualite des livres.</td></tr>
+  <tr><td><strong>Flux de tresorerie</strong></td><td>Rapport montrant les mouvements reels d'argent, divise en trois sections : exploitation (operations), investissement (achats d'actifs) et financement (emprunts, remboursements).</td></tr>
+  <tr><td><strong>Methode indirecte</strong></td><td>Methode de presentation des flux de tresorerie qui part du benefice net et ajuste pour les elements non monetaires. Methode la plus courante.</td></tr>
+  <tr><td><strong>Ratio financier</strong></td><td>Indicateur calcule a partir des chiffres comptables pour evaluer la sante financiere. Exemples : liquidite, rentabilite, endettement.</td></tr>
+  <tr><td><strong>Covenant</strong></td><td>Clause dans un contrat de pret qui exige le maintien de certains ratios financiers (ex: ratio courant > 1,5). Le non-respect peut entrainer le rappel du pret.</td></tr>
+  <tr><td><strong>ROE</strong></td><td>Return on Equity. Rendement des capitaux propres. Benefice net / Capitaux propres. Mesure la rentabilite pour les actionnaires.</td></tr>
+  <tr><td><strong>ROA</strong></td><td>Return on Assets. Rendement des actifs. Benefice net / Total actifs. Mesure l'efficacite d'utilisation des actifs.</td></tr>
+  <tr><td><strong>Rotation des stocks</strong></td><td>Nombre de fois que le stock est renouvele dans l'annee. CMV / Stock moyen. Plus eleve = meilleure gestion.</td></tr>
+  <tr><td><strong>Delai de recouvrement</strong></td><td>Nombre moyen de jours pour encaisser une facture client. Comptes clients / (Revenus / 365). Plus bas = meilleure collecte.</td></tr>
+  <tr><td><strong>Export</strong></td><td>Extraction des donnees comptables dans un format externe (CSV, Excel, PDF, Sage, QuickBooks) pour utilisation par un comptable ou un logiciel tiers.</td></tr>
+  <tr><td><strong>Cloture</strong></td><td>Processus de finalisation d'une periode comptable. Inclut les ajustements, la verification et le verrouillage. Apres cloture, aucune modification n'est possible.</td></tr>
+  <tr><td><strong>NCECF</strong></td><td>Normes Comptables pour les Entreprises a Capital Ferme. Cadre comptable canadien pour les entreprises privees. Determine la presentation des etats financiers.</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="05-bilan.md">Bilan</a> : Etat financier principal -- actifs, passifs, capitaux propres</li>
+<li><a href="06-resultats.md">Etat des resultats</a> : Etat financier principal -- revenus, charges, benefice</li>
+<li><a href="04-grand-livre.md">Grand livre</a> : Donnees source de tous les rapports</li>
+<li><a href="11-budget.md">Budget</a> : Previsions a comparer avec les resultats reels</li>
+<li><a href="09-taxes.md">Taxes TPS/TVQ</a> : Rapports fiscaux pour les declarations</li>
+<li><a href="10-rapprochement.md">Rapprochement</a> : Verification bancaire prealable aux rapports</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

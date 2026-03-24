@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des Contacts &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 10 — CRM</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion des Contacts</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Contacts</p>
+<p><strong>URL</strong>: <code>/admin/crm/contacts</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~25 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Contacts</strong> est le registre central de toutes les personnes avec lesquelles votre entreprise interagit. Chaque client, prospect, fournisseur ou partenaire de BioCycle Peptides est un contact dans le CRM.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Consulter la liste complete de tous vos contacts</li>
+<li>Ajouter de nouveaux contacts manuellement ou par import</li>
+<li>Modifier les informations d'un contact existant</li>
+<li>Consulter l'historique complet d'un contact (achats, emails, appels, notes)</li>
+<li>Associer un contact a une entreprise (compte B2B)</li>
+<li>Attribuer un contact a un representant commercial</li>
+<li>Ajouter des tags et des segments pour organiser votre base</li>
+<li>Fusionner des contacts en double</li>
+<li>Envoyer un email ou passer un appel directement depuis la fiche</li>
+<li>Exporter les contacts en CSV</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un contact ?</h3>
+
+<p>Un contact est une <strong>fiche individuelle</strong> representant une personne. Contrairement a un simple carnet d'adresses, la fiche contact dans le CRM contient non seulement les coordonnees, mais aussi tout l'historique de la relation : emails echanges, appels passes, commandes effectuees, tickets de support, etc.</p>
+
+<h3>Contact vs Lead vs Client</h3>
+
+<table>
+<thead>
+    <tr><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Contact</strong></td><td>Toute personne enregistree dans le systeme, quel que soit son statut</td></tr>
+  <tr><td><strong>Lead</strong></td><td>Un contact qui a montre de l'interet mais n'a pas encore achete</td></tr>
+  <tr><td><strong>Client</strong></td><td>Un contact qui a effectue au moins un achat</td></tr>
+  <tr><td><strong>Prospect</strong></td><td>Un contact identifie comme potentiel acheteur, en cours de qualification</td></tr>
+</tbody>
+</table>
+<p>Un meme contact peut etre a la fois un lead et devenir ensuite un client. Son statut evolue au fil de la relation.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu CRM</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Cliquez sur <strong>CRM</strong> dans la navigation horizontale</li>
+<li>Dans le panneau lateral, cliquez sur <strong>Contacts</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation</h3>
+<ol>
+<li>Cliquez sur l'icone CRM dans le rail d'icones a gauche</li>
+<li>Selectionnez <strong>Contacts</strong> dans le panneau qui s'ouvre</li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Tapez <code>/</code> pour ouvrir la recherche rapide</li>
+<li>Tapez "contacts"</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<p>L'interface est organisee en <strong>3 zones</strong> :</p>
+
+<h3>1. La barre de ruban (Ribbon)</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau contact</strong></td><td>Creer une fiche contact vide a remplir</td></tr>
+  <tr><td><strong>Importer</strong></td><td>Importer des contacts depuis un fichier CSV/Excel</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Exporter les contacts filtres au format CSV</td></tr>
+  <tr><td><strong>Fusionner</strong></td><td>Fusionner deux contacts en double</td></tr>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer le contact selectionne</td></tr>
+  <tr><td><strong>Envoyer email</strong></td><td>Ouvrir la fenetre d'envoi d'email</td></tr>
+  <tr><td><strong>Appeler</strong></td><td>Lancer un appel via le centre d'appels integre</td></tr>
+</tbody>
+</table>
+<h3>2. La liste des contacts (panneau central)</h3>
+
+<ul>
+<li><strong>Barre de recherche</strong> : Recherchez par nom, email, telephone ou entreprise</li>
+<li><strong>Filtres avances</strong> : Filtrez par tag, segment, statut, representant assigne, date de creation</li>
+<li><strong>Tri</strong> : Triez par nom, date de creation, derniere activite, score</li>
+<li><strong>Vue en liste</strong> : Affichage tabulaire avec colonnes personnalisables</li>
+<li><strong>Vue en cartes</strong> : Affichage en fiches visuelles (utile pour un survol rapide)</li>
+<li><strong>Pagination</strong> : Navigation entre les pages de resultats</li>
+</ul>
+
+<h3>3. Le panneau de detail (panneau droit)</h3>
+
+<p>Quand vous selectionnez un contact, ses informations apparaissent a droite :</p>
+
+<p><strong>Informations generales</strong> :</p>
+<ul>
+<li>Nom complet, email, telephone</li>
+<li>Entreprise associee</li>
+<li>Adresse postale</li>
+<li>Source d'acquisition (comment ce contact est arrive)</li>
+<li>Representant assigne</li>
+</ul>
+
+<p><strong>Onglets du detail</strong> :</p>
+<ul>
+<li><strong>Timeline</strong> : Chronologie de toutes les interactions</li>
+<li><strong>Deals</strong> : Opportunites de vente associees</li>
+<li><strong>Activites</strong> : Taches, appels, emails planifies</li>
+<li><strong>Commandes</strong> : Historique des achats sur la boutique</li>
+<li><strong>Notes</strong> : Notes internes de l'equipe</li>
+<li><strong>Fichiers</strong> : Documents joints a la fiche</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer un nouveau contact</h3>
+
+<p><strong>Objectif</strong> : Ajouter manuellement un contact dans le CRM.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau contact</strong> dans le ruban</li>
+<li>Remplissez les champs obligatoires :</li>
+</ol>
+<ul>
+<li><strong>Prenom</strong> et <strong>Nom</strong> (au minimum l'un des deux)</li>
+<li><strong>Email</strong> (recommande)</li>
+</ul>
+<ol>
+<li>Remplissez les champs facultatifs :</li>
+</ol>
+<ul>
+<li>Telephone, adresse, entreprise, poste, source</li>
+</ul>
+<ol>
+<li>Ajoutez des <strong>tags</strong> si necessaire (ex: "VIP", "B2B", "Quebec")</li>
+<li>Assignez un <strong>representant</strong> (ou laissez vide pour l'attribution automatique)</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Astuce</strong> : Le systeme detecte automatiquement les doublons. Si un contact avec le meme email existe deja, vous serez averti avant la creation.</p>
+</blockquote>
+
+<h3>2. Modifier un contact</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Recherchez le contact dans la liste ou utilisez la barre de recherche</li>
+<li>Cliquez sur le contact pour ouvrir le panneau de detail</li>
+<li>Cliquez sur le bouton <strong>Modifier</strong> (icone crayon)</li>
+<li>Apportez vos modifications</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<h3>3. Consulter l'historique d'un contact</h3>
+
+<p><strong>Objectif</strong> : Voir toutes les interactions passees avec un contact.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le contact</li>
+<li>Dans le panneau de detail, cliquez sur l'onglet <strong>Timeline</strong></li>
+<li>Parcourez la chronologie qui affiche :</li>
+</ol>
+<ul>
+<li>Emails envoyes et recus</li>
+<li>Appels effectues (avec duree et notes)</li>
+<li>Commandes passees</li>
+<li>Changements de statut des deals</li>
+<li>Notes ajoutees par l'equipe</li>
+<li>Actions automatisees (ex: email de sequence envoye)</li>
+</ul>
+
+<h3>4. Fusionner des contacts en double</h3>
+
+<p><strong>Objectif</strong> : Quand un meme client a ete enregistre deux fois.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Identifiez les doublons (utilisez la page <strong>Doublons</strong> dans Automatisation)</li>
+<li>Selectionnez le premier contact</li>
+<li>Cliquez sur <strong>Fusionner</strong> dans le ruban</li>
+<li>Recherchez le second contact (le doublon)</li>
+<li>Le systeme vous montre les deux fiches cote a cote</li>
+<li>Pour chaque champ, choisissez quelle valeur conserver</li>
+<li>Cliquez sur <strong>Fusionner</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Important</strong> : La fusion est irreversible. L'historique des deux contacts sera combine sur la fiche resultante. Le contact "doublon" sera supprime.</p>
+</blockquote>
+
+<h3>5. Segmenter et tagger les contacts</h3>
+
+<p><strong>Objectif</strong> : Organiser votre base pour cibler des groupes specifiques.</p>
+
+<p><strong>Tags</strong> :</p>
+<ul>
+<li>Ce sont des etiquettes libres que vous attachez aux contacts</li>
+<li>Exemples : "VIP", "B2B", "Athlete", "Professionnel sante"</li>
+<li>Pour ajouter un tag : ouvrez la fiche, cliquez sur l'icone tag, tapez ou selectionnez</li>
+</ul>
+
+<p><strong>Segments</strong> :</p>
+<ul>
+<li>Ce sont des groupes dynamiques bases sur des criteres (voir page Listes & Segments)</li>
+<li>Exemple : "Clients actifs du Quebec ayant achete plus de 3 fois"</li>
+</ul>
+
+<h3>6. Envoyer un email depuis la fiche contact</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le contact</li>
+<li>Cliquez sur <strong>Envoyer email</strong> dans le ruban (ou l'icone email dans le detail)</li>
+<li>Redigez votre email ou selectionnez un modele</li>
+<li>Cliquez sur <strong>Envoyer</strong></li>
+<li>L'email apparait automatiquement dans la timeline du contact</li>
+</ol>
+
+<h3>7. Passer un appel depuis la fiche contact</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le contact</li>
+<li>Cliquez sur <strong>Appeler</strong> dans le ruban (ou l'icone telephone dans le detail)</li>
+<li>Le systeme d'appels integre se lance (voir page Centre d'appels)</li>
+<li>Apres l'appel, ajoutez des notes de conversation</li>
+<li>L'appel est automatiquement enregistre dans la timeline</li>
+</ol>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Qualification d'un nouveau lead</h3>
+<ol>
+<li>Le lead arrive dans les contacts (import, formulaire web, scraper)</li>
+<li>Ouvrez sa fiche et consultez les informations disponibles</li>
+<li>Ajoutez des tags pertinents ("secteur pharma", "Quebec", etc.)</li>
+<li>Assignez-le a un representant</li>
+<li>Creez une tache de premier appel</li>
+<li>Ajoutez-le a une sequence d'emails automatisee</li>
+</ol>
+
+<h3>Nettoyage periodique de la base</h3>
+<ol>
+<li>Filtrez les contacts sans activite depuis 12 mois</li>
+<li>Exportez cette liste pour reference</li>
+<li>Archivez ou supprimez les contacts obsoletes</li>
+<li>Verifiez les doublons et fusionnez si necessaire</li>
+<li>Mettez a jour les tags et segments</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Quelle est la difference entre un contact et un client dans Koraline ?</strong></p>
+<p>R : Un contact est toute personne enregistree dans le CRM. Un client est un contact qui a un historique d'achats sur la boutique. Tous les clients sont des contacts, mais tous les contacts ne sont pas des clients.</p>
+
+<p><strong>Q : Comment importer mes contacts depuis un autre systeme ?</strong></p>
+<p>R : Utilisez la fonction Import (voir page Import/Export). Koraline accepte les fichiers CSV et Excel. Un assistant de mappage vous aidera a associer les colonnes de votre fichier aux champs du CRM.</p>
+
+<p><strong>Q : Puis-je supprimer un contact qui a des commandes ?</strong></p>
+<p>R : Non, un contact lie a des commandes ne peut pas etre supprime pour des raisons de tracabilite comptable. Vous pouvez l'archiver pour qu'il n'apparaisse plus dans les listes actives.</p>
+
+<p><strong>Q : Les contacts sont-ils synchronises avec la boutique ?</strong></p>
+<p>R : Oui. Quand un client cree un compte sur la boutique en ligne, un contact est automatiquement cree dans le CRM. Et inversement, les modifications dans le CRM se refletent dans la boutique.</p>
+
+<p><strong>Q : Comment attribuer automatiquement les leads aux representants ?</strong></p>
+<p>R : Configurez les regles d'attribution dans Automatisation > Workflows. Vous pouvez distribuer par rotation (round-robin), par territoire ou par expertise.</p>
+
+<hr>
+
+<h2>Strategie expert : gestion relation client pour un e-commerce de peptides</h2>
+
+<h3>Cycle de vie client BioCycle Peptides</h3>
+
+<p>Chaque contact traverse un cycle de vie previsible. Comprendre ce cycle permet d'appliquer les bonnes actions au bon moment.</p>
+
+<pre><code>Visiteur → Inscrit → Prospect → Premier achat → Client recurrent → Ambassadeur
+                                     ↘                    ↘
+                                   Client inactif     Client perdu</code></pre>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Definition</th><th>Actions CRM</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Visiteur</strong></td><td>Navigue sur le site, non identifie</td><td>Popup newsletter, pixel retargeting</td></tr>
+  <tr><td><strong>Inscrit</strong></td><td>A cree un compte ou s'est inscrit a la newsletter</td><td>Flow bienvenue, nurturing educatif</td></tr>
+  <tr><td><strong>Prospect</strong></td><td>A montre un interet concret (panier, demande info, formulaire)</td><td>Lead scoring, assignation representant</td></tr>
+  <tr><td><strong>Premier achat</strong></td><td>A passe sa premiere commande</td><td>Flow post-achat, cross-sell, demande d'avis</td></tr>
+  <tr><td><strong>Client recurrent</strong></td><td>2+ commandes, achete regulierement</td><td>Programme fidelite, offres VIP, suggestions personnalisees</td></tr>
+  <tr><td><strong>Ambassadeur</strong></td><td>Recommande activement BioCycle (referrals, avis publics)</td><td>Programme ambassadeur, recompenses, acces anticipe nouveaux produits</td></tr>
+  <tr><td><strong>Client inactif</strong></td><td>Pas de commande depuis 60+ jours</td><td>Flow reactivation, code promo personnalise</td></tr>
+  <tr><td><strong>Client perdu</strong></td><td>Pas de commande depuis 180+ jours malgre reactivation</td><td>Archivage, 1 email par trimestre maximum</td></tr>
+</tbody>
+</table>
+<h3>Champs personnalises recommandes pour peptides</h3>
+
+<p>En plus des champs standards (nom, email, telephone, adresse), ajoutez ces champs personnalises pour exploiter pleinement le CRM dans le contexte peptides :</p>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Type</th><th>Utilite</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Type de recherche</strong></td><td>Liste deroulante (academique, clinique, personnelle, industrielle)</td><td>Segmenter par profil et adapter le discours</td></tr>
+  <tr><td><strong>Peptides preferes</strong></td><td>Tags multiples (BPC-157, CJC-1295, TB-500, etc.)</td><td>Cross-sell cible, alertes stock, recommandations</td></tr>
+  <tr><td><strong>Volume mensuel estime</strong></td><td>Nombre ($CA)</td><td>Identifier les clients a fort potentiel pour le programme B2B</td></tr>
+  <tr><td><strong>Institution/Universite</strong></td><td>Texte libre</td><td>Regrouper les contacts par institution, offres B2B</td></tr>
+  <tr><td><strong>Source de decouverte</strong></td><td>Liste (Google, Reddit, PubMed, referral, salon, autre)</td><td>Mesurer l'efficacite des canaux d'acquisition</td></tr>
+  <tr><td><strong>Niveau d'experience peptides</strong></td><td>Liste (debutant, intermediaire, avance)</td><td>Adapter le contenu educatif</td></tr>
+  <tr><td><strong>Langue preferee</strong></td><td>Liste (FR, EN)</td><td>Envoyer les communications dans la bonne langue</td></tr>
+  <tr><td><strong>Consentement CASL</strong></td><td>Date + methode</td><td>Conformite legale (preuve de consentement)</td></tr>
+</tbody>
+</table>
+<h3>Valeur client et priorisation</h3>
+
+<p>Tous les clients n'ont pas la meme valeur. Utilisez ces criteres pour prioriser vos efforts :</p>
+
+<table>
+<thead>
+    <tr><th>Segment</th><th>Criteres</th><th>Valeur estimee</th><th>Priorite</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Platinum</strong></td><td>CLV > 2000 $CA ou > 10 commandes</td><td>Tres haute</td><td>Service white-glove, representant dedie</td></tr>
+  <tr><td><strong>Gold</strong></td><td>CLV 500-2000 $CA ou 4-10 commandes</td><td>Haute</td><td>Offres VIP, acces anticipe</td></tr>
+  <tr><td><strong>Silver</strong></td><td>CLV 150-500 $CA ou 2-3 commandes</td><td>Moyenne</td><td>Nurturing fidelite, cross-sell</td></tr>
+  <tr><td><strong>Bronze</strong></td><td>1 commande, CLV < 150 $CA</td><td>Standard</td><td>Flow post-achat, incitation 2e commande</td></tr>
+  <tr><td><strong>Prospect</strong></td><td>0 commande</td><td>A qualifier</td><td>Nurturing educatif, code bienvenue</td></tr>
+</tbody>
+</table>
+<h3>Bonnes pratiques de gestion des contacts pour peptides</h3>
+
+<ol>
+<li><strong>Nettoyer la base regulierement</strong> : Tous les 3 mois, archivez les contacts sans activite depuis 12 mois et fusionnez les doublons</li>
+<li><strong>Enrichir progressivement</strong> : A chaque interaction (appel, email, commande), ajoutez des informations aux champs personnalises</li>
+<li><strong>Respecter la vie privee</strong> : Conformement a la Loi 25 du Quebec, documentez chaque consentement et offrez un acces facile aux preferences de confidentialite</li>
+<li><strong>Segmenter avant de communiquer</strong> : Ne jamais envoyer un email generique a toute la base. Minimum 2-3 segments distincts</li>
+<li><strong>Historiser les interactions</strong> : Chaque appel, email, note doit etre enregistre dans la timeline. Un representant qui reprend un dossier doit pouvoir comprendre toute la relation en 2 minutes</li>
+</ol>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Fiche contact</strong></td><td>L'ensemble des informations et de l'historique d'une personne</td></tr>
+  <tr><td><strong>Source d'acquisition</strong></td><td>Canal par lequel le contact est arrive (site web, salon, referral, etc.)</td></tr>
+  <tr><td><strong>Tag</strong></td><td>Etiquette libre pour categoriser un contact</td></tr>
+  <tr><td><strong>Segment</strong></td><td>Groupe dynamique de contacts repondant a des criteres definis</td></tr>
+  <tr><td><strong>Attribution</strong></td><td>Assignation d'un contact a un representant commercial</td></tr>
+  <tr><td><strong>Doublon</strong></td><td>Deux fiches representant la meme personne dans le systeme</td></tr>
+  <tr><td><strong>Timeline</strong></td><td>Chronologie de toutes les interactions avec un contact</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/pipeline">Pipeline</a> : Vue des deals associes aux contacts</li>
+<li><a href="/admin/crm/leads">Leads</a> : Gestion specifique des prospects</li>
+<li><a href="/admin/crm/companies">Entreprises</a> : Fiches des entreprises associees</li>
+<li><a href="/admin/crm/lists">Listes et Segments</a> : Groupement et segmentation</li>
+<li><a href="/admin/crm/import-export">Import/Export</a> : Outils d'importation et exportation</li>
+<li><a href="/admin/crm/duplicates">Doublons</a> : Detection et fusion des doublons</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

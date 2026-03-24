@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boite de reception (Inbox) &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 08 — Emails</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Boite de reception (Inbox)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Emails > Boite de reception</p>
+</blockquote>
+
+<hr>
+
+<h2>Concepts pour debutants</h2>
+
+<p>La boite de reception de Koraline fonctionne comme un client email de type Outlook integre directement dans</p>
+<p>le panneau d'administration. Elle centralise toutes les conversations entrantes des clients de BioCycle</p>
+<p>Peptides en un seul endroit. Chaque email entrant cree automatiquement une <strong>conversation</strong> qui regroupe</p>
+<p>l'ensemble des echanges avec un meme client sur un meme sujet.</p>
+
+<p>Contrairement a un client email classique, cette boite de reception est enrichie avec les donnees CRM :</p>
+<p>vous voyez immediatement le nom du client, son niveau de fidelite, et l'agent assigne a la conversation.</p>
+<p>Cela permet de repondre plus rapidement et avec un meilleur contexte.</p>
+
+<p>Les conversations ont un cycle de vie defini par des <strong>statuts</strong> : Nouveau, Ouvert, En attente, Resolu</p>
+<p>et Ferme. Ces statuts permettent a toute l'equipe de savoir ou en est chaque demande client.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Dans le panneau d'administration, cliquez sur l'icone <strong>Emails</strong> dans la barre laterale gauche (icone enveloppe).</li>
+<li>Dans le panneau de navigation, sous <strong>Favoris</strong>, cliquez sur <strong>Boite de reception</strong>.</li>
+<li>L'URL directe est : <code>/admin/emails?folder=inbox</code></li>
+</ol>
+
+<hr>
+
+<h2>Apercu de l'interface</h2>
+
+<h3>Barre de recherche</h3>
+<p>En haut de la boite de reception se trouve un champ de recherche. Tapez un nom, une adresse email ou</p>
+<p>un mot-cle pour filtrer les conversations en temps reel.</p>
+
+<h3>Filtres de statut</h3>
+<p>Sous la barre de recherche, une rangee de boutons-filtres permet de trier par statut :</p>
+
+<table>
+<thead>
+    <tr><th>Filtre</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Tous</strong></td><td>Affiche toutes les conversations</td></tr>
+  <tr><td><strong>Nouveau</strong></td><td>Conversations jamais ouvertes (icone cercle bleu)</td></tr>
+  <tr><td><strong>Ouvert</strong></td><td>Conversations en cours de traitement (icone alerte orange)</td></tr>
+  <tr><td><strong>En attente</strong></td><td>Conversations en attente d'une reponse du client (icone pause jaune)</td></tr>
+  <tr><td><strong>Resolu</strong></td><td>Conversations resolues (icone coche vert)</td></tr>
+</tbody>
+</table>
+<p>Chaque filtre affiche un compteur indiquant le nombre de conversations dans cette categorie.</p>
+
+<h3>Liste des conversations</h3>
+<p>Chaque conversation affiche :</p>
+<ul>
+<li><strong>Avatar du client</strong> : Photo de profil ou initiale</li>
+<li><strong>Nom de l'expediteur</strong> : Nom du client ou adresse email</li>
+<li><strong>Objet</strong> : Ligne d'objet du dernier email</li>
+<li><strong>Apercu</strong> : Les 100 premiers caracteres du dernier message</li>
+<li><strong>Horodatage relatif</strong> : "il y a 5m", "il y a 2h", "il y a 3j", etc.</li>
+<li><strong>Indicateur de priorite</strong> : Bordure gauche coloree (rouge = urgent, orange = haute)</li>
+<li><strong>Agent assigne</strong> : Nom de l'agent s'occupant de la conversation</li>
+<li><strong>Tags</strong> : Etiquettes de classification (maximum 2 affiches)</li>
+<li><strong>Compteur de messages</strong> : Nombre total de messages dans le fil</li>
+</ul>
+
+<h3>Panneau de detail</h3>
+<p>Lorsque vous cliquez sur une conversation, le panneau de droite affiche le <strong>fil de conversation</strong></p>
+<p>complet avec l'historique des echanges, les pieces jointes, et la barre latérale client (CRM).</p>
+
+<h3>Ruban d'actions</h3>
+<p>Depuis le detail d'une conversation, vous pouvez :</p>
+<ul>
+<li><strong>Repondre</strong> : Envoyer une reponse au client</li>
+<li><strong>Ajouter une note interne</strong> : Note visible uniquement par l'equipe</li>
+<li><strong>Changer le statut</strong> : Marquer comme resolu, en attente, etc.</li>
+<li><strong>Assigner</strong> : Attribuer la conversation a un autre agent</li>
+<li><strong>Archiver</strong> : Deplacer vers les archives</li>
+</ul>
+
+<hr>
+
+<h2>Fonctions detaillees</h2>
+
+<h3>Actualisation automatique</h3>
+<p>La boite de reception se rafraichit automatiquement toutes les <strong>30 secondes</strong> pour afficher les</p>
+<p>nouveaux messages sans recharger la page.</p>
+
+<h3>Priorites des conversations</h3>
+<p>Les conversations sont classees par priorite, signalee par la bordure gauche :</p>
+<ul>
+<li><strong>Rouge</strong> : Priorite urgente - a traiter immediatement</li>
+<li><strong>Orange</strong> : Priorite haute - a traiter dans l'heure</li>
+<li><strong>Transparent</strong> : Priorite normale</li>
+<li><strong>Gris</strong> : Priorite basse</li>
+</ul>
+
+<h3>Sidebar client (CRM)</h3>
+<p>A droite du fil de conversation, la sidebar affiche les informations CRM du client :</p>
+<ul>
+<li>Nom, email, photo de profil</li>
+<li>Niveau de fidelite (tier)</li>
+<li>Historique des commandes recentes</li>
+<li>Liens rapides vers la fiche client</li>
+</ul>
+
+<h3>Reponses et notes</h3>
+<ul>
+<li><strong>Repondre</strong> : Composez votre reponse dans l'editeur integre. Les variables dynamiques</li>
+</ul>
+<p>  (prenom, nom) sont disponibles.</p>
+<ul>
+<li><strong>Note interne</strong> : Ajoutez des notes visibles uniquement par l'equipe interne. Utile pour</li>
+</ul>
+<p>  documenter le contexte avant un transfert de conversation.</p>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Workflow 1 : Traiter un nouvel email client</h3>
+<ol>
+<li>Cliquez sur le filtre <strong>Nouveau</strong> pour voir les conversations non traitees.</li>
+<li>Selectionnez une conversation pour lire le message.</li>
+<li>Consultez la sidebar CRM pour comprendre le contexte client.</li>
+<li>Redigez votre reponse dans l'editeur.</li>
+<li>Cliquez sur <strong>Envoyer</strong>.</li>
+<li>Changez le statut a <strong>Resolu</strong> si la demande est traitee, ou <strong>En attente</strong> si vous attendez</li>
+</ol>
+<p>   une reponse du client.</p>
+
+<h3>Workflow 2 : Escalader une conversation a un collegue</h3>
+<ol>
+<li>Ouvrez la conversation concernee.</li>
+<li>Ajoutez une <strong>note interne</strong> expliquant le contexte et la raison du transfert.</li>
+<li>Cliquez sur <strong>Assigner</strong> et selectionnez le collegue.</li>
+<li>Le collegue verra la conversation apparaitre dans sa boite avec la note.</li>
+</ol>
+
+<h3>Workflow 3 : Rechercher un echange passe</h3>
+<ol>
+<li>Tapez le nom du client ou un mot-cle dans la <strong>barre de recherche</strong>.</li>
+<li>Les resultats s'affichent instantanement dans la liste.</li>
+<li>Cliquez sur la conversation pour consulter l'historique complet.</li>
+</ol>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q : Les emails sont-ils synchronises avec un serveur email externe ?</strong></p>
+<p>R : Oui, les emails entrants sont recus via un webhook d'email entrant et stockes dans la base</p>
+<p>de donnees Koraline. Les reponses sont envoyees via le service d'envoi configure (SendGrid, SMTP).</p>
+
+<p><strong>Q : Puis-je voir les pieces jointes ?</strong></p>
+<p>R : Oui, les pieces jointes sont accessibles dans le fil de conversation via l'API des pieces jointes.</p>
+
+<p><strong>Q : Comment savoir si un email a ete lu ?</strong></p>
+<p>R : Les conversations non lues apparaissent avec le statut <strong>Nouveau</strong>. Des qu'un agent ouvre la</p>
+<p>conversation, elle passe automatiquement a <strong>Ouvert</strong>.</p>
+
+<p><strong>Q : Combien de conversations peuvent s'afficher ?</strong></p>
+<p>R : La liste affiche toutes les conversations correspondant au filtre actif, sans pagination.</p>
+<p>Le rafraichissement automatique garantit que les nouvelles conversations apparaissent en temps reel.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Conversation</strong></td><td>Fil de messages regroupant tous les echanges avec un client sur un meme sujet</td></tr>
+  <tr><td><strong>Statut</strong></td><td>Etat d'avancement de la conversation (Nouveau, Ouvert, En attente, Resolu, Ferme)</td></tr>
+  <tr><td><strong>Priorite</strong></td><td>Niveau d'urgence de la conversation (Urgent, Haute, Normale, Basse)</td></tr>
+  <tr><td><strong>Note interne</strong></td><td>Message visible uniquement par les agents, pas envoye au client</td></tr>
+  <tr><td><strong>Tag</strong></td><td>Etiquette de classification appliquee a une conversation</td></tr>
+  <tr><td><strong>Assignation</strong></td><td>Action d'attribuer une conversation a un agent specifique</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages associees</h2>
+
+<ul>
+<li><a href="./02-envois.md">Emails envoyes</a> : Consulter les emails envoyes</li>
+<li><a href="./03-brouillons.md">Brouillons</a> : Gerer les emails en cours de redaction</li>
+<li><a href="./04-templates.md">Templates</a> : Creer des modeles d'email reutilisables</li>
+<li><a href="./05-campagnes.md">Campagnes</a> : Envoyer des emails en masse</li>
+<li><a href="./07-analytics.md">Analytics emails</a> : Statistiques de delivrabilite</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

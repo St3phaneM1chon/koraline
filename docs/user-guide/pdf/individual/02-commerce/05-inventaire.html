@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion de l'Inventaire &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 02 — Commerce</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Gestion de l'Inventaire</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Commerce > Inventaire</p>
+<p><strong>URL</strong>: <code>/admin/inventaire</code></p>
+<p><strong>Niveau</strong>: Debutant a avance</p>
+<p><strong>Temps de lecture</strong>: ~35 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Inventaire</strong> est votre centre de controle pour tout ce qui concerne le stock de vos produits. Elle combine 4 fonctions majeures en une seule page a onglets.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Voir les niveaux de stock de tous vos produits et formats (quantite, seuil d'alerte, disponibilite)</li>
+<li>Ajouter du stock (reapprovisionnement)</li>
+<li>Ajuster les quantites (correction d'erreurs, retours, pertes)</li>
+<li>Configurer les alertes de stock bas pour chaque produit</li>
+<li>Gerer vos fournisseurs (nom, contact, email, telephone, site web)</li>
+<li>Creer et suivre des bons de commande (Purchase Orders) aupres de vos fournisseurs</li>
+<li>Reconcilier votre stock informatique avec votre stock physique</li>
+<li>Voir les statistiques mensuelles d'inventaire</li>
+<li>Importer des donnees de stock depuis un fichier CSV</li>
+<li>Exporter l'inventaire complet au format CSV</li>
+</ul>
+
+<hr>
+
+<h2>Concepts cles pour les debutants</h2>
+
+<h3>Qu'est-ce que le stock ?</h3>
+<p>Le stock, c'est la quantite physique de chaque produit que vous avez en entrepot, prete a etre expediee aux clients. Quand un client achete, le stock diminue. Quand vous recevez une livraison de votre fournisseur, le stock augmente.</p>
+
+<h3>Les niveaux de stock</h3>
+<table>
+<thead>
+    <tr><th>Indicateur</th><th>Couleur</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>En stock</strong></td><td>Vert</td><td>Quantite suffisante, au-dessus du seuil d'alerte</td></tr>
+  <tr><td><strong>Stock bas</strong></td><td>Jaune/Orange</td><td>Quantite en dessous du seuil d'alerte — il faut commander bientot</td></tr>
+  <tr><td><strong>Rupture</strong></td><td>Rouge</td><td>Stock a 0 — le produit n'est plus disponible a la vente</td></tr>
+</tbody>
+</table>
+<h3>Le seuil d'alerte (Low Stock Threshold)</h3>
+<p>C'est la quantite minimale que vous definissez pour chaque produit. Quand le stock descend en dessous de ce seuil, le systeme vous alerte. Par exemple, si le seuil est 10, vous serez alerte quand il reste 9 unites ou moins.</p>
+
+<h3>Qu'est-ce qu'un bon de commande (Purchase Order / PO) ?</h3>
+<p>C'est un document qui formalise votre demande d'achat aupres d'un fournisseur. Il liste les produits, quantites, prix unitaires et la date de livraison prevue. Les statuts d'un PO sont : Brouillon, Commande, Partiel, Recu, Annule.</p>
+
+<h3>Qu'est-ce que la reconciliation ?</h3>
+<p>La reconciliation consiste a comparer le stock enregistre dans le systeme avec le stock physique reel dans votre entrepot. Si les chiffres ne correspondent pas (ecarts), vous pouvez ajuster le stock et documenter la raison.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<h3>Methode 1 : Via le menu principal</h3>
+<ol>
+<li>Connectez-vous a l'interface d'administration (<code>/admin</code>)</li>
+<li>Dans la <strong>barre de navigation horizontale</strong> en haut, cliquez sur <strong>Commerce</strong></li>
+<li>Dans le <strong>panneau lateral gauche</strong>, cliquez sur <strong>Inventaire</strong></li>
+</ol>
+
+<h3>Methode 2 : Via le rail de navigation</h3>
+<ol>
+<li>Cliquez sur l'icone <strong>panier</strong> (Commerce) dans la colonne d'icones a gauche</li>
+<li>Cliquez sur <strong>Inventaire</strong> (5e element de la liste)</li>
+</ol>
+
+<h3>Methode 3 : Via la barre de recherche</h3>
+<ol>
+<li>Tapez "inventaire" dans la barre de recherche en haut</li>
+<li>Selectionnez le resultat</li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<div style="background:#f0f4f8; border:1px dashed #ccd5de; border-radius:8px; padding:1.5rem; text-align:center; color:#8899aa; margin:1rem 0; font-size:0.9em;">[Illustration : Page Inventaire]</div>
+
+<p>L'interface est organisee en <strong>4 onglets</strong> en haut de la zone principale :</p>
+
+<table>
+<thead>
+    <tr><th>Onglet</th><th>Icone</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Stock</strong></td><td>Paquet</td><td>Vue principale — niveaux de stock de tous les produits</td></tr>
+  <tr><td><strong>Suppliers</strong></td><td>Batiment</td><td>Gestion des fournisseurs</td></tr>
+  <tr><td><strong>Purchase Orders</strong></td><td>Presse-papiers</td><td>Bons de commande fournisseurs</td></tr>
+  <tr><td><strong>Reconciliation</strong></td><td>Balance</td><td>Verification stock informatique vs stock physique</td></tr>
+</tbody>
+</table>
+<h3>La barre de ruban (Ribbon)</h3>
+<p>Les boutons du ruban changent selon l'onglet actif :</p>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Ajouter stock</strong></td><td>Ouvrir le formulaire de reapprovisionnement</td></tr>
+  <tr><td><strong>Reajuster</strong></td><td>Ouvrir le formulaire d'ajustement de stock</td></tr>
+  <tr><td><strong>Stats mensuelles</strong></td><td>Afficher les statistiques de mouvements de stock</td></tr>
+  <tr><td><strong>Liste renouvellement</strong></td><td>Voir les produits qui doivent etre commandes</td></tr>
+  <tr><td><strong>Soumissions</strong></td><td>Acceder aux soumissions fournisseurs</td></tr>
+  <tr><td><strong>Commander en ligne</strong></td><td>Commander directement aupres d'un fournisseur</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger l'inventaire au format CSV</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Onglet 1 : Stock</h2>
+
+<h3>Les cartes de statistiques (5 cartes)</h3>
+
+<table>
+<thead>
+    <tr><th>Carte</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Total produits</strong></td><td>Nombre de references (formats de produits) dans le systeme</td></tr>
+  <tr><td><strong>En stock</strong></td><td>Nombre de produits avec stock > 0</td></tr>
+  <tr><td><strong>Stock bas</strong></td><td>Nombre de produits en dessous de leur seuil d'alerte (fond jaune)</td></tr>
+  <tr><td><strong>Rupture</strong></td><td>Nombre de produits a stock 0</td></tr>
+  <tr><td><strong>Valeur stock</strong></td><td>Valeur totale du stock en dollars canadiens (prix de vente x quantite)</td></tr>
+</tbody>
+</table>
+<h3>Les sous-onglets de filtre</h3>
+<p>Sous les cartes, une barre de filtres :</p>
+<ul>
+<li><strong>Tous les statuts</strong> — Afficher tous les produits</li>
+<li><strong>En stock</strong> — Uniquement les produits disponibles</li>
+<li><strong>Stock bas</strong> — Uniquement les produits sous le seuil d'alerte</li>
+<li><strong>Rupture</strong> — Uniquement les produits en rupture</li>
+</ul>
+
+<h3>La barre de recherche</h3>
+<p>Tapez un nom de produit ou un SKU pour filtrer la liste.</p>
+
+<h3>La liste maitre/detail</h3>
+<ul>
+<li><strong>Panneau gauche</strong> : Liste des produits avec stock, SKU et prix</li>
+<li><strong>Panneau droit</strong> : Detail du produit selectionne</li>
+</ul>
+
+<h3>Actions sur un produit</h3>
+
+<h4>Ajouter du stock (Reapprovisionnement)</h4>
+<ol>
+<li>Selectionnez un produit dans la liste</li>
+<li>Cliquez sur <strong>Reappro</strong> dans les actions rapides du panneau de detail</li>
+<li>Entrez la quantite a ajouter</li>
+<li>Optionnel : ajoutez une note (ex: "Reception fournisseur 2026-03-20")</li>
+<li>Confirmez — le stock est augmente immediatement</li>
+</ol>
+
+<h4>Ajuster le stock</h4>
+<ol>
+<li>Selectionnez un produit</li>
+<li>Cliquez sur <strong>Ajustement</strong> dans les actions rapides</li>
+<li>Entrez la nouvelle quantite corrigee</li>
+<li>Donnez obligatoirement une <strong>raison</strong> (ex: "Inventaire physique - 3 unites cassees")</li>
+<li>Confirmez</li>
+</ol>
+
+<h4>Modifier le seuil d'alerte</h4>
+<ol>
+<li>Selectionnez un produit</li>
+<li>Dans le panneau de detail, cliquez sur l'icone <strong>Modifier</strong> (crayon) a cote du seuil</li>
+<li>Entrez le nouveau seuil</li>
+<li>Enregistrez</li>
+</ol>
+
+<h4>Voir l'historique des mouvements</h4>
+<ol>
+<li>Selectionnez un produit</li>
+<li>Dans le panneau de detail, cliquez sur <strong>Historique</strong></li>
+<li>Une liste chronologique affiche tous les mouvements : ajouts, ventes, ajustements, avec dates et raisons</li>
+</ol>
+
+<h4>Configurer les alertes</h4>
+<ol>
+<li>Cliquez sur le bouton <strong>Alertes</strong> dans les actions rapides</li>
+<li>Verifiez les seuils de chaque produit</li>
+<li>Ajustez si necessaire</li>
+</ol>
+
+<hr>
+
+<h2>Onglet 2 : Suppliers (Fournisseurs)</h2>
+
+<h3>Voir la liste des fournisseurs</h3>
+<p>Un tableau affiche tous vos fournisseurs avec :</p>
+<ul>
+<li><strong>Nom</strong> — Nom de l'entreprise fournisseur</li>
+<li><strong>Contact</strong> — Nom de la personne-contact</li>
+<li><strong>Email</strong> — Lien cliquable pour envoyer un email</li>
+<li><strong>Telephone</strong> — Numero de contact</li>
+<li><strong>Site web</strong> — Lien vers le site du fournisseur</li>
+</ul>
+
+<h3>Ajouter un fournisseur</h3>
+<ol>
+<li>Cliquez sur <strong>Add Supplier</strong> en haut a droite</li>
+<li>Un formulaire apparait avec les champs :</li>
+</ol>
+<ul>
+<li><strong>Nom</strong> (obligatoire)</li>
+<li>Contact, Email, Telephone, Adresse, Site web, Notes (optionnels)</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Create Supplier</strong></li>
+</ol>
+
+<hr>
+
+<h2>Onglet 3 : Purchase Orders (Bons de commande)</h2>
+
+<h3>Voir les bons de commande</h3>
+<p>Un tableau liste tous les PO avec :</p>
+<ul>
+<li><strong>ID</strong> — Identifiant unique du bon</li>
+<li><strong>Fournisseur</strong> — Nom du fournisseur</li>
+<li><strong>Articles</strong> — Nombre de lignes</li>
+<li><strong>Total</strong> — Montant total du bon</li>
+<li><strong>Statut</strong> — Badge colore (DRAFT, ORDERED, PARTIAL, RECEIVED, CANCELLED)</li>
+<li><strong>Date prevue</strong> — Date de livraison esperee</li>
+<li><strong>Date de creation</strong></li>
+</ul>
+
+<h3>Filtrer par statut</h3>
+<p>Des boutons en haut permettent de filtrer : Tous, DRAFT, ORDERED, PARTIAL, RECEIVED, CANCELLED.</p>
+
+<h3>Creer un bon de commande</h3>
+<ol>
+<li>Cliquez sur <strong>New Purchase Order</strong></li>
+<li>Selectionnez un <strong>fournisseur</strong> (obligatoire)</li>
+<li>Entrez la <strong>date de livraison prevue</strong> (optionnel)</li>
+<li>Ajoutez les <strong>lignes d'articles</strong> :</li>
+</ol>
+<ul>
+<li>Product ID (obligatoire)</li>
+<li>Format ID (optionnel)</li>
+<li>Quantite (minimum 1)</li>
+<li>Cout unitaire (doit etre > 0)</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>+ Add Item</strong> pour ajouter d'autres lignes</li>
+<li>Le total se calcule automatiquement</li>
+<li>Cliquez sur <strong>Create PO</strong></li>
+</ol>
+
+<h3>Statuts d'un bon de commande</h3>
+<table>
+<thead>
+    <tr><th>Statut</th><th>Signification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>DRAFT</strong></td><td>Brouillon — pas encore envoye au fournisseur</td></tr>
+  <tr><td><strong>ORDERED</strong></td><td>Commande passee au fournisseur</td></tr>
+  <tr><td><strong>PARTIAL</strong></td><td>Livraison partielle recue</td></tr>
+  <tr><td><strong>RECEIVED</strong></td><td>Totalement recu — le stock peut etre mis a jour</td></tr>
+  <tr><td><strong>CANCELLED</strong></td><td>Annule</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Onglet 4 : Reconciliation</h2>
+
+<h3>Qu'est-ce qu'on voit ?</h3>
+<p>Un tableau compare, pour chaque produit/format :</p>
+<ul>
+<li><strong>Stock enregistre</strong> — ce que dit le systeme</li>
+<li><strong>Stock calcule</strong> — base sur les ventes et receptions</li>
+<li><strong>Ecart</strong> — la difference entre les deux</li>
+<li><strong>Statut</strong> — MATCH (aucun ecart) ou DISCREPANCY (ecart detecte)</li>
+</ul>
+
+<h3>Filtrer les ecarts</h3>
+<p>Deux boutons : <strong>Tous</strong> et <strong>Ecarts seulement</strong> pour ne voir que les produits avec des differences.</p>
+
+<h3>Corriger un ecart</h3>
+<ol>
+<li>Identifiez un produit avec le statut <strong>DISCREPANCY</strong></li>
+<li>Cliquez sur <strong>Ajuster</strong> a cote de ce produit</li>
+<li>Entrez la quantite reelle (stock physique)</li>
+<li>Donnez une <strong>raison obligatoire</strong> (ex: "Comptage physique 20 mars", "Produit endommage", "Erreur de saisie")</li>
+<li>Confirmez — le stock est corrige et l'evenement est enregistre</li>
+</ol>
+
+<hr>
+
+<h2>Workflows complets</h2>
+
+<h3>Scenario 1 : Reception d'une livraison fournisseur</h3>
+
+<ol>
+<li>Le colis arrive a l'entrepot</li>
+<li>Verifiez le contenu physique par rapport au bon de commande</li>
+<li>Allez dans <strong>Inventaire > Purchase Orders</strong></li>
+<li>Trouvez le PO correspondant</li>
+<li>Si tout est recu : passez le statut a RECEIVED</li>
+<li>Allez dans l'onglet <strong>Stock</strong></li>
+<li>Pour chaque produit recu, cliquez sur <strong>Reappro</strong> et ajoutez la quantite</li>
+<li>Verifiez que les cartes de statistiques se mettent a jour</li>
+</ol>
+
+<h3>Scenario 2 : Inventaire physique mensuel</h3>
+
+<ol>
+<li>Imprimez la liste de stock (bouton Exporter > ouvrir le CSV)</li>
+<li>Faites le comptage physique dans l'entrepot</li>
+<li>Allez dans <strong>Inventaire > Reconciliation</strong></li>
+<li>Comparez les chiffres systeme vs physique</li>
+<li>Pour chaque ecart, cliquez sur <strong>Ajuster</strong> avec la quantite reelle et la raison</li>
+<li>Exportez le rapport apres reconciliation pour vos archives</li>
+</ol>
+
+<h3>Scenario 3 : Stock bas detecte</h3>
+
+<ol>
+<li>Vous voyez un badge jaune sur la carte <strong>Stock bas</strong> (ou recevez une alerte)</li>
+<li>Cliquez sur l'onglet de filtre <strong>Stock bas</strong></li>
+<li>Identifiez les produits concernes</li>
+<li>Allez dans <strong>Suppliers</strong> — identifiez le fournisseur</li>
+<li>Allez dans <strong>Purchase Orders</strong> > <strong>New Purchase Order</strong></li>
+<li>Selectionnez le fournisseur, ajoutez les produits et quantites</li>
+<li>Creez le PO et envoyez-le au fournisseur</li>
+</ol>
+
+<hr>
+
+<h2>FAQ — Questions frequentes</h2>
+
+<h3>Q : Quelle est la difference entre "Ajouter stock" et "Ajuster" ?</h3>
+<p><strong>R</strong> : "Ajouter stock" ajoute une quantite a la quantite existante (ex: stock 50 + ajout 20 = 70). "Ajuster" remplace la quantite par la nouvelle valeur (ex: stock 50, ajustement a 47 = 47). L'ajustement exige une raison.</p>
+
+<h3>Q : Le stock se met-il a jour automatiquement quand un client achete ?</h3>
+<p><strong>R</strong> : Oui. Chaque commande confirmee diminue automatiquement le stock du produit et format correspondant.</p>
+
+<h3>Q : Peut-on avoir des alertes automatiques quand le stock est bas ?</h3>
+<p><strong>R</strong> : Oui. Definissez un seuil d'alerte (lowStockThreshold) pour chaque produit. Quand le stock descend en dessous, la carte "Stock bas" se met a jour et des notifications sont envoyees.</p>
+
+<h3>Q : Comment exporter le stock pour ma comptabilite ?</h3>
+<p><strong>R</strong> : Cliquez sur <strong>Exporter</strong> dans le ruban. Un fichier CSV avec tous les produits, quantites, prix et valeur est telecharge. Ouvrez-le dans Excel.</p>
+
+<h3>Q : Les bons de commande mettent-ils a jour le stock automatiquement ?</h3>
+<p><strong>R</strong> : Non. Quand un PO passe a RECEIVED, vous devez manuellement ajouter le stock via "Ajouter stock" dans l'onglet Stock. C'est un controle volontaire pour verifier la reception physique.</p>
+
+<hr>
+
+<h2>Strategie expert : Gestion specifique des peptides</h2>
+
+<h3>Conditions de stockage des peptides lyophilises</h3>
+
+<p>Les peptides synthetiques sont des produits sensibles qui necessitent des conditions de stockage rigoureuses pour maintenir leur purete et leur efficacite.</p>
+
+<table>
+<thead>
+    <tr><th>Condition</th><th>Specification</th><th>Consequence si non respecte</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Temperature</strong></td><td>2 a 8 degres Celsius (refrigere) pour le long terme ; temperature ambiante (moins de 25 degres) pour le court terme (moins de 30 jours)</td><td>Degradation acceleree, perte de purete, produit inutilisable</td></tr>
+  <tr><td><strong>Humidite</strong></td><td>Moins de 40% d'humidite relative ; stockage dans un contenant etanche avec dessiccant</td><td>Reconstitution prematuree, contamination, agglutination</td></tr>
+  <tr><td><strong>Lumiere</strong></td><td>A l'abri de la lumiere directe ; stockage dans des contenants opaques ou ambre</td><td>Photo-degradation, perte d'activite biologique</td></tr>
+  <tr><td><strong>Vibrations</strong></td><td>Eviter les manipulations excessives</td><td>Fragmentation des composes lyophilises</td></tr>
+</tbody>
+</table>
+<h3>Duree de conservation</h3>
+
+<table>
+<thead>
+    <tr><th>Type de peptide</th><th>Duree conservation (lyophilise, scelle)</th><th>Duree conservation (reconstitue)</th></tr>
+</thead>
+<tbody>
+  <tr><td>Peptides standards (BPC-157, TB-500)</td><td>24 mois a compter de la fabrication</td><td>30 jours refrigere</td></tr>
+  <tr><td>Peptides complexes (CJC-1295 DAC)</td><td>18-24 mois</td><td>14-21 jours refrigere</td></tr>
+  <tr><td>Melanotane / PT-141</td><td>24 mois</td><td>30 jours refrigere</td></tr>
+</tbody>
+</table>
+<h3>Chaine de froid</h3>
+
+<p>Pour les expeditions, maintenir la chaine de froid en ete ou pour les envois longue distance :</p>
+<ol>
+<li>Utiliser des pochettes isothermes avec gel refrigerant pour les envois de plus de 48 heures en transit</li>
+<li>Expedier en debut de semaine (lundi-mercredi) pour eviter que les colis ne restent en entrepot de tri le week-end</li>
+<li>Eviter les expeditions les vendredis avant jours feries prolonges</li>
+</ol>
+
+<hr>
+
+<h2>Strategie expert : Calcul du point de reorder optimal</h2>
+
+<h3>Formule du point de reorder</h3>
+
+<p>Le point de reorder (ou seuil de reapprovisionnement) est la quantite de stock a laquelle il faut passer une commande fournisseur pour eviter la rupture.</p>
+
+<pre><code>Point de reorder = (Consommation moyenne quotidienne x Delai d'approvisionnement en jours) + Stock de securite</code></pre>
+
+<h3>Calcul du stock de securite</h3>
+
+<p>Le stock de securite absorbe les variations de demande et les retards fournisseurs.</p>
+
+<pre><code>Stock de securite = Facteur de securite x Ecart-type de la demande quotidienne x Racine carree du delai d'approvisionnement</code></pre>
+
+<p><strong>Facteurs de securite courants</strong> :</p>
+<table>
+<thead>
+    <tr><th>Niveau de service cible</th><th>Facteur de securite</th></tr>
+</thead>
+<tbody>
+  <tr><td>90% (acceptable)</td><td>1,28</td></tr>
+  <tr><td>95% (recommande)</td><td>1,65</td></tr>
+  <tr><td>99% (critique)</td><td>2,33</td></tr>
+</tbody>
+</table>
+<h3>Exemple concret pour BioCycle Peptides</h3>
+
+<p>Prenons le BPC-157 5mg :</p>
+<ul>
+<li><strong>Consommation moyenne</strong> : 8 unites par jour (environ 240 par mois)</li>
+<li><strong>Delai d'approvisionnement</strong> : 21 jours (3 semaines pour un fournisseur chinois avec livraison maritime)</li>
+<li><strong>Ecart-type de la demande</strong> : 3 unites par jour</li>
+<li><strong>Facteur de securite</strong> : 1,65 (service 95%)</li>
+</ul>
+
+<pre><code>Stock de securite = 1,65 x 3 x racine(21) = 1,65 x 3 x 4,58 = 22,7 ≈ 23 unites
+Point de reorder = (8 x 21) + 23 = 168 + 23 = 191 unites</code></pre>
+
+<p>Il faut donc configurer le seuil d'alerte a <strong>191 unites</strong> dans Koraline pour ce produit. Quand le stock descend en dessous de 191, lancer immediatement un bon de commande fournisseur.</p>
+
+<h3>Recommandations par produit</h3>
+
+<table>
+<thead>
+    <tr><th>Categorie</th><th>Delai approvisionnement typique</th><th>Stock securite recommande</th></tr>
+</thead>
+<tbody>
+  <tr><td>Peptides populaires (BPC-157, TB-500)</td><td>14-21 jours</td><td>3-4 semaines de stock</td></tr>
+  <tr><td>Peptides specialises (CJC-1295, Ipamorelin)</td><td>21-30 jours</td><td>4-6 semaines de stock</td></tr>
+  <tr><td>Accessoires (seringues, eau bacteriostatique)</td><td>7-14 jours</td><td>2-3 semaines de stock</td></tr>
+  <tr><td>Supplements</td><td>14-21 jours</td><td>3-4 semaines de stock</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Strategie expert : Methode FIFO obligatoire pour les produits perissables</h2>
+
+<h3>Qu'est-ce que FIFO ?</h3>
+
+<p>FIFO signifie "First In, First Out" (premier entre, premier sorti). Cela signifie que les produits recus en premier doivent etre vendus en premier.</p>
+
+<h3>Pourquoi FIFO est obligatoire pour les peptides</h3>
+
+<ol>
+<li><strong>Duree de conservation limitee</strong> : les peptides lyophilises ont une duree de vie de 18-24 mois. Sans FIFO, les lots anciens risquent d'expirer en entrepot.</li>
+<li><strong>Tracabilite des lots</strong> : en cas de probleme qualite, il faut pouvoir identifier rapidement quels clients ont recu un lot specifique.</li>
+<li><strong>Conformite reglementaire</strong> : les bonnes pratiques de distribution (BPD) exigent le suivi des lots et la rotation des stocks.</li>
+</ol>
+
+<h3>Mise en oeuvre pratique dans l'entrepot</h3>
+
+<ol>
+<li><strong>Etiquetage</strong> : chaque lot recu porte une etiquette avec le numero de lot, la date de reception et la date d'expiration</li>
+<li><strong>Organisation physique</strong> : les nouveaux lots sont places derriere les lots existants sur les etageres</li>
+<li><strong>Verification picking</strong> : lors de la preparation des commandes, toujours prelever les lots avec la date d'expiration la plus proche</li>
+<li><strong>Alerte d'expiration</strong> : configurer une alerte a 90 jours avant la date d'expiration pour les lots restants</li>
+</ol>
+
+<h3>Suivi dans Koraline</h3>
+
+<p>A chaque reapprovisionnement dans l'onglet <strong>Stock</strong>, ajouter une note avec :</p>
+<ul>
+<li>Le numero de lot du fournisseur</li>
+<li>La date de fabrication</li>
+<li>La date d'expiration</li>
+<li>La quantite recue</li>
+</ul>
+
+<p>Cela permet de reconstituer l'historique complet lors d'une reconciliation ou d'un rappel de lot.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>SKU</strong></td><td>Stock Keeping Unit — code unique identifiant un produit/format specifique (ex: PP-BPC157-5MG)</td></tr>
+  <tr><td><strong>Seuil d'alerte</strong></td><td>Quantite minimale en dessous de laquelle le produit est considere en "stock bas"</td></tr>
+  <tr><td><strong>Rupture de stock</strong></td><td>Stock = 0, le produit n'est plus vendable</td></tr>
+  <tr><td><strong>PO</strong></td><td>Purchase Order — bon de commande aupres d'un fournisseur</td></tr>
+  <tr><td><strong>Reconciliation</strong></td><td>Processus de comparaison entre le stock informatique et le stock physique</td></tr>
+  <tr><td><strong>MRR</strong></td><td>Voir glossaire de la page <a href="04-abonnements.md">Abonnements</a></td></tr>
+  <tr><td><strong>CSV</strong></td><td>Format de fichier tableur compatible Excel/Google Sheets</td></tr>
+  <tr><td><strong>Reappro</strong></td><td>Reapprovisionnement — ajouter du stock suite a une reception</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages liees</h2>
+
+<ul>
+<li><a href="01-commandes.md">Commandes</a> — Les ventes qui diminuent le stock</li>
+<li><a href="04-abonnements.md">Abonnements</a> — Les livraisons recurrentes qui utilisent le stock</li>
+<li><a href="06-fournisseurs.md">Fournisseurs</a> — Page dediee a la gestion complete des fournisseurs</li>
+<li><a href="07-paiements.md">Paiements</a> — Reconciliation financiere des achats fournisseurs</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

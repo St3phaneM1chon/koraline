@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scraper Web pour Generation de Leads &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 10 — CRM</span>
+        <span>2026-03-20</span>
+      </div>
+<h1>Scraper Web pour Generation de Leads</h1>
+
+<blockquote>
+<p><strong>Section</strong>: CRM > Scraper</p>
+<p><strong>URL</strong>: <code>/admin/scraper</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>Le <strong>Scraper</strong> est un outil de prospection automatisee qui explore le web pour identifier des leads potentiels pour BioCycle Peptides. Il collecte des informations publiques sur des entreprises et professionnels susceptibles d'etre interesses par vos produits.</p>
+
+<p><strong>En tant que gestionnaire, vous pouvez :</strong></p>
+<ul>
+<li>Configurer des recherches automatisees par secteur et region</li>
+<li>Extraire des informations de contact depuis des sources publiques</li>
+<li>Importer automatiquement les resultats dans le CRM comme leads</li>
+<li>Programmer des scans reguliers (quotidien, hebdomadaire)</li>
+<li>Filtrer et enrichir les donnees extraites</li>
+<li>Creer des listes ciblees a partir des resultats</li>
+<li>Suivre les sources qui generent les meilleurs leads</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qu'est-ce que le scraping web ?</h3>
+
+<p>Le <strong>scraping</strong> (ou "web scraping") consiste a extraire automatiquement des informations publiees sur des sites web. C'est comme avoir un assistant qui visite des centaines de sites pour noter les coordonnees de prospects potentiels.</p>
+
+<h3>Est-ce legal ?</h3>
+
+<p>Le scraping d'informations <strong>publiquement accessibles</strong> est generalement permis au Canada, sous certaines conditions :</p>
+<ul>
+<li>Les donnees doivent etre publiques (pas derriere un login)</li>
+<li>Le site ne doit pas l'interdire explicitement dans ses conditions d'utilisation</li>
+<li>Les donnees personnelles doivent etre traitees conformement a la LPRPDE/Loi 25</li>
+<li>L'usage doit etre commercial legitime (prospection, pas de spam)</li>
+</ul>
+
+<blockquote>
+<p><strong>Important</strong> : BioCycle Peptides utilise le scraper de maniere ethique, en se limitant aux annuaires professionnels publics et aux sites d'entreprises.</p>
+</blockquote>
+
+<h3>Sources typiques</h3>
+
+<table>
+<thead>
+    <tr><th>Source</th><th>Type de donnees</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Annuaires professionnels</strong></td><td>Cliniques, pharmacies, medecins</td></tr>
+  <tr><td><strong>LinkedIn</strong> (via API)</td><td>Profils professionnels, entreprises</td></tr>
+  <tr><td><strong>Google Maps</strong></td><td>Commerces locaux, coordonnees, avis</td></tr>
+  <tr><td><strong>Registres publics</strong></td><td>Entreprises enregistrees au Quebec</td></tr>
+  <tr><td><strong>Sites d'associations</strong></td><td>Membres d'ordres professionnels</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>CRM > <strong>Scraper</strong> dans le panneau lateral</li>
+<li>Ou Systeme > Outils > <strong>Scraper</strong></li>
+<li>URL directe : <code>/admin/scraper</code></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. La barre de ruban</h3>
+
+<table>
+<thead>
+    <tr><th>Bouton</th><th>Fonction</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nouveau scan</strong></td><td>Lancer une nouvelle recherche</td></tr>
+  <tr><td><strong>Historique</strong></td><td>Voir les scans precedents</td></tr>
+  <tr><td><strong>Importer</strong></td><td>Envoyer les resultats dans le CRM</td></tr>
+  <tr><td><strong>Parametres</strong></td><td>Configurer les sources et filtres</td></tr>
+</tbody>
+</table>
+<h3>2. Le formulaire de recherche</h3>
+
+<p>Champs de configuration d'un scan :</p>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Description</th><th>Exemple</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Mots-cles</strong></td><td>Termes de recherche</td><td>"clinique peptides", "medecin sport"</td></tr>
+  <tr><td><strong>Localisation</strong></td><td>Region geographique</td><td>Quebec, Montreal, Canada</td></tr>
+  <tr><td><strong>Secteur</strong></td><td>Domaine d'activite</td><td>Sante, pharmaceutique, sport</td></tr>
+  <tr><td><strong>Source</strong></td><td>Quel site/annuaire explorer</td><td>Google Maps, Pages Jaunes</td></tr>
+  <tr><td><strong>Limite</strong></td><td>Nombre max de resultats</td><td>50, 100, 500</td></tr>
+</tbody>
+</table>
+<h3>3. Les resultats</h3>
+
+<p>Tableau des prospects trouves :</p>
+<ul>
+<li>Nom de l'entreprise/personne</li>
+<li>Adresse email (si trouvee)</li>
+<li>Telephone</li>
+<li>Site web</li>
+<li>Adresse</li>
+<li>Score de pertinence (note automatique)</li>
+<li>Statut : nouveau, importe, ignore</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Lancer un scan</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau scan</strong></li>
+<li>Remplissez les criteres de recherche :</li>
+</ol>
+<ul>
+<li>Mots-cles : "clinique sante naturopathe Montreal"</li>
+<li>Localisation : "Montreal, QC"</li>
+<li>Source : Google Maps</li>
+<li>Limite : 100 resultats</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Lancer le scan</strong></li>
+<li>Le systeme explore la source et collecte les resultats</li>
+<li>Attendez la fin du scan (barre de progression)</li>
+</ol>
+
+<blockquote>
+<p><strong>Note</strong> : Un scan peut prendre de quelques secondes a plusieurs minutes selon la source et le nombre de resultats demandes.</p>
+</blockquote>
+
+<h3>2. Examiner et filtrer les resultats</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Une fois le scan termine, les resultats s'affichent en tableau</li>
+<li>Verifiez la pertinence de chaque resultat :</li>
+</ol>
+<ul>
+<li>Score de pertinence (calcule automatiquement)</li>
+<li>Completude des donnees (email present ? telephone ?)</li>
+</ul>
+<ol>
+<li>Cochez les resultats pertinents</li>
+<li>Marquez les non-pertinents comme "ignores"</li>
+<li>Filtrez par score, secteur, ou completude des donnees</li>
+</ol>
+
+<h3>3. Importer les resultats dans le CRM</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez les resultats a importer (ou "tous les pertinents")</li>
+<li>Cliquez sur <strong>Importer dans le CRM</strong></li>
+<li>Configurez l'import :</li>
+</ol>
+<ul>
+<li><strong>Type</strong> : lead, contact, ou entreprise</li>
+<li><strong>Source</strong> : sera taguee automatiquement ("Scraper - Google Maps")</li>
+<li><strong>Assignation</strong> : representant par defaut ou round-robin</li>
+<li><strong>Tags</strong> : tags a appliquer automatiquement</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Importer</strong></li>
+<li>Les resultats deviennent des leads dans le CRM</li>
+</ol>
+
+<h3>4. Programmer des scans recurrents</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Creez un scan avec vos criteres habituels</li>
+<li>Activez l'option <strong>Recurrence</strong></li>
+<li>Choisissez la frequence : quotidien, hebdomadaire, mensuel</li>
+<li>Le systeme lancera le scan automatiquement et vous notifiera des nouveaux resultats</li>
+<li>Les doublons sont detectes automatiquement (un meme contact n'est pas importe deux fois)</li>
+</ol>
+
+<h3>5. Enrichissement des donnees</h3>
+
+<p>Le scraper peut enrichir les fiches existantes :</p>
+<ul>
+<li>Trouver l'email d'un contact dont vous n'avez que le nom</li>
+<li>Ajouter le site web d'une entreprise</li>
+<li>Completer l'adresse a partir du nom</li>
+<li>Verifier si un numero de telephone est encore actif</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Campagne de prospection regionale</h3>
+<ol>
+<li>Lancez un scan : "cliniques sante" dans "Laval, QC"</li>
+<li>Examinez les resultats et filtrez les plus pertinents</li>
+<li>Importez comme leads dans le CRM</li>
+<li>Creez un segment "Prospects Laval cliniques"</li>
+<li>Lancez une sequence d'emails d'introduction</li>
+<li>Apres 5 jours, lancez une campagne d'appels sur les non-repondants</li>
+</ol>
+
+<h3>Veille concurrentielle</h3>
+<ol>
+<li>Programmez un scan hebdomadaire sur vos mots-cles</li>
+<li>Identifiez les nouveaux acteurs du marche</li>
+<li>Ajoutez les contacts pertinents dans une liste de veille</li>
+<li>Analysez les tendances (nouveaux types de cliniques, nouvelles regions)</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Le scraper peut-il trouver des emails avec certitude ?</strong></p>
+<p>R : Pas toujours. Les emails sont extraits des sites publics ou devines par des patterns (prenom.nom@entreprise.com). Le systeme indique un taux de confiance pour chaque email trouve.</p>
+
+<p><strong>Q : Combien de scans puis-je lancer par jour ?</strong></p>
+<p>R : Cela depend du plan d'abonnement et des limites des sources (API). En general, 5-10 scans par jour sont raisonnables.</p>
+
+<p><strong>Q : Les resultats sont-ils toujours a jour ?</strong></p>
+<p>R : Les donnees sont aussi recentes que la source. Les annuaires sont generalement mis a jour regulierement. Pour des donnees critiques, verifiez manuellement avant de contacter.</p>
+
+<p><strong>Q : Comment eviter d'importer des doublons ?</strong></p>
+<p>R : Le systeme compare automatiquement les emails et numeros de telephone avec votre base existante. Les doublons potentiels sont signales avant l'import.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Scraping</strong></td><td>Extraction automatisee de donnees depuis des sites web</td></tr>
+  <tr><td><strong>Scan</strong></td><td>Une session de scraping avec des criteres definis</td></tr>
+  <tr><td><strong>Enrichissement</strong></td><td>Ajout d'informations complementaires a une fiche existante</td></tr>
+  <tr><td><strong>Score de pertinence</strong></td><td>Note automatique evaluant la qualite d'un resultat</td></tr>
+  <tr><td><strong>Recurrence</strong></td><td>Programmation d'un scan a intervalle regulier</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/crm/leads">Leads</a> : Ou sont importes les resultats du scraper</li>
+<li><a href="/admin/crm/contacts">Contacts</a> : Enrichissement des fiches existantes</li>
+<li><a href="/admin/crm/lists">Listes et Segments</a> : Organisation des leads scrapes</li>
+<li><a href="/admin/crm/workflows">Automatisations</a> : Workflows post-import</li>
+<li><a href="/admin/crm/import-export">Import/Export</a> : Autres methodes d'importation</li>
+</ul>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>

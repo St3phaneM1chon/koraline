@@ -1,0 +1,2525 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12 — Systeme &mdash; Suite Koraline</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  @page {
+    margin: 2cm 2.5cm;
+    size: A4;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      color: #999;
+    }
+  }
+
+  @media print {
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .toc-container { page-break-after: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, figure, pre { page-break-inside: avoid; }
+    body { font-size: 10pt; }
+    a { color: #0066CC !important; text-decoration: none !important; }
+    a[href]::after { content: none !important; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    color: #0066CC;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.6rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e0e8f0;
+  }
+
+  h3 {
+    color: #004488;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  h4 {
+    color: #335577;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0.6rem 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  /* ── Links ── */
+  a {
+    color: #0066CC;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 102, 204, 0.2);
+    transition: border-color 0.2s;
+  }
+  a:hover { border-bottom-color: #0066CC; }
+
+  /* ── Tables ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2rem 0;
+    font-size: 0.92em;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  thead { background: #f0f4f8; }
+  th {
+    font-weight: 600;
+    color: #003366;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #e8ecf0;
+    vertical-align: top;
+  }
+  tr:nth-child(even) { background: #f8fafc; }
+  tr:hover { background: #eef3f8; }
+
+  /* ── Code ── */
+  code {
+    background: #f0f4f8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+    border: 1px solid #e0e8f0;
+  }
+
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.2rem 1.4rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85em;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    border: 1px solid #334155;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── Blockquotes ── */
+  blockquote {
+    border-left: 4px solid #0066CC;
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+    background: #f0f6ff;
+    border-radius: 0 6px 6px 0;
+    color: #334155;
+    font-style: italic;
+  }
+
+  blockquote p { margin: 0.3rem 0; text-align: left; }
+  blockquote strong { color: #0066CC; font-style: normal; }
+
+  /* ── Lists ── */
+  ul, ol {
+    padding-left: 1.8rem;
+    margin: 0.8rem 0;
+  }
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  li > ul, li > ol { margin: 0.2rem 0; }
+
+  /* ── Horizontal Rule ── */
+  hr {
+    border: none;
+    border-top: 2px solid #e0e8f0;
+    margin: 2rem 0;
+  }
+
+  /* ── Images (placeholder) ── */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e8f0;
+    margin: 1rem 0;
+    display: block;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #0066CC 0%, #003366 100%);
+    border-radius: 24px;
+    margin: 0 auto 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    box-shadow: 0 8px 30px rgba(0, 102, 204, 0.25);
+  }
+
+  .cover h1 {
+    font-size: 2.6rem;
+    border: none;
+    padding: 0;
+    margin: 0 0 0.8rem;
+    color: #003366;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: #5a6f84;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
+
+  .cover .version {
+    font-size: 0.95rem;
+    color: #8899aa;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .cover .brand {
+    color: #0066CC;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Table of Contents ── */
+  .toc-container {
+    margin: 2rem 0 3rem;
+  }
+
+  .toc-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 3px solid #0066CC;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-section {
+    font-weight: 600;
+    color: #003366;
+    font-size: 1.05rem;
+    padding: 0.6rem 0 0.3rem;
+    margin-top: 0.8rem;
+    border-bottom: 1px solid #f0f4f8;
+  }
+
+  .toc-section:first-child { margin-top: 0; }
+
+  .toc-pages {
+    list-style: none;
+    padding: 0 0 0 1.2rem;
+    margin: 0;
+  }
+
+  .toc-pages li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-pages a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 0.93rem;
+    transition: background 0.15s;
+  }
+
+  .toc-pages a:hover {
+    background: #f0f6ff;
+    color: #0066CC;
+  }
+
+  .toc-pages a .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #ccd5de;
+    margin: 0 0.5rem;
+    min-width: 2rem;
+  }
+
+  /* ── Header bar ── */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #0066CC;
+    font-size: 0.85rem;
+    color: #5a6f84;
+  }
+
+  .doc-header .brand-name {
+    font-weight: 700;
+    color: #0066CC;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center;
+    color: #8899aa;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid #e0e8f0;
+  }
+
+  .doc-footer .brand {
+    color: #0066CC;
+    font-weight: 600;
+  }
+
+  /* ── Print-specific button ── */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0066CC;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    z-index: 1000;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  }
+
+  /* ── Section separator ── */
+  .section-separator {
+    margin: 3rem 0;
+    padding: 2rem 0;
+    border-top: 3px solid #0066CC;
+    text-align: center;
+  }
+  .section-separator h1 {
+    border: none;
+    font-size: 2rem;
+    color: #003366;
+  }
+  .section-separator .section-desc {
+    color: #5a6f84;
+    font-size: 1rem;
+  }
+
+  /* ── Emoji / Icon badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: #e8f4ff;
+    color: #0066CC;
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">Imprimer / PDF</button>
+<div class="doc-header no-print">
+        <span class="brand-name">BioCycle Peptides</span>
+        <span>Suite Koraline &mdash; 12 — Systeme</span>
+        <span>2026-03-20</span>
+      </div>
+
+<div class="cover" style="min-height: 40vh; padding: 3rem 2rem;">
+  <div class="cover-logo" style="width:80px; height:80px; font-size:1.8rem; border-radius:16px;">K</div>
+  <h1 style="font-size:2rem;">12 — Systeme</h1>
+  <div class="subtitle">Guide Utilisateur &mdash; Suite Koraline</div>
+  <div class="version">
+    10 pages dans cette section<br>
+    2026-03-20
+  </div>
+</div><div class="toc-container" style="margin:1rem 0 2rem;">
+<h2>Contenu de cette section</h2>
+<ul class="toc">
+<ul class="toc-pages">
+<li><a href="#12-systeme--01-utilisateurs"><span>Gestion des Utilisateurs et Employes</span><span class="toc-dots"></span></a></li>
+<li><a href="#12-systeme--02-roles"><span>Roles et Permissions</span><span class="toc-dots"></span></a></li>
+<li><a href="#12-systeme--03-parametres"><span>Parametres Generaux</span><span class="toc-dots"></span></a></li>
+<li><a href="#12-systeme--04-integrations"><span>Integrations et Webhooks</span><span class="toc-dots"></span></a></li>
+<li><a href="#12-systeme--05-audit"><span>Journal d'Audit (Audit Logs)</span><span class="toc-dots"></span></a></li>
+<li><a href="#12-systeme--06-traductions"><span>Gestion des Traductions (i18n)</span><span class="toc-dots"></span></a></li>
+<li><a href="#12-systeme--07-apparence"><span>Apparence et Contenu</span><span class="toc-dots"></span></a></li>
+<li><a href="#12-systeme--08-maintenance"><span>Maintenance et Outils Systeme</span><span class="toc-dots"></span></a></li>
+<li><a href="#12-systeme--09-securite"><span>Securite</span><span class="toc-dots"></span></a></li>
+<li><a href="#12-systeme--10-sauvegardes"><span>Sauvegardes (Backups)</span><span class="toc-dots"></span></a></li>
+</ul>
+</ul>
+</div><div id="12-systeme--01-utilisateurs">
+<h1>Gestion des Utilisateurs et Employes</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Systeme > Utilisateurs / Employes</p>
+<p><strong>URL</strong>: <code>/admin/employes</code></p>
+<p><strong>Niveau</strong>: Debutant a intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Employes</strong> gere les comptes utilisateurs de l'equipe BioCycle Peptides qui ont acces a l'interface d'administration Koraline. Chaque personne de l'equipe a un compte avec un role et des permissions specifiques.</p>
+
+<p><strong>En tant qu'administrateur, vous pouvez :</strong></p>
+<ul>
+<li>Creer des comptes pour les nouveaux membres de l'equipe</li>
+<li>Attribuer des roles (administrateur, gestionnaire, agent, etc.)</li>
+<li>Activer ou desactiver des comptes</li>
+<li>Reinitialiser les mots de passe</li>
+<li>Consulter l'activite de chaque utilisateur</li>
+<li>Gerer les informations personnelles des employes</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qui a besoin d'un compte ?</h3>
+
+<p>Toute personne qui doit acceder a l'interface d'administration (<code>/admin</code>) a besoin d'un compte utilisateur. Les clients de la boutique en ligne ont des comptes separes (geres dans Commerce > Clients).</p>
+
+<h3>Roles typiques chez BioCycle</h3>
+
+<table>
+<thead>
+    <tr><th>Role</th><th>Acces</th><th>Qui</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Administrateur</strong></td><td>Acces total a toutes les sections</td><td>Proprietaire, directeur</td></tr>
+  <tr><td><strong>Gestionnaire commerce</strong></td><td>Commerce, catalogue, inventaire</td><td>Responsable e-commerce</td></tr>
+  <tr><td><strong>Agent CRM</strong></td><td>CRM, contacts, pipeline, appels</td><td>Representant commercial</td></tr>
+  <tr><td><strong>Comptable</strong></td><td>Comptabilite uniquement</td><td>Comptable interne</td></tr>
+  <tr><td><strong>Agent support</strong></td><td>CRM (tickets, chat)</td><td>Agent de service client</td></tr>
+  <tr><td><strong>Marketing</strong></td><td>Marketing, newsletters, campagnes</td><td>Responsable marketing</td></tr>
+  <tr><td><strong>Observateur</strong></td><td>Lecture seule sur tout</td><td>Consultant, auditeur</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Systeme > <strong>Employes</strong> dans le panneau lateral</li>
+<li>URL directe : <code>/admin/employes</code></li>
+</ol>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer un utilisateur</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouvel employe</strong></li>
+<li>Remplissez les informations :</li>
+</ol>
+<ul>
+<li><strong>Prenom</strong> et <strong>Nom</strong></li>
+<li><strong>Email</strong> (servira d'identifiant de connexion)</li>
+<li><strong>Role</strong> : selectionnez dans la liste (voir Roles & Permissions)</li>
+<li><strong>Telephone</strong> (optionnel)</li>
+<li><strong>Departement</strong> (optionnel)</li>
+</ul>
+<ol>
+<li>Le systeme envoie un email d'invitation avec un lien pour definir le mot de passe</li>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>2. Modifier un utilisateur</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Trouvez l'utilisateur dans la liste</li>
+<li>Cliquez sur son nom</li>
+<li>Modifiez les informations ou le role</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<h3>3. Desactiver un compte</h3>
+
+<p><strong>Quand</strong> : Un employe quitte l'entreprise ou n'a plus besoin d'acces.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Ouvrez la fiche de l'employe</li>
+<li>Basculez le commutateur <strong>Actif</strong> a <strong>Inactif</strong></li>
+<li>Le compte est desactive immediatement (la session en cours est terminee)</li>
+</ol>
+
+<blockquote>
+<p><strong>Bonne pratique</strong> : Ne supprimez jamais un compte utilisateur. Desactivez-le pour conserver l'historique de ses actions dans les logs d'audit.</p>
+</blockquote>
+
+<h3>4. Reinitialiser un mot de passe</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Ouvrez la fiche de l'employe</li>
+<li>Cliquez sur <strong>Reinitialiser le mot de passe</strong></li>
+<li>Un email est envoye a l'employe avec un lien de reinitialisation</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Combien d'utilisateurs puis-je creer ?</strong></p>
+<p>R : Il n'y a pas de limite dans Koraline.</p>
+
+<p><strong>Q : Un employe peut-il avoir plusieurs roles ?</strong></p>
+<p>R : Non directement, mais vous pouvez creer un role personnalise combinant les permissions de plusieurs roles (voir Roles & Permissions).</p>
+
+<p><strong>Q : Que se passe-t-il si un employe oublie son mot de passe ?</strong></p>
+<p>R : Il peut utiliser "Mot de passe oublie" sur la page de connexion, ou vous pouvez forcer la reinitialisation depuis sa fiche.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Utilisateur</strong></td><td>Personne ayant un compte d'acces a l'administration</td></tr>
+  <tr><td><strong>Role</strong></td><td>Ensemble de permissions attribuees a un utilisateur</td></tr>
+  <tr><td><strong>Compte actif</strong></td><td>Compte qui peut se connecter</td></tr>
+  <tr><td><strong>Compte desactive</strong></td><td>Compte existant mais ne pouvant plus se connecter</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/permissions">Roles & Permissions</a> : Configuration des roles</li>
+<li><a href="/admin/logs">Audit Logs</a> : Historique des actions des utilisateurs</li>
+<li><a href="/admin/securite">Securite</a> : Parametres de securite des comptes</li>
+<li><a href="/admin/parametres">Parametres</a> : Configuration generale</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="12-systeme--02-roles">
+<h1>Roles et Permissions</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Systeme > Permissions</p>
+<p><strong>URL</strong>: <code>/admin/permissions</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Permissions</strong> permet de definir les roles et les droits d'acces de chaque membre de l'equipe. Un role determine ce qu'un utilisateur peut voir et faire dans Koraline.</p>
+
+<p><strong>En tant qu'administrateur, vous pouvez :</strong></p>
+<ul>
+<li>Consulter les roles existants et leurs permissions</li>
+<li>Creer des roles personnalises</li>
+<li>Modifier les permissions d'un role</li>
+<li>Attribuer un role a un ou plusieurs utilisateurs</li>
+<li>Definir des restrictions par section, par action, ou par donnee</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qu'est-ce qu'une permission ?</h3>
+
+<p>Une <strong>permission</strong> est un droit specifique : voir les commandes, modifier un produit, supprimer un contact, exporter des donnees, etc. Un <strong>role</strong> est un ensemble de permissions regroupees sous un nom (ex: "Agent CRM" = peut voir les contacts + creer des deals + passer des appels).</p>
+
+<h3>Principe du moindre privilege</h3>
+
+<p>Chaque utilisateur ne doit avoir acces qu'a ce dont il a besoin pour son travail. Un agent de support n'a pas besoin de voir la comptabilite. Un comptable n'a pas besoin de modifier les produits. C'est une question de <strong>securite</strong> et de <strong>simplicite</strong>.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Systeme > <strong>Permissions</strong> dans le panneau lateral</li>
+<li>URL directe : <code>/admin/permissions</code></li>
+</ol>
+
+<hr>
+
+<h2>Les roles pre-configures</h2>
+
+<table>
+<thead>
+    <tr><th>Role</th><th>Description</th><th>Sections accessibles</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Super Admin</strong></td><td>Acces total, ne peut pas etre restreint</td><td>Tout</td></tr>
+  <tr><td><strong>Administrateur</strong></td><td>Acces a toutes les sections sauf les parametres systeme critiques</td><td>Quasi tout</td></tr>
+  <tr><td><strong>Gestionnaire commerce</strong></td><td>Gestion des commandes, produits, inventaire, clients</td><td>Commerce, Catalogue</td></tr>
+  <tr><td><strong>Agent CRM</strong></td><td>Gestion des contacts, leads, deals, appels</td><td>CRM</td></tr>
+  <tr><td><strong>Comptable</strong></td><td>Acces a la comptabilite complete</td><td>Comptabilite</td></tr>
+  <tr><td><strong>Marketing</strong></td><td>Gestion des campagnes, newsletters, promotions</td><td>Marketing, CRM (campagnes)</td></tr>
+  <tr><td><strong>Support</strong></td><td>Gestion des tickets, chat, base de connaissances</td><td>CRM (tickets, chat)</td></tr>
+  <tr><td><strong>Observateur</strong></td><td>Lecture seule sur toutes les sections</td><td>Tout (lecture seule)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Matrice des permissions</h3>
+
+<p>La page affiche une <strong>matrice</strong> croisant les sections et les actions :</p>
+
+<table>
+<thead>
+    <tr><th>Section / Action</th><th>Voir</th><th>Creer</th><th>Modifier</th><th>Supprimer</th><th>Exporter</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Commerce - Commandes</strong></td><td>X</td><td>X</td><td>X</td><td></td><td>X</td></tr>
+  <tr><td><strong>Commerce - Produits</strong></td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td></tr>
+  <tr><td><strong>CRM - Contacts</strong></td><td>X</td><td>X</td><td>X</td><td></td><td>X</td></tr>
+  <tr><td><strong>CRM - Deals</strong></td><td>X</td><td>X</td><td>X</td><td>X</td><td></td></tr>
+  <tr><td><strong>Comptabilite</strong></td><td></td><td></td><td></td><td></td><td></td></tr>
+  <tr><td><strong>Systeme</strong></td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<p>Pour chaque case, cochez ou decochez pour accorder ou retirer la permission.</p>
+
+<h3>2. Creer un role personnalise</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau role</strong></li>
+<li>Nommez le role (ex: "Responsable B2B")</li>
+<li>Decrivez-le (ex: "Gestion des clients distributeurs et pipeline B2B")</li>
+<li>Dans la matrice, cochez les permissions necessaires :</li>
+</ol>
+<ul>
+<li>Commerce : voir commandes, voir clients</li>
+<li>CRM : tout (contacts, deals, pipeline, appels)</li>
+<li>Comptabilite : voir factures clients uniquement</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Creer</strong></li>
+</ol>
+
+<h3>3. Modifier un role existant</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez le role dans la liste</li>
+<li>Modifiez les permissions dans la matrice</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Attention</strong> : Les modifications s'appliquent immediatement a tous les utilisateurs ayant ce role. Ils verront les changements a leur prochaine navigation.</p>
+</blockquote>
+
+<h3>4. Permissions speciales</h3>
+
+<p>Certaines permissions meritent une attention particuliere :</p>
+
+<table>
+<thead>
+    <tr><th>Permission</th><th>Description</th><th>Risque</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Supprimer</strong></td><td>Supprimer des enregistrements</td><td>Haut - perte de donnees</td></tr>
+  <tr><td><strong>Exporter</strong></td><td>Telecharger des donnees en CSV/Excel</td><td>Moyen - fuite de donnees</td></tr>
+  <tr><td><strong>Parametres systeme</strong></td><td>Modifier la configuration globale</td><td>Haut - impact sur tout le systeme</td></tr>
+  <tr><td><strong>Gestion des utilisateurs</strong></td><td>Creer/modifier des comptes</td><td>Haut - escalade de privileges</td></tr>
+  <tr><td><strong>Voir les prix</strong></td><td>Voir les prix d'achat et marges</td><td>Moyen - information confidentielle</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Puis-je creer un role avec acces a seulement une page specifique ?</strong></p>
+<p>R : Oui, la granularite va jusqu'a la section individuelle. Vous pouvez creer un role n'ayant acces qu'a la gestion des commandes par exemple.</p>
+
+<p><strong>Q : Que voit un utilisateur sans permission sur une section ?</strong></p>
+<p>R : La section n'apparait tout simplement pas dans son menu. S'il essaie d'acceder a l'URL directement, il verra un message "Acces refuse".</p>
+
+<p><strong>Q : Le role Super Admin peut-il etre modifie ?</strong></p>
+<p>R : Non, le Super Admin a toujours un acces total. C'est une securite pour eviter de se verrouiller hors du systeme.</p>
+
+<p><strong>Q : Puis-je voir qui a quel role ?</strong></p>
+<p>R : Oui, chaque role affiche la liste des utilisateurs qui y sont assignes. Et chaque fiche employe montre son role actuel.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Role</strong></td><td>Ensemble nomme de permissions</td></tr>
+  <tr><td><strong>Permission</strong></td><td>Droit specifique d'effectuer une action</td></tr>
+  <tr><td><strong>Matrice</strong></td><td>Tableau croisant sections et actions pour definir les permissions</td></tr>
+  <tr><td><strong>Moindre privilege</strong></td><td>Principe de n'accorder que les acces strictement necessaires</td></tr>
+  <tr><td><strong>Escalade de privileges</strong></td><td>Quand un utilisateur obtient plus de droits que prevu</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/employes">Utilisateurs</a> : Attribution des roles aux utilisateurs</li>
+<li><a href="/admin/logs">Audit Logs</a> : Suivi de qui fait quoi</li>
+<li><a href="/admin/securite">Securite</a> : Parametres de securite complementaires</li>
+<li><a href="/admin/parametres">Parametres</a> : Configuration generale du systeme</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="12-systeme--03-parametres">
+<h1>Parametres Generaux</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Systeme > Parametres</p>
+<p><strong>URL</strong>: <code>/admin/parametres</code>, <code>/admin/parametres/modules</code></p>
+<p><strong>Niveau</strong>: Intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Parametres</strong> centralise la configuration globale de la plateforme Koraline pour BioCycle Peptides : informations de l'entreprise, devises, taxes, emails, et activation des modules.</p>
+
+<p><strong>En tant qu'administrateur, vous pouvez :</strong></p>
+<ul>
+<li>Modifier les informations de l'entreprise (nom, adresse, logo)</li>
+<li>Configurer la devise par defaut et les taux de taxe</li>
+<li>Gerer les numeros de TPS et TVQ</li>
+<li>Configurer les parametres d'email (expediteur, serveur SMTP)</li>
+<li>Activer ou desactiver les modules de l'application</li>
+<li>Configurer les parametres regionaux (langue, fuseau horaire)</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Systeme > <strong>Parametres</strong> dans le panneau lateral</li>
+<li>URL directe : <code>/admin/parametres</code></li>
+<li>Pour les modules : <code>/admin/parametres/modules</code></li>
+</ol>
+
+<hr>
+
+<h2>Sections de configuration</h2>
+
+<h3>1. Informations de l'entreprise</h3>
+
+<table>
+<thead>
+    <tr><th>Champ</th><th>Description</th><th>Valeur BioCycle</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Nom</strong></td><td>Raison sociale</td><td>BioCycle Peptides Inc.</td></tr>
+  <tr><td><strong>Adresse</strong></td><td>Adresse du siege</td><td>Montreal, QC, Canada</td></tr>
+  <tr><td><strong>Telephone</strong></td><td>Numero principal</td><td>+1 (514) xxx-xxxx</td></tr>
+  <tr><td><strong>Email</strong></td><td>Email de contact</td><td>contact@biocyclepeptides.com</td></tr>
+  <tr><td><strong>Site web</strong></td><td>URL du site</td><td>biocyclepeptides.com</td></tr>
+  <tr><td><strong>Logo</strong></td><td>Logo de l'entreprise</td><td>(image uploadee)</td></tr>
+  <tr><td><strong>Numero TPS</strong></td><td>Numero d'inscription TPS/TVH</td><td>Rxxxxx xxxx RTxxxx</td></tr>
+  <tr><td><strong>Numero TVQ</strong></td><td>Numero d'inscription TVQ</td><td>xxxx xxxx xxxx TQxxxx</td></tr>
+</tbody>
+</table>
+<h3>2. Parametres regionaux</h3>
+
+<table>
+<thead>
+    <tr><th>Parametre</th><th>Description</th><th>Valeur</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Langue par defaut</strong></td><td>Langue de l'interface admin</td><td>Francais</td></tr>
+  <tr><td><strong>Fuseau horaire</strong></td><td>Zone horaire</td><td>America/Toronto (EST)</td></tr>
+  <tr><td><strong>Format de date</strong></td><td>Format d'affichage</td><td>AAAA-MM-JJ</td></tr>
+  <tr><td><strong>Format de nombre</strong></td><td>Separateur decimal</td><td>Virgule (1 234,56)</td></tr>
+  <tr><td><strong>Devise principale</strong></td><td>Devise de base</td><td>CAD ($CA)</td></tr>
+</tbody>
+</table>
+<h3>3. Parametres de taxes</h3>
+
+<table>
+<thead>
+    <tr><th>Parametre</th><th>Description</th><th>Valeur</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>TPS</strong></td><td>Taux federal</td><td>5%</td></tr>
+  <tr><td><strong>TVQ</strong></td><td>Taux provincial (Quebec)</td><td>9.975%</td></tr>
+  <tr><td><strong>Taxe incluse</strong></td><td>Prix affiches TTC ou HT</td><td>HT (standard au Canada)</td></tr>
+  <tr><td><strong>Arrondi</strong></td><td>Methode d'arrondi</td><td>Au cent pres</td></tr>
+</tbody>
+</table>
+<h3>4. Gestion des modules</h3>
+
+<p><strong>URL</strong> : <code>/admin/parametres/modules</code></p>
+
+<p>Activez ou desactivez les grandes sections de Koraline :</p>
+
+<table>
+<thead>
+    <tr><th>Module</th><th>Description</th><th>Statut</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Commerce</strong></td><td>Commandes, clients, inventaire</td><td>Actif</td></tr>
+  <tr><td><strong>Catalogue</strong></td><td>Produits, categories</td><td>Actif</td></tr>
+  <tr><td><strong>CRM</strong></td><td>Contacts, pipeline, appels</td><td>Actif</td></tr>
+  <tr><td><strong>Comptabilite</strong></td><td>Ecritures, factures, rapports</td><td>Actif</td></tr>
+  <tr><td><strong>Marketing</strong></td><td>Campagnes, promotions, newsletters</td><td>Actif</td></tr>
+  <tr><td><strong>Fidelite</strong></td><td>Points, recompenses, webinaires</td><td>Actif</td></tr>
+  <tr><td><strong>Telephonie</strong></td><td>VoIP, appels, IVR</td><td>Actif</td></tr>
+  <tr><td><strong>Media</strong></td><td>Galerie, fichiers</td><td>Actif</td></tr>
+  <tr><td><strong>Communaute</strong></td><td>Avis, chat, forum, ambassadeurs</td><td>Actif</td></tr>
+  <tr><td><strong>Emails</strong></td><td>Gestion des emails</td><td>Actif</td></tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note</strong> : Desactiver un module le cache de la navigation mais ne supprime pas les donnees. Vous pouvez le reactiver a tout moment.</p>
+</blockquote>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Modifier les parametres affecte-t-il les donnees existantes ?</strong></p>
+<p>R : Non. Changer le taux de TVQ par exemple n'affecte que les nouvelles transactions. Les factures existantes conservent le taux applique au moment de leur creation.</p>
+
+<p><strong>Q : Puis-je avoir plusieurs devises ?</strong></p>
+<p>R : Oui. La devise principale est le CAD, mais vous pouvez configurer le USD et d'autres devises dans Comptabilite > Devises.</p>
+
+<p><strong>Q : Comment changer le logo qui apparait sur les factures ?</strong></p>
+<p>R : Uploadez le nouveau logo dans la section "Informations de l'entreprise". Il sera automatiquement utilise sur les factures, emails et documents generes.</p>
+
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/employes">Utilisateurs</a> : Gestion des comptes</li>
+<li><a href="/admin/permissions">Roles</a> : Permissions des utilisateurs</li>
+<li><a href="/admin/webhooks">Integrations</a> : Connexions externes</li>
+<li><a href="/admin/contenu">Apparence</a> : Personnalisation visuelle</li>
+<li><a href="/admin/securite">Securite</a> : Parametres de securite</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="12-systeme--04-integrations">
+<h1>Integrations et Webhooks</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Systeme > Outils > Webhooks / Monitoring</p>
+<p><strong>URL</strong>: <code>/admin/webhooks</code>, <code>/admin/monitoring</code></p>
+<p><strong>Niveau</strong>: Avance</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Webhooks</strong> et les outils d'integration permettent de connecter Koraline a des services externes. Les webhooks envoient des notifications automatiques a d'autres systemes quand des evenements se produisent dans Koraline.</p>
+
+<p><strong>En tant qu'administrateur, vous pouvez :</strong></p>
+<ul>
+<li>Configurer des webhooks pour notifier des services externes</li>
+<li>Suivre les deliveries (envois) et les erreurs</li>
+<li>Connecter Koraline a des outils tiers (Zapier, Make, etc.)</li>
+<li>Surveiller l'etat de sante du systeme (monitoring)</li>
+<li>Gerer les taches planifiees (crons)</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qu'est-ce qu'un webhook ?</h3>
+
+<p>Un <strong>webhook</strong> est un message automatique envoye par Koraline vers un autre service quand quelque chose se passe. C'est comme une notification push entre systemes.</p>
+
+<p><strong>Exemple</strong> : Quand une nouvelle commande est passee, Koraline envoie un webhook a Slack pour notifier l'equipe. Ou quand un paiement est recu, Koraline notifie votre systeme comptable externe.</p>
+
+<h3>Quand utiliser les webhooks ?</h3>
+
+<table>
+<thead>
+    <tr><th>Evenement Koraline</th><th>Service cible</th><th>Action</th></tr>
+</thead>
+<tbody>
+  <tr><td>Nouvelle commande</td><td>Slack</td><td>Notification dans un canal</td></tr>
+  <tr><td>Paiement recu</td><td>Logiciel comptable</td><td>Synchronisation</td></tr>
+  <tr><td>Nouveau lead</td><td>CRM externe</td><td>Creation de fiche</td></tr>
+  <tr><td>Stock bas</td><td>Email/SMS</td><td>Alerte approvisionnement</td></tr>
+  <tr><td>Commande expediee</td><td>Service de tracking</td><td>Mise a jour du suivi</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<table>
+<thead>
+    <tr><th>Page</th><th>URL</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Webhooks</strong></td><td><code>/admin/webhooks</code></td><td>Configuration des webhooks</td></tr>
+  <tr><td><strong>Monitoring</strong></td><td><code>/admin/monitoring</code></td><td>Etat de sante du systeme</td></tr>
+  <tr><td><strong>Crons</strong></td><td><code>/admin/system/crons</code></td><td>Taches planifiees</td></tr>
+  <tr><td><strong>Analytics</strong></td><td><code>/admin/analytics</code></td><td>Analytics du site</td></tr>
+  <tr><td><strong>Cross-Module</strong></td><td><code>/admin/analytics/cross-module</code></td><td>Analytics transversales</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer un webhook</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Nouveau webhook</strong></li>
+<li>Configurez :</li>
+</ol>
+<ul>
+<li><strong>Nom</strong> : description du webhook (ex: "Notification Slack commandes")</li>
+<li><strong>URL cible</strong> : l'adresse ou envoyer les donnees</li>
+<li><strong>Evenement</strong> : quel evenement declenche le webhook</li>
+<li><strong>Methode</strong> : POST (par defaut)</li>
+<li><strong>Headers</strong> : en-tetes supplementaires (authentification)</li>
+<li><strong>Secret</strong> : cle de verification (optionnel mais recommande)</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Creer</strong></li>
+<li>Testez avec <strong>Envoyer un test</strong></li>
+</ol>
+
+<h3>2. Surveiller les deliveries</h3>
+
+<p>Chaque webhook affiche un historique :</p>
+<ul>
+<li>Date et heure de l'envoi</li>
+<li>Code de reponse (200 = succes, 4xx/5xx = erreur)</li>
+<li>Contenu envoye (payload)</li>
+<li>Temps de reponse</li>
+</ul>
+
+<h3>3. Monitoring systeme</h3>
+
+<p><strong>URL</strong> : <code>/admin/monitoring</code></p>
+
+<p>Tableau de bord de sante :</p>
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Uptime</strong></td><td>Temps de disponibilite du site</td></tr>
+  <tr><td><strong>Temps de reponse</strong></td><td>Vitesse des pages</td></tr>
+  <tr><td><strong>Erreurs</strong></td><td>Nombre d'erreurs serveur</td></tr>
+  <tr><td><strong>Base de donnees</strong></td><td>Etat de la connexion PostgreSQL</td></tr>
+  <tr><td><strong>Stripe</strong></td><td>Etat de la connexion Stripe</td></tr>
+  <tr><td><strong>Emails</strong></td><td>Etat du service d'envoi d'emails</td></tr>
+</tbody>
+</table>
+<h3>4. Taches planifiees (Crons)</h3>
+
+<p><strong>URL</strong> : <code>/admin/system/crons</code></p>
+
+<p>Liste des taches automatiques :</p>
+<table>
+<thead>
+    <tr><th>Tache</th><th>Frequence</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td>Nettoyage sessions</td><td>Quotidien</td><td>Supprime les sessions expirees</td></tr>
+  <tr><td>Rappels echeances</td><td>Quotidien</td><td>Envoie les rappels de paiement</td></tr>
+  <tr><td>Mise a jour taux change</td><td>Quotidien</td><td>Met a jour les taux de devises</td></tr>
+  <tr><td>Sauvegarde DB</td><td>Bi-quotidien</td><td>Sauvegarde de la base de donnees</td></tr>
+  <tr><td>Rapports automatiques</td><td>Hebdomadaire</td><td>Genere et envoie les rapports planifies</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Les webhooks sont-ils securises ?</strong></p>
+<p>R : Oui, chaque webhook peut etre signe avec un secret. Le service cible peut verifier la signature pour s'assurer que le message vient bien de Koraline.</p>
+
+<p><strong>Q : Que se passe-t-il si le service cible est indisponible ?</strong></p>
+<p>R : Koraline retente l'envoi automatiquement (3 tentatives avec delai croissant). Si toutes echouent, l'evenement est marque en erreur dans le journal.</p>
+
+<p><strong>Q : Combien de webhooks puis-je configurer ?</strong></p>
+<p>R : Pas de limite. Vous pouvez avoir plusieurs webhooks pour le meme evenement.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Webhook</strong></td><td>Notification HTTP automatique envoyee lors d'un evenement</td></tr>
+  <tr><td><strong>Payload</strong></td><td>Contenu des donnees envoyees par le webhook (format JSON)</td></tr>
+  <tr><td><strong>Cron</strong></td><td>Tache planifiee executee automatiquement a intervalle regulier</td></tr>
+  <tr><td><strong>Monitoring</strong></td><td>Surveillance de l'etat de sante du systeme</td></tr>
+  <tr><td><strong>Uptime</strong></td><td>Pourcentage de temps ou le systeme est disponible</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/parametres">Parametres</a> : Configuration generale</li>
+<li><a href="/admin/securite">Securite</a> : Securite des connexions</li>
+<li><a href="/admin/logs">Audit Logs</a> : Journal des evenements</li>
+<li><a href="/admin/backups">Sauvegardes</a> : Sauvegarde des donnees</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="12-systeme--05-audit">
+<h1>Journal d'Audit (Audit Logs)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Systeme > Logs d'audit</p>
+<p><strong>URL</strong>: <code>/admin/logs</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>Le <strong>Journal d'audit</strong> enregistre automatiquement toutes les actions effectuees par les utilisateurs dans Koraline. C'est une trace complete et inalterable de qui a fait quoi, quand et sur quoi.</p>
+
+<p><strong>En tant qu'administrateur, vous pouvez :</strong></p>
+<ul>
+<li>Consulter l'historique complet des actions</li>
+<li>Filtrer par utilisateur, action, date ou section</li>
+<li>Rechercher une action specifique</li>
+<li>Exporter le journal pour audit externe</li>
+<li>Identifier les comportements suspects</li>
+<li>Verifier la conformite aux politiques internes</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Pourquoi un journal d'audit ?</h3>
+
+<ul>
+<li><strong>Securite</strong> : detecter les actions non autorisees ou suspectes</li>
+<li><strong>Conformite</strong> : la Loi 25 (Quebec) exige la tracabilite des acces aux donnees personnelles</li>
+<li><strong>Depannage</strong> : comprendre ce qui s'est passe en cas de probleme</li>
+<li><strong>Responsabilite</strong> : savoir qui a modifie quoi</li>
+</ul>
+
+<h3>Ce qui est enregistre</h3>
+
+<table>
+<thead>
+    <tr><th>Type d'action</th><th>Exemples</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Connexion</strong></td><td>Login, logout, tentatives echouees</td></tr>
+  <tr><td><strong>Creation</strong></td><td>Nouvelle commande, nouveau contact, nouvelle facture</td></tr>
+  <tr><td><strong>Modification</strong></td><td>Changement de prix, modification de statut, mise a jour de role</td></tr>
+  <tr><td><strong>Suppression</strong></td><td>Suppression de produit, suppression de contact</td></tr>
+  <tr><td><strong>Export</strong></td><td>Telechargement de CSV, export de rapports</td></tr>
+  <tr><td><strong>Configuration</strong></td><td>Changement de parametres, modification de permissions</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Systeme > <strong>Logs d'audit</strong> dans le panneau lateral</li>
+<li>URL directe : <code>/admin/logs</code></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>La liste des evenements</h3>
+
+<table>
+<thead>
+    <tr><th>Colonne</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Date/Heure</strong></td><td>Moment exact de l'action</td></tr>
+  <tr><td><strong>Utilisateur</strong></td><td>Qui a effectue l'action</td></tr>
+  <tr><td><strong>Action</strong></td><td>Ce qui a ete fait (creation, modification, suppression)</td></tr>
+  <tr><td><strong>Section</strong></td><td>Ou l'action a eu lieu (Commerce, CRM, Comptabilite, etc.)</td></tr>
+  <tr><td><strong>Objet</strong></td><td>L'element affecte (commande #1234, contact Jean Martin)</td></tr>
+  <tr><td><strong>Details</strong></td><td>Information complementaire (ancien et nouveau valeur si modification)</td></tr>
+  <tr><td><strong>IP</strong></td><td>Adresse IP de l'utilisateur</td></tr>
+</tbody>
+</table>
+<h3>Les filtres</h3>
+
+<table>
+<thead>
+    <tr><th>Filtre</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Utilisateur</strong></td><td>Voir les actions d'un utilisateur specifique</td></tr>
+  <tr><td><strong>Action</strong></td><td>Filtrer par type (creation, modification, suppression, export)</td></tr>
+  <tr><td><strong>Section</strong></td><td>Filtrer par module (Commerce, CRM, Systeme, etc.)</td></tr>
+  <tr><td><strong>Periode</strong></td><td>Date de debut et de fin</td></tr>
+  <tr><td><strong>Recherche</strong></td><td>Recherche textuelle dans les details</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Investiguer un evenement</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Utilisez les filtres pour trouver l'evenement</li>
+<li>Cliquez sur la ligne pour voir les details complets</li>
+<li>Pour les modifications, vous voyez l'<strong>avant</strong> et l'<strong>apres</strong> :</li>
+</ol>
+   <pre><code>Modification du produit "BPC-157 Oral 60 caps"
+   Champ : prix
+   Avant : 89,95 $
+   Apres : 94,95 $
+   Par : Marie Lavoie
+   Le : 2026-03-15 14:32:18
+   IP : 192.168.1.42</code></pre>
+
+<h3>2. Detecter les anomalies</h3>
+
+<p><strong>Signaux d'alerte</strong> :</p>
+<ul>
+<li>Connexions en dehors des heures de bureau</li>
+<li>Nombreuses tentatives de connexion echouees</li>
+<li>Exports massifs de donnees</li>
+<li>Modifications de permissions par un non-administrateur</li>
+<li>Suppressions en masse</li>
+</ul>
+
+<h3>3. Exporter le journal</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Appliquez les filtres souhaites</li>
+<li>Cliquez sur <strong>Exporter</strong></li>
+<li>Choisissez le format (CSV, PDF)</li>
+<li>Le journal filtre est telecharge</li>
+</ol>
+
+<blockquote>
+<p><strong>Note</strong> : L'export du journal d'audit est lui-meme enregistre dans le journal.</p>
+</blockquote>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Le journal peut-il etre modifie ou supprime ?</strong></p>
+<p>R : Non. Le journal d'audit est en lecture seule et ne peut pas etre altere. C'est une exigence de securite et de conformite.</p>
+
+<p><strong>Q : Combien de temps les logs sont-ils conserves ?</strong></p>
+<p>R : Par defaut, 2 ans. Cette duree est configurable dans les parametres systeme.</p>
+
+<p><strong>Q : Les actions des clients de la boutique sont-elles aussi enregistrees ?</strong></p>
+<p>R : Les connexions des clients et les actions sensibles (changement de mot de passe, modification d'adresse) sont enregistrees. Les actions de navigation standard (consultation de produits) ne le sont pas.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Audit log</strong></td><td>Journal chronologique de toutes les actions dans le systeme</td></tr>
+  <tr><td><strong>Tracabilite</strong></td><td>Capacite de reconstituer l'historique d'une action</td></tr>
+  <tr><td><strong>IP</strong></td><td>Adresse Internet identifiant l'ordinateur de l'utilisateur</td></tr>
+  <tr><td><strong>Conformite</strong></td><td>Respect des lois et reglementations (Loi 25, LPRPDE)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/employes">Utilisateurs</a> : Qui effectue les actions</li>
+<li><a href="/admin/permissions">Roles</a> : Permissions des utilisateurs</li>
+<li><a href="/admin/securite">Securite</a> : Parametres de securite</li>
+<li><a href="/admin/backups">Sauvegardes</a> : Protection des donnees</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="12-systeme--06-traductions">
+<h1>Gestion des Traductions (i18n)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Systeme > Configuration > Traductions</p>
+<p><strong>URL</strong>: <code>/admin/traductions</code></p>
+<p><strong>Niveau</strong>: Intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Traductions</strong> gere les textes affiches dans les 22 langues supportees par la boutique BioCycle Peptides. Chaque label, bouton, message et description peut etre traduit pour offrir une experience multilingue aux clients du monde entier.</p>
+
+<p><strong>En tant qu'administrateur, vous pouvez :</strong></p>
+<ul>
+<li>Consulter toutes les cles de traduction organisees par section</li>
+<li>Modifier les traductions existantes</li>
+<li>Ajouter des traductions manquantes</li>
+<li>Verifier les cles non traduites par langue</li>
+<li>Exporter et importer les traductions en masse</li>
+<li>Definir la langue par defaut de l'interface</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Qu'est-ce que l'i18n ?</h3>
+
+<p><strong>i18n</strong> est l'abreviation de "internationalization" (il y a 18 lettres entre le "i" et le "n"). C'est le systeme qui permet a Koraline d'afficher son contenu dans differentes langues.</p>
+
+<h3>Les 22 langues supportees</h3>
+
+<table>
+<thead>
+    <tr><th>Code</th><th>Langue</th><th>Marche cible</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>fr</strong></td><td>Francais</td><td>Quebec, France, Afrique francophone</td></tr>
+  <tr><td><strong>en</strong></td><td>Anglais</td><td>Canada anglophone, USA, international</td></tr>
+  <tr><td><strong>es</strong></td><td>Espagnol</td><td>Amerique latine</td></tr>
+  <tr><td><strong>de</strong></td><td>Allemand</td><td>Allemagne, Suisse</td></tr>
+  <tr><td><strong>pt</strong></td><td>Portugais</td><td>Bresil, Portugal</td></tr>
+  <tr><td><strong>it</strong></td><td>Italien</td><td>Italie</td></tr>
+  <tr><td><strong>ar</strong></td><td>Arabe</td><td>Moyen-Orient</td></tr>
+  <tr><td><strong>ar-dz</strong></td><td>Arabe (Algerie)</td><td>Algerie</td></tr>
+  <tr><td><strong>ar-lb</strong></td><td>Arabe (Liban)</td><td>Liban</td></tr>
+  <tr><td><strong>ar-ma</strong></td><td>Arabe (Maroc)</td><td>Maroc</td></tr>
+  <tr><td><strong>zh</strong></td><td>Chinois</td><td>Chine</td></tr>
+  <tr><td><strong>ko</strong></td><td>Coreen</td><td>Coree du Sud</td></tr>
+  <tr><td><strong>hi</strong></td><td>Hindi</td><td>Inde</td></tr>
+  <tr><td><strong>pa</strong></td><td>Pendjabi</td><td>Inde, Pakistan</td></tr>
+  <tr><td><strong>ta</strong></td><td>Tamoul</td><td>Inde du Sud, Sri Lanka</td></tr>
+  <tr><td><strong>ru</strong></td><td>Russe</td><td>Russie</td></tr>
+  <tr><td><strong>pl</strong></td><td>Polonais</td><td>Pologne</td></tr>
+  <tr><td><strong>sv</strong></td><td>Suedois</td><td>Suede</td></tr>
+  <tr><td><strong>vi</strong></td><td>Vietnamien</td><td>Vietnam</td></tr>
+  <tr><td><strong>tl</strong></td><td>Tagalog</td><td>Philippines</td></tr>
+  <tr><td><strong>ht</strong></td><td>Creole haitien</td><td>Haiti</td></tr>
+  <tr><td><strong>gcr</strong></td><td>Creole guyanais</td><td>Guyane</td></tr>
+</tbody>
+</table>
+<h3>Comment ca fonctionne</h3>
+
+<p>Chaque texte affiche dans l'interface est associe a une <strong>cle de traduction</strong>. Par exemple :</p>
+<ul>
+<li>Cle : <code>common.addToCart</code></li>
+<li>Francais : "Ajouter au panier"</li>
+<li>Anglais : "Add to Cart"</li>
+<li>Espagnol : "Agregar al carrito"</li>
+</ul>
+
+<p>Quand un client visite le site en espagnol, le systeme affiche "Agregar al carrito" partout ou la cle <code>common.addToCart</code> est utilisee.</p>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Systeme > Configuration > <strong>Traductions</strong></li>
+<li>URL directe : <code>/admin/traductions</code></li>
+</ol>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Parcourir les traductions</h3>
+
+<p>L'interface affiche les traductions groupees par <strong>namespace</strong> (section) :</p>
+
+<table>
+<thead>
+    <tr><th>Namespace</th><th>Exemples de cles</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>common</strong></td><td>addToCart, search, save, cancel, loading</td></tr>
+  <tr><td><strong>shop</strong></td><td>productDetails, relatedProducts, reviews</td></tr>
+  <tr><td><strong>admin</strong></td><td>dashboard, settings, permissions</td></tr>
+  <tr><td><strong>account</strong></td><td>myOrders, myProfile, changePassword</td></tr>
+  <tr><td><strong>checkout</strong></td><td>shippingAddress, paymentMethod, orderSummary</td></tr>
+</tbody>
+</table>
+<h3>2. Modifier une traduction</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Trouvez la cle (recherche ou navigation par namespace)</li>
+<li>Cliquez sur la cle</li>
+<li>Modifiez le texte dans la langue souhaitee</li>
+<li>Cliquez sur <strong>Sauvegarder</strong></li>
+</ol>
+
+<blockquote>
+<p><strong>Important</strong> : Le francais est la <strong>langue de reference</strong>. Toute modification en francais devrait etre propagee aux autres langues.</p>
+</blockquote>
+
+<h3>3. Identifier les traductions manquantes</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Selectionnez une langue dans le filtre</li>
+<li>Activez le filtre <strong>Non traduit</strong></li>
+<li>La liste affiche les cles sans traduction dans cette langue</li>
+<li>Traduisez ou utilisez le bouton <strong>Traduire automatiquement</strong></li>
+</ol>
+
+<h3>4. Import/Export en masse</h3>
+
+<p><strong>Exporter</strong> :</p>
+<ol>
+<li>Selectionnez la langue</li>
+<li>Cliquez sur <strong>Exporter CSV</strong></li>
+<li>Le fichier contient les cles et les traductions</li>
+</ol>
+
+<p><strong>Importer</strong> :</p>
+<ol>
+<li>Modifiez le CSV exporte (ou preparez un nouveau)</li>
+<li>Cliquez sur <strong>Importer CSV</strong></li>
+<li>Les traductions sont mises a jour en masse</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Les descriptions de produits sont-elles aussi dans ce systeme ?</strong></p>
+<p>R : Non. Les descriptions de produits ont leur propre systeme de traduction dans la fiche produit (Catalogue). Cette page gere les textes d'interface (boutons, labels, messages).</p>
+
+<p><strong>Q : La traduction automatique est-elle fiable ?</strong></p>
+<p>R : Elle donne un bon point de depart, mais une relecture humaine est recommandee pour le contenu visible par les clients.</p>
+
+<p><strong>Q : Le site detecte-t-il la langue du visiteur automatiquement ?</strong></p>
+<p>R : Oui, la langue est detectee via le navigateur du visiteur et peut etre changee manuellement via le selecteur de langue sur le site.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>i18n</strong></td><td>Internationalization, systeme de gestion multilingue</td></tr>
+  <tr><td><strong>Cle de traduction</strong></td><td>Identifiant unique d'un texte (ex: common.save)</td></tr>
+  <tr><td><strong>Namespace</strong></td><td>Groupe de cles par section (common, shop, admin, etc.)</td></tr>
+  <tr><td><strong>Locale</strong></td><td>Code de langue (fr, en, es, etc.)</td></tr>
+  <tr><td><strong>Fallback</strong></td><td>Langue de secours si une traduction manque (anglais)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/parametres">Parametres</a> : Langue par defaut</li>
+<li><a href="/admin/contenu">Contenu</a> : Pages de contenu traduisibles</li>
+<li><a href="/admin/seo">SEO</a> : Meta-donnees multilingues</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="12-systeme--07-apparence">
+<h1>Apparence et Contenu</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Systeme > Configuration > Contenu / SEO / Navigateur</p>
+<p><strong>URL</strong>: <code>/admin/contenu</code>, <code>/admin/seo</code>, <code>/admin/navigateur</code></p>
+<p><strong>Niveau</strong>: Intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>Les pages de gestion de l'<strong>Apparence</strong> et du <strong>Contenu</strong> permettent de personnaliser le site web public de BioCycle Peptides : pages d'information, meta-donnees SEO, et navigation.</p>
+
+<p><strong>En tant qu'administrateur, vous pouvez :</strong></p>
+<ul>
+<li>Creer et modifier des pages de contenu (A propos, FAQ, Politique de confidentialite)</li>
+<li>Configurer les meta-donnees SEO (titres, descriptions, mots-cles)</li>
+<li>Gerer la structure de navigation du site</li>
+<li>Configurer les redirections d'URL</li>
+<li>Optimiser le referencement naturel</li>
+</ul>
+
+<hr>
+
+<h2>Les 3 pages principales</h2>
+
+<h3>1. Pages de contenu (<code>/admin/contenu</code>)</h3>
+
+<p>Gerez les pages statiques du site :</p>
+
+<table>
+<thead>
+    <tr><th>Page</th><th>Description</th><th>Obligatoire</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>A propos</strong></td><td>Presentation de BioCycle Peptides</td><td>Recommande</td></tr>
+  <tr><td><strong>FAQ</strong></td><td>Questions frequemment posees</td><td>Recommande</td></tr>
+  <tr><td><strong>Politique de confidentialite</strong></td><td>Conformite Loi 25</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Conditions d'utilisation</strong></td><td>Terms of service</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Politique de retour</strong></td><td>Conditions de retour et remboursement</td><td>Recommande</td></tr>
+  <tr><td><strong>Livraison</strong></td><td>Informations sur les delais et frais</td><td>Recommande</td></tr>
+  <tr><td><strong>Contact</strong></td><td>Formulaire de contact</td><td>Recommande</td></tr>
+</tbody>
+</table>
+<p><strong>Fonctionnalites</strong> :</p>
+<ul>
+<li>Editeur visuel riche (gras, italique, titres, listes, images, liens)</li>
+<li>Support multilingue (chaque page peut etre traduite)</li>
+<li>Publication et depublication</li>
+<li>URL personnalisable (slug)</li>
+</ul>
+
+<h3>2. SEO (<code>/admin/seo</code>)</h3>
+
+<p>Optimisez le referencement naturel de chaque page :</p>
+
+<table>
+<thead>
+    <tr><th>Parametre</th><th>Description</th><th>Exemple</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Meta title</strong></td><td>Titre dans les resultats Google</td><td>"BioCycle Peptides - Peptides de qualite au Canada"</td></tr>
+  <tr><td><strong>Meta description</strong></td><td>Description sous le titre dans Google</td><td>"Achetez des peptides de recherche de haute qualite..."</td></tr>
+  <tr><td><strong>Keywords</strong></td><td>Mots-cles principaux</td><td>peptides, BPC-157, TB-500, Canada</td></tr>
+  <tr><td><strong>Canonical URL</strong></td><td>URL de reference pour eviter le contenu duplique</td><td>https://biocyclepeptides.com/</td></tr>
+  <tr><td><strong>Open Graph</strong></td><td>Apercu pour les reseaux sociaux (titre, image)</td><td>Image et titre pour partage Facebook/LinkedIn</td></tr>
+  <tr><td><strong>Sitemap</strong></td><td>Plan du site pour Google</td><td>Genere automatiquement</td></tr>
+  <tr><td><strong>Robots.txt</strong></td><td>Instructions pour les moteurs de recherche</td><td>Pages a indexer ou exclure</td></tr>
+</tbody>
+</table>
+<h3>3. Navigateur web (<code>/admin/navigateur</code>)</h3>
+
+<p>Navigateur integre pour visualiser et tester le site public directement depuis l'interface d'administration.</p>
+
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Creer une page de contenu</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Allez sur <code>/admin/contenu</code></li>
+<li>Cliquez sur <strong>Nouvelle page</strong></li>
+<li>Remplissez :</li>
+</ol>
+<ul>
+<li><strong>Titre</strong> : le titre de la page</li>
+<li><strong>URL</strong> (slug) : l'adresse (ex: <code>/a-propos</code>)</li>
+<li><strong>Contenu</strong> : utilisez l'editeur visuel</li>
+<li><strong>Meta SEO</strong> : titre et description pour Google</li>
+</ul>
+<ol>
+<li>Cliquez sur <strong>Publier</strong></li>
+</ol>
+
+<h3>2. Optimiser le SEO d'un produit</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Allez sur <code>/admin/seo</code></li>
+<li>Selectionnez la page ou le produit</li>
+<li>Remplissez les meta-donnees :</li>
+</ol>
+<ul>
+<li>Titre optimise (60 caracteres max)</li>
+<li>Description accrocheuse (155 caracteres max)</li>
+<li>Mots-cles pertinents</li>
+</ul>
+<ol>
+<li>Verifiez l'apercu Google (genere automatiquement)</li>
+<li>Sauvegardez</li>
+</ol>
+
+<h3>3. Gerer les redirections</h3>
+
+<p>Si vous changez l'URL d'une page, configurez une redirection 301 pour ne pas perdre le referencement :</p>
+<ol>
+<li>Ancienne URL → Nouvelle URL</li>
+<li>Le systeme redirige automatiquement les visiteurs et les moteurs de recherche</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Le SEO est-il important pour un site de peptides ?</strong></p>
+<p>R : Absolument. Une bonne optimisation SEO permet d'attirer des clients organiquement (sans payer de publicite). Les recherches comme "acheter peptides Canada" ou "BPC-157 Quebec" peuvent generer beaucoup de trafic qualifie.</p>
+
+<p><strong>Q : Les pages de contenu sont-elles traduisibles ?</strong></p>
+<p>R : Oui. Chaque page peut avoir une version dans chacune des 22 langues supportees.</p>
+
+<p><strong>Q : Comment savoir si mon SEO fonctionne ?</strong></p>
+<p>R : Consultez les analytics (<code>/admin/analytics</code>) pour voir le trafic organique (visiteurs venant de Google). Le SEO prend generalement 3-6 mois pour montrer des resultats.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>SEO</strong></td><td>Search Engine Optimization, optimisation pour les moteurs de recherche</td></tr>
+  <tr><td><strong>Meta title</strong></td><td>Titre de la page dans les resultats de recherche</td></tr>
+  <tr><td><strong>Meta description</strong></td><td>Description sous le titre dans les resultats Google</td></tr>
+  <tr><td><strong>Slug</strong></td><td>Partie de l'URL apres le nom de domaine (/a-propos)</td></tr>
+  <tr><td><strong>Redirection 301</strong></td><td>Redirection permanente d'une ancienne URL vers une nouvelle</td></tr>
+  <tr><td><strong>Sitemap</strong></td><td>Fichier XML listant toutes les pages pour les moteurs de recherche</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/traductions">Traductions</a> : Textes multilingues</li>
+<li><a href="/admin/parametres">Parametres</a> : Configuration generale</li>
+<li><a href="/admin/analytics">Analytics</a> : Suivi du trafic et du SEO</li>
+<li><a href="/admin/blog">Blog</a> : Articles (si module active)</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="12-systeme--08-maintenance">
+<h1>Maintenance et Outils Systeme</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Systeme > Outils / Diagnostics</p>
+<p><strong>URL</strong>: <code>/admin/diagnostics</code>, <code>/admin/uat</code></p>
+<p><strong>Niveau</strong>: Avance</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>Les outils de <strong>Maintenance</strong> regroupent les fonctions techniques pour diagnostiquer, tester et maintenir la plateforme Koraline en bon etat de fonctionnement.</p>
+
+<p><strong>En tant qu'administrateur, vous pouvez :</strong></p>
+<ul>
+<li>Executer des diagnostics reseau et systeme</li>
+<li>Tester les fonctionnalites en environnement UAT</li>
+<li>Verifier la connectivite aux services externes</li>
+<li>Consulter les metriques de performance</li>
+<li>Gerer le cache de l'application</li>
+<li>Surveiller les taches de fond (crons)</li>
+</ul>
+
+<hr>
+
+<h2>Les pages de maintenance</h2>
+
+<h3>1. Diagnostics reseau (<code>/admin/diagnostics</code>)</h3>
+
+<p>Cette page teste la connectivite entre Koraline et les services externes :</p>
+
+<table>
+<thead>
+    <tr><th>Service</th><th>Test</th><th>Statut attendu</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Base de donnees</strong></td><td>Connexion PostgreSQL</td><td>Connecte</td></tr>
+  <tr><td><strong>Stripe</strong></td><td>API de paiement</td><td>Actif</td></tr>
+  <tr><td><strong>Email</strong></td><td>Service d'envoi SMTP</td><td>Operationnel</td></tr>
+  <tr><td><strong>Telnyx</strong></td><td>Telephonie VoIP</td><td>Connecte</td></tr>
+  <tr><td><strong>Azure</strong></td><td>Hebergement</td><td>En ligne</td></tr>
+  <tr><td><strong>Redis</strong></td><td>Cache et sessions</td><td>Actif</td></tr>
+</tbody>
+</table>
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Ouvrez la page Diagnostics</li>
+<li>Cliquez sur <strong>Lancer les tests</strong></li>
+<li>Chaque service est teste et affiche son statut :</li>
+</ol>
+<ul>
+<li>Vert : operationnel</li>
+<li>Jaune : lent ou degradation</li>
+<li>Rouge : hors service</li>
+</ul>
+
+<h3>2. Tests UAT (<code>/admin/uat</code>)</h3>
+
+<p><strong>UAT</strong> (User Acceptance Testing) est un environnement de test pour valider les nouvelles fonctionnalites avant de les mettre en production.</p>
+
+<p><strong>Fonctionnalites</strong> :</p>
+<ul>
+<li>Simuler des commandes sans paiement reel</li>
+<li>Tester les workflows CRM avec des donnees fictives</li>
+<li>Verifier les emails envoyes (sans les envoyer reellement)</li>
+<li>Tester les integrations en mode sandbox</li>
+</ul>
+
+<h3>3. Monitoring (<code>/admin/monitoring</code>)</h3>
+
+<p>Tableau de bord de surveillance continue :</p>
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Description</th><th>Seuil d'alerte</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>CPU</strong></td><td>Utilisation du processeur</td><td>> 80%</td></tr>
+  <tr><td><strong>Memoire</strong></td><td>RAM utilisee</td><td>> 85%</td></tr>
+  <tr><td><strong>Disque</strong></td><td>Espace de stockage</td><td>> 90%</td></tr>
+  <tr><td><strong>Requetes/s</strong></td><td>Nombre de requetes par seconde</td><td>> 500</td></tr>
+  <tr><td><strong>Temps de reponse</strong></td><td>Latence moyenne des pages</td><td>> 3 secondes</td></tr>
+  <tr><td><strong>Erreurs 5xx</strong></td><td>Erreurs serveur</td><td>> 0</td></tr>
+</tbody>
+</table>
+<h3>4. Taches planifiees (<code>/admin/system/crons</code>)</h3>
+
+<p>Gestion des crons (taches automatiques) :</p>
+<ul>
+<li>Voir le statut de chaque tache</li>
+<li>Voir la derniere execution et la prochaine</li>
+<li>Forcer l'execution d'une tache</li>
+<li>Desactiver temporairement une tache</li>
+</ul>
+
+<hr>
+
+<h2>Workflows courants</h2>
+
+<h3>Diagnostic d'un probleme</h3>
+<ol>
+<li>Un utilisateur signale un probleme (page lente, erreur)</li>
+<li>Ouvrez les diagnostics : tous les services sont-ils verts ?</li>
+<li>Verifiez le monitoring : y a-t-il une surcharge ?</li>
+<li>Consultez les logs d'audit : y a-t-il des erreurs recentes ?</li>
+<li>Si le probleme persiste, contactez le support technique</li>
+</ol>
+
+<h3>Verification de sante quotidienne</h3>
+<ol>
+<li>Ouvrez le monitoring</li>
+<li>Verifiez que tous les indicateurs sont au vert</li>
+<li>Verifiez les taches planifiees : ont-elles toutes reussi ?</li>
+<li>Consultez les webhooks : y a-t-il des echecs recents ?</li>
+</ol>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Que faire si un service est au rouge dans les diagnostics ?</strong></p>
+<p>R : Verifiez si le service externe est en panne (page de statut du fournisseur). Si c'est un probleme de configuration (cle API expiree, URL modifiee), mettez a jour dans les parametres.</p>
+
+<p><strong>Q : Les tests UAT affectent-ils les donnees reelles ?</strong></p>
+<p>R : Non, l'environnement UAT utilise des donnees isolees. Aucune action en UAT n'affecte les vraies commandes, contacts ou finances.</p>
+
+<p><strong>Q : A quelle frequence verifier le monitoring ?</strong></p>
+<p>R : Les alertes sont envoyees automatiquement en cas de probleme. Une verification manuelle quotidienne est recommandee pour les aspects non automatises.</p>
+
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Diagnostic</strong></td><td>Test de connectivite et de sante des composants du systeme</td></tr>
+  <tr><td><strong>UAT</strong></td><td>User Acceptance Testing, tests de validation fonctionnelle</td></tr>
+  <tr><td><strong>Monitoring</strong></td><td>Surveillance continue des metriques de performance</td></tr>
+  <tr><td><strong>Cron</strong></td><td>Tache automatique executee a intervalle regulier</td></tr>
+  <tr><td><strong>Latence</strong></td><td>Temps de reponse d'une requete</td></tr>
+  <tr><td><strong>5xx</strong></td><td>Codes d'erreur serveur HTTP (500, 502, 503, 504)</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/diagnostics">Diagnostics</a> : Tests de connectivite</li>
+<li><a href="/admin/monitoring">Monitoring</a> : Metriques temps reel</li>
+<li><a href="/admin/logs">Audit Logs</a> : Journal des evenements</li>
+<li><a href="/admin/backups">Sauvegardes</a> : Protection des donnees</li>
+<li><a href="/admin/securite">Securite</a> : Parametres de securite</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="12-systeme--09-securite">
+<h1>Securite</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Systeme > Outils > Securite</p>
+<p><strong>URL</strong>: <code>/admin/securite</code></p>
+<p><strong>Niveau</strong>: Intermediaire a avance</p>
+<p><strong>Temps de lecture</strong>: ~20 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Securite</strong> centralise tous les parametres de protection de la plateforme Koraline et des donnees de BioCycle Peptides. La securite est critique pour un site e-commerce qui traite des paiements et des donnees personnelles.</p>
+
+<p><strong>En tant qu'administrateur, vous pouvez :</strong></p>
+<ul>
+<li>Configurer la politique de mots de passe</li>
+<li>Activer l'authentification a deux facteurs (2FA)</li>
+<li>Gerer les sessions actives</li>
+<li>Configurer les restrictions d'acces par IP</li>
+<li>Surveiller les tentatives de connexion echouees</li>
+<li>Gerer le chiffrement des donnees sensibles</li>
+<li>Configurer les politiques de conformite (Loi 25, LPRPDE)</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Pourquoi la securite est-elle si importante ?</h3>
+
+<p>BioCycle Peptides gere :</p>
+<ul>
+<li><strong>Donnees de paiement</strong> : cartes de credit via Stripe (les numeros ne sont jamais stockes dans Koraline)</li>
+<li><strong>Donnees personnelles</strong> : noms, adresses, emails, telephones des clients</li>
+<li><strong>Donnees financieres</strong> : comptabilite, factures, relevees bancaires</li>
+<li><strong>Donnees commerciales</strong> : prix d'achat, marges, listes de clients</li>
+</ul>
+
+<p>Une fuite de donnees pourrait couter cher en termes de confiance, de reputation et de penalites legales.</p>
+
+<h3>Les 3 piliers de la securite</h3>
+
+<table>
+<thead>
+    <tr><th>Pilier</th><th>Description</th><th>Mesures</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Confidentialite</strong></td><td>Seules les personnes autorisees voient les donnees</td><td>Roles, permissions, chiffrement</td></tr>
+  <tr><td><strong>Integrite</strong></td><td>Les donnees ne sont pas alterees sans autorisation</td><td>Logs d'audit, validations</td></tr>
+  <tr><td><strong>Disponibilite</strong></td><td>Le systeme est accessible quand necessaire</td><td>Sauvegardes, monitoring, redondance</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Systeme > Outils > <strong>Securite</strong></li>
+<li>URL directe : <code>/admin/securite</code></li>
+</ol>
+
+<hr>
+
+<h2>Parametres de securite</h2>
+
+<h3>1. Politique de mots de passe</h3>
+
+<table>
+<thead>
+    <tr><th>Parametre</th><th>Valeur recommandee</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Longueur minimale</strong></td><td>12 caracteres</td><td>Plus c'est long, plus c'est securise</td></tr>
+  <tr><td><strong>Complexite</strong></td><td>Majuscule + minuscule + chiffre + caractere special</td><td>Exige un melange de types</td></tr>
+  <tr><td><strong>Expiration</strong></td><td>90 jours</td><td>Force le changement regulier</td></tr>
+  <tr><td><strong>Historique</strong></td><td>5 derniers mots de passe</td><td>Empeche la reutilisation</td></tr>
+  <tr><td><strong>Verrouillage</strong></td><td>Apres 5 echecs</td><td>Bloque le compte temporairement</td></tr>
+</tbody>
+</table>
+<h3>2. Authentification a deux facteurs (2FA)</h3>
+
+<p><strong>Qu'est-ce que c'est ?</strong></p>
+<p>En plus du mot de passe, un deuxieme facteur est demande : un code envoye par SMS ou genere par une application (Google Authenticator, Authy).</p>
+
+<p><strong>Configuration</strong> :</p>
+<ol>
+<li>Allez dans Securite > 2FA</li>
+<li>Activez pour <strong>tous les administrateurs</strong> (recommande)</li>
+<li>Optionnel : activez pour tous les utilisateurs</li>
+<li>Chaque utilisateur configure son application 2FA a sa prochaine connexion</li>
+</ol>
+
+<blockquote>
+<p><strong>Fortement recommande</strong> : Activez le 2FA au minimum pour les comptes administrateurs et comptables.</p>
+</blockquote>
+
+<h3>3. Gestion des sessions</h3>
+
+<table>
+<thead>
+    <tr><th>Parametre</th><th>Description</th><th>Valeur recommandee</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Duree de session</strong></td><td>Temps avant deconnexion automatique</td><td>8 heures</td></tr>
+  <tr><td><strong>Session unique</strong></td><td>Autoriser une seule session par utilisateur</td><td>Active</td></tr>
+  <tr><td><strong>Deconnexion inactivite</strong></td><td>Temps d'inactivite avant deconnexion</td><td>30 minutes</td></tr>
+</tbody>
+</table>
+<p><strong>Sessions actives</strong> :</p>
+<ul>
+<li>Voir la liste des utilisateurs actuellement connectes</li>
+<li>Forcer la deconnexion d'un utilisateur si necessaire</li>
+<li>Voir l'IP et le navigateur de chaque session</li>
+</ul>
+
+<h3>4. Restrictions d'acces par IP</h3>
+
+<p><strong>Objectif</strong> : Limiter l'acces a l'administration depuis certaines adresses IP seulement.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Allez dans Securite > Restrictions IP</li>
+<li>Ajoutez les adresses IP autorisees (bureau, VPN)</li>
+<li>Activez la restriction</li>
+<li>Seules les connexions depuis ces IP seront acceptees</li>
+</ol>
+
+<blockquote>
+<p><strong>Attention</strong> : Si vous activez cette restriction et perdez acces a l'IP autorisee, vous serez verrouille hors du systeme. Gardez toujours une IP de secours.</p>
+</blockquote>
+
+<h3>5. Surveillance des connexions</h3>
+
+<p>La page affiche :</p>
+<ul>
+<li><strong>Connexions reussies</strong> : derniere date, IP, navigateur</li>
+<li><strong>Tentatives echouees</strong> : nombre, IP source, date</li>
+<li><strong>Comptes verrouilles</strong> : utilisateurs bloques apres trop d'echecs</li>
+</ul>
+
+<p><strong>Signaux d'alerte</strong> :</p>
+<ul>
+<li>Plus de 10 tentatives echouees depuis la meme IP → possible attaque par force brute</li>
+<li>Connexions depuis des pays inhabituels → possible compromission de compte</li>
+<li>Connexions en dehors des heures normales → verifier avec l'utilisateur</li>
+</ul>
+
+<hr>
+
+<h2>Conformite legale</h2>
+
+<h3>Loi 25 du Quebec</h3>
+
+<p>La <strong>Loi modernisant des dispositions legislatives en matiere de protection des renseignements personnels</strong> (Loi 25) exige :</p>
+
+<table>
+<thead>
+    <tr><th>Exigence</th><th>Implementation dans Koraline</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Responsable</strong></td><td>Designez un responsable des donnees personnelles</td></tr>
+  <tr><td><strong>Consentement</strong></td><td>Formulaires de consentement pour la collecte de donnees</td></tr>
+  <tr><td><strong>Politique de confidentialite</strong></td><td>Page publiee sur le site</td></tr>
+  <tr><td><strong>Droit d'acces</strong></td><td>Les clients peuvent demander leurs donnees</td></tr>
+  <tr><td><strong>Droit de rectification</strong></td><td>Les clients peuvent corriger leurs donnees</td></tr>
+  <tr><td><strong>Droit de suppression</strong></td><td>Les clients peuvent demander la suppression</td></tr>
+  <tr><td><strong>Notification de breach</strong></td><td>Obligation de notifier en cas de fuite de donnees</td></tr>
+  <tr><td><strong>Journal d'audit</strong></td><td>Tracabilite des acces aux donnees personnelles</td></tr>
+</tbody>
+</table>
+<h3>LPRPDE (federal)</h3>
+
+<p>La Loi sur la Protection des Renseignements Personnels et les Documents Electroniques s'applique aussi aux entreprises canadiennes et impose des obligations similaires.</p>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Les donnees de cartes de credit sont-elles stockees dans Koraline ?</strong></p>
+<p>R : Non, jamais. Les paiements sont traites par Stripe. Koraline ne voit et ne stocke jamais les numeros de carte. Seuls les 4 derniers chiffres et le type de carte sont enregistres pour reference.</p>
+
+<p><strong>Q : Comment reagir en cas de suspicion de piratage ?</strong></p>
+<p>R : 1) Forcez la deconnexion de tous les utilisateurs. 2) Changez les mots de passe de tous les comptes admin. 3) Activez le 2FA. 4) Consultez les logs d'audit pour identifier l'intrusion. 5) Si des donnees clients sont compromises, notifiez conformement a la Loi 25.</p>
+
+<p><strong>Q : Les sauvegardes sont-elles chiffrees ?</strong></p>
+<p>R : Oui, les sauvegardes de la base de donnees sont chiffrees (voir page Sauvegardes).</p>
+
+<p><strong>Q : Le site utilise-t-il HTTPS ?</strong></p>
+<p>R : Oui, toutes les communications sont chiffrees via HTTPS (certificat SSL). Les connexions HTTP sont automatiquement redirigees vers HTTPS.</p>
+
+<hr>
+
+<h2>Strategie expert : Conformite reglementaire detaillee pour un e-commerce de peptides au Quebec</h2>
+
+<h3>Loi 25 du Quebec -- Obligations detaillees</h3>
+
+<p>La Loi 25 (anciennement projet de loi 64) est entree en vigueur progressivement depuis septembre 2022. Elle impose des obligations strictes aux entreprises qui collectent, utilisent ou communiquent des renseignements personnels. Pour BioCycle Peptides, qui traite des donnees clients, des informations de paiement et des adresses de livraison, la conformite est obligatoire et les penalites sont severes.</p>
+
+<p><strong>Obligations et implementation dans Koraline :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Obligation Loi 25</th><th>Echeance</th><th>Implementation BioCycle</th><th>Statut requis</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Responsable de la protection des RP</strong></td><td>En vigueur</td><td>Designez une personne (par defaut : le PDG). Son nom et ses coordonnees doivent etre publies sur le site web.</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Registre des incidents de confidentialite</strong></td><td>En vigueur</td><td>Tenir un registre de TOUT incident impliquant des RP (acces non autorise, perte, vol, communication non autorisee). Conserver minimum 5 ans.</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Notification des incidents</strong></td><td>En vigueur</td><td>Si un incident presente un "risque de prejudice serieux" : notifier la Commission d'acces a l'information (CAI) ET les personnes concernees. Delai : "avec diligence".</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Consentement explicite</strong></td><td>En vigueur</td><td>Le consentement doit etre manifeste, libre, eclaire, donne a des fins specifiques et de duree limitee. Les cases pre-cochees sont INTERDITES.</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Evaluation des facteurs relatifs a la vie privee (EFVP)</strong></td><td>En vigueur</td><td>Avant tout nouveau projet impliquant des RP (ex: nouveau partenaire de livraison, nouvel outil CRM, integration API tierce), mener une EFVP documentee.</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Droit a l'oubli (desindexation)</strong></td><td>En vigueur</td><td>Un client peut demander que ses informations soient desindexees des moteurs de recherche si la diffusion contrevient a la loi ou a une ordonnance.</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Droit a la portabilite</strong></td><td>En vigueur</td><td>Un client peut demander ses RP dans un format technologique structure et couramment utilise (CSV, JSON).</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Politique de confidentialite</strong></td><td>En vigueur</td><td>Publiee sur le site en termes simples et clairs. Doit detailler : quelles RP sont collectees, pourquoi, avec qui elles sont partagees, combien de temps conservees, comment exercer ses droits.</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Transparence des decisions automatisees</strong></td><td>En vigueur</td><td>Si Koraline utilise un algorithme pour prendre des decisions affectant les clients (scoring fidelite, detection fraude), informer le client et lui permettre de contester.</td><td>Obligatoire</td></tr>
+</tbody>
+</table>
+<p><strong>Penalites Loi 25 :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Type de penalite</th><th>Montant maximum</th><th>Applicable a</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Penalite administrative (CAI)</strong></td><td>10 000 000$ ou 2% du chiffre d'affaires mondial</td><td>Entreprise</td></tr>
+  <tr><td><strong>Penalite penale</strong></td><td>25 000 000$ ou 4% du chiffre d'affaires mondial</td><td>Entreprise</td></tr>
+  <tr><td><strong>Penalite individuelle</strong></td><td>50 000$ a 100 000$</td><td>Dirigeant responsable</td></tr>
+</tbody>
+</table>
+<h3>LPRPDE federale -- Obligations complementaires</h3>
+
+<p>La Loi sur la Protection des Renseignements Personnels et les Documents Electroniques (LPRPDE) s'applique aux activites commerciales interprovinciales et internationales. Pour BioCycle Peptides, qui vend partout au Canada et potentiellement a l'international, la LPRPDE s'ajoute a la Loi 25.</p>
+
+<p><strong>Les 10 principes LPRPDE et leur application :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Principe</th><th>Application BioCycle</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Responsabilite</strong></td><td>L'entreprise est responsable des RP sous sa garde, y compris celles transferees a des tiers (Stripe, transporteurs)</td></tr>
+  <tr><td><strong>Fins determinees</strong></td><td>Collecter les RP uniquement pour des fins identifiees (commande, livraison, marketing si consentement)</td></tr>
+  <tr><td><strong>Consentement</strong></td><td>Obtenir le consentement avant ou au moment de la collecte</td></tr>
+  <tr><td><strong>Limitation de la collecte</strong></td><td>Ne collecter que les RP necessaires (pas de champs superflus dans les formulaires)</td></tr>
+  <tr><td><strong>Limitation de l'utilisation</strong></td><td>Ne pas utiliser les RP pour des fins autres que celles identifiees (pas de revente de donnees)</td></tr>
+  <tr><td><strong>Exactitude</strong></td><td>Maintenir les RP a jour et permettre au client de les corriger</td></tr>
+  <tr><td><strong>Mesures de securite</strong></td><td>Proteger les RP par des mesures techniques (chiffrement, 2FA) et organisationnelles (formation)</td></tr>
+  <tr><td><strong>Transparence</strong></td><td>Rendre disponible l'information sur les pratiques de gestion des RP</td></tr>
+  <tr><td><strong>Acces individuel</strong></td><td>Permettre au client d'acceder a ses RP et de les contester</td></tr>
+  <tr><td><strong>Possibilite de porter plainte</strong></td><td>Avoir un processus de traitement des plaintes relatif aux RP</td></tr>
+</tbody>
+</table>
+<h3>PCI-DSS pour les paiements par carte</h3>
+
+<p>BioCycle Peptides utilise Stripe pour traiter les paiements, ce qui simplifie considerablement la conformite PCI-DSS. Cependant, certaines obligations demeurent.</p>
+
+<p><strong>Niveau de conformite :</strong> BioCycle est probablement un marchand de <strong>niveau 4</strong> (< 20 000 transactions e-commerce par an), ce qui signifie un questionnaire d'auto-evaluation (SAQ) plutot qu'un audit externe.</p>
+
+<p><strong>Regles absolues :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Regle PCI-DSS</th><th>Implementation BioCycle</th><th>Consequence si non respectee</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Ne JAMAIS stocker le CVV/CVC</strong></td><td>Stripe gere tout -- aucun CVV ne transite par les serveurs Koraline</td><td>Amende 5 000 - 100 000$/mois + perte du droit de traiter les cartes</td></tr>
+  <tr><td><strong>Ne JAMAIS stocker le numero de carte complet</strong></td><td>Seuls les 4 derniers chiffres sont stockes pour reference</td><td>Idem</td></tr>
+  <tr><td><strong>Utiliser la tokenisation</strong></td><td>Stripe tokenise les cartes. Koraline ne recoit qu'un token Stripe, pas les donnees de carte</td><td>Obligatoire</td></tr>
+  <tr><td><strong>HTTPS obligatoire</strong></td><td>Tout le site est en HTTPS (certificat SSL)</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Logs d'acces</strong></td><td>Tracer les acces aux donnees de paiement</td><td>Obligatoire</td></tr>
+  <tr><td><strong>Mise a jour reguliere</strong></td><td>Maintenir les dependances de securite a jour (Next.js, libraries)</td><td>Obligatoire</td></tr>
+</tbody>
+</table>
+<p><strong>Verifications trimestrielles recommandees :</strong></p>
+<ul>
+<li>Verifier que les pages de paiement ne contiennent aucun script tiers non autorise (risque de skimming)</li>
+<li>Verifier que les tokens Stripe expirent correctement</li>
+<li>Scanner le site avec un outil ASV (Approved Scanning Vendor) si le volume le justifie</li>
+<li>Revoir les logs d'acces aux donnees financieres</li>
+</ul>
+
+<h3>Checklist de conformite pour BioCycle Peptides</h3>
+
+<p><strong>A verifier chaque trimestre :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Element</th><th>Verification</th><th>Fait</th></tr>
+</thead>
+<tbody>
+  <tr><td>Responsable RP designe et publie sur le site</td><td>Verifier la page "Politique de confidentialite"</td><td></td></tr>
+  <tr><td>Registre d'incidents a jour</td><td>Verifier le registre (meme s'il est vide, il doit exister)</td><td></td></tr>
+  <tr><td>Consentement explicite sur tous les formulaires</td><td>Tester le formulaire d'inscription, de commande, de newsletter</td><td></td></tr>
+  <tr><td>Politique de confidentialite a jour</td><td>Relire et mettre a jour si changements</td><td></td></tr>
+  <tr><td>Droits des clients fonctionnels</td><td>Tester le processus de demande d'acces, de rectification et de suppression</td><td></td></tr>
+  <tr><td>EFVP pour tout nouveau partenaire/outil</td><td>Verifier que toute nouvelle integration a fait l'objet d'une EFVP</td><td></td></tr>
+  <tr><td>2FA actif sur tous les comptes admin</td><td>Verifier dans Securite > Sessions</td><td></td></tr>
+  <tr><td>Sauvegardes chiffrees fonctionnelles</td><td>Tester la restauration (voir page Sauvegardes)</td><td></td></tr>
+  <tr><td>Pas de donnees de carte stockees</td><td>Verifier avec Stripe que tout passe par tokenisation</td><td></td></tr>
+  <tr><td>Formation equipe sur la protection des RP</td><td>Chaque employe doit comprendre ses obligations</td><td></td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>2FA</strong></td><td>Two-Factor Authentication, authentification a deux facteurs</td></tr>
+  <tr><td><strong>Chiffrement</strong></td><td>Processus rendant les donnees illisibles sans la cle de dechiffrement</td></tr>
+  <tr><td><strong>Force brute</strong></td><td>Attaque essayant toutes les combinaisons de mot de passe</td></tr>
+  <tr><td><strong>Session</strong></td><td>Periode de connexion d'un utilisateur</td></tr>
+  <tr><td><strong>HTTPS</strong></td><td>Protocole de communication chiffre (le cadenas dans la barre d'adresse)</td></tr>
+  <tr><td><strong>Loi 25</strong></td><td>Loi quebecoise sur la protection des renseignements personnels</td></tr>
+  <tr><td><strong>LPRPDE</strong></td><td>Loi federale canadienne sur la protection des donnees</td></tr>
+  <tr><td><strong>Breach</strong></td><td>Fuite ou acces non autorise a des donnees</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/employes">Utilisateurs</a> : Comptes a securiser</li>
+<li><a href="/admin/permissions">Roles</a> : Permissions d'acces</li>
+<li><a href="/admin/logs">Audit Logs</a> : Journal des actions</li>
+<li><a href="/admin/backups">Sauvegardes</a> : Protection des donnees</li>
+<li><a href="/admin/parametres">Parametres</a> : Configuration generale</li>
+</ul>
+
+</div>
+<div class="page-break"></div>
+<div id="12-systeme--10-sauvegardes">
+<h1>Sauvegardes (Backups)</h1>
+
+<blockquote>
+<p><strong>Section</strong>: Systeme > Aurelia > Sauvegardes</p>
+<p><strong>URL</strong>: <code>/admin/backups</code></p>
+<p><strong>Niveau</strong>: Intermediaire</p>
+<p><strong>Temps de lecture</strong>: ~15 minutes</p>
+</blockquote>
+
+<hr>
+
+<h2>A quoi sert cette page ?</h2>
+
+<p>La page <strong>Sauvegardes</strong> gere la protection des donnees de BioCycle Peptides contre la perte accidentelle, les pannes techniques ou les incidents de securite. Des sauvegardes regulieres et automatiques garantissent que vous pouvez toujours recuperer vos donnees.</p>
+
+<p><strong>En tant qu'administrateur, vous pouvez :</strong></p>
+<ul>
+<li>Voir l'historique des sauvegardes effectuees</li>
+<li>Lancer une sauvegarde manuelle</li>
+<li>Telecharger une sauvegarde</li>
+<li>Restaurer une sauvegarde precedente</li>
+<li>Configurer la frequence des sauvegardes automatiques</li>
+<li>Verifier l'integrite des sauvegardes</li>
+</ul>
+
+<hr>
+
+<h2>Concepts de base pour les debutants</h2>
+
+<h3>Pourquoi sauvegarder ?</h3>
+
+<p>Les donnees sont l'actif le plus precieux de votre entreprise. Sans sauvegarde, vous risquez de perdre :</p>
+<ul>
+<li>Toutes vos commandes et l'historique des ventes</li>
+<li>Les fiches contacts et l'historique CRM</li>
+<li>La comptabilite complete</li>
+<li>Les parametres et configurations</li>
+</ul>
+
+<p>Les causes de perte possibles :</p>
+<ul>
+<li><strong>Panne materielle</strong> : disque dur qui tombe en panne</li>
+<li><strong>Erreur humaine</strong> : suppression accidentelle de donnees</li>
+<li><strong>Cyberattaque</strong> : ransomware chiffrant vos donnees</li>
+<li><strong>Bug logiciel</strong> : corruption de la base de donnees</li>
+</ul>
+
+<h3>Regle du 3-2-1</h3>
+
+<p>La bonne pratique universelle :</p>
+<ul>
+<li><strong>3</strong> copies des donnees</li>
+<li><strong>2</strong> supports differents (serveur + cloud)</li>
+<li><strong>1</strong> copie hors site (dans un autre lieu physique)</li>
+</ul>
+
+<hr>
+
+<h2>Comment y acceder</h2>
+
+<ol>
+<li>Systeme > groupe <strong>Aurelia</strong> > <strong>Sauvegardes</strong></li>
+<li>URL directe : <code>/admin/backups</code></li>
+</ol>
+
+<hr>
+
+<h2>Vue d'ensemble de l'interface</h2>
+
+<h3>1. L'etat des sauvegardes</h3>
+
+<p>En haut de la page, un resume :</p>
+
+<table>
+<thead>
+    <tr><th>Indicateur</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Derniere sauvegarde</strong></td><td>Date et heure de la derniere sauvegarde reussie</td></tr>
+  <tr><td><strong>Prochaine sauvegarde</strong></td><td>Date et heure de la prochaine sauvegarde planifiee</td></tr>
+  <tr><td><strong>Taille</strong></td><td>Taille de la derniere sauvegarde</td></tr>
+  <tr><td><strong>Statut</strong></td><td>Reussi, en cours, ou echec</td></tr>
+</tbody>
+</table>
+<h3>2. L'historique des sauvegardes</h3>
+
+<table>
+<thead>
+    <tr><th>Colonne</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Date</strong></td><td>Quand la sauvegarde a ete effectuee</td></tr>
+  <tr><td><strong>Type</strong></td><td>Automatique ou manuelle</td></tr>
+  <tr><td><strong>Taille</strong></td><td>Volume de donnees sauvegardees</td></tr>
+  <tr><td><strong>Statut</strong></td><td>Succes ou echec</td></tr>
+  <tr><td><strong>Actions</strong></td><td>Telecharger, restaurer, supprimer</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Fonctionnalites detaillees</h2>
+
+<h3>1. Sauvegarde automatique</h3>
+
+<p>Le systeme effectue des sauvegardes automatiques selon ce calendrier :</p>
+
+<table>
+<thead>
+    <tr><th>Frequence</th><th>Heure</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Quotidienne</strong></td><td>3h00 AM</td><td>Sauvegarde complete de la base de donnees</td></tr>
+  <tr><td><strong>Bi-quotidienne</strong></td><td>8h00 AM + 8h00 PM</td><td>Sauvegarde de la base de donnees</td></tr>
+  <tr><td><strong>Hebdomadaire</strong></td><td>Dimanche 4h00 AM</td><td>Sauvegarde complete (code + donnees)</td></tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note</strong> : Les sauvegardes s'executent en arriere-plan sans affecter les performances du site.</p>
+</blockquote>
+
+<h3>2. Lancer une sauvegarde manuelle</h3>
+
+<p><strong>Quand</strong> : Avant une operation risquee (mise a jour, migration, modification massive).</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Sauvegarder maintenant</strong></li>
+<li>Selectionnez le type :</li>
+</ol>
+<ul>
+<li><strong>Base de donnees</strong> : uniquement les donnees</li>
+<li><strong>Complete</strong> : donnees + fichiers (images, documents)</li>
+</ul>
+<ol>
+<li>Attendez la fin du processus (barre de progression)</li>
+<li>La sauvegarde apparait dans l'historique</li>
+</ol>
+
+<h3>3. Telecharger une sauvegarde</h3>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Trouvez la sauvegarde souhaitee dans l'historique</li>
+<li>Cliquez sur <strong>Telecharger</strong></li>
+<li>Le fichier est telecharge (format compresse)</li>
+<li>Conservez-le dans un endroit securise (disque externe, cloud)</li>
+</ol>
+
+<h3>4. Restaurer une sauvegarde</h3>
+
+<p><strong>Quand</strong> : En cas de perte de donnees ou de corruption.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Trouvez la sauvegarde a restaurer</li>
+<li>Cliquez sur <strong>Restaurer</strong></li>
+<li>Le systeme affiche un avertissement : la restauration remplace les donnees actuelles</li>
+<li>Confirmez en tapant "RESTAURER"</li>
+<li>Le processus demarre (peut prendre plusieurs minutes)</li>
+<li>Le site sera temporairement indisponible pendant la restauration</li>
+</ol>
+
+<blockquote>
+<p><strong>Attention</strong> : La restauration remplace TOUTES les donnees actuelles par celles de la sauvegarde. Les transactions effectuees entre la sauvegarde et la restauration seront perdues. Faites une sauvegarde des donnees actuelles AVANT de restaurer.</p>
+</blockquote>
+
+<h3>5. Verifier l'integrite</h3>
+
+<p><strong>Objectif</strong> : S'assurer qu'une sauvegarde est lisible et complete.</p>
+
+<p><strong>Etapes</strong> :</p>
+<ol>
+<li>Cliquez sur <strong>Verifier</strong> a cote d'une sauvegarde</li>
+<li>Le systeme teste la lisibilite et l'integrite du fichier</li>
+<li>Resultat : OK (sauvegarde valide) ou Erreur (sauvegarde corrompue)</li>
+</ol>
+
+<hr>
+
+<h2>Bonnes pratiques</h2>
+
+<h3>A faire</h3>
+<ul>
+<li>Verifier regulierement que les sauvegardes automatiques fonctionnent</li>
+<li>Telecharger une copie mensuelle sur un support externe</li>
+<li>Tester la restauration au moins une fois par an (sur un environnement de test)</li>
+<li>Sauvegarder manuellement avant toute operation majeure</li>
+</ul>
+
+<h3>A ne pas faire</h3>
+<ul>
+<li>Ne pas compter uniquement sur les sauvegardes automatiques sans verifier</li>
+<li>Ne pas stocker les sauvegardes uniquement sur le meme serveur que l'application</li>
+<li>Ne pas ignorer les alertes de sauvegarde echouee</li>
+</ul>
+
+<hr>
+
+<h2>Questions frequentes (FAQ)</h2>
+
+<p><strong>Q : Combien de sauvegardes sont conservees ?</strong></p>
+<p>R : Par defaut : 7 quotidiennes, 4 hebdomadaires et 3 mensuelles. Les plus anciennes sont supprimees automatiquement.</p>
+
+<p><strong>Q : Les sauvegardes incluent-elles les fichiers uploades (images produits, etc.) ?</strong></p>
+<p>R : Les sauvegardes completes (hebdomadaires) incluent tout. Les sauvegardes quotidiennes incluent uniquement la base de donnees.</p>
+
+<p><strong>Q : La restauration affecte-t-elle les paiements Stripe ?</strong></p>
+<p>R : Non. Stripe garde sa propre copie des paiements. La restauration ne remet pas les paiements Stripe a un etat precedent. Cependant, vous pourriez voir des incoherences temporaires entre Koraline et Stripe.</p>
+
+<p><strong>Q : Puis-je restaurer partiellement (juste un client, juste une commande) ?</strong></p>
+<p>R : Non, la restauration est globale. Pour recuperer des donnees specifiques, exportez-les depuis la sauvegarde et importez-les manuellement.</p>
+
+<hr>
+
+<h2>Strategie expert : Politique de sauvegarde complete pour un e-commerce de peptides</h2>
+
+<h3>Regle 3-2-1 detaillee pour BioCycle Peptides</h3>
+
+<p>La regle 3-2-1 est le standard de l'industrie pour la protection des donnees. Voici son application concrete pour BioCycle Peptides :</p>
+
+<p><strong>3 copies des donnees :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Copie</th><th>Emplacement</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Copie 1 (primaire)</strong></td><td>Azure PostgreSQL Flexible Server</td><td>Base de donnees de production</td><td>La copie active, utilisee par le site en temps reel</td></tr>
+  <tr><td><strong>Copie 2 (locale)</strong></td><td>Serveur de backup Azure Storage (ou AWS S3)</td><td>Dump PostgreSQL chiffre</td><td>Sauvegarde automatique, meme region Azure</td></tr>
+  <tr><td><strong>Copie 3 (hors site)</strong></td><td>Support physique ou cloud secondaire (ex: Google Cloud Storage, disque externe chiffre)</td><td>Copie hors site</td><td>Protection contre la perte du centre de donnees principal</td></tr>
+</tbody>
+</table>
+<p><strong>2 supports differents :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Support</th><th>Exemples</th><th>Avantage</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Support 1</strong></td><td>Stockage cloud (Azure Blob Storage, AWS S3)</td><td>Haute disponibilite, acces rapide, redondance geographique</td></tr>
+  <tr><td><strong>Support 2</strong></td><td>Disque externe chiffre OU cloud secondaire d'un autre fournisseur</td><td>Protection contre la faillite/panne d'un fournisseur unique</td></tr>
+</tbody>
+</table>
+<p><strong>1 copie hors site :</strong></p>
+<p>La copie hors site doit etre dans un lieu physiquement different du datacenter principal. Pour BioCycle heberge sur Azure Canada Central (Toronto), la copie hors site peut etre :</p>
+<ul>
+<li>Azure Canada East (Quebec City)</li>
+<li>Un fournisseur cloud alternatif (AWS Montreal, Google Cloud Montreal)</li>
+<li>Un disque externe chiffre conserve dans un lieu securise hors bureau</li>
+</ul>
+
+<h3>Frequence de sauvegarde recommandee</h3>
+
+<table>
+<thead>
+    <tr><th>Type de donnees</th><th>Frequence</th><th>Heure</th><th>Retention</th><th>Justification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Base de donnees PostgreSQL</strong></td><td>2x par jour</td><td>8h00 + 20h00 EST</td><td>30 jours quotidiennes + 12 mois mensuelles</td><td>Les commandes et transactions arrivent tout au long de la journee</td></tr>
+  <tr><td><strong>Fichiers uploades</strong> (images produits, documents, CoA)</td><td>1x par jour</td><td>3h00 EST</td><td>90 jours</td><td>Changent moins souvent que la BD, mais sont irreplacables</td></tr>
+  <tr><td><strong>Configuration systeme</strong> (schema Prisma, .env, parametres)</td><td>A chaque changement</td><td>Immediate (hook git ou script)</td><td>Illimite (versionne dans git)</td><td>Un changement de config peut casser le site</td></tr>
+  <tr><td><strong>Code source</strong></td><td>Continue (git)</td><td>A chaque commit</td><td>Illimite (historique git complet)</td><td>Deja gere par GitHub</td></tr>
+  <tr><td><strong>Sauvegarde complete</strong> (BD + fichiers + config)</td><td>Hebdomadaire</td><td>Dimanche 4h00 EST</td><td>12 mois</td><td>Pour les restaurations completes</td></tr>
+</tbody>
+</table>
+<h3>Test de restauration mensuel obligatoire</h3>
+
+<p>Une sauvegarde non testee est une sauvegarde qui n'existe pas. Chaque mois, effectuer un test de restauration complet :</p>
+
+<p><strong>Procedure de test mensuel :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Etape</th><th>Action</th><th>Critere de succes</th></tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>Selectionner la sauvegarde la plus recente</td><td>Le fichier existe et est accessible</td></tr>
+  <tr><td>2</td><td>Verifier l'integrite du fichier (checksum SHA-256)</td><td>Le checksum correspond a celui enregistre lors de la sauvegarde</td></tr>
+  <tr><td>3</td><td>Restaurer sur un environnement de test (pas la production)</td><td>La restauration se termine sans erreur</td></tr>
+  <tr><td>4</td><td>Verifier les donnees : compter les commandes, clients, produits</td><td>Les compteurs correspondent aux valeurs attendues</td></tr>
+  <tr><td>5</td><td>Tester les fonctionnalites critiques : connexion, catalogue, panier</td><td>Le site fonctionne normalement</td></tr>
+  <tr><td>6</td><td>Documenter le resultat dans le registre de test</td><td>Date, duree, resultat, observations</td></tr>
+</tbody>
+</table>
+<p><strong>Frequence des tests :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Type de test</th><th>Frequence</th><th>Duree estimee</th></tr>
+</thead>
+<tbody>
+  <tr><td>Test d'integrite (checksum)</td><td>Hebdomadaire (automatise)</td><td>< 1 minute</td></tr>
+  <tr><td>Restauration partielle (BD seule sur env test)</td><td>Mensuelle</td><td>30-60 minutes</td></tr>
+  <tr><td>Restauration complete (BD + fichiers sur env test)</td><td>Trimestrielle</td><td>2-4 heures</td></tr>
+  <tr><td>Test de reprise apres sinistre (DR drill)</td><td>Annuelle</td><td>1 journee</td></tr>
+</tbody>
+</table>
+<h3>RTO et RPO cibles</h3>
+
+<p>Le RTO (Recovery Time Objective) et le RPO (Recovery Point Objective) definissent les engagements de l'entreprise en cas de sinistre.</p>
+
+<table>
+<thead>
+    <tr><th>Metrique</th><th>Definition</th><th>Cible BioCycle</th><th>Justification</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>RPO</strong></td><td>Duree maximale de donnees perdues</td><td>< 1 heure</td><td>Avec 2 sauvegardes BD par jour (8h + 20h), le pire cas est la perte de 12 heures de donnees. Pour atteindre un RPO < 1h, activer la replication continue Azure PostgreSQL (point-in-time recovery).</td></tr>
+  <tr><td><strong>RTO</strong></td><td>Duree maximale d'indisponibilite</td><td>< 4 heures</td><td>Temps pour detecter le probleme (monitoring), decider de restaurer, executer la restauration et verifier.</td></tr>
+</tbody>
+</table>
+<p><strong>Plan d'action par type de sinistre :</strong></p>
+
+<table>
+<thead>
+    <tr><th>Sinistre</th><th>RPO reel</th><th>RTO reel</th><th>Actions</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Erreur humaine</strong> (suppression accidentelle de donnees)</td><td>< 1h (point-in-time recovery Azure)</td><td>< 30 min</td><td>Restauration selective depuis le point-in-time recovery</td></tr>
+  <tr><td><strong>Corruption de base de donnees</strong></td><td>< 12h (derniere sauvegarde)</td><td>< 2h</td><td>Restauration complete depuis la derniere sauvegarde valide</td></tr>
+  <tr><td><strong>Ransomware / cyberattaque</strong></td><td>< 12h</td><td>< 4h</td><td>Isoler le systeme, restaurer depuis la copie hors site, changer tous les mots de passe</td></tr>
+  <tr><td><strong>Panne du datacenter Azure</strong></td><td>0 (replication si activee)</td><td>< 1h (failover automatique)</td><td>Basculement vers la region secondaire</td></tr>
+  <tr><td><strong>Perte totale</strong> (incendie, catastrophe)</td><td>< 24h (copie hors site)</td><td>< 8h</td><td>Reconstruction complete depuis la copie hors site + deploiement GitHub</td></tr>
+</tbody>
+</table>
+<h3>Chiffrement des sauvegardes</h3>
+
+<p>Toutes les sauvegardes doivent etre chiffrees, au repos et en transit :</p>
+
+<table>
+<thead>
+    <tr><th>Element</th><th>Methode de chiffrement</th><th>Cle</th></tr>
+</thead>
+<tbody>
+  <tr><td>Sauvegarde BD en transit</td><td>TLS 1.3 (Azure PostgreSQL force le SSL)</td><td>Certificat Azure</td></tr>
+  <tr><td>Sauvegarde BD au repos (Azure)</td><td>AES-256 (chiffrement transparent Azure)</td><td>Cle geree par Azure (ou cle client via Azure Key Vault)</td></tr>
+  <tr><td>Copie hors site</td><td>AES-256 avec cle symetrique</td><td>Cle stockee separement de la sauvegarde (jamais au meme endroit)</td></tr>
+  <tr><td>Disque externe</td><td>BitLocker (Windows) ou FileVault (macOS)</td><td>Mot de passe + cle de recuperation imprimee et stockee en coffre</td></tr>
+</tbody>
+</table>
+<h3>Alertes et monitoring des sauvegardes</h3>
+
+<p>Ne jamais compter sur la memoire humaine pour verifier les sauvegardes. Configurer des alertes automatiques :</p>
+
+<table>
+<thead>
+    <tr><th>Alerte</th><th>Condition</th><th>Action</th><th>Severite</th></tr>
+</thead>
+<tbody>
+  <tr><td>Sauvegarde echouee</td><td>Le job de sauvegarde retourne une erreur</td><td>Email + SMS au responsable technique</td><td>Critique</td></tr>
+  <tr><td>Sauvegarde manquante</td><td>Aucune sauvegarde depuis > 14h (pour les bi-quotidiennes)</td><td>Email au responsable</td><td>Haute</td></tr>
+  <tr><td>Espace de stockage faible</td><td>< 20% d'espace restant sur le stockage de sauvegardes</td><td>Email au responsable</td><td>Moyenne</td></tr>
+  <tr><td>Taille anormale</td><td>La sauvegarde est 50% plus petite que la precedente (possible corruption)</td><td>Email au responsable</td><td>Haute</td></tr>
+  <tr><td>Test de restauration en retard</td><td>Aucun test depuis > 35 jours</td><td>Email au responsable</td><td>Moyenne</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Glossaire</h2>
+
+<table>
+<thead>
+    <tr><th>Terme</th><th>Definition</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>Sauvegarde</strong></td><td>Copie des donnees a un moment precis</td></tr>
+  <tr><td><strong>Restauration</strong></td><td>Remplacement des donnees actuelles par une sauvegarde</td></tr>
+  <tr><td><strong>Integrite</strong></td><td>Validite et completude d'une sauvegarde</td></tr>
+  <tr><td><strong>Sauvegarde incrementale</strong></td><td>Copie uniquement des changements depuis la derniere sauvegarde</td></tr>
+  <tr><td><strong>Sauvegarde complete</strong></td><td>Copie de toutes les donnees</td></tr>
+  <tr><td><strong>Regle 3-2-1</strong></td><td>3 copies, 2 supports, 1 hors site</td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2>Pages reliees</h2>
+
+<ul>
+<li><a href="/admin/securite">Securite</a> : Protection des donnees</li>
+<li><a href="/admin/logs">Audit Logs</a> : Tracabilite des actions</li>
+<li><a href="/admin/parametres">Parametres</a> : Configuration generale</li>
+<li><a href="/admin/monitoring">Monitoring</a> : Surveillance du systeme</li>
+</ul>
+
+</div>
+
+<div class="doc-footer">
+  <span class="brand">BioCycle Peptides</span> &mdash; Suite Koraline &mdash; Guide Utilisateur<br>
+  Document genere le 2026-03-20 &mdash; Version 1.0<br>
+  &copy; 2026 BioCycle Peptides Inc. Tous droits reserves.
+</div>
+</body>
+</html>
