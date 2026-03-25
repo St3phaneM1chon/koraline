@@ -28,13 +28,21 @@ interface DashboardStats {
   }>;
 }
 
+// FIX P3: Use static Tailwind classes (dynamic interpolation doesn't work with purge)
+const colorClasses: Record<string, { bg: string; text: string }> = {
+  primary: { bg: 'bg-blue-100', text: 'text-blue-600' },
+  success: { bg: 'bg-green-100', text: 'text-green-600' },
+  destructive: { bg: 'bg-red-100', text: 'text-red-600' },
+};
+
 function StatCard({ icon: Icon, label, value, sublabel, color = 'primary' }: {
   icon: typeof Users; label: string; value: string | number; sublabel?: string; color?: string;
 }) {
+  const cc = colorClasses[color] ?? colorClasses.primary;
   return (
     <div className="rounded-lg border p-4">
       <div className="flex items-center gap-3">
-        <div className={`p-2 rounded-lg bg-${color}/10`}><Icon className={`h-5 w-5 text-${color}`} /></div>
+        <div className={`p-2 rounded-lg ${cc.bg}`}><Icon className={`h-5 w-5 ${cc.text}`} /></div>
         <div>
           <p className="text-2xl font-bold">{value}</p>
           <p className="text-sm text-muted-foreground">{label}</p>
