@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, type FormEvent } from 'react';
 import { useTranslations } from '@/hooks/useTranslations';
 import { PageHeader, Button, EmptyState, Modal, FormField, Input, Textarea, DataTable, type Column } from '@/components/admin';
 import { Plus, Package, Pencil, Trash2 } from 'lucide-react';
+import { ConfirmProvider, useConfirm } from '@/components/lms/ConfirmDialog';
 
 interface BundleRow {
   id: string;
@@ -29,7 +30,12 @@ interface BundleForm {
 const emptyForm: BundleForm = { name: '', slug: '', description: '', price: '', corporatePrice: '', courseIds: [] };
 
 export default function ForfaitsPage() {
+  return <ConfirmProvider><ForfaitsPageInner /></ConfirmProvider>;
+}
+
+function ForfaitsPageInner() {
   const { t } = useTranslations();
+  const { confirm: confirmDialog } = useConfirm();
   const [bundles, setBundles] = useState<BundleRow[]>([]);
   const [courses, setCourses] = useState<Array<{ id: string; title: string }>>([]);
   const [loading, setLoading] = useState(true);
@@ -98,7 +104,8 @@ export default function ForfaitsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Supprimer ce forfait?')) return;
+    const ok = await confirmDialog({ title: 'Supprimer le forfait', message: 'Cette action est irreversible. Supprimer ce forfait?', destructive: true, confirmLabel: 'Supprimer' });
+    if (!ok) return;
     await fetch(`/api/admin/lms/bundles/${id}`, { method: 'DELETE' });
     fetchBundles();
   };
