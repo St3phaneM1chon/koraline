@@ -45,6 +45,15 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
     return apiError(`Users not in corporate account: ${invalidUsers.join(', ')}`, ErrorCode.VALIDATION_ERROR, { request, status: 400 });
   }
 
+  // V2 P0 FIX: Validate budget before enrollment
+  if (account.budgetAmount) {
+    const remaining = Number(account.budgetAmount) - Number(account.budgetUsed);
+    // Estimate cost (rough check — exact pricing resolved per item below)
+    if (remaining <= 0) {
+      return apiError('Corporate budget exhausted', ErrorCode.VALIDATION_ERROR, { request, status: 400 });
+    }
+  }
+
   const results = {
     enrollmentsCreated: 0,
     enrollmentsSkipped: 0,

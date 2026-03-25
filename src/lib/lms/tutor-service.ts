@@ -1428,19 +1428,23 @@ REGLES:
   // ── 9. Build conversation messages for Claude ────────────────────
   const claudeMessages: Array<{ role: string; content: string }> = [];
 
+  // V2 P0 FIX: Sanitize ALL messages (history + current) against prompt injection
+  // Expanded tag list to cover all context block names used in system prompt
+  const sanitizeForInjection = (text: string) =>
+    text.replace(/<\/?(?:student-profile|system|context|instructions|admin|knowledge|emotion-detected|provincial-context|tutor-mode|scaffolding|course-context|mastery-data)[^>]*>/gi, '')
+      .slice(0, 5000);
+
   // Add conversation history (last 20 messages for context window management)
   const recentHistory = conversationHistory.slice(-20);
   for (const msg of recentHistory) {
     claudeMessages.push({
       role: msg.role === 'user' ? 'user' : 'assistant',
-      content: msg.content,
+      content: msg.role === 'user' ? sanitizeForInjection(msg.content) : msg.content,
     });
   }
 
-  // Add the current user message (sanitized to prevent prompt injection via XML tags)
-  const sanitizedMessage = message
-    .replace(/<\/?(?:student-profile|system|context|instructions|admin)[^>]*>/gi, '')
-    .slice(0, 5000); // Max 5000 chars per message
+  // Add the current user message
+  const sanitizedMessage = sanitizeForInjection(message);
   claudeMessages.push({ role: 'user', content: sanitizedMessage });
 
   // Determine max tokens based on mode

@@ -60,6 +60,15 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
   if (type === 'course') {
     const course = await prisma.course.findFirst({ where: { id, tenantId } });
     if (!course) return NextResponse.json({ error: 'Course not found' }, { status: 404 });
+
+    // V2 P0 FIX: Check if already enrolled before creating payment
+    const existingEnrollment = await prisma.enrollment.findUnique({
+      where: { tenantId_courseId_userId: { tenantId, courseId: id, userId } },
+      select: { id: true, status: true },
+    });
+    if (existingEnrollment && existingEnrollment.status !== 'CANCELLED') {
+      return NextResponse.json({ error: 'Already enrolled in this course' }, { status: 409 });
+    }
     itemName = course.title;
     itemDescription = course.subtitle || course.description || '';
     isFree = course.isFree;

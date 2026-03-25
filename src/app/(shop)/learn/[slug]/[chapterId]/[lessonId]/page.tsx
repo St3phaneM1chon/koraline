@@ -99,6 +99,15 @@ export default async function LessonPage({ params }: PageProps) {
     redirect(`/learn/${slug}`);
   }
 
+  // V2 P0 FIX: Server-side sequential completion gate
+  if (course.requireSequentialCompletion && tenantId) {
+    const { canAccessLesson } = await import('@/lib/lms/lms-service');
+    const access = await canAccessLesson(tenantId, enrollment.id, lessonId);
+    if (!access.allowed) {
+      redirect(`/learn/${slug}?locked=true`);
+    }
+  }
+
   // Find the current lesson
   const currentChapter = course.chapters.find((ch) => ch.id === chapterId);
   if (!currentChapter) {
