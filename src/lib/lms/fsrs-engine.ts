@@ -40,7 +40,7 @@ export type Rating = 1 | 2 | 3 | 4; // Again, Hard, Good, Easy
  * Calcule la retrievability (probabilité de rappel) basée sur le temps écoulé
  */
 export function getRetrievability(stability: number, elapsedDays: number): number {
-  if (stability <= 0) return 0;
+  if (stability < 0.01) return 0; // FIX P2: guard very small stability
   return Math.pow(1 + elapsedDays / (9 * stability), -1);
 }
 
@@ -54,6 +54,11 @@ export function scheduleReview(
   weights: number[] = DEFAULT_WEIGHTS,
   desiredRetention: number = 0.9
 ): FsrsReviewResult {
+  // FIX P2: Validate weights array
+  if (weights.length < 19) {
+    throw new Error(`FSRS weights must have 19 elements, got ${weights.length}`);
+  }
+
   const elapsedDays = card.lastReview
     ? (now.getTime() - card.lastReview.getTime()) / (1000 * 60 * 60 * 24)
     : 0;
