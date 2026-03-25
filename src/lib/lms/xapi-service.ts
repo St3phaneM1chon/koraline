@@ -47,11 +47,15 @@ export async function recordStatement(params: {
   };
 }): Promise<void> {
   try {
+    // FIX P3: Validate verb is a known xAPI verb
+    const validVerbs = Object.keys(XAPI_VERBS);
+    const verb = validVerbs.includes(params.verb) ? params.verb : 'interacted';
+
     await prisma.xapiStatement.create({
       data: {
         tenantId: params.tenantId,
         actorId: params.actorId,
-        verb: params.verb,
+        verb,
         objectType: params.objectType,
         objectId: params.objectId,
         objectName: params.objectName ?? null,
@@ -76,7 +80,8 @@ export async function queryStatements(tenantId: string, options?: {
   limit?: number;
   offset?: number;
 }) {
-  const { actorId, verb, objectType, since, until, limit = 50, offset = 0 } = options ?? {};
+  const { actorId, verb, objectType, since, until, limit: rawLimit = 50, offset = 0 } = options ?? {};
+  const limit = Math.min(Math.max(rawLimit, 1), 1000); // FIX P3: Cap limit
 
   return prisma.xapiStatement.findMany({
     where: {
