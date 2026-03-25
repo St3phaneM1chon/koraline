@@ -6668,7 +6668,18 @@
       "formationAnalytics": "Analytique",
       "formationReports": "Rapports",
       "formationSettings": "Parametres",
-      "formationPortal": "Portail"
+      "formationPortal": "Portail",
+      "formationCohorts": "Cohortes",
+      "formationRolePaths": "Parcours par role",
+      "formationLiveSessions": "Sessions en direct",
+      "formationQuestionBanks": "Banques de questions",
+      "formationTemplates": "Modeles de cours",
+      "formationGradebook": "Carnet de notes",
+      "formationXapi": "xAPI / Traces",
+      "formationRubrics": "Grilles evaluation",
+      "formationPeerReview": "Evaluation pairs",
+      "formationDrip": "Diffusion progressive",
+      "formationLti": "Outils LTI"
     },
     "tutorials": {
       "title": "Tutoriels",

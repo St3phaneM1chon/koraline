@@ -1,0 +1,74 @@
+'use client';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import { useState, useEffect, useCallback, type FormEvent } from 'react';
+import { PageHeader, Button, EmptyState, DataTable, type Column, Modal, FormField, Input } from '@/components/admin';
+import { Users, Plus } from 'lucide-react';
+
+export default function Page() {
+  const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [form, setForm] = useState<any>({});
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
+
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/admin/lms/cohorts`);
+      const json = await res.json();
+      const list = json.data?.grades ?? json.data?.statements ?? json.data ?? [];
+      setData(Array.isArray(list) ? list : []);
+    } catch { setData([]); }
+    finally { setLoading(false); }
+  }, []);
+
+  useEffect(() => { fetchData(); }, [fetchData]);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true); setError('');
+    try {
+      const res = await fetch('/api/admin/lms/cohorts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
+      if (!res.ok) throw new Error((await res.json()).message ?? 'Erreur');
+      setModalOpen(false); setForm({}); fetchData();
+    } catch (err: any) { setError(err.message); }
+    finally { setSubmitting(false); }
+  };
+
+  const columns: Column<any>[] = [
+    { key: 'cohorte', header: 'Cohorte', render: (row: any) => String(row.name) },
+    { key: 'debut', header: 'Debut', render: (row: any) => String(new Date(row.startsAt).toLocaleDateString('fr-CA')) },
+    { key: 'membres', header: 'Membres', render: (row: any) => String(row._count?.members ?? 0) },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <PageHeader title="Cohortes" subtitle=""
+        actions={<Button onClick={() => { setForm({}); setModalOpen(true); }}><Plus className="h-4 w-4 mr-2" /> Ajouter</Button>}
+      />
+
+      {loading ? (
+        <div className="text-center py-12 text-muted-foreground">Chargement...</div>
+      ) : data.length === 0 ? (
+        <EmptyState icon={Users} title="Aucune donnee" description="Ajoutez-en un pour commencer." />
+      ) : (
+        <DataTable columns={columns} data={data} keyExtractor={(r: any) => r.id} />
+      )}
+      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title="Ajouter">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {error && <p className="text-sm text-destructive">{error}</p>}
+          <FormField label="ID Cours"><Input value={form.courseId || ""} onChange={(e) => setForm((f: any) => ({ ...f, courseId: e.target.value }))} /></FormField>
+          <FormField label="Nom"><Input value={form.name || ""} onChange={(e) => setForm((f: any) => ({ ...f, name: e.target.value }))} /></FormField>
+          <FormField label="Debut"><Input type="datetime-local" value={form.startsAt || ""} onChange={(e) => setForm((f: any) => ({ ...f, startsAt: e.target.value }))} /></FormField>
+          <div className="flex justify-end gap-2">
+            <Button type="button" variant="outline" onClick={() => setModalOpen(false)}>Annuler</Button>
+            <Button type="submit" disabled={submitting}>{submitting ? 'En cours...' : 'Creer'}</Button>
+          </div>
+        </form>
+      </Modal>
+    </div>
+  );
+}
