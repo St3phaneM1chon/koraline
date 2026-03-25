@@ -33,12 +33,15 @@ export interface OpenBadgeAssertion {
   '@context': string[];
   type: string[];
   id: string;
-  recipient: { type: string; identity: string; hashed: boolean };
-  badge: OpenBadge;
-  issuedOn: string;
-  expires?: string;
+  issuer: { type: string[]; id: string; name: string; url: string };
+  validFrom: string;
+  validUntil?: string;
+  credentialSubject: {
+    type: string[];
+    identifier: Array<{ type: string; identityHash: string; identityType: string; hashed: boolean }>;
+    achievement: OpenBadge;
+  };
   evidence?: Array<{ id: string; name: string; description: string }>;
-  verification: { type: string };
 }
 
 /**
@@ -92,6 +95,7 @@ export function generateBadgeAssertion(params: {
     throw new Error('Valid recipient email required for badge assertion');
   }
 
+  // P11-10 FIX: Updated to proper Open Badges 3.0 / Verifiable Credentials 2.0 structure
   return {
     '@context': [
       'https://www.w3.org/ns/credentials/v2',
@@ -99,18 +103,25 @@ export function generateBadgeAssertion(params: {
     ],
     type: ['VerifiableCredential', 'OpenBadgeCredential'],
     id: `${SITE_URL}/api/lms/badges/assertions/${params.awardId}.json`,
-    recipient: {
-      type: 'email',
-      identity: `sha256$${hashEmail(params.recipientEmail)}`,
-      hashed: true,
+    issuer: {
+      type: ['Profile'],
+      id: `${SITE_URL}/api/lms/badges/issuer.json`,
+      name: SITE_NAME,
+      url: SITE_URL,
     },
-    badge: generateBadgeClass(params.badge),
-    issuedOn: params.issuedOn.toISOString(),
-    ...(params.expiresOn ? { expires: params.expiresOn.toISOString() } : {}),
+    validFrom: params.issuedOn.toISOString(),
+    ...(params.expiresOn ? { validUntil: params.expiresOn.toISOString() } : {}),
+    credentialSubject: {
+      type: ['AchievementSubject'],
+      identifier: [{
+        type: 'IdentityObject',
+        identityHash: `sha256$${hashEmail(params.recipientEmail)}`,
+        identityType: 'emailAddress',
+        hashed: true,
+      }],
+      achievement: generateBadgeClass(params.badge),
+    },
     ...(params.evidence ? { evidence: params.evidence } : {}),
-    verification: {
-      type: 'HostedBadge',
-    },
   };
 }
 

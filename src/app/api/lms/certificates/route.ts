@@ -44,39 +44,30 @@ export const GET = withUserGuard(async (_request: NextRequest, { session }) => {
       take: 100,
     });
 
-    // Enrich with course thumbnail by looking up the enrollment -> course
-    const enrichedCertificates = await Promise.all(
-      certificates.map(async (cert) => {
-        // Try to find the enrollment linked to this certificate to get the course thumbnail
-        let courseThumbnailUrl: string | null = null;
-        try {
-          const enrollment = await prisma.enrollment.findFirst({
-            where: { certificateId: cert.id, tenantId },
-            select: {
-              course: {
-                select: { thumbnailUrl: true },
-              },
-            },
-          });
-          courseThumbnailUrl = enrollment?.course?.thumbnailUrl ?? null;
-        } catch {
-          // Non-critical: thumbnail is optional
-        }
-
-        return {
-          id: cert.id,
-          courseTitle: cert.courseTitle,
-          studentName: cert.studentName,
-          issuedAt: cert.issuedAt,
-          expiresAt: cert.expiresAt,
-          verificationCode: cert.verificationCode,
-          status: cert.status,
-          pdfUrl: cert.pdfUrl,
-          qrCodeUrl: cert.qrCodeUrl,
-          courseThumbnailUrl,
-        };
-      })
+    // P11-11 FIX: Batch-fetch thumbnails (was N+1 individual queries)
+    const certIds = certificates.map(c => c.id);
+    const enrollments = certIds.length > 0
+      ? await prisma.enrollment.findMany({
+          where: { certificateId: { in: certIds }, tenantId },
+          select: { certificateId: true, course: { select: { thumbnailUrl: true } } },
+        })
+      : [];
+    const thumbnailMap = new Map(
+      enrollments.map(e => [e.certificateId, e.course?.thumbnailUrl ?? null])
     );
+
+    const enrichedCertificates = certificates.map(cert => ({
+      id: cert.id,
+      courseTitle: cert.courseTitle,
+      studentName: cert.studentName,
+      issuedAt: cert.issuedAt,
+      expiresAt: cert.expiresAt,
+      verificationCode: cert.verificationCode,
+      status: cert.status,
+      pdfUrl: cert.pdfUrl,
+      qrCodeUrl: cert.qrCodeUrl,
+      courseThumbnailUrl: thumbnailMap.get(cert.id) ?? null,
+    }));
 
     return NextResponse.json({ certificates: enrichedCertificates });
   } catch (error) {
