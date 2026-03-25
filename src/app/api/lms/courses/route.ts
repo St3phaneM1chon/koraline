@@ -21,8 +21,9 @@ export async function GET(request: NextRequest) {
   const categorySlug = searchParams.get('category') ?? undefined;
   const search = searchParams.get('search') ?? undefined;
   const level = searchParams.get('level') ?? undefined;
-  const page = parseInt(searchParams.get('page') ?? '1', 10);
-  const limit = Math.min(parseInt(searchParams.get('limit') ?? '12', 10), 50);
+  // FIX P2: NaN-safe parseInt with fallback
+  const page = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10) || 1);
+  const limit = Math.min(Math.max(1, parseInt(searchParams.get('limit') ?? '12', 10) || 12), 50);
 
   const where = {
     tenantId,
