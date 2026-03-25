@@ -35,11 +35,17 @@ export default function CoursesListPage() {
 
   const fetchCourses = useCallback(async () => {
     setLoading(true);
-    const res = await fetch('/api/admin/lms/courses?page=1&limit=50');
-    const data = await res.json();
-    setCourses(data.data?.courses ?? data.courses ?? []);
-    setTotal(data.data?.total ?? data.total ?? 0);
-    setLoading(false);
+    try {
+      const res = await fetch('/api/admin/lms/courses?page=1&limit=50');
+      const data = await res.json();
+      setCourses(data.data?.courses ?? data.courses ?? []);
+      setTotal(data.data?.total ?? data.total ?? 0);
+    } catch {
+      setCourses([]);
+      setTotal(0);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => { fetchCourses(); }, [fetchCourses]);
