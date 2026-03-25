@@ -21,11 +21,15 @@ export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
   const tenantId = session.user.tenantId;
   const { searchParams } = new URL(request.url);
   const courseId = searchParams.get('courseId');
+  const page = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10) || 1);
+  const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') ?? '50', 10) || 50));
 
   const cohorts = await prisma.lmsCohort.findMany({
     where: { tenantId, ...(courseId ? { courseId } : {}), isActive: true },
     include: { _count: { select: { members: true } } },
     orderBy: { startsAt: 'desc' },
+    take: limit,
+    skip: (page - 1) * limit,
   });
 
   return apiSuccess(cohorts, { request });
@@ -37,6 +41,10 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
   const parsed = createSchema.safeParse(body);
 
   if (!parsed.success) return apiError('Validation failed', ErrorCode.VALIDATION_ERROR, { request });
+
+  if (parsed.data.endsAt && new Date(parsed.data.endsAt) <= new Date(parsed.data.startsAt)) {
+    return apiError('End date must be after start date', ErrorCode.VALIDATION_ERROR, { request, status: 400 });
+  }
 
   const { memberUserIds, ...cohortData } = parsed.data;
 

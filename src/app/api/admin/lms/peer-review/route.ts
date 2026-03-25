@@ -22,6 +22,8 @@ export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
   const tenantId = session.user.tenantId;
   const { searchParams } = new URL(request.url);
   const courseId = searchParams.get('courseId');
+  const page = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10) || 1);
+  const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') ?? '50', 10) || 50));
 
   const assignments = await prisma.peerReviewAssignment.findMany({
     where: { tenantId, ...(courseId ? { courseId } : {}), isActive: true },
@@ -30,6 +32,8 @@ export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
       rubric: { select: { id: true, name: true } },
     },
     orderBy: { createdAt: 'desc' },
+    take: limit,
+    skip: (page - 1) * limit,
   });
 
   return apiSuccess(assignments, { request });
@@ -41,6 +45,10 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
   const parsed = createSchema.safeParse(body);
 
   if (!parsed.success) return apiError('Validation failed', ErrorCode.VALIDATION_ERROR, { request });
+
+  if (parsed.data.deadline && new Date(parsed.data.deadline) < new Date()) {
+    return apiError('Deadline must be in the future', ErrorCode.VALIDATION_ERROR, { request, status: 400 });
+  }
 
   const assignment = await prisma.peerReviewAssignment.create({
     data: {

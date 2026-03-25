@@ -1819,22 +1819,24 @@ async function handleLmsRefund(charge: Stripe.Charge): Promise<boolean> {
       return true;
     }
 
-    if (isFullRefund) {
-      // Full refund: suspend all enrollments from this bundle + decrement enrollmentCount
-      for (const enrollmentId of bundleOrder.enrollmentIds) {
-        const enrollment = await prisma.enrollment.update({
-          where: { id: enrollmentId },
-          data: { status: 'SUSPENDED' },
-          select: { courseId: true },
-        }).catch(() => null); // Some enrollments may not exist anymore
-        if (enrollment?.courseId) {
-          await prisma.$executeRaw`UPDATE "Course" SET "enrollmentCount" = GREATEST("enrollmentCount" - 1, 0) WHERE id = ${enrollment.courseId}`.catch(() => {}); // Non-blocking
+    await prisma.$transaction(async (tx) => {
+      if (isFullRefund) {
+        // Full refund: suspend all enrollments from this bundle + decrement enrollmentCount
+        for (const enrollmentId of bundleOrder.enrollmentIds) {
+          const enrollment = await tx.enrollment.update({
+            where: { id: enrollmentId },
+            data: { status: 'SUSPENDED' },
+            select: { courseId: true },
+          }).catch(() => null); // Some enrollments may not exist anymore
+          if (enrollment?.courseId) {
+            await tx.$executeRaw`UPDATE "Course" SET "enrollmentCount" = GREATEST("enrollmentCount" - 1, 0) WHERE id = ${enrollment.courseId}`.catch(() => {}); // Non-blocking
+          }
         }
       }
-    }
-    await prisma.courseBundleOrder.update({
-      where: { id: bundleOrder.id },
-      data: { status: isFullRefund ? 'refunded' : 'partial_refund' },
+      await tx.courseBundleOrder.update({
+        where: { id: bundleOrder.id },
+        data: { status: isFullRefund ? 'refunded' : 'partial_refund' },
+      });
     });
     logger.info(`[LMS Refund] Bundle ${isFullRefund ? 'fully refunded' : 'partially refunded'}`, { bundleOrderId: bundleOrder.id, count: bundleOrder.enrollmentIds.length });
     return true;

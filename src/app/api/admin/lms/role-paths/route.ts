@@ -24,6 +24,9 @@ const createSchema = z.object({
 
 export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
   const tenantId = session.user.tenantId;
+  const { searchParams } = new URL(request.url);
+  const page = Math.max(1, parseInt(searchParams.get('page') ?? '1', 10) || 1);
+  const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') ?? '50', 10) || 50));
 
   const paths = await prisma.lmsRolePath.findMany({
     where: { tenantId, isActive: true },
@@ -32,6 +35,8 @@ export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
       _count: { select: { steps: true } },
     },
     orderBy: { name: 'asc' },
+    take: limit,
+    skip: (page - 1) * limit,
   });
 
   return apiSuccess(paths, { request });
