@@ -78,9 +78,12 @@ export const GET = withUserGuard(async (request: NextRequest, { session }) => {
 
   const myEntry = leaderboard.find(e => e.userId === session.user.id);
 
+  // P8-06 FIX: Strip userId from response to avoid leaking raw IDs
+  const sanitized = leaderboard.map(({ userId: _uid, ...rest }) => rest);
+
   return NextResponse.json({
     data: {
-      leaderboard,
+      leaderboard: sanitized,
       myRank: myEntry?.rank ?? null,
       period,
       source: 'materialized',

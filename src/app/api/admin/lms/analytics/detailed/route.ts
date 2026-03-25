@@ -172,7 +172,7 @@ export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
   const atRiskUsers = atRiskUserIds.length > 0
     ? await prisma.user.findMany({
         where: { id: { in: atRiskUserIds }, tenantId },
-        select: { id: true, name: true, email: true },
+        select: { id: true, name: true },
       })
     : [];
   const userMap = new Map(atRiskUsers.map(u => [u.id, u]));
@@ -190,7 +190,7 @@ export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
       const user = userMap.get(e.userId);
       return {
         studentId: e.userId,
-        studentName: user?.name ?? user?.email ?? 'N/A',
+        studentName: user?.name ?? 'Utilisateur',
         courseTitle: e.course.title,
         progress: Number(e.progress),
         deadline: e.complianceDeadline!.toISOString(),
@@ -249,14 +249,14 @@ export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
   const eventUsers = eventUserIds.size > 0
     ? await prisma.user.findMany({
         where: { id: { in: [...eventUserIds] }, tenantId },
-        select: { id: true, name: true, email: true },
+        select: { id: true, name: true },
       })
     : [];
   const eventUserMap = new Map(eventUsers.map(u => [u.id, u]));
 
   const getUserName = (userId: string) => {
     const u = eventUserMap.get(userId);
-    return u?.name ?? u?.email ?? 'N/A';
+    return u?.name ?? 'Utilisateur';
   };
 
   type ActivityEvent = {

@@ -13,7 +13,13 @@ const createSchema = z.object({
   unlockType: z.enum(['delay', 'date']),
   delayDays: z.number().int().min(0).optional(),
   unlockDate: z.string().datetime().optional(),
-});
+}).refine(
+  (data) => data.unlockType !== 'delay' || (data.delayDays !== undefined && data.delayDays !== null),
+  { message: 'delayDays is required when unlockType is delay', path: ['delayDays'] },
+).refine(
+  (data) => data.unlockType !== 'date' || (data.unlockDate !== undefined && data.unlockDate !== null),
+  { message: 'unlockDate is required when unlockType is date', path: ['unlockDate'] },
+);
 
 export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
   const tenantId = session.user.tenantId;

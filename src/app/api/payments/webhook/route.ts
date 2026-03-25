@@ -1820,12 +1820,16 @@ async function handleLmsRefund(charge: Stripe.Charge): Promise<boolean> {
     }
 
     if (isFullRefund) {
-      // Full refund: suspend all enrollments from this bundle
+      // Full refund: suspend all enrollments from this bundle + decrement enrollmentCount
       for (const enrollmentId of bundleOrder.enrollmentIds) {
-        await prisma.enrollment.update({
+        const enrollment = await prisma.enrollment.update({
           where: { id: enrollmentId },
           data: { status: 'SUSPENDED' },
-        }).catch(() => {}); // Some enrollments may not exist anymore
+          select: { courseId: true },
+        }).catch(() => null); // Some enrollments may not exist anymore
+        if (enrollment?.courseId) {
+          await prisma.$executeRaw`UPDATE "Course" SET "enrollmentCount" = GREATEST("enrollmentCount" - 1, 0) WHERE id = ${enrollment.courseId}`.catch(() => {}); // Non-blocking
+        }
       }
     }
     await prisma.courseBundleOrder.update({

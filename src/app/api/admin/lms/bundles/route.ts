@@ -36,6 +36,15 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
 
   const { courseIds, ...bundleData } = parsed.data;
 
+  // P9-29 FIX: Verify all courseIds belong to the current tenant
+  const validCourses = await prisma.course.findMany({
+    where: { id: { in: courseIds }, tenantId },
+    select: { id: true },
+  });
+  if (validCourses.length !== courseIds.length) {
+    return apiError('One or more course IDs are invalid', ErrorCode.VALIDATION_ERROR, { request, status: 400 });
+  }
+
   const bundle = await prisma.courseBundle.create({
     data: {
       tenantId,
