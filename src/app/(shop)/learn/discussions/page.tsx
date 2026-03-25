@@ -2,7 +2,7 @@
 
 import { useState, useEffect, type FormEvent } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { MessageSquare, Send, Pin } from 'lucide-react';
+import { MessageSquare, Send, Pin, Lock } from 'lucide-react';
 import { useTranslations } from '@/hooks/useTranslations';
 
 export default function DiscussionsPage() {
@@ -85,12 +85,31 @@ export default function DiscussionsPage() {
                   <div className="flex items-start gap-2">
                     {d.isPinned && <Pin className="h-4 w-4 text-amber-500 flex-shrink-0 mt-1" />}
                     <div className="flex-1">
-                      <h3 className="font-medium">{d.title}</h3>
-                      <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{d.content}</p>
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-medium">{d.title}</h3>
+                        {d.isLocked && <Lock className="h-3 w-3 text-muted-foreground" />}
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-1">{d.content}</p>
                       <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
+                        <span className="font-medium">{d.authorName}</span>
                         <span>{d.replyCount} {t('lms.discussions.replies')}</span>
                         <span>{new Date(d.createdAt).toLocaleDateString('fr-CA')}</span>
                       </div>
+                      {/* P8-25: Show inline replies */}
+                      {d.replies && d.replies.length > 0 && (
+                        <div className="mt-3 pl-4 border-l-2 border-muted space-y-2">
+                          {d.replies.map((r: any) => (
+                            <div key={r.id} className="text-sm">
+                              <div className="flex items-center gap-2">
+                                <span className="font-medium text-xs">{r.authorName}</span>
+                                {r.isInstructor && <span className="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">Instructeur</span>}
+                                <span className="text-xs text-muted-foreground">{new Date(r.createdAt).toLocaleDateString('fr-CA')}</span>
+                              </div>
+                              <p className="text-muted-foreground mt-0.5">{r.content}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </li>
