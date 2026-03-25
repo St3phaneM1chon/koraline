@@ -40,6 +40,11 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
   const userId = session.user.id;
   const userEmail = session.user.email;
 
+  // FIX P2: Defense in depth — null check on userId
+  if (!userId) {
+    return NextResponse.json({ error: 'User ID not found in session' }, { status: 403 });
+  }
+
   // Check if user has a corporate account
   const corpEmployee = await prisma.corporateEmployee.findFirst({
     where: { tenantId, userId, isActive: true },
