@@ -74,6 +74,10 @@ export const PUT = withAdminGuard(async (request: NextRequest, { session, params
   const { questions, ...quizData } = parsed.data;
 
   const quiz = await prisma.$transaction(async (tx) => {
+    // P9-06 FIX: Verify ownership inside transaction (defense-in-depth)
+    const txQuiz = await tx.quiz.findFirst({ where: { id, tenantId }, select: { id: true } });
+    if (!txQuiz) throw new Error('Quiz not found');
+
     // Update quiz metadata
     await tx.quiz.update({
       where: { id },
