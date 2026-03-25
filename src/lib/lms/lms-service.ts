@@ -322,7 +322,7 @@ export async function updateLessonProgress(
   return progress;
 }
 
-async function recalculateEnrollmentProgress(enrollmentId: string) {
+export async function recalculateEnrollmentProgress(enrollmentId: string) {
   const enrollment = await prisma.enrollment.findUnique({
     where: { id: enrollmentId },
     include: { lessonProgress: true },
