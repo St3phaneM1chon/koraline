@@ -67,23 +67,23 @@ export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
     : 0;
 
   // --- Enrollment trend (last 12 months) ---
-  // Use raw query to group by month since groupBy on date doesn't aggregate by month
+  // P9-20 FIX: Use raw SQL GROUP BY month instead of loading all enrollments into memory
   const twelveMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 11, 1);
-  const allRecentEnrollments = await prisma.enrollment.findMany({
-    where: { tenantId, enrolledAt: { gte: twelveMonthsAgo } },
-    select: { enrolledAt: true },
-  });
+  const rawMonthly = await prisma.$queryRaw<Array<{ month: string; count: bigint }>>`
+    SELECT TO_CHAR("enrolledAt", 'YYYY-MM') as month, COUNT(*) as count
+    FROM "Enrollment"
+    WHERE "tenantId" = ${tenantId} AND "enrolledAt" >= ${twelveMonthsAgo}
+    GROUP BY TO_CHAR("enrolledAt", 'YYYY-MM')
+    ORDER BY month ASC
+  `;
+  const monthCountMap = new Map(rawMonthly.map(r => [r.month, Number(r.count)]));
 
-  // Aggregate by month
   const monthlyEnrollments: { month: string; count: number }[] = [];
   for (let i = 11; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
     const label = d.toLocaleDateString('fr-CA', { month: 'short', year: '2-digit' });
-    const count = allRecentEnrollments.filter(e => {
-      const ed = new Date(e.enrolledAt);
-      return ed.getFullYear() === d.getFullYear() && ed.getMonth() === d.getMonth();
-    }).length;
-    monthlyEnrollments.push({ month: label, count });
+    monthlyEnrollments.push({ month: label, count: monthCountMap.get(key) ?? 0 });
   }
 
   // --- Completion rate by course ---
