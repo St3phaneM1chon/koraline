@@ -1011,10 +1011,11 @@ function extractSessionState(
     }
   }
 
-  // Count questions from user and Aurelia
+  // V2 P2 FIX: Renamed for semantic clarity
+  // questionsAsked = student questions, questionsAnswered = Aurelia's Socratic questions
   for (const msg of history) {
     if (msg.role === 'user' && /\?/.test(msg.content)) questionsAsked++;
-    if (msg.role === 'assistant' && /\?/.test(msg.content)) questionsAnswered++;
+    if (msg.role === 'assistant' && /\?/.test(msg.content)) questionsAnswered++; // Aurelia's questions to student
   }
 
   return {
@@ -1519,7 +1520,7 @@ REGLES:
           userId,
           'emotion',
           `Émotion détectée pendant la session: ${emotion}`,
-          `Message: "${message.slice(0, 100)}" | Erreurs consécutives: ${sessionState.consecutiveErrors}`,
+          `Longueur message: ${message.length} chars | Erreurs consécutives: ${sessionState.consecutiveErrors}`,
           0.7,
           'ai_session',
           emotion === 'FRUSTRATED' || emotion === 'ANXIOUS' ? 'NEGATIVE'
