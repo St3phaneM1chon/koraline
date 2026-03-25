@@ -202,13 +202,40 @@ export const PQAP_GLOSSARY: PqapGlossaryTerm[] = [
 ];
 
 /** Search the glossary by query string (term or definition) */
+// FIX P3: Add fuzzy search fallback when exact match returns no results
 export function searchGlossary(query: string): PqapGlossaryTerm[] {
-  const lower = query.toLowerCase();
-  return PQAP_GLOSSARY.filter(t =>
+  const lower = query.toLowerCase().trim();
+  if (!lower) return [];
+
+  // Exact match first
+  const exact = PQAP_GLOSSARY.filter(t =>
     t.term.toLowerCase().includes(lower) ||
     t.definition.toLowerCase().includes(lower) ||
     t.id.includes(lower)
-  ).slice(0, 20);
+  );
+
+  if (exact.length > 0) return exact.slice(0, 20);
+
+  // Fuzzy fallback: trigram similarity
+  const scored = PQAP_GLOSSARY.map(t => {
+    const termLower = t.term.toLowerCase();
+    const score = trigramSimilarity(lower, termLower);
+    return { term: t, score };
+  }).filter(s => s.score > 0.2)
+    .sort((a, b) => b.score - a.score);
+
+  return scored.slice(0, 10).map(s => s.term);
+}
+
+function trigramSimilarity(a: string, b: string): number {
+  const trigramsA = new Set<string>();
+  const trigramsB = new Set<string>();
+  for (let i = 0; i <= a.length - 3; i++) trigramsA.add(a.slice(i, i + 3));
+  for (let i = 0; i <= b.length - 3; i++) trigramsB.add(b.slice(i, i + 3));
+  if (trigramsA.size === 0 || trigramsB.size === 0) return 0;
+  let intersection = 0;
+  for (const t of trigramsA) if (trigramsB.has(t)) intersection++;
+  return intersection / Math.max(trigramsA.size, trigramsB.size);
 }
 
 /** Get all terms in a given category */
