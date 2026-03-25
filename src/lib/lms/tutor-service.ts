@@ -1062,12 +1062,20 @@ async function getOrCreateSession(
   const lastReset = new Date(subscription.lastResetDate);
   const isNewDay = now.toDateString() !== lastReset.toDateString();
 
+  // Reset counter if new day (must happen before atomic limit check)
   if (isNewDay) {
     await prisma.aiTutorSubscription.update({
       where: { id: subscription.id },
       data: { questionsUsedToday: 0, lastResetDate: now },
     });
-  } else if (subscription.questionsUsedToday >= subscription.questionsPerDay) {
+  }
+
+  // Atomic check-and-increment to prevent TOCTOU race on daily limit
+  const updated = await prisma.aiTutorSubscription.updateMany({
+    where: { id: subscription.id, questionsUsedToday: { lt: subscription.questionsPerDay } },
+    data: { questionsUsedToday: { increment: 1 } },
+  });
+  if (updated.count === 0) {
     throw new Error('DAILY_LIMIT_REACHED');
   }
 
@@ -1496,11 +1504,7 @@ REGLES:
         },
       });
 
-      // Increment daily usage counter
-      await prisma.aiTutorSubscription.update({
-        where: { id: session.subscriptionId },
-        data: { questionsUsedToday: { increment: 1 } },
-      });
+      // Daily usage counter already incremented atomically in getOrCreateSession()
 
       // Increment totalInteractions on StudentProfile
       await prisma.studentProfile.updateMany({

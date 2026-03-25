@@ -34,17 +34,18 @@ export async function awardXp(
   const amount = customAmount ?? XP_VALUES[reason] ?? 0;
   if (amount === 0) return { amount: 0, newBalance: 0 };
 
-  // FIX P2: Deduplication — prevent double XP for same event
-  if (sourceId) {
-    const existing = await prisma.lmsXpTransaction.findFirst({
-      where: { tenantId, userId, sourceId },
-      select: { balance: true },
-    });
-    if (existing) return { amount: 0, newBalance: existing.balance };
-  }
+  // FIX P7-02: Dedup check INSIDE transaction to prevent race condition
+  // Returns null for dedup hit (no XP awarded), or the new balance number
+  const txResult = await prisma.$transaction(async (tx) => {
+    // Dedup check inside transaction to prevent double XP for same event
+    if (sourceId) {
+      const existing = await tx.lmsXpTransaction.findFirst({
+        where: { tenantId, userId, sourceId },
+        select: { balance: true },
+      });
+      if (existing) return { dedup: true as const, balance: existing.balance };
+    }
 
-  // FIX P1: Use transaction to prevent race condition on balance
-  const newBalance = await prisma.$transaction(async (tx) => {
     const lastTransaction = await tx.lmsXpTransaction.findFirst({
       where: { tenantId, userId },
       orderBy: { createdAt: 'desc' },
@@ -65,14 +66,20 @@ export async function awardXp(
       },
     });
 
-    return balance;
+    return { dedup: false as const, balance };
   });
 
-  // Update leaderboard (non-blocking, create if missing)
-  await prisma.lmsLeaderboard.updateMany({
-    where: { tenantId, userId },
-    data: { totalPoints: newBalance },
-  }).catch((e) => { if (typeof console !== "undefined") console.warn("[LMS] Non-blocking op failed:", e instanceof Error ? e.message : e); }); // Non-blocking — leaderboard refresh cron will create entries
+  // If dedup hit, return early — no side effects needed
+  if (txResult.dedup) return { amount: 0, newBalance: txResult.balance };
+
+  const newBalance = txResult.balance;
+
+  // Update leaderboard (non-blocking, upsert to create if missing)
+  await prisma.lmsLeaderboard.upsert({
+    where: { tenantId_userId_period: { tenantId, userId, period: 'all_time' } },
+    update: { totalPoints: newBalance },
+    create: { tenantId, userId, totalPoints: newBalance, displayName: 'Student', rank: 0, period: 'all_time' },
+  }).catch((e) => { if (typeof console !== "undefined") console.warn("[LMS] Non-blocking op failed:", e instanceof Error ? e.message : e); });
 
   // Check challenge progress (guard against recursive calls)
   if (reason !== 'challenge') {
@@ -140,18 +147,20 @@ async function updateChallengeProgress(tenantId: string, userId: string, action:
     const criteria = participant.challenge.criteria as { action?: string; count?: number } | null;
     if (!criteria?.action || criteria.action !== action) continue;
 
-    const newProgress = participant.progress + 1;
-    const isCompleted = newProgress >= (criteria.count ?? 1);
-
-    await prisma.lmsChallengeParticipant.update({
+    // FIX P7-01: Use atomic increment to prevent race condition on progress
+    const updated = await prisma.lmsChallengeParticipant.update({
       where: { id: participant.id },
-      data: {
-        progress: newProgress,
-        isCompleted,
-        // FIX P3: Don't overwrite existing completedAt with null
-        ...(isCompleted ? { completedAt: now } : {}),
-      },
+      data: { progress: { increment: 1 } },
     });
+
+    const isCompleted = updated.progress >= (criteria.count ?? 1);
+
+    if (isCompleted && !participant.isCompleted) {
+      await prisma.lmsChallengeParticipant.update({
+        where: { id: participant.id },
+        data: { isCompleted: true, completedAt: now },
+      });
+    }
 
     // Award XP for completing challenge
     if (isCompleted && !participant.xpAwarded) {

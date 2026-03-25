@@ -474,17 +474,25 @@ export async function submitQuizAttempt(
   const timeTaken = existingAttempt ? Math.round((now.getTime() - existingAttempt.startedAt.getTime()) / 1000) : null;
 
   // V2 P0 FIX: Update existing in-progress attempt instead of creating duplicate
+  let result;
   if (existingAttempt) {
-    return prisma.quizAttempt.update({
+    result = await prisma.quizAttempt.update({
       where: { id: existingAttempt.id },
       data: { score, totalPoints, earnedPoints, answers: gradedAnswers, passed, completedAt: now, timeTaken },
     });
+  } else {
+    // Fallback: create new attempt (for backward compatibility with attempts started before this fix)
+    result = await prisma.quizAttempt.create({
+      data: { tenantId, quizId, userId, score, totalPoints, earnedPoints, answers: gradedAnswers, passed, completedAt: now, timeTaken },
+    });
   }
 
-  // Fallback: create new attempt (for backward compatibility with attempts started before this fix)
-  return prisma.quizAttempt.create({
-    data: { tenantId, quizId, userId, score, totalPoints, earnedPoints, answers: gradedAnswers, passed, completedAt: now, timeTaken },
-  });
+  // Award XP for passing a quiz (non-blocking)
+  if (passed) {
+    try { await awardXp(tenantId, userId, 'quiz_pass', quizId); } catch { /* non-blocking */ }
+  }
+
+  return result;
 }
 
 function gradeQuestion(
@@ -505,10 +513,11 @@ function gradeQuestion(
     }
     case 'FILL_IN': {
       if (!question.correctAnswer) return false;
-      const userAnswer = Array.isArray(answer) ? answer[0] : answer;
+      const userAnswer = (Array.isArray(answer) ? answer[0] : answer).trim().normalize('NFC');
+      const correct = question.correctAnswer.trim().normalize('NFC');
       return question.caseSensitive
-        ? userAnswer.trim() === question.correctAnswer.trim()
-        : userAnswer.trim().toLowerCase() === question.correctAnswer.trim().toLowerCase();
+        ? userAnswer === correct
+        : userAnswer.toLowerCase() === correct.toLowerCase();
     }
     default:
       return false;
@@ -1158,7 +1167,7 @@ export async function resolvePricing(
 export async function checkAndAwardBadges(tenantId: string, userId: string) {
   const badges = await prisma.lmsBadge.findMany({
     where: { tenantId, isActive: true },
-    select: { id: true, criteria: true },
+    select: { id: true, name: true, criteria: true },
   });
 
   if (badges.length === 0) return [];
@@ -1207,6 +1216,9 @@ export async function checkAndAwardBadges(tenantId: string, userId: string) {
       await prisma.lmsBadgeAward.create({
         data: { tenantId, badgeId: badge.id, userId },
       });
+      await prisma.lmsNotification.create({
+        data: { tenantId, userId, type: 'badge_earned', title: 'Nouveau badge obtenu!', message: badge.name },
+      }).catch(() => {});
       newAwards.push(badge.id);
     }
   }

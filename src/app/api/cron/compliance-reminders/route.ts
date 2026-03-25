@@ -13,10 +13,10 @@ import { buildComplianceReminderEmail } from '@/lib/email/templates/lms-emails';
 import { logger } from '@/lib/logger';
 
 export async function GET(request: NextRequest) {
-  // Verify cron secret
+  // Verify cron secret — reject if CRON_SECRET is unset OR header doesn't match
   const authHeader = request.headers.get('authorization');
   const cronSecret = process.env.CRON_SECRET;
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -37,6 +37,7 @@ export async function GET(request: NextRequest) {
     const endOfDay = new Date(startOfDay.getTime() + 86400000);
 
     // Find CePeriods ending on this date with incomplete UFC
+    // NOTE: Intentionally no tenantId filter — this cron processes ALL tenants' periods in one sweep.
     const periods = await prisma.cePeriod.findMany({
       where: {
         endDate: { gte: startOfDay, lt: endOfDay },

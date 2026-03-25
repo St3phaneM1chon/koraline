@@ -31,8 +31,12 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
     return NextResponse.json({ error: 'No tenant context' }, { status: 403 });
   }
 
+  if (!session.user.id) {
+    return NextResponse.json({ error: 'User ID missing' }, { status: 401 });
+  }
+
   try {
-    const enrollment = await enrollUser(tenantId, parsed.data.courseId, session.user.id!);
+    const enrollment = await enrollUser(tenantId, parsed.data.courseId, session.user.id);
 
     // Send enrollment confirmation email (non-blocking)
     const course = await prisma.course.findUnique({ where: { id: parsed.data.courseId }, select: { title: true, slug: true } });

@@ -119,8 +119,8 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
         originalPrice: pricing.originalPrice.toString(),
         discount: pricing.discount.toString(),
       },
-      success_url: `${getBaseUrl(request)}/learn/dashboard?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${getBaseUrl(request)}/learn/${(await prisma.course.findUnique({ where: { id }, select: { slug: true } }))?.slug ?? ''}?checkout=cancelled`,
+      success_url: `${getBaseUrl()}/learn/dashboard?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${getBaseUrl()}/learn/${course.slug}?checkout=cancelled`,
     });
 
     return NextResponse.json({
@@ -177,8 +177,8 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
         corporateAccountId: corporateAccountId ?? '',
         courseCount: bundle.items.length.toString(),
       },
-      success_url: `${getBaseUrl(request)}/learn/dashboard?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${getBaseUrl(request)}/learn/forfaits/${bundle.slug}?checkout=cancelled`,
+      success_url: `${getBaseUrl()}/learn/dashboard?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${getBaseUrl()}/learn/forfaits/${bundle.slug}?checkout=cancelled`,
     });
 
     return NextResponse.json({
@@ -192,8 +192,6 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
   }
 });
 
-function getBaseUrl(request: NextRequest): string {
-  const host = request.headers.get('host') ?? 'localhost:3000';
-  const proto = request.headers.get('x-forwarded-proto') ?? 'http';
-  return `${proto}://${host}`;
+function getBaseUrl(): string {
+  return process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_BASE_URL || 'https://attitudes.vip';
 }

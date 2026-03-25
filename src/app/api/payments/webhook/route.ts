@@ -1650,8 +1650,17 @@ async function handleLmsCheckoutComplete(
   logger.info('[LMS Webhook] Processing LMS checkout', { type, itemId, userId, tenantId });
 
   if (type === 'course') {
-    // Enroll in single course
-    await enrollUser(tenantId, itemId, userId);
+    // Enroll in single course (idempotent: webhook retries after successful enrollment)
+    try {
+      await enrollUser(tenantId, itemId, userId);
+    } catch (err) {
+      if (err instanceof Error && err.message.includes('Already enrolled')) {
+        // Idempotent: webhook retry after successful enrollment — treat as success
+        logger.info('[LMS Webhook] Already enrolled, treating as idempotent success', { courseId: itemId, userId });
+      } else {
+        throw err;
+      }
+    }
 
     // Update enrollment with payment info
     await prisma.enrollment.updateMany({
