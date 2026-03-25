@@ -15,6 +15,15 @@ export default function Page() {
 
 
   const [courseId, setCourseId] = useState("");
+  const [courses, setCourses] = useState<Array<{id: string; title: string}>>([]);
+
+  // FIX P2-05: Fetch courses for dropdown instead of requiring UUID input
+  useEffect(() => {
+    fetch('/api/admin/lms/courses?limit=100')
+      .then(r => r.json())
+      .then(d => setCourses(d.data?.courses ?? []))
+      .catch(() => {});
+  }, []);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -42,7 +51,13 @@ export default function Page() {
       <PageHeader title="Carnet de notes" subtitle=""
 
       />
-      <div className="flex gap-2"><input type="text" placeholder="ID du cours" value={courseId} onChange={(e) => setCourseId(e.target.value)} className="rounded-md border px-3 py-2 text-sm w-64" /><Button onClick={fetchData} variant="outline">{t('common.load')}</Button></div>
+      <div className="flex gap-2">
+        <select value={courseId} onChange={(e) => { setCourseId(e.target.value); }} className="rounded-md border px-3 py-2 text-sm w-80">
+          <option value="">Selectionner un cours...</option>
+          {courses.map(c => <option key={c.id} value={c.id}>{c.title}</option>)}
+        </select>
+        <Button onClick={fetchData} variant="outline">{t('common.load')}</Button>
+      </div>
       {loading ? (
         <div className="text-center py-12 text-muted-foreground">{t('common.loading')}</div>
       ) : data.length === 0 ? (
