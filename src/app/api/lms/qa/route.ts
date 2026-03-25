@@ -47,7 +47,7 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
   // Answer a question
   if (body.qaId) {
     const parsed = answerSchema.safeParse(body);
-    if (!parsed.success) return NextResponse.json({ error: parsed.error.message }, { status: 400 });
+    if (!parsed.success) return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
 
     const answer = await prisma.lessonQAAnswer.create({
       data: {
@@ -77,7 +77,7 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
 
   // Ask a question
   const parsed = questionSchema.safeParse(body);
-  if (!parsed.success) return NextResponse.json({ error: parsed.error.message }, { status: 400 });
+  if (!parsed.success) return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
 
   const qa = await prisma.lessonQA.create({
     data: {

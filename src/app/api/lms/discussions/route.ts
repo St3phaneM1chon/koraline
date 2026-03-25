@@ -50,7 +50,7 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
   // Reply to discussion
   if (body.discussionId) {
     const parsed = replySchema.safeParse(body);
-    if (!parsed.success) return NextResponse.json({ error: parsed.error.message }, { status: 400 });
+    if (!parsed.success) return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
 
     const reply = await prisma.courseDiscussionReply.create({
       data: {
@@ -72,7 +72,7 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
 
   // New discussion
   const parsed = createSchema.safeParse(body);
-  if (!parsed.success) return NextResponse.json({ error: parsed.error.message }, { status: 400 });
+  if (!parsed.success) return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
 
   const discussion = await prisma.courseDiscussion.create({
     data: {

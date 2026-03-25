@@ -24,12 +24,15 @@ export const GET = withUserGuard(async (request: NextRequest, { session }) => {
     orderBy: { rank: 'asc' },
     take: limit,
     select: {
-      userId: true,
+      // FIX P2: Don't expose raw userId — use displayName instead
+      displayName: true,
+      avatarUrl: true,
       coursesCompleted: true,
       totalPoints: true,
       currentStreak: true,
       badgeCount: true,
       rank: true,
+      userId: true, // needed for myRank check only
     },
   });
 
