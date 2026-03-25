@@ -986,9 +986,16 @@ export async function getCorporateDashboardStats(tenantId: string, corporateAcco
     e => e.complianceDeadline && e.complianceDeadline < new Date() && e.status !== 'COMPLETED'
   ).length;
 
-  // Per-employee summary
+  // V2 FIX: Use Map for O(n+m) instead of O(n*m) employee-enrollment lookup
+  const enrollmentsByUser = new Map<string, typeof enrollments>();
+  for (const e of enrollments) {
+    const list = enrollmentsByUser.get(e.userId) ?? [];
+    list.push(e);
+    enrollmentsByUser.set(e.userId, list);
+  }
+
   const employeeSummaries = employees.map(emp => {
-    const empEnrollments = enrollments.filter(e => e.userId === emp.userId);
+    const empEnrollments = enrollmentsByUser.get(emp.userId) ?? [];
     const completed = empEnrollments.filter(e => e.status === 'COMPLETED').length;
     const inProgress = empEnrollments.filter(e => e.status === 'ACTIVE').length;
     return {
