@@ -95,6 +95,12 @@ export async function getCourseById(tenantId: string, id: string) {
         include: {
           lessons: {
             orderBy: { sortOrder: 'asc' },
+            // FIX P2: Don't fetch full content (manualText, supplementaryTexts can be huge)
+            select: {
+              id: true, title: true, type: true, sortOrder: true, isPublished: true, isFree: true,
+              description: true, estimatedMinutes: true, videoDuration: true, quizId: true,
+              videoUrl: true, videoExplainerUrl: true, visualAnchorUrl: true,
+            },
           },
         },
       },
