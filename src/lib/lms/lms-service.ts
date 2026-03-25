@@ -391,7 +391,8 @@ export async function submitQuizAttempt(
   tenantId: string,
   quizId: string,
   userId: string,
-  answers: Array<{ questionId: string; answer: string | string[] }>
+  answers: Array<{ questionId: string; answer: string | string[] }>,
+  attemptId?: string
 ) {
   const quiz = await prisma.quiz.findFirst({
     where: { id: quizId, tenantId },
@@ -410,11 +411,38 @@ export async function submitQuizAttempt(
     }
   }
 
-  // Check max attempts
-  const attemptCount = await prisma.quizAttempt.count({
-    where: { quizId, userId, tenantId },
+  // V2 P0 FIX (P6-01): Server-side timer enforcement
+  // Find the in-progress attempt (created when student started the quiz)
+  const existingAttempt = attemptId
+    ? await prisma.quizAttempt.findFirst({
+        where: { id: attemptId, quizId, userId, tenantId, completedAt: null },
+        select: { id: true, startedAt: true },
+      })
+    : await prisma.quizAttempt.findFirst({
+        where: { quizId, userId, tenantId, completedAt: null },
+        orderBy: { startedAt: 'desc' },
+        select: { id: true, startedAt: true },
+      });
+
+  if (existingAttempt && quiz.timeLimit) {
+    const elapsedSeconds = (Date.now() - existingAttempt.startedAt.getTime()) / 1000;
+    const timeLimitSeconds = quiz.timeLimit * 60;
+    // Allow 10% grace for network latency
+    if (elapsedSeconds > timeLimitSeconds * 1.1) {
+      // Mark the attempt as completed with 0 score (time expired)
+      await prisma.quizAttempt.update({
+        where: { id: existingAttempt.id },
+        data: { score: 0, totalPoints: 0, earnedPoints: 0, passed: false, completedAt: new Date(), timeTaken: Math.round(elapsedSeconds) },
+      });
+      throw new Error('Time limit exceeded');
+    }
+  }
+
+  // Check max COMPLETED attempts (in-progress ones don't count against limit for submission)
+  const completedAttemptCount = await prisma.quizAttempt.count({
+    where: { quizId, userId, tenantId, completedAt: { not: null } },
   });
-  if (attemptCount >= quiz.maxAttempts) {
+  if (completedAttemptCount >= quiz.maxAttempts) {
     throw new Error('Maximum attempts reached');
   }
 
@@ -426,13 +454,11 @@ export async function submitQuizAttempt(
   }
 
   // C3-BIZ-B-001 FIX: totalPoints from ALL quiz questions, not just answered ones.
-  // Prevents gaming by skipping hard questions (skip = 0 earned but still in denominator).
   const totalPoints = quiz.questions.reduce((sum, q) => sum + q.points, 0);
   let earnedPoints = 0;
   const gradedAnswers = quiz.questions.map(question => {
     const studentAnswer = answers.find(a => a.questionId === question.id);
     if (!studentAnswer) {
-      // Unanswered question = 0 points
       return { questionId: question.id, answer: null, isCorrect: false, points: 0 };
     }
 
@@ -444,19 +470,20 @@ export async function submitQuizAttempt(
 
   const score = totalPoints > 0 ? Math.round((earnedPoints / totalPoints) * 100) : 0;
   const passed = score >= quiz.passingScore;
+  const now = new Date();
+  const timeTaken = existingAttempt ? Math.round((now.getTime() - existingAttempt.startedAt.getTime()) / 1000) : null;
 
+  // V2 P0 FIX: Update existing in-progress attempt instead of creating duplicate
+  if (existingAttempt) {
+    return prisma.quizAttempt.update({
+      where: { id: existingAttempt.id },
+      data: { score, totalPoints, earnedPoints, answers: gradedAnswers, passed, completedAt: now, timeTaken },
+    });
+  }
+
+  // Fallback: create new attempt (for backward compatibility with attempts started before this fix)
   return prisma.quizAttempt.create({
-    data: {
-      tenantId,
-      quizId,
-      userId,
-      score,
-      totalPoints,
-      earnedPoints,
-      answers: gradedAnswers,
-      passed,
-      completedAt: new Date(),
-    },
+    data: { tenantId, quizId, userId, score, totalPoints, earnedPoints, answers: gradedAnswers, passed, completedAt: now, timeTaken },
   });
 }
 

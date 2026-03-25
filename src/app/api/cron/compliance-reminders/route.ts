@@ -54,6 +54,19 @@ export async function GET(request: NextRequest) {
     for (const period of periods) {
       if (Number(period.earnedUfc) >= Number(period.requiredUfc)) continue; // Already met
 
+      // V2 P0 FIX: Deduplication — check if reminder already sent today for this period + type
+      const dedupKey = `compliance_reminder_${label}`;
+      const alreadySent = await prisma.lmsNotification.findFirst({
+        where: {
+          tenantId: period.tenantId,
+          userId: period.userId,
+          type: dedupKey,
+          createdAt: { gte: startOfDay },
+        },
+        select: { id: true },
+      });
+      if (alreadySent) continue; // Already sent this reminder today
+
       // Get user email
       const user = await prisma.user.findUnique({
         where: { id: period.userId },
@@ -83,6 +96,18 @@ export async function GET(request: NextRequest) {
         });
 
         await sendEmail({ to: { email: user.email, name: user.name ?? undefined }, subject: email.subject, html: email.html, text: email.text });
+
+        // V2 P0 FIX: Record sent reminder for deduplication
+        await prisma.lmsNotification.create({
+          data: {
+            tenantId: period.tenantId,
+            userId: period.userId,
+            type: dedupKey,
+            title: `Rappel conformite (${label})`,
+            message: `Echeance UFC: ${startOfDay.toLocaleDateString('fr-CA')}`,
+          },
+        }).catch(() => { /* dedup record failure should not block email flow */ });
+
         sent++;
         logger.info(`[compliance-reminder] Sent ${label} reminder to ${user.email}`);
       } catch (err) {

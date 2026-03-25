@@ -13,6 +13,7 @@ import { submitQuizAttempt } from '@/lib/lms/lms-service';
 
 const submitQuizSchema = z.object({
   quizId: z.string().min(1),
+  attemptId: z.string().min(1).optional(), // V2 P0 FIX: Reference in-progress attempt for timer enforcement
   answers: z.array(z.object({
     questionId: z.string().min(1),
     answer: z.union([z.string(), z.array(z.string())]),
@@ -37,7 +38,8 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
       tenantId,
       parsed.data.quizId,
       session.user.id!,
-      parsed.data.answers
+      parsed.data.answers,
+      parsed.data.attemptId
     );
     return NextResponse.json({
       attempt: {
@@ -52,7 +54,7 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
     if (error instanceof Error) {
       const msg = error.message;
       // C3-SEC-S-004 FIX: Only return known safe business messages
-      const safeMessages = ["Maximum attempts reached", "Quiz not found", "Enrollment not found", "Invalid question IDs submitted", "Already enrolled", "Required quizzes not passed"];
+      const safeMessages = ["Maximum attempts reached", "Quiz not found", "Enrollment not found", "Invalid question IDs submitted", "Already enrolled", "Required quizzes not passed", "Time limit exceeded", "Not enrolled in this course"];
       return NextResponse.json({ error: safeMessages.some(s => msg.includes(s)) ? msg : "Quiz submission failed" }, { status: 400 });
     }
     return NextResponse.json({ error: 'Quiz submission failed' }, { status: 500 });

@@ -85,6 +85,12 @@ export const POST = withUserGuard(async (_request: NextRequest, { session, param
     return NextResponse.json({ error: 'Maximum attempts reached' }, { status: 400 });
   }
 
+  // V2 P0 FIX (P6-02): Check for existing in-progress attempt (completedAt IS NULL)
+  const existingInProgress = await prisma.quizAttempt.findFirst({
+    where: { quizId, userId: session.user.id!, tenantId, completedAt: null },
+    select: { id: true, startedAt: true },
+  });
+
   // Strip answers from questions - return only what the student needs
   const questions = quiz.questions.map((q) => {
     const options = q.options as Array<{ id: string; text: string; isCorrect?: boolean }>;
@@ -110,6 +116,30 @@ export const POST = withUserGuard(async (_request: NextRequest, { session, param
     }
   }
 
+  // V2 P0 FIX (P6-02): Create QuizAttempt record with startedAt for server-side timer enforcement
+  let attemptId: string;
+  let startedAt: Date;
+  if (existingInProgress) {
+    // Resume existing in-progress attempt
+    attemptId = existingInProgress.id;
+    startedAt = existingInProgress.startedAt;
+  } else {
+    const attempt = await prisma.quizAttempt.create({
+      data: {
+        tenantId,
+        quizId,
+        userId: session.user.id!,
+        score: 0,
+        totalPoints: 0,
+        earnedPoints: 0,
+        answers: [],
+        startedAt: new Date(),
+      },
+    });
+    attemptId = attempt.id;
+    startedAt = attempt.startedAt;
+  }
+
   return NextResponse.json({
     quiz: {
       id: quiz.id,
@@ -120,6 +150,8 @@ export const POST = withUserGuard(async (_request: NextRequest, { session, param
       showResults: quiz.showResults,
     },
     questions: finalQuestions,
+    attemptId,
+    startedAt: startedAt.toISOString(),
     attemptNumber: attemptCount + 1,
     attemptsRemaining: quiz.maxAttempts - attemptCount - 1,
   });
