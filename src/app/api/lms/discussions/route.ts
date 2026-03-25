@@ -38,7 +38,32 @@ export const GET = withUserGuard(async (request: NextRequest, { session }) => {
     },
   });
 
-  return NextResponse.json({ data: discussions });
+  // P8-14 FIX: Resolve user names and strip raw userId from responses
+  const allUserIds = new Set<string>();
+  for (const d of discussions) {
+    allUserIds.add(d.userId);
+    for (const r of d.replies) allUserIds.add(r.userId);
+  }
+  const users = allUserIds.size > 0
+    ? await prisma.user.findMany({ where: { id: { in: [...allUserIds] }, tenantId }, select: { id: true, name: true } })
+    : [];
+  const nameMap = new Map(users.map(u => [u.id, u.name ?? 'Etudiant']));
+
+  const sanitized = discussions.map(d => ({
+    id: d.id, title: d.title, content: d.content,
+    authorName: nameMap.get(d.userId) ?? 'Etudiant',
+    isOwner: d.userId === session.user.id,
+    isPinned: d.isPinned, isLocked: d.isLocked,
+    replyCount: d.replyCount, createdAt: d.createdAt,
+    replies: d.replies.map(r => ({
+      id: r.id, content: r.content, isInstructor: r.isInstructor,
+      authorName: nameMap.get(r.userId) ?? 'Etudiant',
+      isOwner: r.userId === session.user.id,
+      upvotes: r.upvotes, createdAt: r.createdAt,
+    })),
+  }));
+
+  return NextResponse.json({ data: sanitized });
 }, { skipCsrf: true });
 
 export const POST = withUserGuard(async (request: NextRequest, { session }) => {
