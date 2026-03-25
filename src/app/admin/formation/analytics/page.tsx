@@ -108,7 +108,7 @@ function ChartSkeleton({ height = 'h-64' }: { height?: string }) {
           <div
             key={i}
             className="flex-1 bg-slate-200 rounded-t"
-            style={{ height: `${20 + Math.random() * 60}%` }}
+            style={{ height: `${20 + ((i * 37 + 13) % 60)}%` }}
           />
         ))}
       </div>
