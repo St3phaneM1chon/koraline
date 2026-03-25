@@ -106,7 +106,7 @@ export default function CorporatifPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Comptes corporatifs"
+        title={t("admin.lms.corporateAccounts")}
         subtitle={`${accounts.length} compagnie(s) d'assurance`}
         actions={
           <Button onClick={() => { setForm(emptyForm); setModalOpen(true); }}>
@@ -123,7 +123,7 @@ export default function CorporatifPage() {
         <DataTable columns={columns} data={accounts} keyExtractor={(a) => a.id} />
       )}
 
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title="Nouveau compte corporatif">
+      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={t("admin.lms.newAccount")}>
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && <p className="text-sm text-destructive">{error}</p>}
           <FormField label="Nom de la compagnie">

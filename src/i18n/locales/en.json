@@ -10192,7 +10192,26 @@
         "matchingPreviewNote": "Interactive matching will be available in the quiz player.",
         "orderingPreviewNote": "Interactive reordering will be available in the quiz player.",
         "backToList": "Back to quiz list"
-      }
+      },
+      "corporateAccounts": "Corporate Accounts",
+      "corporateAccountsSubtitle": "insurance companie(s)",
+      "newAccount": "New account",
+      "companyName": "Company name",
+      "contactEmail": "Contact email",
+      "contactName": "Contact name",
+      "billing": "Billing",
+      "discount": "Discount",
+      "budget": "Budget",
+      "employees": "Employees",
+      "bundles": "Training Bundles",
+      "newBundle": "New bundle",
+      "bundleName": "Bundle name",
+      "individualPrice": "Individual price",
+      "corporatePrice": "Corporate price",
+      "coursesIncluded": "Courses included",
+      "slug": "Slug (URL)",
+      "description": "Description",
+      "annualBudget": "Annual budget"
     }
   },
   "ambassador": {

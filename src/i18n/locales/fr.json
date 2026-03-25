@@ -10190,7 +10190,26 @@
         "matchingPreviewNote": "L'appariement interactif sera disponible dans le lecteur de quiz.",
         "orderingPreviewNote": "Le reordonnement interactif sera disponible dans le lecteur de quiz.",
         "backToList": "Retour a la liste des quiz"
-      }
+      },
+      "corporateAccounts": "Comptes corporatifs",
+      "corporateAccountsSubtitle": "compagnie(s) d'assurance",
+      "newAccount": "Nouveau compte",
+      "companyName": "Nom de la compagnie",
+      "contactEmail": "Email de contact",
+      "contactName": "Nom du contact",
+      "billing": "Facturation",
+      "discount": "Rabais",
+      "budget": "Budget",
+      "employees": "Employes",
+      "bundles": "Forfaits de formation",
+      "newBundle": "Nouveau forfait",
+      "bundleName": "Nom du forfait",
+      "individualPrice": "Prix individuel",
+      "corporatePrice": "Prix corporatif",
+      "coursesIncluded": "Cours inclus",
+      "slug": "Slug (URL)",
+      "description": "Description",
+      "annualBudget": "Budget annuel"
     }
   },
   "ambassador": {

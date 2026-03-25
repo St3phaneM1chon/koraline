@@ -124,7 +124,7 @@ export default function ForfaitsPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Forfaits de formation"
+        title={t("admin.lms.bundles")}
         subtitle={`${bundles.length} forfait(s) actif(s)`}
         actions={
           <Button onClick={() => { setEditingId(null); setForm(emptyForm); setModalOpen(true); }}>
@@ -141,7 +141,7 @@ export default function ForfaitsPage() {
         <DataTable columns={columns} data={bundles} keyExtractor={(b) => b.id} />
       )}
 
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editingId ? 'Modifier le forfait' : 'Nouveau forfait'}>
+      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editingId ? t('admin.lms.bundleName') : t('admin.lms.newBundle')}>
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && <p className="text-sm text-destructive">{error}</p>}
           <FormField label="Nom du forfait">
