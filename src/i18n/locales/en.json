@@ -12752,6 +12752,21 @@
       "shareProfile": "Share My Profile",
       "shareText": "I earned {badges} badges and {points} points on Aptitudes!",
       "backToDashboard": "Back to Dashboard"
+    },
+    "bundles": {
+      "bundleCatalog": "Training Bundles",
+      "bundleCatalogDesc": "Our bundles group essential courses for your certification.",
+      "noBundles": "No bundles available at the moment.",
+      "bundle": "Bundle",
+      "courses": "courses",
+      "enrolled": "enrolled",
+      "free": "Free",
+      "sequentialWarning": "Sequential completion required",
+      "sequentialDesc": "Each concept must be completed in order before moving to the next one.",
+      "buyBundle": "Buy bundle",
+      "enrollFree": "Enroll for free",
+      "sponsoredBy": "Sponsored by your employer",
+      "youSave": "You save"
     }
   },
   "legal": {

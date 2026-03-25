@@ -12750,6 +12750,21 @@
       "shareProfile": "Partager mon profil",
       "shareText": "J'ai obtenu {badges} badges et {points} points sur Aptitudes !",
       "backToDashboard": "Retour au tableau de bord"
+    },
+    "bundles": {
+      "bundleCatalog": "Forfaits de formation",
+      "bundleCatalogDesc": "Nos forfaits regroupent les formations essentielles pour votre certification.",
+      "noBundles": "Aucun forfait disponible pour le moment.",
+      "bundle": "Forfait",
+      "courses": "cours",
+      "enrolled": "inscrit(s)",
+      "free": "Gratuit",
+      "sequentialWarning": "Completion sequentielle obligatoire",
+      "sequentialDesc": "Chaque notion doit etre completee dans l'ordre avant de pouvoir passer a la suivante.",
+      "buyBundle": "Acheter le forfait",
+      "enrollFree": "S'inscrire gratuitement",
+      "sponsoredBy": "Parraine par votre employeur",
+      "youSave": "Vous economisez"
     }
   },
   "legal": {
