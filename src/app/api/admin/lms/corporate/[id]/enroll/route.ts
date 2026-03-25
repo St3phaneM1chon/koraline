@@ -147,9 +147,15 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
     ? (await prisma.courseBundle.findUnique({ where: { id: itemId }, include: { items: { include: { course: { select: { title: true } } } } } }))?.items.map(i => i.course.title) ?? []
     : [(await prisma.course.findUnique({ where: { id: itemId }, select: { title: true } }))?.title ?? ''];
 
+  // P9-08 FIX: Batch-fetch all users at once instead of N+1 individual lookups
+  const usersForEmail = await prisma.user.findMany({
+    where: { id: { in: userIds }, tenantId },
+    select: { id: true, email: true, name: true },
+  });
+  const userMap = new Map(usersForEmail.map(u => [u.id, u]));
+
   for (const userId of userIds) {
-    // P9-03 FIX: Use findFirst with tenantId instead of findUnique to prevent cross-tenant user lookup
-    const user = await prisma.user.findFirst({ where: { id: userId, tenantId }, select: { email: true, name: true } });
+    const user = userMap.get(userId);
     if (user?.email) {
       const email = buildCorporateWelcomeEmail({
         employeeName: user.name ?? 'Employe',

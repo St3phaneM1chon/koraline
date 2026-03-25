@@ -55,31 +55,33 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
     ? (parsed.data as z.infer<typeof bulkAddSchema>).employees
     : [parsed.data as z.infer<typeof addEmployeeSchema>];
 
-  const results = { added: 0, skipped: 0 };
+  // P9-10 FIX: Batch-validate user IDs and use createMany instead of sequential loop
+  const userIds = employeesToAdd.map(emp => emp.userId);
+  const validUsers = await prisma.user.findMany({
+    where: { id: { in: userIds }, tenantId },
+    select: { id: true },
+  });
+  const validUserIds = new Set(validUsers.map(u => u.id));
 
-  for (const emp of employeesToAdd) {
-    const existing = await prisma.corporateEmployee.findUnique({
-      where: { corporateAccountId_userId: { corporateAccountId: id, userId: emp.userId } },
-    });
+  const validEmployees = employeesToAdd.filter(emp => validUserIds.has(emp.userId));
 
-    if (existing) {
-      results.skipped++;
-      continue;
-    }
+  const result = await prisma.corporateEmployee.createMany({
+    data: validEmployees.map(emp => ({
+      tenantId,
+      corporateAccountId: id,
+      userId: emp.userId,
+      employeeId: emp.employeeId ?? null,
+      department: emp.department ?? null,
+      role: emp.role ?? 'EMPLOYEE',
+      addedBy: session.user.id,
+    })),
+    skipDuplicates: true,
+  });
 
-    await prisma.corporateEmployee.create({
-      data: {
-        tenantId,
-        corporateAccountId: id,
-        userId: emp.userId,
-        employeeId: emp.employeeId ?? null,
-        department: emp.department ?? null,
-        role: emp.role ?? 'EMPLOYEE',
-        addedBy: session.user.id,
-      },
-    });
-    results.added++;
-  }
+  const results = {
+    added: result.count,
+    skipped: employeesToAdd.length - result.count,
+  };
 
   return apiSuccess(results, { request, status: 201 });
 });
