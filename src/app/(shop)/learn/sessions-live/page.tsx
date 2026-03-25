@@ -8,7 +8,8 @@ export default function SessionsLivePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/admin/lms/live-sessions?upcoming=true')
+    // FIX P1-05: Use student-accessible API (not admin endpoint)
+    fetch('/api/lms/live-sessions')
       .then(r => r.json())
       .then(d => setSessions(d.data ?? []))
       .catch(() => setSessions([]))
