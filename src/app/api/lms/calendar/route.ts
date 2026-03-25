@@ -17,7 +17,14 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'userId and token required' }, { status: 400 });
   }
 
-  // Verify token (simple hash check)
+  // FIX P0: Verify token — use HMAC of userId + secret as calendar token
+  const { createHmac } = await import('crypto');
+  const secret = process.env.NEXTAUTH_SECRET || process.env.CRON_SECRET || 'fallback-secret';
+  const expectedToken = createHmac('sha256', secret).update(userId).digest('hex').slice(0, 32);
+  if (token !== expectedToken) {
+    return NextResponse.json({ error: 'Invalid token' }, { status: 403 });
+  }
+
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: { id: true, name: true, email: true, tenantId: true },
