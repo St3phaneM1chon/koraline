@@ -1,12 +1,15 @@
 'use client';
 
 import { useState, useEffect, type FormEvent } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { MessageSquare, Send, Pin } from 'lucide-react';
 
 export default function DiscussionsPage() {
+  const searchParams = useSearchParams();
   const [discussions, setDiscussions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [courseId] = useState(''); // Would come from context or URL param
+  // FIX P2-08: Read courseId from URL query param instead of empty state
+  const [courseId, setCourseId] = useState(searchParams?.get('courseId') ?? '');
   const [newTitle, setNewTitle] = useState('');
   const [newContent, setNewContent] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -47,8 +50,13 @@ export default function DiscussionsPage() {
       <p className="text-muted-foreground mb-8">Echangez avec vos collegues de formation.</p>
 
       {!courseId && (
-        <div className="text-center py-12 text-muted-foreground">
-          Selectionnez un cours pour voir ses discussions.
+        <div className="text-center py-12">
+          <p className="text-muted-foreground mb-4">Entrez l&apos;identifiant d&apos;un cours pour voir ses discussions.</p>
+          <div className="flex gap-2 max-w-md mx-auto">
+            <input type="text" placeholder="ID du cours" className="flex-1 rounded-md border px-3 py-2 text-sm"
+              onKeyDown={(e) => { if (e.key === 'Enter') setCourseId((e.target as HTMLInputElement).value); }} />
+            <button onClick={() => {}} className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium">Charger</button>
+          </div>
         </div>
       )}
 
