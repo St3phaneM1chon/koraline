@@ -782,6 +782,12 @@ export function getApplicableLaws(provinceCode: string, topic?: string): string[
 
 export function getProvincePrograms(provinceCode: string): GovernmentProgram[] {
   const code = provinceCode.toUpperCase() as ProvinceCode;
+  // FIX P3: Validate province code exists before filtering
+  const province = PROVINCES.find(p => p.code === code);
+  if (!province) {
+    console.warn(`[provincial-data] Unknown province code: ${provinceCode}`);
+    return []; // Return empty but log warning for debugging
+  }
   return GOVERNMENT_PROGRAMS.filter(p =>
     p.applicableProvinces === 'ALL' ||
     (Array.isArray(p.applicableProvinces) && p.applicableProvinces.includes(code))
