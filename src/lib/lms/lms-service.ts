@@ -13,8 +13,10 @@ export async function getCourses(tenantId: string, options?: {
   page?: number;
   limit?: number;
 }) {
-  const { status, categoryId, search, page = 1, limit = 20 } = options ?? {};
-  const skip = (page - 1) * limit;
+  const { status, categoryId, search, page = 1, limit: rawLimit = 20 } = options ?? {};
+  const limit = Math.min(Math.max(rawLimit, 1), 100);
+  const safePage = Math.max(page, 1);
+  const skip = (safePage - 1) * limit;
 
   const where: Prisma.CourseWhereInput = {
     tenantId,
@@ -50,9 +52,9 @@ export async function getCourseBySlug(tenantId: string, slug: string) {
   return prisma.course.findUnique({
     where: { tenantId_slug: { tenantId, slug } },
     include: {
-      category: true,
-      instructor: true,
-      certificateTemplate: true,
+      category: { select: { id: true, name: true, slug: true } },
+      instructor: { select: { id: true, userId: true, title: true, bio: true, avatarUrl: true } },
+      certificateTemplate: { select: { id: true, name: true } },
       chapters: {
         where: { isPublished: true },
         orderBy: { sortOrder: 'asc' },
@@ -85,9 +87,9 @@ export async function getCourseById(tenantId: string, id: string) {
   return prisma.course.findFirst({
     where: { id, tenantId },
     include: {
-      category: true,
-      instructor: true,
-      certificateTemplate: true,
+      category: { select: { id: true, name: true, slug: true } },
+      instructor: { select: { id: true, userId: true, title: true, bio: true, avatarUrl: true } },
+      certificateTemplate: { select: { id: true, name: true } },
       chapters: {
         orderBy: { sortOrder: 'asc' },
         include: {
