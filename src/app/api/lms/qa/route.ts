@@ -86,6 +86,19 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
   const parsed = questionSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
 
+  // V2 FIX: Verify user has access to this lesson (enrollment check via lesson → chapter → course)
+  const lesson = await prisma.lesson.findFirst({
+    where: { id: parsed.data.lessonId, tenantId },
+    select: { chapter: { select: { courseId: true } } },
+  });
+  if (!lesson) return NextResponse.json({ error: 'Lesson not found' }, { status: 404 });
+
+  const enrollment = await prisma.enrollment.findFirst({
+    where: { tenantId, courseId: lesson.chapter.courseId, userId: session.user.id, status: 'ACTIVE' },
+    select: { id: true },
+  });
+  if (!enrollment) return NextResponse.json({ error: 'Not enrolled' }, { status: 403 });
+
   const qa = await prisma.lessonQA.create({
     data: {
       tenantId,

@@ -82,6 +82,13 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
   const parsed = createSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
 
+  // V2 FIX: Verify user is enrolled in the course before allowing discussion creation
+  const enrollment = await prisma.enrollment.findFirst({
+    where: { tenantId, courseId: parsed.data.courseId, userId: session.user.id, status: 'ACTIVE' },
+    select: { id: true },
+  });
+  if (!enrollment) return NextResponse.json({ error: 'You must be enrolled in this course' }, { status: 403 });
+
   const discussion = await prisma.courseDiscussion.create({
     data: {
       tenantId,
