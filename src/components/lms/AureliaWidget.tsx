@@ -187,6 +187,7 @@ export default function AureliaWidget({ context, studentName, studentProvince }:
         content: greeting,
         timestamp: new Date(),
       }]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
     }
   }, [isOpen]);
 
