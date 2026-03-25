@@ -562,6 +562,54 @@ export async function issueCertificate(
     data: { certificateId: certificate.id },
   });
 
+  // V2 P0 FIX: Auto-create CeCredit when course has accreditation (UFC system was non-functional)
+  try {
+    const accreditations = await prisma.courseAccreditation.findMany({
+      where: { tenantId, courseId: enrollment.courseId, status: 'APPROVED' },
+      select: { regulatoryBodyId: true, ufcCredits: true, ceCategory: true },
+    });
+    for (const acc of accreditations) {
+      // Find user's license for this regulatory body
+      const license = await prisma.representativeLicense.findFirst({
+        where: { tenantId, userId, regulatoryBodyId: acc.regulatoryBodyId, isActive: true },
+        select: { id: true },
+      });
+      if (!license) continue; // No active license for this body — skip
+
+      // Find active CePeriod for this user + regulatory body
+      const activePeriod = await prisma.cePeriod.findFirst({
+        where: { tenantId, userId, regulatoryBodyId: acc.regulatoryBodyId, status: { in: ['ACTIVE', 'GRACE_PERIOD'] } },
+        select: { id: true },
+      });
+      if (activePeriod) {
+        await prisma.ceCredit.create({
+          data: {
+            tenantId,
+            userId,
+            licenseId: license.id,
+            cePeriodId: activePeriod.id,
+            courseId: enrollment.courseId,
+            enrollmentId,
+            certificateId: certificate.id,
+            ufcCredits: acc.ufcCredits,
+            ceCategory: acc.ceCategory,
+            description: `Cours complete: ${course.title}`,
+            isVerified: true,
+            verifiedAt: new Date(),
+            earnedAt: new Date(),
+          },
+        });
+        // Update denormalized UFC count on CePeriod
+        await prisma.cePeriod.update({
+          where: { id: activePeriod.id },
+          data: { earnedUfc: { increment: Number(acc.ufcCredits) } },
+        });
+      }
+    }
+  } catch {
+    // UFC credit creation should not block certificate issuance
+  }
+
   // Send certificate email (non-blocking)
   const user = await prisma.user.findUnique({ where: { id: userId }, select: { email: true, name: true } });
   if (user?.email) {
