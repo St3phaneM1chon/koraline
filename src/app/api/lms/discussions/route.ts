@@ -25,10 +25,15 @@ export const GET = withUserGuard(async (request: NextRequest, { session }) => {
   const courseId = searchParams.get('courseId');
   if (!courseId) return NextResponse.json({ error: 'courseId required' }, { status: 400 });
 
+  // P8-08 FIX: Add cursor-based pagination
+  const cursor = searchParams.get('cursor');
+  const limit = Math.min(parseInt(searchParams.get('limit') ?? '20', 10), 50);
+
   const discussions = await prisma.courseDiscussion.findMany({
     where: { tenantId, courseId },
     orderBy: [{ isPinned: 'desc' }, { createdAt: 'desc' }],
-    take: 50,
+    take: limit + 1,
+    ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
     include: {
       replies: {
         orderBy: { createdAt: 'asc' },
@@ -63,7 +68,11 @@ export const GET = withUserGuard(async (request: NextRequest, { session }) => {
     })),
   }));
 
-  return NextResponse.json({ data: sanitized });
+  const hasMore = sanitized.length > limit;
+  if (hasMore) sanitized.pop();
+  const nextCursor = hasMore ? sanitized[sanitized.length - 1]?.id : null;
+
+  return NextResponse.json({ data: sanitized, nextCursor, hasMore });
 }, { skipCsrf: true });
 
 export const POST = withUserGuard(async (request: NextRequest, { session }) => {
