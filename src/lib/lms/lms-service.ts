@@ -268,7 +268,13 @@ export async function updateLessonProgress(
     throw new Error('Cannot mark video as completed without video progress');
   }
 
-  // Validate: timeSpent must be reasonable (max 8 hours per update)
+  // FIX P2: Validate quizScore and videoProgress ranges
+  if (data.quizScore !== undefined && (data.quizScore < 0 || data.quizScore > 100)) {
+    throw new Error("Quiz score must be between 0 and 100");
+  }
+  if (data.videoProgress !== undefined && data.videoProgress < 0) {
+    throw new Error("Video progress cannot be negative");
+  }  // Validate: timeSpent must be reasonable (max 8 hours per update)
   if (data.timeSpent && data.timeSpent > 28800) {
     throw new Error('Time spent per update cannot exceed 8 hours');
   }
