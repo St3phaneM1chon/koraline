@@ -105,8 +105,9 @@ export async function getXpSummary(tenantId: string, userId: string) {
   ]);
 
   const balance = lastTransaction?.balance ?? 0;
-  const level = Math.floor(balance / 500) + 1; // Level up every 500 XP
-  const xpToNextLevel = 500 - (balance % 500);
+  // FIX P3: Level 0 when no XP, level 1 starts at 1 XP
+  const level = balance > 0 ? Math.floor(balance / 500) + 1 : 0;
+  const xpToNextLevel = balance > 0 ? 500 - (balance % 500) : 500;
 
   return {
     balance,
@@ -132,6 +133,7 @@ async function updateChallengeProgress(tenantId: string, userId: string, action:
       challenge: { isActive: true, startsAt: { lte: now }, endsAt: { gte: now } },
     },
     include: { challenge: { select: { criteria: true, xpReward: true } } },
+    take: 20, // FIX P3: Limit to prevent large result sets
   });
 
   for (const participant of participants) {
@@ -146,7 +148,8 @@ async function updateChallengeProgress(tenantId: string, userId: string, action:
       data: {
         progress: newProgress,
         isCompleted,
-        completedAt: isCompleted ? now : null,
+        // FIX P3: Don't overwrite existing completedAt with null
+        ...(isCompleted ? { completedAt: now } : {}),
       },
     });
 
