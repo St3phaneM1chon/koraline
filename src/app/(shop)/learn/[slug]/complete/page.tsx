@@ -366,6 +366,7 @@ export default function CourseCompletePage() {
                   className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
                 >
                   <div className="aspect-video bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                     {course.thumbnailUrl ? (
                       <img src={course.thumbnailUrl} alt="" className="w-full h-full object-cover" />
                     ) : (
