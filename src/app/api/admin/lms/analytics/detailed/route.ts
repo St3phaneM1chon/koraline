@@ -168,9 +168,10 @@ export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
 
   // Lookup user names for at-risk enrollments
   const atRiskUserIds = [...new Set(atRiskEnrollments.map(e => e.userId))];
+  // P9-02 FIX: Add tenantId to prevent cross-tenant user data access
   const atRiskUsers = atRiskUserIds.length > 0
     ? await prisma.user.findMany({
-        where: { id: { in: atRiskUserIds } },
+        where: { id: { in: atRiskUserIds }, tenantId },
         select: { id: true, name: true, email: true },
       })
     : [];
@@ -244,9 +245,10 @@ export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
   recentCompletionRows.forEach(e => eventUserIds.add(e.userId));
   recentQuizRows.forEach(q => eventUserIds.add(q.userId));
 
+  // P9-02 FIX: Add tenantId to prevent cross-tenant user data access
   const eventUsers = eventUserIds.size > 0
     ? await prisma.user.findMany({
-        where: { id: { in: [...eventUserIds] } },
+        where: { id: { in: [...eventUserIds] }, tenantId },
         select: { id: true, name: true, email: true },
       })
     : [];

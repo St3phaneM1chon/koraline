@@ -547,6 +547,9 @@ export async function issueCertificate(
   studentName: string
 ) {
   // FIX P1: Prevent duplicate certificate issuance
+  // TODO P11-01: TOCTOU race condition — this check + create should be wrapped in a
+  // $transaction with serializable isolation to prevent concurrent issuance. Deferred
+  // because it requires broader refactoring of the downstream logic.
   const existingCert = await prisma.certificate.findFirst({
     where: { tenantId, userId, enrollment: { courseId: (await prisma.enrollment.findUnique({ where: { id: enrollmentId }, select: { courseId: true } }))?.courseId ?? '' } },
     select: { id: true },
@@ -1133,7 +1136,8 @@ export async function getCorporateDashboardStats(tenantId: string, corporateAcco
  */
 export async function resolvePricing(
   item: { price: unknown; corporatePrice: unknown; currency: string },
-  corporateAccountId?: string | null
+  corporateAccountId?: string | null,
+  tenantId?: string // P9-01 FIX: Cross-tenant isolation
 ): Promise<{ price: number; originalPrice: number; discount: number; isCorporate: boolean }> {
   const originalPrice = Number(item.price ?? 0);
 
@@ -1153,8 +1157,11 @@ export async function resolvePricing(
   }
 
   // Fall back to account-level discount
+  // P9-01 FIX: Add tenantId to where clause to prevent cross-tenant data access
+  const accountWhere: { id: string; tenantId?: string } = { id: corporateAccountId };
+  if (tenantId) accountWhere.tenantId = tenantId;
   const account = await prisma.corporateAccount.findFirst({
-    where: { id: corporateAccountId },
+    where: accountWhere,
     select: { discountPercent: true },
   });
 

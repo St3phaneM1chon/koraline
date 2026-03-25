@@ -1741,27 +1741,72 @@ async function handleLmsRefund(charge: Stripe.Charge): Promise<boolean> {
   const paymentIntentId = charge.payment_intent as string;
   if (!paymentIntentId) return false;
 
+  // P11-04 FIX: Distinguish full vs partial refund
+  const isFullRefund = charge.amount_refunded === charge.amount;
+
   // Check CourseOrder
   const courseOrder = await prisma.courseOrder.findFirst({
     where: { stripePaymentIntentId: paymentIntentId },
   });
 
   if (courseOrder) {
-    // Suspend enrollment
-    await prisma.enrollment.updateMany({
-      where: { tenantId: courseOrder.tenantId, courseId: courseOrder.courseId, userId: courseOrder.userId },
-      data: { status: 'SUSPENDED' },
-    });
-    // V2 FIX: Decrement course enrollment count on refund
-    await prisma.course.update({
-      where: { id: courseOrder.courseId },
-      data: { enrollmentCount: { decrement: 1 } },
-    }).catch(() => {}); // Non-blocking — count may already be 0
+    // P11-15 FIX: Idempotency — skip if already processed
+    if (courseOrder.status === 'refunded') {
+      logger.info('[LMS Refund] Already processed, skipping', { courseOrderId: courseOrder.id });
+      return true;
+    }
+
+    if (isFullRefund) {
+      // Full refund: suspend enrollment + revoke certificate + revoke CE credits
+      await prisma.enrollment.updateMany({
+        where: { tenantId: courseOrder.tenantId, courseId: courseOrder.courseId, userId: courseOrder.userId },
+        data: { status: 'SUSPENDED' },
+      });
+      // V2 FIX: Decrement course enrollment count on refund
+      await prisma.course.update({
+        where: { id: courseOrder.courseId },
+        data: { enrollmentCount: { decrement: 1 } },
+      }).catch(() => {}); // Non-blocking — count may already be 0
+
+      // P11-03 FIX: Revoke certificate if one was issued
+      const enrollment = await prisma.enrollment.findFirst({
+        where: { tenantId: courseOrder.tenantId, courseId: courseOrder.courseId, userId: courseOrder.userId },
+        select: { certificateId: true },
+      });
+      if (enrollment?.certificateId) {
+        await prisma.certificate.update({
+          where: { id: enrollment.certificateId },
+          data: {
+            status: 'REVOKED',
+            revokedAt: new Date(),
+            revokedReason: 'Full refund processed',
+          },
+        }).catch(() => {}); // Certificate may already be revoked
+      }
+
+      // P11-03 FIX: Revoke CE credits for this user + course
+      const ceCredits = await prisma.ceCredit.findMany({
+        where: { tenantId: courseOrder.tenantId, userId: courseOrder.userId, courseId: courseOrder.courseId },
+        select: { id: true, cePeriodId: true, ufcCredits: true },
+      });
+      for (const credit of ceCredits) {
+        await prisma.cePeriod.update({
+          where: { id: credit.cePeriodId },
+          data: { earnedUfc: { decrement: Number(credit.ufcCredits) } },
+        }).catch(() => {}); // Period may not exist
+        await prisma.ceCredit.delete({ where: { id: credit.id } }).catch(() => {});
+      }
+    }
+    // Both full and partial: update order status
     await prisma.courseOrder.update({
       where: { id: courseOrder.id },
-      data: { status: 'refunded', refundedAt: new Date(), refundAmount: (charge.amount_refunded ?? 0) / 100 },
+      data: {
+        status: isFullRefund ? 'refunded' : 'partial_refund',
+        refundedAt: new Date(),
+        refundAmount: (charge.amount_refunded ?? 0) / 100,
+      },
     });
-    logger.info('[LMS Refund] Course enrollment suspended', { courseOrderId: courseOrder.id, userId: courseOrder.userId });
+    logger.info(`[LMS Refund] Course order ${isFullRefund ? 'fully refunded' : 'partially refunded'}`, { courseOrderId: courseOrder.id, userId: courseOrder.userId });
     return true;
   }
 
@@ -1771,18 +1816,26 @@ async function handleLmsRefund(charge: Stripe.Charge): Promise<boolean> {
   });
 
   if (bundleOrder) {
-    // Suspend all enrollments from this bundle
-    for (const enrollmentId of bundleOrder.enrollmentIds) {
-      await prisma.enrollment.update({
-        where: { id: enrollmentId },
-        data: { status: 'SUSPENDED' },
-      }).catch(() => {}); // Some enrollments may not exist anymore
+    // P11-15 FIX: Idempotency — skip if already processed
+    if (bundleOrder.status === 'refunded') {
+      logger.info('[LMS Refund] Bundle already processed, skipping', { bundleOrderId: bundleOrder.id });
+      return true;
+    }
+
+    if (isFullRefund) {
+      // Full refund: suspend all enrollments from this bundle
+      for (const enrollmentId of bundleOrder.enrollmentIds) {
+        await prisma.enrollment.update({
+          where: { id: enrollmentId },
+          data: { status: 'SUSPENDED' },
+        }).catch(() => {}); // Some enrollments may not exist anymore
+      }
     }
     await prisma.courseBundleOrder.update({
       where: { id: bundleOrder.id },
-      data: { status: 'refunded' },
+      data: { status: isFullRefund ? 'refunded' : 'partial_refund' },
     });
-    logger.info('[LMS Refund] Bundle enrollments suspended', { bundleOrderId: bundleOrder.id, count: bundleOrder.enrollmentIds.length });
+    logger.info(`[LMS Refund] Bundle ${isFullRefund ? 'fully refunded' : 'partially refunded'}`, { bundleOrderId: bundleOrder.id, count: bundleOrder.enrollmentIds.length });
     return true;
   }
 

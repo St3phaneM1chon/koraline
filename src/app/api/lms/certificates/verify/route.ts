@@ -9,6 +9,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verifyCertificate } from '@/lib/lms/lms-service';
 import { checkRateLimit } from '@/lib/security';
 
+/**
+ * P11-02 FIX: Mask full name to "FirstName L." for privacy on public endpoint.
+ * "Jean-Pierre Dupont" -> "Jean-Pierre D."
+ * "Alice" -> "Alice"
+ */
+function maskName(fullName: string): string {
+  const parts = fullName.trim().split(/\s+/);
+  if (parts.length <= 1) return parts[0] || 'Student';
+  const firstName = parts.slice(0, -1).join(' ');
+  const lastInitial = parts[parts.length - 1][0];
+  return `${firstName} ${lastInitial}.`;
+}
+
 export async function GET(request: NextRequest) {
   // Rate limiting — prevent brute-force certificate code enumeration
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || '127.0.0.1';
@@ -30,11 +43,12 @@ export async function GET(request: NextRequest) {
   const isValid = certificate.status === 'ISSUED' &&
     (!certificate.expiresAt || new Date(certificate.expiresAt) > new Date());
 
+  // P11-02 FIX: Mask student name on public verification endpoint to prevent PII leakage
   return NextResponse.json({
     valid: isValid,
     certificate: {
       courseTitle: certificate.courseTitle,
-      studentName: certificate.studentName,
+      studentName: maskName(certificate.studentName),
       issuedAt: certificate.issuedAt,
       expiresAt: certificate.expiresAt,
       status: certificate.status,

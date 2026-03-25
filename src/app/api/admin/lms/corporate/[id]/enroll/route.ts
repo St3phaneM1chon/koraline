@@ -65,9 +65,11 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
     const bundle = await prisma.courseBundle.findFirst({ where: { id: itemId, tenantId } });
     if (!bundle) return apiError('Bundle not found', ErrorCode.NOT_FOUND, { request, status: 404 });
 
+    // P9-01 FIX: Pass tenantId to resolvePricing for cross-tenant isolation
     const pricing = await resolvePricing(
       { price: bundle.price, corporatePrice: bundle.corporatePrice, currency: bundle.currency },
-      corporateAccountId
+      corporateAccountId,
+      tenantId
     );
 
     for (const userId of userIds) {
@@ -105,9 +107,11 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
     const course = await prisma.course.findFirst({ where: { id: itemId, tenantId } });
     if (!course) return apiError('Course not found', ErrorCode.NOT_FOUND, { request, status: 404 });
 
+    // P9-01 FIX: Pass tenantId to resolvePricing for cross-tenant isolation
     const pricing = await resolvePricing(
       { price: course.price, corporatePrice: course.corporatePrice, currency: course.currency },
-      corporateAccountId
+      corporateAccountId,
+      tenantId
     );
 
     for (const userId of userIds) {
@@ -144,7 +148,8 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
     : [(await prisma.course.findUnique({ where: { id: itemId }, select: { title: true } }))?.title ?? ''];
 
   for (const userId of userIds) {
-    const user = await prisma.user.findUnique({ where: { id: userId }, select: { email: true, name: true } });
+    // P9-03 FIX: Use findFirst with tenantId instead of findUnique to prevent cross-tenant user lookup
+    const user = await prisma.user.findFirst({ where: { id: userId, tenantId }, select: { email: true, name: true } });
     if (user?.email) {
       const email = buildCorporateWelcomeEmail({
         employeeName: user.name ?? 'Employe',
