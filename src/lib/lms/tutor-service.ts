@@ -1113,7 +1113,7 @@ async function callClaude(
       'content-type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-5-20241022',
+      model: 'claude-sonnet-4-20250514',
       max_tokens: maxTokens,
       system: systemPrompt,
       messages: messages.map(m => ({
@@ -1147,7 +1147,7 @@ async function callClaude(
   return {
     content: textContent,
     tokensUsed: (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0),
-    model: data.model || 'claude-sonnet-4-5-20241022',
+    model: data.model || 'claude-sonnet-4-20250514',
   };
 }
 
