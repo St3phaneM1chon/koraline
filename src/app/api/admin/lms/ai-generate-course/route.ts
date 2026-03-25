@@ -15,7 +15,9 @@ const generateSchema = z.object({
   language: z.enum(['fr', 'en']).optional(),
 });
 
-export const POST = withAdminGuard(async (request: NextRequest) => {
+// P9-04 FIX: Extract session for audit logging; rate limit via withAdminGuard
+export const POST = withAdminGuard(async (request: NextRequest, { session }) => {
+  const tenantId = session.user.tenantId;
   const body = await request.json();
   const parsed = generateSchema.safeParse(body);
 
@@ -31,8 +33,8 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
       maxChapters: parsed.data.maxChapters,
     });
 
-    return apiSuccess(outline, { request });
+    return apiSuccess({ ...outline, tenantId }, { request });
   } catch (err) {
     return apiError(`Generation failed: ${(err as Error).message}`, ErrorCode.INTERNAL_ERROR, { request, status: 500 });
   }
-});
+}, { rateLimit: 5 }); // P9-04 FIX: Limit AI generation to 5/minute per admin
