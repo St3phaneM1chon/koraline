@@ -49,7 +49,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
   let sortOrder = parsed.data.sortOrder;
   if (sortOrder === undefined) {
     const last = await prisma.courseChapter.findFirst({
-      where: { courseId: parsed.data.courseId },
+      where: { courseId: parsed.data.courseId, tenantId },
       orderBy: { sortOrder: 'desc' },
     });
     sortOrder = (last?.sortOrder ?? -1) + 1;

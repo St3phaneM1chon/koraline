@@ -53,6 +53,34 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
 
   const { steps, ...pathData } = parsed.data;
 
+  // Validate that courseIds and bundleIds in steps belong to the current tenant
+  const courseIds = steps.map(s => s.courseId).filter((id): id is string => !!id);
+  const bundleIds = steps.map(s => s.bundleId).filter((id): id is string => !!id);
+
+  if (courseIds.length > 0) {
+    const validCourses = await prisma.course.findMany({
+      where: { id: { in: courseIds }, tenantId },
+      select: { id: true },
+    });
+    const validCourseIds = new Set(validCourses.map(c => c.id));
+    const invalidCourseIds = courseIds.filter(id => !validCourseIds.has(id));
+    if (invalidCourseIds.length > 0) {
+      return apiError('One or more courseIds do not belong to this tenant', ErrorCode.VALIDATION_ERROR, { request });
+    }
+  }
+
+  if (bundleIds.length > 0) {
+    const validBundles = await prisma.courseBundle.findMany({
+      where: { id: { in: bundleIds }, tenantId },
+      select: { id: true },
+    });
+    const validBundleIds = new Set(validBundles.map(b => b.id));
+    const invalidBundleIds = bundleIds.filter(id => !validBundleIds.has(id));
+    if (invalidBundleIds.length > 0) {
+      return apiError('One or more bundleIds do not belong to this tenant', ErrorCode.VALIDATION_ERROR, { request });
+    }
+  }
+
   const path = await prisma.lmsRolePath.create({
     data: {
       tenantId,

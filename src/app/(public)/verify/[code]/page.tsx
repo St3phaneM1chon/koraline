@@ -170,7 +170,7 @@ export default async function CertificateVerificationPage({ params }: PageProps)
 
             <div className="pt-2 border-t border-gray-100">
               <p className="text-xs text-gray-400">
-                Verification code: <span className="font-mono">{code}</span>
+                {t('lms.verificationCode')}: <span className="font-mono">{code}</span>
               </p>
             </div>
           </div>

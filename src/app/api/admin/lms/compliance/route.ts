@@ -4,12 +4,14 @@ import { NextRequest } from 'next/server';
 import { withAdminGuard } from '@/lib/admin-api-guard';
 import { apiSuccess } from '@/lib/api-response';
 import { prisma } from '@/lib/db';
-import type { ComplianceStatus } from '@prisma/client';
 
 export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
   const tenantId = session.user.tenantId;
   const { searchParams } = new URL(request.url);
-  const status = searchParams.get('status') as ComplianceStatus | null;
+  const validStatuses = ['NOT_STARTED', 'IN_PROGRESS', 'COMPLETED', 'OVERDUE', 'EXPIRED'] as const;
+  type ValidStatus = typeof validStatuses[number];
+  const rawStatus = searchParams.get('status');
+  const status: ValidStatus | null = rawStatus && (validStatuses as readonly string[]).includes(rawStatus) ? rawStatus as ValidStatus : null;
   const page = parseInt(searchParams.get('page') ?? '1', 10);
   const limit = Math.min(parseInt(searchParams.get('limit') ?? '20', 10), 100);
 
@@ -18,7 +20,8 @@ export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
   thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
 
   // Get compliance enrollments (courses marked as compliance)
-  const where = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const where: any = {
     tenantId,
     complianceStatus: status ? status : { not: null },
   };

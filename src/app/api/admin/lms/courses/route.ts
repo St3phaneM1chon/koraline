@@ -35,7 +35,9 @@ const createCourseSchema = z.object({
 export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
   const { searchParams } = new URL(request.url);
   const tenantId = session.user.tenantId;
-  const status = searchParams.get('status') as 'DRAFT' | 'PUBLISHED' | 'ARCHIVED' | undefined;
+  const validStatuses = ['DRAFT', 'PUBLISHED', 'ARCHIVED'];
+  const rawStatus = searchParams.get('status');
+  const status = rawStatus && validStatuses.includes(rawStatus) ? rawStatus as 'DRAFT' | 'PUBLISHED' | 'ARCHIVED' : undefined;
   const categoryId = searchParams.get('categoryId') ?? undefined;
   const search = searchParams.get('search') ?? undefined;
   const page = parseInt(searchParams.get('page') ?? '1', 10);
