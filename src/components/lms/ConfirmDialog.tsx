@@ -40,6 +40,7 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
   const handleClose = useCallback((result: boolean) => {
     state.resolve?.(result);
     setState(s => ({ ...s, open: false, resolve: null }));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.resolve]);
 
   return (
