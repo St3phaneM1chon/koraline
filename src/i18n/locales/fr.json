@@ -13461,7 +13461,8 @@
       "empty": "Aucune discussion. Soyez le premier!",
       "replies": "réponse(s)",
       "titlePlaceholder": "Titre de la discussion",
-      "messagePlaceholder": "Partagez votre question ou commentaire..."
+      "messagePlaceholder": "Partagez votre question ou commentaire...",
+      "instructorBadge": "Instructeur"
     },
     "liveSessions": {
       "title": "Sessions en direct",

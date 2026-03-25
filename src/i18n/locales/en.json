@@ -13463,7 +13463,8 @@
       "empty": "No discussions yet. Be the first!",
       "replies": "reply(ies)",
       "titlePlaceholder": "Discussion title",
-      "messagePlaceholder": "Share your question or comment..."
+      "messagePlaceholder": "Share your question or comment...",
+      "instructorBadge": "Instructor"
     },
     "liveSessions": {
       "title": "Live Sessions",

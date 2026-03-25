@@ -102,7 +102,7 @@ export default function DiscussionsPage() {
                             <div key={r.id} className="text-sm">
                               <div className="flex items-center gap-2">
                                 <span className="font-medium text-xs">{r.authorName}</span>
-                                {r.isInstructor && <span className="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">Instructeur</span>}
+                                {r.isInstructor && <span className="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">{t('lms.discussions.instructorBadge')}</span>}
                                 <span className="text-xs text-muted-foreground">{new Date(r.createdAt).toLocaleDateString('fr-CA')}</span>
                               </div>
                               <p className="text-muted-foreground mt-0.5">{r.content}</p>
