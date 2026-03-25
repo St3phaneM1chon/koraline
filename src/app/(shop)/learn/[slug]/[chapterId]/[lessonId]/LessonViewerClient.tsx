@@ -1,6 +1,12 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import type DOMPurifyType from 'dompurify';
+
+// FIX P1-01: XSS prevention — sanitize all HTML before dangerouslySetInnerHTML
+const DOMPurify: typeof DOMPurifyType = typeof window !== 'undefined'
+  ? require('dompurify')
+  : { sanitize: (html: string) => html } as typeof DOMPurifyType;
 import Link from 'next/link';
 import { useTranslations } from '@/hooks/useTranslations';
 
@@ -248,8 +254,12 @@ export default function LessonViewerClient({
     }
   };
 
-  // Simple markdown to HTML for text content
+  // Simple markdown to HTML for text content (sanitized against XSS)
   const renderMarkdown = (md: string) => {
+    const rawHtml = renderMarkdownUnsafe(md);
+    return DOMPurify.sanitize(rawHtml, { ALLOWED_TAGS: ['h1','h2','h3','h4','p','strong','em','code','li','ul','ol','a','br','span','div','img','table','thead','tbody','tr','th','td'], ALLOWED_ATTR: ['class','href','src','alt','target','rel'] });
+  };
+  const renderMarkdownUnsafe = (md: string) => {
     return md
       .replace(/^### (.+)$/gm, '<h3 class="text-lg font-semibold text-gray-900 mt-6 mb-2">$1</h3>')
       .replace(/^## (.+)$/gm, '<h2 class="text-xl font-bold text-gray-900 mt-8 mb-3">$1</h2>')
