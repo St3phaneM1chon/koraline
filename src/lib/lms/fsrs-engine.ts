@@ -32,6 +32,7 @@ export interface FsrsReviewResult {
   newDifficulty: number;
   newStability: number;
   interval: number; // jours
+  newLapses: number; // FIX P3: include updated lapse count
 }
 
 export type Rating = 1 | 2 | 3 | 4; // Again, Hard, Good, Easy
@@ -103,6 +104,7 @@ export function scheduleReview(
     newDifficulty,
     newStability,
     interval: Math.round(interval),
+    newLapses: card.lapses + (rating === 1 ? 1 : 0), // FIX P3: track lapses
   };
 }
 
