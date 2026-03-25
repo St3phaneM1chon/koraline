@@ -1096,8 +1096,54 @@ async function getOrCreateSession(
 }
 
 // ---------------------------------------------------------------------------
-// Claude API Call
+// Claude API Call (with retry for transient errors)
 // ---------------------------------------------------------------------------
+
+const RETRYABLE_STATUSES = [429, 500, 529];
+const MAX_RETRIES = 2;
+
+async function callClaudeWithRetry(
+  apiKey: string,
+  systemPrompt: string,
+  messages: Array<{ role: string; content: string }>,
+  maxTokens: number
+): Promise<Response> {
+  let lastError: Error | null = null;
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    if (attempt > 0) await new Promise(r => setTimeout(r, attempt * 2000));
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
+    try {
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        signal: controller.signal,
+        headers: { 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
+        body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: maxTokens, system: systemPrompt, messages: messages.map(m => ({ role: m.role, content: m.content })) }),
+      });
+      clearTimeout(timeoutId);
+      if (!resp.ok) {
+        if (RETRYABLE_STATUSES.includes(resp.status) && attempt < MAX_RETRIES) {
+          logger.warn(`[TutorService] Claude API ${resp.status}, retrying (${attempt + 1}/${MAX_RETRIES})...`);
+          lastError = new Error(`CLAUDE_API_ERROR: ${resp.status}`);
+          continue;
+        }
+        const errorBody = await resp.text().catch(() => 'Unknown error');
+        logger.error('[TutorService] Claude API error', { status: resp.status, body: errorBody.slice(0, 500) });
+        throw new Error(`CLAUDE_API_ERROR: ${resp.status}`);
+      }
+      return resp;
+    } catch (err) {
+      clearTimeout(timeoutId);
+      if (err instanceof Error && err.name === 'AbortError' && attempt < MAX_RETRIES) {
+        logger.warn(`[TutorService] Claude API timeout, retrying (${attempt + 1}/${MAX_RETRIES})...`);
+        lastError = err;
+        continue;
+      }
+      throw err;
+    }
+  }
+  throw lastError ?? new Error('CLAUDE_API_ERROR: max retries exceeded');
+}
 
 async function callClaude(
   systemPrompt: string,
@@ -1109,38 +1155,9 @@ async function callClaude(
     throw new Error('ANTHROPIC_API_KEY is not configured');
   }
 
-  // FIX P0: Add 30s timeout to prevent thread exhaustion
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 30000);
+  // V2 P1 FIX (P4-05): Retry on transient errors (429, 500, 529) with exponential backoff
+  const response = await callClaudeWithRetry(apiKey, systemPrompt, messages, maxTokens);
 
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    signal: controller.signal,
-    headers: {
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: maxTokens,
-      system: systemPrompt,
-      messages: messages.map(m => ({
-        role: m.role,
-        content: m.content,
-      })),
-    }),
-  });
-  clearTimeout(timeoutId);
-
-  if (!response.ok) {
-    const errorBody = await response.text().catch(() => 'Unknown error');
-    logger.error('[TutorService] Claude API error', {
-      status: response.status,
-      body: errorBody.slice(0, 500),
-    });
-    throw new Error(`CLAUDE_API_ERROR: ${response.status}`);
-  }
 
   const data = await response.json() as {
     content: Array<{ type: string; text: string }>;
