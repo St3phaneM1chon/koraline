@@ -721,6 +721,29 @@ export async function POST(request: NextRequest) {
             },
           },
     };
+    // ECOM-F7 FIX: Run fraud detection before creating Stripe session
+    try {
+      const { assessFraudRisk } = await import('@/lib/fraud-detection');
+      const fraudResult = assessFraudRisk({
+        userId: session?.user?.id || 'guest',
+        email: session?.user?.email || 'guest@unknown.com',
+        total: serverTotal,
+        shippingCountry: country,
+        shippingAddress: JSON.stringify(shippingInfo),
+        orderTimestamp: new Date(),
+      });
+      if (fraudResult.recommendation === 'DECLINE') {
+        logger.warn('[Checkout] Fraud detection DECLINED order', { riskScore: fraudResult.riskScore, signals: fraudResult.signals });
+        return NextResponse.json({ error: 'Order flagged for review. Please contact support.' }, { status: 403 });
+      }
+      if (fraudResult.recommendation === 'REVIEW') {
+        logger.info('[Checkout] Fraud detection flagged for REVIEW', { riskScore: fraudResult.riskScore });
+        // Allow but log for manual review
+      }
+    } catch {
+      // Fraud detection failure should not block checkout
+    }
+
     // BE-PAY-05 / payment-06: Pass idempotencyKey to Stripe to prevent duplicate charges
     const stripeOptions: Stripe.RequestOptions = {};
     if (idempotencyKey) {
