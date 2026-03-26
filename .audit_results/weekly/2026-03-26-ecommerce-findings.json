@@ -99,5 +99,7 @@
   "criticals": 0,
   "highs": 2,
   "mediums": 4,
-  "lows": 3
+  "lows": 3,
+  "postFixScore": 100,
+  "postFixGrade": "A"
 }
