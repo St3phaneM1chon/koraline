@@ -59,9 +59,9 @@ export async function GET(
       );
     }
 
-    // Max range: 2 years
-    const twoYearsMs = 2 * 365 * 24 * 60 * 60 * 1000;
-    if (dateTo.getTime() - dateFrom.getTime() > twoYearsMs) {
+    // ACCT-F8 FIX: Reduce max range to 1 year (was 2 years, no pagination)
+    const oneYearMs = 365 * 24 * 60 * 60 * 1000;
+    if (dateTo.getTime() - dateFrom.getTime() > oneYearMs) {
       return NextResponse.json(
         { error: 'La plage de dates ne peut pas depasser 2 ans' },
         { status: 400 }
