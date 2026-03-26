@@ -368,6 +368,16 @@ export function parseBankStatementCSV(
         }
         break;
         
+      case 'rbc':
+        // ACCT-F11 FIX: RBC format — Date(MM/DD/YYYY),Account,Description,Amount
+        // RBC uses MM/DD/YYYY (not DD/MM/YYYY like Desjardins)
+        date = new Date(cols[0]); // new Date() handles MM/DD/YYYY natively
+        if (isNaN(date.getTime())) date = parseDate(cols[0]); // fallback
+        description = cols[2] || cols[1];
+        amount = Math.abs(parseFloat(cols[3] || cols[2]) || 0);
+        type = parseFloat(cols[3] || cols[2]) < 0 ? 'DEBIT' : 'CREDIT';
+        break;
+
       default:
         // Generic: Date,Description,Amount (negative = debit)
         date = parseDate(cols[0]);
