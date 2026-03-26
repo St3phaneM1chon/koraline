@@ -158,7 +158,12 @@ const providers = [
       try {
         // SECURITY: Check brute-force lockout before any DB query
         const { checkLoginAttempt, recordFailedAttempt, clearFailedAttempts } = await import('./brute-force-protection');
-        const lockCheck = await checkLoginAttempt(email, 'unknown', 'unknown');
+        // AUTH-F5: IP/UA should come from credentials.ip/credentials.userAgent
+        // (set by the login route before calling signIn). NextAuth authorize()
+        // doesn't have direct request access, so IP must be passed through credentials.
+        const ip = (credentials as Record<string, string>)?.ip || 'unknown';
+        const ua = (credentials as Record<string, string>)?.userAgent || 'unknown';
+        const lockCheck = await checkLoginAttempt(email, ip, ua);
         if (!lockCheck.allowed) {
           // AUTH-003 FIX: Log brute-force lockout events for security monitoring
           logger.warn('[Auth] Brute-force lockout triggered', { email });
