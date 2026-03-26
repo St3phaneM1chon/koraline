@@ -91,10 +91,13 @@ export async function POST(request: NextRequest) {
       where: { email: normalizedEmail },
     });
 
+    // AUTH-F11 FIX: Anti-enumeration — same response whether email exists or not
     if (existing) {
+      // Timing normalization: perform dummy hash so response time is consistent
+      await bcrypt.hash('timing-normalization', 12);
       return NextResponse.json(
-        { message: 'Un compte avec cet email existe déjà' },
-        { status: 409 }
+        { message: 'Si cet email est disponible, un compte a ete cree.' },
+        { status: 201 }
       );
     }
 
