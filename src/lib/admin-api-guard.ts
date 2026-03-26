@@ -142,7 +142,8 @@ export function withAdminGuard(
       // ---------------------------------------------------------------
       const { setCurrentTenantId } = await import('@/lib/db');
       const tenantSlug = request.headers.get('x-tenant-slug') || '';
-      const isSuperAdmin = request.headers.get('x-tenant-super-admin') === '1';
+      // AUTH-F8 FIX: Derive super-admin from session role, NOT from client header
+      const isSuperAdmin = session.user.role === 'OWNER' && session.user.tenantId === process.env.PLATFORM_TENANT_ID;
 
       // Use tenantId from session (trusted) if available, otherwise resolve from slug
       if (session.user.tenantId) {

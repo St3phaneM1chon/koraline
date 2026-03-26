@@ -362,8 +362,8 @@ export async function POST(request: NextRequest) {
                 sku: item.sku ? String(item.sku) : null,
                 quantity: Number(item.quantity) || 1,
                 unitPrice: Number(item.price) || 0,
-                discount: Number(item.discount) || 0,
-                total: subtract(multiply(Number(item.price), Number(item.quantity)), Number(item.discount) || 0),
+                discount: 0, // PAY-F8 FIX: Never trust client-sent discount. Promos tracked at order level.
+                total: multiply(Number(item.price), Number(item.quantity)),
               })),
             } : undefined,
           },
