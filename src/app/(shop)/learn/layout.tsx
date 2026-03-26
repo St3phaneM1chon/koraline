@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { isModuleEnabled } from '@/lib/module-flags';
 import { auth } from '@/lib/auth-config';
+import LearnShell from './LearnShell';
 
 /**
  * Learn section layout guard.
@@ -22,6 +23,5 @@ export default async function LearnLayout({
     redirect('/auth/signin?callbackUrl=/learn');
   }
 
-  const LearnShell = (await import('./LearnShell')).default;
   return <LearnShell>{children}</LearnShell>;
 }
