@@ -119,41 +119,5 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // QW-11: Certificate expiry reminders (90 days out)
-  let certRemindersSent = 0;
-  try {
-    const d90 = new Date(now);
-    d90.setDate(d90.getDate() + 90);
-    const startOfD90 = new Date(d90.getFullYear(), d90.getMonth(), d90.getDate());
-    const endOfD90 = new Date(startOfD90.getTime() + 86400000);
-    const expiringCerts = await prisma.certificate.findMany({
-      where: { status: 'ISSUED', expiresAt: { gte: startOfD90, lt: endOfD90 } },
-      include: { course: { select: { title: true } } },
-    });
-    for (const cert of expiringCerts) {
-      const dedupExists = await prisma.lmsNotification.findFirst({
-        where: { tenantId: cert.tenantId, userId: cert.userId, type: 'cert_expiry_90d', createdAt: { gte: new Date(now.getFullYear(), now.getMonth(), now.getDate()) } },
-        select: { id: true },
-      });
-      if (dedupExists) continue;
-      const certUser = await prisma.user.findUnique({ where: { id: cert.userId }, select: { email: true, name: true } });
-      if (!certUser?.email) continue;
-      try {
-        await sendEmail({
-          to: { email: certUser.email, name: certUser.name ?? undefined },
-          subject: `Votre certificat "${cert.course?.title}" expire dans 90 jours`,
-          html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;"><h2>Rappel de renouvellement</h2><p>Bonjour ${certUser.name ?? 'Etudiant'},</p><p>Votre certificat pour <strong>${cert.course?.title ?? 'un cours'}</strong> expire le <strong>${cert.expiresAt?.toLocaleDateString('fr-CA') ?? ''}</strong> (dans 90 jours).</p></div>`,
-        });
-        certRemindersSent++;
-        await prisma.lmsNotification.create({ data: { tenantId: cert.tenantId, userId: cert.userId, type: 'cert_expiry_90d', title: 'Rappel expiration certificat', message: cert.course?.title ?? '' } }).catch(() => {});
-      } catch (certErr) {
-        errors++;
-        logger.error('[compliance-reminder] Cert email failed', { error: certErr instanceof Error ? certErr.message : String(certErr) });
-      }
-    }
-  } catch (batchErr) {
-    logger.error('[compliance-reminder] Cert batch error', { error: batchErr instanceof Error ? batchErr.message : String(batchErr) });
-  }
-
-  return NextResponse.json({ sent, certRemindersSent, errors, timestamp: now.toISOString() });
+  return NextResponse.json({ sent, errors, timestamp: now.toISOString() });
 }

@@ -25,9 +25,10 @@ function getTwilioClient(): { messages: { create: (params: Record<string, unknow
   }
 
   try {
-    // Dynamic require to avoid build failure if twilio not installed
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const twilio = require('twilio');
+    // Dynamic require hidden from webpack to avoid build failure if twilio not installed
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, no-eval
+    const loadModule = new Function('m', 'return require(m)');
+    const twilio = loadModule('twilio');
     _twilioClient = twilio(accountSid, authToken);
     return _twilioClient;
   } catch {
@@ -291,9 +292,10 @@ export function validateTwilioSignature(
   }
 
   try {
-    // Dynamic require
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const twilio = require('twilio');
+    // Dynamic require hidden from webpack
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, no-eval
+    const loadModule = new Function('m', 'return require(m)');
+    const twilio = loadModule('twilio');
     return twilio.validateRequest(authToken, signature, url, params);
   } catch {
     logger.error('[WhatsApp] twilio package not installed - rejecting webhook (cannot verify signature)');
