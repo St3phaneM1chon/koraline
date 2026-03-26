@@ -1220,12 +1220,12 @@ export default function EmailsPage() {
     {
       key: 'to',
       header: t('admin.emailConfig.recipient'),
-      render: (log) => <span className="text-slate-900">{log.to}</span>,
+      render: (log) => <span className="text-[var(--k-text-primary)]">{log.to}</span>,
     },
     {
       key: 'subject',
       header: t('admin.emailConfig.subject'),
-      render: (log) => <span className="text-slate-600 truncate max-w-xs block">{log.subject}</span>,
+      render: (log) => <span className="text-[var(--k-text-secondary)] truncate max-w-xs block">{log.subject}</span>,
     },
     {
       key: 'status',
@@ -1240,7 +1240,7 @@ export default function EmailsPage() {
     {
       key: 'date',
       header: t('admin.emailConfig.date'),
-      render: (log) => <span className="text-sm text-slate-500">{new Date(log.sentAt).toLocaleString(locale)}</span>,
+      render: (log) => <span className="text-sm text-[var(--k-text-secondary)]">{new Date(log.sentAt).toLocaleString(locale)}</span>,
     },
   ];
 
@@ -1262,10 +1262,10 @@ export default function EmailsPage() {
       {/* Compact header bar — stats + actions inline */}
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div className="flex items-center gap-6">
-          <h1 className="text-lg font-bold text-slate-900">{t('admin.emailConfig.hubTitle')}</h1>
+          <h1 className="text-lg font-bold text-[var(--k-text-primary)]">{t('admin.emailConfig.hubTitle')}</h1>
           {/* Inline stats */}
           <div className="hidden sm:flex items-center gap-4 text-sm">
-            <span className="flex items-center gap-1.5 text-slate-600">
+            <span className="flex items-center gap-1.5 text-[var(--k-text-secondary)]">
               <LayoutTemplate className="h-4 w-4" />
               {stats.activeTemplates}/{templates.length}
             </span>
@@ -1324,7 +1324,7 @@ export default function EmailsPage() {
 
       {/* Constructeur de templates (conditionnel) */}
       {showTemplateBuilder && (
-        <div className="bg-white rounded-xl border border-slate-200 p-6">
+        <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
           <TemplateBuilder onSaved={() => {
             fetchData();
             setShowTemplateBuilder(false);
@@ -1342,7 +1342,7 @@ export default function EmailsPage() {
       )}
 
       {/* Tabs Navigation */}
-      <div className="border-b border-slate-200">
+      <div className="border-b border-[var(--k-border-subtle)]">
         <nav className="flex gap-1 overflow-x-auto">
           {tabs.map((tab) => {
             const Icon = tab.icon;
@@ -1358,7 +1358,7 @@ export default function EmailsPage() {
                 className={`flex items-center gap-2 py-3 px-4 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
                   activeTab === tab.key
                     ? 'border-indigo-500 text-indigo-600'
-                    : 'border-transparent text-slate-500 hover:text-slate-700'
+                    : 'border-transparent text-[var(--k-text-secondary)] hover:text-slate-700'
                 }`}
               >
                 <Icon className="h-4 w-4" />
@@ -1378,13 +1378,13 @@ export default function EmailsPage() {
       {activeTab === 'inbox' && (
         <div
           ref={splitContainerRef}
-          className="bg-white rounded-xl border border-slate-200 overflow-hidden flex"
+          className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] overflow-hidden flex"
           style={{ height: 'calc(100vh - 380px)', minHeight: '500px' }}
         >
           {/* LEFT PANEL — Email list (resizable) */}
           <div className="flex-shrink-0 border-r border-slate-200 overflow-hidden flex flex-col" style={{ width: splitWidth }}>
             {/* Folder header */}
-            <div className="px-4 py-2.5 bg-slate-50 border-b border-slate-200 flex items-center gap-2">
+            <div className="px-4 py-2.5 bg-white/5 border-b border-[var(--k-border-subtle)] flex items-center gap-2">
               <span className="text-sm font-semibold text-slate-700">
                 {folderParam === 'inbox' && (t('admin.nav.emailInbox'))}
                 {folderParam === 'sent' && (t('admin.nav.emailSent'))}
@@ -1410,7 +1410,7 @@ export default function EmailsPage() {
                     <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-500" />
                   </div>
                 ) : sentEmails.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-48 text-slate-400">
+                  <div className="flex flex-col items-center justify-center h-48 text-[var(--k-text-muted)]">
                     <SendHorizontal className="h-10 w-10 mb-2" />
                     <p className="text-sm">{t('admin.emailConfig.noEmailsSent')}</p>
                   </div>
@@ -1419,17 +1419,17 @@ export default function EmailsPage() {
                     <button
                       key={email.id}
                       onClick={() => { setSelectedSentEmail(email); setSelectedConversation(null); }}
-                      className={`w-full text-start p-3 border-b border-slate-100 transition-colors ${
-                        selectedSentEmail?.id === email.id ? 'bg-indigo-50' : 'hover:bg-slate-50'
+                      className={`w-full text-start p-3 border-b border-white/5 transition-colors ${
+                        selectedSentEmail?.id === email.id ? 'bg-indigo-50' : 'hover:bg-white/5'
                       }`}
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-sm font-medium text-slate-900 truncate">À: {email.to}</span>
+                        <span className="text-sm font-medium text-[var(--k-text-primary)] truncate">À: {email.to}</span>
                         <span className="text-[10px] text-slate-400 whitespace-nowrap">
                           {new Date(email.sentAt).toLocaleDateString(locale, { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
                         </span>
                       </div>
-                      <p className="text-sm text-slate-600 truncate mt-0.5">{email.subject}</p>
+                      <p className="text-sm text-[var(--k-text-secondary)] truncate mt-0.5">{email.subject}</p>
                       <div className="flex items-center gap-2 mt-1">
                         <span className={`px-1.5 py-0.5 text-[10px] rounded-full font-medium ${
                           ['sent', 'delivered'].includes(email.status.toLowerCase()) ? 'bg-green-100 text-green-700' :
@@ -1442,7 +1442,7 @@ export default function EmailsPage() {
                   ))
                 )
               ) : (
-                <div className="flex flex-col items-center justify-center h-48 text-slate-400">
+                <div className="flex flex-col items-center justify-center h-48 text-[var(--k-text-muted)]">
                   <Mail className="h-10 w-10 mb-2" />
                   <p className="text-sm">
                     {folderParam === 'drafts' && 'Aucun brouillon'}
@@ -1481,8 +1481,8 @@ export default function EmailsPage() {
                   </button>
                 </div>
                 <div className="space-y-3">
-                  <h2 className="text-lg font-semibold text-slate-900">{selectedSentEmail.subject}</h2>
-                  <div className="flex items-center gap-4 text-sm text-slate-500 flex-wrap">
+                  <h2 className="text-lg font-semibold text-[var(--k-text-primary)]">{selectedSentEmail.subject}</h2>
+                  <div className="flex items-center gap-4 text-sm text-[var(--k-text-secondary)] flex-wrap">
                     <span><strong>{t('admin.emailConfig.from')}:</strong> {emailSettings['email.senderEmail'] || 'noreply@biocyclepeptides.com'}</span>
                     <span><strong>{t('admin.emailConfig.recipient')}:</strong> {selectedSentEmail.to}</span>
                     <span>{new Date(selectedSentEmail.sentAt).toLocaleString(locale)}</span>
@@ -1494,12 +1494,12 @@ export default function EmailsPage() {
                     }`}>{selectedSentEmail.status}</span>
                   </div>
                   {selectedSentEmail.templateId && (
-                    <p className="text-sm text-slate-400">Template: {selectedSentEmail.templateId}</p>
+                    <p className="text-sm text-[var(--k-text-muted)]">Template: {selectedSentEmail.templateId}</p>
                   )}
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center h-full text-slate-400">
+              <div className="flex flex-col items-center justify-center h-full text-[var(--k-text-muted)]">
                 <Mail className="h-16 w-16 mb-4 opacity-30" />
                 <p className="text-sm">{t('admin.emails.inbox.selectConversation')}</p>
               </div>
@@ -1534,13 +1534,13 @@ export default function EmailsPage() {
                 return (
                   <div
                     key={template.id}
-                    className={`bg-white rounded-xl border border-slate-200 p-4 ${!template.isActive ? 'opacity-60' : ''}`}
+                    className={`bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-4 ${!template.isActive ? 'opacity-60' : ''}`}
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div>
                         <StatusBadge variant={variant}>{getTemplateLabel(template.type)}</StatusBadge>
-                        <h3 className="font-semibold text-slate-900 mt-1">{template.name}</h3>
-                        <p className="text-xs text-slate-500">{getTemplateDescription(template.type)}</p>
+                        <h3 className="font-semibold text-[var(--k-text-primary)] mt-1">{template.name}</h3>
+                        <p className="text-xs text-[var(--k-text-secondary)]">{getTemplateDescription(template.type)}</p>
                       </div>
                       <button
                         onClick={() => toggleTemplate(template.id)}
@@ -1556,9 +1556,9 @@ export default function EmailsPage() {
                         }`} />
                       </button>
                     </div>
-                    <p className="text-sm text-slate-600 mb-3 truncate">{t('admin.emailConfig.subject')}: {template.subject}</p>
+                    <p className="text-sm text-[var(--k-text-secondary)] mb-3 truncate">{t('admin.emailConfig.subject')}: {template.subject}</p>
                     <div className="flex justify-between items-center">
-                      <span className="text-xs text-slate-400">
+                      <span className="text-xs text-[var(--k-text-muted)]">
                         {t('admin.emailConfig.updated')}: {new Date(template.lastUpdated).toLocaleDateString(locale)}
                       </span>
                       <Button variant="ghost" size="sm" onClick={() => setEditingTemplate(template)}>
@@ -1608,12 +1608,12 @@ export default function EmailsPage() {
 
       {/* ==================== SETTINGS TAB ==================== */}
       {activeTab === 'settings' && (
-        <div key={settingsLoaded ? 'loaded' : 'loading'} className="bg-white rounded-xl border border-slate-200 p-6 space-y-6" data-email-settings="">
+        <div key={settingsLoaded ? 'loaded' : 'loading'} className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6 space-y-6" data-email-settings="">
           <div>
-            <h3 className="font-semibold text-slate-900 mb-4">{t('admin.emailConfig.smtpConfig')}</h3>
+            <h3 className="font-semibold text-[var(--k-text-primary)] mb-4">{t('admin.emailConfig.smtpConfig')}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField label={t('admin.emailConfig.provider')}>
-                <select data-field="provider" defaultValue={emailSettings['email.provider'] || 'Resend'} aria-label="Email service provider" className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                <select data-field="provider" defaultValue={emailSettings['email.provider'] || 'Resend'} aria-label="Email service provider" className="w-full h-9 px-3 rounded-lg border border-[var(--k-border-subtle)] text-sm text-[var(--k-text-primary)] bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                   <option value="Resend">Resend</option>
                   <option value="SendGrid">SendGrid</option>
                   <option value="SMTP">{t('admin.emailConfig.customSmtp')}</option>
@@ -1633,7 +1633,7 @@ export default function EmailsPage() {
 
           {/* Inbound email webhook config */}
           <div className="pt-4 border-t border-slate-200">
-            <h3 className="font-semibold text-slate-900 mb-4">{t('admin.emailConfig.inboundTitle')}</h3>
+            <h3 className="font-semibold text-[var(--k-text-primary)] mb-4">{t('admin.emailConfig.inboundTitle')}</h3>
             <div className="grid grid-cols-1 gap-4">
               <FormField label={t('admin.emailConfig.webhookUrl')} hint={t('admin.emailConfig.webhookUrlHint')}>
                 <Input type="text" readOnly value={`${typeof window !== 'undefined' ? window.location.origin : ''}/api/webhooks/inbound-email`} />
@@ -1649,30 +1649,30 @@ export default function EmailsPage() {
 
           {/* Automations */}
           <div className="pt-4 border-t border-slate-200">
-            <h3 className="font-semibold text-slate-900 mb-4">{t('admin.emailConfig.automations')}</h3>
+            <h3 className="font-semibold text-[var(--k-text-primary)] mb-4">{t('admin.emailConfig.automations')}</h3>
             <div className="space-y-3">
               <label className="flex items-center justify-between">
                 <span className="text-slate-700">{t('admin.emailConfig.abandonedCartEmail')}</span>
-                <input type="checkbox" defaultChecked={emailSettings['automation.abandonedCart'] === 'true'} data-field="autoAbandonedCart" aria-label="Enable abandoned cart email automation" className="w-4 h-4 rounded border-slate-300 text-indigo-500 focus:ring-indigo-500" />
+                <input type="checkbox" defaultChecked={emailSettings['automation.abandonedCart'] === 'true'} data-field="autoAbandonedCart" aria-label="Enable abandoned cart email automation" className="w-4 h-4 rounded border-[var(--k-border-subtle)] text-indigo-500 focus:ring-indigo-500" />
               </label>
               <label className="flex items-center justify-between">
                 <span className="text-slate-700">{t('admin.emailConfig.reviewRequest')}</span>
-                <input type="checkbox" defaultChecked={emailSettings['automation.reviewRequest'] !== 'false'} data-field="autoReviewRequest" aria-label="Enable review request email automation" className="w-4 h-4 rounded border-slate-300 text-indigo-500 focus:ring-indigo-500" />
+                <input type="checkbox" defaultChecked={emailSettings['automation.reviewRequest'] !== 'false'} data-field="autoReviewRequest" aria-label="Enable review request email automation" className="w-4 h-4 rounded border-[var(--k-border-subtle)] text-indigo-500 focus:ring-indigo-500" />
               </label>
               <label className="flex items-center justify-between">
                 <span className="text-slate-700">{t('admin.emailConfig.birthdayEmail')}</span>
-                <input type="checkbox" defaultChecked={emailSettings['automation.birthdayEmail'] !== 'false'} data-field="autoBirthday" aria-label="Enable birthday email automation" className="w-4 h-4 rounded border-slate-300 text-indigo-500 focus:ring-indigo-500" />
+                <input type="checkbox" defaultChecked={emailSettings['automation.birthdayEmail'] !== 'false'} data-field="autoBirthday" aria-label="Enable birthday email automation" className="w-4 h-4 rounded border-[var(--k-border-subtle)] text-indigo-500 focus:ring-indigo-500" />
               </label>
               <label className="flex items-center justify-between">
                 <span className="text-slate-700">{t('admin.emailConfig.autoResponder')}</span>
-                <input type="checkbox" defaultChecked={emailSettings['automation.autoResponder'] === 'true'} data-field="autoAutoResponder" aria-label="Enable auto-responder email automation" className="w-4 h-4 rounded border-slate-300 text-indigo-500 focus:ring-indigo-500" />
+                <input type="checkbox" defaultChecked={emailSettings['automation.autoResponder'] === 'true'} data-field="autoAutoResponder" aria-label="Enable auto-responder email automation" className="w-4 h-4 rounded border-[var(--k-border-subtle)] text-indigo-500 focus:ring-indigo-500" />
               </label>
             </div>
           </div>
 
           {/* DKIM/SPF/DMARC */}
           <div className="pt-4 border-t border-slate-200">
-            <h3 className="font-semibold text-slate-900 mb-4">{t('admin.emailConfig.emailAuthTitle')}</h3>
+            <h3 className="font-semibold text-[var(--k-text-primary)] mb-4">{t('admin.emailConfig.emailAuthTitle')}</h3>
             <div className="space-y-3">
               {[
                 { name: 'SPF', status: emailAuthStatus?.spf || 'unknown', desc: 'Sender Policy Framework' },
@@ -1680,10 +1680,10 @@ export default function EmailsPage() {
                 { name: 'DMARC', status: emailAuthStatus?.dmarc || 'unknown', desc: 'Domain-based Message Auth' },
                 { name: 'BIMI', status: emailAuthStatus?.bimi || 'unknown', desc: 'Brand Indicators for Message Identification' },
               ].map(item => (
-                <div key={item.name} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                <div key={item.name} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
                   <div>
-                    <span className="text-sm font-medium text-slate-900">{item.name}</span>
-                    <span className="text-xs text-slate-500 ms-2">{item.desc}</span>
+                    <span className="text-sm font-medium text-[var(--k-text-primary)]">{item.name}</span>
+                    <span className="text-xs text-[var(--k-text-secondary)] ms-2">{item.desc}</span>
                   </div>
                   <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                     item.status === 'configured' ? 'bg-green-100 text-green-700' :
@@ -1756,14 +1756,14 @@ export default function EmailsPage() {
           {/* ==================== EMAIL ACCOUNTS MANAGEMENT ==================== */}
           <div className="mt-8 border-t border-slate-200 pt-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-slate-900">Comptes email</h3>
+              <h3 className="font-semibold text-[var(--k-text-primary)]">Comptes email</h3>
               <Button variant="primary" icon={Plus} onClick={() => openAccountModal()}>
                 Ajouter un compte
               </Button>
             </div>
 
             {emailAccounts.length === 0 ? (
-              <div className="text-center py-8 text-slate-400">
+              <div className="text-center py-8 text-[var(--k-text-muted)]">
                 <Mail className="h-10 w-10 mx-auto mb-2 opacity-30" />
                 <p className="text-sm">Aucun compte email configuré</p>
                 <p className="text-xs mt-1">Ajoutez un compte pour gérer vos envois</p>
@@ -1771,12 +1771,12 @@ export default function EmailsPage() {
             ) : (
               <div className="space-y-3">
                 {emailAccounts.map((acc) => (
-                  <div key={acc.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200">
+                  <div key={acc.id} className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-[var(--k-border-subtle)]">
                     <div className="flex items-center gap-3">
                       <div className="w-3 h-3 rounded-full" style={{ backgroundColor: acc.color || '#3b82f6' }} />
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-medium text-slate-900">{acc.name}</span>
+                          <span className="font-medium text-[var(--k-text-primary)]">{acc.name}</span>
                           {acc.isDefault && (
                             <span className="px-1.5 py-0.5 text-[10px] bg-indigo-100 text-indigo-700 rounded-full font-medium">Par défaut</span>
                           )}
@@ -1784,7 +1784,7 @@ export default function EmailsPage() {
                             <span className="px-1.5 py-0.5 text-[10px] bg-red-100 text-red-700 rounded-full font-medium">Désactivé</span>
                           )}
                         </div>
-                        <p className="text-sm text-slate-500">{acc.email}</p>
+                        <p className="text-sm text-[var(--k-text-secondary)]">{acc.email}</p>
                         <p className="text-xs text-slate-400 mt-0.5">
                           {acc.provider === 'resend' ? 'Resend' : acc.provider === 'sendgrid' ? 'SendGrid' : 'SMTP'}
                           {acc.displayName && ` · ${acc.displayName}`}
@@ -1794,7 +1794,7 @@ export default function EmailsPage() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => openAccountModal(acc)}
-                        className="px-3 py-1.5 text-xs text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                        className="px-3 py-1.5 text-xs text-[var(--k-text-secondary)] hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
                       >
                         Modifier
                       </button>
@@ -1854,7 +1854,7 @@ export default function EmailsPage() {
                 value={accountForm.provider}
                 onChange={(e) => setAccountForm({ ...accountForm, provider: e.target.value })}
                 aria-label="Email provider"
-                className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm"
+                className="w-full h-9 px-3 rounded-lg border border-[var(--k-border-subtle)] text-sm"
               >
                 <option value="resend">Resend</option>
                 <option value="sendgrid">SendGrid</option>
@@ -1867,7 +1867,7 @@ export default function EmailsPage() {
                 value={accountForm.color}
                 onChange={(e) => setAccountForm({ ...accountForm, color: e.target.value })}
                 aria-label="Account color"
-                className="w-full h-9 rounded-lg border border-slate-300 cursor-pointer"
+                className="w-full h-9 rounded-lg border border-[var(--k-border-subtle)] cursor-pointer"
               />
             </FormField>
             <FormField label="Options">
@@ -1990,7 +1990,7 @@ export default function EmailsPage() {
         }
       >
         <div className="space-y-4">
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-[var(--k-text-secondary)]">
             {t('admin.emailConfig.abTestDescription')}
           </p>
           <FormField label={t('admin.emailConfig.abTestSubjectA')}>
@@ -2110,11 +2110,11 @@ export default function EmailsPage() {
         }
       >
         <div className="space-y-4">
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-[var(--k-text-secondary)]">
             {t('admin.emailConfig.importDescription')}
           </p>
           <div
-            className="border-2 border-dashed border-slate-300 rounded-lg p-8 text-center cursor-pointer hover:border-indigo-400 transition-colors"
+            className="border-2 border-dashed border-[var(--k-border-subtle)] rounded-lg p-8 text-center cursor-pointer hover:border-indigo-400 transition-colors"
             onClick={() => fileInputRef.current?.click()}
             role="button"
             tabIndex={0}
@@ -2123,11 +2123,11 @@ export default function EmailsPage() {
             <Upload className="h-8 w-8 text-slate-400 mx-auto mb-2" />
             {importFile ? (
               <div>
-                <p className="text-sm font-medium text-slate-900">{importFile.name}</p>
-                <p className="text-xs text-slate-500">{(importFile.size / 1024).toFixed(1)} KB</p>
+                <p className="text-sm font-medium text-[var(--k-text-primary)]">{importFile.name}</p>
+                <p className="text-xs text-[var(--k-text-secondary)]">{(importFile.size / 1024).toFixed(1)} KB</p>
               </div>
             ) : (
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-[var(--k-text-secondary)]">
                 {t('admin.emailConfig.importDropzone')}
               </p>
             )}
@@ -2143,11 +2143,11 @@ export default function EmailsPage() {
               }}
             />
           </div>
-          <div className="bg-slate-50 rounded-lg p-3">
+          <div className="bg-white/5 rounded-lg p-3">
             <h4 className="text-xs font-semibold text-slate-700 mb-1">
               {t('admin.emailConfig.importFormat')}
             </h4>
-            <code className="text-[10px] text-slate-600 block">
+            <code className="text-[10px] text-[var(--k-text-secondary)] block">
               Email,Locale,Source<br />
               john@example.com,en,import<br />
               marie@example.com,fr,import
@@ -2186,7 +2186,7 @@ export default function EmailsPage() {
             <select
               value={newContactLocale}
               onChange={(e) => setNewContactLocale(e.target.value)}
-              className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full h-9 px-3 rounded-lg border border-[var(--k-border-subtle)] text-sm text-[var(--k-text-primary)] bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               aria-label="Contact language"
             >
               <option value="en">English</option>
@@ -2202,7 +2202,7 @@ export default function EmailsPage() {
             <select
               value={newContactSource}
               onChange={(e) => setNewContactSource(e.target.value)}
-              className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full h-9 px-3 rounded-lg border border-[var(--k-border-subtle)] text-sm text-[var(--k-text-primary)] bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               aria-label="Contact source"
             >
               <option value="manual">{t('admin.emailConfig.sourceManual')}</option>
@@ -2223,7 +2223,7 @@ export default function EmailsPage() {
         size="md"
       >
         <div className="space-y-3">
-          <p className="text-sm text-slate-600 mb-4">
+          <p className="text-sm text-[var(--k-text-secondary)] mb-4">
             {t('admin.emailConfig.variablesDescription')}
           </p>
           {[
@@ -2241,7 +2241,7 @@ export default function EmailsPage() {
           ].map(item => (
             <div
               key={item.var}
-              className="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg hover:bg-slate-100 cursor-pointer transition-colors"
+              className="flex items-center justify-between p-2.5 bg-white/5 rounded-lg hover:bg-white/10 cursor-pointer transition-colors"
               onClick={() => {
                 navigator.clipboard.writeText(item.var);
                 toast.success((t('admin.emailConfig.variableCopied')).replace('{var}', item.var));
@@ -2256,10 +2256,10 @@ export default function EmailsPage() {
               }}
             >
               <div className="flex items-center gap-2">
-                <code className="text-xs font-mono bg-white px-2 py-1 rounded border border-slate-200 text-indigo-700">
+                <code className="text-xs font-mono bg-white px-2 py-1 rounded border border-[var(--k-border-subtle)] text-indigo-700">
                   {item.var}
                 </code>
-                <span className="text-sm text-slate-600">{item.desc}</span>
+                <span className="text-sm text-[var(--k-text-secondary)]">{item.desc}</span>
               </div>
               <Copy className="h-3.5 w-3.5 text-slate-400" />
             </div>
@@ -2314,7 +2314,7 @@ export default function EmailsPage() {
             aria-hidden="true"
           />
           {/* Composer panel */}
-          <div className="relative w-full max-w-2xl mx-4 mb-4 sm:mb-0 bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden" style={{ height: '70vh', maxHeight: '600px' }}>
+          <div className="relative w-full max-w-2xl mx-4 mb-4 sm:mb-0 bg-white rounded-xl shadow-2xl border border-[var(--k-border-subtle)] overflow-hidden" style={{ height: '70vh', maxHeight: '600px' }}>
             <EmailComposer
               onClose={() => { setShowComposer(false); setComposerReplyTo(null); }}
               replyTo={composerReplyTo}

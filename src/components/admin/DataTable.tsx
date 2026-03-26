@@ -95,14 +95,14 @@ export function DataTable<T>({
 
   if (loading) {
     return (
-      <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
+      <div className="bg-[var(--k-glass-thin)] border border-[var(--k-border-subtle)] rounded-lg overflow-hidden">
         <div className="animate-pulse">
-          <div className="h-11 bg-slate-50 border-b border-slate-200" />
+          <div className="h-11 bg-white/5 border-b border-[var(--k-border-subtle)]" />
           {[1, 2, 3, 4, 5].map(i => (
-            <div key={i} className="h-14 border-b border-slate-100 px-4 flex items-center gap-4">
-              <div className="h-4 bg-slate-100 rounded w-1/4" />
-              <div className="h-4 bg-slate-100 rounded w-1/3" />
-              <div className="h-4 bg-slate-100 rounded w-1/5" />
+            <div key={i} className="h-14 border-b border-white/5 px-4 flex items-center gap-4">
+              <div className="h-4 bg-white/10 rounded w-1/4" />
+              <div className="h-4 bg-white/10 rounded w-1/3" />
+              <div className="h-4 bg-white/10 rounded w-1/5" />
             </div>
           ))}
         </div>
@@ -112,7 +112,7 @@ export function DataTable<T>({
 
   if (data.length === 0) {
     return (
-      <div className="bg-white border border-slate-200 rounded-lg">
+      <div className="bg-[var(--k-glass-thin)] border border-[var(--k-border-subtle)] rounded-lg">
         <EmptyState
           title={emptyTitle}
           description={emptyDescription}
@@ -123,11 +123,11 @@ export function DataTable<T>({
   }
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+    <div className="bg-[var(--k-glass-thin)] border border-[var(--k-border-subtle)] rounded-xl overflow-hidden shadow-sm">
       {/* Chantier 3.4: Bulk actions bar */}
       {selectable && selectedIds && selectedIds.size > 0 && bulkActions && bulkActions.length > 0 && (
-        <div className="flex items-center gap-3 px-4 py-2 bg-indigo-50 border-b border-indigo-100">
-          <span className="text-sm font-medium text-indigo-800">
+        <div className="flex items-center gap-3 px-4 py-2 bg-indigo-500/10 border-b border-indigo-500/20">
+          <span className="text-sm font-medium text-indigo-300">
             {selectedIds.size} {t('admin.dataTable.selected') || 'selected'}
           </span>
           <div className="flex items-center gap-2 ms-auto">
@@ -137,8 +137,8 @@ export function DataTable<T>({
                 onClick={() => action.onClick(selectedIds)}
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
                   action.variant === 'danger'
-                    ? 'bg-red-100 text-red-700 hover:bg-red-200'
-                    : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                    ? 'bg-red-500/20 text-red-300 hover:bg-red-500/30'
+                    : 'bg-white/10 text-[var(--k-text-secondary)] border border-[var(--k-border-subtle)] hover:bg-white/15'
                 }`}
               >
                 {action.icon}

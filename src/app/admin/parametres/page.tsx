@@ -340,8 +340,8 @@ export default function ParametresPage() {
     <div className="flex flex-col md:flex-row gap-6" role="main" aria-label={t('admin.settingsPage.sidebarTitle')}>
       {/* Sidebar */}
       <div className="w-full md:w-64 flex-shrink-0">
-        <div className="bg-white rounded-xl border border-slate-200 p-4 sticky top-4">
-          <h2 className="font-semibold text-slate-900 mb-4">{t('admin.settingsPage.sidebarTitle')}</h2>
+        <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-4 sticky top-4">
+          <h2 className="font-semibold text-[var(--k-text-primary)] mb-4">{t('admin.settingsPage.sidebarTitle')}</h2>
           <nav className="space-y-1">
             {sections.map((section) => {
               const Icon = section.icon;
@@ -352,7 +352,7 @@ export default function ParametresPage() {
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-start transition-colors ${
                     activeSection === section.id
                       ? 'bg-indigo-100 text-indigo-900'
-                      : 'text-slate-600 hover:bg-slate-100'
+                      : 'text-[var(--k-text-secondary)] hover:bg-slate-100'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -367,8 +367,8 @@ export default function ParametresPage() {
       {/* Content */}
       <div className="flex-1 min-w-0 space-y-6">
         {activeSection === 'general' && (
-          <div className="bg-white rounded-xl border border-slate-200 p-6">
-            <h3 className="text-lg font-semibold text-slate-900 mb-6">{t('admin.settingsPage.generalTitle')}</h3>
+          <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
+            <h3 className="text-lg font-semibold text-[var(--k-text-primary)] mb-6">{t('admin.settingsPage.generalTitle')}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <FormField label={t('admin.settingsPage.siteName')}>
                 <Input
@@ -410,7 +410,7 @@ export default function ParametresPage() {
                 <select
                   value={settings.timezone}
                   onChange={(e) => setSettings({ ...settings, timezone: e.target.value })}
-                  className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full h-9 px-3 rounded-lg border border-[var(--k-border-subtle)] text-sm text-[var(--k-text-primary)] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 >
                   <option value="America/Toronto">{t('admin.settingsPage.timezoneToronto')}</option>
                   <option value="America/Montreal">{t('admin.settingsPage.timezoneMontreal')}</option>
@@ -423,14 +423,14 @@ export default function ParametresPage() {
         )}
 
         {activeSection === 'store' && (
-          <div className="bg-white rounded-xl border border-slate-200 p-6">
-            <h3 className="text-lg font-semibold text-slate-900 mb-6">{t('admin.settingsPage.storeTitle')}</h3>
+          <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
+            <h3 className="text-lg font-semibold text-[var(--k-text-primary)] mb-6">{t('admin.settingsPage.storeTitle')}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <FormField label={t('admin.settingsPage.defaultCurrency')}>
                 <select
                   value={settings.currency}
                   onChange={(e) => setSettings({ ...settings, currency: e.target.value })}
-                  className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full h-9 px-3 rounded-lg border border-[var(--k-border-subtle)] text-sm text-[var(--k-text-primary)] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 >
                   <option value="CAD">{t('admin.settingsPage.cadOption')}</option>
                   <option value="USD">{t('admin.settingsPage.usdOption')}</option>
@@ -444,7 +444,7 @@ export default function ParametresPage() {
                       type="checkbox"
                       checked={settings.freeShippingThreshold === -1}
                       onChange={(e) => setSettings({ ...settings, freeShippingThreshold: e.target.checked ? -1 : 150 })}
-                      className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                      className="rounded border-[var(--k-border-subtle)] text-indigo-600 focus:ring-indigo-500"
                     />
                     {t('admin.settingsPage.shippingNotApplicable') || 'Ne s\'applique pas (produit numérique, formation, service, forfait, etc.)'}
                   </label>
@@ -457,7 +457,7 @@ export default function ParametresPage() {
                       placeholder="150"
                     />
                   )}
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-[var(--k-text-secondary)]">
                     {t('admin.settingsPage.shippingThresholdHelp') || 'Montant minimum pour la livraison gratuite. Cochez la case si vos produits ne nécessitent pas de livraison (formations en ligne, contrats de service, applications, forfaits, etc.)'}
                   </p>
                 </div>
@@ -466,7 +466,7 @@ export default function ParametresPage() {
                 <select
                   value={settings.weightUnit}
                   onChange={(e) => setSettings({ ...settings, weightUnit: e.target.value })}
-                  className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full h-9 px-3 rounded-lg border border-[var(--k-border-subtle)] text-sm text-[var(--k-text-primary)] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 >
                   <option value="g">{t('admin.settingsPage.gramsOption')}</option>
                   <option value="kg">{t('admin.settingsPage.kilogramsOption')}</option>
@@ -478,7 +478,7 @@ export default function ParametresPage() {
                 <select
                   value={settings.dimensionUnit}
                   onChange={(e) => setSettings({ ...settings, dimensionUnit: e.target.value })}
-                  className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full h-9 px-3 rounded-lg border border-[var(--k-border-subtle)] text-sm text-[var(--k-text-primary)] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 >
                   <option value="cm">{t('admin.settingsPage.centimetersOption')}</option>
                   <option value="in">{t('admin.settingsPage.inchesOption')}</option>
@@ -489,8 +489,8 @@ export default function ParametresPage() {
         )}
 
         {activeSection === 'orders' && (
-          <div className="bg-white rounded-xl border border-slate-200 p-6">
-            <h3 className="text-lg font-semibold text-slate-900 mb-6">{t('admin.settingsPage.ordersTitle')}</h3>
+          <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
+            <h3 className="text-lg font-semibold text-[var(--k-text-primary)] mb-6">{t('admin.settingsPage.ordersTitle')}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <FormField label={t('admin.settingsPage.orderPrefix')} hint={t('admin.settingsPage.orderPrefixHint')}>
                 <Input
@@ -519,7 +519,7 @@ export default function ParametresPage() {
                     type="checkbox"
                     checked={settings.guestCheckout}
                     onChange={(e) => setSettings({ ...settings, guestCheckout: e.target.checked })}
-                    className="w-4 h-4 rounded border-slate-300 text-indigo-500"
+                    className="w-4 h-4 rounded border-[var(--k-border-subtle)] text-indigo-500"
                   />
                   <span className="text-slate-700">{t('admin.settingsPage.guestCheckout')}</span>
                 </label>
@@ -529,13 +529,13 @@ export default function ParametresPage() {
         )}
 
         {activeSection === 'notifications' && (
-          <div className="bg-white rounded-xl border border-slate-200 p-6">
-            <h3 className="text-lg font-semibold text-slate-900 mb-6">{t('admin.settingsPage.notificationsTitle')}</h3>
+          <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
+            <h3 className="text-lg font-semibold text-[var(--k-text-primary)] mb-6">{t('admin.settingsPage.notificationsTitle')}</h3>
             <div className="space-y-4">
               <label className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-slate-700">{t('admin.settingsPage.newOrders')}</p>
-                  <p className="text-sm text-slate-500">{t('admin.settingsPage.newOrdersDesc')}</p>
+                  <p className="text-sm text-[var(--k-text-secondary)]">{t('admin.settingsPage.newOrdersDesc')}</p>
                 </div>
                 <button
                   onClick={() => setSettings({ ...settings, orderNotifications: !settings.orderNotifications })}
@@ -548,7 +548,7 @@ export default function ParametresPage() {
               <label className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-slate-700">{t('admin.settingsPage.lowStockAlerts')}</p>
-                  <p className="text-sm text-slate-500">{t('admin.settingsPage.lowStockAlertsDesc')}</p>
+                  <p className="text-sm text-[var(--k-text-secondary)]">{t('admin.settingsPage.lowStockAlertsDesc')}</p>
                 </div>
                 <button
                   onClick={() => setSettings({ ...settings, lowStockNotifications: !settings.lowStockNotifications })}
@@ -561,7 +561,7 @@ export default function ParametresPage() {
               <label className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-slate-700">{t('admin.settingsPage.newReviews')}</p>
-                  <p className="text-sm text-slate-500">{t('admin.settingsPage.newReviewsDesc')}</p>
+                  <p className="text-sm text-[var(--k-text-secondary)]">{t('admin.settingsPage.newReviewsDesc')}</p>
                 </div>
                 <button
                   onClick={() => setSettings({ ...settings, reviewNotifications: !settings.reviewNotifications })}
@@ -575,13 +575,13 @@ export default function ParametresPage() {
         )}
 
         {activeSection === 'security' && (
-          <div className="bg-white rounded-xl border border-slate-200 p-6">
-            <h3 className="text-lg font-semibold text-slate-900 mb-6">{t('admin.settingsPage.securityTitle')}</h3>
+          <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
+            <h3 className="text-lg font-semibold text-[var(--k-text-primary)] mb-6">{t('admin.settingsPage.securityTitle')}</h3>
             <div className="space-y-6">
               <label className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-slate-700">{t('admin.settingsPage.emailVerification')}</p>
-                  <p className="text-sm text-slate-500">{t('admin.settingsPage.emailVerificationDesc')}</p>
+                  <p className="text-sm text-[var(--k-text-secondary)]">{t('admin.settingsPage.emailVerificationDesc')}</p>
                 </div>
                 <button
                   onClick={() => setSettings({ ...settings, requireEmailVerification: !settings.requireEmailVerification })}
@@ -612,30 +612,30 @@ export default function ParametresPage() {
         )}
 
         {activeSection === 'integrations' && (
-          <div className="bg-white rounded-xl border border-slate-200 p-6">
-            <h3 className="text-lg font-semibold text-slate-900 mb-6">{t('admin.settingsPage.integrationsTitle')}</h3>
+          <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
+            <h3 className="text-lg font-semibold text-[var(--k-text-primary)] mb-6">{t('admin.settingsPage.integrationsTitle')}</h3>
             <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
+              <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
                     <span className="text-indigo-600 font-bold">S</span>
                   </div>
                   <div>
-                    <p className="font-medium text-slate-900">Stripe</p>
-                    <p className="text-sm text-slate-500">{t('admin.settingsPage.cardPayments')}</p>
+                    <p className="font-medium text-[var(--k-text-primary)]">Stripe</p>
+                    <p className="text-sm text-[var(--k-text-secondary)]">{t('admin.settingsPage.cardPayments')}</p>
                   </div>
                 </div>
                 <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-sm">{t('admin.settingsPage.connected')}</span>
               </div>
 
-              <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
+              <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
                     <span className="text-indigo-800 font-bold">P</span>
                   </div>
                   <div>
-                    <p className="font-medium text-slate-900">PayPal</p>
-                    <p className="text-sm text-slate-500">{t('admin.settingsPage.paypalPayments')}</p>
+                    <p className="font-medium text-[var(--k-text-primary)]">PayPal</p>
+                    <p className="text-sm text-[var(--k-text-secondary)]">{t('admin.settingsPage.paypalPayments')}</p>
                   </div>
                 </div>
                 <Button variant="ghost" size="sm" className="text-indigo-600 hover:text-indigo-700 bg-indigo-100 hover:bg-indigo-200" onClick={() => {
@@ -646,14 +646,14 @@ export default function ParametresPage() {
                 </Button>
               </div>
 
-              <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
+              <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
                     <span className="text-red-600 font-bold">G</span>
                   </div>
                   <div>
-                    <p className="font-medium text-slate-900">Google Analytics</p>
-                    <p className="text-sm text-slate-500">{t('admin.settingsPage.trafficStats')}</p>
+                    <p className="font-medium text-[var(--k-text-primary)]">Google Analytics</p>
+                    <p className="text-sm text-[var(--k-text-secondary)]">{t('admin.settingsPage.trafficStats')}</p>
                   </div>
                 </div>
                 <Button variant="ghost" size="sm" className="text-indigo-600 hover:text-indigo-700 bg-indigo-100 hover:bg-indigo-200" onClick={() => {
@@ -664,14 +664,14 @@ export default function ParametresPage() {
                 </Button>
               </div>
 
-              <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
+              <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
                     <span className="text-green-600 font-bold">R</span>
                   </div>
                   <div>
-                    <p className="font-medium text-slate-900">Resend</p>
-                    <p className="text-sm text-slate-500">{t('admin.settingsPage.emailSending')}</p>
+                    <p className="font-medium text-[var(--k-text-primary)]">Resend</p>
+                    <p className="text-sm text-[var(--k-text-secondary)]">{t('admin.settingsPage.emailSending')}</p>
                   </div>
                 </div>
                 <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-sm">{t('admin.settingsPage.connected')}</span>
@@ -682,9 +682,9 @@ export default function ParametresPage() {
 
         {/* ─── Sessions actives ──────────────────────────────────── */}
         {activeSection === 'sessions' && (
-          <div className="bg-white rounded-xl border border-slate-200 p-6">
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">Sessions actives</h3>
-            <p className="text-sm text-slate-500 mb-6">
+          <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
+            <h3 className="text-lg font-semibold text-[var(--k-text-primary)] mb-2">Sessions actives</h3>
+            <p className="text-sm text-[var(--k-text-secondary)] mb-6">
               Gerez les sessions connectees a votre compte administrateur. Forcez la deconnexion des sessions suspectes.
             </p>
             <div className="space-y-3">
@@ -705,17 +705,17 @@ export default function ParametresPage() {
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <p className="font-medium text-slate-900 text-sm">{session.device}</p>
+                        <p className="font-medium text-[var(--k-text-primary)] text-sm">{session.device}</p>
                         {session.current && (
                           <span className="text-[10px] font-semibold px-1.5 py-0.5 bg-green-100 text-green-700 rounded-full">
                             Session actuelle
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-[var(--k-text-secondary)]">
                         {session.browser} &middot; IP: {session.ip} &middot; {session.location}
                       </p>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-[var(--k-text-muted)]">
                         Derniere activite: {new Date(session.lastActivity).toLocaleString(locale)}
                       </p>
                     </div>
@@ -755,16 +755,16 @@ export default function ParametresPage() {
 
         {/* ─── Apparence (Mode sombre) ────────────────────────────── */}
         {activeSection === 'appearance' && (
-          <div className="bg-white rounded-xl border border-slate-200 p-6">
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">Apparence</h3>
-            <p className="text-sm text-slate-500 mb-6">
+          <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
+            <h3 className="text-lg font-semibold text-[var(--k-text-primary)] mb-2">Apparence</h3>
+            <p className="text-sm text-[var(--k-text-secondary)] mb-6">
               Personnalisez l&apos;apparence de votre interface d&apos;administration.
             </p>
             <div className="space-y-6">
-              <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
+              <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
                 <div>
                   <p className="font-medium text-slate-700">Mode sombre</p>
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-[var(--k-text-secondary)]">
                     Basculer entre le mode clair et sombre pour l&apos;interface d&apos;administration.
                   </p>
                 </div>
@@ -776,9 +776,9 @@ export default function ParametresPage() {
 
         {/* ─── Preferences de notification admin ──────────────────── */}
         {activeSection === 'notifPrefs' && (
-          <div className="bg-white rounded-xl border border-slate-200 p-6">
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">Alertes administrateur</h3>
-            <p className="text-sm text-slate-500 mb-6">
+          <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
+            <h3 className="text-lg font-semibold text-[var(--k-text-primary)] mb-2">Alertes administrateur</h3>
+            <p className="text-sm text-[var(--k-text-secondary)] mb-6">
               Configurez quelles alertes vous souhaitez recevoir par email et notification push.
             </p>
 
@@ -799,12 +799,12 @@ export default function ParametresPage() {
                 ].map((item) => {
                   const Icon = item.icon;
                   return (
-                    <label key={item.key} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer">
+                    <label key={item.key} className="flex items-center justify-between p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer">
                       <div className="flex items-center gap-3">
                         <Icon className="w-4 h-4 text-slate-500" />
                         <div>
                           <p className="text-sm font-medium text-slate-700">{item.label}</p>
-                          <p className="text-xs text-slate-500">{item.desc}</p>
+                          <p className="text-xs text-[var(--k-text-secondary)]">{item.desc}</p>
                         </div>
                       </div>
                       <button
@@ -826,10 +826,10 @@ export default function ParametresPage() {
                 Notifications push (navigateur)
               </h4>
               <div className="space-y-3">
-                <label className="flex items-center justify-between p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer">
+                <label className="flex items-center justify-between p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer">
                   <div>
                     <p className="text-sm font-medium text-slate-700">Activer les notifications push</p>
-                    <p className="text-xs text-slate-500">Recevez des alertes en temps reel dans votre navigateur</p>
+                    <p className="text-xs text-[var(--k-text-secondary)]">Recevez des alertes en temps reel dans votre navigateur</p>
                   </div>
                   <button
                     onClick={() => setNotifPrefs(prev => ({ ...prev, pushEnabled: !prev.pushEnabled }))}
@@ -845,7 +845,7 @@ export default function ParametresPage() {
                       { key: 'pushLowStock' as const, label: 'Stock bas' },
                       { key: 'pushSecurityAlert' as const, label: 'Alertes de securite' },
                     ].map((item) => (
-                      <label key={item.key} className="flex items-center justify-between p-3 ps-8 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer">
+                      <label key={item.key} className="flex items-center justify-between p-3 ps-8 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer">
                         <p className="text-sm text-slate-700">{item.label}</p>
                         <button
                           onClick={() => setNotifPrefs(prev => ({ ...prev, [item.key]: !prev[item.key] }))}

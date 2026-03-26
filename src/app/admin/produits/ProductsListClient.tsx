@@ -629,19 +629,19 @@ export default function ProductsListClient({
       <div className="p-4 lg:p-6 pb-0 flex-shrink-0">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
           <div>
-            <h1 className="text-xl font-bold text-slate-900">{t('admin.products.title')}</h1>
-            <p className="text-sm text-slate-500 mt-0.5">
+            <h1 className="text-xl font-bold text-[var(--k-text-primary)]">{t('admin.products.title')}</h1>
+            <p className="text-sm text-[var(--k-text-tertiary)] mt-0.5">
               {t('admin.products.subtitle', { total: stats.total, active: stats.active, featured: stats.featured })}
             </p>
             <TutorialLink guideSlug="03-catalogue/01-produits" magazineSlug="Section_03_Catalogue" compact />
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             {/* View Toggle */}
-            <div className="flex items-center border border-slate-300 rounded-md overflow-hidden">
+            <div className="flex items-center border border-[var(--k-border-default)] rounded-md overflow-hidden">
               <button
                 onClick={() => setViewMode('list')}
-                className={`flex items-center gap-1 px-2.5 py-1.5 text-sm border-r border-slate-300 ${
-                  viewMode === 'list' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-500 hover:bg-slate-50'
+                className={`flex items-center gap-1 px-2.5 py-1.5 text-sm border-r border-[var(--k-border-default)] ${
+                  viewMode === 'list' ? 'bg-[#6366f1]/10 text-[#818cf8]' : 'text-[var(--k-text-tertiary)] hover:bg-[var(--k-glass-thin)]'
                 }`}
                 title={t('admin.products.listView')}
                 aria-label={t('admin.products.listView')}
@@ -652,7 +652,7 @@ export default function ProductsListClient({
               <button
                 onClick={() => setViewMode('grid')}
                 className={`flex items-center gap-1 px-2.5 py-1.5 text-sm ${
-                  viewMode === 'grid' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-500 hover:bg-slate-50'
+                  viewMode === 'grid' ? 'bg-[#6366f1]/10 text-[#818cf8]' : 'text-[var(--k-text-tertiary)] hover:bg-[var(--k-glass-thin)]'
                 }`}
                 title={t('admin.products.gridView')}
                 aria-label={t('admin.products.gridView')}
@@ -698,13 +698,13 @@ export default function ProductsListClient({
 
         {/* Reorder Alerts Banner */}
         {reorderAlerts.length > 0 && (
-          <div className="mb-4 bg-amber-50 border border-amber-200 rounded-lg p-3">
+          <div className="mb-4 bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
             <div className="flex items-start gap-2">
-              <AlertTriangle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+              <AlertTriangle className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-sm text-amber-800">
+                <p className="font-semibold text-sm text-amber-300">
                   {t('admin.products.reorderAlertTitle')}
-                  <span className="ms-1 font-normal text-amber-600">({reorderAlerts.length})</span>
+                  <span className="ms-1 font-normal text-amber-400">({reorderAlerts.length})</span>
                 </p>
                 <div className="mt-1 flex flex-wrap gap-2">
                   {reorderAlerts.slice(0, 5).map((p) => {
@@ -716,17 +716,17 @@ export default function ProductsListClient({
                         key={p.id}
                         type="button"
                         onClick={() => setSelectedProductId(p.id)}
-                        className="inline-flex items-center gap-1.5 px-2 py-1 bg-white border border-amber-200 rounded text-xs text-amber-800 hover:bg-amber-100 transition-colors"
+                        className="inline-flex items-center gap-1.5 px-2 py-1 bg-[var(--k-glass-thin)] border border-amber-500/20 rounded text-xs text-amber-300 hover:bg-amber-500/15 transition-colors"
                       >
                         <span className="font-medium">{p.name}</span>
-                        <span className="text-amber-600">
+                        <span className="text-amber-400">
                           ({t('admin.products.reorderStock')}: {totalStock}/{p.reorderPoint})
                         </span>
                       </button>
                     );
                   })}
                   {reorderAlerts.length > 5 && (
-                    <span className="text-xs text-amber-600 py-1">
+                    <span className="text-xs text-amber-400 py-1">
                       +{reorderAlerts.length - 5} {t('admin.products.reorderMore')}
                     </span>
                   )}
@@ -743,7 +743,7 @@ export default function ProductsListClient({
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
               aria-label={t('admin.products.filterByCategory')}
-              className="h-8 px-3 text-sm border border-slate-200 rounded-lg bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="h-8 px-3 text-sm border border-[var(--k-border-subtle)] rounded-lg bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)] focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50"
             >
               <option value="">{t('admin.products.allCategories')}</option>
               {categories.map((c) => (
@@ -829,7 +829,7 @@ export default function ProductsListClient({
                   <div className="space-y-6">
                     {/* Product Image */}
                     {selectedProduct.imageUrl && (
-                      <div className="rounded-lg overflow-hidden border border-slate-200">
+                      <div className="rounded-lg overflow-hidden border border-[var(--k-border-subtle)]">
                         <Image
                           src={selectedProduct.imageUrl}
                           alt={selectedProduct.name}
@@ -843,8 +843,8 @@ export default function ProductsListClient({
 
                     {/* Info Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="bg-slate-50 rounded-lg p-3">
-                        <p className="text-xs text-slate-500">{t('admin.products.colPrice')}</p>
+                      <div className="bg-[var(--k-bg-surface)] rounded-lg p-3">
+                        <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.products.colPrice')}</p>
                         {/* BUG-070 FIX: Show format price range instead of base price */}
                         {(() => {
                           const af = (selectedProduct.options || []).filter(f => f.isActive);
@@ -853,16 +853,16 @@ export default function ProductsListClient({
                             const minP = Math.min(...prices);
                             const maxP = Math.max(...prices);
                             return (
-                              <p className="text-xl font-bold text-slate-900">
+                              <p className="text-xl font-bold text-[var(--k-text-primary)]">
                                 {minP === maxP ? formatCurrency(minP) : `${formatCurrency(minP)}\u2013${formatCurrency(maxP)}`}
                               </p>
                             );
                           }
-                          return <p className="text-xl font-bold text-slate-900">{formatCurrency(Number(selectedProduct.price))}</p>;
+                          return <p className="text-xl font-bold text-[var(--k-text-primary)]">{formatCurrency(Number(selectedProduct.price))}</p>;
                         })()}
                       </div>
-                      <div className="bg-slate-50 rounded-lg p-3">
-                        <p className="text-xs text-slate-500">{t('admin.products.colStatus')}</p>
+                      <div className="bg-[var(--k-bg-surface)] rounded-lg p-3">
+                        <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.products.colStatus')}</p>
                         <div className="flex items-center gap-2 mt-1">
                           <StatusBadge variant={selectedProduct.isActive ? 'success' : 'error'}>
                             {selectedProduct.isActive ? t('admin.products.active') : t('admin.products.inactive')}
@@ -871,26 +871,26 @@ export default function ProductsListClient({
                         </div>
                       </div>
                       {selectedProduct.purity && (
-                        <div className="bg-slate-50 rounded-lg p-3">
-                          <p className="text-xs text-slate-500">{t('admin.products.purity')}</p>
+                        <div className="bg-[var(--k-bg-surface)] rounded-lg p-3">
+                          <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.products.purity')}</p>
                           <p className="text-lg font-bold text-emerald-700">{selectedProduct.purity}%</p>
                         </div>
                       )}
-                      <div className="bg-slate-50 rounded-lg p-3">
-                        <p className="text-xs text-slate-500">{t('admin.products.colCategory')}</p>
-                        <p className="text-sm font-medium text-slate-900">{selectedProduct.category.name}</p>
+                      <div className="bg-[var(--k-bg-surface)] rounded-lg p-3">
+                        <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.products.colCategory')}</p>
+                        <p className="text-sm font-medium text-[var(--k-text-primary)]">{selectedProduct.category.name}</p>
                       </div>
                       {/* ABC Classification */}
-                      <div className="bg-slate-50 rounded-lg p-3">
-                        <p className="text-xs text-slate-500">{t('admin.products.abcClassification')}</p>
+                      <div className="bg-[var(--k-bg-surface)] rounded-lg p-3">
+                        <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.products.abcClassification')}</p>
                         <div className="flex items-center gap-2 mt-1">
-                          <TrendingUp className="w-4 h-4 text-slate-400" />
+                          <TrendingUp className="w-4 h-4 text-[var(--k-text-muted)]" />
                           {(() => {
                             const abc = abcClassification[selectedProduct.id];
                             const configs = {
                               A: { label: 'A - ' + (t('admin.products.abcA')), className: 'text-emerald-700 bg-emerald-100' },
                               B: { label: 'B - ' + (t('admin.products.abcB')), className: 'text-indigo-700 bg-indigo-100' },
-                              C: { label: 'C - ' + (t('admin.products.abcC')), className: 'text-slate-600 bg-slate-100' },
+                              C: { label: 'C - ' + (t('admin.products.abcC')), className: 'text-[var(--k-text-secondary)] bg-slate-100' },
                             };
                             const config = configs[abc || 'C'];
                             return (
@@ -915,7 +915,7 @@ export default function ProductsListClient({
                           {t('admin.products.bestseller')}
                         </span>
                       )}
-                      <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-slate-100 text-slate-600">
+                      <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-white/10 text-[var(--k-text-secondary)]">
                         {selectedProduct.productType}
                       </span>
                     </div>
@@ -923,29 +923,29 @@ export default function ProductsListClient({
                     {/* Formats Table */}
                     {selectedProduct.options && selectedProduct.options.length > 0 && (
                       <div>
-                        <h3 className="font-semibold text-slate-900 mb-3">
+                        <h3 className="font-semibold text-[var(--k-text-primary)] mb-3">
                           {t('admin.products.colOptions')} ({selectedProduct.options.length})
                         </h3>
-                        <div className="border border-slate-200 rounded-lg overflow-hidden overflow-x-auto">
+                        <div className="border border-[var(--k-border-subtle)] rounded-lg overflow-hidden overflow-x-auto">
                           <table className="w-full">
-                            <thead className="bg-slate-50">
+                            <thead className="bg-[var(--k-bg-surface)]">
                               <tr>
-                                <th className="px-3 py-2 text-start text-xs font-medium text-slate-500 uppercase">{t('admin.products.colFormat')}</th>
-                                <th className="px-3 py-2 text-end text-xs font-medium text-slate-500 uppercase">{t('admin.products.colPrice')}</th>
-                                <th className="px-3 py-2 text-center text-xs font-medium text-slate-500 uppercase">{t('admin.products.colStock')}</th>
-                                <th className="px-3 py-2 text-center text-xs font-medium text-slate-500 uppercase">{t('admin.products.colStatus')}</th>
+                                <th className="px-3 py-2 text-start text-xs font-medium text-[var(--k-text-tertiary)] uppercase">{t('admin.products.colFormat')}</th>
+                                <th className="px-3 py-2 text-end text-xs font-medium text-[var(--k-text-tertiary)] uppercase">{t('admin.products.colPrice')}</th>
+                                <th className="px-3 py-2 text-center text-xs font-medium text-[var(--k-text-tertiary)] uppercase">{t('admin.products.colStock')}</th>
+                                <th className="px-3 py-2 text-center text-xs font-medium text-[var(--k-text-tertiary)] uppercase">{t('admin.products.colStatus')}</th>
                               </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-100">
+                            <tbody className="divide-y divide-white/5">
                               {selectedProduct.options.map((fmt) => (
                                 <tr key={fmt.id}>
-                                  <td className="px-3 py-2 text-sm text-slate-900 truncate max-w-[160px]">{fmt.name}</td>
-                                  <td className="px-3 py-2 text-sm text-end text-slate-700">{formatCurrency(Number(fmt.price))}</td>
+                                  <td className="px-3 py-2 text-sm text-[var(--k-text-primary)] truncate max-w-[160px]">{fmt.name}</td>
+                                  <td className="px-3 py-2 text-sm text-end text-[var(--k-text-secondary)]">{formatCurrency(Number(fmt.price))}</td>
                                   <td className="px-3 py-2 text-sm text-center">
                                     <span className={`font-medium ${
                                       fmt.stockQuantity === 0 ? 'text-red-600' :
-                                      fmt.stockQuantity <= 10 ? 'text-amber-600' :
-                                      'text-slate-700'
+                                      fmt.stockQuantity <= 10 ? 'text-amber-400' :
+                                      'text-[var(--k-text-secondary)]'
                                     }`}>
                                       {fmt.stockQuantity}
                                     </span>
@@ -974,8 +974,8 @@ export default function ProductsListClient({
                     )}
 
                     {/* Slug */}
-                    <div className="text-xs text-slate-400">
-                      Slug: <code className="bg-slate-100 px-1 py-0.5 rounded">{selectedProduct.slug}</code>
+                    <div className="text-xs text-[var(--k-text-muted)]">
+                      Slug: <code className="bg-white/10 px-1 py-0.5 rounded">{selectedProduct.slug}</code>
                     </div>
                   </div>
                 </DetailPane>
@@ -1002,7 +1002,7 @@ export default function ProductsListClient({
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={t('admin.products.searchPlaceholder')}
                 aria-label={t('admin.products.searchPlaceholder')}
-                className="w-full h-9 ps-3 pe-8 text-sm border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full h-9 ps-3 pe-8 text-sm border border-[var(--k-border-subtle)] rounded-lg bg-[var(--k-glass-thin)] focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50"
               />
             </div>
             <div className="flex items-center gap-1.5 overflow-x-auto">
@@ -1013,7 +1013,7 @@ export default function ProductsListClient({
                   className={`px-3 py-1.5 text-xs font-medium rounded-full whitespace-nowrap transition-colors ${
                     statusFilter === tab.key
                       ? 'bg-indigo-100 text-indigo-800'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                      : 'bg-white/10 text-[var(--k-text-secondary)] hover:bg-slate-200'
                   }`}
                 >
                   {tab.label} ({tab.count})
@@ -1023,7 +1023,7 @@ export default function ProductsListClient({
           </div>
 
           {filteredProducts.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-20 text-slate-400">
+            <div className="flex flex-col items-center justify-center py-20 text-[var(--k-text-muted)]">
               <Package className="w-12 h-12 mb-3" />
               <p className="font-medium">{t('admin.products.emptyTitle')}</p>
               <p className="text-sm mt-1">{t('admin.products.emptyDescription')}</p>
@@ -1050,11 +1050,11 @@ export default function ProductsListClient({
                 return (
                   <div
                     key={product.id}
-                    className="bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer group"
+                    className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] overflow-hidden hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer group"
                     onClick={() => router.push(`/admin/produits/${product.id}`)}
                   >
                     {/* Image */}
-                    <div className="relative h-40 bg-slate-100">
+                    <div className="relative h-40 bg-white/10">
                       {product.imageUrl ? (
                         <Image
                           src={product.imageUrl}
@@ -1064,7 +1064,7 @@ export default function ProductsListClient({
                         />
                       ) : (
                         <div className="flex items-center justify-center h-full">
-                          <Package className="w-10 h-10 text-slate-300" />
+                          <Package className="w-10 h-10 text-[var(--k-text-muted)]" />
                         </div>
                       )}
                       {/* Status overlay */}
@@ -1093,8 +1093,8 @@ export default function ProductsListClient({
 
                     {/* Content */}
                     <div className="p-3">
-                      <p className="text-xs text-slate-500 mb-0.5 truncate">{product.category.name}</p>
-                      <h3 className="font-semibold text-sm text-slate-900 truncate group-hover:text-indigo-700 transition-colors">
+                      <p className="text-xs text-[var(--k-text-tertiary)] mb-0.5 truncate">{product.category.name}</p>
+                      <h3 className="font-semibold text-sm text-[var(--k-text-primary)] truncate group-hover:text-indigo-700 transition-colors">
                         {product.name}
                       </h3>
                       <p className="text-lg font-bold text-indigo-700 mt-1 truncate">{priceDisplay}</p>
@@ -1106,14 +1106,14 @@ export default function ProductsListClient({
                             {stockStatus.label}
                           </StatusBadge>
                         </div>
-                        <span className="text-xs text-slate-400">
+                        <span className="text-xs text-[var(--k-text-muted)]">
                           {t('admin.products.totalStock')}: {totalStock}
                         </span>
                       </div>
 
                       {/* Format count */}
                       {product.options && product.options.length > 0 && (
-                        <p className="text-xs text-slate-400 mt-1.5">
+                        <p className="text-xs text-[var(--k-text-muted)] mt-1.5">
                           {tp('admin.products.optionCount', product.options.length)}
                         </p>
                       )}
@@ -1163,7 +1163,7 @@ export default function ProductsListClient({
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-[var(--k-text-secondary)] mb-1">
               {t('admin.products.scheduleActionLabel')}
             </label>
             <div className="flex gap-3">
@@ -1173,9 +1173,9 @@ export default function ProductsListClient({
                   name="scheduleAction"
                   checked={scheduleAction === 'publish'}
                   onChange={() => setScheduleAction('publish')}
-                  className="w-4 h-4 text-indigo-600 border-slate-300 focus:ring-indigo-500"
+                  className="w-4 h-4 text-indigo-600 border-[var(--k-border-subtle)] focus:ring-indigo-500"
                 />
-                <span className="text-sm text-slate-700">
+                <span className="text-sm text-[var(--k-text-secondary)]">
                   {t('admin.products.scheduleActionPublish')}
                 </span>
               </label>
@@ -1185,16 +1185,16 @@ export default function ProductsListClient({
                   name="scheduleAction"
                   checked={scheduleAction === 'unpublish'}
                   onChange={() => setScheduleAction('unpublish')}
-                  className="w-4 h-4 text-indigo-600 border-slate-300 focus:ring-indigo-500"
+                  className="w-4 h-4 text-indigo-600 border-[var(--k-border-subtle)] focus:ring-indigo-500"
                 />
-                <span className="text-sm text-slate-700">
+                <span className="text-sm text-[var(--k-text-secondary)]">
                   {t('admin.products.scheduleActionUnpublish')}
                 </span>
               </label>
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-[var(--k-text-secondary)] mb-1">
               {t('admin.products.scheduleDateLabel')}
             </label>
             <input
@@ -1203,7 +1203,7 @@ export default function ProductsListClient({
               onChange={(e) => setScheduleDate(e.target.value)}
               min={new Date().toISOString().slice(0, 16)}
               aria-label={t('admin.products.scheduleDateLabel')}
-              className="w-full h-10 px-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full h-10 px-3 border border-[var(--k-border-default)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50"
             />
           </div>
           {scheduleDate && (
@@ -1246,7 +1246,7 @@ export default function ProductsListClient({
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-[var(--k-text-secondary)] mb-1">
               {t('admin.products.bulkPriceDirectionLabel')}
             </label>
             <div className="flex gap-3">
@@ -1256,9 +1256,9 @@ export default function ProductsListClient({
                   name="priceDirection"
                   checked={bulkPriceDirection === 'increase'}
                   onChange={() => setBulkPriceDirection('increase')}
-                  className="w-4 h-4 text-indigo-600 border-slate-300 focus:ring-indigo-500"
+                  className="w-4 h-4 text-indigo-600 border-[var(--k-border-subtle)] focus:ring-indigo-500"
                 />
-                <span className="text-sm text-slate-700">
+                <span className="text-sm text-[var(--k-text-secondary)]">
                   {t('admin.products.bulkPriceIncrease')}
                 </span>
               </label>
@@ -1268,16 +1268,16 @@ export default function ProductsListClient({
                   name="priceDirection"
                   checked={bulkPriceDirection === 'decrease'}
                   onChange={() => setBulkPriceDirection('decrease')}
-                  className="w-4 h-4 text-indigo-600 border-slate-300 focus:ring-indigo-500"
+                  className="w-4 h-4 text-indigo-600 border-[var(--k-border-subtle)] focus:ring-indigo-500"
                 />
-                <span className="text-sm text-slate-700">
+                <span className="text-sm text-[var(--k-text-secondary)]">
                   {t('admin.products.bulkPriceDecrease')}
                 </span>
               </label>
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-[var(--k-text-secondary)] mb-1">
               {t('admin.products.bulkPricePercentLabel')}
             </label>
             <input
@@ -1288,12 +1288,12 @@ export default function ProductsListClient({
               value={bulkPricePercent}
               onChange={(e) => setBulkPricePercent(parseFloat(e.target.value) || 0)}
               aria-label={t('admin.products.bulkPricePercentLabel')}
-              className="w-full h-10 px-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full h-10 px-3 border border-[var(--k-border-default)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50"
               placeholder="e.g. 10"
             />
           </div>
           {categoryFilter && (
-            <p className="text-xs text-slate-500 bg-slate-50 rounded-lg p-2">
+            <p className="text-xs text-[var(--k-text-tertiary)] bg-[var(--k-bg-surface)] rounded-lg p-2">
               {(t('admin.products.bulkPriceCategoryNote')).replace('{category}', categoryFilter)}
             </p>
           )}
@@ -1322,13 +1322,13 @@ function MiniStat({
   value: number;
 }) {
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-3">
+    <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-4 flex items-center gap-3">
       <div className="w-9 h-9 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600 flex-shrink-0">
         <Icon className="w-4 h-4" />
       </div>
       <div className="min-w-0">
-        <p className="text-xs text-slate-500 truncate">{label}</p>
-        <p className="text-lg font-bold text-slate-900">{value}</p>
+        <p className="text-xs text-[var(--k-text-tertiary)] truncate">{label}</p>
+        <p className="text-lg font-bold text-[var(--k-text-primary)]">{value}</p>
       </div>
     </div>
   );

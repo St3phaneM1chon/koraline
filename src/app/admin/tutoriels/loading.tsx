@@ -11,7 +11,7 @@ export default function TutorielsLoading() {
 
       <div className="flex gap-4" style={{ height: 'calc(100vh - 220px)' }}>
         {/* Sidebar skeleton */}
-        <div className="w-80 flex-shrink-0 bg-white rounded-xl border border-gray-200 p-3 space-y-2">
+        <div className="w-80 flex-shrink-0 bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-3 space-y-2">
           <Skeleton className="h-9 w-full rounded-lg" />
           <SkeletonText className="h-3 w-32" />
           <div className="space-y-1 mt-4">
@@ -27,7 +27,7 @@ export default function TutorielsLoading() {
         </div>
 
         {/* Content skeleton */}
-        <div className="flex-1 bg-white rounded-xl border border-gray-200 p-8 space-y-4">
+        <div className="flex-1 bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-8 space-y-4">
           <SkeletonText className="h-8 w-64" />
           <Skeleton className="h-px w-full" />
           <div className="space-y-3">

@@ -101,7 +101,7 @@ export default function LmsDashboardPage() {
         <Link href="/admin/formation/cours">
           <SectionCard title={t('admin.lms.manageCourses')} className="cursor-pointer transition-colors hover:bg-accent/50">
             <div className="flex items-center gap-3">
-              <BookOpen className="h-5 w-5 text-blue-600" />
+              <BookOpen className="h-5 w-5 text-blue-400" />
               <p className="text-sm text-muted-foreground">{t('admin.lms.manageCoursesDesc')}</p>
             </div>
           </SectionCard>

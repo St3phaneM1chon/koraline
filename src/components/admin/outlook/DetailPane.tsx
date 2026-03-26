@@ -37,7 +37,7 @@ export function DetailPane({
   // Empty state
   if (isEmpty || (!children && !header)) {
     return (
-      <div className={`flex-1 flex flex-col items-center justify-center bg-white ${className}`}>
+      <div className={`flex-1 flex flex-col items-center justify-center bg-transparent ${className}`}>
         <div className="flex flex-col items-center text-center px-6 animate-fade-in">
           <EmptyIcon className="w-16 h-16 text-slate-300 mb-4" />
           <h3 className="text-lg font-medium text-slate-600">{emptyTitle}</h3>
@@ -48,10 +48,10 @@ export function DetailPane({
   }
 
   return (
-    <div className={`flex-1 flex flex-col bg-white min-w-0 animate-fade-in ${className}`}>
+    <div className={`flex-1 flex flex-col bg-transparent min-w-0 animate-fade-in ${className}`}>
       {/* Header */}
       {header && (
-        <div className="sticky top-0 z-10 bg-white border-b border-slate-200 px-6 py-4">
+        <div className="sticky top-0 z-10 bg-[var(--k-glass-thin)] backdrop-blur-xl border-b border-[var(--k-border-subtle)] px-6 py-4">
           <div className="flex items-center gap-4">
             {/* Back button (mobile) */}
             {header.onBack && (

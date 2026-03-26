@@ -158,8 +158,8 @@ function SuppliersTab() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-slate-900">{t('admin.inventory.tabSuppliers')}</h2>
-          <p className="text-sm text-slate-500">{suppliers.length} {t('admin.inventory.supplierCount')}</p>
+          <h2 className="text-lg font-semibold text-[var(--k-text-primary)]">{t('admin.inventory.tabSuppliers')}</h2>
+          <p className="text-sm text-[var(--k-text-tertiary)]">{suppliers.length} {t('admin.inventory.supplierCount')}</p>
         </div>
         <Button variant="primary" icon={Plus} size="sm" onClick={() => setShowForm(true)}>
           {t('admin.inventory.addSupplier')}
@@ -168,43 +168,43 @@ function SuppliersTab() {
 
       {/* Supplier creation form */}
       {showForm && (
-        <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4">
-          <h3 className="text-base font-semibold text-slate-900">New Supplier</h3>
+        <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-xl p-6 space-y-4">
+          <h3 className="text-base font-semibold text-[var(--k-text-primary)]">New Supplier</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Name *</label>
+              <label className="block text-xs font-medium text-[var(--k-text-secondary)] mb-1">Name *</label>
               <input type="text" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Supplier name" />
+                className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)] focus:ring-2 focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50" placeholder="Supplier name" />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Contact Name</label>
+              <label className="block text-xs font-medium text-[var(--k-text-secondary)] mb-1">Contact Name</label>
               <input type="text" value={form.contactName} onChange={e => setForm(f => ({ ...f, contactName: e.target.value }))}
-                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Contact person" />
+                className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)] focus:ring-2 focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50" placeholder="Contact person" />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Email</label>
+              <label className="block text-xs font-medium text-[var(--k-text-secondary)] mb-1">Email</label>
               <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="email@supplier.com" />
+                className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)] focus:ring-2 focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50" placeholder="email@supplier.com" />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Phone</label>
+              <label className="block text-xs font-medium text-[var(--k-text-secondary)] mb-1">Phone</label>
               <input type="text" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="+1 555 123 4567" />
+                className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)] focus:ring-2 focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50" placeholder="+1 555 123 4567" />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-xs font-medium text-slate-600 mb-1">Address</label>
+              <label className="block text-xs font-medium text-[var(--k-text-secondary)] mb-1">Address</label>
               <input type="text" value={form.address} onChange={e => setForm(f => ({ ...f, address: e.target.value }))}
-                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="123 Supplier St, City" />
+                className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)] focus:ring-2 focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50" placeholder="123 Supplier St, City" />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Website</label>
+              <label className="block text-xs font-medium text-[var(--k-text-secondary)] mb-1">Website</label>
               <input type="url" value={form.website} onChange={e => setForm(f => ({ ...f, website: e.target.value }))}
-                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="https://supplier.com" />
+                className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)] focus:ring-2 focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50" placeholder="https://supplier.com" />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Notes</label>
+              <label className="block text-xs font-medium text-[var(--k-text-secondary)] mb-1">Notes</label>
               <input type="text" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
-                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Internal notes" />
+                className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)] focus:ring-2 focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50" placeholder="Internal notes" />
             </div>
           </div>
           <div className="flex justify-end gap-2 pt-2">
@@ -216,47 +216,47 @@ function SuppliersTab() {
 
       {/* Suppliers list */}
       {suppliers.length === 0 && !showForm ? (
-        <div className="bg-white border border-slate-200 rounded-xl p-12 text-center">
-          <Building2 className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-          <h3 className="text-lg font-semibold text-slate-900 mb-1">No suppliers yet</h3>
-          <p className="text-sm text-slate-500 mb-4">Add your first supplier to manage inventory procurement.</p>
+        <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-xl p-12 text-center">
+          <Building2 className="w-12 h-12 text-[var(--k-text-muted)] mx-auto mb-3" />
+          <h3 className="text-lg font-semibold text-[var(--k-text-primary)] mb-1">No suppliers yet</h3>
+          <p className="text-sm text-[var(--k-text-tertiary)] mb-4">Add your first supplier to manage inventory procurement.</p>
           <Button variant="primary" icon={Plus} size="sm" onClick={() => setShowForm(true)}>Add Supplier</Button>
         </div>
       ) : (
-        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+        <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-xl overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 border-b border-slate-200">
+            <thead className="bg-[var(--k-glass-thin)] border-b border-[var(--k-border-subtle)]">
               <tr>
-                <th className="text-start px-4 py-3 font-medium text-slate-600">Name</th>
-                <th className="text-start px-4 py-3 font-medium text-slate-600 hidden md:table-cell">Contact</th>
-                <th className="text-start px-4 py-3 font-medium text-slate-600 hidden md:table-cell">Email</th>
-                <th className="text-start px-4 py-3 font-medium text-slate-600 hidden lg:table-cell">Phone</th>
-                <th className="text-start px-4 py-3 font-medium text-slate-600 hidden lg:table-cell">Website</th>
+                <th className="text-start px-4 py-3 font-medium text-[var(--k-text-secondary)]">Name</th>
+                <th className="text-start px-4 py-3 font-medium text-[var(--k-text-secondary)] hidden md:table-cell">Contact</th>
+                <th className="text-start px-4 py-3 font-medium text-[var(--k-text-secondary)] hidden md:table-cell">Email</th>
+                <th className="text-start px-4 py-3 font-medium text-[var(--k-text-secondary)] hidden lg:table-cell">Phone</th>
+                <th className="text-start px-4 py-3 font-medium text-[var(--k-text-secondary)] hidden lg:table-cell">Website</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-[var(--k-border-subtle)]">
               {suppliers.map(s => (
-                <tr key={s.id} className="hover:bg-slate-50 transition-colors">
+                <tr key={s.id} className="hover:bg-[var(--k-glass-thin)] transition-colors">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
-                      <Building2 className="w-4 h-4 text-slate-400 flex-shrink-0" />
-                      <span className="font-medium text-slate-900">{s.name}</span>
+                      <Building2 className="w-4 h-4 text-[var(--k-text-muted)] flex-shrink-0" />
+                      <span className="font-medium text-[var(--k-text-primary)]">{s.name}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-slate-600 hidden md:table-cell">{s.contactName || '-'}</td>
+                  <td className="px-4 py-3 text-[var(--k-text-secondary)] hidden md:table-cell">{s.contactName || '-'}</td>
                   <td className="px-4 py-3 hidden md:table-cell">
                     {s.email ? (
-                      <a href={`mailto:${s.email}`} className="text-indigo-600 hover:underline flex items-center gap-1">
+                      <a href={`mailto:${s.email}`} className="text-[#818cf8] hover:underline flex items-center gap-1">
                         <Mail className="w-3 h-3" /> {s.email}
                       </a>
                     ) : '-'}
                   </td>
-                  <td className="px-4 py-3 text-slate-600 hidden lg:table-cell">
+                  <td className="px-4 py-3 text-[var(--k-text-secondary)] hidden lg:table-cell">
                     {s.phone ? <span className="flex items-center gap-1"><Phone className="w-3 h-3" /> {s.phone}</span> : '-'}
                   </td>
                   <td className="px-4 py-3 hidden lg:table-cell">
                     {s.website ? (
-                      <a href={s.website} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline flex items-center gap-1">
+                      <a href={s.website} target="_blank" rel="noopener noreferrer" className="text-[#818cf8] hover:underline flex items-center gap-1">
                         <Globe className="w-3 h-3" /> Visit
                       </a>
                     ) : '-'}
@@ -368,11 +368,11 @@ function PurchaseOrdersTab() {
 
   const poStatusBadge = (status: string) => {
     const map: Record<string, { bg: string; text: string }> = {
-      DRAFT: { bg: 'bg-slate-100', text: 'text-slate-700' },
-      ORDERED: { bg: 'bg-indigo-100', text: 'text-indigo-700' },
-      PARTIAL: { bg: 'bg-amber-100', text: 'text-amber-700' },
-      RECEIVED: { bg: 'bg-emerald-100', text: 'text-emerald-700' },
-      CANCELLED: { bg: 'bg-red-100', text: 'text-red-700' },
+      DRAFT: { bg: 'bg-[var(--k-glass-thin)]', text: 'text-[var(--k-text-secondary)]' },
+      ORDERED: { bg: 'bg-[#6366f1]/15', text: 'text-[#818cf8]' },
+      PARTIAL: { bg: 'bg-amber-500/15', text: 'text-amber-400' },
+      RECEIVED: { bg: 'bg-emerald-500/15', text: 'text-emerald-400' },
+      CANCELLED: { bg: 'bg-red-500/15', text: 'text-red-400' },
     };
     const s = map[status] || map.DRAFT;
     return <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${s.bg} ${s.text}`}>{status}</span>;
@@ -390,8 +390,8 @@ function PurchaseOrdersTab() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-slate-900">{t('admin.inventory.tabPurchaseOrders')}</h2>
-          <p className="text-sm text-slate-500">{orders.length} order(s)</p>
+          <h2 className="text-lg font-semibold text-[var(--k-text-primary)]">{t('admin.inventory.tabPurchaseOrders')}</h2>
+          <p className="text-sm text-[var(--k-text-tertiary)]">{orders.length} order(s)</p>
         </div>
         <Button variant="primary" icon={Plus} size="sm" onClick={() => setShowForm(true)}>
           New Purchase Order
@@ -406,68 +406,68 @@ function PurchaseOrdersTab() {
             onClick={() => setStatusFilter(s)}
             className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
               statusFilter === s
-                ? 'bg-indigo-50 text-indigo-700 border-indigo-200'
-                : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                ? 'bg-[#6366f1]/10 text-[#818cf8] border-[#6366f1]/20'
+                : 'bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)] border-slate-200 hover:bg-[var(--k-glass-thin)]'
             }`}
           >
             {s === 'all' ? 'All' : s}
-            {s !== 'all' && <span className="ms-1 text-slate-400">({orders.filter(o => o.status === s).length})</span>}
+            {s !== 'all' && <span className="ms-1 text-[var(--k-text-muted)]">({orders.filter(o => o.status === s).length})</span>}
           </button>
         ))}
       </div>
 
       {/* PO creation form */}
       {showForm && (
-        <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4">
-          <h3 className="text-base font-semibold text-slate-900">New Purchase Order</h3>
+        <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-xl p-6 space-y-4">
+          <h3 className="text-base font-semibold text-[var(--k-text-primary)]">New Purchase Order</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Supplier *</label>
+              <label className="block text-xs font-medium text-[var(--k-text-secondary)] mb-1">Supplier *</label>
               <select
                 value={form.supplierId}
                 onChange={e => setForm(f => ({ ...f, supplierId: e.target.value }))}
-                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)] focus:ring-2 focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50"
               >
                 <option value="">Select supplier</option>
                 {suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Expected Delivery</label>
+              <label className="block text-xs font-medium text-[var(--k-text-secondary)] mb-1">Expected Delivery</label>
               <input type="date" value={form.expectedDelivery} onChange={e => setForm(f => ({ ...f, expectedDelivery: e.target.value }))}
-                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+                className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)] focus:ring-2 focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50" />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Notes</label>
+              <label className="block text-xs font-medium text-[var(--k-text-secondary)] mb-1">Notes</label>
               <input type="text" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
-                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Internal notes" />
+                className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)] focus:ring-2 focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50" placeholder="Internal notes" />
             </div>
           </div>
 
           {/* Line items */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="text-xs font-medium text-slate-600">Line Items *</label>
-              <button onClick={addItem} className="text-xs text-indigo-600 hover:text-indigo-700 font-medium">+ Add Item</button>
+              <label className="text-xs font-medium text-[var(--k-text-secondary)]">Line Items *</label>
+              <button onClick={addItem} className="text-xs text-[#818cf8] hover:text-[#a5b4fc] font-medium">+ Add Item</button>
             </div>
             <div className="space-y-2">
               {form.items.map((item, idx) => (
                 <div key={idx} className="grid grid-cols-12 gap-2 items-center">
                   <div className="col-span-4">
                     <input type="text" value={item.productId} onChange={e => updateItem(idx, 'productId', e.target.value)}
-                      className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm" placeholder="Product ID" />
+                      className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)]" placeholder="Product ID" />
                   </div>
                   <div className="col-span-3">
                     <input type="text" value={item.optionId} onChange={e => updateItem(idx, 'optionId', e.target.value)}
-                      className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm" placeholder="Format ID (opt)" />
+                      className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)]" placeholder="Format ID (opt)" />
                   </div>
                   <div className="col-span-2">
                     <input type="number" value={item.quantity} onChange={e => updateItem(idx, 'quantity', parseInt(e.target.value) || 0)}
-                      className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm" placeholder="Qty" min={1} />
+                      className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)]" placeholder="Qty" min={1} />
                   </div>
                   <div className="col-span-2">
                     <input type="number" value={item.unitCost} onChange={e => updateItem(idx, 'unitCost', parseFloat(e.target.value) || 0)}
-                      className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm" placeholder="Unit $" min={0} step="0.01" />
+                      className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)]" placeholder="Unit $" min={0} step="0.01" />
                   </div>
                   <div className="col-span-1">
                     {form.items.length > 1 && (
@@ -479,7 +479,7 @@ function PurchaseOrdersTab() {
                 </div>
               ))}
             </div>
-            <p className="text-xs text-slate-500 mt-2">
+            <p className="text-xs text-[var(--k-text-tertiary)] mt-2">
               Total: ${form.items.reduce((sum, i) => sum + i.quantity * i.unitCost, 0).toFixed(2)}
             </p>
           </div>
@@ -493,40 +493,40 @@ function PurchaseOrdersTab() {
 
       {/* PO list */}
       {filteredOrders.length === 0 && !showForm ? (
-        <div className="bg-white border border-slate-200 rounded-xl p-12 text-center">
-          <ClipboardList className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-          <h3 className="text-lg font-semibold text-slate-900 mb-1">No purchase orders</h3>
-          <p className="text-sm text-slate-500 mb-4">Create your first purchase order to track inventory procurement.</p>
+        <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-xl p-12 text-center">
+          <ClipboardList className="w-12 h-12 text-[var(--k-text-muted)] mx-auto mb-3" />
+          <h3 className="text-lg font-semibold text-[var(--k-text-primary)] mb-1">No purchase orders</h3>
+          <p className="text-sm text-[var(--k-text-tertiary)] mb-4">Create your first purchase order to track inventory procurement.</p>
           <Button variant="primary" icon={Plus} size="sm" onClick={() => setShowForm(true)}>New Purchase Order</Button>
         </div>
       ) : (
-        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+        <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-xl overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 border-b border-slate-200">
+            <thead className="bg-[var(--k-glass-thin)] border-b border-[var(--k-border-subtle)]">
               <tr>
-                <th className="text-start px-4 py-3 font-medium text-slate-600">PO ID</th>
-                <th className="text-start px-4 py-3 font-medium text-slate-600">Supplier</th>
-                <th className="text-start px-4 py-3 font-medium text-slate-600 hidden md:table-cell">Items</th>
-                <th className="text-start px-4 py-3 font-medium text-slate-600">Total</th>
-                <th className="text-start px-4 py-3 font-medium text-slate-600">Status</th>
-                <th className="text-start px-4 py-3 font-medium text-slate-600 hidden lg:table-cell">Expected</th>
-                <th className="text-start px-4 py-3 font-medium text-slate-600 hidden lg:table-cell">Created</th>
+                <th className="text-start px-4 py-3 font-medium text-[var(--k-text-secondary)]">PO ID</th>
+                <th className="text-start px-4 py-3 font-medium text-[var(--k-text-secondary)]">Supplier</th>
+                <th className="text-start px-4 py-3 font-medium text-[var(--k-text-secondary)] hidden md:table-cell">Items</th>
+                <th className="text-start px-4 py-3 font-medium text-[var(--k-text-secondary)]">Total</th>
+                <th className="text-start px-4 py-3 font-medium text-[var(--k-text-secondary)]">Status</th>
+                <th className="text-start px-4 py-3 font-medium text-[var(--k-text-secondary)] hidden lg:table-cell">Expected</th>
+                <th className="text-start px-4 py-3 font-medium text-[var(--k-text-secondary)] hidden lg:table-cell">Created</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-[var(--k-border-subtle)]">
               {filteredOrders.map(po => {
                 const supplier = suppliers.find(s => s.id === po.supplierId);
                 return (
-                  <tr key={po.id} className="hover:bg-slate-50 transition-colors">
-                    <td className="px-4 py-3 font-mono text-xs text-slate-700">{po.id.slice(0, 16)}...</td>
-                    <td className="px-4 py-3 text-slate-900 font-medium">{supplier?.name || po.supplierId}</td>
-                    <td className="px-4 py-3 text-slate-600 hidden md:table-cell">{po.items?.length || 0} item(s)</td>
-                    <td className="px-4 py-3 font-medium text-slate-900">${Number(po.totalCost).toFixed(2)}</td>
+                  <tr key={po.id} className="hover:bg-[var(--k-glass-thin)] transition-colors">
+                    <td className="px-4 py-3 font-mono text-xs text-[var(--k-text-secondary)]">{po.id.slice(0, 16)}...</td>
+                    <td className="px-4 py-3 text-[var(--k-text-primary)] font-medium">{supplier?.name || po.supplierId}</td>
+                    <td className="px-4 py-3 text-[var(--k-text-secondary)] hidden md:table-cell">{po.items?.length || 0} item(s)</td>
+                    <td className="px-4 py-3 font-medium text-[var(--k-text-primary)]">${Number(po.totalCost).toFixed(2)}</td>
                     <td className="px-4 py-3">{poStatusBadge(po.status)}</td>
-                    <td className="px-4 py-3 text-slate-600 hidden lg:table-cell">
+                    <td className="px-4 py-3 text-[var(--k-text-secondary)] hidden lg:table-cell">
                       {po.expectedDelivery ? new Date(po.expectedDelivery).toLocaleDateString(locale) : '-'}
                     </td>
-                    <td className="px-4 py-3 text-slate-600 hidden lg:table-cell">
+                    <td className="px-4 py-3 text-[var(--k-text-secondary)] hidden lg:table-cell">
                       {new Date(po.createdAt).toLocaleDateString(locale)}
                     </td>
                   </tr>
@@ -629,7 +629,7 @@ function ReconciliationTab() {
   }
 
   if (!data) {
-    return <p className="text-slate-500 text-center py-10">No reconciliation data available.</p>;
+    return <p className="text-[var(--k-text-tertiary)] text-center py-10">No reconciliation data available.</p>;
   }
 
   return (
@@ -651,7 +651,7 @@ function ReconciliationTab() {
         <button
           onClick={() => setFilter('all')}
           className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-            filter === 'all' ? 'bg-indigo-100 text-indigo-700 font-medium' : 'text-slate-500 hover:bg-slate-100'
+            filter === 'all' ? 'bg-[#6366f1]/15 text-[#818cf8] font-medium' : 'text-[var(--k-text-tertiary)] hover:bg-[var(--k-glass-thin)]'
           }`}
         >
           All ({data.totalProducts})
@@ -659,7 +659,7 @@ function ReconciliationTab() {
         <button
           onClick={() => setFilter('discrepancy')}
           className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-            filter === 'discrepancy' ? 'bg-orange-100 text-orange-700 font-medium' : 'text-slate-500 hover:bg-slate-100'
+            filter === 'discrepancy' ? 'bg-orange-500/15 text-orange-400 font-medium' : 'text-[var(--k-text-tertiary)] hover:bg-[var(--k-glass-thin)]'
           }`}
         >
           Discrepancies ({data.discrepancyCount})
@@ -671,24 +671,24 @@ function ReconciliationTab() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
+      <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm rounded-lg border border-[var(--k-border-subtle)] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 border-b border-slate-200">
+            <thead className="bg-[var(--k-glass-thin)] border-b border-[var(--k-border-subtle)]">
               <tr>
-                <th className="text-start px-4 py-3 font-medium text-slate-600">Product</th>
-                <th className="text-start px-4 py-3 font-medium text-slate-600">Format</th>
-                <th className="text-end px-4 py-3 font-medium text-slate-600">Recorded</th>
-                <th className="text-end px-4 py-3 font-medium text-slate-600">Calculated</th>
-                <th className="text-end px-4 py-3 font-medium text-slate-600">Discrepancy</th>
-                <th className="text-center px-4 py-3 font-medium text-slate-600">Status</th>
-                <th className="text-center px-4 py-3 font-medium text-slate-600">Actions</th>
+                <th className="text-start px-4 py-3 font-medium text-[var(--k-text-secondary)]">Product</th>
+                <th className="text-start px-4 py-3 font-medium text-[var(--k-text-secondary)]">Format</th>
+                <th className="text-end px-4 py-3 font-medium text-[var(--k-text-secondary)]">Recorded</th>
+                <th className="text-end px-4 py-3 font-medium text-[var(--k-text-secondary)]">Calculated</th>
+                <th className="text-end px-4 py-3 font-medium text-[var(--k-text-secondary)]">Discrepancy</th>
+                <th className="text-center px-4 py-3 font-medium text-[var(--k-text-secondary)]">Status</th>
+                <th className="text-center px-4 py-3 font-medium text-[var(--k-text-secondary)]">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-[var(--k-border-subtle)]">
               {filteredItems.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="text-center py-8 text-slate-400">
+                  <td colSpan={7} className="text-center py-8 text-[var(--k-text-muted)]">
                     {filter === 'discrepancy' ? 'No discrepancies found' : 'No inventory items found'}
                   </td>
                 </tr>
@@ -698,9 +698,9 @@ function ReconciliationTab() {
                   const isAdjusting = adjusting === itemKey;
 
                   return (
-                    <tr key={itemKey} className={item.status === 'DISCREPANCY' ? 'bg-orange-50/50' : ''}>
-                      <td className="px-4 py-3 font-medium text-slate-900">{item.productName}</td>
-                      <td className="px-4 py-3 text-slate-600">{item.optionName}</td>
+                    <tr key={itemKey} className={item.status === 'DISCREPANCY' ? 'bg-orange-500/5' : ''}>
+                      <td className="px-4 py-3 font-medium text-[var(--k-text-primary)]">{item.productName}</td>
+                      <td className="px-4 py-3 text-[var(--k-text-secondary)]">{item.optionName}</td>
                       <td className="px-4 py-3 text-end font-mono">{item.recordedStock}</td>
                       <td className="px-4 py-3 text-end font-mono">{item.calculatedStock}</td>
                       <td className={`px-4 py-3 text-end font-mono font-medium ${
@@ -711,8 +711,8 @@ function ReconciliationTab() {
                       <td className="px-4 py-3 text-center">
                         <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
                           item.status === 'MATCH'
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-orange-100 text-orange-700'
+                            ? 'bg-green-500/15 text-green-400'
+                            : 'bg-orange-500/15 text-orange-400'
                         }`}>
                           {item.status === 'MATCH' ? <Check className="w-3 h-3" /> : <AlertTriangle className="w-3 h-3" />}
                           {item.status}
@@ -827,9 +827,9 @@ function reorderUrgency(item: ProductOption): number {
 }
 
 const ABC_BADGE: Record<string, { bg: string; text: string }> = {
-  A: { bg: 'bg-emerald-100', text: 'text-emerald-800' },
-  B: { bg: 'bg-indigo-100', text: 'text-indigo-800' },
-  C: { bg: 'bg-slate-100', text: 'text-slate-600' },
+  A: { bg: 'bg-emerald-500/15', text: 'text-emerald-400' },
+  B: { bg: 'bg-[#6366f1]/15', text: 'text-[#818cf8]' },
+  C: { bg: 'bg-[var(--k-glass-thin)]', text: 'text-[var(--k-text-secondary)]' },
 };
 
 // ── Main Component ────────────────────────────────────────────
@@ -1206,8 +1206,8 @@ export default function InventairePage() {
       <div className="p-4 lg:p-6 pb-0 flex-shrink-0">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-xl font-bold text-slate-900">{t('admin.inventory.title')}</h1>
-            <p className="text-sm text-slate-500 mt-0.5">{t('admin.inventory.subtitle')}</p>
+            <h1 className="text-xl font-bold text-[var(--k-text-primary)]">{t('admin.inventory.title')}</h1>
+            <p className="text-sm text-[var(--k-text-tertiary)] mt-0.5">{t('admin.inventory.subtitle')}</p>
             <TutorialLink guideSlug="02-commerce/05-inventaire" magazineSlug="Section_02_Commerce" compact />
           </div>
         </div>
@@ -1223,8 +1223,8 @@ export default function InventairePage() {
               onClick={() => setActiveTab(tab.key)}
               className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors -mb-px ${
                 activeTab === tab.key
-                  ? 'border-indigo-500 text-indigo-700'
-                  : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                  ? 'border-indigo-500 text-[#818cf8]'
+                  : 'border-transparent text-[var(--k-text-tertiary)] hover:text-[var(--k-text-secondary)] hover:border-slate-300'
               }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -1306,7 +1306,7 @@ export default function InventairePage() {
               )}
             </Button>
             <label className="cursor-pointer inline-block">
-              <span className="inline-flex items-center justify-center font-medium rounded-lg border transition-colors duration-150 bg-white text-slate-700 hover:bg-slate-50 active:bg-slate-100 border-slate-300 shadow-sm h-8 px-3 text-xs gap-1.5">
+              <span className="inline-flex items-center justify-center font-medium rounded-lg border transition-colors duration-150 bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)] hover:bg-[var(--k-glass-thin)] active:bg-[var(--k-glass-thin)] border-slate-300 shadow-sm h-8 px-3 text-xs gap-1.5">
                 <Upload className="w-4 h-4" />
                 {t('admin.inventory.importCsv')}
               </span>
@@ -1387,13 +1387,13 @@ export default function InventairePage() {
               />
               {/* A7-P2-006: Pagination controls */}
               {totalPages > 1 && (
-                <div className="flex items-center justify-between px-3 py-2 border-t border-slate-200 text-xs text-slate-500 flex-shrink-0">
+                <div className="flex items-center justify-between px-3 py-2 border-t border-slate-200 text-xs text-[var(--k-text-tertiary)] flex-shrink-0">
                   <span>{filteredInventory.length} items</span>
                   <div className="flex items-center gap-1">
                     <button
                       disabled={currentPage <= 1}
                       onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                      className="px-2 py-1 rounded hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed"
+                      className="px-2 py-1 rounded hover:bg-[var(--k-glass-thin)] disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       &laquo; Prev
                     </button>
@@ -1401,7 +1401,7 @@ export default function InventairePage() {
                     <button
                       disabled={currentPage >= totalPages}
                       onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                      className="px-2 py-1 rounded hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed"
+                      className="px-2 py-1 rounded hover:bg-[var(--k-glass-thin)] disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       Next &raquo;
                     </button>
@@ -1459,55 +1459,55 @@ export default function InventairePage() {
                       );
                     })()}
                     {!selectedItem.isActive && (
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-slate-100 text-slate-600">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)]">
                         Inactive
                       </span>
                     )}
                   </div>
 
                   {/* Lead Time Tracking */}
-                  <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                  <div className="bg-[#6366f1]/10 border border-[#6366f1]/20 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <Clock className="w-4 h-4 text-indigo-600" />
+                      <Clock className="w-4 h-4 text-[#818cf8]" />
                       <h4 className="text-sm font-semibold text-indigo-800">Delai d&apos;approvisionnement</h4>
                     </div>
                     <div className="grid grid-cols-3 gap-3">
-                      <div className="text-center p-2 bg-white rounded border border-indigo-100">
-                        <p className="text-lg font-bold text-indigo-700">5j</p>
-                        <p className="text-[10px] text-indigo-600">Delai moyen</p>
+                      <div className="text-center p-2 bg-[var(--k-glass-thin)] rounded border border-indigo-100">
+                        <p className="text-lg font-bold text-[#818cf8]">5j</p>
+                        <p className="text-[10px] text-[#818cf8]">Delai moyen</p>
                       </div>
-                      <div className="text-center p-2 bg-white rounded border border-indigo-100">
-                        <p className="text-lg font-bold text-indigo-700">3j</p>
-                        <p className="text-[10px] text-indigo-600">Dernier delai</p>
+                      <div className="text-center p-2 bg-[var(--k-glass-thin)] rounded border border-indigo-100">
+                        <p className="text-lg font-bold text-[#818cf8]">3j</p>
+                        <p className="text-[10px] text-[#818cf8]">Dernier delai</p>
                       </div>
-                      <div className="text-center p-2 bg-white rounded border border-indigo-100">
-                        <p className="text-lg font-bold text-indigo-700">10j</p>
-                        <p className="text-[10px] text-indigo-600">Delai max</p>
+                      <div className="text-center p-2 bg-[var(--k-glass-thin)] rounded border border-indigo-100">
+                        <p className="text-lg font-bold text-[#818cf8]">10j</p>
+                        <p className="text-[10px] text-[#818cf8]">Delai max</p>
                       </div>
                     </div>
                   </div>
 
                   {/* Stock details */}
-                  <div className="bg-slate-50 rounded-lg p-4">
-                    <h3 className="font-semibold text-slate-900 mb-3">{t('admin.inventory.colStock')}</h3>
+                  <div className="bg-[var(--k-bg-surface)] rounded-lg p-4">
+                    <h3 className="font-semibold text-[var(--k-text-primary)] mb-3">{t('admin.inventory.colStock')}</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="text-center p-3 bg-white rounded-lg border border-slate-200">
+                      <div className="text-center p-3 bg-[var(--k-glass-thin)] backdrop-blur-sm rounded-lg border border-[var(--k-border-subtle)]">
                         <p className={`text-3xl font-bold ${
                           selectedItem.stockQuantity === 0 ? 'text-red-600' :
                           selectedItem.stockQuantity <= selectedItem.lowStockThreshold ? 'text-amber-600' :
-                          'text-slate-900'
+                          'text-[var(--k-text-primary)]'
                         }`}>
                           {selectedItem.stockQuantity}
                         </p>
-                        <p className="text-xs text-slate-500 mt-1">{t('admin.inventory.colStock')}</p>
+                        <p className="text-xs text-[var(--k-text-tertiary)] mt-1">{t('admin.inventory.colStock')}</p>
                       </div>
-                      <div className="text-center p-3 bg-white rounded-lg border border-slate-200">
-                        <p className="text-3xl font-bold text-slate-900">{selectedItem.lowStockThreshold}</p>
-                        <p className="text-xs text-slate-500 mt-1">{t('admin.inventory.colThreshold')}</p>
+                      <div className="text-center p-3 bg-[var(--k-glass-thin)] backdrop-blur-sm rounded-lg border border-[var(--k-border-subtle)]">
+                        <p className="text-3xl font-bold text-[var(--k-text-primary)]">{selectedItem.lowStockThreshold}</p>
+                        <p className="text-xs text-[var(--k-text-tertiary)] mt-1">{t('admin.inventory.colThreshold')}</p>
                       </div>
-                      <div className="text-center p-3 bg-white rounded-lg border border-slate-200">
-                        <p className="text-3xl font-bold text-slate-900">{formatCurrency(selectedItem.price)}</p>
-                        <p className="text-xs text-slate-500 mt-1">{t('admin.inventory.colPrice')}</p>
+                      <div className="text-center p-3 bg-[var(--k-glass-thin)] backdrop-blur-sm rounded-lg border border-[var(--k-border-subtle)]">
+                        <p className="text-3xl font-bold text-[var(--k-text-primary)]">{formatCurrency(selectedItem.price)}</p>
+                        <p className="text-xs text-[var(--k-text-tertiary)] mt-1">{t('admin.inventory.colPrice')}</p>
                       </div>
                     </div>
                   </div>
@@ -1526,48 +1526,48 @@ export default function InventairePage() {
                   </div>
 
                   {/* Product Info */}
-                  <div className="bg-slate-50 rounded-lg p-4">
-                    <h3 className="font-semibold text-slate-900 mb-3">{t('admin.inventory.colProduct')}</h3>
+                  <div className="bg-[var(--k-bg-surface)] rounded-lg p-4">
+                    <h3 className="font-semibold text-[var(--k-text-primary)] mb-3">{t('admin.inventory.colProduct')}</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <p className="text-xs text-slate-500 mb-1">{t('admin.inventory.colProduct')}</p>
+                        <p className="text-xs text-[var(--k-text-tertiary)] mb-1">{t('admin.inventory.colProduct')}</p>
                         <Link
                           href={`/admin/produits/${selectedItem.productId}`}
-                          className="text-indigo-600 hover:underline font-medium"
+                          className="text-[#818cf8] hover:underline font-medium"
                         >
                           {selectedItem.productName}
                         </Link>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-500 mb-1">Format</p>
-                        <p className="text-slate-900">{selectedItem.optionName}</p>
+                        <p className="text-xs text-[var(--k-text-tertiary)] mb-1">Format</p>
+                        <p className="text-[var(--k-text-primary)]">{selectedItem.optionName}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-500 mb-1">{t('admin.inventory.colSku')}</p>
-                        <code className="text-sm text-slate-600 bg-slate-100 px-2 py-0.5 rounded">
+                        <p className="text-xs text-[var(--k-text-tertiary)] mb-1">{t('admin.inventory.colSku')}</p>
+                        <code className="text-sm text-[var(--k-text-secondary)] bg-[var(--k-glass-thin)] px-2 py-0.5 rounded">
                           {selectedItem.sku || '-'}
                         </code>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-500 mb-1">{t('admin.inventory.colStatus')}</p>
-                        <p className="text-slate-700">{selectedItem.availability.replace(/_/g, ' ')}</p>
+                        <p className="text-xs text-[var(--k-text-tertiary)] mb-1">{t('admin.inventory.colStatus')}</p>
+                        <p className="text-[var(--k-text-secondary)]">{selectedItem.availability.replace(/_/g, ' ')}</p>
                       </div>
                     </div>
                   </div>
 
                   {/* Inline stock edit */}
-                  <div className="border border-slate-200 rounded-lg p-4">
-                    <h3 className="font-semibold text-slate-900 mb-3">{t('admin.inventory.adjustmentReason')}</h3>
+                  <div className="border border-[var(--k-border-subtle)] rounded-lg p-4">
+                    <h3 className="font-semibold text-[var(--k-text-primary)] mb-3">{t('admin.inventory.adjustmentReason')}</h3>
                     {editingId === selectedItem.id ? (
                       <div className="space-y-3">
                         <div className="flex items-center gap-3">
-                          <label className="text-sm text-slate-600 w-24">{t('admin.inventory.colStock')}:</label>
+                          <label className="text-sm text-[var(--k-text-secondary)] w-24">{t('admin.inventory.colStock')}:</label>
                           <input
                             type="number"
                             value={editValue}
                             onChange={(e) => setEditValue(parseInt(e.target.value) || 0)}
-                            className="w-24 h-9 px-3 border border-slate-300 rounded-lg text-center text-sm
-                              focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            className="w-24 h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-center text-sm
+                              focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50"
                             autoFocus
                           />
                         </div>
@@ -1578,7 +1578,7 @@ export default function InventairePage() {
                             value={adjustmentReason}
                             onChange={(e) => setAdjustmentReason(e.target.value)}
                           />
-                          <p className="text-xs text-slate-400 mt-1">{t('admin.inventory.adjustmentRequired')}</p>
+                          <p className="text-xs text-[var(--k-text-muted)] mt-1">{t('admin.inventory.adjustmentRequired')}</p>
                         </div>
                         <div className="flex gap-2">
                           <Button
@@ -1644,7 +1644,7 @@ export default function InventairePage() {
             <span className="sr-only">Loading...</span>
           </div>
         ) : historyData.length === 0 ? (
-          <p className="text-sm text-slate-500 py-4 text-center">
+          <p className="text-sm text-[var(--k-text-tertiary)] py-4 text-center">
             {t('admin.inventory.noHistory')}
           </p>
         ) : (
@@ -1661,10 +1661,10 @@ export default function InventairePage() {
                   <span className={`font-bold min-w-[3rem] text-end ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
                     {isPositive ? '+' : ''}{tx.quantity}
                   </span>
-                  <span className="text-slate-600 flex-1">
+                  <span className="text-[var(--k-text-secondary)] flex-1">
                     {tx.reason || tx.type}
                   </span>
-                  <span className="text-slate-400 text-xs whitespace-nowrap">{timeAgo}</span>
+                  <span className="text-[var(--k-text-muted)] text-xs whitespace-nowrap">{timeAgo}</span>
                 </div>
               );
             })}
@@ -1692,7 +1692,7 @@ export default function InventairePage() {
                   {t('admin.inventory.outOfStock')} ({outOfStockItems.length})
                 </h4>
                 {outOfStockItems.length === 0 ? (
-                  <p className="text-sm text-slate-400 italic">{t('admin.inventory.noOutOfStockItems')}</p>
+                  <p className="text-sm text-[var(--k-text-muted)] italic">{t('admin.inventory.noOutOfStockItems')}</p>
                 ) : (
                   <div className="border border-red-200 rounded-lg overflow-hidden">
                     <table className="w-full text-sm">
@@ -1707,10 +1707,10 @@ export default function InventairePage() {
                       <tbody className="divide-y divide-red-100">
                         {outOfStockItems.map(item => (
                           <tr key={item.id} className="hover:bg-red-50/50">
-                            <td className="px-3 py-2 text-slate-900">{item.productName}</td>
-                            <td className="px-3 py-2 text-slate-600">{item.optionName}</td>
-                            <td className="px-3 py-2 text-slate-500">{item.sku || '-'}</td>
-                            <td className="px-3 py-2 text-end text-slate-700">{formatCurrency(item.price)}</td>
+                            <td className="px-3 py-2 text-[var(--k-text-primary)]">{item.productName}</td>
+                            <td className="px-3 py-2 text-[var(--k-text-secondary)]">{item.optionName}</td>
+                            <td className="px-3 py-2 text-[var(--k-text-tertiary)]">{item.sku || '-'}</td>
+                            <td className="px-3 py-2 text-end text-[var(--k-text-secondary)]">{formatCurrency(item.price)}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -1726,7 +1726,7 @@ export default function InventairePage() {
                   {t('admin.inventory.lowStock')} ({lowStockItems.length})
                 </h4>
                 {lowStockItems.length === 0 ? (
-                  <p className="text-sm text-slate-400 italic">{t('admin.inventory.noLowStockItems')}</p>
+                  <p className="text-sm text-[var(--k-text-muted)] italic">{t('admin.inventory.noLowStockItems')}</p>
                 ) : (
                   <div className="border border-amber-200 rounded-lg overflow-hidden">
                     <table className="w-full text-sm">
@@ -1741,10 +1741,10 @@ export default function InventairePage() {
                       <tbody className="divide-y divide-amber-100">
                         {lowStockItems.map(item => (
                           <tr key={item.id} className="hover:bg-amber-50/50">
-                            <td className="px-3 py-2 text-slate-900">{item.productName}</td>
-                            <td className="px-3 py-2 text-slate-600">{item.optionName}</td>
+                            <td className="px-3 py-2 text-[var(--k-text-primary)]">{item.productName}</td>
+                            <td className="px-3 py-2 text-[var(--k-text-secondary)]">{item.optionName}</td>
                             <td className="px-3 py-2 text-center font-semibold text-amber-700">{item.stockQuantity}</td>
-                            <td className="px-3 py-2 text-center text-slate-500">{item.lowStockThreshold}</td>
+                            <td className="px-3 py-2 text-center text-[var(--k-text-tertiary)]">{item.lowStockThreshold}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -1767,9 +1767,9 @@ export default function InventairePage() {
       >
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-slate-50 rounded-lg p-4 text-center">
-              <p className="text-2xl font-bold text-slate-900">{stats.total}</p>
-              <p className="text-xs text-slate-500 mt-1">{t('admin.inventory.totalProducts')}</p>
+            <div className="bg-[var(--k-bg-surface)] rounded-lg p-4 text-center">
+              <p className="text-2xl font-bold text-[var(--k-text-primary)]">{stats.total}</p>
+              <p className="text-xs text-[var(--k-text-tertiary)] mt-1">{t('admin.inventory.totalProducts')}</p>
             </div>
             <div className="bg-emerald-50 rounded-lg p-4 text-center">
               <p className="text-2xl font-bold text-emerald-700">{stats.inStock}</p>
@@ -1794,8 +1794,8 @@ export default function InventairePage() {
             </div>
           </div>
           {/* Stock health indicator */}
-          <div className="bg-slate-50 rounded-lg p-4">
-            <h4 className="text-sm font-semibold text-slate-700 mb-2">
+          <div className="bg-[var(--k-bg-surface)] rounded-lg p-4">
+            <h4 className="text-sm font-semibold text-[var(--k-text-secondary)] mb-2">
               {t('admin.inventory.stockHealth')}
             </h4>
             <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden flex">
@@ -1819,7 +1819,7 @@ export default function InventairePage() {
                 </>
               )}
             </div>
-            <div className="flex justify-between mt-2 text-xs text-slate-500">
+            <div className="flex justify-between mt-2 text-xs text-[var(--k-text-tertiary)]">
               <span className="flex items-center gap-1"><span className="w-2 h-2 bg-emerald-500 rounded-full inline-block" /> {t('admin.inventory.inStock')}</span>
               <span className="flex items-center gap-1"><span className="w-2 h-2 bg-amber-500 rounded-full inline-block" /> {t('admin.inventory.lowStock')}</span>
               <span className="flex items-center gap-1"><span className="w-2 h-2 bg-red-500 rounded-full inline-block" /> {t('admin.inventory.outOfStock')}</span>
@@ -1837,7 +1837,7 @@ export default function InventairePage() {
         size="lg"
       >
         {reorderItems.length === 0 ? (
-          <div className="py-8 text-center text-slate-400">
+          <div className="py-8 text-center text-[var(--k-text-muted)]">
             <PackageCheck className="w-8 h-8 mx-auto mb-2 text-emerald-400" />
             <p className="text-sm">Tous les stocks sont au-dessus du seuil. Aucun reapprovisionnement necessaire.</p>
           </div>
@@ -1851,7 +1851,7 @@ export default function InventairePage() {
               return (
                 <div
                   key={item.id}
-                  className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                  className="flex items-center gap-3 p-3 border border-[var(--k-border-subtle)] rounded-lg hover:bg-[var(--k-glass-thin)] transition-colors"
                 >
                   {/* Urgency bar */}
                   <div className="w-1.5 h-12 rounded-full bg-slate-200 overflow-hidden flex flex-col-reverse">
@@ -1863,37 +1863,37 @@ export default function InventairePage() {
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <p className="text-sm font-medium text-slate-900 truncate">{item.productName}</p>
+                      <p className="text-sm font-medium text-[var(--k-text-primary)] truncate">{item.productName}</p>
                       <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${abcBadge.bg} ${abcBadge.text}`}>
                         {item.abcClass}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-500">{item.optionName}{item.sku ? ` (${item.sku})` : ''}</p>
+                    <p className="text-xs text-[var(--k-text-tertiary)]">{item.optionName}{item.sku ? ` (${item.sku})` : ''}</p>
                   </div>
 
                   <div className="text-center px-3">
                     <p className={`text-lg font-bold ${item.stockQuantity === 0 ? 'text-red-600' : 'text-amber-600'}`}>
                       {item.stockQuantity}
                     </p>
-                    <p className="text-[10px] text-slate-400">en stock</p>
+                    <p className="text-[10px] text-[var(--k-text-muted)]">en stock</p>
                   </div>
 
                   <div className="text-center px-3">
-                    <p className="text-sm font-medium text-slate-700">{item.lowStockThreshold}</p>
-                    <p className="text-[10px] text-slate-400">seuil</p>
+                    <p className="text-sm font-medium text-[var(--k-text-secondary)]">{item.lowStockThreshold}</p>
+                    <p className="text-[10px] text-[var(--k-text-muted)]">seuil</p>
                   </div>
 
                   <div className="text-center px-3">
-                    <div className="flex items-center gap-1 text-indigo-600">
+                    <div className="flex items-center gap-1 text-[#818cf8]">
                       <Clock className="w-3 h-3" />
                       <span className="text-sm font-medium">{item.estimatedLeadDays}j</span>
                     </div>
-                    <p className="text-[10px] text-slate-400">delai est.</p>
+                    <p className="text-[10px] text-[var(--k-text-muted)]">delai est.</p>
                   </div>
 
                   <div className="text-end px-2">
-                    <p className="text-sm font-medium text-slate-700">{formatCurrency(item.price)}</p>
-                    <p className="text-[10px] text-slate-400">prix unit.</p>
+                    <p className="text-sm font-medium text-[var(--k-text-secondary)]">{formatCurrency(item.price)}</p>
+                    <p className="text-[10px] text-[var(--k-text-muted)]">prix unit.</p>
                   </div>
                 </div>
               );
@@ -1911,17 +1911,17 @@ export default function InventairePage() {
         size="md"
       >
         <div className="space-y-4">
-          <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4 text-center">
+          <div className="bg-[#6366f1]/10 border border-[#6366f1]/20 rounded-lg p-4 text-center">
             <ArrowRightLeft className="w-8 h-8 text-indigo-400 mx-auto mb-2" />
             <p className="text-sm text-indigo-800 font-medium">Module de transfert inter-entrepots</p>
-            <p className="text-xs text-indigo-600 mt-1">
+            <p className="text-xs text-[#818cf8] mt-1">
               Selectionnez un produit, la quantite a transferer et l&apos;emplacement de destination.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Produit source</label>
-              <select className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm">
+              <label className="block text-xs font-medium text-[var(--k-text-secondary)] mb-1">Produit source</label>
+              <select className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)]">
                 <option value="">Selectionnez...</option>
                 {inventory.filter(i => i.stockQuantity > 0).map(item => (
                   <option key={item.id} value={item.id}>
@@ -1931,35 +1931,35 @@ export default function InventairePage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Quantite</label>
+              <label className="block text-xs font-medium text-[var(--k-text-secondary)] mb-1">Quantite</label>
               <input
                 type="number"
                 min={1}
                 defaultValue={1}
-                className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm"
+                className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)]"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Depuis</label>
-              <select className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm">
+              <label className="block text-xs font-medium text-[var(--k-text-secondary)] mb-1">Depuis</label>
+              <select className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)]">
                 <option value="main">Entrepot principal</option>
                 <option value="secondary">Entrepot secondaire</option>
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">Vers</label>
-              <select className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm">
+              <label className="block text-xs font-medium text-[var(--k-text-secondary)] mb-1">Vers</label>
+              <select className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)]">
                 <option value="secondary">Entrepot secondaire</option>
                 <option value="main">Entrepot principal</option>
               </select>
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Raison du transfert</label>
+            <label className="block text-xs font-medium text-[var(--k-text-secondary)] mb-1">Raison du transfert</label>
             <input
               type="text"
               placeholder="Ex: Reequilibrage de stock, demande client..."
-              className="w-full h-9 px-3 border border-slate-300 rounded-lg text-sm"
+              className="w-full h-9 px-3 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)]"
             />
           </div>
           <div className="flex justify-end gap-2 pt-2">

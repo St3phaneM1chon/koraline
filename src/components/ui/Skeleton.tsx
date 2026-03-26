@@ -13,7 +13,7 @@ interface SkeletonProps {
 export function Skeleton({ className = '' }: SkeletonProps) {
   return (
     <div
-      className={`animate-pulse rounded bg-gray-200 ${className}`}
+      className={`animate-pulse rounded bg-white/10 ${className}`}
       aria-hidden="true"
     />
   );
@@ -27,7 +27,7 @@ export function SkeletonText({ className = 'h-4 w-full' }: SkeletonProps) {
 /** Product / generic card skeleton with image area, title, and subtitle. */
 export function SkeletonCard({ className = '' }: SkeletonProps) {
   return (
-    <div className={`bg-white rounded-xl border border-gray-200 overflow-hidden ${className}`}>
+    <div className={`bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] overflow-hidden ${className}`}>
       <Skeleton className="w-full h-48" />
       <div className="p-4 space-y-3">
         <SkeletonText className="h-4 w-3/4" />
@@ -63,7 +63,7 @@ export function SkeletonTableRow({ columns = 5, className = '' }: SkeletonProps 
 /** Stat card skeleton matching the admin dashboard / account stats. */
 export function SkeletonStatCard({ className = '' }: SkeletonProps) {
   return (
-    <div className={`bg-white rounded-xl p-6 border border-gray-200 ${className}`}>
+    <div className={`bg-[var(--k-glass-thin)] rounded-xl p-6 border border-[var(--k-border-subtle)] ${className}`}>
       <div className="flex items-center gap-4">
         <Skeleton className="w-12 h-12 rounded-lg" />
         <div className="space-y-2 flex-1">

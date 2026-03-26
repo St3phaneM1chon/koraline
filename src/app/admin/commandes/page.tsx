@@ -1393,8 +1393,8 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
       <div className="p-4 lg:p-6 pb-0 flex-shrink-0">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
           <div>
-            <h1 className="text-xl font-bold text-slate-900">{t('admin.commandes.title')}</h1>
-            <p className="text-sm text-slate-500 mt-0.5">{t('admin.commandes.subtitle')}</p>
+            <h1 className="text-xl font-bold text-[var(--k-text-primary)]">{t('admin.commandes.title')}</h1>
+            <p className="text-sm text-[var(--k-text-tertiary)] mt-0.5">{t('admin.commandes.subtitle')}</p>
             <TutorialLink guideSlug="02-commerce/01-commandes" magazineSlug="Section_02_Commerce" compact />
           </div>
           <div className="flex items-center gap-2 flex-wrap">
@@ -1437,7 +1437,7 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
                 value={bulkStatus}
                 onChange={(e) => setBulkStatus(e.target.value)}
                 aria-label={t('admin.commandes.bulkSelectStatus')}
-                className="h-8 px-2 rounded border border-indigo-300 text-xs text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="h-8 px-2 rounded border border-indigo-300 text-xs text-[var(--k-text-primary)] bg-[var(--k-glass-thin)] focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="">{t('admin.commandes.bulkSelectStatus')}</option>
                 {statusOptionValues.map(s => (
@@ -1522,7 +1522,7 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
                   className={`p-1.5 rounded transition-colors ${
                     selectedOrderIds.size > 0
                       ? 'text-indigo-700 bg-indigo-100 hover:bg-indigo-200'
-                      : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'
+                      : 'text-[var(--k-text-muted)] hover:text-[var(--k-text-secondary)] hover:bg-[var(--k-glass-thin)]'
                   }`}
                   title={
                     selectedOrderIds.size > 0
@@ -1610,7 +1610,7 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
                     if (tags.length === 0) return null;
                     return (
                       <div className="flex items-center gap-2 flex-wrap">
-                        <Tag className="w-4 h-4 text-slate-400" />
+                        <Tag className="w-4 h-4 text-[var(--k-text-muted)]" />
                         {tags.map((tag) => (
                           <span
                             key={tag}
@@ -1640,7 +1640,7 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
                         }}
                         disabled={updating}
                         aria-label={t('admin.commandes.orderStatusLabel')}
-                        className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full h-9 px-3 rounded-lg border border-[var(--k-border-default)] text-sm text-[var(--k-text-primary)] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                       >
                         {statusOptionValues.map(s => (
                           <option key={s} value={s}>{s}</option>
@@ -1703,8 +1703,8 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
 
                   {/* Order Timeline */}
                   {showTimeline && (
-                    <div className="bg-slate-50 rounded-lg p-4">
-                      <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                    <div className="bg-[var(--k-bg-surface)] rounded-lg p-4">
+                      <h3 className="font-semibold text-[var(--k-text-primary)] mb-4 flex items-center gap-2">
                         <History className="w-4 h-4" />
                         {t('admin.commandes.timelineTitle')}
                       </h3>
@@ -1714,26 +1714,26 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
 
                   {/* Notes Panel (via dedicated /notes API) */}
                   {showNotesPanel && (
-                    <div className="bg-slate-50 rounded-lg p-4">
-                      <h3 className="font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                    <div className="bg-[var(--k-bg-surface)] rounded-lg p-4">
+                      <h3 className="font-semibold text-[var(--k-text-primary)] mb-4 flex items-center gap-2">
                         <MessageSquare className="w-4 h-4" />
                         {t('admin.commandes.notesPanelTitle')}
                       </h3>
 
                       {loadingNotes ? (
                         <div className="flex items-center justify-center py-6">
-                          <Loader2 className="w-5 h-5 animate-spin text-slate-400" />
-                          <span className="ms-2 text-sm text-slate-500">{t('admin.commandes.processing')}</span>
+                          <Loader2 className="w-5 h-5 animate-spin text-[var(--k-text-muted)]" />
+                          <span className="ms-2 text-sm text-[var(--k-text-tertiary)]">{t('admin.commandes.processing')}</span>
                         </div>
                       ) : orderNotes ? (
                         <div className="space-y-4">
                           {/* Customer notes (read-only) */}
                           {orderNotes.customerNotes && (
                             <div>
-                              <p className="text-xs font-medium text-slate-500 uppercase mb-1">
+                              <p className="text-xs font-medium text-[var(--k-text-tertiary)] uppercase mb-1">
                                 {t('admin.commandes.customerNotesLabel')}
                               </p>
-                              <div className="bg-white rounded-lg border border-slate-200 p-3 text-sm text-slate-700 whitespace-pre-wrap">
+                              <div className="bg-[var(--k-glass-thin)] rounded-lg border border-[var(--k-border-subtle)] p-3 text-sm text-[var(--k-text-secondary)] whitespace-pre-wrap">
                                 {orderNotes.customerNotes}
                               </div>
                             </div>
@@ -1741,23 +1741,23 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
 
                           {/* Admin notes */}
                           <div>
-                            <p className="text-xs font-medium text-slate-500 uppercase mb-1">
+                            <p className="text-xs font-medium text-[var(--k-text-tertiary)] uppercase mb-1">
                               {t('admin.commandes.adminNotesLabel')}
                             </p>
                             {orderNotes.adminNotes ? (
-                              <div className="bg-white rounded-lg border border-slate-200 p-3 text-sm text-slate-700 whitespace-pre-wrap mb-3">
+                              <div className="bg-[var(--k-glass-thin)] rounded-lg border border-[var(--k-border-subtle)] p-3 text-sm text-[var(--k-text-secondary)] whitespace-pre-wrap mb-3">
                                 {orderNotes.adminNotes}
                               </div>
                             ) : (
-                              <p className="text-sm text-slate-400 italic mb-3">
+                              <p className="text-sm text-[var(--k-text-muted)] italic mb-3">
                                 {t('admin.commandes.noNotesYet')}
                               </p>
                             )}
                           </div>
 
                           {/* Add new note form */}
-                          <div className="border-t border-slate-200 pt-3">
-                            <p className="text-xs font-medium text-slate-500 uppercase mb-1">
+                          <div className="border-t border-[var(--k-border-subtle)] pt-3">
+                            <p className="text-xs font-medium text-[var(--k-text-tertiary)] uppercase mb-1">
                               {t('admin.commandes.addNewNote')}
                             </p>
                             <Textarea
@@ -1781,13 +1781,13 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
 
                           {/* Last updated */}
                           {orderNotes.updatedAt && (
-                            <p className="text-xs text-slate-400">
+                            <p className="text-xs text-[var(--k-text-muted)]">
                               {t('admin.commandes.notesLastUpdated')}: {new Date(orderNotes.updatedAt).toLocaleString(locale)}
                             </p>
                           )}
                         </div>
                       ) : (
-                        <p className="text-sm text-slate-400 italic">{t('admin.commandes.noNotesYet')}</p>
+                        <p className="text-sm text-[var(--k-text-muted)] italic">{t('admin.commandes.noNotesYet')}</p>
                       )}
                     </div>
                   )}
@@ -1795,34 +1795,34 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
                   {/* Customer Info */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <h3 className="font-semibold text-slate-900 mb-2">{t('admin.commandes.customerTitle')}</h3>
-                      <p className="text-slate-700">{selectedOrder.userName}</p>
-                      <p className="text-slate-500 text-sm">{selectedOrder.userEmail}</p>
+                      <h3 className="font-semibold text-[var(--k-text-primary)] mb-2">{t('admin.commandes.customerTitle')}</h3>
+                      <p className="text-[var(--k-text-secondary)]">{selectedOrder.userName}</p>
+                      <p className="text-[var(--k-text-tertiary)] text-sm">{selectedOrder.userEmail}</p>
                       <Link href={`/admin/clients/${selectedOrder.userId}`} className="text-indigo-600 text-sm hover:underline">
                         {t('admin.commandes.viewProfile')} &rarr;
                       </Link>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-slate-900 mb-2">{t('admin.commandes.shippingAddressTitle')}</h3>
-                      <p className="text-slate-700">{selectedOrder.shippingName}</p>
-                      <p className="text-slate-500 text-sm">{selectedOrder.shippingAddress1}</p>
-                      <p className="text-slate-500 text-sm">
+                      <h3 className="font-semibold text-[var(--k-text-primary)] mb-2">{t('admin.commandes.shippingAddressTitle')}</h3>
+                      <p className="text-[var(--k-text-secondary)]">{selectedOrder.shippingName}</p>
+                      <p className="text-[var(--k-text-tertiary)] text-sm">{selectedOrder.shippingAddress1}</p>
+                      <p className="text-[var(--k-text-tertiary)] text-sm">
                         {selectedOrder.shippingCity}, {selectedOrder.shippingState} {selectedOrder.shippingPostal}
                       </p>
-                      <p className="text-slate-500 text-sm">{selectedOrder.shippingCountry}</p>
+                      <p className="text-[var(--k-text-tertiary)] text-sm">{selectedOrder.shippingCountry}</p>
                     </div>
                   </div>
 
                   {/* Tracking */}
-                  <div className="bg-slate-50 rounded-lg p-4">
-                    <h3 className="font-semibold text-slate-900 mb-3">{t('admin.commandes.trackingTitle')}</h3>
+                  <div className="bg-[var(--k-bg-surface)] rounded-lg p-4">
+                    <h3 className="font-semibold text-[var(--k-text-primary)] mb-3">{t('admin.commandes.trackingTitle')}</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <FormField label={t('admin.commandes.carrierLabel')}>
                         <select
                           defaultValue={selectedOrder.carrier || ''}
                           onChange={(e) => updateTracking(selectedOrder.id, e.target.value, selectedOrder.trackingNumber || '')}
                           aria-label={t('admin.commandes.carrierLabel')}
-                          className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          className="w-full h-9 px-3 rounded-lg border border-[var(--k-border-default)] text-sm text-[var(--k-text-primary)] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         >
                           <option value="">{t('admin.commandes.carrierSelect')}</option>
                           <option value="Postes Canada">{t('admin.commandes.carrierCanadaPost')}</option>
@@ -1845,29 +1845,29 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
 
                   {/* Items */}
                   <div>
-                    <h3 className="font-semibold text-slate-900 mb-3">{t('admin.commandes.itemsTitle')}</h3>
-                    <div className="border border-slate-200 rounded-lg overflow-hidden overflow-x-auto">
+                    <h3 className="font-semibold text-[var(--k-text-primary)] mb-3">{t('admin.commandes.itemsTitle')}</h3>
+                    <div className="border border-[var(--k-border-subtle)] rounded-lg overflow-hidden overflow-x-auto">
                       <table className="w-full">
-                        <thead className="bg-slate-50">
+                        <thead className="bg-[var(--k-bg-surface)]">
                           <tr>
-                            <th className="px-4 py-2 text-start text-xs font-medium text-slate-500 uppercase">{t('admin.commandes.colProduct')}</th>
-                            <th className="px-4 py-2 text-center text-xs font-medium text-slate-500 uppercase">{t('admin.commandes.colQty')}</th>
-                            <th className="px-4 py-2 text-end text-xs font-medium text-slate-500 uppercase">{t('admin.commandes.colUnitPrice')}</th>
-                            <th className="px-4 py-2 text-end text-xs font-medium text-slate-500 uppercase">{t('admin.commandes.colTotal')}</th>
+                            <th className="px-4 py-2 text-start text-xs font-medium text-[var(--k-text-tertiary)] uppercase">{t('admin.commandes.colProduct')}</th>
+                            <th className="px-4 py-2 text-center text-xs font-medium text-[var(--k-text-tertiary)] uppercase">{t('admin.commandes.colQty')}</th>
+                            <th className="px-4 py-2 text-end text-xs font-medium text-[var(--k-text-tertiary)] uppercase">{t('admin.commandes.colUnitPrice')}</th>
+                            <th className="px-4 py-2 text-end text-xs font-medium text-[var(--k-text-tertiary)] uppercase">{t('admin.commandes.colTotal')}</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-100">
+                        <tbody className="divide-y divide-white/5">
                           {selectedOrder.items.map((item) => (
                             <tr key={item.id}>
                               <td className="px-4 py-3 max-w-[250px]">
-                                <p className="font-medium text-slate-900 truncate">{item.productName}</p>
+                                <p className="font-medium text-[var(--k-text-primary)] truncate">{item.productName}</p>
                                 {item.optionName && (
-                                  <p className="text-xs text-slate-500 truncate">{item.optionName}</p>
+                                  <p className="text-xs text-[var(--k-text-tertiary)] truncate">{item.optionName}</p>
                                 )}
                               </td>
-                              <td className="px-4 py-3 text-center text-sm text-slate-700">{item.quantity}</td>
-                              <td className="px-4 py-3 text-end text-sm text-slate-700">{formatCurrency(item.unitPrice)}</td>
-                              <td className="px-4 py-3 text-end text-sm font-medium text-slate-900">{formatCurrency(item.total)}</td>
+                              <td className="px-4 py-3 text-center text-sm text-[var(--k-text-secondary)]">{item.quantity}</td>
+                              <td className="px-4 py-3 text-end text-sm text-[var(--k-text-secondary)]">{formatCurrency(item.unitPrice)}</td>
+                              <td className="px-4 py-3 text-end text-sm font-medium text-[var(--k-text-primary)]">{formatCurrency(item.total)}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -1876,13 +1876,13 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
                   </div>
 
                   {/* Totals */}
-                  <div className="bg-slate-50 rounded-lg p-4">
+                  <div className="bg-[var(--k-bg-surface)] rounded-lg p-4">
                     <div className="space-y-2">
-                      <div className="flex justify-between text-slate-600 text-sm">
+                      <div className="flex justify-between text-[var(--k-text-secondary)] text-sm">
                         <span>{t('admin.commandes.subtotal')}</span>
                         <span>{formatCurrency(selectedOrder.subtotal)}</span>
                       </div>
-                      <div className="flex justify-between text-slate-600 text-sm">
+                      <div className="flex justify-between text-[var(--k-text-secondary)] text-sm">
                         <span>{t('admin.commandes.shipping')}</span>
                         <span>{selectedOrder.shippingCost === 0 ? t('admin.commandes.shippingFree') : formatCurrency(selectedOrder.shippingCost)}</span>
                       </div>
@@ -1892,11 +1892,11 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
                           <span>-{formatCurrency(selectedOrder.discount)}</span>
                         </div>
                       )}
-                      <div className="flex justify-between text-slate-600 text-sm">
+                      <div className="flex justify-between text-[var(--k-text-secondary)] text-sm">
                         <span>{t('admin.commandes.taxes')}</span>
                         <span>{formatCurrency(selectedOrder.tax)}</span>
                       </div>
-                      <div className="flex justify-between text-lg font-bold text-slate-900 pt-2 border-t border-slate-300">
+                      <div className="flex justify-between text-lg font-bold text-[var(--k-text-primary)] pt-2 border-t border-[var(--k-border-default)]">
                         <span>{t('admin.commandes.total')}</span>
                         <span>{formatCurrency(selectedOrder.total)}</span>
                       </div>
@@ -1938,34 +1938,34 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
                       </h3>
                       <div className="space-y-3">
                         {paymentErrors.map((pe) => (
-                          <div key={pe.id} className="bg-white rounded-lg p-3 border border-red-100">
+                          <div key={pe.id} className="bg-[var(--k-glass-thin)] rounded-lg p-3 border border-red-100">
                             <div className="flex justify-between items-start mb-2">
                               <div>
-                                <p className="font-mono text-xs text-slate-500">{pe.stripePaymentId}</p>
+                                <p className="font-mono text-xs text-[var(--k-text-tertiary)]">{pe.stripePaymentId}</p>
                                 <p className="font-medium text-red-700">{pe.errorType}</p>
                               </div>
-                              <span className="text-xs text-slate-500">
+                              <span className="text-xs text-[var(--k-text-tertiary)]">
                                 {new Date(pe.createdAt).toLocaleString(locale)}
                               </span>
                             </div>
-                            <p className="text-sm text-slate-700 mb-2">{pe.errorMessage}</p>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs text-slate-600">
+                            <p className="text-sm text-[var(--k-text-secondary)] mb-2">{pe.errorMessage}</p>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs text-[var(--k-text-secondary)]">
                               <div>
-                                <span className="text-slate-400">{t('admin.commandes.peAmount')}: </span>
+                                <span className="text-[var(--k-text-muted)]">{t('admin.commandes.peAmount')}: </span>
                                 <span className="font-mono">{formatCurrency(pe.amount)}</span>
                               </div>
                               <div>
-                                <span className="text-slate-400">{t('admin.commandes.peEmail')}: </span>
+                                <span className="text-[var(--k-text-muted)]">{t('admin.commandes.peEmail')}: </span>
                                 <span className="font-mono">{pe.customerEmail || 'N/A'}</span>
                               </div>
                               <div>
-                                <span className="text-slate-400">{t('admin.commandes.peMethod')}: </span>
+                                <span className="text-[var(--k-text-muted)]">{t('admin.commandes.peMethod')}: </span>
                                 <span className="font-mono">{pe.metadata?.paymentMethodType?.join(', ') || 'N/A'}</span>
                               </div>
                             </div>
                             {pe.metadata?.declineCode && (
                               <div className="mt-2 text-xs">
-                                <span className="text-slate-400">{t('admin.commandes.peDeclineCode')}: </span>
+                                <span className="text-[var(--k-text-muted)]">{t('admin.commandes.peDeclineCode')}: </span>
                                 <span className="font-mono text-red-600">{pe.metadata.declineCode}</span>
                               </div>
                             )}
@@ -2343,7 +2343,7 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
               value={reshipReason}
               onChange={(e) => setReshipReason(e.target.value)}
               aria-label={t('admin.commandes.reshipReasonLabel')}
-              className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full h-9 px-3 rounded-lg border border-[var(--k-border-default)] text-sm text-[var(--k-text-primary)] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             >
               {reshipReasons.map((r) => (
                 <option key={r} value={r}>{r}</option>
@@ -2353,15 +2353,15 @@ ${selectedOrder.adminNotes ? `<div class="notes"><strong>${t('admin.commandes.pr
 
           {selectedOrder && (
             <div>
-              <h4 className="text-sm font-medium text-slate-700 mb-2">{t('admin.commandes.itemsToReship')}</h4>
-              <div className="border border-slate-200 rounded-lg divide-y divide-slate-100">
+              <h4 className="text-sm font-medium text-[var(--k-text-secondary)] mb-2">{t('admin.commandes.itemsToReship')}</h4>
+              <div className="border border-[var(--k-border-subtle)] rounded-lg divide-y divide-white/5">
                 {selectedOrder.items.map((item) => (
                   <div key={item.id} className="px-3 py-2 flex justify-between text-sm">
-                    <span className="text-slate-700">
+                    <span className="text-[var(--k-text-secondary)]">
                       {item.productName}
-                      {item.optionName && <span className="text-slate-400 ms-1">({item.optionName})</span>}
+                      {item.optionName && <span className="text-[var(--k-text-muted)] ms-1">({item.optionName})</span>}
                     </span>
-                    <span className="text-slate-500">x{item.quantity}</span>
+                    <span className="text-[var(--k-text-tertiary)]">x{item.quantity}</span>
                   </div>
                 ))}
               </div>

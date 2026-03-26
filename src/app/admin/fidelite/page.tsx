@@ -484,8 +484,8 @@ export default function FidelitePage() {
       </div>
 
       {/* Basic Settings */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6">
-        <h3 className="font-semibold text-slate-900 mb-4">{t('admin.loyalty.basicSettings')}</h3>
+      <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
+        <h3 className="font-semibold text-[var(--k-text-primary)] mb-4">{t('admin.loyalty.basicSettings')}</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           <FormField label={t('admin.loyalty.pointsPerDollar')} hint={t('admin.loyalty.bronzeLevel')}>
             <Input
@@ -520,8 +520,8 @@ export default function FidelitePage() {
       </div>
 
       {/* Special Bonuses */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6">
-        <h3 className="font-semibold text-slate-900 mb-4">{t('admin.loyalty.specialBonuses')}</h3>
+      <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
+        <h3 className="font-semibold text-[var(--k-text-primary)] mb-4">{t('admin.loyalty.specialBonuses')}</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           <FormField label={t('admin.loyalty.birthdayBonus')} hint={t('admin.loyalty.pointsOffered')}>
             <Input
@@ -555,9 +555,9 @@ export default function FidelitePage() {
       </div>
 
       {/* Tiers */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6">
+      <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold text-slate-900">{t('admin.loyalty.loyaltyTiers')}</h3>
+          <h3 className="font-semibold text-[var(--k-text-primary)]">{t('admin.loyalty.loyaltyTiers')}</h3>
           <Button variant="ghost" size="sm" icon={Plus} className="text-indigo-600 hover:text-indigo-700" onClick={addNewTier}>
             {t('admin.loyalty.addTier')}
           </Button>
@@ -623,7 +623,7 @@ export default function FidelitePage() {
             <select
               value={simTier || config.tiers[0]?.name || ''}
               onChange={(e) => setSimTier(e.target.value)}
-              className="w-full h-9 px-3 rounded-lg border border-indigo-300 text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full h-9 px-3 rounded-lg border border-indigo-300 text-sm text-[var(--k-text-primary)] bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             >
               {config.tiers.map((tier, idx) => (
                 <option key={`${idx}-${tier.name}`} value={tier.name}>{tier.name}</option>
@@ -640,8 +640,8 @@ export default function FidelitePage() {
 
       {/* A-027: Loyalty Statistics Overview */}
       {(txnStats || loyaltyStats) && (
-        <div className="bg-white rounded-xl border border-slate-200 p-6">
-          <h3 className="font-semibold text-slate-900 mb-4">{t('admin.loyalty.statsTitle')}</h3>
+        <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
+          <h3 className="font-semibold text-[var(--k-text-primary)] mb-4">{t('admin.loyalty.statsTitle')}</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
               <p className="text-xs text-green-600 font-medium">{t('admin.loyalty.totalEarned')}</p>
@@ -671,8 +671,8 @@ export default function FidelitePage() {
               <div className="space-y-2">
                 {Object.entries(loyaltyStats.membersByTier).map(([tier, count]) => (
                   <div key={tier} className="flex items-center gap-3">
-                    <span className="text-sm font-medium text-slate-600 w-20">{tier}</span>
-                    <div className="flex-1 bg-slate-100 rounded-full h-4">
+                    <span className="text-sm font-medium text-[var(--k-text-secondary)] w-20">{tier}</span>
+                    <div className="flex-1 bg-white/10 rounded-full h-4">
                       <div
                         className="bg-indigo-500 rounded-full h-4 transition-all duration-500"
                         style={{ width: `${loyaltyStats.totalMembers > 0 ? Math.max(2, (count / loyaltyStats.totalMembers) * 100) : 0}%` }}
@@ -688,9 +688,9 @@ export default function FidelitePage() {
       )}
 
       {/* A-026: Recent Transactions */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6">
+      <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold text-slate-900">{t('admin.loyalty.recentTransactions')}</h3>
+          <h3 className="font-semibold text-[var(--k-text-primary)]">{t('admin.loyalty.recentTransactions')}</h3>
           <Link
             href="/admin/clients"
             className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
@@ -703,22 +703,22 @@ export default function FidelitePage() {
             <Loader2 className="w-6 h-6 animate-spin text-indigo-500" />
           </div>
         ) : recentTxns.length === 0 ? (
-          <p className="text-sm text-slate-500 text-center py-8">{t('admin.loyalty.noTransactions')}</p>
+          <p className="text-sm text-[var(--k-text-secondary)] text-center py-8">{t('admin.loyalty.noTransactions')}</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-200">
-                  <th className="text-start py-2 px-3 font-semibold text-slate-600">{t('admin.loyalty.user')}</th>
-                  <th className="text-start py-2 px-3 font-semibold text-slate-600">{t('admin.loyalty.type')}</th>
-                  <th className="text-end py-2 px-3 font-semibold text-slate-600">{t('admin.loyalty.pointsLabel')}</th>
-                  <th className="text-start py-2 px-3 font-semibold text-slate-600">{t('admin.loyalty.description')}</th>
-                  <th className="text-start py-2 px-3 font-semibold text-slate-600">{t('admin.loyalty.date')}</th>
+                <tr className="border-b border-[var(--k-border-subtle)]">
+                  <th className="text-start py-2 px-3 font-semibold text-[var(--k-text-secondary)]">{t('admin.loyalty.user')}</th>
+                  <th className="text-start py-2 px-3 font-semibold text-[var(--k-text-secondary)]">{t('admin.loyalty.type')}</th>
+                  <th className="text-end py-2 px-3 font-semibold text-[var(--k-text-secondary)]">{t('admin.loyalty.pointsLabel')}</th>
+                  <th className="text-start py-2 px-3 font-semibold text-[var(--k-text-secondary)]">{t('admin.loyalty.description')}</th>
+                  <th className="text-start py-2 px-3 font-semibold text-[var(--k-text-secondary)]">{t('admin.loyalty.date')}</th>
                 </tr>
               </thead>
               <tbody>
                 {recentTxns.map(txn => (
-                  <tr key={txn.id} className="border-b border-slate-100 hover:bg-slate-50">
+                  <tr key={txn.id} className="border-b border-white/5 hover:bg-white/5">
                     <td className="py-2 px-3">
                       <p className="font-medium text-slate-800 truncate max-w-[120px]">{txn.userName}</p>
                     </td>
@@ -727,7 +727,7 @@ export default function FidelitePage() {
                         txn.type.startsWith('EARN') ? 'bg-green-100 text-green-700' :
                         txn.type.startsWith('REDEEM') ? 'bg-orange-100 text-orange-700' :
                         txn.type === 'EXPIRE' ? 'bg-red-100 text-red-700' :
-                        'bg-slate-100 text-slate-600'
+                        'bg-white/10 text-slate-600'
                       }`}>
                         {txn.type.replace('EARN_', '').replace('REDEEM_', '')}
                       </span>
@@ -735,8 +735,8 @@ export default function FidelitePage() {
                     <td className={`py-2 px-3 text-end font-bold ${txn.points > 0 ? 'text-green-600' : 'text-orange-600'}`}>
                       {txn.points > 0 ? '+' : ''}{txn.points}
                     </td>
-                    <td className="py-2 px-3 text-slate-500 truncate max-w-[200px]">{txn.description}</td>
-                    <td className="py-2 px-3 text-slate-500 text-xs">
+                    <td className="py-2 px-3 text-[var(--k-text-secondary)] truncate max-w-[200px]">{txn.description}</td>
+                    <td className="py-2 px-3 text-[var(--k-text-secondary)] text-xs">
                       {new Date(txn.createdAt).toLocaleDateString(locale)}
                     </td>
                   </tr>
@@ -748,12 +748,12 @@ export default function FidelitePage() {
       </div>
 
       {/* ─── Gamification Dashboard ──────────────────────────── */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6">
+      <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
         <div className="flex items-center gap-2 mb-1">
           <Trophy className="w-5 h-5 text-amber-500" />
-          <h3 className="font-semibold text-slate-900">{t('admin.loyalty.gamificationTitle')}</h3>
+          <h3 className="font-semibold text-[var(--k-text-primary)]">{t('admin.loyalty.gamificationTitle')}</h3>
         </div>
-        <p className="text-sm text-slate-500 mb-5">{t('admin.loyalty.gamificationSubtitle')}</p>
+        <p className="text-sm text-[var(--k-text-secondary)] mb-5">{t('admin.loyalty.gamificationSubtitle')}</p>
 
         {/* Available Badges */}
         <div className="mb-6">
@@ -763,10 +763,10 @@ export default function FidelitePage() {
           </h4>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {BADGES.map((badge) => (
-              <div key={badge.id} className="bg-slate-50 rounded-lg p-3 text-center border border-slate-100 hover:border-amber-200 transition-colors">
+              <div key={badge.id} className="bg-white/5 rounded-lg p-3 text-center border border-slate-100 hover:border-amber-200 transition-colors">
                 <span className="text-2xl">{badge.icon}</span>
                 <p className="text-xs font-semibold text-slate-700 mt-1">{badge.nameFr}</p>
-                <p className="text-[10px] text-slate-500 mt-0.5">{badge.requirement.type}: {badge.requirement.value}</p>
+                <p className="text-[10px] text-[var(--k-text-secondary)] mt-0.5">{badge.requirement.type}: {badge.requirement.value}</p>
                 <p className="text-[10px] font-medium text-amber-600 mt-1">+{badge.pointsReward} {t('admin.loyalty.pts')}</p>
               </div>
             ))}
@@ -781,12 +781,12 @@ export default function FidelitePage() {
           </h4>
           <div className="space-y-2">
             {activeChallenges.map((ch) => (
-              <div key={ch.id} className={`flex items-center justify-between rounded-lg border p-3 ${ch.isActive ? 'bg-green-50 border-green-200' : 'bg-slate-50 border-slate-200'}`}>
+              <div key={ch.id} className={`flex items-center justify-between rounded-lg border p-3 ${ch.isActive ? 'bg-green-50 border-green-200' : 'bg-white/5 border-slate-200'}`}>
                 <div className="flex items-center gap-3">
                   <Zap className={`w-4 h-4 ${ch.isActive ? 'text-green-600' : 'text-slate-400'}`} />
                   <div>
                     <p className="text-sm font-medium text-slate-800">{ch.nameFr}</p>
-                    <p className="text-xs text-slate-500">{t('admin.loyalty.challengeTarget')}: {ch.target} {ch.type} &middot; {t('admin.loyalty.challengeReward')}: +{ch.pointsReward} {t('admin.loyalty.pts')}</p>
+                    <p className="text-xs text-[var(--k-text-secondary)]">{t('admin.loyalty.challengeTarget')}: {ch.target} {ch.type} &middot; {t('admin.loyalty.challengeReward')}: +{ch.pointsReward} {t('admin.loyalty.pts')}</p>
                   </div>
                 </div>
                 <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${ch.isActive ? 'bg-green-100 text-green-700' : 'bg-slate-200 text-slate-500'}`}>
@@ -809,36 +809,36 @@ export default function FidelitePage() {
               <p className="text-3xl font-bold text-orange-700">12</p>
               <p className="text-xs text-orange-500">{t('admin.loyalty.days')}</p>
             </div>
-            <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 text-center">
-              <p className="text-xs text-slate-500 font-medium">{t('admin.loyalty.longestStreak')}</p>
+            <div className="bg-white/5 border border-[var(--k-border-subtle)] rounded-lg p-4 text-center">
+              <p className="text-xs text-[var(--k-text-secondary)] font-medium">{t('admin.loyalty.longestStreak')}</p>
               <p className="text-3xl font-bold text-slate-700">34</p>
-              <p className="text-xs text-slate-500">{t('admin.loyalty.days')}</p>
+              <p className="text-xs text-[var(--k-text-secondary)]">{t('admin.loyalty.days')}</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* ─── Points Engine Config ─────────────────────────────── */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6">
+      <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
         <div className="flex items-center gap-2 mb-1">
           <Star className="w-5 h-5 text-indigo-600" />
-          <h3 className="font-semibold text-slate-900">{t('admin.loyalty.pointsRulesTitle')}</h3>
+          <h3 className="font-semibold text-[var(--k-text-primary)]">{t('admin.loyalty.pointsRulesTitle')}</h3>
         </div>
-        <p className="text-sm text-slate-500 mb-5">{t('admin.loyalty.pointsRulesSubtitle')}</p>
+        <p className="text-sm text-[var(--k-text-secondary)] mb-5">{t('admin.loyalty.pointsRulesSubtitle')}</p>
 
         {/* Point Rules Table */}
         <div className="mb-6 overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-200">
-                <th className="text-start py-2 px-3 font-semibold text-slate-600">{t('admin.loyalty.action')}</th>
-                <th className="text-start py-2 px-3 font-semibold text-slate-600">{t('admin.loyalty.pointsAwarded')}</th>
-                <th className="text-start py-2 px-3 font-semibold text-slate-600">{t('admin.loyalty.dailyLimit')}</th>
+              <tr className="border-b border-[var(--k-border-subtle)]">
+                <th className="text-start py-2 px-3 font-semibold text-[var(--k-text-secondary)]">{t('admin.loyalty.action')}</th>
+                <th className="text-start py-2 px-3 font-semibold text-[var(--k-text-secondary)]">{t('admin.loyalty.pointsAwarded')}</th>
+                <th className="text-start py-2 px-3 font-semibold text-[var(--k-text-secondary)]">{t('admin.loyalty.dailyLimit')}</th>
               </tr>
             </thead>
             <tbody>
               {POINTS_RULES.map((rule) => (
-                <tr key={rule.id} className="border-b border-slate-100 hover:bg-slate-50">
+                <tr key={rule.id} className="border-b border-white/5 hover:bg-white/5">
                   <td className="py-2.5 px-3">
                     <p className="font-medium text-slate-800">{rule.descriptionFr}</p>
                     <p className="text-[10px] text-slate-400 font-mono">{rule.action}</p>
@@ -848,7 +848,7 @@ export default function FidelitePage() {
                       {typeof rule.points === 'function' ? '1 pt/$' : `${rule.points} ${t('admin.loyalty.pts')}`}
                     </span>
                   </td>
-                  <td className="py-2.5 px-3 text-slate-500">
+                  <td className="py-2.5 px-3 text-[var(--k-text-secondary)]">
                     {rule.maxPerDay ? `${rule.maxPerDay}/jour` : t('admin.loyalty.noLimit')}
                   </td>
                 </tr>
@@ -864,12 +864,12 @@ export default function FidelitePage() {
             <div key={tier.id} className="rounded-lg border-2 p-3 text-center" style={{ borderColor: tier.color, backgroundColor: `${tier.color}15` }}>
               <p className="text-xs font-bold text-slate-700">{tier.nameFr}</p>
               <p className="text-lg font-bold" style={{ color: tier.color }}>{tier.multiplier}x</p>
-              <p className="text-[10px] text-slate-500">{tier.minPoints.toLocaleString(locale)}+ {t('admin.loyalty.pts')}</p>
-              <div className="mt-2 text-[10px] text-slate-600">
+              <p className="text-[10px] text-[var(--k-text-secondary)]">{tier.minPoints.toLocaleString(locale)}+ {t('admin.loyalty.pts')}</p>
+              <div className="mt-2 text-[10px] text-[var(--k-text-secondary)]">
                 {tier.perks.slice(0, 2).map((perk, i) => (
                   <p key={i}>&#10003; {perk}</p>
                 ))}
-                {tier.perks.length > 2 && <p className="text-slate-400">+{tier.perks.length - 2} ...</p>}
+                {tier.perks.length > 2 && <p className="text-[var(--k-text-muted)]">+{tier.perks.length - 2} ...</p>}
               </div>
             </div>
           ))}
@@ -877,12 +877,12 @@ export default function FidelitePage() {
       </div>
 
       {/* ─── Reward Catalog ───────────────────────────────────── */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6">
+      <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
         <div className="flex items-center gap-2 mb-1">
           <Gift className="w-5 h-5 text-pink-500" />
-          <h3 className="font-semibold text-slate-900">{t('admin.loyalty.rewardCatalog')}</h3>
+          <h3 className="font-semibold text-[var(--k-text-primary)]">{t('admin.loyalty.rewardCatalog')}</h3>
         </div>
-        <p className="text-sm text-slate-500 mb-5">{t('admin.loyalty.rewardCatalogSubtitle')}</p>
+        <p className="text-sm text-[var(--k-text-secondary)] mb-5">{t('admin.loyalty.rewardCatalogSubtitle')}</p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {rewardCatalog.map((reward) => {
             // FIX F-006: Updated type labels to match canonical catalog types
@@ -896,7 +896,7 @@ export default function FidelitePage() {
               : reward.type === 'bonus' ? 'bg-purple-100 text-purple-700'
               : 'bg-amber-100 text-amber-700';
             return (
-              <div key={reward.id} className="bg-slate-50 rounded-lg border border-slate-100 p-4 flex flex-col items-center text-center hover:border-pink-200 transition-colors">
+              <div key={reward.id} className="bg-white/5 rounded-lg border border-slate-100 p-4 flex flex-col items-center text-center hover:border-pink-200 transition-colors">
                 <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full mb-2 ${typeColor}`}>{typeLabel}</span>
                 <p className="text-sm font-semibold text-slate-800">{reward.name}</p>
                 <p className="text-lg font-bold text-pink-600 mt-1">{reward.cost.toLocaleString(locale)} {t('admin.loyalty.pts')}</p>
@@ -915,21 +915,21 @@ export default function FidelitePage() {
       </div>
 
       {/* ─── Points Expiration Widget ─────────────────────────── */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6">
+      <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
         <div className="flex items-center gap-2 mb-1">
           <Clock className="w-5 h-5 text-red-500" />
-          <h3 className="font-semibold text-slate-900">{t('admin.loyalty.expirationTitle')}</h3>
+          <h3 className="font-semibold text-[var(--k-text-primary)]">{t('admin.loyalty.expirationTitle')}</h3>
         </div>
-        <p className="text-sm text-slate-500 mb-5">{t('admin.loyalty.expirationSubtitle')}</p>
+        <p className="text-sm text-[var(--k-text-secondary)] mb-5">{t('admin.loyalty.expirationSubtitle')}</p>
 
         {/* Config summary */}
         <div className="grid grid-cols-3 gap-4 mb-5">
-          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-center">
-            <p className="text-xs text-slate-500">{t('admin.loyalty.expirationMonths')}</p>
+          <div className="bg-white/5 border border-[var(--k-border-subtle)] rounded-lg p-3 text-center">
+            <p className="text-xs text-[var(--k-text-secondary)]">{t('admin.loyalty.expirationMonths')}</p>
             <p className="text-lg font-bold text-slate-800">{t('admin.loyalty.expirationMonthsValue').replace('{months}', String(DEFAULT_EXPIRATION.expirationMonths))}</p>
           </div>
-          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-center">
-            <p className="text-xs text-slate-500">{t('admin.loyalty.reminderSchedule')}</p>
+          <div className="bg-white/5 border border-[var(--k-border-subtle)] rounded-lg p-3 text-center">
+            <p className="text-xs text-[var(--k-text-secondary)]">{t('admin.loyalty.reminderSchedule')}</p>
             <div className="text-xs text-slate-700 mt-1">
               {DEFAULT_EXPIRATION.reminderDaysBefore.map((days) => (
                 <span key={days} className="inline-block bg-indigo-100 text-indigo-700 rounded-full px-1.5 py-0.5 text-[10px] font-medium me-1 mb-0.5">
@@ -938,8 +938,8 @@ export default function FidelitePage() {
               ))}
             </div>
           </div>
-          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-center">
-            <p className="text-xs text-slate-500">{t('admin.loyalty.gracePeriod')}</p>
+          <div className="bg-white/5 border border-[var(--k-border-subtle)] rounded-lg p-3 text-center">
+            <p className="text-xs text-[var(--k-text-secondary)]">{t('admin.loyalty.gracePeriod')}</p>
             <p className="text-lg font-bold text-slate-800">{t('admin.loyalty.gracePeriodDays').replace('{days}', String(DEFAULT_EXPIRATION.graceperiodDays))}</p>
           </div>
         </div>
@@ -1047,14 +1047,14 @@ export default function FidelitePage() {
               rows={4}
               value={tierFormPerks}
               onChange={(e) => setTierFormPerks(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm text-slate-900 placeholder-slate-400 transition-shadow resize-y focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:border-indigo-700"
+              className="w-full px-3 py-2 rounded-lg border border-[var(--k-border-subtle)] text-sm text-[var(--k-text-primary)] placeholder-slate-400 transition-shadow resize-y focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:border-indigo-700"
             />
           </FormField>
           <FormField label={t('admin.loyalty.tierColor')}>
             <select
               value={tierFormColor}
               onChange={(e) => setTierFormColor(e.target.value)}
-              className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:border-indigo-700"
+              className="w-full h-9 px-3 rounded-lg border border-[var(--k-border-subtle)] text-sm text-[var(--k-text-primary)] bg-white focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:border-indigo-700"
             >
               {/* FIX: F-064/F-086 - Clarify that value is color key; label shows color + tier name */}
               <option value="orange">{t('admin.loyalty.colorOrange')}</option>

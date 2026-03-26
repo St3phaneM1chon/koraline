@@ -35,15 +35,15 @@ export function StatCard({ label, value, icon: Icon, trend, className = '', them
         : 'text-slate-400'
     : '';
 
-  const iconBg = theme ? theme.statIconBg : 'bg-slate-50';
-  const iconColor = theme ? theme.statIconColor : 'text-slate-600';
+  const iconBg = theme ? theme.statIconBg : 'bg-white/10';
+  const iconColor = theme ? theme.statIconColor : 'text-[var(--k-text-secondary)]';
 
   return (
-    <div className={`bg-white border border-slate-200 rounded-lg p-5 ${className}`}>
+    <div className={`bg-[var(--k-glass-thin)] border border-[var(--k-border-subtle)] rounded-lg p-5 ${className}`}>
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm font-medium text-slate-500">{label}</p>
-          <p className="mt-1.5 text-2xl font-semibold text-slate-900 tabular-nums">{value}</p>
+          <p className="text-sm font-medium text-[var(--k-text-secondary)]">{label}</p>
+          <p className="mt-1.5 text-2xl font-semibold text-[var(--k-text-primary)] tabular-nums">{value}</p>
         </div>
         <div className={`p-2 rounded-lg ${iconBg}`}>
           <Icon className={`w-5 h-5 ${iconColor}`} />

@@ -159,13 +159,13 @@ export default function MediaDashboardPage() {
   return (
     <div className="p-6 max-w-5xl space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-slate-900">{t('admin.media.dashboardTitle')}</h1>
+        <h1 className="text-2xl font-bold text-[var(--k-text-primary)]">{t('admin.media.dashboardTitle')}</h1>
         <div>
           <input ref={fileInputRef} type="file" multiple onChange={handleUpload} aria-label={t('admin.media.upload')} className="hidden" />
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#6366f1] to-[#818cf8] text-white rounded-lg hover:from-[#5558e6] hover:to-[#7580f2] transition-colors text-sm disabled:opacity-50"
           >
             {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
             {t('admin.media.upload')}
@@ -208,19 +208,19 @@ export default function MediaDashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {platforms.map((p) => (
             <Link key={p.key} href={p.href} className="group">
-              <div className="flex items-center gap-3 p-4 bg-white rounded-lg border border-slate-200 hover:border-indigo-300 hover:shadow-sm transition-all">
+              <div className="flex items-center gap-3 p-4 bg-[var(--k-glass-thin)] rounded-lg border border-[var(--k-border-subtle)] hover:border-indigo-300 hover:shadow-sm transition-all">
                 <div className={`w-10 h-10 rounded-lg ${p.color} flex items-center justify-center text-white`}>
                   {p.icon}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-slate-900 truncate">{p.label}</p>
+                  <p className="font-medium text-[var(--k-text-primary)] truncate">{p.label}</p>
                   <div className="flex items-center gap-1 text-xs">
                     {p.enabled === null ? (
-                      <span className="text-slate-400">{t('admin.media.comingSoon')}</span>
+                      <span className="text-[var(--k-text-muted)]">{t('admin.media.comingSoon')}</span>
                     ) : p.enabled ? (
                       <><CheckCircle2 className="w-3 h-3 text-green-500" /><span className="text-green-600">{t('admin.integrations.connected')}</span></>
                     ) : (
-                      <><XCircle className="w-3 h-3 text-slate-300" /><span className="text-slate-400">{t('admin.integrations.connectionFailed')}</span></>
+                      <><XCircle className="w-3 h-3 text-slate-300" /><span className="text-[var(--k-text-muted)]">{t('admin.integrations.connectionFailed')}</span></>
                     )}
                   </div>
                 </div>
@@ -247,9 +247,9 @@ export default function MediaDashboardPage() {
 // FIX: F84 - TODO: Extract QuickLink to src/components/admin/QuickLink.tsx for reuse
 function StatCard({ icon, label, value, color }: { icon: React.ReactNode; label: string; value: number | string; color: string }) {
   return (
-    <div className="bg-white rounded-lg border border-slate-200 p-4">
+    <div className="bg-[var(--k-glass-thin)] rounded-lg border border-[var(--k-border-subtle)] p-4">
       <div className={`flex items-center gap-2 ${color} mb-1`}>{icon}<span className="text-sm font-medium">{label}</span></div>
-      <p className="text-2xl font-bold text-slate-900">{value}</p>
+      <p className="text-2xl font-bold text-[var(--k-text-primary)]">{value}</p>
     </div>
   );
 }
@@ -257,11 +257,11 @@ function StatCard({ icon, label, value, color }: { icon: React.ReactNode; label:
 function QuickLink({ href, icon, label, desc }: { href: string; icon: React.ReactNode; label: string; desc: string }) {
   return (
     <Link href={href}>
-      <div className="flex items-start gap-3 p-4 bg-white rounded-lg border border-slate-200 hover:border-indigo-300 hover:shadow-sm transition-all">
+      <div className="flex items-start gap-3 p-4 bg-[var(--k-glass-thin)] rounded-lg border border-[var(--k-border-subtle)] hover:border-indigo-300 hover:shadow-sm transition-all">
         <div className="text-indigo-600 mt-0.5">{icon}</div>
         <div>
-          <p className="font-medium text-slate-900">{label}</p>
-          <p className="text-xs text-slate-500">{desc}</p>
+          <p className="font-medium text-[var(--k-text-primary)]">{label}</p>
+          <p className="text-xs text-[var(--k-text-secondary)]">{desc}</p>
         </div>
       </div>
     </Link>

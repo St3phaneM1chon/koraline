@@ -391,7 +391,7 @@ export default function PermissionsPage() {
       />
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-6 bg-slate-100 p-1 rounded-lg w-fit">
+      <div className="flex gap-1 mb-6 bg-white/10 p-1 rounded-lg w-fit">
         {tabs.map(tab => {
           const Icon = tab.icon;
           return (
@@ -400,8 +400,8 @@ export default function PermissionsPage() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors
                 ${activeTab === tab.id
-                  ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700'
+                  ? 'bg-white text-[var(--k-text-primary)] shadow-sm'
+                  : 'text-[var(--k-text-secondary)] hover:text-slate-700'
                 }`}
             >
               <Icon className="w-4 h-4" />
@@ -413,9 +413,9 @@ export default function PermissionsPage() {
 
       {/* TAB: Role Defaults */}
       {activeTab === 'defaults' && (
-        <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
-          <div className="px-5 py-3 border-b border-slate-200 bg-slate-50">
-            <div className="grid grid-cols-[1fr_80px_80px_80px_80px] gap-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+        <div className="bg-[var(--k-glass-thin)] border border-[var(--k-border-subtle)] rounded-lg overflow-hidden">
+          <div className="px-5 py-3 border-b border-[var(--k-border-subtle)] bg-white/5">
+            <div className="grid grid-cols-[1fr_80px_80px_80px_80px] gap-4 text-xs font-semibold text-[var(--k-text-secondary)] uppercase tracking-wider">
               <span>{t('admin.permissions.permission')}</span>
               <span className="text-center">{t('admin.permissions.owner')}</span>
               <span className="text-center">{t('admin.permissions.employee')}</span>
@@ -423,12 +423,12 @@ export default function PermissionsPage() {
               <span className="text-center">{t('admin.permissions.customer')}</span>
             </div>
           </div>
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-white/5">
             {groupedPermissions.map(group => (
               <div key={group.key}>
                 <button
                   onClick={() => toggleModule(group.key)}
-                  className="w-full flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                  className="w-full flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-white/5 transition-colors"
                 >
                   {expandedModules.has(group.key) ? (
                     <ChevronDown className="w-4 h-4 text-slate-400" />
@@ -456,7 +456,7 @@ export default function PermissionsPage() {
                               className={`w-6 h-6 rounded flex items-center justify-center transition-colors
                                 ${(perm as unknown as Record<string, boolean>)[field]
                                   ? 'bg-emerald-100 text-emerald-600'
-                                  : 'bg-slate-100 text-slate-300'
+                                  : 'bg-white/10 text-slate-300'
                                 }
                                 ${field === 'defaultOwner' ? 'cursor-not-allowed opacity-60' : 'hover:ring-2 hover:ring-indigo-300'}
                               `}
@@ -506,7 +506,7 @@ export default function PermissionsPage() {
           ) : (
             <div className="grid gap-4">
               {groups.map(group => (
-                <div key={group.id} className="bg-white border border-slate-200 rounded-lg p-5">
+                <div key={group.id} className="bg-[var(--k-glass-thin)] border border-[var(--k-border-subtle)] rounded-lg p-5">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
                       <div
@@ -514,8 +514,8 @@ export default function PermissionsPage() {
                         style={{ backgroundColor: group.color || '#0ea5e9' }}
                       />
                       <div>
-                        <h3 className="text-sm font-semibold text-slate-900">{group.name}</h3>
-                        {group.description && <p className="text-xs text-slate-500 mt-0.5">{group.description}</p>}
+                        <h3 className="text-sm font-semibold text-[var(--k-text-primary)]">{group.name}</h3>
+                        {group.description && <p className="text-xs text-[var(--k-text-secondary)] mt-0.5">{group.description}</p>}
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -541,7 +541,7 @@ export default function PermissionsPage() {
                   </div>
                   <div className="mt-3 flex flex-wrap gap-1.5">
                     {group.permissions.slice(0, 8).map(p => (
-                      <span key={p.permission.code} className="text-[11px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full font-mono">
+                      <span key={p.permission.code} className="text-[11px] text-[var(--k-text-secondary)] bg-white/10 px-2 py-0.5 rounded-full font-mono">
                         {p.permission.code}
                       </span>
                     ))}
@@ -592,19 +592,19 @@ export default function PermissionsPage() {
                   type="color"
                   value={groupForm.color}
                   onChange={e => setGroupForm(f => ({ ...f, color: e.target.value }))}
-                  className="h-9 w-20 rounded border border-slate-300 cursor-pointer"
+                  className="h-9 w-20 rounded border border-[var(--k-border-subtle)] cursor-pointer"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">{t('admin.permissions.permissionsLabel')}</label>
-                <div className="max-h-80 overflow-y-auto border border-slate-200 rounded-lg divide-y divide-slate-100">
+                <div className="max-h-80 overflow-y-auto border border-[var(--k-border-subtle)] rounded-lg divide-y divide-white/5">
                   {groupedPermissions.map(group => (
                     <div key={group.key}>
-                      <div className="px-3 py-2 bg-slate-50 text-xs font-semibold text-slate-600 uppercase">
+                      <div className="px-3 py-2 bg-white/5 text-xs font-semibold text-[var(--k-text-secondary)] uppercase">
                         {group.label}
                       </div>
                       {group.permissions.map(perm => (
-                        <label key={perm.code} className="flex items-center gap-3 px-3 py-2 hover:bg-slate-50 cursor-pointer">
+                        <label key={perm.code} className="flex items-center gap-3 px-3 py-2 hover:bg-white/5 cursor-pointer">
                           <input
                             type="checkbox"
                             checked={groupForm.permissionCodes.includes(perm.code)}
@@ -616,7 +616,7 @@ export default function PermissionsPage() {
                                   : f.permissionCodes.filter(c => c !== perm.code),
                               }));
                             }}
-                            className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                            className="rounded border-[var(--k-border-subtle)] text-indigo-600 focus:ring-indigo-500"
                           />
                           <div>
                             <p className="text-sm text-slate-700">{perm.name}</p>
@@ -637,7 +637,7 @@ export default function PermissionsPage() {
       {activeTab === 'overrides' && (
         <div>
           {/* User search */}
-          <div className="bg-white border border-slate-200 rounded-lg p-5 mb-4">
+          <div className="bg-[var(--k-glass-thin)] border border-[var(--k-border-subtle)] rounded-lg p-5 mb-4">
             <label className="block text-sm font-medium text-slate-700 mb-2">{t('admin.permissions.searchUser')}</label>
             <div className="relative w-full max-w-md">
               <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -652,7 +652,7 @@ export default function PermissionsPage() {
               />
             </div>
             {users.length > 0 && !selectedUser && (
-              <div className="mt-2 border border-slate-200 rounded-lg divide-y divide-slate-100 max-h-48 overflow-y-auto">
+              <div className="mt-2 border border-[var(--k-border-subtle)] rounded-lg divide-y divide-white/5 max-h-48 overflow-y-auto">
                 {users.map(user => (
                   <button
                     key={user.id}
@@ -662,14 +662,14 @@ export default function PermissionsPage() {
                       setUserSearch('');
                       fetchOverrides(user.id);
                     }}
-                    className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 text-start"
+                    className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/5 text-start"
                   >
-                    <div className="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center text-xs font-medium text-slate-600">
+                    <div className="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center text-xs font-medium text-[var(--k-text-secondary)]">
                       {user.name?.charAt(0)?.toUpperCase() || user.email.charAt(0).toUpperCase()}
                     </div>
                     <div>
                       <p className="text-sm font-medium text-slate-800">{user.name || user.email}</p>
-                      <p className="text-xs text-slate-400">{user.email} - {user.role}</p>
+                      <p className="text-xs text-[var(--k-text-muted)]">{user.email} - {user.role}</p>
                     </div>
                   </button>
                 ))}
@@ -681,12 +681,12 @@ export default function PermissionsPage() {
             <div>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center text-sm font-medium text-slate-600">
+                  <div className="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center text-sm font-medium text-[var(--k-text-secondary)]">
                     {selectedUser.name?.charAt(0)?.toUpperCase() || selectedUser.email.charAt(0).toUpperCase()}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-slate-900">{selectedUser.name || selectedUser.email}</p>
-                    <p className="text-xs text-slate-500">{selectedUser.email}</p>
+                    <p className="text-sm font-semibold text-[var(--k-text-primary)]">{selectedUser.name || selectedUser.email}</p>
+                    <p className="text-xs text-[var(--k-text-secondary)]">{selectedUser.email}</p>
                   </div>
                   <StatusBadge variant="info">{selectedUser.role}</StatusBadge>
                 </div>
@@ -695,18 +695,18 @@ export default function PermissionsPage() {
                 </Button>
               </div>
 
-              <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
-                <div className="px-5 py-3 border-b border-slate-200 bg-slate-50">
-                  <div className="grid grid-cols-[1fr_120px_80px] gap-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              <div className="bg-[var(--k-glass-thin)] border border-[var(--k-border-subtle)] rounded-lg overflow-hidden">
+                <div className="px-5 py-3 border-b border-[var(--k-border-subtle)] bg-white/5">
+                  <div className="grid grid-cols-[1fr_120px_80px] gap-4 text-xs font-semibold text-[var(--k-text-secondary)] uppercase tracking-wider">
                     <span>{t('admin.permissions.permission')}</span>
                     <span className="text-center">{t('admin.permissions.overrideCol')}</span>
                     <span className="text-center">{t('admin.permissions.actionsCol')}</span>
                   </div>
                 </div>
-                <div className="divide-y divide-slate-100 max-h-[60vh] overflow-y-auto">
+                <div className="divide-y divide-white/5 max-h-[60vh] overflow-y-auto">
                   {groupedPermissions.map(group => (
                     <div key={group.key}>
-                      <div className="px-5 py-2 bg-slate-50 text-xs font-semibold text-slate-600 uppercase">
+                      <div className="px-5 py-2 bg-white/5 text-xs font-semibold text-[var(--k-text-secondary)] uppercase">
                         {group.label}
                       </div>
                       {group.permissions.map(perm => {
@@ -723,7 +723,7 @@ export default function PermissionsPage() {
                                 className={`px-2.5 py-1 rounded text-xs font-medium transition-colors
                                   ${override?.granted === true
                                     ? 'bg-emerald-100 text-emerald-700 ring-1 ring-emerald-300'
-                                    : 'bg-slate-50 text-slate-400 hover:bg-emerald-50 hover:text-emerald-600'
+                                    : 'bg-white/5 text-slate-400 hover:bg-emerald-50 hover:text-emerald-600'
                                   }`}
                               >
                                 {t('admin.permissions.grant')}
@@ -733,7 +733,7 @@ export default function PermissionsPage() {
                                 className={`px-2.5 py-1 rounded text-xs font-medium transition-colors
                                   ${override?.granted === false
                                     ? 'bg-red-100 text-red-700 ring-1 ring-red-300'
-                                    : 'bg-slate-50 text-slate-400 hover:bg-red-50 hover:text-red-600'
+                                    : 'bg-white/5 text-slate-400 hover:bg-red-50 hover:text-red-600'
                                   }`}
                               >
                                 {t('admin.permissions.revoke')}

@@ -553,8 +553,8 @@ export default function NewsletterPage() {
       <div className="p-4 lg:p-6 pb-0 flex-shrink-0">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-xl font-bold text-slate-900">{t('admin.newsletter.title')}</h1>
-            <p className="text-sm text-slate-500 mt-0.5">{t('admin.newsletter.subtitle')}</p>
+            <h1 className="text-xl font-bold text-[var(--k-text-primary)]">{t('admin.newsletter.title')}</h1>
+            <p className="text-sm text-[var(--k-text-secondary)] mt-0.5">{t('admin.newsletter.subtitle')}</p>
             <TutorialLink guideSlug="04-marketing/03-newsletter" magazineSlug="Section_04_Marketing" compact />
           </div>
           <div className="flex items-center gap-2">
@@ -596,8 +596,8 @@ export default function NewsletterPage() {
         </div>
 
         {/* Source breakdown */}
-        <div className="bg-white rounded-lg p-4 border border-slate-200 mb-4">
-          <h3 className="text-sm font-semibold text-slate-900 mb-3">{t('admin.newsletter.subscriptionsBySource')}</h3>
+        <div className="bg-white rounded-lg p-4 border border-[var(--k-border-subtle)] mb-4">
+          <h3 className="text-sm font-semibold text-[var(--k-text-primary)] mb-3">{t('admin.newsletter.subscriptionsBySource')}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             <SourceCard
               label={t('admin.newsletter.welcomePopup')}
@@ -624,22 +624,22 @@ export default function NewsletterPage() {
         </div>
 
         {/* Segmentation intelligente */}
-        <div className="bg-white rounded-lg p-4 border border-slate-200 mb-4">
+        <div className="bg-white rounded-lg p-4 border border-[var(--k-border-subtle)] mb-4">
           <div className="flex items-center gap-2 mb-3">
             <Target className="h-5 w-5 text-violet-600" />
-            <h3 className="text-sm font-semibold text-slate-900">Segmentation intelligente</h3>
+            <h3 className="text-sm font-semibold text-[var(--k-text-primary)]">Segmentation intelligente</h3>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
             {BUILT_IN_SEGMENTS.map((segment: Segment) => (
               <div
                 key={segment.id}
-                className="p-3 bg-slate-50 rounded-lg border border-slate-100 hover:border-violet-200 hover:bg-violet-50/30 transition-colors cursor-default"
+                className="p-3 bg-white/5 rounded-lg border border-slate-100 hover:border-violet-200 hover:bg-violet-50/30 transition-colors cursor-default"
               >
                 <div className="flex items-center gap-2 mb-1">
                   <span className="w-2 h-2 rounded-full bg-violet-400" />
                   <p className="text-sm font-medium text-slate-800">{segment.nameFr}</p>
                 </div>
-                <p className="text-[11px] text-slate-500 line-clamp-2">{locale.startsWith('fr') ? segment.descriptionFr : segment.description}</p>
+                <p className="text-[11px] text-[var(--k-text-secondary)] line-clamp-2">{locale.startsWith('fr') ? segment.descriptionFr : segment.description}</p>
                 <div className="flex flex-wrap gap-1 mt-2">
                   {segment.criteria.map((c, idx) => (
                     <span key={idx} className="inline-flex items-center px-1.5 py-0.5 bg-violet-100 text-violet-700 rounded text-[10px] font-medium">
@@ -655,10 +655,10 @@ export default function NewsletterPage() {
         {/* Conformité CASL et résultats A/B Test */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
           {/* Badge conformité CASL */}
-          <div className="bg-white rounded-lg p-4 border border-slate-200">
+          <div className="bg-white rounded-lg p-4 border border-[var(--k-border-subtle)]">
             <div className="flex items-center gap-2 mb-3">
               <Shield className="h-5 w-5 text-emerald-600" />
-              <h3 className="text-sm font-semibold text-slate-900">Conformité LCAP (CASL)</h3>
+              <h3 className="text-sm font-semibold text-[var(--k-text-primary)]">Conformité LCAP (CASL)</h3>
             </div>
             <div className="flex items-start gap-4">
               <div className="flex-shrink-0 w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center">
@@ -669,31 +669,31 @@ export default function NewsletterPage() {
                   <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">
                     Conforme
                   </span>
-                  <span className="text-xs text-slate-500">Loi canadienne anti-pourriel</span>
+                  <span className="text-xs text-[var(--k-text-secondary)]">Loi canadienne anti-pourriel</span>
                 </div>
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-600">Double opt-in</span>
+                    <span className="text-[var(--k-text-secondary)]">Double opt-in</span>
                     <span className={`font-medium ${CASL_DEFAULTS.requireDoubleOptIn ? 'text-emerald-600' : 'text-red-500'}`}>
                       {CASL_DEFAULTS.requireDoubleOptIn ? 'Activé' : 'Désactivé'}
                     </span>
                   </div>
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-600">Consentement implicite</span>
+                    <span className="text-[var(--k-text-secondary)]">Consentement implicite</span>
                     <span className="font-medium text-slate-800">{CASL_DEFAULTS.impliedConsentDurationDays} jours max</span>
                   </div>
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-600">Délai de désinscription</span>
+                    <span className="text-[var(--k-text-secondary)]">Délai de désinscription</span>
                     <span className="font-medium text-slate-800">{CASL_DEFAULTS.unsubscribeProcessingDays} jours max</span>
                   </div>
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-600">Fins autorisées</span>
+                    <span className="text-[var(--k-text-secondary)]">Fins autorisées</span>
                     <span className="font-medium text-slate-800">{CASL_DEFAULTS.consentPurposes.length} types</span>
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-1 pt-1">
                   {CASL_DEFAULTS.consentPurposes.map((purpose) => (
-                    <span key={purpose} className="inline-flex items-center px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded text-[10px]">
+                    <span key={purpose} className="inline-flex items-center px-1.5 py-0.5 bg-white/10 text-[var(--k-text-secondary)] rounded text-[10px]">
                       {purpose === 'marketing' ? 'Marketing' :
                        purpose === 'promotions' ? 'Promotions' :
                        purpose === 'newsletter' ? 'Infolettre' :
@@ -707,10 +707,10 @@ export default function NewsletterPage() {
           </div>
 
           {/* Résultats A/B Test */}
-          <div className="bg-white rounded-lg p-4 border border-slate-200">
+          <div className="bg-white rounded-lg p-4 border border-[var(--k-border-subtle)]">
             <div className="flex items-center gap-2 mb-3">
               <FlaskConical className="h-5 w-5 text-indigo-600" />
-              <h3 className="text-sm font-semibold text-slate-900">Résultats des tests A/B</h3>
+              <h3 className="text-sm font-semibold text-[var(--k-text-primary)]">Résultats des tests A/B</h3>
             </div>
             {campaigns.filter(c => c.abTestResult).length > 0 ? (
               <div className="space-y-3">
@@ -723,7 +723,7 @@ export default function NewsletterPage() {
                   const metricLabel = metric === 'open_rate' ? "taux d'ouverture" : metric === 'click_rate' ? 'taux de clic' : 'taux conversion';
                   const isRunning = abResult.status === 'RUNNING';
                   return (
-                    <div key={campaign.id} className="bg-slate-50 rounded-lg p-3">
+                    <div key={campaign.id} className="bg-white/5 rounded-lg p-3">
                       <div className="flex items-center gap-2 mb-2">
                         <p className="text-xs font-medium text-slate-700 truncate flex-1">{campaign.subject}</p>
                         {isRunning && (
@@ -737,7 +737,7 @@ export default function NewsletterPage() {
                           </span>
                         )}
                         {abResult.status === 'COMPLETED' && !abResult.significant && (
-                          <span className="inline-flex items-center px-1.5 py-0.5 bg-slate-100 text-slate-500 rounded text-[10px] font-medium">
+                          <span className="inline-flex items-center px-1.5 py-0.5 bg-white/10 text-[var(--k-text-secondary)] rounded text-[10px] font-medium">
                             Non significatif
                           </span>
                         )}
@@ -748,9 +748,9 @@ export default function NewsletterPage() {
                             {winner === 'A' && !isRunning && <Trophy className="h-3 w-3 text-emerald-600" />}
                             <p className="text-xs font-semibold text-slate-700">Variante A</p>
                           </div>
-                          <p className="text-lg font-bold text-slate-900">{(rateA * 100).toFixed(1)}%</p>
-                          <p className="text-[10px] text-slate-500">{metricLabel}</p>
-                          <p className="text-[10px] text-slate-400">{abResult.variantA.sent} envoyés</p>
+                          <p className="text-lg font-bold text-[var(--k-text-primary)]">{(rateA * 100).toFixed(1)}%</p>
+                          <p className="text-[10px] text-[var(--k-text-secondary)]">{metricLabel}</p>
+                          <p className="text-[10px] text-[var(--k-text-muted)]">{abResult.variantA.sent} envoyés</p>
                         </div>
                         <span className="text-xs text-slate-400 font-medium">vs</span>
                         <div className={`flex-1 text-center p-2 rounded ${winner === 'B' && !isRunning ? 'bg-emerald-100 ring-1 ring-emerald-300' : 'bg-white'}`}>
@@ -758,9 +758,9 @@ export default function NewsletterPage() {
                             {winner === 'B' && !isRunning && <Trophy className="h-3 w-3 text-emerald-600" />}
                             <p className="text-xs font-semibold text-slate-700">Variante B</p>
                           </div>
-                          <p className="text-lg font-bold text-slate-900">{(rateB * 100).toFixed(1)}%</p>
-                          <p className="text-[10px] text-slate-500">{metricLabel}</p>
-                          <p className="text-[10px] text-slate-400">{abResult.variantB.sent} envoyés</p>
+                          <p className="text-lg font-bold text-[var(--k-text-primary)]">{(rateB * 100).toFixed(1)}%</p>
+                          <p className="text-[10px] text-[var(--k-text-secondary)]">{metricLabel}</p>
+                          <p className="text-[10px] text-[var(--k-text-muted)]">{abResult.variantB.sent} envoyés</p>
                         </div>
                       </div>
                       {isRunning && abResult.checkWinnerAfter && (
@@ -780,7 +780,7 @@ export default function NewsletterPage() {
             ) : (
               <div className="text-center py-6">
                 <AlertTriangle className="h-8 w-8 text-slate-300 mx-auto mb-2" />
-                <p className="text-sm text-slate-500">Aucun résultat A/B disponible</p>
+                <p className="text-sm text-[var(--k-text-secondary)]">Aucun résultat A/B disponible</p>
                 <p className="text-xs text-slate-400 mt-1">Activez le test A/B dans le compositeur de campagne</p>
               </div>
             )}
@@ -788,7 +788,7 @@ export default function NewsletterPage() {
         </div>
 
         {/* Tab switcher: Subscribers vs Campaigns */}
-        <div className="border-b border-slate-200">
+        <div className="border-b border-[var(--k-border-subtle)]">
           <nav className="flex gap-8">
             {(['subscribers', 'campaigns'] as const).map((tab) => (
               <button
@@ -797,7 +797,7 @@ export default function NewsletterPage() {
                 className={`py-3 border-b-2 font-medium text-sm transition-colors ${
                   activeTab === tab
                     ? 'border-indigo-500 text-indigo-600'
-                    : 'border-transparent text-slate-500 hover:text-slate-700'
+                    : 'border-transparent text-[var(--k-text-secondary)] hover:text-slate-700'
                 }`}
               >
                 {tab === 'subscribers'
@@ -886,15 +886,15 @@ export default function NewsletterPage() {
                 >
                   <div className="space-y-6">
                     {/* Status */}
-                    <div className="bg-slate-50 rounded-lg p-4">
-                      <h3 className="font-semibold text-slate-900 mb-3">{t('admin.newsletter.colStatus')}</h3>
+                    <div className="bg-white/5 rounded-lg p-4">
+                      <h3 className="font-semibold text-[var(--k-text-primary)] mb-3">{t('admin.newsletter.colStatus')}</h3>
                       <div className="flex items-center gap-2">
                         <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
                           selectedSubscriber.status === 'ACTIVE'
                             ? 'bg-emerald-100 text-emerald-700'
                             : selectedSubscriber.status === 'BOUNCED'
                               ? 'bg-red-100 text-red-700'
-                              : 'bg-slate-100 text-slate-600'
+                              : 'bg-white/10 text-slate-600'
                         }`}>
                           {selectedSubscriber.status}
                         </span>
@@ -904,30 +904,30 @@ export default function NewsletterPage() {
                     {/* Details */}
                     <div className="space-y-4">
                       <div className="flex justify-between text-sm">
-                        <span className="text-slate-600">{t('admin.newsletter.colEmail')}</span>
-                        <span className="font-medium text-slate-900">{selectedSubscriber.email}</span>
+                        <span className="text-[var(--k-text-secondary)]">{t('admin.newsletter.colEmail')}</span>
+                        <span className="font-medium text-[var(--k-text-primary)]">{selectedSubscriber.email}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-slate-600">{t('admin.newsletter.colLanguage')}</span>
-                        <span className="font-medium text-slate-900">{selectedSubscriber.locale.toUpperCase()}</span>
+                        <span className="text-[var(--k-text-secondary)]">{t('admin.newsletter.colLanguage')}</span>
+                        <span className="font-medium text-[var(--k-text-primary)]">{selectedSubscriber.locale.toUpperCase()}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-slate-600">{t('admin.newsletter.colSource')}</span>
+                        <span className="text-[var(--k-text-secondary)]">{t('admin.newsletter.colSource')}</span>
                         <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
                           selectedSubscriber.source === 'popup' ? 'bg-indigo-50 text-indigo-700'
-                          : selectedSubscriber.source === 'footer' ? 'bg-slate-100 text-slate-600'
+                          : selectedSubscriber.source === 'footer' ? 'bg-white/10 text-slate-600'
                           : 'bg-amber-50 text-amber-700'
                         }`}>
                           {selectedSubscriber.source || 'N/A'}
                         </span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-slate-600">{t('admin.newsletter.colSubscribedAt')}</span>
-                        <span className="font-medium text-slate-900">{formatDate(selectedSubscriber.subscribedAt)}</span>
+                        <span className="text-[var(--k-text-secondary)]">{t('admin.newsletter.colSubscribedAt')}</span>
+                        <span className="font-medium text-[var(--k-text-primary)]">{formatDate(selectedSubscriber.subscribedAt)}</span>
                       </div>
                       {selectedSubscriber.unsubscribedAt && (
                         <div className="flex justify-between text-sm">
-                          <span className="text-slate-600">{t('admin.newsletter.unsubscribedAt')}</span>
+                          <span className="text-[var(--k-text-secondary)]">{t('admin.newsletter.unsubscribedAt')}</span>
                           <span className="font-medium text-red-600">{formatDate(selectedSubscriber.unsubscribedAt)}</span>
                         </div>
                       )}
@@ -1089,19 +1089,19 @@ export default function NewsletterPage() {
                 >
                   <div className="space-y-6">
                     {/* Status */}
-                    <div className="bg-slate-50 rounded-lg p-4">
+                    <div className="bg-white/5 rounded-lg p-4">
                       <div className="flex items-center gap-2">
                         <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
                           selectedCampaign.status === 'SENT'
                             ? 'bg-emerald-100 text-emerald-700'
                             : selectedCampaign.status === 'SCHEDULED'
                               ? 'bg-indigo-100 text-indigo-700'
-                              : 'bg-slate-100 text-slate-600'
+                              : 'bg-white/10 text-slate-600'
                         }`}>
                           {selectedCampaign.status}
                         </span>
                         {selectedCampaign.recipientCount > 0 && (
-                          <span className="text-sm text-slate-600">
+                          <span className="text-sm text-[var(--k-text-secondary)]">
                             {t('admin.newsletter.recipients', { count: selectedCampaign.recipientCount })}
                           </span>
                         )}
@@ -1135,20 +1135,20 @@ export default function NewsletterPage() {
                         </div>
                         <div className="grid grid-cols-4 gap-3">
                           <div className="text-center">
-                            <p className="text-lg font-bold text-slate-900">{emailBridge.stats.totalSent}</p>
-                            <p className="text-[10px] text-slate-500">{t('admin.bridges.campaignEmails')}</p>
+                            <p className="text-lg font-bold text-[var(--k-text-primary)]">{emailBridge.stats.totalSent}</p>
+                            <p className="text-[10px] text-[var(--k-text-secondary)]">{t('admin.bridges.campaignEmails')}</p>
                           </div>
                           <div className="text-center">
                             <p className="text-lg font-bold text-emerald-700">{emailBridge.stats.delivered}</p>
-                            <p className="text-[10px] text-slate-500">Delivered</p>
+                            <p className="text-[10px] text-[var(--k-text-secondary)]">Delivered</p>
                           </div>
                           <div className="text-center">
                             <p className="text-lg font-bold text-indigo-700">{emailBridge.stats.openRate}%</p>
-                            <p className="text-[10px] text-slate-500">{t('admin.bridges.openRate')}</p>
+                            <p className="text-[10px] text-[var(--k-text-secondary)]">{t('admin.bridges.openRate')}</p>
                           </div>
                           <div className="text-center">
                             <p className="text-lg font-bold text-violet-700">{emailBridge.stats.clickRate}%</p>
-                            <p className="text-[10px] text-slate-500">{t('admin.bridges.clickRate')}</p>
+                            <p className="text-[10px] text-[var(--k-text-secondary)]">{t('admin.bridges.clickRate')}</p>
                           </div>
                         </div>
                       </div>
@@ -1156,25 +1156,25 @@ export default function NewsletterPage() {
 
                     {/* Content preview */}
                     <div>
-                      <h3 className="font-semibold text-slate-900 mb-3">{t('admin.newsletter.content')}</h3>
-                      <div className="bg-slate-50 rounded-lg p-4 text-sm text-slate-700 whitespace-pre-wrap font-mono">
+                      <h3 className="font-semibold text-[var(--k-text-primary)] mb-3">{t('admin.newsletter.content')}</h3>
+                      <div className="bg-white/5 rounded-lg p-4 text-sm text-slate-700 whitespace-pre-wrap font-mono">
                         {selectedCampaign.content}
                       </div>
                     </div>
 
                     {/* Dates */}
-                    <div className="bg-slate-50 rounded-lg p-4">
+                    <div className="bg-white/5 rounded-lg p-4">
                       <div className="space-y-2">
                         {selectedCampaign.sentAt && (
                           <div className="flex justify-between text-sm">
-                            <span className="text-slate-600">{t('admin.newsletter.sentOn', { date: '' }).replace(': ', '')}</span>
-                            <span className="font-medium text-slate-900">{formatDate(selectedCampaign.sentAt)}</span>
+                            <span className="text-[var(--k-text-secondary)]">{t('admin.newsletter.sentOn', { date: '' }).replace(': ', '')}</span>
+                            <span className="font-medium text-[var(--k-text-primary)]">{formatDate(selectedCampaign.sentAt)}</span>
                           </div>
                         )}
                         {selectedCampaign.scheduledFor && (
                           <div className="flex justify-between text-sm">
-                            <span className="text-slate-600">{t('admin.newsletter.scheduledFor', { date: '' }).replace(': ', '')}</span>
-                            <span className="font-medium text-slate-900">{formatDate(selectedCampaign.scheduledFor)}</span>
+                            <span className="text-[var(--k-text-secondary)]">{t('admin.newsletter.scheduledFor', { date: '' }).replace(': ', '')}</span>
+                            <span className="font-medium text-[var(--k-text-primary)]">{formatDate(selectedCampaign.scheduledFor)}</span>
                           </div>
                         )}
                       </div>
@@ -1237,13 +1237,13 @@ export default function NewsletterPage() {
           </FormField>
 
           {/* ── A/B Test Configuration ─────────────────────────── */}
-          <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+          <div className="bg-white/5 rounded-lg p-4 border border-[var(--k-border-subtle)]">
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
                 checked={abTestEnabled}
                 onChange={(e) => setAbTestEnabled(e.target.checked)}
-                className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                className="rounded border-[var(--k-border-subtle)] text-indigo-600 focus:ring-indigo-500"
               />
               <FlaskConical className="h-4 w-4 text-indigo-600" />
               <span className="text-sm font-medium text-slate-700">
@@ -1255,7 +1255,7 @@ export default function NewsletterPage() {
               <div className="mt-4 space-y-4">
                 {/* Test type */}
                 <div>
-                  <label className="text-xs font-medium text-slate-600 block mb-1.5">
+                  <label className="text-xs font-medium text-[var(--k-text-secondary)] block mb-1.5">
                     {t('admin.newsletter.abTestType')}
                   </label>
                   <div className="flex gap-2">
@@ -1265,7 +1265,7 @@ export default function NewsletterPage() {
                       className={`flex-1 px-3 py-2 text-xs rounded-lg border transition-colors ${
                         abTestType === 'subject'
                           ? 'bg-indigo-50 border-indigo-300 text-indigo-700 font-medium'
-                          : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
+                          : 'bg-white border-slate-200 text-[var(--k-text-secondary)] hover:border-[var(--k-border-subtle)]'
                       }`}
                     >
                       {t('admin.newsletter.abTestSubject')}
@@ -1276,7 +1276,7 @@ export default function NewsletterPage() {
                       className={`flex-1 px-3 py-2 text-xs rounded-lg border transition-colors ${
                         abTestType === 'content'
                           ? 'bg-indigo-50 border-indigo-300 text-indigo-700 font-medium'
-                          : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
+                          : 'bg-white border-slate-200 text-[var(--k-text-secondary)] hover:border-[var(--k-border-subtle)]'
                       }`}
                     >
                       {t('admin.newsletter.abTestContent')}
@@ -1309,13 +1309,13 @@ export default function NewsletterPage() {
                 {/* Split & timing settings */}
                 <div className="grid grid-cols-3 gap-3">
                   <div>
-                    <label className="text-xs font-medium text-slate-600 block mb-1.5">
+                    <label className="text-xs font-medium text-[var(--k-text-secondary)] block mb-1.5">
                       {t('admin.newsletter.abSplitPct')}
                     </label>
                     <select
                       value={abSplitPercentage}
                       onChange={(e) => setAbSplitPercentage(Number(e.target.value))}
-                      className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                      className="w-full rounded-lg border border-[var(--k-border-subtle)] px-3 py-2 text-sm"
                     >
                       <option value={10}>10%</option>
                       <option value={20}>20%</option>
@@ -1328,13 +1328,13 @@ export default function NewsletterPage() {
                     </p>
                   </div>
                   <div>
-                    <label className="text-xs font-medium text-slate-600 block mb-1.5">
+                    <label className="text-xs font-medium text-[var(--k-text-secondary)] block mb-1.5">
                       {t('admin.newsletter.abWaitTime')}
                     </label>
                     <select
                       value={abWaitMinutes}
                       onChange={(e) => setAbWaitMinutes(Number(e.target.value))}
-                      className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                      className="w-full rounded-lg border border-[var(--k-border-subtle)] px-3 py-2 text-sm"
                     >
                       <option value={30}>30 min</option>
                       <option value={60}>1h</option>
@@ -1345,13 +1345,13 @@ export default function NewsletterPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="text-xs font-medium text-slate-600 block mb-1.5">
+                    <label className="text-xs font-medium text-[var(--k-text-secondary)] block mb-1.5">
                       {t('admin.newsletter.abWinMetric')}
                     </label>
                     <select
                       value={abWinningMetric}
                       onChange={(e) => setAbWinningMetric(e.target.value as 'open_rate' | 'click_rate')}
-                      className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                      className="w-full rounded-lg border border-[var(--k-border-subtle)] px-3 py-2 text-sm"
                     >
                       <option value="open_rate">{t('admin.newsletter.abMetricOpens')}</option>
                       <option value="click_rate">{t('admin.newsletter.abMetricClicks')}</option>
@@ -1359,7 +1359,7 @@ export default function NewsletterPage() {
                   </div>
                 </div>
 
-                <p className="text-[10px] text-slate-400">
+                <p className="text-[10px] text-[var(--k-text-muted)]">
                   {t('admin.newsletter.abTestExplanation') || `${abSplitPercentage / 2}% of recipients will receive Variant A, ${abSplitPercentage / 2}% Variant B. After ${abWaitMinutes >= 60 ? `${abWaitMinutes / 60}h` : `${abWaitMinutes}min`}, the winning variant (by ${abWinningMetric === 'open_rate' ? 'open rate' : 'click rate'}) will be sent to the remaining ${100 - abSplitPercentage}%.`}
                 </p>
               </div>
@@ -1395,10 +1395,10 @@ export default function NewsletterPage() {
         ) : statsData ? (
           <div className="space-y-6">
             {/* Campaign info */}
-            <div className="bg-slate-50 rounded-lg p-4">
-              <h3 className="font-semibold text-slate-900 mb-1">{statsData.subject}</h3>
+            <div className="bg-white/5 rounded-lg p-4">
+              <h3 className="font-semibold text-[var(--k-text-primary)] mb-1">{statsData.subject}</h3>
               {statsData.sentAt && (
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-[var(--k-text-secondary)]">
                   {t('admin.newsletter.sentOn', { date: formatDate(statsData.sentAt) })}
                 </p>
               )}
@@ -1425,45 +1425,45 @@ export default function NewsletterPage() {
             </div>
 
             {/* Detailed counts */}
-            <div className="bg-slate-50 rounded-lg p-4">
-              <h3 className="font-semibold text-slate-900 mb-3">{t('admin.newsletter.statsDetails')}</h3>
+            <div className="bg-white/5 rounded-lg p-4">
+              <h3 className="font-semibold text-[var(--k-text-primary)] mb-3">{t('admin.newsletter.statsDetails')}</h3>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-600">{t('admin.newsletter.statsOpened')}</span>
-                  <span className="font-medium text-slate-900">{statsData.stats.openCount}</span>
+                  <span className="text-[var(--k-text-secondary)]">{t('admin.newsletter.statsOpened')}</span>
+                  <span className="font-medium text-[var(--k-text-primary)]">{statsData.stats.openCount}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-600">{t('admin.newsletter.statsClicked')}</span>
-                  <span className="font-medium text-slate-900">{statsData.stats.clickCount}</span>
+                  <span className="text-[var(--k-text-secondary)]">{t('admin.newsletter.statsClicked')}</span>
+                  <span className="font-medium text-[var(--k-text-primary)]">{statsData.stats.clickCount}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-600">{t('admin.newsletter.statsBounced')}</span>
-                  <span className="font-medium text-slate-900">{statsData.stats.bounceCount}</span>
+                  <span className="text-[var(--k-text-secondary)]">{t('admin.newsletter.statsBounced')}</span>
+                  <span className="font-medium text-[var(--k-text-primary)]">{statsData.stats.bounceCount}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-600">{t('admin.newsletter.statsUnsubscribed')}</span>
-                  <span className="font-medium text-slate-900">{statsData.stats.unsubscribeCount}</span>
+                  <span className="text-[var(--k-text-secondary)]">{t('admin.newsletter.statsUnsubscribed')}</span>
+                  <span className="font-medium text-[var(--k-text-primary)]">{statsData.stats.unsubscribeCount}</span>
                 </div>
               </div>
             </div>
 
             {/* Subscriber context */}
-            <div className="bg-slate-50 rounded-lg p-4">
-              <h3 className="font-semibold text-slate-900 mb-3">{t('admin.newsletter.subscriberContext')}</h3>
+            <div className="bg-white/5 rounded-lg p-4">
+              <h3 className="font-semibold text-[var(--k-text-primary)] mb-3">{t('admin.newsletter.subscriberContext')}</h3>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-600">{t('admin.newsletter.activeSubscribers')}</span>
-                  <span className="font-medium text-slate-900">{statsData.subscriberContext.totalActive}</span>
+                  <span className="text-[var(--k-text-secondary)]">{t('admin.newsletter.activeSubscribers')}</span>
+                  <span className="font-medium text-[var(--k-text-primary)]">{statsData.subscriberContext.totalActive}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-600">{t('admin.newsletter.unsubscribed')}</span>
-                  <span className="font-medium text-slate-900">{statsData.subscriberContext.totalUnsubscribed}</span>
+                  <span className="text-[var(--k-text-secondary)]">{t('admin.newsletter.unsubscribed')}</span>
+                  <span className="font-medium text-[var(--k-text-primary)]">{statsData.subscriberContext.totalUnsubscribed}</span>
                 </div>
               </div>
             </div>
           </div>
         ) : (
-          <p className="text-sm text-slate-500 py-4 text-center">
+          <p className="text-sm text-[var(--k-text-secondary)] py-4 text-center">
             {t('admin.newsletter.noStats')}
           </p>
         )}

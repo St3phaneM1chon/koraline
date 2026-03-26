@@ -21,10 +21,10 @@ export function SectionCard({ children, title, headerAction, theme, className = 
   const accentBorder = theme ? `border-t-2 ${theme.accentBar.replace('border-s-', 'border-t-')}` : '';
 
   return (
-    <div className={`bg-white rounded-xl border border-slate-200 overflow-hidden ${accentBorder} ${className}`}>
+    <div className={`bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] overflow-hidden ${accentBorder} ${className}`}>
       {(title || headerAction) && (
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
-          {title && <h3 className="font-semibold text-slate-900 text-sm">{title}</h3>}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--k-border-subtle)]">
+          {title && <h3 className="font-semibold text-[var(--k-text-primary)] text-sm">{title}</h3>}
           {headerAction}
         </div>
       )}

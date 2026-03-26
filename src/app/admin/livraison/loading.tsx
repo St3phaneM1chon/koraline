@@ -2,18 +2,18 @@ export default function LivraisonLoading() {
   return (
     <div className="space-y-6 animate-pulse" aria-live="polite" aria-busy="true">
       <div className="flex justify-between">
-        <div className="h-8 w-36 bg-gray-200 rounded" />
-        <div className="h-10 w-32 bg-gray-200 rounded-lg" />
+        <div className="h-8 w-36 bg-white/10 rounded" />
+        <div className="h-10 w-32 bg-white/10 rounded-lg" />
       </div>
-      <div className="bg-white rounded-lg divide-y">
+      <div className="bg-[var(--k-glass-thin)] rounded-lg divide-y">
         {[...Array(5)].map((_, i) => (
           <div key={i} className="p-4 flex items-center gap-4">
             <div className="flex-1 space-y-2">
-              <div className="h-4 w-40 bg-gray-200 rounded" />
-              <div className="h-3 w-24 bg-gray-100 rounded" />
+              <div className="h-4 w-40 bg-white/10 rounded" />
+              <div className="h-3 w-24 bg-white/5 rounded" />
             </div>
-            <div className="h-6 w-24 bg-gray-200 rounded" />
-            <div className="h-6 w-16 bg-gray-200 rounded-full" />
+            <div className="h-6 w-24 bg-white/10 rounded" />
+            <div className="h-6 w-16 bg-white/10 rounded-full" />
           </div>
         ))}
       </div>

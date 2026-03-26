@@ -433,8 +433,8 @@ export default function EmployesPage() {
       <div className="p-4 lg:p-6 pb-0 flex-shrink-0">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-xl font-bold text-slate-900">{t('admin.employees.title')}</h1>
-            <p className="text-sm text-slate-500 mt-0.5">{t('admin.employees.subtitle')}</p>
+            <h1 className="text-xl font-bold text-[var(--k-text-primary)]">{t('admin.employees.title')}</h1>
+            <p className="text-sm text-[var(--k-text-secondary)] mt-0.5">{t('admin.employees.subtitle')}</p>
           </div>
           <Button variant="primary" icon={Plus} onClick={() => { resetForm(); setShowForm(true); fetchAvailablePhones(); }}>
             {t('admin.employees.inviteEmployee')}
@@ -512,7 +512,7 @@ export default function EmployesPage() {
                     </div>
 
                     <div className="flex items-center gap-2 ms-auto">
-                      <span className="text-sm text-slate-600">{t('admin.employees.statusCol')}:</span>
+                      <span className="text-sm text-[var(--k-text-secondary)]">{t('admin.employees.statusCol')}:</span>
                       <button
                         onClick={() => toggleActive(selectedEmployee.id)}
                         disabled={selectedEmployee.role === 'OWNER'}
@@ -531,41 +531,41 @@ export default function EmployesPage() {
                   </div>
 
                   {/* Employee Info */}
-                  <div className="bg-slate-50 rounded-lg p-4">
-                    <h3 className="font-semibold text-slate-900 mb-3">{t('admin.employees.employeeCol')}</h3>
+                  <div className="bg-white/5 rounded-lg p-4">
+                    <h3 className="font-semibold text-[var(--k-text-primary)] mb-3">{t('admin.employees.employeeCol')}</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <p className="text-xs text-slate-500 mb-1">{t('admin.employees.nameLabel')}</p>
-                        <p className="text-slate-900 font-medium">{selectedEmployee.name}</p>
+                        <p className="text-xs text-[var(--k-text-muted)] mb-1">{t('admin.employees.nameLabel')}</p>
+                        <p className="text-[var(--k-text-primary)] font-medium">{selectedEmployee.name}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-500 mb-1">{t('admin.employees.emailLabel')}</p>
-                        <p className="text-slate-900">{selectedEmployee.email}</p>
+                        <p className="text-xs text-[var(--k-text-muted)] mb-1">{t('admin.employees.emailLabel')}</p>
+                        <p className="text-[var(--k-text-primary)]">{selectedEmployee.email}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-500 mb-1">{t('admin.employees.lastLogin')}</p>
-                        <p className="text-slate-700">
+                        <p className="text-xs text-[var(--k-text-muted)] mb-1">{t('admin.employees.lastLogin')}</p>
+                        <p className="text-[var(--k-text-secondary)]">
                           {selectedEmployee.lastLogin
                             ? new Date(selectedEmployee.lastLogin).toLocaleString(locale)
                             : t('admin.employees.never')}
                         </p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-500 mb-1">{t('admin.employees.roleCol')}</p>
-                        <p className="text-slate-700">{selectedEmployee.role}</p>
+                        <p className="text-xs text-[var(--k-text-muted)] mb-1">{t('admin.employees.roleCol')}</p>
+                        <p className="text-[var(--k-text-secondary)]">{selectedEmployee.role}</p>
                       </div>
                     </div>
                   </div>
 
                   {/* Permissions */}
                   <div>
-                    <h3 className="font-semibold text-slate-900 mb-3">{t('admin.employees.permissionsCol')}</h3>
+                    <h3 className="font-semibold text-[var(--k-text-primary)] mb-3">{t('admin.employees.permissionsCol')}</h3>
                     {selectedEmployee.role === 'OWNER' ? (
-                      <p className="text-sm text-slate-600 bg-amber-50 border border-amber-200 rounded-lg p-3">
+                      <p className="text-sm text-amber-300 bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
                         {t('admin.employees.allPermissions')}
                       </p>
                     ) : (
-                      <div className="border border-slate-200 rounded-lg divide-y divide-slate-100">
+                      <div className="border border-[var(--k-border-subtle)] rounded-lg divide-y divide-white/5">
                         {permissionKeys.map((key) => {
                           const hasPermission = selectedEmployee.permissions.includes(key);
                           return (
@@ -575,11 +575,11 @@ export default function EmployesPage() {
                                 hasPermission ? '' : 'opacity-40'
                               }`}
                             >
-                              <span className="text-sm text-slate-700">{t(permissionI18nMap[key])}</span>
+                              <span className="text-sm text-[var(--k-text-secondary)]">{t(permissionI18nMap[key])}</span>
                               <span className={`text-xs font-medium px-2 py-0.5 rounded ${
                                 hasPermission
                                   ? 'bg-emerald-50 text-emerald-700'
-                                  : 'bg-slate-100 text-slate-400'
+                                  : 'bg-white/10 text-[var(--k-text-muted)]'
                               }`}>
                                 {hasPermission ? '✓' : '-'}
                               </span>
@@ -629,7 +629,7 @@ export default function EmployesPage() {
             <select
               value={formData.role}
               onChange={(e) => setFormData({ ...formData, role: e.target.value as 'OWNER' | 'EMPLOYEE' })}
-              className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full h-9 px-3 rounded-lg border border-[var(--k-border-subtle)] bg-white/5 text-sm text-[var(--k-text-primary)] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             >
               <option value="EMPLOYEE">{t('admin.employees.roleEmployee')}</option>
               <option value="OWNER">{t('admin.employees.roleOwner')}</option>
@@ -638,16 +638,16 @@ export default function EmployesPage() {
 
           {formData.role === 'EMPLOYEE' && (
             <FormField label={t('admin.employees.permissionsLabel')}>
-              <div className="space-y-2 max-h-48 overflow-y-auto border border-slate-200 rounded-lg p-3">
+              <div className="space-y-2 max-h-48 overflow-y-auto border border-[var(--k-border-subtle)] rounded-lg p-3">
                 {permissionKeys.map((key) => (
                   <label key={key} className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={formData.permissions.includes(key)}
                       onChange={() => togglePermission(key)}
-                      className="w-4 h-4 rounded border-slate-300 text-indigo-500"
+                      className="w-4 h-4 rounded border-[var(--k-border-subtle)] text-indigo-400"
                     />
-                    <span className="text-sm text-slate-700">{t(permissionI18nMap[key])}</span>
+                    <span className="text-sm text-[var(--k-text-secondary)]">{t(permissionI18nMap[key])}</span>
                   </label>
                 ))}
               </div>
@@ -662,7 +662,7 @@ export default function EmployesPage() {
                 <select
                   value={formData.phoneNumberId}
                   onChange={(e) => setFormData({ ...formData, phoneNumberId: e.target.value })}
-                  className="w-full h-9 ps-9 pe-3 rounded-lg border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full h-9 ps-9 pe-3 rounded-lg border border-[var(--k-border-subtle)] bg-white/5 text-sm text-[var(--k-text-primary)] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 >
                   <option value="">{t('admin.employees.noPhoneAssigned')}</option>
                   {availablePhones.map((phone) => (
@@ -675,7 +675,7 @@ export default function EmployesPage() {
             </FormField>
           )}
 
-          <div className="flex flex-col gap-3 pt-4 border-t border-slate-200">
+          <div className="flex flex-col gap-3 pt-4 border-t border-[var(--k-border-subtle)]">
             {editingEmployee && (
               <Button
                 variant="secondary"

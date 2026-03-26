@@ -436,8 +436,8 @@ export default function WebinairesPage() {
       <div className="p-4 lg:p-6 pb-0 flex-shrink-0">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-xl font-bold text-slate-900">{t('admin.webinars.title')}</h1>
-            <p className="text-sm text-slate-500 mt-0.5">{t('admin.webinars.subtitle')}</p>
+            <h1 className="text-xl font-bold text-[var(--k-text-primary)]">{t('admin.webinars.title')}</h1>
+            <p className="text-sm text-[var(--k-text-secondary)] mt-0.5">{t('admin.webinars.subtitle')}</p>
           </div>
           <Button variant="primary" icon={Plus} onClick={openCreateForm}>
             {t('admin.webinars.newWebinar')}
@@ -503,8 +503,8 @@ export default function WebinairesPage() {
                       selectedWebinar.status === 'COMPLETED' ? 'bg-emerald-100 text-emerald-800' :
                       selectedWebinar.status === 'SCHEDULED' ? 'bg-indigo-100 text-indigo-800' :
                       selectedWebinar.status === 'LIVE' ? 'bg-red-100 text-red-800' :
-                      selectedWebinar.status === 'CANCELLED' ? 'bg-slate-100 text-slate-700' :
-                      'bg-slate-100 text-slate-600'
+                      selectedWebinar.status === 'CANCELLED' ? 'bg-white/10 text-slate-700' :
+                      'bg-white/10 text-slate-600'
                     }`}>
                       {statusLabel(selectedWebinar.status, locale)}
                     </span>
@@ -512,26 +512,26 @@ export default function WebinairesPage() {
 
                   {/* Description */}
                   <div>
-                    <h3 className="font-semibold text-slate-900 mb-2">{t('admin.webinars.formDescription')}</h3>
-                    <p className="text-slate-600">{selectedWebinar.description}</p>
+                    <h3 className="font-semibold text-[var(--k-text-primary)] mb-2">{t('admin.webinars.formDescription')}</h3>
+                    <p className="text-[var(--k-text-secondary)]">{selectedWebinar.description}</p>
                   </div>
 
                   {/* Details Grid */}
-                  <div className="bg-slate-50 rounded-lg p-4">
-                    <h3 className="font-semibold text-slate-900 mb-3">{t('admin.webinars.formTitle')}</h3>
+                  <div className="bg-white/5 rounded-lg p-4">
+                    <h3 className="font-semibold text-[var(--k-text-primary)] mb-3">{t('admin.webinars.formTitle')}</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="flex items-center gap-2">
                         <User className="w-4 h-4 text-slate-400" />
                         <div>
-                          <p className="text-xs text-slate-500">{t('admin.webinars.formHost')}</p>
-                          <p className="text-slate-900 font-medium">{selectedWebinar.host}</p>
+                          <p className="text-xs text-[var(--k-text-secondary)]">{t('admin.webinars.formHost')}</p>
+                          <p className="text-[var(--k-text-primary)] font-medium">{selectedWebinar.host}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
                         <CalendarDays className="w-4 h-4 text-slate-400" />
                         <div>
-                          <p className="text-xs text-slate-500">{t('admin.webinars.formDateTime')}</p>
-                          <p className="text-slate-900">
+                          <p className="text-xs text-[var(--k-text-secondary)]">{t('admin.webinars.formDateTime')}</p>
+                          <p className="text-[var(--k-text-primary)]">
                             {selectedWebinar.scheduledAt
                               ? new Date(selectedWebinar.scheduledAt).toLocaleString(locale)
                               : '-'}
@@ -541,42 +541,42 @@ export default function WebinairesPage() {
                       <div className="flex items-center gap-2">
                         <Clock className="w-4 h-4 text-slate-400" />
                         <div>
-                          <p className="text-xs text-slate-500">{t('admin.webinars.formDuration')}</p>
-                          <p className="text-slate-900">{selectedWebinar.duration} min</p>
+                          <p className="text-xs text-[var(--k-text-secondary)]">{t('admin.webinars.formDuration')}</p>
+                          <p className="text-[var(--k-text-primary)]">{selectedWebinar.duration} min</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
                         <Users className="w-4 h-4 text-slate-400" />
                         <div>
-                          <p className="text-xs text-slate-500">{t('admin.webinars.formMaxSeats')}</p>
-                          <p className="text-slate-900">{selectedWebinar.maxAttendees}</p>
+                          <p className="text-xs text-[var(--k-text-secondary)]">{t('admin.webinars.formMaxSeats')}</p>
+                          <p className="text-[var(--k-text-primary)]">{selectedWebinar.maxAttendees}</p>
                         </div>
                       </div>
                     </div>
                   </div>
 
                   {/* Registration & Attendance */}
-                  <div className="bg-slate-50 rounded-lg p-4">
-                    <h3 className="font-semibold text-slate-900 mb-3">{t('admin.webinars.registeredUpcoming')}</h3>
+                  <div className="bg-white/5 rounded-lg p-4">
+                    <h3 className="font-semibold text-[var(--k-text-primary)] mb-3">{t('admin.webinars.registeredUpcoming')}</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="text-center p-3 bg-white rounded-lg border border-slate-200">
-                        <p className="text-2xl font-bold text-slate-900">{selectedWebinar.registeredCount}</p>
-                        <p className="text-xs text-slate-500">{t('admin.webinars.registered')}</p>
+                      <div className="text-center p-3 bg-[var(--k-glass-thin)] rounded-lg border border-[var(--k-border-subtle)]">
+                        <p className="text-2xl font-bold text-[var(--k-text-primary)]">{selectedWebinar.registeredCount}</p>
+                        <p className="text-xs text-[var(--k-text-secondary)]">{t('admin.webinars.registered')}</p>
                       </div>
-                      <div className="text-center p-3 bg-white rounded-lg border border-slate-200">
-                        <p className="text-2xl font-bold text-slate-900">{selectedWebinar.maxAttendees}</p>
-                        <p className="text-xs text-slate-500">{t('admin.webinars.formMaxSeats')}</p>
+                      <div className="text-center p-3 bg-[var(--k-glass-thin)] rounded-lg border border-[var(--k-border-subtle)]">
+                        <p className="text-2xl font-bold text-[var(--k-text-primary)]">{selectedWebinar.maxAttendees}</p>
+                        <p className="text-xs text-[var(--k-text-secondary)]">{t('admin.webinars.formMaxSeats')}</p>
                       </div>
                       {selectedWebinar.status === 'COMPLETED' && (
-                        <div className="text-center p-3 bg-white rounded-lg border border-slate-200">
-                          <p className="text-2xl font-bold text-slate-900">{selectedWebinar.attendedCount}</p>
-                          <p className="text-xs text-slate-500">{t('admin.webinars.attended', { count: String(selectedWebinar.attendedCount) })}</p>
+                        <div className="text-center p-3 bg-[var(--k-glass-thin)] rounded-lg border border-[var(--k-border-subtle)]">
+                          <p className="text-2xl font-bold text-[var(--k-text-primary)]">{selectedWebinar.attendedCount}</p>
+                          <p className="text-xs text-[var(--k-text-secondary)]">{t('admin.webinars.attended', { count: String(selectedWebinar.attendedCount) })}</p>
                         </div>
                       )}
                     </div>
                     {/* Progress bar */}
                     <div className="mt-3">
-                      <div className="flex justify-between text-xs text-slate-500 mb-1">
+                      <div className="flex justify-between text-xs text-[var(--k-text-secondary)] mb-1">
                         <span>{t('admin.webinars.registered')}</span>
                         <span>{Math.round((selectedWebinar.registeredCount / selectedWebinar.maxAttendees) * 100)}%</span>
                       </div>

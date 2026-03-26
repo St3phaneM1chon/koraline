@@ -215,19 +215,19 @@ export default function CustomersPage() {
       {/* VIP Customer Identification Panel */}
       {vipCustomers.length > 0 && (
         <div className="px-4 lg:px-6 pt-4 lg:pt-6 flex-shrink-0">
-          <div className="bg-amber-50 rounded-xl border border-amber-200 p-4 mb-4">
+          <div className="bg-amber-500/10 rounded-xl border border-amber-500/20 p-4 mb-4">
             <button
               onClick={() => setShowVipPanel(!showVipPanel)}
               className="w-full flex items-center justify-between"
             >
               <div className="flex items-center gap-2">
-                <Crown className="w-5 h-5 text-amber-600" />
-                <h3 className="font-semibold text-amber-900">{t('admin.customers.vipCustomers')}</h3>
-                <span className="text-xs text-amber-600">{t('admin.customers.vipByClv')}</span>
+                <Crown className="w-5 h-5 text-amber-400" />
+                <h3 className="font-semibold text-amber-300">{t('admin.customers.vipCustomers')}</h3>
+                <span className="text-xs text-amber-400">{t('admin.customers.vipByClv')}</span>
               </div>
               {showVipPanel
-                ? <ChevronUp className="w-4 h-4 text-amber-600" />
-                : <ChevronDown className="w-4 h-4 text-amber-600" />
+                ? <ChevronUp className="w-4 h-4 text-amber-400" />
+                : <ChevronDown className="w-4 h-4 text-amber-400" />
               }
             </button>
 
@@ -238,14 +238,14 @@ export default function CustomersPage() {
                   {vipCustomers.map((customer, idx) => {
                     const segInfo = RFM_SEGMENTS[customer.rfmSegment];
                     return (
-                      <div key={customer.id} className="bg-white rounded-lg border border-amber-100 p-3 text-center">
+                      <div key={customer.id} className="bg-[var(--k-glass-thin)] rounded-lg border border-amber-500/15 p-3 text-center">
                         <div className="flex items-center justify-center gap-1 mb-1">
                           {idx === 0 && <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />}
-                          <span className="text-xs font-bold text-amber-700">#{idx + 1}</span>
+                          <span className="text-xs font-bold text-amber-400">#{idx + 1}</span>
                         </div>
-                        <p className="text-sm font-semibold text-slate-800 truncate">{customer.name || customer.email.split('@')[0]}</p>
-                        <p className="text-lg font-bold text-emerald-700">{fmt(customer.totalSpent)}</p>
-                        <p className="text-[10px] text-slate-500">{customer._count?.purchases || 0} {t('admin.customers.purchases').toLowerCase()}</p>
+                        <p className="text-sm font-semibold text-[var(--k-text-primary)] truncate">{customer.name || customer.email.split('@')[0]}</p>
+                        <p className="text-lg font-bold text-emerald-400">{fmt(customer.totalSpent)}</p>
+                        <p className="text-[10px] text-[var(--k-text-tertiary)]">{customer._count?.purchases || 0} {t('admin.customers.purchases').toLowerCase()}</p>
                         <span
                           className="inline-block mt-1 text-[10px] font-semibold px-1.5 py-0.5 rounded-full text-white"
                           style={{ backgroundColor: segInfo.color }}
@@ -260,7 +260,7 @@ export default function CustomersPage() {
                 {/* RFM Summary Bar */}
                 {Object.keys(rfmSummary).length > 0 && (
                   <div>
-                    <p className="text-xs font-semibold text-amber-700 mb-2">{t('admin.customers.rfmSegments')}</p>
+                    <p className="text-xs font-semibold text-amber-400 mb-2">{t('admin.customers.rfmSegments')}</p>
                     <div className="flex flex-wrap gap-1.5">
                       {(Object.entries(rfmSummary) as [string, number][])
                         .sort((a, b) => b[1] - a[1])

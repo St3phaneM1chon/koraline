@@ -268,7 +268,7 @@ export function ContentList({
   const hasContent = allItems.length > 0 || allGroups.some((g) => g.items.length > 0);
 
   return (
-    <div className={`flex flex-col h-full bg-white border-e border-slate-200 ${className}`}>
+    <div className={`flex flex-col h-full bg-[var(--k-glass-thin)] border-e border-[var(--k-border-subtle)] ${className}`}>
       {/* Header: filter tabs + actions */}
       {(filterTabs || headerActions) && (
         <div className="flex items-center justify-between border-b border-slate-200 px-2">

@@ -500,8 +500,8 @@ export default function SEOPage() {
       />
 
       {/* Global Settings */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6">
-        <h3 className="font-semibold text-slate-900 mb-4">{t('admin.seo.globalSettings')}</h3>
+      <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
+        <h3 className="font-semibold text-[var(--k-text-primary)] mb-4">{t('admin.seo.globalSettings')}</h3>
         <div className="grid grid-cols-2 gap-4">
           <FormField label={t('admin.seo.siteName')}>
             <Input
@@ -531,10 +531,10 @@ export default function SEOPage() {
       </div>
 
       {/* Analytics */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6">
+      <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
         <div className="flex items-center gap-2 mb-4">
           <BarChart3 className="w-4 h-4 text-slate-400" />
-          <h3 className="font-semibold text-slate-900">{t('admin.seo.analyticsTracking')}</h3>
+          <h3 className="font-semibold text-[var(--k-text-primary)]">{t('admin.seo.analyticsTracking')}</h3>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <FormField label={t('admin.seo.googleAnalyticsId')}>
@@ -572,25 +572,25 @@ export default function SEOPage() {
       </div>
 
       {/* Pages */}
-      <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-        <div className="p-4 border-b border-slate-200">
-          <h3 className="font-semibold text-slate-900">{t('admin.seo.pages')}</h3>
+      <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] overflow-hidden">
+        <div className="p-4 border-b border-[var(--k-border-subtle)]">
+          <h3 className="font-semibold text-[var(--k-text-primary)]">{t('admin.seo.pages')}</h3>
         </div>
         <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-slate-50">
+          <thead className="bg-white/5">
             <tr>
-              <th className="px-4 py-3 text-start text-xs font-semibold text-slate-500 uppercase">{t('admin.seo.page')}</th>
-              <th className="px-4 py-3 text-start text-xs font-semibold text-slate-500 uppercase">{t('admin.seo.titleCol')}</th>
-              <th className="px-4 py-3 text-start text-xs font-semibold text-slate-500 uppercase">{t('admin.seo.description')}</th>
-              <th className="px-4 py-3 text-center text-xs font-semibold text-slate-500 uppercase">{t('admin.seo.indexed')}</th>
-              <th className="px-4 py-3 text-center text-xs font-semibold text-slate-500 uppercase">{t('admin.seo.actionsCol')}</th>
+              <th className="px-4 py-3 text-start text-xs font-semibold text-[var(--k-text-secondary)] uppercase">{t('admin.seo.page')}</th>
+              <th className="px-4 py-3 text-start text-xs font-semibold text-[var(--k-text-secondary)] uppercase">{t('admin.seo.titleCol')}</th>
+              <th className="px-4 py-3 text-start text-xs font-semibold text-[var(--k-text-secondary)] uppercase">{t('admin.seo.description')}</th>
+              <th className="px-4 py-3 text-center text-xs font-semibold text-[var(--k-text-secondary)] uppercase">{t('admin.seo.indexed')}</th>
+              <th className="px-4 py-3 text-center text-xs font-semibold text-[var(--k-text-secondary)] uppercase">{t('admin.seo.actionsCol')}</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-white/5">
             {pages.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-12 text-center text-slate-400">
+                <td colSpan={5} className="px-4 py-12 text-center text-[var(--k-text-muted)]">
                   <Globe className="w-8 h-8 mx-auto mb-2 opacity-50" />
                   <p className="text-sm">{t('admin.seo.noPages')}</p>
                 </td>
@@ -598,17 +598,17 @@ export default function SEOPage() {
             )}
             {pages.map((page) => (
               <React.Fragment key={page.id}>
-              <tr className="hover:bg-slate-50/50">
+              <tr className="hover:bg-white/5/50">
                 <td className="px-4 py-3">
-                  <code className="text-sm bg-slate-100 px-2 py-0.5 rounded text-slate-700">{page.path}</code>
+                  <code className="text-sm bg-white/10 px-2 py-0.5 rounded text-slate-700">{page.path}</code>
                 </td>
                 <td className="px-4 py-3">
-                  <p className="text-slate-900 truncate max-w-xs">{page.title}</p>
-                  <p className="text-xs text-slate-400">{page.title.length}/60 {t('admin.seo.characters')}</p>
+                  <p className="text-[var(--k-text-primary)] truncate max-w-xs">{page.title}</p>
+                  <p className="text-xs text-[var(--k-text-muted)]">{page.title.length}/60 {t('admin.seo.characters')}</p>
                 </td>
                 <td className="px-4 py-3">
-                  <p className="text-slate-600 truncate max-w-sm">{page.description || '-'}</p>
-                  <p className="text-xs text-slate-400">{page.description?.length || 0}/160 {t('admin.seo.characters')}</p>
+                  <p className="text-[var(--k-text-secondary)] truncate max-w-sm">{page.description || '-'}</p>
+                  <p className="text-xs text-[var(--k-text-muted)]">{page.description?.length || 0}/160 {t('admin.seo.characters')}</p>
                 </td>
                 <td className="px-4 py-3 text-center">
                   <button
@@ -645,13 +645,13 @@ export default function SEOPage() {
               {/* Open Graph Preview Row */}
               {showOgPreview === page.id && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-3 bg-slate-50">
+                  <td colSpan={5} className="px-4 py-3 bg-white/5">
                     <div className="max-w-lg mx-auto">
-                      <p className="text-xs font-semibold text-slate-500 uppercase mb-2 flex items-center gap-1">
+                      <p className="text-xs font-semibold text-[var(--k-text-secondary)] uppercase mb-2 flex items-center gap-1">
                         <Eye className="w-3 h-3" /> Aperçu Open Graph (Facebook / LinkedIn)
                       </p>
-                      <div className="border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm">
-                        <div className="h-32 bg-slate-100 flex items-center justify-center">
+                      <div className="border border-[var(--k-border-subtle)] rounded-lg overflow-hidden bg-white shadow-sm">
+                        <div className="h-32 bg-white/10 flex items-center justify-center">
                           {page.ogImage ? (
                             <Image src={page.ogImage} alt="OG" width={200} height={200} className="w-full h-full object-cover" />
                           ) : (
@@ -660,8 +660,8 @@ export default function SEOPage() {
                         </div>
                         <div className="p-3">
                           <p className="text-[10px] text-slate-400 uppercase">{globalSettings.siteUrl.replace('https://', '')}</p>
-                          <p className="text-sm font-semibold text-slate-900 mt-0.5">{page.title || 'Titre de la page'}</p>
-                          <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{page.description || 'Description de la page'}</p>
+                          <p className="text-sm font-semibold text-[var(--k-text-primary)] mt-0.5">{page.title || 'Titre de la page'}</p>
+                          <p className="text-xs text-[var(--k-text-secondary)] mt-0.5 line-clamp-2">{page.description || 'Description de la page'}</p>
                         </div>
                       </div>
                     </div>
@@ -690,39 +690,39 @@ export default function SEOPage() {
 
       {/* Per-Product SEO Section */}
       {products.length > 0 && (
-        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-          <div className="p-4 border-b border-slate-200">
-            <h3 className="font-semibold text-slate-900 flex items-center gap-2">
+        <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] overflow-hidden">
+          <div className="p-4 border-b border-[var(--k-border-subtle)]">
+            <h3 className="font-semibold text-[var(--k-text-primary)] flex items-center gap-2">
               <ShoppingBag className="w-4 h-4 text-slate-400" />
               SEO par produit ({products.length})
             </h3>
-            <p className="text-xs text-slate-500 mt-1">Titre et description méta par produit, aperçu Open Graph et données structurées</p>
+            <p className="text-xs text-[var(--k-text-secondary)] mt-1">Titre et description méta par produit, aperçu Open Graph et données structurées</p>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-slate-50">
+              <thead className="bg-white/5">
                 <tr>
-                  <th className="px-4 py-3 text-start text-xs font-semibold text-slate-500 uppercase">Produit</th>
-                  <th className="px-4 py-3 text-start text-xs font-semibold text-slate-500 uppercase">Titre méta</th>
-                  <th className="px-4 py-3 text-start text-xs font-semibold text-slate-500 uppercase">Description méta</th>
-                  <th className="px-4 py-3 text-center text-xs font-semibold text-slate-500 uppercase">Actions</th>
+                  <th className="px-4 py-3 text-start text-xs font-semibold text-[var(--k-text-secondary)] uppercase">Produit</th>
+                  <th className="px-4 py-3 text-start text-xs font-semibold text-[var(--k-text-secondary)] uppercase">Titre méta</th>
+                  <th className="px-4 py-3 text-start text-xs font-semibold text-[var(--k-text-secondary)] uppercase">Description méta</th>
+                  <th className="px-4 py-3 text-center text-xs font-semibold text-[var(--k-text-secondary)] uppercase">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-white/5">
                 {products.map(product => (
                   <React.Fragment key={product.id}>
-                  <tr className="hover:bg-slate-50/50">
+                  <tr className="hover:bg-white/5/50">
                     <td className="px-4 py-3">
-                      <p className="text-sm font-medium text-slate-900">{product.name}</p>
-                      <code className="text-[10px] text-slate-400">/products/{product.slug}</code>
+                      <p className="text-sm font-medium text-[var(--k-text-primary)]">{product.name}</p>
+                      <code className="text-[10px] text-[var(--k-text-muted)]">/products/{product.slug}</code>
                     </td>
                     <td className="px-4 py-3">
                       <p className="text-sm text-slate-700 truncate max-w-xs">{product.metaTitle || <span className="text-slate-400 italic">Non défini</span>}</p>
-                      <p className="text-[10px] text-slate-400">{(product.metaTitle || '').length}/60 caractères</p>
+                      <p className="text-[10px] text-[var(--k-text-muted)]">{(product.metaTitle || '').length}/60 caractères</p>
                     </td>
                     <td className="px-4 py-3">
-                      <p className="text-sm text-slate-600 truncate max-w-sm">{product.metaDescription || <span className="text-slate-400 italic">Non défini</span>}</p>
-                      <p className="text-[10px] text-slate-400">{(product.metaDescription || '').length}/160 caractères</p>
+                      <p className="text-sm text-[var(--k-text-secondary)] truncate max-w-sm">{product.metaDescription || <span className="text-slate-400 italic">Non défini</span>}</p>
+                      <p className="text-[10px] text-[var(--k-text-muted)]">{(product.metaDescription || '').length}/160 caractères</p>
                     </td>
                     <td className="px-4 py-3 text-center">
                       <div className="flex items-center justify-center gap-1">
@@ -749,14 +749,14 @@ export default function SEOPage() {
                   {/* OG Preview and JSON-LD rows for this product */}
                   {(showOgPreview === `prod-${product.id}` || showJsonLd === `prod-${product.id}`) && (
                     <tr>
-                      <td colSpan={4} className="px-4 py-3 bg-slate-50">
+                      <td colSpan={4} className="px-4 py-3 bg-white/5">
                         {showOgPreview === `prod-${product.id}` && (
                           <div className="max-w-lg mx-auto mb-3">
-                            <p className="text-xs font-semibold text-slate-500 uppercase mb-2 flex items-center gap-1">
+                            <p className="text-xs font-semibold text-[var(--k-text-secondary)] uppercase mb-2 flex items-center gap-1">
                               <Eye className="w-3 h-3" /> Aperçu Open Graph - {product.name}
                             </p>
-                            <div className="border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm">
-                              <div className="h-32 bg-slate-100 flex items-center justify-center">
+                            <div className="border border-[var(--k-border-subtle)] rounded-lg overflow-hidden bg-white shadow-sm">
+                              <div className="h-32 bg-white/10 flex items-center justify-center">
                                 {product.imageUrl ? (
                                   <Image src={product.imageUrl} alt={product.name} width={200} height={200} className="w-full h-full object-cover" />
                                 ) : (
@@ -765,8 +765,8 @@ export default function SEOPage() {
                               </div>
                               <div className="p-3">
                                 <p className="text-[10px] text-slate-400 uppercase">{globalSettings.siteUrl.replace('https://', '')}</p>
-                                <p className="text-sm font-semibold text-slate-900 mt-0.5">{product.metaTitle || product.name}</p>
-                                <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{product.metaDescription || 'Peptide de recherche par BioCycle Peptides'}</p>
+                                <p className="text-sm font-semibold text-[var(--k-text-primary)] mt-0.5">{product.metaTitle || product.name}</p>
+                                <p className="text-xs text-[var(--k-text-secondary)] mt-0.5 line-clamp-2">{product.metaDescription || 'Peptide de recherche par BioCycle Peptides'}</p>
                               </div>
                             </div>
                           </div>
@@ -793,17 +793,17 @@ export default function SEOPage() {
       )}
 
       {/* Robots.txt Preview */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6">
+      <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <FileCode className="w-4 h-4 text-slate-400" />
-            <h3 className="font-semibold text-slate-900">robots.txt</h3>
+            <h3 className="font-semibold text-[var(--k-text-primary)]">robots.txt</h3>
           </div>
           <Button variant="ghost" size="sm" icon={Pencil} onClick={openRobotsModal}>
             {t('admin.seo.edit')}
           </Button>
         </div>
-        <pre className="bg-slate-50 rounded-lg p-4 text-sm text-slate-700 overflow-x-auto">
+        <pre className="bg-white/5 rounded-lg p-4 text-sm text-slate-700 overflow-x-auto">
           {robotsContent ||
             `User-agent: *
 Allow: /
@@ -959,11 +959,11 @@ Sitemap: ${globalSettings.siteUrl}/sitemap.xml`}
 
             {/* Live OG Preview */}
             <div className="border-t border-slate-200 pt-4">
-              <p className="text-xs font-semibold text-slate-500 uppercase mb-2 flex items-center gap-1">
+              <p className="text-xs font-semibold text-[var(--k-text-secondary)] uppercase mb-2 flex items-center gap-1">
                 <Eye className="w-3 h-3" /> Aperçu Open Graph
               </p>
-              <div className="border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm max-w-sm">
-                <div className="h-24 bg-slate-100 flex items-center justify-center">
+              <div className="border border-[var(--k-border-subtle)] rounded-lg overflow-hidden bg-white shadow-sm max-w-sm">
+                <div className="h-24 bg-white/10 flex items-center justify-center">
                   {editingProduct.imageUrl ? (
                     <Image src={editingProduct.imageUrl} alt={editingProduct.name} width={200} height={200} className="w-full h-full object-cover" />
                   ) : (
@@ -972,8 +972,8 @@ Sitemap: ${globalSettings.siteUrl}/sitemap.xml`}
                 </div>
                 <div className="p-2">
                   <p className="text-[9px] text-slate-400 uppercase">{globalSettings.siteUrl.replace('https://', '')}</p>
-                  <p className="text-xs font-semibold text-slate-900">{productMetaTitle || editingProduct.name}</p>
-                  <p className="text-[10px] text-slate-500 line-clamp-2">{productMetaDesc || 'Description du produit'}</p>
+                  <p className="text-xs font-semibold text-[var(--k-text-primary)]">{productMetaTitle || editingProduct.name}</p>
+                  <p className="text-[10px] text-[var(--k-text-secondary)] line-clamp-2">{productMetaDesc || 'Description du produit'}</p>
                 </div>
               </div>
             </div>

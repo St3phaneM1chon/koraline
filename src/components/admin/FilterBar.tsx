@@ -26,7 +26,7 @@ export function FilterBar({ searchValue, onSearchChange, searchPlaceholder: sear
             onChange={e => onSearchChange(e.target.value)}
             placeholder={searchPlaceholder}
             aria-label={searchPlaceholder}
-            className="w-full h-9 ps-9 pe-8 rounded-lg border border-slate-300 text-sm text-slate-900 placeholder-slate-400
+            className="w-full h-9 ps-9 pe-8 rounded-lg border border-[var(--k-border-subtle)] bg-white/5 text-sm text-[var(--k-text-primary)] placeholder-[var(--k-text-muted)]
               focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow"
           />
           {searchValue && (
@@ -67,8 +67,8 @@ export function SelectFilter({ label, value, onChange, options }: SelectFilterPr
     <select
       value={value}
       onChange={e => onChange(e.target.value)}
-      className="h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-700
-        bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+      className="h-9 px-3 rounded-lg border border-[var(--k-border-subtle)] text-sm text-[var(--k-text-secondary)]
+        bg-white/5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
       aria-label={label}
     >
       <option value="">{label}</option>

@@ -539,12 +539,12 @@ export default function AvisPage() {
       <div className="p-4 lg:p-6 pb-0 flex-shrink-0">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-xl font-bold text-slate-900">{t('admin.reviews.title')}</h1>
-            <p className="text-sm text-slate-500 mt-0.5">{t('admin.reviews.subtitle')}</p>
+            <h1 className="text-xl font-bold text-[var(--k-text-primary)]">{t('admin.reviews.title')}</h1>
+            <p className="text-sm text-[var(--k-text-secondary)] mt-0.5">{t('admin.reviews.subtitle')}</p>
           </div>
           <div className="flex items-center gap-3">
             {/* Review request automation toggle */}
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-200">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg border border-[var(--k-border-subtle)]">
               <button
                 onClick={() => {
                   setAutoRequestEnabled(!autoRequestEnabled);
@@ -593,7 +593,7 @@ export default function AvisPage() {
             <span className="text-slate-300">|</span>
             <button
               onClick={clearSelection}
-              className="text-xs text-slate-500 hover:text-slate-700 font-medium"
+              className="text-xs text-[var(--k-text-secondary)] hover:text-slate-700 font-medium"
             >
               Clear
             </button>
@@ -661,9 +661,9 @@ export default function AvisPage() {
                           type="checkbox"
                           checked={selectedIds.has(selectedReview.id)}
                           onChange={() => toggleSelectReview(selectedReview.id)}
-                          className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                          className="w-4 h-4 rounded border-[var(--k-border-subtle)] text-indigo-600 focus:ring-indigo-500"
                         />
-                        <span className="text-xs text-slate-500">Select</span>
+                        <span className="text-xs text-[var(--k-text-secondary)]">Select</span>
                       </label>
                       {selectedReview.status === 'PENDING' && (
                         <>
@@ -755,7 +755,7 @@ export default function AvisPage() {
                           <p className={`text-sm font-semibold ${sentiment.color}`}>
                             Sentiment: {sentiment.label}
                           </p>
-                          <p className="text-xs text-slate-500">
+                          <p className="text-xs text-[var(--k-text-secondary)]">
                             {selectedReview.rating >= 4
                               ? 'Le client est satisfait du produit'
                               : selectedReview.rating === 3
@@ -770,11 +770,11 @@ export default function AvisPage() {
 
                   {/* Review title */}
                   {selectedReview.title && (
-                    <h3 className="text-lg font-semibold text-slate-900">{selectedReview.title}</h3>
+                    <h3 className="text-lg font-semibold text-[var(--k-text-primary)]">{selectedReview.title}</h3>
                   )}
 
                   {/* Review content */}
-                  <div className="bg-slate-50 rounded-lg p-4">
+                  <div className="bg-white/5 rounded-lg p-4">
                     <p className="text-slate-700 leading-relaxed">{selectedReview.content}</p>
                   </div>
 
@@ -795,7 +795,7 @@ export default function AvisPage() {
                               setLightboxIndex(idx);
                               setLightboxOpen(true);
                             }}
-                            className="relative w-28 h-28 rounded-lg overflow-hidden border border-slate-200 hover:border-indigo-400 transition-colors cursor-pointer group"
+                            className="relative w-28 h-28 rounded-lg overflow-hidden border border-[var(--k-border-subtle)] hover:border-indigo-400 transition-colors cursor-pointer group"
                           >
                             <Image
                               src={img}
@@ -817,14 +817,14 @@ export default function AvisPage() {
                   )}
 
                   {/* Product info */}
-                  <div className="bg-slate-50 rounded-lg p-4">
-                    <h4 className="font-semibold text-slate-900 mb-2">{t('admin.reviews.productInfo')}</h4>
+                  <div className="bg-white/5 rounded-lg p-4">
+                    <h4 className="font-semibold text-[var(--k-text-primary)] mb-2">{t('admin.reviews.productInfo')}</h4>
                     <p className="text-slate-700">{selectedReview.productName}</p>
-                    <p className="text-sm text-slate-500 mt-1">
+                    <p className="text-sm text-[var(--k-text-secondary)] mt-1">
                       {t('admin.reviews.reviewedOn')} {new Date(selectedReview.createdAt).toLocaleDateString(locale)}
                     </p>
                     {selectedReview.userEmail && (
-                      <p className="text-sm text-slate-500">{selectedReview.userEmail}</p>
+                      <p className="text-sm text-[var(--k-text-secondary)]">{selectedReview.userEmail}</p>
                     )}
                   </div>
 
@@ -909,7 +909,7 @@ export default function AvisPage() {
       {/* F-021 FIX: Pagination navigation */}
       {totalPages > 1 && (
         <div className="flex-shrink-0 flex items-center justify-between px-4 lg:px-6 py-3 border-t border-slate-200 bg-white">
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-[var(--k-text-secondary)]">
             {t('common.page')} {currentPage} / {totalPages}
             {' '}({totalReviews} {t('admin.reviews.totalReviews')})
           </p>
@@ -969,13 +969,13 @@ export default function AvisPage() {
       >
         {selectedReview && (
           <div className="space-y-4">
-            <div className="bg-slate-50 rounded-lg p-3">
+            <div className="bg-white/5 rounded-lg p-3">
               <div className="flex items-center gap-2 mb-1">
-                <p className="text-sm text-slate-500">{selectedReview.userName}</p>
+                <p className="text-sm text-[var(--k-text-secondary)]">{selectedReview.userName}</p>
                 {renderStars(selectedReview.rating)}
               </div>
               {selectedReview.title && (
-                <h4 className="font-semibold text-slate-900 mb-1">{selectedReview.title}</h4>
+                <h4 className="font-semibold text-[var(--k-text-primary)] mb-1">{selectedReview.title}</h4>
               )}
               <p className="text-slate-700">{selectedReview.content}</p>
 
@@ -990,7 +990,7 @@ export default function AvisPage() {
                         setLightboxIndex(idx);
                         setLightboxOpen(true);
                       }}
-                      className="relative w-24 h-24 rounded-lg overflow-hidden border border-slate-200 hover:border-indigo-400 transition-colors cursor-pointer group"
+                      className="relative w-24 h-24 rounded-lg overflow-hidden border border-[var(--k-border-subtle)] hover:border-indigo-400 transition-colors cursor-pointer group"
                     >
                       <Image
                         src={img}
@@ -1006,7 +1006,7 @@ export default function AvisPage() {
             </div>
             {/* Bulk Response Templates */}
             <div>
-              <p className="text-xs font-medium text-slate-600 mb-2">Modeles de reponse rapide :</p>
+              <p className="text-xs font-medium text-[var(--k-text-secondary)] mb-2">Modeles de reponse rapide :</p>
               <div className="flex flex-wrap gap-2">
                 {RESPONSE_TEMPLATES.map((template) => (
                   <button
@@ -1030,7 +1030,7 @@ export default function AvisPage() {
               />
               <div className="flex items-center justify-between mt-1">
                 {/* A-057: Keyboard shortcut hint */}
-                <p className="text-xs text-slate-400">{'\u2318'}+Enter / Ctrl+Enter {t('common.toSubmit')}</p>
+                <p className="text-xs text-[var(--k-text-muted)]">{'\u2318'}+Enter / Ctrl+Enter {t('common.toSubmit')}</p>
                 <p className={`text-xs ${adminResponse.length > 4800 ? 'text-red-500' : adminResponse.length > 4000 ? 'text-amber-500' : 'text-slate-400'}`}>
                   {adminResponse.length}/5000
                 </p>

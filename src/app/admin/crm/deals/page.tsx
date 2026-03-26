@@ -264,13 +264,13 @@ export default function DealsPage() {
           <div className="flex-1" />
           <button
             onClick={bulkDelete}
-            className="flex items-center gap-1 px-2.5 py-1 text-xs text-red-600 bg-white border border-red-200 rounded-md hover:bg-red-50"
+            className="flex items-center gap-1 px-2.5 py-1 text-xs text-red-600 bg-[var(--k-glass-thin)] border border-red-500/20 rounded-md hover:bg-red-500/10"
           >
             <Trash2 className="h-3 w-3" /> {t('common.delete')}
           </button>
           <button
             onClick={() => setSelected(new Set())}
-            className="p-1 text-[#818cf8] hover:bg-indigo-100 rounded"
+            className="p-1 text-[#818cf8] hover:bg-[#6366f1]/15 rounded"
           >
             <X className="h-4 w-4" />
           </button>
@@ -368,7 +368,7 @@ export default function DealsPage() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between px-4 py-3 border-t bg-gray-50">
+          <div className="flex items-center justify-between px-4 py-3 border-t border-[var(--k-border-subtle)] bg-gray-50">
             <p className="text-sm text-[var(--k-text-tertiary)]">
               {((page - 1) * limit) + 1}-{Math.min(page * limit, total)} / {total}
             </p>
