@@ -1,0 +1,109 @@
+rules:
+  # ── Security Rules ──────────────────────────────────────────────
+
+  - id: prisma-raw-query-unsafe
+    pattern: |
+      prisma.$queryRawUnsafe(...)
+    message: >
+      $queryRawUnsafe allows SQL injection. Use $queryRaw with tagged
+      template literals instead.
+    severity: ERROR
+    languages: [typescript]
+    metadata:
+      cwe: "CWE-89"
+      owasp: "A03:2021-Injection"
+
+  - id: dangerously-set-inner-html-no-sanitize
+    patterns:
+      - pattern: |
+          dangerouslySetInnerHTML={{ __html: $VAR }}
+      - pattern-not: |
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize($VAR) }}
+    message: >
+      dangerouslySetInnerHTML without DOMPurify sanitization. XSS risk.
+    severity: WARNING
+    languages: [typescript, typescriptreact]
+    metadata:
+      cwe: "CWE-79"
+      owasp: "A07:2021-XSS"
+
+  - id: hardcoded-api-key
+    pattern-regex: '(?:api[_-]?key|secret|password|token)\s*[:=]\s*["\x27][a-zA-Z0-9_\-]{20,}["\x27]'
+    message: >
+      Possible hardcoded credential detected. Use environment variables.
+    severity: ERROR
+    languages: [typescript]
+    metadata:
+      cwe: "CWE-798"
+
+  # ── Performance Rules ───────────────────────────────────────────
+
+  - id: findmany-without-take
+    patterns:
+      - pattern: |
+          prisma.$MODEL.findMany({ ... })
+      - pattern-not: |
+          prisma.$MODEL.findMany({ ..., take: ..., ... })
+    message: >
+      findMany without take/limit can return unbounded results.
+      Add take: N to prevent OOM on large datasets.
+    severity: WARNING
+    languages: [typescript]
+
+  - id: top-level-stripe-init
+    pattern: |
+      const $VAR = new Stripe(...)
+    message: >
+      Top-level Stripe initialization crashes at build time if
+      STRIPE_SECRET_KEY is not set. Use lazy initialization.
+    severity: WARNING
+    languages: [typescript]
+
+  # ── Reliability Rules ───────────────────────────────────────────
+
+  - id: console-log-in-api-route
+    pattern: |
+      console.log(...)
+    paths:
+      include:
+        - "src/app/api/**"
+    message: >
+      console.log in API route. Use logger service instead.
+    severity: INFO
+    languages: [typescript]
+
+  - id: missing-try-catch-prisma
+    patterns:
+      - pattern: |
+          export const $METHOD = withAdminGuard(async ($REQ, { session }) => {
+            ...
+            await prisma.$MODEL.$OP(...)
+            ...
+          })
+      - pattern-not: |
+          export const $METHOD = withAdminGuard(async ($REQ, { session }) => {
+            ...
+            try { ... } catch { ... }
+            ...
+          })
+    message: >
+      Prisma operation without try/catch in admin route. Unhandled
+      errors will return generic 500.
+    severity: WARNING
+    languages: [typescript]
+
+  # ── Multi-tenant Rules ──────────────────────────────────────────
+
+  - id: user-findunique-without-tenantid
+    patterns:
+      - pattern: |
+          prisma.user.findUnique({ where: { id: $ID } })
+      - pattern-not: |
+          prisma.user.findUnique({ where: { id: $ID, tenantId: ... } })
+    message: >
+      User lookup without tenantId filter. In multi-tenant apps,
+      always include tenantId to prevent cross-tenant data access.
+    severity: WARNING
+    languages: [typescript]
+    metadata:
+      cwe: "CWE-639"
