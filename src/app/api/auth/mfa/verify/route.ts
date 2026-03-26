@@ -5,6 +5,8 @@ import { z } from 'zod';
 import { prisma } from '@/lib/db';
 import { generateToken, verifyToken, formatUser } from '@/lib/auth-jwt';
 import { logger } from '@/lib/logger';
+import { rateLimitMiddleware } from '@/lib/rate-limiter';
+import { getClientIpFromRequest } from '@/lib/admin-audit';
 
 const mfaSchema = z.object({
   code: z.string().length(6),
@@ -13,6 +15,12 @@ const mfaSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    // AUTH-F4 FIX: Rate limit MFA verification (5 attempts per 15 min)
+    const ip = getClientIpFromRequest(request);
+    const rl = await rateLimitMiddleware(ip, '/api/auth/mfa/verify');
+    if (!rl.success) {
+      return NextResponse.json({ error: 'Too many attempts' }, { status: 429, headers: rl.headers });
+    }
     const body = await request.json();
     const parsed = mfaSchema.safeParse(body);
     if (!parsed.success) {
