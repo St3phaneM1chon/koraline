@@ -183,6 +183,39 @@ export default function MorningBriefingWidget() {
                 </div>
               )}
 
+              {/* #19: Top 3 priorities summary */}
+              {briefing.metadata && (() => {
+                const priorities: Array<{ label: string; count: number; urgency: 'high' | 'medium' | 'low' }> = [];
+                const md = briefing.metadata!;
+                if ((md.pendingOrders ?? 0) > 0) priorities.push({ label: t('admin.dashboard.pendingOrders') || 'Pending Orders', count: md.pendingOrders!, urgency: 'high' });
+                if ((md.overdueDeals ?? 0) > 0) priorities.push({ label: t('admin.dashboard.overdueDeals') || 'Overdue Deals', count: md.overdueDeals!, urgency: 'high' });
+                if ((md.uncontactedLeads ?? 0) > 0) priorities.push({ label: t('admin.dashboard.uncontactedLeads') || 'New Leads', count: md.uncontactedLeads!, urgency: 'medium' });
+                if ((md.overdueTasks ?? 0) > 0) priorities.push({ label: t('admin.dashboard.overdueTasks') || 'Overdue Tasks', count: md.overdueTasks!, urgency: 'high' });
+                if ((md.lowStock ?? 0) > 0) priorities.push({ label: t('admin.dashboard.stockAlerts') || 'Low Stock', count: md.lowStock!, urgency: 'medium' });
+                const top3 = priorities.sort((a, b) => {
+                  const s: Record<string, number> = { high: 3, medium: 2, low: 1 };
+                  return (s[b.urgency] ?? 0) - (s[a.urgency] ?? 0) || b.count - a.count;
+                }).slice(0, 3);
+                if (top3.length === 0) return null;
+                return (
+                  <div className="mb-4 p-3 bg-amber-50/80 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-800/30 rounded-lg">
+                    <p className="text-xs font-semibold text-amber-700 dark:text-amber-400 mb-2 flex items-center gap-1.5">
+                      <Target className="w-3.5 h-3.5" />
+                      {t('admin.dashboard.topPriorities') || 'Top 3 Priorities'}
+                    </p>
+                    <ol className="space-y-1.5">
+                      {top3.map((p, i) => (
+                        <li key={i} className="flex items-center gap-2 text-xs">
+                          <span className="w-4 h-4 rounded-full bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 flex items-center justify-center text-[10px] font-bold shrink-0">{i + 1}</span>
+                          <span className="text-slate-700 dark:text-slate-300">{p.label}</span>
+                          <span className="text-amber-600 dark:text-amber-400 font-semibold">({p.count})</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                );
+              })()}
+
               {/* AI content */}
               <div className="text-sm text-slate-700 leading-relaxed space-y-1.5">
                 {briefing.content.split('\n').map((line, i) => {

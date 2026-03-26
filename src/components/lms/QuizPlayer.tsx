@@ -450,6 +450,19 @@ export default function QuizPlayer({
     (e: KeyboardEvent<HTMLDivElement>) => {
       if (phase !== 'active') return;
 
+      // FIX-54: Arrow key navigation for answer options
+      const q = currentQuestion;
+      if (q && (q.type === 'MULTIPLE_CHOICE' || q.type === 'TRUE_FALSE') && (e.key === 'ArrowDown' || e.key === 'ArrowUp') && e.target !== questionContainerRef.current) {
+        e.preventDefault();
+        const optBtns = questionContainerRef.current?.querySelectorAll<HTMLElement>('[data-option-id]');
+        if (optBtns && optBtns.length > 0) {
+          const cur = Array.from(optBtns).findIndex(b => b === document.activeElement);
+          const next = e.key === 'ArrowDown' ? (cur < optBtns.length - 1 ? cur + 1 : 0) : (cur > 0 ? cur - 1 : optBtns.length - 1);
+          optBtns[next]?.focus();
+        }
+        return;
+      }
+
       switch (e.key) {
         case 'ArrowRight':
         case 'ArrowDown':
@@ -467,7 +480,7 @@ export default function QuizPlayer({
           break;
       }
     },
-    [phase, goNext, goPrev]
+    [phase, goNext, goPrev, currentQuestion]
   );
 
   // ── Determine if a MULTIPLE_CHOICE question has multiple correct answers ──
@@ -1162,6 +1175,9 @@ function MultipleChoiceInput({
           return (
             <label
               key={opt.id}
+              data-option-id={opt.id}
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onChange(opt.id); } }}
               className="flex items-center gap-3 p-4 cursor-pointer transition-all duration-200"
               style={{
                 borderRadius: 'var(--k-radius-lg)',
@@ -1646,6 +1662,23 @@ function ResultQuestionRow({
                 </ul>
               </div>
             )}
+
+          {/* #10: Show explanation after wrong answer */}
+          {!isCorrect && originalQuestion?.explanation && (
+            <div
+              className="mt-2 text-sm p-3 rounded-lg"
+              style={{
+                background: 'var(--k-accent-amber-10)',
+                borderLeft: '3px solid var(--k-accent-amber)',
+                color: 'var(--k-text-secondary)',
+              }}
+            >
+              <p className="font-medium mb-1" style={{ color: 'var(--k-accent-amber)' }}>
+                {t('lms.quiz.explanation') || 'Explanation'}:
+              </p>
+              <p>{originalQuestion.explanation}</p>
+            </div>
+          )}
         </div>
       )}
     </div>

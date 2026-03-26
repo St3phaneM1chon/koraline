@@ -506,9 +506,23 @@ function SessionSummary({
  <h2 className="text-2xl font-bold text-[var(--k-text-primary)] mb-2">
  {t('learn.review.sessionComplete')}
  </h2>
- <p className="text-[var(--k-text-secondary)] mb-6">
+ <p className="text-[var(--k-text-secondary)] mb-4">
  {t('learn.review.sessionSummary', { total: String(total), good: String(goodCount), percent: String(percentage) })}
  </p>
+
+ {/* #15: Retention curve feedback */}
+ <div className="mb-6 px-4 py-3 rounded-lg text-sm" style={{
+   background: percentage >= 85 ? 'var(--k-accent-emerald-10)' : percentage >= 60 ? 'var(--k-accent-amber-10)' : 'var(--k-accent-rose-10)',
+   border: `1px solid ${percentage >= 85 ? 'rgba(16,185,129,0.2)' : percentage >= 60 ? 'rgba(245,158,11,0.2)' : 'rgba(244,63,94,0.2)'}`,
+ }}>
+   <p style={{ color: percentage >= 85 ? 'var(--k-accent-emerald)' : percentage >= 60 ? 'var(--k-accent-amber)' : 'var(--k-accent-rose)' }}>
+     {percentage >= 85
+       ? t('learn.review.retentionExcellent') || `You retained ${percentage}% — excellent memory retention!`
+       : percentage >= 60
+         ? t('learn.review.retentionGood') || `You retained ${percentage}% — good progress, keep reviewing regularly.`
+         : t('learn.review.retentionNeedsWork') || `You retained ${percentage}% — consider more frequent review sessions.`}
+   </p>
+ </div>
 
  {/* Results list */}
  <div className="bg-[var(--k-glass-regular)] backdrop-blur-xl rounded-xl border border-[var(--k-border-subtle)] divide-y divide-[var(--k-border-subtle)] text-left mb-6">

@@ -71,7 +71,7 @@ export async function getRedisClient(): Promise<MinimalRedisClient | null> {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (client as any).on('error', (err: Error) => {
-      logger.error('[redis] Connection error:', { error: err.message });
+      logger.error('[redis] Connection error:', { error: err.message.replace(/:\/\/[^:]+:([^@]+)@/, '://***:***@') });
       _available = false;
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -82,7 +82,9 @@ export async function getRedisClient(): Promise<MinimalRedisClient | null> {
     return _client;
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    logger.warn(`[redis] Unavailable (${message})`);
+    // FIX-32: Mask password in Redis connection error messages
+    const safeMessage = message.replace(/:\/\/[^:]+:([^@]+)@/, '://***:***@');
+    logger.warn(`[redis] Unavailable (${safeMessage})`);
     return null;
   }
 }
@@ -117,7 +119,8 @@ export async function getRedisPubSubClient(): Promise<MinimalRedisClient | null>
     await client.connect();
     return client as unknown as MinimalRedisClient;
   } catch (err) {
-    logger.warn(`[redis] PubSub client unavailable: ${err instanceof Error ? err.message : String(err)}`);
+    const pubSubMsg = (err instanceof Error ? err.message : String(err)).replace(/:\/\/[^:]+:([^@]+)@/, '://***:***@');
+    logger.warn(`[redis] PubSub client unavailable: ${pubSubMsg}`);
     return null;
   }
 }

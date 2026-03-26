@@ -18,6 +18,20 @@
 import { type Locale } from '@/i18n/config';
 import { createServerTranslator, formatCurrencyServer, formatDateServer } from '@/i18n/server';
 
+/**
+ * FIX-31: Escape user-supplied data before inserting into HTML email templates.
+ * Prevents stored XSS when product names, customer names, etc. contain special chars.
+ */
+function escapeHtml(str: string): string {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
 // Types
 interface OrderEmailData {
   customerName: string;
@@ -177,17 +191,17 @@ export function orderConfirmationEmail(data: OrderEmailData, locale: Locale = 'f
 
   const content = `
     <h2 style="margin-top: 0;">${t('email.order.confirmed')} 🎉</h2>
-    <p>${t('email.greeting', { name: data.customerName })}</p>
+    <p>${t('email.greeting', { name: escapeHtml(data.customerName) })}</p>
     <p>${t('email.order.thankYou')}</p>
 
     <div class="order-box">
       <div class="order-row">
         <span>${t('order.number')}</span>
-        <span><strong>${data.orderNumber}</strong></span>
+        <span><strong>${escapeHtml(data.orderNumber)}</strong></span>
       </div>
       <div class="order-row">
         <span>${t('products.description')}</span>
-        <span>${data.productName}</span>
+        <span>${escapeHtml(data.productName)}</span>
       </div>
       <div class="order-row">
         <span>${t('cart.total')}</span>
@@ -245,7 +259,7 @@ export function welcomeEmail(data: WelcomeEmailData, locale: Locale = 'fr'): { s
   const t = createServerTranslator(locale);
 
   const content = `
-    <h2 style="margin-top: 0;">${t('email.greeting', { name: data.userName })} 👋</h2>
+    <h2 style="margin-top: 0;">${t('email.greeting', { name: escapeHtml(data.userName) })} 👋</h2>
     <p>
       ${t('email.welcome.accountCreated', { company: emailConfig.companyName })}
     </p>
@@ -289,7 +303,7 @@ export function passwordResetEmail(data: PasswordResetData, locale: Locale = 'fr
 
   const content = `
     <h2 style="margin-top: 0;">${t('auth.resetPassword')}</h2>
-    <p>${t('email.greeting', { name: data.userName })}</p>
+    <p>${t('email.greeting', { name: escapeHtml(data.userName) })}</p>
     <p>
       ${t('email.passwordReset.requested')}
     </p>
@@ -334,20 +348,20 @@ export function shippingUpdateEmail(data: ShippingUpdateData, locale: Locale = '
 
   const content = `
     <h2 style="margin-top: 0;">📦 ${t('email.shipping.orderUpdate')}</h2>
-    <p>${t('email.greeting', { name: data.customerName })}</p>
+    <p>${t('email.greeting', { name: escapeHtml(data.customerName) })}</p>
 
     <div class="order-box">
       <div class="order-row">
         <span>${t('order.number')}</span>
-        <span><strong>${data.orderNumber}</strong></span>
+        <span><strong>${escapeHtml(data.orderNumber)}</strong></span>
       </div>
       <div class="order-row">
         <span>${t('products.description')}</span>
-        <span>${data.productName}</span>
+        <span>${escapeHtml(data.productName)}</span>
       </div>
       <div class="order-row">
         <span>${t('order.status')}</span>
-        <span style="color: #1976d2; font-weight: 600;">${statusLabel}</span>
+        <span style="color: #1976d2; font-weight: 600;">${escapeHtml(statusLabel)}</span>
       </div>
       ${data.trackingNumber ? `
         <div class="order-row">
@@ -398,7 +412,7 @@ export function receiptEmail(
 
   const itemsHtml = data.items.map(item => `
     <div class="order-row">
-      <span>${item.name}</span>
+      <span>${escapeHtml(item.name)}</span>
       <span>${formatCurrencyServer(item.price, locale)}</span>
     </div>
   `).join('');
@@ -412,7 +426,7 @@ export function receiptEmail(
 
   const content = `
     <h2 style="margin-top: 0;">${t('order.receipt.title')} 🧾</h2>
-    <p>${t('email.greeting', { name: data.customerName })}</p>
+    <p>${t('email.greeting', { name: escapeHtml(data.customerName) })}</p>
     <p>
       ${t('email.order.receipt')}
     </p>
@@ -420,7 +434,7 @@ export function receiptEmail(
     <div class="order-box">
       <div class="order-row">
         <span>${t('order.number')}</span>
-        <span><strong>${data.orderNumber}</strong></span>
+        <span><strong>${escapeHtml(data.orderNumber)}</strong></span>
       </div>
       ${itemsHtml}
       <div class="order-row">
@@ -465,12 +479,12 @@ export function backInStockEmail(data: BackInStockData, locale: Locale = 'fr', u
     <div class="order-box" style="background-color: #f9f9f9; border-radius: 8px; padding: 20px; margin: 20px 0;">
       ${data.imageUrl ? `
         <div style="text-align: center; margin-bottom: 16px;">
-          <img src="${data.imageUrl}" alt="${data.productName}" style="max-width: 200px; height: auto; border-radius: 8px;" />
+          <img src="${data.imageUrl}" alt="${escapeHtml(data.productName)}" style="max-width: 200px; height: auto; border-radius: 8px;" />
         </div>
       ` : ''}
 
       <h3 style="margin: 0 0 8px 0; color: #333; font-size: 20px;">
-        ${data.productName}${data.optionName ? ` - ${data.optionName}` : ''}
+        ${escapeHtml(data.productName)}${data.optionName ? ` - ${escapeHtml(data.optionName)}` : ''}
       </h3>
 
       <p style="margin: 0; font-size: 24px; color: #ff6b35; font-weight: bold;">
@@ -521,12 +535,12 @@ export function orderCancellationEmail(
   const formattedRefund = data.refundAmount ? formatCurrencyServer(data.refundAmount, locale, data.currency) : null;
 
   const itemsList = data.items.map(item => `
-    <li>${item.name} (${t('email.order.quantity')}: ${item.quantity})</li>
+    <li>${escapeHtml(item.name)} (${t('email.order.quantity')}: ${item.quantity})</li>
   `).join('');
 
   const content = `
     <h2 style="margin-top: 0;">${t('email.order.cancelledTitle')}</h2>
-    <p>${t('email.greeting', { name: data.customerName })}</p>
+    <p>${t('email.greeting', { name: escapeHtml(data.customerName) })}</p>
     <p>
       ${t('email.order.cancelledSuccess')}
     </p>
@@ -534,7 +548,7 @@ export function orderCancellationEmail(
     <div class="order-box">
       <div class="order-row">
         <span>${t('order.number')}</span>
-        <span><strong>${data.orderNumber}</strong></span>
+        <span><strong>${escapeHtml(data.orderNumber)}</strong></span>
       </div>
       <div class="order-row">
         <span>${t('email.order.status')}</span>

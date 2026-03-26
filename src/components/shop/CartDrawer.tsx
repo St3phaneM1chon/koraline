@@ -9,6 +9,7 @@ import { useCurrency } from '@/contexts/CurrencyContext';
 import { useI18n } from '@/i18n/client';
 import { toast } from 'sonner';
 import CartCrossSell from './CartCrossSell';
+import ShippingEstimator from './ShippingEstimator';
 import { useDiscountCode } from '@/hooks/useDiscountCode';
 import { fetchWithCSRF } from '@/lib/csrf';
 
@@ -546,6 +547,9 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                 </div>
               </div>
             )}
+
+            {/* #10 Live Shipping Calculator */}
+            <ShippingEstimator subtotal={subtotal} />
 
             {/* Continue Shopping */}
             <button

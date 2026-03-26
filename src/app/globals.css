@@ -33,6 +33,12 @@
   }
 }
 
+/* #26: Skeleton shimmer animation (background-position based) */
+@keyframes k-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 /* PWA Install Banner Animation */
 @keyframes slide-up {
   from {
@@ -1724,4 +1730,18 @@ html.dark [data-sonner-toaster] [data-sonner-toast] {
     left: auto !important;
     right: 0 !important;
   }
+}
+
+/* #29: General print stylesheet */
+@media print {
+  nav, aside, .admin-sidebar, .admin-topbar, [role="navigation"],
+  [data-print-hide], .fixed:not(.print-invoice-container),
+  .sticky, button:not([data-print-show]), .cart-drawer, .chat-widget, .toast-container {
+    display: none !important;
+  }
+  body { background: white !important; color: black !important; font-size: 12pt !important; }
+  a[href]:after { content: " (" attr(href) ")" !important; font-size: 0.8em !important; color: #666 !important; }
+  a[href^="/"]:after, a[href^="#"]:after { content: "" !important; }
+  tr, .card, .glass-card, article { break-inside: avoid; }
+  main, .container { max-width: 100% !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
 }

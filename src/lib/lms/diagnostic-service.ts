@@ -13,6 +13,7 @@
  */
 
 import { prisma } from '@/lib/db';
+import { cacheGetOrSet, CacheTTL } from '@/lib/cache';
 
 interface DiagnosticQuestion {
   id: string;
@@ -37,6 +38,18 @@ interface DiagnosticConceptResult {
  * Sélectionne 1-2 questions par concept prérequis
  */
 export async function generateDiagnosticQuiz(
+  tenantId: string,
+  courseId: string
+): Promise<DiagnosticQuestion[]> {
+  // FIX-45: Cache question pool per course for 5 minutes
+  const cacheKey = `diagnostic:questions:${tenantId}:${courseId}`;
+  return cacheGetOrSet(cacheKey, () => _generateDiagnosticQuizImpl(tenantId, courseId), {
+    ttl: CacheTTL.CONFIG,
+    tags: [`diagnostic:${courseId}`],
+  });
+}
+
+async function _generateDiagnosticQuizImpl(
   tenantId: string,
   courseId: string
 ): Promise<DiagnosticQuestion[]> {

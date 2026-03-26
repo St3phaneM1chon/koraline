@@ -267,6 +267,9 @@ export const PATCH = withUserGuard(async (request: NextRequest, { session }) => 
         if (subscription.status === 'CANCELLED') {
           return NextResponse.json({ error: 'Already cancelled' }, { status: 400 });
         }
+        // FIX-36 TODO: When Stripe recurring billing is integrated, cancel via
+        // stripe.subscriptions.update(stripeSubId, { cancel_at_period_end: true })
+        // before setting local status to CANCELLED.
         updateData = { status: 'CANCELLED', cancelledAt: new Date() };
         break;
       default:

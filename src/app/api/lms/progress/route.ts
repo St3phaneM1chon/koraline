@@ -11,6 +11,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { withUserGuard } from '@/lib/user-api-guard';
 import { getEnrollment, getUserEnrollments, updateLessonProgress } from '@/lib/lms/lms-service';
+import { cacheGetOrSet, cacheDelete, CacheTTL } from '@/lib/cache';
 
 const updateProgressSchema = z.object({
   enrollmentId: z.string().min(1),
@@ -30,13 +31,21 @@ export const GET = withUserGuard(async (request: NextRequest, { session }) => {
   const { searchParams } = new URL(request.url);
   const courseId = searchParams.get('courseId');
 
+  // FIX-48: Cache progress for 5 minutes to reduce DB load
   if (courseId) {
-    const enrollment = await getEnrollment(tenantId, courseId, session.user.id!);
+    const cacheKey = `lms:progress:${tenantId}:${session.user.id}:${courseId}`;
+    const enrollment = await cacheGetOrSet(cacheKey, () => getEnrollment(tenantId, courseId, session.user.id!), {
+      ttl: CacheTTL.CONFIG,
+      tags: [`lms:progress:${session.user.id}`],
+    });
     return NextResponse.json({ enrollment });
   }
 
-  // Return all enrollments for the user
-  const enrollments = await getUserEnrollments(tenantId, session.user.id!);
+  const allKey = `lms:progress:${tenantId}:${session.user.id}:all`;
+  const enrollments = await cacheGetOrSet(allKey, () => getUserEnrollments(tenantId, session.user.id!), {
+    ttl: CacheTTL.CONFIG,
+    tags: [`lms:progress:${session.user.id}`],
+  });
   return NextResponse.json({ enrollments });
 }, { skipCsrf: true });
 
@@ -65,6 +74,8 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
         timeSpent: parsed.data.timeSpent,
       }
     );
+    // FIX-48: Invalidate cache after progress update
+    cacheDelete(`lms:progress:${tenantId}:${session.user.id}:all`);
     return NextResponse.json({ progress });
   } catch (error) {
     if (error instanceof Error) {

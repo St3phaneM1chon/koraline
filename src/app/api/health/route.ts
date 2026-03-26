@@ -85,15 +85,34 @@ export async function GET(request: NextRequest) {
     },
   });
 
-  // Check 3: Database connectivity
+  // Check 3: Database connectivity + #25: connection pool metrics
   const dbStart = Date.now();
   try {
     await prisma.$queryRaw`SELECT 1`;
+    let poolDetails: Record<string, unknown> = {};
+    try {
+      const poolStats = await prisma.$queryRaw<Array<{ active: bigint; idle: bigint; total: bigint; max_connections: string }>>`
+        SELECT
+          (SELECT count(*) FROM pg_stat_activity WHERE state = 'active') as active,
+          (SELECT count(*) FROM pg_stat_activity WHERE state = 'idle') as idle,
+          (SELECT count(*) FROM pg_stat_activity) as total,
+          current_setting('max_connections') as max_connections
+      `;
+      if (poolStats[0]) {
+        poolDetails = {
+          activeConnections: Number(poolStats[0].active),
+          idleConnections: Number(poolStats[0].idle),
+          totalConnections: Number(poolStats[0].total),
+          maxConnections: parseInt(poolStats[0].max_connections, 10),
+        };
+      }
+    } catch { /* pool metrics are best-effort */ }
     checks.push({
       name: 'database',
       status: 'pass',
       message: 'Database connection OK',
       duration: Date.now() - dbStart,
+      details: Object.keys(poolDetails).length > 0 ? poolDetails : undefined,
     });
   } catch (dbError) {
     const errorMsg = dbError instanceof Error ? dbError.message : 'Unknown error';

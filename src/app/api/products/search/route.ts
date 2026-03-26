@@ -133,8 +133,22 @@ export async function GET(request: NextRequest) {
           }
         }
 
+        // Search result highlighting: wrap matched terms in <mark> tags
+        const searchHighlighted = q ? searchResults.map((prod: Record<string, unknown>) => {
+          const queryTerms = q.split(/\s+/).filter(Boolean);
+          const escRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const markPattern = new RegExp(`(${queryTerms.map(escRe).join('|')})`, 'gi');
+          return {
+            ...prod,
+            nameHighlighted: typeof prod.name === 'string' ? prod.name.replace(markPattern, '<mark>$1</mark>') : prod.name,
+            descriptionSnippet: typeof prod.shortDescription === 'string'
+              ? prod.shortDescription.replace(markPattern, '<mark>$1</mark>').slice(0, 200)
+              : undefined,
+          };
+        }) : searchResults;
+
         return {
-          products: searchResults,
+          products: searchHighlighted,
           categories: translatedCategories,
           total: searchTotal,
           query: q,

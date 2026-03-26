@@ -211,19 +211,19 @@ export default function ContentHubPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-100">
-                  <th className="text-start py-2 pe-4 font-medium text-slate-500">
+                  <th scope="col" className="text-start py-2 pe-4 font-medium text-slate-500">
                     {t('admin.contentHub.videoTitle')}
                   </th>
-                  <th className="text-start py-2 pe-4 font-medium text-slate-500">
+                  <th scope="col" className="text-start py-2 pe-4 font-medium text-slate-500">
                     {t('admin.contentHub.status')}
                   </th>
-                  <th className="text-start py-2 pe-4 font-medium text-slate-500">
+                  <th scope="col" className="text-start py-2 pe-4 font-medium text-slate-500">
                     {t('admin.contentHub.type')}
                   </th>
-                  <th className="text-end py-2 pe-4 font-medium text-slate-500">
+                  <th scope="col" className="text-end py-2 pe-4 font-medium text-slate-500">
                     {t('admin.contentHub.views')}
                   </th>
-                  <th className="text-end py-2 font-medium text-slate-500">
+                  <th scope="col" className="text-end py-2 font-medium text-slate-500">
                     {t('admin.contentHub.date')}
                   </th>
                 </tr>

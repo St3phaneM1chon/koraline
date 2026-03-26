@@ -122,6 +122,28 @@ export default function StudentCertificatesPage() {
  }
  }, [certificates, filter]);
 
+ // #13: Export competency matrix as CSV
+ const handleExportSkills = useCallback(() => {
+ if (certificates.length === 0) return;
+ const headers = ['Course', 'Status', 'Issue Date', 'Expiry Date', 'Verification Code'];
+ const rows = certificates.map(cert => [
+   cert.courseTitle, getDisplayStatus(cert),
+   formatDate(cert.issuedAt, locale),
+   cert.expiresAt ? formatDate(cert.expiresAt, locale) : 'N/A',
+   cert.verificationCode,
+ ]);
+ const bom = '\uFEFF';
+ const csv = bom + [headers.join(','), ...rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(','))].join('\n');
+ const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+ const url = URL.createObjectURL(blob);
+ const a = document.createElement('a');
+ a.href = url;
+ a.download = `competency-matrix-${new Date().toISOString().split('T')[0]}.csv`;
+ a.click();
+ URL.revokeObjectURL(url);
+ toast.success(t('lms.competencyExported') || 'Competency matrix exported');
+ }, [certificates, locale, t]);
+
  // Actions
  const handleCopyVerificationLink = useCallback(
  (verificationCode: string) => {
@@ -170,13 +192,22 @@ export default function StudentCertificatesPage() {
  <div className="min-h-screen bg-[var(--k-bg-base)]">
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
  {/* Header */}
- <div className="mb-8">
+ <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+ <div>
  <h1 className="text-3xl font-bold text-[var(--k-text-primary)] ">
  {t('lms.myCertificates')}
  </h1>
  <p className="mt-2 text-[var(--k-text-secondary)] ">
  {t('lms.myCertificatesDesc')}
  </p>
+ </div>
+ {certificates.length > 0 && (
+ <button onClick={handleExportSkills}
+   className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-[var(--k-glass-regular)] border border-[var(--k-border-default)] rounded-lg text-[var(--k-text-secondary)] hover:bg-[var(--k-glass-thick)] transition-colors backdrop-blur-sm">
+   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+   {t('lms.exportSkills') || 'Export Skills'}
+ </button>
+ )}
  </div>
 
  {/* Filter Tabs */}

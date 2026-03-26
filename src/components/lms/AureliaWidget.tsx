@@ -201,8 +201,16 @@ export default function AureliaWidget({ context, studentName, studentProvince }:
         return `Hey${name}! Tu es dans un quiz. Je ne peux pas te donner les réponses, mais je peux t'aider à comprendre les concepts si tu bloques. Demande-moi!`;
       case 'course':
         return `Bonjour${name}! Tu regardes le cours "${context.courseTitle}". Tu veux que je t'explique le contenu ou que je te recommande par où commencer?`;
-      case 'dashboard':
+      case 'dashboard': {
+        // #12: Context-aware study recommendation based on score
+        if (context?.currentScore !== undefined && context.currentScore < 70) {
+          return `Salut${name}! Je vois que ton score actuel est de ${context.currentScore}%. On devrait revoir les concepts ou tu as le plus de difficulte. Tu veux qu'on commence une session de revision?`;
+        }
+        if (context?.masteryLevel !== undefined && context.masteryLevel < 50) {
+          return `Salut${name}! Ton niveau de maitrise est a ${context.masteryLevel}%. Je te recommande de revoir les chapitres ou tu as le moins bien performe. On s'y met?`;
+        }
         return `Salut${name}! Comment ça va aujourd'hui? Je vois ton tableau de bord — tu veux qu'on révise tes points faibles ou qu'on continue où tu en étais?`;
+      }
       case 'certificate':
         return `Félicitations${name}! 🎉 Tu as un certificat ici. Si tu veux revoir la matière ou préparer la suite, je suis là.`;
       default:

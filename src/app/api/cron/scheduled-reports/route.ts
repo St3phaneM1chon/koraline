@@ -9,6 +9,7 @@ import { timingSafeEqual } from 'crypto';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { withJobLock } from '@/lib/cron-lock';
+import { sendEmail } from '@/lib/email/email-service'; // #17
 
 export async function GET(request: NextRequest) {
   // SECURITY: Timing-safe CRON_SECRET verification (prevents timing attacks)
@@ -55,14 +56,26 @@ export async function GET(request: NextRequest) {
           })
         );
 
-        // TODO: Generate report data and send email to recipients
-        // For now, just log it
-        logger.info('Scheduled report processed', {
-          reportId: report.id,
-          name: report.name,
-          recipients: report.recipients,
-          nextRun: nextRun.toISOString(),
-        });
+        // #17: Send scheduled report email to recipients
+        const recipients = (report.recipients as string[] | undefined) || [];
+        const reportName = report.name || 'Scheduled Report';
+        const baseUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
+        const reportDate = now.toLocaleDateString('fr-CA');
+
+        for (const email of recipients) {
+          if (!email || typeof email !== 'string') continue;
+          try {
+            await sendEmail({
+              to: { email },
+              subject: `[Rapport] ${reportName} - ${reportDate}`,
+              html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;"><h2>${reportName}</h2><p>Votre rapport planifie est pret.</p><p><strong>Date:</strong> ${reportDate}</p><p><strong>Frequence:</strong> ${schedule}</p><p style="margin-top:20px;"><a href="${baseUrl}/admin/dashboard" style="display:inline-block;padding:10px 24px;background:#6366f1;color:white;text-decoration:none;border-radius:8px;">Voir le tableau de bord</a></p></div>`,
+              tags: ['scheduled-report', 'automated'],
+            });
+          } catch (emailErr) {
+            logger.error('Failed to send scheduled report email', { reportId: report.id, email, error: emailErr instanceof Error ? emailErr.message : String(emailErr) });
+          }
+        }
+        logger.info('Scheduled report processed', { reportId: report.id, name: report.name, recipientCount: recipients.length, nextRun: nextRun.toISOString() });
       }
 
       // Batch all updates in a single transaction instead of N sequential updates

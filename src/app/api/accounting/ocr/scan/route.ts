@@ -54,6 +54,15 @@ export const POST = withAdminGuard(async (request) => {
       }
     }
 
+    // P2-PERF: Reject images larger than 2MB to avoid excessive API costs and latency
+    const MAX_OCR_BYTES = 2 * 1024 * 1024; // 2MB
+    if (buffer.byteLength > MAX_OCR_BYTES) {
+      return NextResponse.json(
+        { error: `Fichier trop volumineux (${(buffer.byteLength / 1024 / 1024).toFixed(1)} Mo). Maximum: 2 Mo. Veuillez redimensionner l'image.` },
+        { status: 400 }
+      );
+    }
+
     // Convert to base64 for Vision API
     const base64 = buffer.toString('base64');
 

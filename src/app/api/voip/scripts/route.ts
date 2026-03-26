@@ -14,9 +14,11 @@ import { logger } from '@/lib/logger';
 
 const scriptCreateSchema = z.object({
   companyId: z.string().min(1, 'companyId is required'),
-  name: z.string().min(1, 'name is required'),
-  content: z.string().min(1, 'content is required'),
-  category: z.string().optional(),
+  name: z.string().min(1, 'name is required').max(200, 'name too long'),
+  // P3-FIX: Trim whitespace and strip <script> tags from content to prevent XSS in agent-rendered scripts
+  content: z.string().min(1, 'content is required').max(50000, 'content too long')
+    .transform(val => val.trim().replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')),
+  category: z.string().max(100).optional(),
 });
 
 export async function GET(request: NextRequest) {

@@ -1799,6 +1799,8 @@ export default function CheckoutPage() {
               <p className="text-xs text-gray-500 mt-2 text-center">
                 {t('checkout.currencyNote')}
               </p>
+
+              {/* #1 Smart Bundle Recommendations */}
             </div>
           </div>
         </div>

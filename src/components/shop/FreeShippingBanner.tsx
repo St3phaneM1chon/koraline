@@ -11,18 +11,25 @@ export default function FreeShippingBanner() {
   const tenant = useTenantBranding();
   const [isVisible, setIsVisible] = useState(true);
 
-  // Hide banner on scroll down, show on scroll up
+  // Hide banner on scroll down, show on scroll up (throttled with rAF)
   useEffect(() => {
     let lastScrollY = window.scrollY;
-    
+    let ticking = false;
+
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          if (currentScrollY > lastScrollY && currentScrollY > 100) {
+            setIsVisible(false);
+          } else {
+            setIsVisible(true);
+          }
+          lastScrollY = currentScrollY;
+          ticking = false;
+        });
       }
-      lastScrollY = currentScrollY;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });

@@ -109,6 +109,17 @@ export async function sendSMS(options: SendSMSOptions): Promise<SendSMSResult> {
       logger.info('[SMS Engine] Recipient opted out, skipping', { to: maskPhone(to) });
       return { success: false, error: 'Recipient opted out' };
     }
+    // FIX-33: Verify SMS consent via NotificationPreference before sending marketing
+    if (contactId) {
+      const prefs = await prisma.notificationPreference.findUnique({
+        where: { userId: contactId },
+        select: { promotions: true },
+      }).catch(() => null);
+      if (prefs && prefs.promotions === false) {
+        logger.info('[SMS Engine] Contact has not opted in to promotions', { to: maskPhone(to), contactId });
+        return { success: false, error: 'Contact has not opted in to promotional messages' };
+      }
+    }
   }
 
   try {

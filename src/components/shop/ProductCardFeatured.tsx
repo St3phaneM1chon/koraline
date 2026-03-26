@@ -52,6 +52,7 @@ export default function ProductCardFeatured({
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
           />
         ) : (
           <div className="flex items-center justify-center h-full" role="img" aria-label={name}>

@@ -501,12 +501,12 @@ export default function LivraisonPage() {
               <table className="w-full">
                 <thead>
                   <tr className="text-xs text-slate-500 uppercase">
-                    <th className="text-start py-2">{t('admin.shipping.method')}</th>
-                    <th className="text-start py-2">{t('admin.shipping.carrier')}</th>
-                    <th className="text-center py-2">{t('admin.shipping.delay')}</th>
-                    <th className="text-end py-2">{t('admin.shipping.price')}</th>
-                    <th className="text-end py-2">{t('admin.shipping.freeAbove')}</th>
-                    <th className="text-center py-2">{t('admin.shipping.activeCol')}</th>
+                    <th scope="col" className="text-start py-2">{t('admin.shipping.method')}</th>
+                    <th scope="col" className="text-start py-2">{t('admin.shipping.carrier')}</th>
+                    <th scope="col" className="text-center py-2">{t('admin.shipping.delay')}</th>
+                    <th scope="col" className="text-end py-2">{t('admin.shipping.price')}</th>
+                    <th scope="col" className="text-end py-2">{t('admin.shipping.freeAbove')}</th>
+                    <th scope="col" className="text-center py-2">{t('admin.shipping.activeCol')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">

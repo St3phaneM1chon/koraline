@@ -230,13 +230,13 @@ export default function VideoSessionsPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-gray-50 text-start text-xs text-gray-500 uppercase tracking-wider">
-                  <th className="px-4 py-3">{t('admin.videoSessions.scheduledAt')}</th>
-                  <th className="px-4 py-3">{t('admin.videoSessions.platform')}</th>
-                  <th className="px-4 py-3">{t('admin.videoSessions.topic')}</th>
-                  <th className="px-4 py-3">{t('admin.videoSessions.client')}</th>
-                  <th className="px-4 py-3">{t('admin.videoSessions.contentType')}</th>
-                  <th className="px-4 py-3">Status</th>
-                  <th className="px-4 py-3 text-end">Actions</th>
+                  <th scope="col" className="px-4 py-3">{t('admin.videoSessions.scheduledAt')}</th>
+                  <th scope="col" className="px-4 py-3">{t('admin.videoSessions.platform')}</th>
+                  <th scope="col" className="px-4 py-3">{t('admin.videoSessions.topic')}</th>
+                  <th scope="col" className="px-4 py-3">{t('admin.videoSessions.client')}</th>
+                  <th scope="col" className="px-4 py-3">{t('admin.videoSessions.contentType')}</th>
+                  <th scope="col" className="px-4 py-3">Status</th>
+                  <th scope="col" className="px-4 py-3 text-end">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">

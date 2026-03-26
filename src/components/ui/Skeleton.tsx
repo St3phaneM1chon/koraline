@@ -9,11 +9,17 @@ interface SkeletonProps {
   className?: string;
 }
 
-/** Base skeleton block with pulse animation. */
+/** Base skeleton block with shimmer animation (#26). */
 export function Skeleton({ className = '' }: SkeletonProps) {
   return (
     <div
-      className={`animate-pulse rounded bg-white/10 ${className}`}
+      className={`rounded bg-white/10 ${className}`}
+      style={{
+        backgroundImage:
+          'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 40%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.06) 60%, transparent 100%)',
+        backgroundSize: '200% 100%',
+        animation: 'k-shimmer 1.5s ease-in-out infinite',
+      }}
       aria-hidden="true"
     />
   );

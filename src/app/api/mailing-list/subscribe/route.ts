@@ -15,8 +15,22 @@ import { getClientIpFromRequest } from '@/lib/admin-audit';
 // Zod schema
 // ---------------------------------------------------------------------------
 
+// P3-FIX: Block disposable/temporary email domains to reduce spam subscriptions
+const DISPOSABLE_EMAIL_DOMAINS = new Set([
+  'mailinator.com', 'guerrillamail.com', 'tempmail.com', 'throwaway.email',
+  'yopmail.com', 'trashmail.com', 'sharklasers.com', 'guerrillamailblock.com',
+  'grr.la', 'dispostable.com', '10minutemail.com', 'temp-mail.org',
+  'fakeinbox.com', 'tempail.com', 'mohmal.com', 'maildrop.cc',
+  'getnada.com', 'burnermail.io', 'mailnesia.com', 'tempr.email',
+  'discard.email', 'tmpmail.net', 'tmpmail.org', 'emailondeck.com',
+]);
+
 const subscribeSchema = z.object({
-  email: z.string().email('Invalid email address').max(254),
+  email: z.string().email('Invalid email address').max(254)
+    .refine(val => {
+      const domain = val.split('@')[1]?.toLowerCase();
+      return !domain || !DISPOSABLE_EMAIL_DOMAINS.has(domain);
+    }, 'Disposable email addresses are not allowed'),
   name: z.string().max(200).optional(),
   preferences: z.array(z.string().max(50)).max(20).optional(),
   consentMethod: z.string().max(50).optional(),

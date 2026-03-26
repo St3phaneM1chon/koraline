@@ -3,12 +3,12 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 
 const STORAGE_KEY = 'attitudes-recently-viewed';
-const MAX_ITEMS = 10;
+const MAX_ITEMS = 20;
 const DEBOUNCE_MS = 500;
 
 /**
  * Hook to manage recently viewed product slugs in localStorage.
- * Stores up to 10 slugs, deduplicated, most recent first.
+ * Stores up to 20 slugs, deduplicated, most recent first.
  * localStorage writes are debounced to avoid excessive I/O.
  */
 export function useRecentlyViewed() {
@@ -22,7 +22,8 @@ export function useRecentlyViewed() {
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {
-          setRecentSlugs(parsed);
+          // Prune to max items on load in case stored data exceeds limit
+          setRecentSlugs(parsed.slice(0, MAX_ITEMS));
         }
       }
     } catch {

@@ -19,6 +19,7 @@ import { withAdminGuard } from '@/lib/admin-api-guard';
 import { prisma } from '@/lib/db';
 import { TRANSLATABLE_FIELDS, type TranslatableModel } from '@/lib/translation';
 import { cacheDelete } from '@/lib/cache';
+import { revalidateTag } from 'next/cache';
 import { logAdminAction, getClientIpFromRequest } from '@/lib/admin-audit';
 import { logger } from '@/lib/logger';
 import { stripControlChars } from '@/lib/sanitize';
@@ -163,8 +164,9 @@ export const PUT = withAdminGuard(async (request: NextRequest, { session, params
       update: updateData,
     });
 
-    // Invalidate cache
+    // Invalidate in-memory cache + ISR cache (FIX-38)
     cacheDelete(`translation:${model}:${entityId}:${locale}`);
+    try { revalidateTag(`translation:${model}`); revalidateTag(`translation:${entityId}`); } catch { /* best-effort */ }
 
     logAdminAction({
       adminUserId: session.user.id,

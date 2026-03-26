@@ -15,7 +15,7 @@ import { logger } from '@/lib/logger';
 const MAX_SMS_PER_SECOND = 1; // 1 SMS per second per source number
 const MAX_RETRIES = 3;
 const RETRY_BACKOFF_MS = [5_000, 15_000, 45_000]; // Exponential backoff
-const BATCH_SIZE = 50;
+const BATCH_SIZE = 100;
 
 // ---------------------------------------------------------------------------
 // Types

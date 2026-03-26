@@ -707,6 +707,23 @@ export async function getLmsDashboardStats(tenantId: string) {
     ? Math.round((completedEnrollments / totalEnrollments) * 100)
     : 0;
 
+  // #14: Average time-to-mastery (completion time in days)
+  let avgCompletionDays: number | null = null;
+  try {
+    const completedWithDates = await prisma.enrollment.findMany({
+      where: { tenantId, status: 'COMPLETED', completedAt: { not: null } },
+      select: { enrolledAt: true, completedAt: true },
+      take: 200,
+    });
+    if (completedWithDates.length > 0) {
+      const totalDays = completedWithDates.reduce((sum, e) => {
+        if (!e.completedAt || !e.enrolledAt) return sum;
+        return sum + (new Date(e.completedAt).getTime() - new Date(e.enrolledAt).getTime()) / (1000 * 60 * 60 * 24);
+      }, 0);
+      avgCompletionDays = Math.round((totalDays / completedWithDates.length) * 10) / 10;
+    }
+  } catch { /* non-critical */ }
+
   return {
     totalCourses,
     publishedCourses,
@@ -716,6 +733,7 @@ export async function getLmsDashboardStats(tenantId: string) {
     completionRate,
     totalCertificates,
     overdueCompliance,
+    avgCompletionDays,
   };
 }
 

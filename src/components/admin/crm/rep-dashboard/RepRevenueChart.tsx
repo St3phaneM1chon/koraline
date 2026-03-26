@@ -141,7 +141,7 @@ export default function RepRevenueChart({ agentId, period }: RepRevenueChartProp
             <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
               {t('admin.crm.revenue.monthlyBreakdown') || 'Monthly Breakdown'}
             </p>
-            <div className="flex items-end gap-2 h-40">
+            <div className="flex items-end gap-2 h-40" role="img" aria-label={`Monthly revenue chart showing ${data.monthlyRevenue.length} months of data`}>
               {data.monthlyRevenue.map((m, idx) => {
                 const heightPct = maxRevenue > 0 ? (m.revenue / maxRevenue) * 100 : 0;
                 return (

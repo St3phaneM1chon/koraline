@@ -141,23 +141,37 @@ export const DELETE = withAdminGuard(async (request: NextRequest, { session, par
       return NextResponse.json({ error: 'Media not found' }, { status: 404 });
     }
 
-    // F55 FIX: Handle both local and Azure URLs properly
+    // FIX-34: Verify storage delete success before removing DB record
+    let storageDeleted = false;
     try {
       if (existing.url.startsWith('http://') || existing.url.startsWith('https://')) {
-        // Azure Blob Storage URL - use storage service to delete
         const { storage } = await import('@/lib/storage');
         await storage.delete(existing.url);
+        storageDeleted = true;
       } else {
-        // Local filesystem path
         const filePath = path.join(process.cwd(), 'public', existing.url);
         await unlink(filePath);
+        storageDeleted = true;
       }
-    } catch {
-      // File might already be deleted or on external storage - continue anyway
-      logger.warn(`Could not delete physical file for media ${id}: ${existing.url}`);
+    } catch (storageErr) {
+      const errMsg = storageErr instanceof Error ? storageErr.message : String(storageErr);
+      const isNotFound = /ENOENT|not found|404|NoSuchKey|BlobNotFound/i.test(errMsg);
+      if (isNotFound) {
+        storageDeleted = true;
+        logger.info(`[admin/medias/id] Physical file already deleted for media ${id}`);
+      } else {
+        logger.warn(`Could not delete physical file for media ${id}: ${existing.url}`, { error: errMsg });
+      }
     }
 
-    // Delete database record
+    if (!storageDeleted) {
+      return NextResponse.json(
+        { error: 'Failed to delete physical file. DB record retained for consistency.' },
+        { status: 500 }
+      );
+    }
+
+    // Delete database record only after confirming storage deletion
     await prisma.media.delete({
       where: { id },
     });

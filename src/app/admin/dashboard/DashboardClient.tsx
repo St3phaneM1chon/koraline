@@ -111,10 +111,36 @@ interface CrossModuleData {
   flags: Record<string, boolean>;
 }
 
+// #16: Dashboard widget visibility toggle
+const DASHBOARD_WIDGET_KEYS = ['kpis', 'aiInsights', 'morningBriefing', 'recentOrders', 'recentUsers', 'crossModule', 'lms'] as const;
+type WidgetKey = typeof DASHBOARD_WIDGET_KEYS[number];
+const WIDGET_STORAGE_KEY = 'dashboard-visible-widgets';
+
+function getVisibleWidgets(): Record<WidgetKey, boolean> {
+  if (typeof window === 'undefined') {
+    return Object.fromEntries(DASHBOARD_WIDGET_KEYS.map(k => [k, true])) as Record<WidgetKey, boolean>;
+  }
+  try {
+    const stored = localStorage.getItem(WIDGET_STORAGE_KEY);
+    if (stored) return JSON.parse(stored);
+  } catch { /* ignore */ }
+  return Object.fromEntries(DASHBOARD_WIDGET_KEYS.map(k => [k, true])) as Record<WidgetKey, boolean>;
+}
+
 export default function DashboardClient({ stats, lmsStats, recentOrders, recentUsers }: DashboardClientProps) {
   const { t, locale } = useI18n();
   const router = useRouter();
   const [crossModule, setCrossModule] = useState<CrossModuleData | null>(null);
+  const [visibleWidgets, setVisibleWidgets] = useState<Record<WidgetKey, boolean>>(getVisibleWidgets);
+  const [showWidgetConfig, setShowWidgetConfig] = useState(false);
+
+  const toggleWidget = useCallback((key: WidgetKey) => {
+    setVisibleWidgets(prev => {
+      const next = { ...prev, [key]: !prev[key] };
+      localStorage.setItem(WIDGET_STORAGE_KEY, JSON.stringify(next));
+      return next;
+    });
+  }, []);
 
   useEffect(() => {
     fetch('/api/admin/dashboard/cross-module')
@@ -215,6 +241,14 @@ export default function DashboardClient({ stats, lmsStats, recentOrders, recentU
           <p className="text-[var(--k-text-secondary)] mt-1">{t('admin.dashboard.subtitle')}</p>
         </div>
         <div className="flex gap-3">
+          {/* #16: Widget config toggle */}
+          <button
+            onClick={() => setShowWidgetConfig(v => !v)}
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-[var(--k-text-secondary)] bg-[var(--k-glass-thin)] border border-[var(--k-border-default)] rounded-lg hover:bg-[var(--k-glass-regular)] backdrop-blur-sm transition-colors"
+            title={t('admin.dashboard.configureWidgets') || 'Configure widgets'}
+          >
+            <Eye className="w-4 h-4" />
+          </button>
           <Link
             href="/admin/commandes"
             className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-[var(--k-text-secondary)] bg-[var(--k-glass-thin)] border border-[var(--k-border-default)] rounded-lg hover:bg-[var(--k-glass-regular)] backdrop-blur-sm transition-colors"
@@ -232,8 +266,30 @@ export default function DashboardClient({ stats, lmsStats, recentOrders, recentU
         </div>
       </div>
 
+      {/* #16: Widget configuration panel */}
+      {showWidgetConfig && (
+        <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-default)] rounded-xl p-4">
+          <h3 className="text-sm font-semibold text-[var(--k-text-primary)] mb-3">{t('admin.dashboard.configureWidgets') || 'Show / Hide Sections'}</h3>
+          <div className="flex flex-wrap gap-3">
+            {DASHBOARD_WIDGET_KEYS.map(key => (
+              <button
+                key={key}
+                onClick={() => toggleWidget(key)}
+                className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
+                  visibleWidgets[key]
+                    ? 'bg-indigo-500/20 border-indigo-500/30 text-indigo-300'
+                    : 'bg-[var(--k-glass-thin)] border-[var(--k-border-subtle)] text-[var(--k-text-muted)]'
+                }`}
+              >
+                {key === 'kpis' ? 'KPIs' : key === 'aiInsights' ? 'AI Insights' : key === 'morningBriefing' ? 'Morning Briefing' : key === 'recentOrders' ? 'Recent Orders' : key === 'recentUsers' ? 'Recent Users' : key === 'crossModule' ? 'Cross-Module' : 'LMS'}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {visibleWidgets.kpis && (<><div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           label={t('admin.dashboard.totalOrders')}
           value={stats.totalOrders.toLocaleString(locale)}
@@ -290,15 +346,18 @@ export default function DashboardClient({ stats, lmsStats, recentOrders, recentU
           href="/admin/produits"
         />
       </div>
+      </>)}
 
       {/* AI Section */}
+      {(visibleWidgets.morningBriefing || visibleWidgets.aiInsights) && (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <MorningBriefingWidget />
-        <AIInsightsWidget />
+        {visibleWidgets.morningBriefing && <MorningBriefingWidget />}
+        {visibleWidgets.aiInsights && <AIInsightsWidget />}
       </div>
+      )}
 
       {/* LMS Formation Widget */}
-      {lmsStats && (lmsStats.courses > 0 || lmsStats.activeEnrollments > 0) && (
+      {visibleWidgets.lms && lmsStats && (lmsStats.courses > 0 || lmsStats.activeEnrollments > 0) && (
         <div className="rounded-xl bg-gradient-to-r from-blue-500/5 to-purple-500/5 border border-[var(--k-border-subtle)] p-5">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold flex items-center gap-2 text-[var(--k-text-primary)]">

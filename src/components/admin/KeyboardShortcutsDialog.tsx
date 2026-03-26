@@ -7,13 +7,16 @@ interface Props {
   onClose: () => void;
 }
 
+// #20: Complete keyboard shortcuts cheat sheet
 const SECTIONS = [
   {
     title: 'General',
     shortcuts: [
-      { keys: ['Ctrl', 'K'], description: 'Focus search' },
+      { keys: ['Ctrl', 'K'], description: 'Focus search / Command palette' },
       { keys: ['?'], description: 'Toggle this dialog' },
       { keys: ['Ctrl', 'B'], description: 'Toggle sidebar' },
+      { keys: ['Ctrl', 'J'], description: 'Open AI Copilot' },
+      { keys: ['Escape'], description: 'Close current panel / modal' },
     ],
   },
   {
@@ -24,6 +27,17 @@ const SECTIONS = [
       { keys: ['g', 'p'], description: 'Go to Products' },
       { keys: ['g', 'c'], description: 'Go to Clients' },
       { keys: ['g', 'i'], description: 'Go to Inventory' },
+      { keys: ['g', 'a'], description: 'Go to Accounting' },
+      { keys: ['g', 'm'], description: 'Go to Marketing' },
+      { keys: ['g', 'f'], description: 'Go to Formation (LMS)' },
+    ],
+  },
+  {
+    title: 'Actions',
+    shortcuts: [
+      { keys: ['n'], description: 'New item (context-dependent)' },
+      { keys: ['r'], description: 'Refresh current page' },
+      { keys: ['Ctrl', 'Shift', 'E'], description: 'Export current view' },
     ],
   },
 ];

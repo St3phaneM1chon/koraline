@@ -15,7 +15,7 @@ import { logger } from '@/lib/logger';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
 import { getClientIpFromRequest } from '@/lib/admin-audit';
 
-const CACHE_TTL = 60 * 1000; // 1 minute
+const CACHE_TTL = 60 * 60 * 1000; // 1 hour
 
 export async function GET(request: NextRequest) {
   try {
