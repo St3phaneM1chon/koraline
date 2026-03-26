@@ -122,7 +122,7 @@ console.log('MONTHLY CHECKLIST:');
 console.log('═══════════════════════════════════════════════════════════════');
 console.log('[ ] Run E2E tests: npx playwright test e2e/');
 console.log('[ ] Run npm audit: npm audit --production');
-console.log('[ ] Check i18n coverage: grep -r "t('" src/ | wc -l');
+console.log("[ ] Check i18n coverage: grep -r \"t('\" src/ | wc -l");
 console.log('[ ] Run Semgrep: npx semgrep --config .semgrep.yml src/');
 console.log('[ ] Review DASHBOARD.md for regressions');
 console.log('═══════════════════════════════════════════════════════════════');
