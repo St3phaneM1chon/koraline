@@ -54,7 +54,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { email, productId, optionId } = validation.data;
+    const { productId, optionId } = validation.data;
+
+    // ECOM-F4 FIX: Use session email when authenticated, client email only for guests
+    const session = await auth();
+    const email = session?.user?.email ?? validation.data.email;
+    if (!email) {
+      return NextResponse.json({ error: 'Email required' }, { status: 400 });
+    }
 
     // Verify product exists
     const product = await prisma.product.findUnique({

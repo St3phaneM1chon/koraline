@@ -200,7 +200,8 @@ export async function POST(request: NextRequest) {
 
         const [cartProducts, cartFormats] = await Promise.all([
           cartProductIds.length > 0
-            ? prisma.product.findMany({ where: { id: { in: cartProductIds } }, select: { id: true, price: true } })
+            // ECOM-F5 FIX: Include productType for server-side shipping calculation
+            ? prisma.product.findMany({ where: { id: { in: cartProductIds } }, select: { id: true, price: true, productType: true } })
             : Promise.resolve([]),
           cartFormatIds.length > 0
             ? prisma.productOption.findMany({ where: { id: { in: cartFormatIds } }, select: { id: true, price: true, productId: true } })
@@ -283,8 +284,9 @@ export async function POST(request: NextRequest) {
       // SECURITY: Calculate shipping server-side
       let serverShipping = 0;
       if (country === 'CA') {
-        // BUG 7: Use 300 threshold for LAB_SUPPLY products to match create-checkout
-        const hasLabSupply = cartItems?.some((item: Record<string, unknown>) => item.productType === 'LAB_SUPPLY');
+        // ECOM-F5 FIX: Use DB productType, not client-sent (was trusting client value)
+        const productTypeMap = new Map(cartProducts.map((p: { id: string; productType: string | null }) => [p.id, p.productType]));
+        const hasLabSupply = cartItems?.some((item: Record<string, unknown>) => productTypeMap.get(item.productId as string) === 'LAB_SUPPLY');
         const freeShippingThreshold = hasLabSupply ? 300 : 100;
         serverShipping = serverSubtotal >= freeShippingThreshold ? 0 : 9.99;
       } else if (country === 'US') {
