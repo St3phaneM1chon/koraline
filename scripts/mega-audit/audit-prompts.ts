@@ -6,6 +6,7 @@
 
 import type { AuditDimension, AuditFinding, Severity } from './audit-config';
 import type { ExtractedFunction } from './function-extractor';
+import { generateThreatPreamble } from './threat-models';
 
 // =====================================================
 // CONTEXT BUILDER (wraps function with envelope)
@@ -146,9 +147,13 @@ Respond in JSON format ONLY (no markdown fences, no extra text):
     "codeSnippet": "the vulnerable code",
     "suggestedFix": "the fixed code",
     "cweId": "CWE-XXX",
-    "owaspCategory": "A01:2021-Broken Access Control"
+    "owaspCategory": "A01:2021-Broken Access Control",
+    "exploitSteps": ["1. Send POST request with...", "2. Observe that..."],
+    "testCase": "test('should reject...', async () => { ... })"
   }
 ]
+
+IMPORTANT: If you cannot write concrete exploitSteps, DO NOT report the finding.
 
 If no findings, return: []`,
 
@@ -381,4 +386,67 @@ function parseJsonFindings(response: string, dimension: AuditDimension): AuditFi
     console.error(`[prompts] Failed to parse ${dimension} response:`, err);
     return [];
   }
+}
+
+// =====================================================
+// V5: ENHANCED PROMPT BUILDER WITH THREAT MODEL
+// =====================================================
+
+/**
+ * Build a complete audit prompt with threat model preamble injected.
+ * This is the recommended entry point for the Audit Forge pipeline.
+ */
+export function buildEnhancedPrompt(
+  fn: ExtractedFunction,
+  dimension: AuditDimension,
+  domainKey: string
+): { systemPrompt: string; userPrompt: string } {
+  const config = DIMENSION_PROMPTS[dimension];
+  const context = buildFunctionContext(fn);
+  const threatModel = generateThreatPreamble(domainKey);
+
+  // Inject threat model into the system prompt
+  const enhancedSystem = threatModel
+    ? `${config.systemPrompt}\n\n${threatModel}`
+    : config.systemPrompt;
+
+  return {
+    systemPrompt: enhancedSystem,
+    userPrompt: config.userPromptTemplate(context),
+  };
+}
+
+/**
+ * Build the adversarial critic prompt for Pass 2.
+ */
+export function buildCriticPrompt(
+  fn: ExtractedFunction,
+  pass1Findings: AuditFinding[]
+): string {
+  const context = buildFunctionContext(fn);
+  const findingsJson = JSON.stringify(pass1Findings, null, 2);
+
+  return `You are a HOSTILE REVIEWER. Every finding below is FALSE until proven otherwise.
+
+## Function Under Review:
+${context}
+
+## Pass 1 Findings to Challenge:
+${findingsJson}
+
+For EACH finding, answer:
+1. Does the middleware (withAdminGuard/withUserGuard) already prevent this?
+2. Does Prisma already parameterize this query?
+3. Does the framework (React/Next.js) already handle this?
+4. Is the evidence (exploitSteps) actually executable?
+5. Does the Prisma schema have constraints that prevent this?
+
+Respond in JSON:
+[
+  {
+    "findingId": "SEC-001",
+    "verdict": "confirmed|downgraded|false_positive",
+    "justification": "Why this verdict"
+  }
+]`;
 }
