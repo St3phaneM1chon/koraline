@@ -204,6 +204,77 @@ export const THREAT_MODELS: Record<string, ThreatModel> = {
   },
 };
 
+  admin: {
+    domain: 'Admin Dashboard',
+    description: 'Panneau d\'administration avec gestion des cours, etudiants, commandes, rapports, parametres.',
+    attackerType: 'Employe avec acces admin limite tentant elevation de privileges, attaquant externe ayant vole des credentials admin.',
+    dataAtRisk: 'Donnees de tous les utilisateurs, commandes, transactions, parametres systeme.',
+    compliance: 'OWASP A01:2025 Broken Access Control, RBAC, audit trail obligatoire.',
+    focusAreas: [
+      'Horizontal privilege escalation (admin accessing other admin\'s data)',
+      'Vertical privilege escalation (regular admin accessing super-admin features)',
+      'Mass data export without audit logging',
+      'IDOR on admin routes (manipulating entity IDs in URLs)',
+      'Missing tenant isolation on admin queries',
+    ],
+    negativeExamples: [
+      'NE PAS rapporter: "missing auth" si withAdminGuard est present',
+      'NE PAS rapporter: "admin can see all data" — c\'est le but d\'un admin',
+    ],
+  },
+
+  user: {
+    domain: 'User-facing (Account, Dashboard)',
+    description: 'Pages compte utilisateur, tableau de bord client, preferences, historique commandes.',
+    attackerType: 'Utilisateur authentifie tentant acces aux donnees d\'un autre utilisateur.',
+    dataAtRisk: 'Profil utilisateur, adresses, historique commandes, preferences.',
+    compliance: 'OWASP A01:2025, Loi 25 Quebec (droit d\'acces/suppression), RGPD.',
+    focusAreas: [
+      'IDOR on user endpoints (accessing another user\'s orders/profile)',
+      'PII exposure in API responses (unnecessary fields returned)',
+      'Account takeover via session manipulation',
+      'Missing data deletion capability (Loi 25 compliance)',
+    ],
+    negativeExamples: [
+      'NE PAS rapporter: "user can see own PII" — c\'est normal',
+    ],
+  },
+
+  api_core: {
+    domain: 'Core API Infrastructure',
+    description: 'Couche d\'infrastructure: DB, cache, logging, email, rate limiting, middleware.',
+    attackerType: 'Attaquant tentant DoS via rate limit bypass, cache poisoning, log injection.',
+    dataAtRisk: 'Connexions DB, cles de cache, logs contenant potentiellement du PII.',
+    compliance: 'OWASP A05:2025 Security Misconfiguration, defense en profondeur.',
+    focusAreas: [
+      'Database connection pool exhaustion',
+      'Cache key collision (cross-tenant cache poisoning)',
+      'Log injection (user input in log messages)',
+      'Rate limiter bypass via header manipulation',
+      'Middleware ordering (auth before rate limit before handler)',
+    ],
+    negativeExamples: [
+      'NE PAS rapporter: "PII in logs" si le logger masque deja les champs sensibles',
+    ],
+  },
+
+  i18n: {
+    domain: 'Internationalization',
+    description: 'Systeme de traduction 22 langues, hooks useTranslations, fichiers locale JSON.',
+    attackerType: 'Attaquant tentant XSS via cles de traduction malveillantes, ou manipulation de locale.',
+    dataAtRisk: 'Aucune donnee sensible directement (textes UI uniquement).',
+    compliance: 'Accessibilite WCAG 2.2, coherence linguistique.',
+    focusAreas: [
+      'XSS via translation values (HTML in locale files)',
+      'Missing translations causing UI errors',
+      'Locale manipulation causing unexpected behavior',
+      'Inconsistent key coverage across 22 locales',
+    ],
+    negativeExamples: [
+      'NE PAS rapporter: "some locales have English fallback" — c\'est le comportement par defaut',
+    ],
+  },
+
 /**
  * Generate a threat model preamble for injection into the audit prompt.
  */
