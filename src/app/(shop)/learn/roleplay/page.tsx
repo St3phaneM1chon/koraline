@@ -138,7 +138,7 @@ export default function RolePlayCatalogPage() {
  <select
  value={selectedDomain}
  onChange={(e) => setSelectedDomain(e.target.value)}
- className="px-4 py-2 border border-[var(--k-border-default)] rounded-lg bg-white text-[var(--k-text-primary)] focus:ring-2 focus:ring-blue-500"
+ className="px-4 py-2 border border-[var(--k-border-default)] rounded-lg bg-[var(--k-glass-thin)] text-[var(--k-text-primary)] focus:ring-2 focus:ring-[var(--k-accent-indigo)]"
  >
  <option value="all">{t('learn.allArticles')}</option>
  {Object.entries(DOMAIN_LABELS).map(([key, val]) => (
@@ -153,7 +153,7 @@ export default function RolePlayCatalogPage() {
  <select
  value={selectedDifficulty}
  onChange={(e) => setSelectedDifficulty(e.target.value)}
- className="px-4 py-2 border border-[var(--k-border-default)] rounded-lg bg-white text-[var(--k-text-primary)] focus:ring-2 focus:ring-blue-500"
+ className="px-4 py-2 border border-[var(--k-border-default)] rounded-lg bg-[var(--k-glass-thin)] text-[var(--k-text-primary)] focus:ring-2 focus:ring-[var(--k-accent-indigo)]"
  >
  <option value="all">{t('learn.allArticles')}</option>
  <option value="BEGINNER">{t('learn.roleplay.beginner')}</option>

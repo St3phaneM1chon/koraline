@@ -111,7 +111,7 @@ function RevenueExpensesChart({
   noDataLabel: string;
 }) {
   if (data.length === 0) {
-    return <div className="h-64 flex items-center justify-center text-slate-400 text-sm">{noDataLabel}</div>;
+    return <div className="h-64 flex items-center justify-center text-[var(--k-text-muted)] text-sm">{noDataLabel}</div>;
   }
 
   const maxVal = Math.max(...data.flatMap((d) => [d.revenue, d.expenses]), 1);
@@ -183,11 +183,11 @@ function RevenueExpensesChart({
       <div className="flex items-center justify-center gap-6 mt-2">
         <div className="flex items-center gap-2">
           <span className="w-3 h-3 bg-emerald-500 rounded" />
-          <span className="text-sm text-slate-600">{revenueLabel}</span>
+          <span className="text-sm text-[var(--k-text-secondary)]">{revenueLabel}</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="w-3 h-3 bg-red-400 rounded" />
-          <span className="text-sm text-slate-600">{expensesLabel}</span>
+          <span className="text-sm text-[var(--k-text-secondary)]">{expensesLabel}</span>
         </div>
       </div>
     </div>
@@ -207,7 +207,7 @@ function CashFlowLineChart({
   noDataLabel: string;
 }) {
   if (data.length === 0) {
-    return <div className="h-52 flex items-center justify-center text-slate-400 text-sm">{noDataLabel}</div>;
+    return <div className="h-52 flex items-center justify-center text-[var(--k-text-muted)] text-sm">{noDataLabel}</div>;
   }
 
   const values = data.map((d) => d.cashFlow);
@@ -285,8 +285,8 @@ function CashFlowLineChart({
       </svg>
       {/* Legend */}
       <div className="flex items-center justify-center gap-2 mt-1">
-        <span className="w-6 h-0.5 bg-indigo-500 rounded" />
-        <span className="text-sm text-slate-600">{label}</span>
+        <span className="w-6 h-0.5 bg-[#6366f1]/100 rounded" />
+        <span className="text-sm text-[var(--k-text-secondary)]">{label}</span>
       </div>
     </div>
   );
@@ -310,7 +310,7 @@ function ExpenseDonutChart({
   ];
 
   if (data.length === 0) {
-    return <div className="h-52 flex items-center justify-center text-slate-400 text-sm">{noDataLabel}</div>;
+    return <div className="h-52 flex items-center justify-center text-[var(--k-text-muted)] text-sm">{noDataLabel}</div>;
   }
 
   const total = data.reduce((s, d) => s + d.total, 0);
@@ -373,8 +373,8 @@ function ExpenseDonutChart({
               className="w-2.5 h-2.5 rounded-full flex-shrink-0"
               style={{ backgroundColor: colors[i % colors.length] }}
             />
-            <span className="text-slate-600 truncate flex-1">{d.accountName}</span>
-            <span className="text-slate-800 font-medium whitespace-nowrap">{d.percentage}%</span>
+            <span className="text-[var(--k-text-secondary)] truncate flex-1">{d.accountName}</span>
+            <span className="text-[var(--k-text-primary)] font-medium whitespace-nowrap">{d.percentage}%</span>
           </div>
         ))}
       </div>
@@ -695,11 +695,11 @@ export default function ComptabiliteDashboard() {
 
   if (loading) return (
     <div aria-live="polite" aria-busy="true" className="p-8 space-y-4 animate-pulse">
-      <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-1/3"></div>
+      <div className="h-8 bg-[var(--k-glass-thin)] rounded w-1/3"></div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {[1,2,3,4].map(i => <div key={i} className="h-24 bg-slate-200 dark:bg-slate-700 rounded-xl"></div>)}
+        {[1,2,3,4].map(i => <div key={i} className="h-24 bg-[var(--k-glass-thin)] rounded-xl"></div>)}
       </div>
-      <div className="h-64 bg-slate-200 dark:bg-slate-700 rounded-xl"></div>
+      <div className="h-64 bg-[var(--k-glass-thin)] rounded-xl"></div>
     </div>
   );
 
@@ -707,14 +707,14 @@ export default function ComptabiliteDashboard() {
     <div className="space-y-6">
       {/* Error Banner */}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg flex items-center justify-between">
+        <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-lg flex items-center justify-between">
           <div className="flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 flex-shrink-0" />
             <span>{error}</span>
           </div>
           <button
             onClick={() => { setError(null); setLoading(true); fetchDashboard(); }}
-            className="text-red-700 underline font-medium hover:text-red-800"
+            className="text-red-400 underline font-medium hover:text-red-400"
           >
             {t('admin.accounting.reload')}
           </button>
@@ -775,50 +775,50 @@ export default function ComptabiliteDashboard() {
 
       {/* Financial KPIs Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl border border-slate-200 p-4">
+        <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm rounded-xl border border-[var(--k-border-subtle)] p-4">
           <div className="flex items-center gap-2 mb-1">
             <Clock className="w-4 h-4 text-indigo-500" />
-            <span className="text-xs font-medium text-slate-500">DSO</span>
+            <span className="text-xs font-medium text-[var(--k-text-tertiary)]">DSO</span>
           </div>
-          <p className="text-2xl font-bold text-slate-900">{kpis.dso}<span className="text-sm font-normal text-slate-500 ms-1">{t('admin.accounting.chartDays')}</span></p>
-          <p className="text-xs text-slate-500 mt-1">{t('admin.accounting.dsoLabel')}</p>
+          <p className="text-2xl font-bold text-[var(--k-text-primary)]">{kpis.dso}<span className="text-sm font-normal text-[var(--k-text-tertiary)] ms-1">{t('admin.accounting.chartDays')}</span></p>
+          <p className="text-xs text-[var(--k-text-tertiary)] mt-1">{t('admin.accounting.dsoLabel')}</p>
         </div>
-        <div className="bg-white rounded-xl border border-slate-200 p-4">
+        <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm rounded-xl border border-[var(--k-border-subtle)] p-4">
           <div className="flex items-center gap-2 mb-1">
             <Clock className="w-4 h-4 text-purple-500" />
-            <span className="text-xs font-medium text-slate-500">DPO</span>
+            <span className="text-xs font-medium text-[var(--k-text-tertiary)]">DPO</span>
           </div>
-          <p className="text-2xl font-bold text-slate-900">{kpis.dpo}<span className="text-sm font-normal text-slate-500 ms-1">{t('admin.accounting.chartDays')}</span></p>
-          <p className="text-xs text-slate-500 mt-1">{t('admin.accounting.dpoLabel')}</p>
+          <p className="text-2xl font-bold text-[var(--k-text-primary)]">{kpis.dpo}<span className="text-sm font-normal text-[var(--k-text-tertiary)] ms-1">{t('admin.accounting.chartDays')}</span></p>
+          <p className="text-xs text-[var(--k-text-tertiary)] mt-1">{t('admin.accounting.dpoLabel')}</p>
         </div>
-        <div className="bg-white rounded-xl border border-slate-200 p-4">
+        <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm rounded-xl border border-[var(--k-border-subtle)] p-4">
           <div className="flex items-center gap-2 mb-1">
             <Percent className="w-4 h-4 text-emerald-500" />
-            <span className="text-xs font-medium text-slate-500">{t('admin.accounting.currentRatioLabel')}</span>
+            <span className="text-xs font-medium text-[var(--k-text-tertiary)]">{t('admin.accounting.currentRatioLabel')}</span>
           </div>
-          <p className="text-2xl font-bold text-slate-900">{kpis.currentRatio.toFixed(2)}</p>
-          <p className={`text-xs mt-1 ${kpis.currentRatio >= 1.5 ? 'text-emerald-600' : kpis.currentRatio >= 1 ? 'text-yellow-600' : 'text-red-600'}`}>
+          <p className="text-2xl font-bold text-[var(--k-text-primary)]">{kpis.currentRatio.toFixed(2)}</p>
+          <p className={`text-xs mt-1 ${kpis.currentRatio >= 1.5 ? 'text-emerald-400' : kpis.currentRatio >= 1 ? 'text-yellow-400' : 'text-red-400'}`}>
             {kpis.currentRatio >= 1.5 ? t('admin.accounting.ratioHealthy') : kpis.currentRatio >= 1 ? t('admin.accounting.ratioAdequate') : t('admin.accounting.ratioLow')}
           </p>
         </div>
-        <div className="bg-white rounded-xl border border-slate-200 p-4">
+        <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm rounded-xl border border-[var(--k-border-subtle)] p-4">
           <div className="flex items-center gap-2 mb-1">
             <DollarSign className="w-4 h-4 text-amber-500" />
-            <span className="text-xs font-medium text-slate-500">AR / AP</span>
+            <span className="text-xs font-medium text-[var(--k-text-tertiary)]">AR / AP</span>
           </div>
-          <p className="text-lg font-bold text-indigo-600">{formatCurrency(kpis.arOutstanding)}</p>
-          <p className="text-lg font-bold text-red-600">{formatCurrency(kpis.apOutstanding)}</p>
+          <p className="text-lg font-bold text-[#818cf8]">{formatCurrency(kpis.arOutstanding)}</p>
+          <p className="text-lg font-bold text-red-400">{formatCurrency(kpis.apOutstanding)}</p>
         </div>
       </div>
 
       {/* ====== P&L en temps réel + CMV + MoM ====== */}
       <SectionCard title={t('admin.accounting.pnlRealTime')} theme={theme}>
-        <p className="text-xs text-slate-500 mb-4">{t('admin.accounting.pnlSubtitle')}</p>
+        <p className="text-xs text-[var(--k-text-tertiary)] mb-4">{t('admin.accounting.pnlSubtitle')}</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-emerald-50 rounded-lg p-4 border border-emerald-200">
-            <p className="text-xs font-medium text-emerald-600 uppercase">{t('admin.accounting.monthlyRevenue')}</p>
-            <p className="text-xl font-bold text-emerald-700 mt-1">{formatCurrency(stats.caMonth)}</p>
-            <p className={`text-xs mt-1 ${momRevenue >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+          <div className="bg-emerald-500/10 rounded-lg p-4 border border-emerald-500/20">
+            <p className="text-xs font-medium text-emerald-400 uppercase">{t('admin.accounting.monthlyRevenue')}</p>
+            <p className="text-xl font-bold text-emerald-400 mt-1">{formatCurrency(stats.caMonth)}</p>
+            <p className={`text-xs mt-1 ${momRevenue >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
               {momRevenue > 0
                 ? t('admin.accounting.momUp').replace('{value}', momRevenue.toFixed(1))
                 : momRevenue < 0
@@ -826,24 +826,24 @@ export default function ComptabiliteDashboard() {
                   : t('admin.accounting.momFlat')}
             </p>
           </div>
-          <div className="bg-red-50 rounded-lg p-4 border border-red-200">
-            <p className="text-xs font-medium text-red-600 uppercase">{t('admin.accounting.cogsLabel')}</p>
-            <p className="text-xl font-bold text-red-700 mt-1">{formatCurrency(cogs)}</p>
+          <div className="bg-red-500/10 rounded-lg p-4 border border-red-500/20">
+            <p className="text-xs font-medium text-red-400 uppercase">{t('admin.accounting.cogsLabel')}</p>
+            <p className="text-xl font-bold text-red-400 mt-1">{formatCurrency(cogs)}</p>
             <p className="text-xs text-red-500 mt-1">
               {stats.caMonth > 0 ? `${((cogs / stats.caMonth) * 100).toFixed(1)}% du CA` : '--'}
             </p>
           </div>
-          <div className="bg-indigo-50 rounded-lg p-4 border border-indigo-200">
-            <p className="text-xs font-medium text-indigo-600 uppercase">{t('admin.accounting.grossMargin')}</p>
-            <p className="text-xl font-bold text-indigo-700 mt-1">{formatCurrency(grossProfit)}</p>
+          <div className="bg-[#6366f1]/10 rounded-lg p-4 border border-indigo-200">
+            <p className="text-xs font-medium text-[#818cf8] uppercase">{t('admin.accounting.grossMargin')}</p>
+            <p className="text-xl font-bold text-[#818cf8] mt-1">{formatCurrency(grossProfit)}</p>
             <p className="text-xs text-indigo-500 mt-1">
               {stats.caMonth > 0 ? `${((grossProfit / stats.caMonth) * 100).toFixed(1)}%` : '--'}
             </p>
           </div>
-          <div className="bg-violet-50 rounded-lg p-4 border border-violet-200">
-            <p className="text-xs font-medium text-violet-600 uppercase">{t('admin.accounting.netProfit')}</p>
-            <p className="text-xl font-bold text-violet-700 mt-1">{formatCurrency(stats.beneficeNet)}</p>
-            <p className={`text-xs mt-1 ${stats.beneficeNet >= 0 ? 'text-violet-600' : 'text-red-600'}`}>
+          <div className="bg-violet-500/10 rounded-lg p-4 border border-violet-500/20">
+            <p className="text-xs font-medium text-violet-400 uppercase">{t('admin.accounting.netProfit')}</p>
+            <p className="text-xl font-bold text-violet-400 mt-1">{formatCurrency(stats.beneficeNet)}</p>
+            <p className={`text-xs mt-1 ${stats.beneficeNet >= 0 ? 'text-violet-400' : 'text-red-400'}`}>
               {stats.caMonth > 0 ? `${((stats.beneficeNet / stats.caMonth) * 100).toFixed(1)}% marge nette` : '--'}
             </p>
           </div>
@@ -855,26 +855,26 @@ export default function ComptabiliteDashboard() {
         {/* AI Expense Categorization */}
         <SectionCard title={t('admin.accounting.aiCategorization')} theme={theme}>
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-violet-100 rounded-lg">
-              <Brain className="w-5 h-5 text-violet-600" />
+            <div className="p-2 bg-violet-500/15 rounded-lg">
+              <Brain className="w-5 h-5 text-violet-400" />
             </div>
             <div>
-              <p className="text-sm font-medium text-slate-700">{t('admin.accounting.aiCategorizationDesc')}</p>
-              <p className="text-xs text-slate-500">{t('admin.accounting.aiCategories').replace('{count}', String(aiCategorizationStats.totalCategories))}</p>
+              <p className="text-sm font-medium text-[var(--k-text-secondary)]">{t('admin.accounting.aiCategorizationDesc')}</p>
+              <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.accounting.aiCategories').replace('{count}', String(aiCategorizationStats.totalCategories))}</p>
             </div>
           </div>
           <div className="space-y-2">
-            <div className="flex items-center justify-between p-2 bg-green-50 rounded-lg">
-              <span className="text-sm text-green-700">{t('admin.accounting.aiHighConfidence')}</span>
-              <span className="text-sm font-semibold text-green-700">{aiCategorizationStats.highConfidence}</span>
+            <div className="flex items-center justify-between p-2 bg-green-500/10 rounded-lg">
+              <span className="text-sm text-green-400">{t('admin.accounting.aiHighConfidence')}</span>
+              <span className="text-sm font-semibold text-green-400">{aiCategorizationStats.highConfidence}</span>
             </div>
-            <div className="flex items-center justify-between p-2 bg-yellow-50 rounded-lg">
-              <span className="text-sm text-yellow-700">{t('admin.accounting.aiMediumConfidence')}</span>
-              <span className="text-sm font-semibold text-yellow-700">{aiCategorizationStats.mediumConfidence}</span>
+            <div className="flex items-center justify-between p-2 bg-yellow-500/10 rounded-lg">
+              <span className="text-sm text-yellow-400">{t('admin.accounting.aiMediumConfidence')}</span>
+              <span className="text-sm font-semibold text-yellow-400">{aiCategorizationStats.mediumConfidence}</span>
             </div>
-            <div className="flex items-center justify-between p-2 bg-red-50 rounded-lg">
-              <span className="text-sm text-red-700">{t('admin.accounting.aiLowConfidence')}</span>
-              <span className="text-sm font-semibold text-red-700">{aiCategorizationStats.lowConfidence}</span>
+            <div className="flex items-center justify-between p-2 bg-red-500/10 rounded-lg">
+              <span className="text-sm text-red-400">{t('admin.accounting.aiLowConfidence')}</span>
+              <span className="text-sm font-semibold text-red-400">{aiCategorizationStats.lowConfidence}</span>
             </div>
           </div>
         </SectionCard>
@@ -882,40 +882,40 @@ export default function ComptabiliteDashboard() {
         {/* QuickBooks/Xero Export */}
         <SectionCard title={t('admin.accounting.exportSection')} theme={theme}>
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-indigo-100 rounded-lg">
-              <FileDown className="w-5 h-5 text-indigo-600" />
+            <div className="p-2 bg-[#6366f1]/15 rounded-lg">
+              <FileDown className="w-5 h-5 text-[#818cf8]" />
             </div>
-            <p className="text-sm text-slate-600">{t('admin.accounting.period')}: {selectedPeriod}</p>
+            <p className="text-sm text-[var(--k-text-secondary)]">{t('admin.accounting.period')}: {selectedPeriod}</p>
           </div>
           <div className="space-y-3">
             <button
               onClick={() => handleAccountingExport('quickbooks_iif')}
-              className="w-full flex items-center gap-3 p-3 rounded-lg border border-green-200 bg-green-50/50 hover:bg-green-50 transition-colors text-start"
+              className="w-full flex items-center gap-3 p-3 rounded-lg border border-green-500/20 bg-green-500/5 hover:bg-green-500/10 transition-colors text-start"
             >
-              <span className="p-1.5 bg-green-100 rounded text-green-600"><Download className="w-4 h-4" /></span>
+              <span className="p-1.5 bg-green-500/15 rounded text-green-400"><Download className="w-4 h-4" /></span>
               <div>
-                <span className="text-sm font-medium text-slate-800">{t('admin.accounting.exportQuickBooks')}</span>
-                <p className="text-xs text-slate-500">Intuit Interchange Format</p>
+                <span className="text-sm font-medium text-[var(--k-text-primary)]">{t('admin.accounting.exportQuickBooks')}</span>
+                <p className="text-xs text-[var(--k-text-tertiary)]">Intuit Interchange Format</p>
               </div>
             </button>
             <button
               onClick={() => handleAccountingExport('xero_csv')}
-              className="w-full flex items-center gap-3 p-3 rounded-lg border border-indigo-200 bg-indigo-50/50 hover:bg-indigo-50 transition-colors text-start"
+              className="w-full flex items-center gap-3 p-3 rounded-lg border border-indigo-200 bg-[#6366f1]/10/50 hover:bg-[#6366f1]/10 transition-colors text-start"
             >
-              <span className="p-1.5 bg-indigo-100 rounded text-indigo-600"><Download className="w-4 h-4" /></span>
+              <span className="p-1.5 bg-[#6366f1]/15 rounded text-[#818cf8]"><Download className="w-4 h-4" /></span>
               <div>
-                <span className="text-sm font-medium text-slate-800">{t('admin.accounting.exportXero')}</span>
-                <p className="text-xs text-slate-500">Xero CSV Import</p>
+                <span className="text-sm font-medium text-[var(--k-text-primary)]">{t('admin.accounting.exportXero')}</span>
+                <p className="text-xs text-[var(--k-text-tertiary)]">Xero CSV Import</p>
               </div>
             </button>
             <button
               onClick={() => handleAccountingExport('generic_csv')}
-              className="w-full flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-slate-50/50 hover:bg-slate-50 transition-colors text-start"
+              className="w-full flex items-center gap-3 p-3 rounded-lg border border-[var(--k-border-subtle)] bg-[var(--k-bg-surface)]/50 hover:bg-[var(--k-bg-surface)] transition-colors text-start"
             >
-              <span className="p-1.5 bg-slate-100 rounded text-slate-600"><Download className="w-4 h-4" /></span>
+              <span className="p-1.5 bg-[var(--k-glass-thin)] rounded text-[var(--k-text-secondary)]"><Download className="w-4 h-4" /></span>
               <div>
-                <span className="text-sm font-medium text-slate-800">{t('admin.accounting.exportGenericCsv')}</span>
-                <p className="text-xs text-slate-500">CSV standard</p>
+                <span className="text-sm font-medium text-[var(--k-text-primary)]">{t('admin.accounting.exportGenericCsv')}</span>
+                <p className="text-xs text-[var(--k-text-tertiary)]">CSV standard</p>
               </div>
             </button>
           </div>
@@ -924,13 +924,13 @@ export default function ComptabiliteDashboard() {
         {/* Multi-Currency */}
         <SectionCard title={t('admin.accounting.multiCurrency')} theme={theme}>
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-amber-100 rounded-lg">
-              <Globe className="w-5 h-5 text-amber-600" />
+            <div className="p-2 bg-amber-500/15 rounded-lg">
+              <Globe className="w-5 h-5 text-amber-400" />
             </div>
-            <p className="text-sm text-slate-600">{t('admin.accounting.multiCurrencyDesc')}</p>
+            <p className="text-sm text-[var(--k-text-secondary)]">{t('admin.accounting.multiCurrencyDesc')}</p>
           </div>
           {fxLoading ? (
-            <div className="flex items-center justify-center py-6 text-sm text-slate-400">
+            <div className="flex items-center justify-center py-6 text-sm text-[var(--k-text-muted)]">
               <RefreshCw className="w-4 h-4 animate-spin me-2" />
               {t('admin.accounting.fxLoading')}
             </div>
@@ -938,20 +938,20 @@ export default function ComptabiliteDashboard() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-slate-200">
-                    <th className="text-start py-2 text-xs font-semibold text-slate-500 uppercase">{t('admin.accounting.fxPair')}</th>
-                    <th className="text-end py-2 text-xs font-semibold text-slate-500 uppercase">{t('admin.accounting.fxRate')}</th>
-                    <th className="text-end py-2 text-xs font-semibold text-slate-500 uppercase">{t('admin.accounting.fxSource')}</th>
+                  <tr className="border-b border-[var(--k-border-subtle)]">
+                    <th className="text-start py-2 text-xs font-semibold text-[var(--k-text-tertiary)] uppercase">{t('admin.accounting.fxPair')}</th>
+                    <th className="text-end py-2 text-xs font-semibold text-[var(--k-text-tertiary)] uppercase">{t('admin.accounting.fxRate')}</th>
+                    <th className="text-end py-2 text-xs font-semibold text-[var(--k-text-tertiary)] uppercase">{t('admin.accounting.fxSource')}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-[var(--k-border-subtle)]">
                   {fxRates.map((fx) => (
-                    <tr key={`${fx.from}/${fx.to}`} className="hover:bg-slate-50">
-                      <td className="py-2.5 font-medium text-slate-900">{fx.from}/{fx.to}</td>
-                      <td className="py-2.5 text-end font-mono text-slate-800">{fx.rate.toFixed(4)}</td>
+                    <tr key={`${fx.from}/${fx.to}`} className="hover:bg-[var(--k-bg-surface)]">
+                      <td className="py-2.5 font-medium text-[var(--k-text-primary)]">{fx.from}/{fx.to}</td>
+                      <td className="py-2.5 text-end font-mono text-[var(--k-text-primary)]">{fx.rate.toFixed(4)}</td>
                       <td className="py-2.5 text-end">
                         <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                          fx.source === 'bank_of_canada' ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'
+                          fx.source === 'bank_of_canada' ? 'bg-green-500/15 text-green-400' : 'bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)]'
                         }`}>
                           {fx.source === 'bank_of_canada' ? t('admin.accounting.fxLive') : t('admin.accounting.fxFallback')}
                         </span>
@@ -968,68 +968,68 @@ export default function ComptabiliteDashboard() {
       {/* ====== Canadian Tax Summary ====== */}
       <SectionCard title={t('admin.accounting.taxSummary')} theme={theme}>
         <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 bg-red-100 rounded-lg">
-            <MapPin className="w-5 h-5 text-red-600" />
+          <div className="p-2 bg-red-500/15 rounded-lg">
+            <MapPin className="w-5 h-5 text-red-400" />
           </div>
-          <p className="text-sm text-slate-600">{t('admin.accounting.taxSummaryDesc')}</p>
+          <p className="text-sm text-[var(--k-text-secondary)]">{t('admin.accounting.taxSummaryDesc')}</p>
         </div>
         {taxByProvince.length === 0 ? (
-          <p className="text-sm text-slate-400 text-center py-6">{t('admin.accounting.taxNoData')}</p>
+          <p className="text-sm text-[var(--k-text-muted)] text-center py-6">{t('admin.accounting.taxNoData')}</p>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Tax Table */}
             <div className="lg:col-span-2 overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-slate-200">
-                    <th className="text-start py-2 text-xs font-semibold text-slate-500 uppercase">{t('admin.accounting.taxProvince')}</th>
-                    <th className="text-end py-2 text-xs font-semibold text-slate-500 uppercase">{t('admin.accounting.taxGst')}</th>
-                    <th className="text-end py-2 text-xs font-semibold text-slate-500 uppercase">{t('admin.accounting.taxQst')}</th>
-                    <th className="text-end py-2 text-xs font-semibold text-slate-500 uppercase">{t('admin.accounting.taxHst')}</th>
-                    <th className="text-end py-2 text-xs font-semibold text-slate-500 uppercase">{t('admin.accounting.taxPst')}</th>
-                    <th className="text-end py-2 text-xs font-semibold text-slate-500 uppercase">{t('admin.accounting.taxTotal')}</th>
+                  <tr className="border-b border-[var(--k-border-subtle)]">
+                    <th className="text-start py-2 text-xs font-semibold text-[var(--k-text-tertiary)] uppercase">{t('admin.accounting.taxProvince')}</th>
+                    <th className="text-end py-2 text-xs font-semibold text-[var(--k-text-tertiary)] uppercase">{t('admin.accounting.taxGst')}</th>
+                    <th className="text-end py-2 text-xs font-semibold text-[var(--k-text-tertiary)] uppercase">{t('admin.accounting.taxQst')}</th>
+                    <th className="text-end py-2 text-xs font-semibold text-[var(--k-text-tertiary)] uppercase">{t('admin.accounting.taxHst')}</th>
+                    <th className="text-end py-2 text-xs font-semibold text-[var(--k-text-tertiary)] uppercase">{t('admin.accounting.taxPst')}</th>
+                    <th className="text-end py-2 text-xs font-semibold text-[var(--k-text-tertiary)] uppercase">{t('admin.accounting.taxTotal')}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-[var(--k-border-subtle)]">
                   {taxByProvince.map((tax) => (
-                    <tr key={tax.province} className="hover:bg-slate-50">
-                      <td className="py-2.5 font-medium text-slate-900">{tax.provinceName} ({tax.province})</td>
-                      <td className="py-2.5 text-end text-slate-700">{tax.gst > 0 ? formatCurrency(tax.gst) : '-'}</td>
-                      <td className="py-2.5 text-end text-slate-700">{tax.qst > 0 ? formatCurrency(tax.qst) : '-'}</td>
-                      <td className="py-2.5 text-end text-slate-700">{tax.hst > 0 ? formatCurrency(tax.hst) : '-'}</td>
-                      <td className="py-2.5 text-end text-slate-700">{tax.pst > 0 ? formatCurrency(tax.pst) : '-'}</td>
-                      <td className="py-2.5 text-end font-bold text-slate-900">{formatCurrency(tax.total)}</td>
+                    <tr key={tax.province} className="hover:bg-[var(--k-bg-surface)]">
+                      <td className="py-2.5 font-medium text-[var(--k-text-primary)]">{tax.provinceName} ({tax.province})</td>
+                      <td className="py-2.5 text-end text-[var(--k-text-secondary)]">{tax.gst > 0 ? formatCurrency(tax.gst) : '-'}</td>
+                      <td className="py-2.5 text-end text-[var(--k-text-secondary)]">{tax.qst > 0 ? formatCurrency(tax.qst) : '-'}</td>
+                      <td className="py-2.5 text-end text-[var(--k-text-secondary)]">{tax.hst > 0 ? formatCurrency(tax.hst) : '-'}</td>
+                      <td className="py-2.5 text-end text-[var(--k-text-secondary)]">{tax.pst > 0 ? formatCurrency(tax.pst) : '-'}</td>
+                      <td className="py-2.5 text-end font-bold text-[var(--k-text-primary)]">{formatCurrency(tax.total)}</td>
                     </tr>
                   ))}
                 </tbody>
-                <tfoot className="border-t-2 border-slate-300">
+                <tfoot className="border-t-2 border-[var(--k-border-default)]">
                   <tr>
-                    <td className="py-2.5 font-bold text-slate-900">{t('common.total')}</td>
-                    <td className="py-2.5 text-end font-bold text-slate-900">{formatCurrency(taxByProvince.reduce((s, tp) => s + tp.gst, 0))}</td>
-                    <td className="py-2.5 text-end font-bold text-slate-900">{formatCurrency(taxByProvince.reduce((s, tp) => s + tp.qst, 0))}</td>
-                    <td className="py-2.5 text-end font-bold text-slate-900">{formatCurrency(taxByProvince.reduce((s, tp) => s + tp.hst, 0))}</td>
-                    <td className="py-2.5 text-end font-bold text-slate-900">{formatCurrency(taxByProvince.reduce((s, tp) => s + tp.pst, 0))}</td>
-                    <td className="py-2.5 text-end font-bold text-emerald-700">{formatCurrency(taxByProvince.reduce((s, tp) => s + tp.total, 0))}</td>
+                    <td className="py-2.5 font-bold text-[var(--k-text-primary)]">{t('common.total')}</td>
+                    <td className="py-2.5 text-end font-bold text-[var(--k-text-primary)]">{formatCurrency(taxByProvince.reduce((s, tp) => s + tp.gst, 0))}</td>
+                    <td className="py-2.5 text-end font-bold text-[var(--k-text-primary)]">{formatCurrency(taxByProvince.reduce((s, tp) => s + tp.qst, 0))}</td>
+                    <td className="py-2.5 text-end font-bold text-[var(--k-text-primary)]">{formatCurrency(taxByProvince.reduce((s, tp) => s + tp.hst, 0))}</td>
+                    <td className="py-2.5 text-end font-bold text-[var(--k-text-primary)]">{formatCurrency(taxByProvince.reduce((s, tp) => s + tp.pst, 0))}</td>
+                    <td className="py-2.5 text-end font-bold text-emerald-400">{formatCurrency(taxByProvince.reduce((s, tp) => s + tp.total, 0))}</td>
                   </tr>
                 </tfoot>
               </table>
             </div>
             {/* Upcoming Remittance Dates */}
             <div className="space-y-3">
-              <h4 className="text-sm font-semibold text-slate-700">{t('admin.accounting.taxRemittanceDates')}</h4>
-              <div className="p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
+              <h4 className="text-sm font-semibold text-[var(--k-text-secondary)]">{t('admin.accounting.taxRemittanceDates')}</h4>
+              <div className="p-3 bg-[#6366f1]/10 border border-indigo-200 rounded-lg">
                 <div className="flex items-center gap-2 mb-1">
-                  <CalendarDays className="w-4 h-4 text-indigo-600" />
-                  <span className="text-sm font-medium text-indigo-800">{t('admin.accounting.taxRemittanceGst')}</span>
+                  <CalendarDays className="w-4 h-4 text-[#818cf8]" />
+                  <span className="text-sm font-medium text-[#818cf8]">{t('admin.accounting.taxRemittanceGst')}</span>
                 </div>
-                <p className="text-xs text-indigo-600 ms-6">{t('admin.accounting.taxQuarterly')} - 30 avril 2026</p>
+                <p className="text-xs text-[#818cf8] ms-6">{t('admin.accounting.taxQuarterly')} - 30 avril 2026</p>
               </div>
-              <div className="p-3 bg-violet-50 border border-violet-200 rounded-lg">
+              <div className="p-3 bg-violet-500/10 border border-violet-500/20 rounded-lg">
                 <div className="flex items-center gap-2 mb-1">
-                  <CalendarDays className="w-4 h-4 text-violet-600" />
-                  <span className="text-sm font-medium text-violet-800">{t('admin.accounting.taxRemittanceQst')}</span>
+                  <CalendarDays className="w-4 h-4 text-violet-400" />
+                  <span className="text-sm font-medium text-violet-400">{t('admin.accounting.taxRemittanceQst')}</span>
                 </div>
-                <p className="text-xs text-violet-600 ms-6">{t('admin.accounting.taxQuarterly')} - 30 avril 2026</p>
+                <p className="text-xs text-violet-400 ms-6">{t('admin.accounting.taxQuarterly')} - 30 avril 2026</p>
               </div>
             </div>
           </div>
@@ -1076,7 +1076,7 @@ export default function ComptabiliteDashboard() {
         <SectionCard title={t('admin.accounting.alertsTitle')} theme={theme}>
           <div className="space-y-3">
             {alerts.length === 0 && (
-              <div className="text-sm text-slate-400 text-center py-6">{t('admin.accounting.noAlerts')}</div>
+              <div className="text-sm text-[var(--k-text-muted)] text-center py-6">{t('admin.accounting.noAlerts')}</div>
             )}
             {alerts.map((alert) => {
               const AlertIcon = alertIcons[alert.type];
@@ -1085,9 +1085,9 @@ export default function ComptabiliteDashboard() {
                   key={alert.id}
                   href={alert.link || '#'}
                   className={`flex items-start gap-3 p-3 rounded-lg border ${
-                    alert.type === 'danger' ? 'bg-red-50 border-red-200' :
-                    alert.type === 'warning' ? 'bg-yellow-50 border-yellow-200' :
-                    'bg-indigo-50 border-indigo-200'
+                    alert.type === 'danger' ? 'bg-red-500/10 border-red-500/20' :
+                    alert.type === 'warning' ? 'bg-yellow-500/10 border-yellow-500/20' :
+                    'bg-[#6366f1]/10 border-indigo-200'
                   }`}
                 >
                   <AlertIcon className={`w-5 h-5 mt-0.5 flex-shrink-0 ${
@@ -1096,9 +1096,9 @@ export default function ComptabiliteDashboard() {
                     'text-indigo-500'
                   }`} />
                   <p className={`text-sm ${
-                    alert.type === 'danger' ? 'text-red-800' :
-                    alert.type === 'warning' ? 'text-yellow-800' :
-                    'text-indigo-800'
+                    alert.type === 'danger' ? 'text-red-400' :
+                    alert.type === 'warning' ? 'text-yellow-400' :
+                    'text-[#818cf8]'
                   }`}>
                     {alert.message}
                   </p>
@@ -1116,26 +1116,26 @@ export default function ComptabiliteDashboard() {
           title={t('admin.accounting.tasksTodo')}
           theme={theme}
           headerAction={
-            <Link href="/admin/comptabilite/cloture" className="text-xs font-medium text-slate-500 hover:text-slate-700 transition-colors">
+            <Link href="/admin/comptabilite/cloture" className="text-xs font-medium text-[var(--k-text-tertiary)] hover:text-[var(--k-text-secondary)] transition-colors">
               {t('admin.accounting.viewAll')} &rarr;
             </Link>
           }
         >
           <div className="space-y-3">
             {tasks.length === 0 && (
-              <div className="text-sm text-slate-400 text-center py-6">{t('admin.accounting.noTasks')}</div>
+              <div className="text-sm text-[var(--k-text-muted)] text-center py-6">{t('admin.accounting.noTasks')}</div>
             )}
             {tasks.map((task) => (
-              <div key={task.id} className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+              <div key={task.id} className="flex items-center gap-3 p-3 bg-[var(--k-bg-surface)] rounded-lg">
                 <input
                   type="checkbox"
                   checked={task.completed}
                   onChange={() => {}}
-                  className="w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                  className="w-4 h-4 rounded border-[var(--k-border-default)] text-emerald-400 focus:ring-emerald-500"
                 />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-900 truncate">{task.title}</p>
-                  <p className="text-xs text-slate-500">{t('admin.accounting.dueDate').replace('{date}', new Date(task.dueDate).toLocaleDateString(locale))}</p>
+                  <p className="text-sm font-medium text-[var(--k-text-primary)] truncate">{task.title}</p>
+                  <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.accounting.dueDate').replace('{date}', new Date(task.dueDate).toLocaleDateString(locale))}</p>
                 </div>
                 <StatusBadge
                   variant={
@@ -1156,74 +1156,74 @@ export default function ComptabiliteDashboard() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             <Link
               href="/admin/comptabilite/ecritures?new=true"
-              className="flex items-center gap-3 p-4 rounded-lg border border-emerald-100 bg-emerald-50/50 hover:bg-emerald-50 transition-colors group"
+              className="flex items-center gap-3 p-4 rounded-lg border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 transition-colors group"
             >
-              <span className="p-2 bg-emerald-100 rounded-lg text-emerald-600 group-hover:bg-emerald-200 transition-colors">
+              <span className="p-2 bg-emerald-500/15 rounded-lg text-emerald-400 group-hover:bg-emerald-500/20 transition-colors">
                 <Plus className="w-5 h-5" />
               </span>
               <div>
-                <span className="font-medium text-slate-800 text-sm">{t('admin.accounting.newEntry')}</span>
-                <p className="text-xs text-slate-500">{t('admin.accountingLayout.sectionEntry')}</p>
+                <span className="font-medium text-[var(--k-text-primary)] text-sm">{t('admin.accounting.newEntry')}</span>
+                <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.accountingLayout.sectionEntry')}</p>
               </div>
             </Link>
             <Link
               href="/admin/comptabilite/rapprochement"
-              className="flex items-center gap-3 p-4 rounded-lg border border-indigo-100 bg-indigo-50/50 hover:bg-indigo-50 transition-colors group"
+              className="flex items-center gap-3 p-4 rounded-lg border border-indigo-100 bg-[#6366f1]/10/50 hover:bg-[#6366f1]/10 transition-colors group"
             >
-              <span className="p-2 bg-indigo-100 rounded-lg text-indigo-600 group-hover:bg-indigo-200 transition-colors">
+              <span className="p-2 bg-[#6366f1]/15 rounded-lg text-[#818cf8] group-hover:bg-indigo-200 transition-colors">
                 <CheckCircle className="w-5 h-5" />
               </span>
               <div>
-                <span className="font-medium text-slate-800 text-sm">{t('admin.accounting.reconciliation')}</span>
-                <p className="text-xs text-slate-500">{t('admin.accountingLayout.sectionBank')}</p>
+                <span className="font-medium text-[var(--k-text-primary)] text-sm">{t('admin.accounting.reconciliation')}</span>
+                <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.accountingLayout.sectionBank')}</p>
               </div>
             </Link>
             <Link
               href="/admin/comptabilite/etats-financiers"
-              className="flex items-center gap-3 p-4 rounded-lg border border-violet-100 bg-violet-50/50 hover:bg-violet-50 transition-colors group"
+              className="flex items-center gap-3 p-4 rounded-lg border border-violet-500/20 bg-violet-500/5 hover:bg-violet-500/10 transition-colors group"
             >
-              <span className="p-2 bg-violet-100 rounded-lg text-violet-600 group-hover:bg-violet-200 transition-colors">
+              <span className="p-2 bg-violet-500/15 rounded-lg text-violet-400 group-hover:bg-violet-200 transition-colors">
                 <FileText className="w-5 h-5" />
               </span>
               <div>
-                <span className="font-medium text-slate-800 text-sm">{t('admin.accounting.financialStatements')}</span>
-                <p className="text-xs text-slate-500">{t('admin.accountingLayout.sectionReports')}</p>
+                <span className="font-medium text-[var(--k-text-primary)] text-sm">{t('admin.accounting.financialStatements')}</span>
+                <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.accountingLayout.sectionReports')}</p>
               </div>
             </Link>
             <Link
               href="/admin/comptabilite/calendrier-fiscal"
-              className="flex items-center gap-3 p-4 rounded-lg border border-amber-100 bg-amber-50/50 hover:bg-amber-50 transition-colors group"
+              className="flex items-center gap-3 p-4 rounded-lg border border-amber-500/20 bg-amber-500/5 hover:bg-amber-500/10 transition-colors group"
             >
-              <span className="p-2 bg-amber-100 rounded-lg text-amber-600 group-hover:bg-amber-200 transition-colors">
+              <span className="p-2 bg-amber-500/15 rounded-lg text-amber-400 group-hover:bg-amber-200 transition-colors">
                 <CalendarDays className="w-5 h-5" />
               </span>
               <div>
-                <span className="font-medium text-slate-800 text-sm">{t('admin.accounting.fiscalCalendar')}</span>
-                <p className="text-xs text-slate-500">{t('admin.accounting.fiscalCalendarSub')}</p>
+                <span className="font-medium text-[var(--k-text-primary)] text-sm">{t('admin.accounting.fiscalCalendar')}</span>
+                <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.accounting.fiscalCalendarSub')}</p>
               </div>
             </Link>
             <Link
               href="/admin/comptabilite/immobilisations"
-              className="flex items-center gap-3 p-4 rounded-lg border border-indigo-100 bg-indigo-50/50 hover:bg-indigo-50 transition-colors group"
+              className="flex items-center gap-3 p-4 rounded-lg border border-indigo-100 bg-[#6366f1]/10/50 hover:bg-[#6366f1]/10 transition-colors group"
             >
-              <span className="p-2 bg-indigo-100 rounded-lg text-indigo-600 group-hover:bg-indigo-200 transition-colors">
+              <span className="p-2 bg-[#6366f1]/15 rounded-lg text-[#818cf8] group-hover:bg-indigo-200 transition-colors">
                 <Building2 className="w-5 h-5" />
               </span>
               <div>
-                <span className="font-medium text-slate-800 text-sm">{t('admin.accounting.fixedAssets')}</span>
-                <p className="text-xs text-slate-500">{t('admin.accounting.fixedAssetsSub')}</p>
+                <span className="font-medium text-[var(--k-text-primary)] text-sm">{t('admin.accounting.fixedAssets')}</span>
+                <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.accounting.fixedAssetsSub')}</p>
               </div>
             </Link>
             <Link
               href="/admin/comptabilite/declaration-tps-tvq"
-              className="flex items-center gap-3 p-4 rounded-lg border border-amber-100 bg-amber-50/50 hover:bg-amber-50 transition-colors group"
+              className="flex items-center gap-3 p-4 rounded-lg border border-amber-500/20 bg-amber-500/5 hover:bg-amber-500/10 transition-colors group"
             >
-              <span className="p-2 bg-amber-100 rounded-lg text-amber-600 group-hover:bg-amber-200 transition-colors">
+              <span className="p-2 bg-amber-500/15 rounded-lg text-amber-400 group-hover:bg-amber-200 transition-colors">
                 <Receipt className="w-5 h-5" />
               </span>
               <div>
-                <span className="font-medium text-slate-800 text-sm">{t('admin.accounting.tpsTvq')}</span>
-                <p className="text-xs text-slate-500">{t('admin.accounting.tpsTvqSub')}</p>
+                <span className="font-medium text-[var(--k-text-primary)] text-sm">{t('admin.accounting.tpsTvq')}</span>
+                <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.accounting.tpsTvqSub')}</p>
               </div>
             </Link>
           </div>

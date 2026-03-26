@@ -212,11 +212,11 @@ export default function RapprochementPage() {
 
   if (loading) return (
     <div aria-live="polite" aria-busy="true" className="p-8 space-y-4 animate-pulse">
-      <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-1/3"></div>
+      <div className="h-8 bg-[var(--k-glass-thin)] rounded w-1/3"></div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {[1,2,3,4].map(i => <div key={i} className="h-24 bg-slate-200 dark:bg-slate-700 rounded-xl"></div>)}
+        {[1,2,3,4].map(i => <div key={i} className="h-24 bg-[var(--k-glass-thin)] rounded-xl"></div>)}
       </div>
-      <div className="h-64 bg-slate-200 dark:bg-slate-700 rounded-xl"></div>
+      <div className="h-64 bg-[var(--k-glass-thin)] rounded-xl"></div>
     </div>
   );
 
@@ -224,11 +224,11 @@ export default function RapprochementPage() {
     <div className="space-y-6">
       {/* Error Banner */}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-4 flex items-center justify-between">
+        <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-lg mb-4 flex items-center justify-between">
           <span>{error}</span>
           <button
             onClick={() => { setError(null); fetchData(); }}
-            className="text-red-700 underline font-medium hover:text-red-800"
+            className="text-red-400 underline font-medium hover:text-red-400"
           >
             R&eacute;essayer
           </button>
@@ -253,11 +253,11 @@ export default function RapprochementPage() {
       <SectionCard theme={theme}>
         <div className="flex gap-4">
           <div>
-            <label className="block text-xs text-slate-500 mb-1">{t('admin.reconciliation.accountLabel')}</label>
+            <label className="block text-xs text-[var(--k-text-tertiary)] mb-1">{t('admin.reconciliation.accountLabel')}</label>
             <select
               value={selectedAccount}
               onChange={(e) => setSelectedAccount(e.target.value)}
-              className="h-9 px-4 border border-slate-300 rounded-lg bg-white text-sm text-slate-700
+              className="h-9 px-4 border border-[var(--k-border-default)] rounded-lg bg-[var(--k-glass-thin)] backdrop-blur-sm text-sm text-[var(--k-text-secondary)]
                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             >
               {bankAccounts.map(acc => (
@@ -268,12 +268,12 @@ export default function RapprochementPage() {
             </select>
           </div>
           <div>
-            <label className="block text-xs text-slate-500 mb-1">{t('admin.reconciliation.periodLabel')}</label>
+            <label className="block text-xs text-[var(--k-text-tertiary)] mb-1">{t('admin.reconciliation.periodLabel')}</label>
             <input
               type="month"
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.target.value)}
-              className="h-9 px-4 border border-slate-300 rounded-lg text-sm text-slate-700
+              className="h-9 px-4 border border-[var(--k-border-default)] rounded-lg text-sm text-[var(--k-text-secondary)]
                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
@@ -283,23 +283,23 @@ export default function RapprochementPage() {
       {/* Summary */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <SectionCard theme={theme}>
-          <p className="text-sm text-slate-500">{t('admin.reconciliation.statementBalance')}</p>
-          <p className="text-2xl font-bold text-slate-900">{formatCurrency(bankBalance)}</p>
+          <p className="text-sm text-[var(--k-text-tertiary)]">{t('admin.reconciliation.statementBalance')}</p>
+          <p className="text-2xl font-bold text-[var(--k-text-primary)]">{formatCurrency(bankBalance)}</p>
         </SectionCard>
         <SectionCard theme={theme}>
-          <p className="text-sm text-slate-500">{t('admin.reconciliation.bookBalance')}</p>
-          <p className="text-2xl font-bold text-slate-900">{formatCurrency(bookBalance)}</p>
+          <p className="text-sm text-[var(--k-text-tertiary)]">{t('admin.reconciliation.bookBalance')}</p>
+          <p className="text-2xl font-bold text-[var(--k-text-primary)]">{formatCurrency(bookBalance)}</p>
         </SectionCard>
-        <div className={`rounded-xl p-4 border ${difference === 0 ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
-          <p className={`text-sm ${difference === 0 ? 'text-green-600' : 'text-red-600'}`}>{t('admin.reconciliation.difference')}</p>
-          <p className={`text-2xl font-bold ${difference === 0 ? 'text-green-700' : 'text-red-700'}`}>
+        <div className={`rounded-xl p-4 border ${difference === 0 ? 'bg-green-500/10 border-green-500/20' : 'bg-red-500/10 border-red-500/20'}`}>
+          <p className={`text-sm ${difference === 0 ? 'text-green-400' : 'text-red-400'}`}>{t('admin.reconciliation.difference')}</p>
+          <p className={`text-2xl font-bold ${difference === 0 ? 'text-green-400' : 'text-red-400'}`}>
             {formatCurrency(difference)}
           </p>
         </div>
         <div className={`rounded-xl p-4 border ${theme.borderLight} ${theme.surfaceLight}`}>
-          <p className="text-sm text-indigo-600">{t('admin.reconciliation.progress')}</p>
-          <p className="text-2xl font-bold text-indigo-700">{bankTransactions.length > 0 ? Math.round((matchedCount / bankTransactions.length) * 100) : 0}%</p>
-          <p className="text-xs text-indigo-600">{matchedCount}/{bankTransactions.length} {t('admin.reconciliation.reconciled')}</p>
+          <p className="text-sm text-[#818cf8]">{t('admin.reconciliation.progress')}</p>
+          <p className="text-2xl font-bold text-[#818cf8]">{bankTransactions.length > 0 ? Math.round((matchedCount / bankTransactions.length) * 100) : 0}%</p>
+          <p className="text-xs text-[#818cf8]">{matchedCount}/{bankTransactions.length} {t('admin.reconciliation.reconciled')}</p>
         </div>
       </div>
 
@@ -313,31 +313,31 @@ export default function RapprochementPage() {
         >
           <div className="max-h-[500px] overflow-y-auto overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-slate-50 sticky top-0">
+              <thead className="bg-[var(--k-bg-surface)] sticky top-0">
                 <tr>
-                  <th scope="col" className="px-3 py-2 text-start text-xs font-semibold text-slate-500">{t('admin.reconciliation.dateCol')}</th>
-                  <th scope="col" className="px-3 py-2 text-start text-xs font-semibold text-slate-500">{t('admin.reconciliation.descriptionCol')}</th>
-                  <th scope="col" className="px-3 py-2 text-end text-xs font-semibold text-slate-500">{t('admin.reconciliation.amountCol')}</th>
-                  <th scope="col" className="px-3 py-2 text-center text-xs font-semibold text-slate-500">{t('admin.reconciliation.actionCol')}</th>
+                  <th scope="col" className="px-3 py-2 text-start text-xs font-semibold text-[var(--k-text-tertiary)]">{t('admin.reconciliation.dateCol')}</th>
+                  <th scope="col" className="px-3 py-2 text-start text-xs font-semibold text-[var(--k-text-tertiary)]">{t('admin.reconciliation.descriptionCol')}</th>
+                  <th scope="col" className="px-3 py-2 text-end text-xs font-semibold text-[var(--k-text-tertiary)]">{t('admin.reconciliation.amountCol')}</th>
+                  <th scope="col" className="px-3 py-2 text-center text-xs font-semibold text-[var(--k-text-tertiary)]">{t('admin.reconciliation.actionCol')}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200">
+              <tbody className="divide-y divide-[var(--k-border-subtle)]">
                 {bankTransactions.map((tx) => (
-                  <tr key={tx.id} className={tx.reconciliationStatus === 'MATCHED' ? 'bg-green-50/50' : 'bg-yellow-50/50'}>
+                  <tr key={tx.id} className={tx.reconciliationStatus === 'MATCHED' ? 'bg-green-500/5' : 'bg-yellow-500/5'}>
                     <td className="px-3 py-2 text-sm">{formatDate(tx.date)}</td>
                     <td className="px-3 py-2 text-sm truncate max-w-[150px]" title={tx.description}>{tx.description}</td>
-                    <td className={`px-3 py-2 text-sm text-end font-medium ${tx.type === 'CREDIT' ? 'text-green-600' : 'text-red-600'}`}>
+                    <td className={`px-3 py-2 text-sm text-end font-medium ${tx.type === 'CREDIT' ? 'text-green-400' : 'text-red-400'}`}>
                       {tx.type === 'CREDIT' ? '+' : '-'}{formatCurrency(tx.amount)}
                     </td>
                     <td className="px-3 py-2 text-center">
                       {tx.reconciliationStatus === 'MATCHED' ? (
-                        <span className="text-green-600">
+                        <span className="text-green-400">
                           <Check className="w-4 h-4 inline" />
                         </span>
                       ) : (
                         <button
                           onClick={() => handleMatch(tx)}
-                          className={`px-2 py-1 ${theme.surfaceLight} text-indigo-700 rounded text-xs hover:bg-indigo-100`}
+                          className={`px-2 py-1 ${theme.surfaceLight} text-[#818cf8] rounded text-xs hover:bg-[#6366f1]/15`}
                         >
                           {t('admin.reconciliation.reconcileBtn')}
                         </button>
@@ -346,7 +346,7 @@ export default function RapprochementPage() {
                   </tr>
                 ))}
                 {bankTransactions.length === 0 && (
-                  <tr><td colSpan={4} className="px-3 py-8 text-center text-slate-400">{t('admin.reconciliation.noBankTransactions')}</td></tr>
+                  <tr><td colSpan={4} className="px-3 py-8 text-center text-[var(--k-text-muted)]">{t('admin.reconciliation.noBankTransactions')}</td></tr>
                 )}
               </tbody>
             </table>
@@ -361,31 +361,31 @@ export default function RapprochementPage() {
         >
           <div className="max-h-[500px] overflow-y-auto overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-slate-50 sticky top-0">
+              <thead className="bg-[var(--k-bg-surface)] sticky top-0">
                 <tr>
-                  <th scope="col" className="px-3 py-2 text-start text-xs font-semibold text-slate-500">{t('admin.reconciliation.dateCol')}</th>
-                  <th scope="col" className="px-3 py-2 text-start text-xs font-semibold text-slate-500">{t('admin.reconciliation.descriptionCol')}</th>
-                  <th scope="col" className="px-3 py-2 text-end text-xs font-semibold text-slate-500">{t('admin.reconciliation.amountCol')}</th>
-                  <th scope="col" className="px-3 py-2 text-center text-xs font-semibold text-slate-500">{t('admin.reconciliation.statusCol')}</th>
+                  <th scope="col" className="px-3 py-2 text-start text-xs font-semibold text-[var(--k-text-tertiary)]">{t('admin.reconciliation.dateCol')}</th>
+                  <th scope="col" className="px-3 py-2 text-start text-xs font-semibold text-[var(--k-text-tertiary)]">{t('admin.reconciliation.descriptionCol')}</th>
+                  <th scope="col" className="px-3 py-2 text-end text-xs font-semibold text-[var(--k-text-tertiary)]">{t('admin.reconciliation.amountCol')}</th>
+                  <th scope="col" className="px-3 py-2 text-center text-xs font-semibold text-[var(--k-text-tertiary)]">{t('admin.reconciliation.statusCol')}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200">
+              <tbody className="divide-y divide-[var(--k-border-subtle)]">
                 {journalEntries.map((entry) => {
                   const isMatched = bankTransactions.some(bt => bt.matchedEntryId === entry.id);
                   const amount = Math.max(entry.totalDebits, entry.totalCredits);
                   return (
-                    <tr key={entry.id} className={isMatched ? 'bg-green-50/50' : 'bg-yellow-50/50'}>
+                    <tr key={entry.id} className={isMatched ? 'bg-green-500/5' : 'bg-yellow-500/5'}>
                       <td className="px-3 py-2 text-sm">{formatDate(entry.date)}</td>
                       <td className="px-3 py-2">
                         <p className="text-sm truncate max-w-[150px]" title={entry.description}>{entry.description}</p>
-                        <p className="text-xs text-slate-500">{entry.entryNumber}</p>
+                        <p className="text-xs text-[var(--k-text-tertiary)]">{entry.entryNumber}</p>
                       </td>
-                      <td className="px-3 py-2 text-sm text-end font-medium text-slate-700">
+                      <td className="px-3 py-2 text-sm text-end font-medium text-[var(--k-text-secondary)]">
                         {formatCurrency(amount)}
                       </td>
                       <td className="px-3 py-2 text-center">
                         {isMatched ? (
-                          <span className="text-green-600">
+                          <span className="text-green-400">
                             <Check className="w-4 h-4 inline" />
                           </span>
                         ) : (
@@ -396,7 +396,7 @@ export default function RapprochementPage() {
                   );
                 })}
                 {journalEntries.length === 0 && (
-                  <tr><td colSpan={4} className="px-3 py-8 text-center text-slate-400">{t('admin.reconciliation.noJournalEntries')}</td></tr>
+                  <tr><td colSpan={4} className="px-3 py-8 text-center text-[var(--k-text-muted)]">{t('admin.reconciliation.noJournalEntries')}</td></tr>
                 )}
               </tbody>
             </table>
@@ -406,10 +406,10 @@ export default function RapprochementPage() {
 
       {/* Complete Reconciliation Button */}
       {difference === 0 && unmatchedBank.length === 0 && bankTransactions.length > 0 && (
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 text-center">
-          <CheckCircle className="w-12 h-12 mx-auto text-green-600 mb-3" />
-          <h3 className="text-lg font-semibold text-green-900 mb-2">{t('admin.reconciliation.reconciliationComplete')}</h3>
-          <p className="text-green-700 mb-4">{t('admin.reconciliation.allTransactionsReconciled')}</p>
+        <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-6 text-center">
+          <CheckCircle className="w-12 h-12 mx-auto text-green-400 mb-3" />
+          <h3 className="text-lg font-semibold text-green-400 mb-2">{t('admin.reconciliation.reconciliationComplete')}</h3>
+          <p className="text-green-400 mb-4">{t('admin.reconciliation.allTransactionsReconciled')}</p>
           <Button variant="primary" className={`${theme.btnPrimary} border-transparent text-white`}>
             {t('admin.reconciliation.validateReconciliation')}
           </Button>
@@ -436,16 +436,16 @@ export default function RapprochementPage() {
       >
         {selectedBankTx && (
           <div className="space-y-4">
-            <div className="bg-indigo-50 rounded-lg p-4">
-              <p className="text-sm text-indigo-600">{t('admin.reconciliation.bankTransaction')}</p>
-              <p className="font-medium text-indigo-900">{selectedBankTx.description}</p>
-              <p className="text-lg font-bold text-indigo-900">
+            <div className="bg-[#6366f1]/10 rounded-lg p-4">
+              <p className="text-sm text-[#818cf8]">{t('admin.reconciliation.bankTransaction')}</p>
+              <p className="font-medium text-[var(--k-text-primary)]">{selectedBankTx.description}</p>
+              <p className="text-lg font-bold text-[var(--k-text-primary)]">
                 {selectedBankTx.type === 'CREDIT' ? '+' : '-'}{formatCurrency(selectedBankTx.amount)}
               </p>
             </div>
 
             <div>
-              <p className="text-sm font-medium text-slate-700 mb-2">{t('admin.reconciliation.selectMatchingEntry')}</p>
+              <p className="text-sm font-medium text-[var(--k-text-secondary)] mb-2">{t('admin.reconciliation.selectMatchingEntry')}</p>
               <div className="space-y-2 max-h-48 overflow-y-auto">
                 {unmatchedJournal
                   .filter(e => {
@@ -455,26 +455,26 @@ export default function RapprochementPage() {
                   .map((entry) => {
                     const entryAmount = Math.max(entry.totalDebits, entry.totalCredits);
                     return (
-                      <label key={entry.id} className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer">
+                      <label key={entry.id} className="flex items-center gap-3 p-3 border border-[var(--k-border-subtle)] rounded-lg hover:bg-[var(--k-bg-surface)] cursor-pointer">
                         <input
                           type="radio"
                           name="matchEntry"
-                          className="text-emerald-600"
+                          className="text-emerald-400"
                           checked={selectedEntryId === entry.id}
                           onChange={() => setSelectedEntryId(entry.id)}
                         />
                         <div className="flex-1">
-                          <p className="font-medium text-slate-900">{entry.description}</p>
-                          <p className="text-xs text-slate-500">{entry.entryNumber} &bull; {formatDate(entry.date)}</p>
+                          <p className="font-medium text-[var(--k-text-primary)]">{entry.description}</p>
+                          <p className="text-xs text-[var(--k-text-tertiary)]">{entry.entryNumber} &bull; {formatDate(entry.date)}</p>
                         </div>
-                        <span className="font-medium text-slate-700">
+                        <span className="font-medium text-[var(--k-text-secondary)]">
                           {formatCurrency(entryAmount)}
                         </span>
                       </label>
                     );
                   })}
                 {unmatchedJournal.filter(e => Math.abs(Math.max(e.totalDebits, e.totalCredits) - selectedBankTx.amount) < 0.01).length === 0 && (
-                  <p className="text-sm text-slate-400 text-center py-4">{t('admin.reconciliation.noMatchingEntry')}</p>
+                  <p className="text-sm text-[var(--k-text-muted)] text-center py-4">{t('admin.reconciliation.noMatchingEntry')}</p>
                 )}
               </div>
             </div>

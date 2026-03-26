@@ -504,7 +504,7 @@ export default function LearningDashboardPage() {
  const deadline = new Date(dl.deadline);
  const isOverdue = deadline < new Date();
  return (
- <div key={i} className={`p-3 rounded-lg text-sm ${isOverdue ? 'bg-red-50 border border-red-200' : 'bg-gray-50'}`}>
+ <div key={i} className={`p-3 rounded-lg text-sm ${isOverdue ? 'bg-red-50 border border-red-200' : 'bg-[var(--k-glass-ultra-thin)]'}`}>
  <p className="font-medium text-[var(--k-text-primary)]">{dl.courseTitle}</p>
  <p className={`text-xs mt-1 ${isOverdue ? 'text-red-600 font-medium' : 'text-gray-500'}`}>
  {isOverdue ? t('learn.dashboard.overdue') : t('learn.dashboard.dueDate')}: {deadline.toLocaleDateString()}

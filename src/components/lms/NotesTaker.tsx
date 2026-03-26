@@ -37,8 +37,8 @@ function textToHtml(text: string): string {
   return text
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/==(.+?)==/g, '<mark class="bg-yellow-200 px-0.5 rounded">$1</mark>')
-    .replace(/^- (.+)$/gm, '<li class="ml-4 list-disc">$1</li>')
+    .replace(/==(.+?)==/g, '<mark style="background: rgba(245, 158, 11, 0.2); color: var(--k-accent-amber); padding: 0 2px; border-radius: 2px;">$1</mark>')
+    .replace(/^- (.+)$/gm, '<li style="margin-left: 1rem; list-style: disc; color: var(--k-text-secondary);">$1</li>')
     .replace(/\n/g, '<br>');
 }
 
@@ -252,7 +252,13 @@ export default function NotesTaker({
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed right-0 top-1/2 -translate-y-1/2 z-40 flex items-center gap-1.5 bg-indigo-600 text-white px-3 py-4 rounded-l-xl shadow-lg hover:bg-indigo-700 transition-colors"
+        className="fixed right-0 top-1/2 -translate-y-1/2 z-40 flex items-center gap-1.5 px-3 py-4 transition-all"
+        style={{
+          background: 'var(--k-gradient-primary)',
+          color: 'var(--k-text-primary)',
+          borderRadius: 'var(--k-radius-lg) 0 0 var(--k-radius-lg)',
+          boxShadow: 'var(--k-shadow-lg), var(--k-glow-primary)',
+        }}
         aria-label={t('learn.notesTaker.open')}
       >
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -262,7 +268,13 @@ export default function NotesTaker({
           {t('learn.notesTaker.notes')}
         </span>
         {notes.length > 0 && (
-          <span className="absolute -top-1 -left-1 w-5 h-5 bg-yellow-400 text-gray-900 rounded-full text-[10px] font-bold flex items-center justify-center">
+          <span
+            className="absolute -top-1 -left-1 w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center"
+            style={{
+              background: 'var(--k-accent-amber)',
+              color: '#000',
+            }}
+          >
             {notes.length}
           </span>
         )}
@@ -270,31 +282,49 @@ export default function NotesTaker({
     );
   }
 
-  // ── Sidebar Panel ─────────────────────────────────────────
+  // ── Sidebar Panel — Glass surface ──────────────────────────
 
   return (
     <div
       ref={panelRef}
-      className="fixed right-0 top-0 bottom-0 z-40 w-full sm:w-96 bg-white shadow-2xl border-l border-gray-200 flex flex-col animate-in slide-in-from-right duration-300"
+      className="fixed right-0 top-0 bottom-0 z-40 w-full sm:w-96 flex flex-col animate-in slide-in-from-right duration-300"
+      style={{
+        background: 'var(--k-bg-surface)',
+        borderLeft: '1px solid var(--k-border-subtle)',
+        boxShadow: 'var(--k-shadow-xl)',
+      }}
       role="complementary"
       aria-label={t('learn.notesTaker.title')}
     >
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-indigo-50 to-purple-50">
+      {/* Glass header */}
+      <div
+        className="flex items-center justify-between px-4 py-3"
+        style={{
+          background: 'var(--k-glass-thick)',
+          backdropFilter: 'blur(var(--k-blur-lg))',
+          WebkitBackdropFilter: 'blur(var(--k-blur-lg))',
+          borderBottom: '1px solid var(--k-border-subtle)',
+        }}
+      >
         <div className="flex items-center gap-2">
-          <svg className="w-5 h-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-5 h-5" style={{ color: 'var(--k-accent-indigo)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
           </svg>
-          <h3 className="text-sm font-bold text-gray-900">{t('learn.notesTaker.title')}</h3>
+          <h3 className="text-sm font-bold" style={{ color: 'var(--k-text-primary)' }}>{t('learn.notesTaker.title')}</h3>
           {hasUnsaved && (
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" title={t('learn.notesTaker.unsaved')} />
+            <span
+              className="w-2 h-2 rounded-full animate-pulse"
+              style={{ background: 'var(--k-accent-amber)' }}
+              title={t('learn.notesTaker.unsaved')}
+            />
           )}
         </div>
         <div className="flex items-center gap-1.5">
           {onAskAurelia && (
             <button
               onClick={handleAskAurelia}
-              className="p-1.5 rounded-lg text-indigo-600 hover:bg-indigo-100 transition-colors"
+              className="p-1.5 rounded-lg transition-all"
+              style={{ color: 'var(--k-accent-indigo)' }}
               aria-label={t('learn.notesTaker.askAurelia')}
               title={t('learn.notesTaker.askAurelia')}
             >
@@ -305,7 +335,8 @@ export default function NotesTaker({
           )}
           <button
             onClick={handleExport}
-            className="p-1.5 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
+            className="p-1.5 rounded-lg transition-all"
+            style={{ color: 'var(--k-text-tertiary)' }}
             aria-label={t('learn.notesTaker.export')}
             title={t('learn.notesTaker.export')}
           >
@@ -315,7 +346,8 @@ export default function NotesTaker({
           </button>
           <button
             onClick={handleManualSave}
-            className="p-1.5 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
+            className="p-1.5 rounded-lg transition-all"
+            style={{ color: 'var(--k-text-tertiary)' }}
             aria-label={t('learn.notesTaker.save')}
             title={t('learn.notesTaker.save')}
           >
@@ -325,7 +357,12 @@ export default function NotesTaker({
           </button>
           <button
             onClick={() => setIsOpen(false)}
-            className="p-1.5 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
+            className="p-1.5 rounded-lg transition-all"
+            style={{
+              background: 'var(--k-glass-thin)',
+              color: 'var(--k-text-tertiary)',
+              border: '1px solid var(--k-border-subtle)',
+            }}
             aria-label={t('learn.notesTaker.close')}
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -335,10 +372,17 @@ export default function NotesTaker({
         </div>
       </div>
 
-      {/* Search */}
-      <div className="px-4 py-2 border-b border-gray-100">
+      {/* Search — glass input */}
+      <div
+        className="px-4 py-2"
+        style={{ borderBottom: '1px solid var(--k-border-subtle)' }}
+      >
         <div className="relative">
-          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4"
+            style={{ color: 'var(--k-text-muted)' }}
+            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+          >
             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           <input
@@ -346,7 +390,13 @@ export default function NotesTaker({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={t('learn.notesTaker.searchPlaceholder')}
-            className="w-full pl-9 pr-3 py-2 text-sm bg-gray-50 rounded-lg border border-gray-200 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all"
+            className="w-full pl-9 pr-3 py-2 text-sm outline-none transition-all"
+            style={{
+              background: 'var(--k-glass-thin)',
+              border: '1px solid var(--k-border-subtle)',
+              borderRadius: 'var(--k-radius-md)',
+              color: 'var(--k-text-primary)',
+            }}
             aria-label={t('learn.notesTaker.searchPlaceholder')}
           />
         </div>
@@ -356,7 +406,13 @@ export default function NotesTaker({
       <div className="px-4 py-2">
         <button
           onClick={handleAddNote}
-          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 border-dashed border-indigo-300 text-indigo-600 font-medium text-sm hover:bg-indigo-50 hover:border-indigo-400 transition-colors"
+          className="w-full flex items-center justify-center gap-2 py-2.5 font-medium text-sm transition-all"
+          style={{
+            border: '2px dashed rgba(99, 102, 241, 0.3)',
+            borderRadius: 'var(--k-radius-lg)',
+            color: 'var(--k-accent-indigo)',
+            background: 'transparent',
+          }}
           aria-label={t('learn.notesTaker.addNote')}
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -368,12 +424,22 @@ export default function NotesTaker({
 
       {/* Editor (when active) */}
       {activeNoteId && (
-        <div className="px-4 py-2 border-b border-gray-200 bg-gray-50">
-          {/* Formatting toolbar */}
+        <div
+          className="px-4 py-2"
+          style={{
+            background: 'var(--k-glass-ultra-thin)',
+            borderBottom: '1px solid var(--k-border-subtle)',
+          }}
+        >
+          {/* Glass formatting toolbar */}
           <div className="flex items-center gap-1 mb-2">
             <button
               onClick={() => applyFormat('bold')}
-              className="w-7 h-7 rounded flex items-center justify-center text-gray-600 hover:bg-gray-200 font-bold text-sm"
+              className="w-7 h-7 rounded flex items-center justify-center font-bold text-sm transition-all"
+              style={{
+                color: 'var(--k-text-secondary)',
+                background: 'transparent',
+              }}
               aria-label={t('learn.notesTaker.formatBold')}
               title="Ctrl+B"
             >
@@ -381,7 +447,11 @@ export default function NotesTaker({
             </button>
             <button
               onClick={() => applyFormat('italic')}
-              className="w-7 h-7 rounded flex items-center justify-center text-gray-600 hover:bg-gray-200 italic text-sm"
+              className="w-7 h-7 rounded flex items-center justify-center italic text-sm transition-all"
+              style={{
+                color: 'var(--k-text-secondary)',
+                background: 'transparent',
+              }}
               aria-label={t('learn.notesTaker.formatItalic')}
               title="Ctrl+I"
             >
@@ -389,7 +459,11 @@ export default function NotesTaker({
             </button>
             <button
               onClick={() => applyFormat('list')}
-              className="w-7 h-7 rounded flex items-center justify-center text-gray-600 hover:bg-gray-200"
+              className="w-7 h-7 rounded flex items-center justify-center transition-all"
+              style={{
+                color: 'var(--k-text-secondary)',
+                background: 'transparent',
+              }}
               aria-label={t('learn.notesTaker.formatList')}
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -398,27 +472,44 @@ export default function NotesTaker({
             </button>
             <button
               onClick={() => applyFormat('highlight')}
-              className="w-7 h-7 rounded flex items-center justify-center hover:bg-gray-200"
+              className="w-7 h-7 rounded flex items-center justify-center transition-all"
               aria-label={t('learn.notesTaker.formatHighlight')}
               title="Ctrl+H"
             >
-              <span className="w-4 h-4 rounded-sm bg-yellow-300 border border-yellow-400" />
+              <span
+                className="w-4 h-4 rounded-sm"
+                style={{ background: 'var(--k-accent-amber)', border: '1px solid rgba(245, 158, 11, 0.5)' }}
+              />
             </button>
             <div className="flex-1" />
+            {/* Glass save / gradient save button */}
             <button
               onClick={handleSaveNote}
-              className="px-3 py-1 text-xs font-semibold bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+              className="px-3 py-1 text-xs font-semibold transition-all"
+              style={{
+                background: 'var(--k-gradient-primary)',
+                color: 'var(--k-text-primary)',
+                borderRadius: 'var(--k-radius-md)',
+              }}
             >
               {t('learn.notesTaker.done')}
             </button>
           </div>
 
+          {/* Transparent text area */}
           <textarea
             ref={editorRef}
             value={editContent}
             onChange={(e) => setEditContent(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full h-32 text-sm bg-white border border-gray-200 rounded-lg p-3 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 resize-none font-mono transition-all"
+            className="w-full h-32 text-sm p-3 outline-none resize-none transition-all"
+            style={{
+              background: 'transparent',
+              border: '1px solid var(--k-border-subtle)',
+              borderRadius: 'var(--k-radius-md)',
+              color: 'var(--k-text-primary)',
+              fontFamily: 'var(--k-font-mono)',
+            }}
             placeholder={t('learn.notesTaker.editorPlaceholder')}
             aria-label={t('learn.notesTaker.editorPlaceholder')}
           />
@@ -428,12 +519,12 @@ export default function NotesTaker({
       {/* Notes list */}
       <div className="flex-1 overflow-y-auto px-4 py-2 space-y-2">
         {filteredNotes.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-12 text-gray-400">
+          <div className="flex flex-col items-center justify-center py-12" style={{ color: 'var(--k-text-muted)' }}>
             <svg className="w-12 h-12 mb-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
             </svg>
-            <p className="text-sm">{t('learn.notesTaker.noNotes')}</p>
-            <p className="text-xs mt-1">{t('learn.notesTaker.noNotesHint')}</p>
+            <p className="text-sm" style={{ color: 'var(--k-text-tertiary)' }}>{t('learn.notesTaker.noNotes')}</p>
+            <p className="text-xs mt-1" style={{ color: 'var(--k-text-muted)' }}>{t('learn.notesTaker.noNotesHint')}</p>
           </div>
         )}
 
@@ -444,17 +535,19 @@ export default function NotesTaker({
           return (
             <div
               key={note.id}
-              className={`rounded-xl border transition-all ${
-                isEditing
-                  ? 'border-indigo-300 bg-indigo-50'
-                  : 'border-gray-200 bg-white hover:shadow-sm'
-              }`}
+              className="transition-all"
+              style={{
+                background: isEditing ? 'var(--k-accent-indigo-10)' : 'var(--k-glass-thin)',
+                border: `1px solid ${isEditing ? 'rgba(99, 102, 241, 0.25)' : 'var(--k-border-subtle)'}`,
+                borderRadius: 'var(--k-radius-lg)',
+              }}
             >
               {/* Note header */}
               <div className="flex items-center justify-between px-3 py-2">
                 <button
                   onClick={() => handleToggleCollapse(note.id)}
-                  className="flex items-center gap-2 text-xs text-gray-400 hover:text-gray-600"
+                  className="flex items-center gap-2 text-xs transition-all"
+                  style={{ color: 'var(--k-text-muted)' }}
                   aria-label={note.isCollapsed ? t('learn.notesTaker.expand') : t('learn.notesTaker.collapse')}
                 >
                   <svg
@@ -469,7 +562,8 @@ export default function NotesTaker({
                   {!isEditing && (
                     <button
                       onClick={() => handleEditNote(note)}
-                      className="p-1 rounded text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
+                      className="p-1 rounded transition-all"
+                      style={{ color: 'var(--k-text-muted)' }}
                       aria-label={t('learn.notesTaker.edit')}
                     >
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -479,7 +573,8 @@ export default function NotesTaker({
                   )}
                   <button
                     onClick={() => handleDeleteNote(note.id)}
-                    className="p-1 rounded text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                    className="p-1 rounded transition-all"
+                    style={{ color: 'var(--k-text-muted)' }}
                     aria-label={t('learn.notesTaker.delete')}
                   >
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -492,15 +587,23 @@ export default function NotesTaker({
               {/* Note body */}
               {!note.isCollapsed && note.content && !isEditing && (
                 <div
-                  className="px-3 pb-3 text-sm text-gray-700 leading-relaxed prose prose-sm max-w-none"
+                  className="px-3 pb-3 text-sm leading-relaxed prose prose-sm max-w-none"
+                  style={{ color: 'var(--k-text-secondary)' }}
                   dangerouslySetInnerHTML={{ __html: note.htmlContent || textToHtml(note.content) }}
                 />
               )}
 
-              {/* Lesson position marker */}
+              {/* Lesson position marker — timestamp link style */}
               {note.lessonPosition && (
                 <div className="px-3 pb-2">
-                  <span className="inline-flex items-center gap-1 text-[10px] font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
+                  <span
+                    className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5"
+                    style={{
+                      background: 'var(--k-accent-indigo-10)',
+                      color: 'var(--k-accent-indigo)',
+                      borderRadius: 'var(--k-radius-pill)',
+                    }}
+                  >
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 0115 0z" />
@@ -515,18 +618,24 @@ export default function NotesTaker({
       </div>
 
       {/* Footer */}
-      <div className="px-4 py-2 border-t border-gray-200 bg-gray-50">
-        <div className="flex items-center justify-between text-xs text-gray-400">
+      <div
+        className="px-4 py-2"
+        style={{
+          borderTop: '1px solid var(--k-border-subtle)',
+          background: 'var(--k-glass-ultra-thin)',
+        }}
+      >
+        <div className="flex items-center justify-between text-xs" style={{ color: 'var(--k-text-muted)' }}>
           <span>{t('learn.notesTaker.totalNotes', { count: notes.length })}</span>
           <span className="flex items-center gap-1">
             {hasUnsaved ? (
               <>
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--k-accent-amber)' }} />
                 {t('learn.notesTaker.unsaved')}
               </>
             ) : (
               <>
-                <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--k-accent-emerald)' }} />
                 {t('learn.notesTaker.saved')}
               </>
             )}

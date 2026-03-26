@@ -37,12 +37,12 @@ interface Lead {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  NEW: 'bg-indigo-100 text-indigo-700',
-  CONTACTED: 'bg-yellow-100 text-yellow-700',
-  QUALIFIED: 'bg-green-100 text-green-700',
-  UNQUALIFIED: 'bg-gray-100 text-gray-600',
-  CONVERTED: 'bg-purple-100 text-purple-700',
-  LOST: 'bg-red-100 text-red-700',
+  NEW: 'bg-[#6366f1]/15 text-[#818cf8]',
+  CONTACTED: 'bg-yellow-500/15 text-yellow-400',
+  QUALIFIED: 'bg-green-500/15 text-green-400',
+  UNQUALIFIED: 'bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)]',
+  CONVERTED: 'bg-purple-500/15 text-purple-400',
+  LOST: 'bg-red-500/15 text-red-400',
 };
 
 const TEMP_ICONS: Record<string, typeof Flame> = {
@@ -213,19 +213,19 @@ export default function LeadsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{t('admin.crm.leads')}</h1>
-          <p className="text-sm text-gray-500 mt-1">{total} {t('admin.crm.leadsTotal')}</p>
+          <h1 className="text-2xl font-bold text-[var(--k-text-primary)]">{t('admin.crm.leads')}</h1>
+          <p className="text-sm text-[var(--k-text-tertiary)] mt-1">{total} {t('admin.crm.leadsTotal')}</p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowImportModal(true)}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50"
+            className="flex items-center gap-1.5 px-3 py-2 text-sm border border-[var(--k-border-default)] rounded-md hover:bg-[var(--k-glass-thin)]"
           >
             <Upload className="h-4 w-4" /> {t('admin.crm.importCSV')}
           </button>
           <button
             onClick={() => setShowCreateModal(true)}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-gradient-to-r from-[#6366f1] to-[#818cf8] text-white rounded-md hover:opacity-90"
           >
             <Plus className="h-4 w-4" /> {t('admin.crm.newLead')}
           </button>
@@ -235,19 +235,19 @@ export default function LeadsPage() {
       {/* Filters */}
       <div className="flex items-center gap-3 mb-4">
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--k-text-muted)]" />
           <input
             type="text"
             placeholder={t('admin.crm.searchLeads')}
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-            className="w-full ps-9 pe-3 py-2 text-sm border border-gray-300 rounded-md"
+            className="w-full ps-9 pe-3 py-2 text-sm border border-[var(--k-border-default)] rounded-md"
           />
         </div>
         <select
           value={statusFilter}
           onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
-          className="text-sm border border-gray-300 rounded-md px-3 py-2"
+          className="text-sm border border-[var(--k-border-default)] rounded-md px-3 py-2"
         >
           <option value="">{t('admin.crm.allStatuses')}</option>
           {['NEW', 'CONTACTED', 'QUALIFIED', 'UNQUALIFIED', 'CONVERTED', 'LOST'].map(s => (
@@ -257,7 +257,7 @@ export default function LeadsPage() {
         <select
           value={sourceFilter}
           onChange={(e) => { setSourceFilter(e.target.value); setPage(1); }}
-          className="text-sm border border-gray-300 rounded-md px-3 py-2"
+          className="text-sm border border-[var(--k-border-default)] rounded-md px-3 py-2"
         >
           <option value="">{t('admin.crm.allSources')}</option>
           {['WEB', 'REFERRAL', 'IMPORT', 'CAMPAIGN', 'MANUAL', 'PARTNER'].map(s => (
@@ -267,7 +267,7 @@ export default function LeadsPage() {
         <select
           value={tempFilter}
           onChange={(e) => { setTempFilter(e.target.value); setPage(1); }}
-          className="text-sm border border-gray-300 rounded-md px-3 py-2"
+          className="text-sm border border-[var(--k-border-default)] rounded-md px-3 py-2"
         >
           <option value="">{t('admin.crm.allTemperatures')}</option>
           {['HOT', 'WARM', 'COLD'].map(s => (
@@ -278,15 +278,15 @@ export default function LeadsPage() {
 
       {/* Bulk Action Bar */}
       {selected.size > 0 && (
-        <div className="flex items-center gap-3 mb-3 px-4 py-2.5 bg-indigo-50 border border-indigo-200 rounded-lg">
-          <span className="text-sm font-medium text-indigo-800">
+        <div className="flex items-center gap-3 mb-3 px-4 py-2.5 bg-[#6366f1]/10 border border-[#6366f1]/20 rounded-lg">
+          <span className="text-sm font-medium text-[#a5b4fc]">
             {selected.size} {t('common.selected')}
           </span>
           <div className="w-px h-5 bg-indigo-200" />
           <select
             defaultValue=""
             onChange={(e) => { if (e.target.value) bulkUpdateStatus(e.target.value); e.target.value = ''; }}
-            className="text-xs border border-indigo-300 rounded-md px-2 py-1 bg-white text-indigo-700"
+            className="text-xs border border-[#6366f1]/30 rounded-md px-2 py-1 bg-[var(--k-glass-thin)] text-[#818cf8]"
           >
             <option value="">{t('admin.crm.changeStatus')}</option>
             {['NEW', 'CONTACTED', 'QUALIFIED', 'UNQUALIFIED', 'LOST'].map(s => (
@@ -295,20 +295,20 @@ export default function LeadsPage() {
           </select>
           <button
             onClick={bulkRecalculateScores}
-            className="flex items-center gap-1 px-2.5 py-1 text-xs text-indigo-700 bg-white border border-indigo-300 rounded-md hover:bg-indigo-100"
+            className="flex items-center gap-1 px-2.5 py-1 text-xs text-[#818cf8] bg-[var(--k-glass-thin)] border border-[#6366f1]/30 rounded-md hover:bg-[#6366f1]/15"
           >
             <RefreshCw className="h-3 w-3" /> {t('admin.crm.recalculate')}
           </button>
           <div className="flex-1" />
           <button
             onClick={bulkDelete}
-            className="flex items-center gap-1 px-2.5 py-1 text-xs text-red-600 bg-white border border-red-200 rounded-md hover:bg-red-50"
+            className="flex items-center gap-1 px-2.5 py-1 text-xs text-red-600 bg-[var(--k-glass-thin)] border border-red-500/20 rounded-md hover:bg-red-500/10"
           >
             <Trash2 className="h-3 w-3" /> {t('common.delete')}
           </button>
           <button
             onClick={() => setSelected(new Set())}
-            className="p-1 text-indigo-500 hover:bg-indigo-100 rounded"
+            className="p-1 text-[#818cf8] hover:bg-[#6366f1]/15 rounded"
           >
             <X className="h-4 w-4" />
           </button>
@@ -316,58 +316,58 @@ export default function LeadsPage() {
       )}
 
       {/* Table */}
-      <div className="bg-white rounded-lg border overflow-hidden">
+      <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm rounded-lg border border-[var(--k-border-subtle)] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50 border-b">
+            <thead className="bg-[var(--k-glass-thin)] border-b border-[var(--k-border-subtle)] border-[var(--k-border-subtle)]">
               <tr>
                 <th className="px-4 py-3 text-start">
                   <input type="checkbox" onChange={selectAll} checked={selected.size === leads.length && leads.length > 0} aria-label="Select all leads" className="rounded" />
                 </th>
-                <th className="px-4 py-3 text-start text-xs font-medium text-gray-500 uppercase">{t('admin.crm.name')}</th>
-                <th className="px-4 py-3 text-start text-xs font-medium text-gray-500 uppercase">{t('admin.crm.company')}</th>
-                <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">{t('admin.crm.score')}</th>
-                <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">{t('admin.crm.temperature')}</th>
-                <th className="px-4 py-3 text-start text-xs font-medium text-gray-500 uppercase">{t('admin.crm.status')}</th>
-                <th className="px-4 py-3 text-start text-xs font-medium text-gray-500 uppercase">{t('admin.crm.source')}</th>
-                <th className="px-4 py-3 text-start text-xs font-medium text-gray-500 uppercase">{t('admin.crm.assignedTo')}</th>
-                <th className="px-4 py-3 text-start text-xs font-medium text-gray-500 uppercase">{t('admin.crm.lastContact')}</th>
-                <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">DNC</th>
+                <th className="px-4 py-3 text-start text-xs font-medium text-[var(--k-text-tertiary)] uppercase">{t('admin.crm.name')}</th>
+                <th className="px-4 py-3 text-start text-xs font-medium text-[var(--k-text-tertiary)] uppercase">{t('admin.crm.company')}</th>
+                <th className="px-4 py-3 text-center text-xs font-medium text-[var(--k-text-tertiary)] uppercase">{t('admin.crm.score')}</th>
+                <th className="px-4 py-3 text-center text-xs font-medium text-[var(--k-text-tertiary)] uppercase">{t('admin.crm.temperature')}</th>
+                <th className="px-4 py-3 text-start text-xs font-medium text-[var(--k-text-tertiary)] uppercase">{t('admin.crm.status')}</th>
+                <th className="px-4 py-3 text-start text-xs font-medium text-[var(--k-text-tertiary)] uppercase">{t('admin.crm.source')}</th>
+                <th className="px-4 py-3 text-start text-xs font-medium text-[var(--k-text-tertiary)] uppercase">{t('admin.crm.assignedTo')}</th>
+                <th className="px-4 py-3 text-start text-xs font-medium text-[var(--k-text-tertiary)] uppercase">{t('admin.crm.lastContact')}</th>
+                <th className="px-4 py-3 text-center text-xs font-medium text-[var(--k-text-tertiary)] uppercase">DNC</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-[var(--k-border-subtle)]">
               {loading ? (
-                <tr><td colSpan={10} className="px-4 py-8 text-center text-gray-400">
-                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-500 mx-auto" />
+                <tr><td colSpan={10} className="px-4 py-8 text-center text-[var(--k-text-muted)]">
+                  <div className="animate-spin rounded-full h-6 w-6 border-b border-[var(--k-border-subtle)]-2 border-indigo-500 mx-auto" />
                 </td></tr>
               ) : leads.length === 0 ? (
                 <tr><td colSpan={10} className="px-4 py-16 text-center">
-                  <Search className="h-10 w-10 text-gray-300 mx-auto mb-3" />
-                  <p className="text-sm font-medium text-gray-500">{t('admin.crm.noLeads')}</p>
-                  <p className="text-xs text-gray-400 mt-1">{t('admin.crm.noLeadsDescription')}</p>
+                  <Search className="h-10 w-10 text-[var(--k-text-muted)] mx-auto mb-3" />
+                  <p className="text-sm font-medium text-[var(--k-text-tertiary)]">{t('admin.crm.noLeads')}</p>
+                  <p className="text-xs text-[var(--k-text-muted)] mt-1">{t('admin.crm.noLeadsDescription')}</p>
                 </td></tr>
               ) : leads.map((lead) => {
                 const TempIcon = TEMP_ICONS[lead.temperature] || Thermometer;
                 return (
                   <tr
                     key={lead.id}
-                    className="hover:bg-gray-50 cursor-pointer"
+                    className="hover:bg-[var(--k-glass-thin)] cursor-pointer"
                     onClick={() => router.push(`/admin/crm/leads/${lead.id}`)}
                   >
                     <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                       <input type="checkbox" checked={selected.has(lead.id)} onChange={() => toggleSelect(lead.id)} aria-label="Select lead" className="rounded" />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="text-sm font-medium text-gray-900">{lead.contactName}</div>
-                      <div className="text-xs text-gray-500">{lead.email || lead.phone || '-'}</div>
+                      <div className="text-sm font-medium text-[var(--k-text-primary)]">{lead.contactName}</div>
+                      <div className="text-xs text-[var(--k-text-tertiary)]">{lead.email || lead.phone || '-'}</div>
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-600">{lead.companyName || '-'}</td>
+                    <td className="px-4 py-3 text-sm text-[var(--k-text-secondary)]">{lead.companyName || '-'}</td>
                     <td className="px-4 py-3 text-center">
                       <div className="inline-flex flex-col items-center gap-0.5 w-12">
-                        <span className={`text-sm font-bold ${lead.score >= 70 ? 'text-green-600' : lead.score >= 40 ? 'text-amber-600' : 'text-gray-400'}`}>
+                        <span className={`text-sm font-bold ${lead.score >= 70 ? 'text-green-600' : lead.score >= 40 ? 'text-amber-600' : 'text-[var(--k-text-muted)]'}`}>
                           {lead.score}
                         </span>
-                        <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
+                        <div className="w-full h-1 bg-[var(--k-glass-thin)] rounded-full overflow-hidden">
                           <div
                             className="h-full rounded-full transition-all"
                             style={{
@@ -379,16 +379,16 @@ export default function LeadsPage() {
                       </div>
                     </td>
                     <td className="px-4 py-3 text-center">
-                      <TempIcon className={`h-5 w-5 mx-auto ${TEMP_COLORS[lead.temperature] || 'text-gray-400'}`} />
+                      <TempIcon className={`h-5 w-5 mx-auto ${TEMP_COLORS[lead.temperature] || 'text-[var(--k-text-muted)]'}`} />
                     </td>
                     <td className="px-4 py-3">
-                      <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded-full ${STATUS_COLORS[lead.status] || 'bg-gray-100 text-gray-600'}`}>
+                      <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded-full ${STATUS_COLORS[lead.status] || 'bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)]'}`}>
                         {lead.status}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-xs text-gray-500">{lead.source}</td>
-                    <td className="px-4 py-3 text-sm text-gray-600">{lead.assignedTo?.name || lead.assignedTo?.email || '-'}</td>
-                    <td className="px-4 py-3 text-xs text-gray-400">
+                    <td className="px-4 py-3 text-xs text-[var(--k-text-tertiary)]">{lead.source}</td>
+                    <td className="px-4 py-3 text-sm text-[var(--k-text-secondary)]">{lead.assignedTo?.name || lead.assignedTo?.email || '-'}</td>
+                    <td className="px-4 py-3 text-xs text-[var(--k-text-muted)]">
                       {lead.lastContactedAt ? new Date(lead.lastContactedAt).toLocaleDateString(locale) : '-'}
                     </td>
                     <td className="px-4 py-3 text-center">
@@ -405,22 +405,22 @@ export default function LeadsPage() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between px-4 py-3 border-t bg-gray-50">
-            <p className="text-sm text-gray-500">
+          <div className="flex items-center justify-between px-4 py-3 border-t border-[var(--k-border-subtle)] bg-[var(--k-glass-thin)]">
+            <p className="text-sm text-[var(--k-text-tertiary)]">
               {((page - 1) * limit) + 1}-{Math.min(page * limit, total)} / {total}
             </p>
             <div className="flex gap-1">
               <button
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="px-3 py-1 text-sm border rounded-md disabled:opacity-50 hover:bg-gray-100"
+                className="px-3 py-1 text-sm border rounded-md disabled:opacity-50 hover:bg-[var(--k-glass-thin)]"
               >
                 Prev
               </button>
               <button
                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="px-3 py-1 text-sm border rounded-md disabled:opacity-50 hover:bg-gray-100"
+                className="px-3 py-1 text-sm border rounded-md disabled:opacity-50 hover:bg-[var(--k-glass-thin)]"
               >
                 Next
               </button>
@@ -432,15 +432,15 @@ export default function LeadsPage() {
       {/* Import CSV Modal */}
       {showImportModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4" role="dialog" aria-modal="true" aria-labelledby="import-csv-modal-title">
-            <div className="flex items-center justify-between p-4 border-b">
+          <div className="bg-[var(--k-bg-surface)] rounded-xl shadow-xl border border-[var(--k-border-subtle)] w-full max-w-md mx-4" role="dialog" aria-modal="true" aria-labelledby="import-csv-modal-title">
+            <div className="flex items-center justify-between p-4 border-b border-[var(--k-border-subtle)]">
               <h2 id="import-csv-modal-title" className="text-lg font-semibold">{t('admin.crm.importCSV')}</h2>
-              <button onClick={() => setShowImportModal(false)} className="p-1 hover:bg-gray-100 rounded" aria-label="Close">
+              <button onClick={() => setShowImportModal(false)} className="p-1 hover:bg-[var(--k-glass-thin)] rounded" aria-label="Close">
                 <X className="h-5 w-5" />
               </button>
             </div>
             <div className="p-4">
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-[var(--k-text-secondary)] mb-4">
                 {t('admin.crm.importInstructions')}
               </p>
               <input
@@ -451,11 +451,11 @@ export default function LeadsPage() {
                   const file = e.target.files?.[0];
                   if (file) handleImportCSV(file);
                 }}
-                className="block w-full text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                className="block w-full text-sm text-[var(--k-text-tertiary)] file:me-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-[#6366f1]/10 file:text-[#818cf8] hover:file:bg-indigo-100"
               />
             </div>
-            <div className="flex justify-end p-4 border-t">
-              <button onClick={() => setShowImportModal(false)} className="px-4 py-2 text-sm text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">
+            <div className="flex justify-end p-4 border-t border-[var(--k-border-subtle)]">
+              <button onClick={() => setShowImportModal(false)} className="px-4 py-2 text-sm text-[var(--k-text-secondary)] bg-[var(--k-glass-thin)] rounded-md hover:bg-[var(--k-glass-thin)]">
                 {t('common.cancel')}
               </button>
             </div>
@@ -500,49 +500,49 @@ function CreateLeadModal({ onClose, onCreated }: { onClose: () => void; onCreate
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4" role="dialog" aria-modal="true" aria-labelledby="create-lead-modal-title">
-        <div className="flex items-center justify-between p-4 border-b">
+      <div className="bg-[var(--k-bg-surface)] rounded-xl shadow-xl border border-[var(--k-border-subtle)] w-full max-w-md mx-4" role="dialog" aria-modal="true" aria-labelledby="create-lead-modal-title">
+        <div className="flex items-center justify-between p-4 border-b border-[var(--k-border-subtle)]">
           <h2 id="create-lead-modal-title" className="text-lg font-semibold">{t('admin.crm.newLead')}</h2>
-          <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded" aria-label="Close"><X className="h-5 w-5" /></button>
+          <button onClick={onClose} className="p-1 hover:bg-[var(--k-glass-thin)] rounded" aria-label="Close"><X className="h-5 w-5" /></button>
         </div>
         <div className="p-4 space-y-3">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.crm.contactName')} *</label>
+            <label className="block text-sm font-medium text-[var(--k-text-secondary)] mb-1">{t('admin.crm.contactName')} *</label>
             <input type="text" value={form.contactName} onChange={(e) => setForm(p => ({ ...p, contactName: e.target.value }))}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" autoFocus />
+              className="w-full border border-[var(--k-border-default)] rounded-md px-3 py-2 text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)]" autoFocus />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.crm.company')}</label>
+            <label className="block text-sm font-medium text-[var(--k-text-secondary)] mb-1">{t('admin.crm.company')}</label>
             <input type="text" value={form.companyName} onChange={(e) => setForm(p => ({ ...p, companyName: e.target.value }))}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" />
+              className="w-full border border-[var(--k-border-default)] rounded-md px-3 py-2 text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)]" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t('common.email')}</label>
+              <label className="block text-sm font-medium text-[var(--k-text-secondary)] mb-1">{t('common.email')}</label>
               <input type="email" value={form.email} onChange={(e) => setForm(p => ({ ...p, email: e.target.value }))}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" />
+                className="w-full border border-[var(--k-border-default)] rounded-md px-3 py-2 text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)]" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t('common.phone')}</label>
+              <label className="block text-sm font-medium text-[var(--k-text-secondary)] mb-1">{t('common.phone')}</label>
               <input type="tel" value={form.phone} onChange={(e) => setForm(p => ({ ...p, phone: e.target.value }))}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" />
+                className="w-full border border-[var(--k-border-default)] rounded-md px-3 py-2 text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)]" />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.crm.source')}</label>
+            <label className="block text-sm font-medium text-[var(--k-text-secondary)] mb-1">{t('admin.crm.source')}</label>
             <select value={form.source} onChange={(e) => setForm(p => ({ ...p, source: e.target.value }))}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+              className="w-full border border-[var(--k-border-default)] rounded-md px-3 py-2 text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)]">
               {['MANUAL', 'WEB', 'REFERRAL', 'CAMPAIGN', 'PARTNER'].map(s => (
                 <option key={s} value={s}>{s}</option>
               ))}
             </select>
           </div>
         </div>
-        <div className="flex justify-end gap-2 p-4 border-t">
-          <button onClick={onClose} className="px-4 py-2 text-sm text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">
+        <div className="flex justify-end gap-2 p-4 border-t border-[var(--k-border-subtle)]">
+          <button onClick={onClose} className="px-4 py-2 text-sm text-[var(--k-text-secondary)] bg-[var(--k-glass-thin)] rounded-md hover:bg-[var(--k-glass-thin)]">
             {t('common.cancel')}
           </button>
-          <button onClick={submit} disabled={creating} className="px-4 py-2 text-sm text-white bg-indigo-600 rounded-md hover:bg-indigo-700 disabled:opacity-50">
+          <button onClick={submit} disabled={creating} className="px-4 py-2 text-sm text-white bg-indigo-600 rounded-md hover:opacity-90 disabled:opacity-50">
             {creating ? '...' : t('common.create')}
           </button>
         </div>

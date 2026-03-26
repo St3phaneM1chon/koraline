@@ -88,13 +88,13 @@ type DateRange = 'month' | '3months' | 'year' | 'all';
 
 function StatCardSkeleton() {
   return (
-    <div className="bg-white border border-slate-200 rounded-lg p-5 animate-pulse">
+    <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-lg p-5 animate-pulse">
       <div className="flex items-start justify-between">
         <div className="space-y-2 flex-1">
-          <div className="h-4 bg-slate-200 rounded w-24" />
-          <div className="h-7 bg-slate-200 rounded w-16 mt-1" />
+          <div className="h-4 bg-[var(--k-glass-thin)] rounded w-24" />
+          <div className="h-7 bg-[var(--k-glass-thin)] rounded w-16 mt-1" />
         </div>
-        <div className="h-9 w-9 bg-slate-200 rounded-lg" />
+        <div className="h-9 w-9 bg-[var(--k-glass-thin)] rounded-lg" />
       </div>
     </div>
   );
@@ -107,7 +107,7 @@ function ChartSkeleton({ height = 'h-64' }: { height?: string }) {
         {Array.from({ length: 12 }).map((_, i) => (
           <div
             key={i}
-            className="flex-1 bg-slate-200 rounded-t"
+            className="flex-1 bg-[var(--k-glass-thin)] rounded-t"
             style={{ height: `${20 + ((i * 37 + 13) % 60)}%` }}
           />
         ))}
@@ -119,9 +119,9 @@ function ChartSkeleton({ height = 'h-64' }: { height?: string }) {
 function TableSkeleton({ rows = 5 }: { rows?: number }) {
   return (
     <div className="animate-pulse space-y-3">
-      <div className="h-8 bg-slate-100 rounded" />
+      <div className="h-8 bg-[var(--k-glass-thin)] rounded" />
       {Array.from({ length: rows }).map((_, i) => (
-        <div key={i} className="h-10 bg-slate-50 rounded" />
+        <div key={i} className="h-10 bg-[var(--k-bg-surface)] rounded" />
       ))}
     </div>
   );
@@ -164,20 +164,20 @@ function HorizontalBarChart({
             style={{ height: barHeight + gap }}
           >
             <span
-              className="text-xs text-slate-500 truncate text-right shrink-0"
+              className="text-xs text-[var(--k-text-tertiary)] truncate text-right shrink-0"
               style={{ width: labelWidth }}
               title={item.label}
             >
               {item.label}
             </span>
-            <div className="flex-1 h-6 bg-slate-100 rounded overflow-hidden relative">
+            <div className="flex-1 h-6 bg-[var(--k-glass-thin)] rounded overflow-hidden relative">
               <div
                 className="h-full rounded transition-all duration-500 ease-out"
                 style={{ width: `${Math.max(pct, 1)}%`, backgroundColor: color }}
               />
             </div>
             <span
-              className="text-xs font-medium text-slate-700 tabular-nums shrink-0"
+              className="text-xs font-medium text-[var(--k-text-secondary)] tabular-nums shrink-0"
               style={{ width: valueWidth }}
             >
               {item.value}{unit}
@@ -209,10 +209,10 @@ function VerticalBarChart({
         const pct = (item.value / maxVal) * 100;
         return (
           <div key={i} className="flex-1 flex flex-col items-center gap-1 min-w-0">
-            <span className="text-[10px] text-slate-500 tabular-nums">
+            <span className="text-[10px] text-[var(--k-text-tertiary)] tabular-nums">
               {item.value}{unit}
             </span>
-            <div className="w-full bg-slate-100 rounded-t relative" style={{ height: '140px' }}>
+            <div className="w-full bg-[var(--k-glass-thin)] rounded-t relative" style={{ height: '140px' }}>
               <div
                 className="absolute bottom-0 left-0 right-0 rounded-t transition-all duration-500 ease-out"
                 style={{
@@ -221,7 +221,7 @@ function VerticalBarChart({
                 }}
               />
             </div>
-            <span className="text-[10px] text-slate-400 truncate w-full text-center" title={item.label}>
+            <span className="text-[10px] text-[var(--k-text-muted)] truncate w-full text-center" title={item.label}>
               {item.label}
             </span>
           </div>
@@ -235,11 +235,11 @@ function VerticalBarChart({
 
 function ActivityEventRow({ event, t }: { event: ActivityEvent; t: (k: string) => string }) {
   const iconMap = {
-    enrollment: { icon: UserPlus, color: 'text-blue-600', bg: 'bg-blue-50' },
-    completion: { icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-    certificate: { icon: Award, color: 'text-amber-600', bg: 'bg-amber-50' },
-    quiz_pass: { icon: CheckCircle, color: 'text-green-600', bg: 'bg-green-50' },
-    quiz_fail: { icon: XCircle, color: 'text-red-500', bg: 'bg-red-50' },
+    enrollment: { icon: UserPlus, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+    completion: { icon: CheckCircle, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+    certificate: { icon: Award, color: 'text-amber-400', bg: 'bg-amber-500/10' },
+    quiz_pass: { icon: CheckCircle, color: 'text-green-400', bg: 'bg-green-500/10' },
+    quiz_fail: { icon: XCircle, color: 'text-red-400', bg: 'bg-red-500/10' },
   };
 
   const labelMap: Record<string, string> = {
@@ -260,19 +260,19 @@ function ActivityEventRow({ event, t }: { event: ActivityEvent; t: (k: string) =
   });
 
   return (
-    <div className="flex items-center gap-3 py-2.5 border-b border-slate-50 last:border-b-0">
+    <div className="flex items-center gap-3 py-2.5 border-b border-[var(--k-border-subtle)] last:border-b-0">
       <div className={`p-1.5 rounded-lg ${config.bg} shrink-0`}>
         <Icon className={`h-4 w-4 ${config.color}`} />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm text-slate-800 truncate">
+        <p className="text-sm text-[var(--k-text-primary)] truncate">
           <span className="font-medium">{event.studentName}</span>
-          <span className="text-slate-400 mx-1.5">&middot;</span>
-          <span className="text-slate-500">{labelMap[event.type]}</span>
+          <span className="text-[var(--k-text-muted)] mx-1.5">&middot;</span>
+          <span className="text-[var(--k-text-tertiary)]">{labelMap[event.type]}</span>
         </p>
-        <p className="text-xs text-slate-400 truncate">{event.detail}</p>
+        <p className="text-xs text-[var(--k-text-muted)] truncate">{event.detail}</p>
       </div>
-      <span className="text-xs text-slate-400 shrink-0 tabular-nums">{dateStr}</span>
+      <span className="text-xs text-[var(--k-text-muted)] shrink-0 tabular-nums">{dateStr}</span>
     </div>
   );
 }
@@ -405,12 +405,12 @@ export default function LmsAnalyticsPage() {
           backHref="/admin/formation"
           backLabel={t('admin.lms.dashboard')}
         />
-        <div className="flex flex-col items-center justify-center min-h-[400px] text-center bg-white rounded-xl border border-slate-200 p-8">
+        <div className="flex flex-col items-center justify-center min-h-[400px] text-center bg-[var(--k-glass-thin)] backdrop-blur-sm rounded-xl border border-[var(--k-border-subtle)] p-8">
           <AlertTriangle className="h-12 w-12 text-amber-500 mb-4" />
-          <h2 className="text-lg font-semibold text-slate-900 mb-2">
+          <h2 className="text-lg font-semibold text-[var(--k-text-primary)] mb-2">
             {t('admin.lms.analytics.error')}
           </h2>
-          <p className="text-sm text-slate-500 mb-6 max-w-md">
+          <p className="text-sm text-[var(--k-text-tertiary)] mb-6 max-w-md">
             {t('admin.lms.analytics.errorDescription')}
           </p>
           <Button onClick={() => fetchData(dateRange)}>
@@ -435,7 +435,7 @@ export default function LmsAnalyticsPage() {
             <select
               value={dateRange}
               onChange={(e) => setDateRange(e.target.value as DateRange)}
-              className="text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="text-sm border border-[var(--k-border-subtle)] rounded-lg px-3 py-2 bg-[var(--k-glass-thin)] backdrop-blur-sm text-[var(--k-text-secondary)] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               aria-label={t('admin.lms.analytics.dateRange')}
             >
               {dateRangeOptions.map(opt => (
@@ -502,7 +502,7 @@ export default function LmsAnalyticsPage() {
         <SectionCard
           title={t('admin.lms.analytics.enrollmentTrend')}
           headerAction={
-            <span className="text-xs text-slate-400">{t('admin.lms.analytics.last12Months')}</span>
+            <span className="text-xs text-[var(--k-text-muted)]">{t('admin.lms.analytics.last12Months')}</span>
           }
         >
           {loading ? (
@@ -513,7 +513,7 @@ export default function LmsAnalyticsPage() {
               color="#3b82f6"
             />
           ) : (
-            <div className="flex items-center justify-center h-48 text-sm text-slate-400">
+            <div className="flex items-center justify-center h-48 text-sm text-[var(--k-text-muted)]">
               {t('admin.lms.analytics.noRecentActivity')}
             </div>
           )}
@@ -531,7 +531,7 @@ export default function LmsAnalyticsPage() {
               unit="%"
             />
           ) : (
-            <div className="flex items-center justify-center h-48 text-sm text-slate-400">
+            <div className="flex items-center justify-center h-48 text-sm text-[var(--k-text-muted)]">
               {t('admin.lms.analytics.noRecentActivity')}
             </div>
           )}
@@ -545,18 +545,18 @@ export default function LmsAnalyticsPage() {
           {loading ? (
             <TableSkeleton rows={5} />
           ) : data && data.topCourses.length > 0 ? (
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-[var(--k-border-subtle)]">
               {data.topCourses.map((course) => (
                 <div key={course.rank} className="flex items-center gap-4 py-3">
-                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-50 text-blue-700 text-sm font-semibold shrink-0">
+                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500/10 text-blue-400 text-sm font-semibold shrink-0">
                     {course.rank}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-slate-800 truncate">{course.title}</p>
+                    <p className="text-sm font-medium text-[var(--k-text-primary)] truncate">{course.title}</p>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0">
-                    <Users className="h-3.5 w-3.5 text-slate-400" />
-                    <span className="text-sm font-medium text-slate-700 tabular-nums">
+                    <Users className="h-3.5 w-3.5 text-[var(--k-text-muted)]" />
+                    <span className="text-sm font-medium text-[var(--k-text-secondary)] tabular-nums">
                       {course.enrollments}
                     </span>
                   </div>
@@ -564,7 +564,7 @@ export default function LmsAnalyticsPage() {
               ))}
             </div>
           ) : (
-            <div className="flex items-center justify-center h-48 text-sm text-slate-400">
+            <div className="flex items-center justify-center h-48 text-sm text-[var(--k-text-muted)]">
               {t('admin.lms.analytics.noRecentActivity')}
             </div>
           )}
@@ -582,7 +582,7 @@ export default function LmsAnalyticsPage() {
               unit="%"
             />
           ) : (
-            <div className="flex items-center justify-center h-48 text-sm text-slate-400">
+            <div className="flex items-center justify-center h-48 text-sm text-[var(--k-text-muted)]">
               {t('admin.lms.analytics.noRecentActivity')}
             </div>
           )}
@@ -595,7 +595,7 @@ export default function LmsAnalyticsPage() {
         headerAction={
           <div className="flex items-center gap-1.5">
             <AlertTriangle className="h-4 w-4 text-amber-500" />
-            <span className="text-xs text-slate-400">{t('admin.lms.analytics.atRiskDescription')}</span>
+            <span className="text-xs text-[var(--k-text-muted)]">{t('admin.lms.analytics.atRiskDescription')}</span>
           </div>
         }
       >
@@ -605,20 +605,20 @@ export default function LmsAnalyticsPage() {
           <div className="overflow-x-auto -mx-6">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-100">
-                  <th className="text-left font-medium text-slate-500 px-6 py-3">
+                <tr className="border-b border-[var(--k-border-subtle)]">
+                  <th className="text-left font-medium text-[var(--k-text-tertiary)] px-6 py-3">
                     {t('admin.lms.analytics.student')}
                   </th>
-                  <th className="text-left font-medium text-slate-500 px-4 py-3">
+                  <th className="text-left font-medium text-[var(--k-text-tertiary)] px-4 py-3">
                     {t('admin.lms.analytics.course')}
                   </th>
-                  <th className="text-center font-medium text-slate-500 px-4 py-3">
+                  <th className="text-center font-medium text-[var(--k-text-tertiary)] px-4 py-3">
                     {t('admin.lms.analytics.progress')}
                   </th>
-                  <th className="text-center font-medium text-slate-500 px-4 py-3">
+                  <th className="text-center font-medium text-[var(--k-text-tertiary)] px-4 py-3">
                     {t('admin.lms.analytics.timeElapsed')}
                   </th>
-                  <th className="text-left font-medium text-slate-500 px-4 py-3">
+                  <th className="text-left font-medium text-[var(--k-text-tertiary)] px-4 py-3">
                     {t('admin.lms.analytics.deadline')}
                   </th>
                 </tr>
@@ -627,30 +627,30 @@ export default function LmsAnalyticsPage() {
                 {data.atRiskList.map((student, i) => (
                   <tr
                     key={`${student.studentId}-${student.courseTitle}-${i}`}
-                    className="border-b border-slate-50 hover:bg-slate-25 transition-colors"
+                    className="border-b border-[var(--k-border-subtle)] hover:bg-[var(--k-glass-thin)] transition-colors"
                   >
-                    <td className="px-6 py-3 font-medium text-slate-800">
+                    <td className="px-6 py-3 font-medium text-[var(--k-text-primary)]">
                       {student.studentName}
                     </td>
-                    <td className="px-4 py-3 text-slate-600 max-w-[200px] truncate">
+                    <td className="px-4 py-3 text-[var(--k-text-secondary)] max-w-[200px] truncate">
                       {student.courseTitle}
                     </td>
                     <td className="px-4 py-3 text-center">
                       <div className="flex items-center justify-center gap-2">
-                        <div className="w-16 h-2 bg-slate-100 rounded-full overflow-hidden">
+                        <div className="w-16 h-2 bg-[var(--k-glass-thin)] rounded-full overflow-hidden">
                           <div
                             className="h-full bg-red-400 rounded-full transition-all"
                             style={{ width: `${student.progress}%` }}
                           />
                         </div>
-                        <span className="text-xs tabular-nums text-red-600 font-medium">
+                        <span className="text-xs tabular-nums text-red-400 font-medium">
                           {student.progress}%
                         </span>
                       </div>
                     </td>
                     <td className="px-4 py-3 text-center">
                       <div className="flex items-center justify-center gap-2">
-                        <div className="w-16 h-2 bg-slate-100 rounded-full overflow-hidden">
+                        <div className="w-16 h-2 bg-[var(--k-glass-thin)] rounded-full overflow-hidden">
                           <div
                             className="h-full rounded-full transition-all"
                             style={{
@@ -659,12 +659,12 @@ export default function LmsAnalyticsPage() {
                             }}
                           />
                         </div>
-                        <span className="text-xs tabular-nums text-slate-600">
+                        <span className="text-xs tabular-nums text-[var(--k-text-secondary)]">
                           {student.timeElapsedPct}%
                         </span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-slate-500 text-xs tabular-nums">
+                    <td className="px-4 py-3 text-[var(--k-text-tertiary)] text-xs tabular-nums">
                       {new Date(student.deadline).toLocaleDateString('fr-CA')}
                     </td>
                   </tr>
@@ -673,7 +673,7 @@ export default function LmsAnalyticsPage() {
             </table>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-12 text-slate-400">
+          <div className="flex flex-col items-center justify-center py-12 text-[var(--k-text-muted)]">
             <CheckCircle className="h-10 w-10 mb-3 text-emerald-400" />
             <p className="text-sm">{t('admin.lms.analytics.noAtRiskStudents')}</p>
           </div>
@@ -684,7 +684,7 @@ export default function LmsAnalyticsPage() {
       <SectionCard
         title={t('admin.lms.analytics.recentActivity')}
         headerAction={
-          <span className="text-xs text-slate-400">{t('admin.lms.analytics.recentActivityDesc')}</span>
+          <span className="text-xs text-[var(--k-text-muted)]">{t('admin.lms.analytics.recentActivityDesc')}</span>
         }
       >
         {loading ? (
@@ -696,7 +696,7 @@ export default function LmsAnalyticsPage() {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-12 text-slate-400">
+          <div className="flex flex-col items-center justify-center py-12 text-[var(--k-text-muted)]">
             <Activity className="h-10 w-10 mb-3" />
             <p className="text-sm">{t('admin.lms.analytics.noRecentActivity')}</p>
           </div>

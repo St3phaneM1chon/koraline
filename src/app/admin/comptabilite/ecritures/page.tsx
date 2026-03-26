@@ -322,7 +322,7 @@ export default function EcrituresPage() {
       render: (entry) => (
         <button
           onClick={(e) => { e.stopPropagation(); openDetail(entry); }}
-          className="font-mono text-sm text-indigo-600 hover:underline"
+          className="font-mono text-sm text-[#818cf8] hover:underline"
         >
           {entry.entryNumber}
         </button>
@@ -333,7 +333,7 @@ export default function EcrituresPage() {
       header: t('admin.entries.dateHeader'),
       sortable: true,
       render: (entry) => (
-        <span className="text-sm text-slate-900">{fmtDate(entry.date)}</span>
+        <span className="text-sm text-[var(--k-text-primary)]">{fmtDate(entry.date)}</span>
       ),
     },
     {
@@ -341,9 +341,9 @@ export default function EcrituresPage() {
       header: t('admin.entries.descriptionHeader'),
       render: (entry) => (
         <div>
-          <p className="text-sm text-slate-900 truncate max-w-xs">{entry.description}</p>
+          <p className="text-sm text-[var(--k-text-primary)] truncate max-w-xs">{entry.description}</p>
           {entry.reference && (
-            <p className="text-xs text-slate-500">{t('admin.entries.refPrefix')} {entry.reference}</p>
+            <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.entries.refPrefix')} {entry.reference}</p>
           )}
         </div>
       ),
@@ -362,7 +362,7 @@ export default function EcrituresPage() {
       header: t('admin.entries.debitHeader'),
       align: 'right',
       render: (entry) => (
-        <span className="font-medium text-slate-900">{fmtCurrency(totalDebit(entry))}</span>
+        <span className="font-medium text-[var(--k-text-primary)]">{fmtCurrency(totalDebit(entry))}</span>
       ),
     },
     {
@@ -370,7 +370,7 @@ export default function EcrituresPage() {
       header: t('admin.entries.creditHeader'),
       align: 'right',
       render: (entry) => (
-        <span className="font-medium text-slate-900">{fmtCurrency(totalCredit(entry))}</span>
+        <span className="font-medium text-[var(--k-text-primary)]">{fmtCurrency(totalCredit(entry))}</span>
       ),
     },
     {
@@ -390,7 +390,7 @@ export default function EcrituresPage() {
         <div className="flex items-center justify-center gap-1">
           <button
             onClick={(e) => { e.stopPropagation(); openDetail(entry); }}
-            className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded"
+            className="p-1.5 text-[var(--k-text-tertiary)] hover:text-[#818cf8] hover:bg-[#6366f1]/10 rounded"
             title={t('admin.entries.viewDetails')}
             aria-label={t('admin.entries.viewDetails')}
           >
@@ -399,7 +399,7 @@ export default function EcrituresPage() {
           {entry.status === 'DRAFT' && (
             <button
               onClick={(e) => { e.stopPropagation(); handlePostEntry(entry.id); }}
-              className="p-1.5 text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 rounded"
+              className="p-1.5 text-[var(--k-text-tertiary)] hover:text-emerald-400 hover:bg-emerald-50 rounded"
               title={t('admin.entries.postEntry')}
               aria-label={t('admin.entries.postEntry')}
             >
@@ -407,7 +407,7 @@ export default function EcrituresPage() {
             </button>
           )}
           {entry.attachments && entry.attachments > 0 && (
-            <span className="text-xs text-slate-400 ms-1">
+            <span className="text-xs text-[var(--k-text-muted)] ms-1">
               <Paperclip className="w-4 h-4 inline" />
             </span>
           )}
@@ -431,7 +431,7 @@ export default function EcrituresPage() {
         </Button>
       )}
       {selectedEntry.status === 'POSTED' && (
-        <Button variant="danger" icon={RotateCcw} className="bg-red-100 text-red-700 hover:bg-red-200 border-transparent shadow-none"
+        <Button variant="danger" icon={RotateCcw} className="bg-red-500/15 text-red-400 hover:bg-red-500/100/20 border-transparent shadow-none"
           onClick={() => {
             // Create a reversal by duplicating with negated amounts
             setNewEntryDate(new Date().toISOString().split('T')[0]);
@@ -547,11 +547,11 @@ export default function EcrituresPage() {
 
   if (loading) return (
     <div aria-live="polite" aria-busy="true" className="p-8 space-y-4 animate-pulse">
-      <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-1/3"></div>
+      <div className="h-8 bg-[var(--k-glass-thin)] rounded w-1/3"></div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {[1,2,3,4].map(i => <div key={i} className="h-24 bg-slate-200 dark:bg-slate-700 rounded-xl"></div>)}
+        {[1,2,3,4].map(i => <div key={i} className="h-24 bg-[var(--k-glass-thin)] rounded-xl"></div>)}
       </div>
-      <div className="h-64 bg-slate-200 dark:bg-slate-700 rounded-xl"></div>
+      <div className="h-64 bg-[var(--k-glass-thin)] rounded-xl"></div>
     </div>
   );
 
@@ -559,11 +559,11 @@ export default function EcrituresPage() {
     <div className="space-y-6">
       {/* Error Banner */}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-4 flex items-center justify-between">
+        <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-lg mb-4 flex items-center justify-between">
           <span>{error}</span>
           <button
             onClick={() => { setError(null); fetchEntries(); }}
-            className="text-red-700 underline font-medium hover:text-red-800"
+            className="text-red-400 underline font-medium hover:text-red-400"
           >
             R&eacute;essayer
           </button>
@@ -654,68 +654,68 @@ export default function EcrituresPage() {
             {/* Header Info */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div>
-                <p className="text-xs text-slate-500">{t('admin.entries.dateLabel')}</p>
-                <p className="font-medium text-slate-900">{fmtDate(selectedEntry.date)}</p>
+                <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.entries.dateLabel')}</p>
+                <p className="font-medium text-[var(--k-text-primary)]">{fmtDate(selectedEntry.date)}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">{t('admin.entries.typeLabel')}</p>
+                <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.entries.typeLabel')}</p>
                 <StatusBadge variant={(typeConfig[selectedEntry.type] || defaultTypeConfig).variant}>
                   {(typeConfig[selectedEntry.type] || defaultTypeConfig).label}
                 </StatusBadge>
               </div>
               <div>
-                <p className="text-xs text-slate-500">{t('admin.entries.statusLabel')}</p>
+                <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.entries.statusLabel')}</p>
                 <StatusBadge variant={(statusConfig[selectedEntry.status] || defaultTypeConfig).variant} dot>
                   {(statusConfig[selectedEntry.status] || defaultTypeConfig).label}
                 </StatusBadge>
               </div>
               <div>
-                <p className="text-xs text-slate-500">{t('admin.entries.createdByLabel')}</p>
-                <p className="font-medium text-slate-900">{selectedEntry.createdBy}</p>
+                <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.entries.createdByLabel')}</p>
+                <p className="font-medium text-[var(--k-text-primary)]">{selectedEntry.createdBy}</p>
               </div>
             </div>
 
             {/* Journal Lines */}
             <div>
-              <h4 className="font-medium text-slate-900 mb-3">{t('admin.entries.entryLines')}</h4>
-              <div className="border border-slate-200 rounded-lg overflow-hidden overflow-x-auto">
+              <h4 className="font-medium text-[var(--k-text-primary)] mb-3">{t('admin.entries.entryLines')}</h4>
+              <div className="border border-[var(--k-border-subtle)] rounded-lg overflow-hidden overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-slate-50">
+                  <thead className="bg-[var(--k-bg-surface)]">
                     <tr>
-                      <th scope="col" className="px-4 py-2 text-start text-xs font-semibold text-slate-500">{t('admin.entries.accountHeader')}</th>
-                      <th scope="col" className="px-4 py-2 text-start text-xs font-semibold text-slate-500">{t('admin.entries.descriptionHeader')}</th>
-                      <th scope="col" className="px-4 py-2 text-end text-xs font-semibold text-slate-500">{t('admin.entries.debitHeader')}</th>
-                      <th scope="col" className="px-4 py-2 text-end text-xs font-semibold text-slate-500">{t('admin.entries.creditHeader')}</th>
+                      <th scope="col" className="px-4 py-2 text-start text-xs font-semibold text-[var(--k-text-tertiary)]">{t('admin.entries.accountHeader')}</th>
+                      <th scope="col" className="px-4 py-2 text-start text-xs font-semibold text-[var(--k-text-tertiary)]">{t('admin.entries.descriptionHeader')}</th>
+                      <th scope="col" className="px-4 py-2 text-end text-xs font-semibold text-[var(--k-text-tertiary)]">{t('admin.entries.debitHeader')}</th>
+                      <th scope="col" className="px-4 py-2 text-end text-xs font-semibold text-[var(--k-text-tertiary)]">{t('admin.entries.creditHeader')}</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-[var(--k-border-subtle)]">
                     {selectedEntry.lines.map((line) => (
                       <tr key={line.id}>
                         <td className="px-4 py-2">
-                          <span className="font-mono text-sm text-slate-600">{line.accountCode}</span>
-                          <span className="text-sm text-slate-900 ms-2">{line.accountName}</span>
+                          <span className="font-mono text-sm text-[var(--k-text-secondary)]">{line.accountCode}</span>
+                          <span className="text-sm text-[var(--k-text-primary)] ms-2">{line.accountName}</span>
                         </td>
-                        <td className="px-4 py-2 text-sm text-slate-600">{line.description || '-'}</td>
+                        <td className="px-4 py-2 text-sm text-[var(--k-text-secondary)]">{line.description || '-'}</td>
                         <td className="px-4 py-2 text-end">
                           {line.debit > 0 && (
-                            <span className="font-medium text-slate-900">{fmtCurrency(line.debit)}</span>
+                            <span className="font-medium text-[var(--k-text-primary)]">{fmtCurrency(line.debit)}</span>
                           )}
                         </td>
                         <td className="px-4 py-2 text-end">
                           {line.credit > 0 && (
-                            <span className="font-medium text-slate-900">{fmtCurrency(line.credit)}</span>
+                            <span className="font-medium text-[var(--k-text-primary)]">{fmtCurrency(line.credit)}</span>
                           )}
                         </td>
                       </tr>
                     ))}
                   </tbody>
-                  <tfoot className="bg-slate-100">
+                  <tfoot className="bg-[var(--k-glass-thin)]">
                     <tr>
-                      <td colSpan={2} className="px-4 py-2 font-semibold text-slate-900">{t('admin.entries.total')}</td>
-                      <td className="px-4 py-2 text-end font-bold text-slate-900">
+                      <td colSpan={2} className="px-4 py-2 font-semibold text-[var(--k-text-primary)]">{t('admin.entries.total')}</td>
+                      <td className="px-4 py-2 text-end font-bold text-[var(--k-text-primary)]">
                         {fmtCurrency(totalDebit(selectedEntry))}
                       </td>
-                      <td className="px-4 py-2 text-end font-bold text-slate-900">
+                      <td className="px-4 py-2 text-end font-bold text-[var(--k-text-primary)]">
                         {fmtCurrency(totalCredit(selectedEntry))}
                       </td>
                     </tr>
@@ -723,12 +723,12 @@ export default function EcrituresPage() {
                 </table>
               </div>
               {totalDebit(selectedEntry) === totalCredit(selectedEntry) ? (
-                <p className="text-sm text-emerald-600 mt-2 flex items-center gap-1">
+                <p className="text-sm text-emerald-400 mt-2 flex items-center gap-1">
                   <CheckCircle className="w-4 h-4" />
                   {t('admin.entries.entryBalanced')}
                 </p>
               ) : (
-                <p className="text-sm text-red-600 mt-2 flex items-center gap-1">
+                <p className="text-sm text-red-400 mt-2 flex items-center gap-1">
                   <AlertTriangle className="w-4 h-4" />
                   {t('admin.entries.entryUnbalanced')}
                 </p>
@@ -737,28 +737,28 @@ export default function EcrituresPage() {
 
             {/* Bridge #4: Comptabilité → Commerce (source order) */}
             {selectedEntry.sourceOrder && (
-              <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
-                <h4 className="text-sm font-semibold text-indigo-800 mb-2 flex items-center gap-1.5">
+              <div className="bg-[#6366f1]/10 border border-indigo-200 rounded-lg p-4">
+                <h4 className="text-sm font-semibold text-[#818cf8] mb-2 flex items-center gap-1.5">
                   <ShoppingCart className="w-4 h-4" />
                   {t('admin.accounting.sourceOrder')}
                 </h4>
                 <div className="flex items-center justify-between text-sm">
                   <div>
-                    <span className="font-mono text-indigo-700">{selectedEntry.sourceOrder.orderNumber}</span>
+                    <span className="font-mono text-[#818cf8]">{selectedEntry.sourceOrder.orderNumber}</span>
                     <span className={`ms-2 px-1.5 py-0.5 rounded text-[10px] font-medium ${
-                      selectedEntry.sourceOrder.status === 'DELIVERED' ? 'bg-green-100 text-green-700' :
-                      selectedEntry.sourceOrder.status === 'CANCELLED' ? 'bg-red-100 text-red-700' :
-                      'bg-gray-100 text-gray-600'
+                      selectedEntry.sourceOrder.status === 'DELIVERED' ? 'bg-green-500/15 text-green-400' :
+                      selectedEntry.sourceOrder.status === 'CANCELLED' ? 'bg-red-500/15 text-red-400' :
+                      'bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)]'
                     }`}>{selectedEntry.sourceOrder.status}</span>
                   </div>
                   <Link
                     href={`/admin/commandes?order=${selectedEntry.sourceOrder.id}`}
-                    className="text-xs text-indigo-600 hover:text-indigo-800 font-medium"
+                    className="text-xs text-[#818cf8] hover:text-[#818cf8] font-medium"
                   >
                     {t('admin.accounting.viewOrder')} →
                   </Link>
                 </div>
-                <p className="text-xs text-indigo-600 mt-1">
+                <p className="text-xs text-[#818cf8] mt-1">
                   {t('common.total')}: {formatCurrency(selectedEntry.sourceOrder.total)}
                 </p>
               </div>
@@ -766,23 +766,23 @@ export default function EcrituresPage() {
 
             {/* Bridge #14: Comptabilité → CRM (linked deal) */}
             {crmDealBridge?.deal && (
-              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                <h4 className="text-sm font-semibold text-purple-800 mb-2 flex items-center gap-1.5">
+              <div className="bg-purple-500/10 border border-purple-500/20 rounded-lg p-4">
+                <h4 className="text-sm font-semibold text-purple-400 mb-2 flex items-center gap-1.5">
                   <Briefcase className="w-4 h-4" />
                   {t('admin.bridges.accountingCrm')}
                 </h4>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="font-medium text-purple-700">{crmDealBridge.deal.title}</span>
+                  <span className="font-medium text-purple-400">{crmDealBridge.deal.title}</span>
                   <Link
                     href={`/admin/crm/deals/${crmDealBridge.deal.id}`}
-                    className="text-xs text-purple-600 hover:text-purple-800 font-medium"
+                    className="text-xs text-purple-400 hover:text-purple-400 font-medium"
                   >
                     {t('admin.bridges.viewAll')} →
                   </Link>
                 </div>
                 <div className="flex items-center justify-between text-xs mt-1">
                   <span className="text-purple-500">{crmDealBridge.deal.stage}</span>
-                  <span className="font-mono text-purple-600">{formatCurrency(crmDealBridge.deal.value)}</span>
+                  <span className="font-mono text-purple-400">{formatCurrency(crmDealBridge.deal.value)}</span>
                 </div>
               </div>
             )}
@@ -814,28 +814,28 @@ export default function EcrituresPage() {
           {/* Journal Lines */}
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h4 className="font-medium text-slate-900">{t('admin.entries.entryLines')}</h4>
-              <Button variant="ghost" size="sm" icon={Plus} className="text-emerald-600 hover:text-emerald-700" onClick={addNewLine}>
+              <h4 className="font-medium text-[var(--k-text-primary)]">{t('admin.entries.entryLines')}</h4>
+              <Button variant="ghost" size="sm" icon={Plus} className="text-emerald-400 hover:text-emerald-400" onClick={addNewLine}>
                 {t('admin.entries.addLine')}
               </Button>
             </div>
-            <div className="border border-slate-200 rounded-lg overflow-hidden overflow-x-auto">
+            <div className="border border-[var(--k-border-subtle)] rounded-lg overflow-hidden overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-slate-50">
+                <thead className="bg-[var(--k-bg-surface)]">
                   <tr>
-                    <th scope="col" className="px-4 py-2 text-start text-xs font-semibold text-slate-500">{t('admin.entries.accountHeader')}</th>
-                    <th scope="col" className="px-4 py-2 text-start text-xs font-semibold text-slate-500">{t('admin.entries.descriptionHeader')}</th>
-                    <th className="px-4 py-2 text-end text-xs font-semibold text-slate-500 w-32">{t('admin.entries.debitHeader')}</th>
-                    <th className="px-4 py-2 text-end text-xs font-semibold text-slate-500 w-32">{t('admin.entries.creditHeader')}</th>
+                    <th scope="col" className="px-4 py-2 text-start text-xs font-semibold text-[var(--k-text-tertiary)]">{t('admin.entries.accountHeader')}</th>
+                    <th scope="col" className="px-4 py-2 text-start text-xs font-semibold text-[var(--k-text-tertiary)]">{t('admin.entries.descriptionHeader')}</th>
+                    <th className="px-4 py-2 text-end text-xs font-semibold text-[var(--k-text-tertiary)] w-32">{t('admin.entries.debitHeader')}</th>
+                    <th className="px-4 py-2 text-end text-xs font-semibold text-[var(--k-text-tertiary)] w-32">{t('admin.entries.creditHeader')}</th>
                     <th className="w-10" />
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-[var(--k-border-subtle)]">
                   {newEntryLines.map((line, idx) => (
                     <tr key={`entry-line-${idx}-${line.accountCode}`}>
                       <td className="px-4 py-2">
                         <select
-                          className="w-full px-2 py-1 border border-slate-300 rounded text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          className="w-full px-2 py-1 border border-[var(--k-border-default)] rounded text-sm bg-[var(--k-glass-thin)] backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                           value={line.accountCode}
                           onChange={(e) => updateNewLine(idx, 'accountCode', e.target.value)}
                         >
@@ -848,7 +848,7 @@ export default function EcrituresPage() {
                       <td className="px-4 py-2">
                         <input
                           type="text"
-                          className="w-full px-2 py-1 border border-slate-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          className="w-full px-2 py-1 border border-[var(--k-border-default)] rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                           placeholder={t('admin.entries.descriptionLinePlaceholder')}
                           value={line.description}
                           onChange={(e) => updateNewLine(idx, 'description', e.target.value)}
@@ -858,7 +858,7 @@ export default function EcrituresPage() {
                         <input
                           type="number"
                           step="0.01"
-                          className="w-full px-2 py-1 border border-slate-300 rounded text-sm text-end focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          className="w-full px-2 py-1 border border-[var(--k-border-default)] rounded text-sm text-end focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                           placeholder="0.00"
                           value={line.debit}
                           onChange={(e) => updateNewLine(idx, 'debit', e.target.value)}
@@ -868,25 +868,25 @@ export default function EcrituresPage() {
                         <input
                           type="number"
                           step="0.01"
-                          className="w-full px-2 py-1 border border-slate-300 rounded text-sm text-end focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          className="w-full px-2 py-1 border border-[var(--k-border-default)] rounded text-sm text-end focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                           placeholder="0.00"
                           value={line.credit}
                           onChange={(e) => updateNewLine(idx, 'credit', e.target.value)}
                         />
                       </td>
                       <td className="px-2">
-                        <button className="p-1 text-red-500 hover:bg-red-50 rounded" onClick={() => removeNewLine(idx)} aria-label="Supprimer">
+                        <button className="p-1 text-red-400 hover:bg-red-500/10 rounded" onClick={() => removeNewLine(idx)} aria-label="Supprimer">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
-                <tfoot className="bg-slate-100">
+                <tfoot className="bg-[var(--k-glass-thin)]">
                   <tr>
-                    <td colSpan={2} className="px-4 py-2 font-semibold text-slate-900">{t('admin.entries.total')}</td>
-                    <td className="px-4 py-2 text-end font-bold text-slate-900">{fmtCurrency(newLinesTotalDebit)}</td>
-                    <td className="px-4 py-2 text-end font-bold text-slate-900">{fmtCurrency(newLinesTotalCredit)}</td>
+                    <td colSpan={2} className="px-4 py-2 font-semibold text-[var(--k-text-primary)]">{t('admin.entries.total')}</td>
+                    <td className="px-4 py-2 text-end font-bold text-[var(--k-text-primary)]">{fmtCurrency(newLinesTotalDebit)}</td>
+                    <td className="px-4 py-2 text-end font-bold text-[var(--k-text-primary)]">{fmtCurrency(newLinesTotalCredit)}</td>
                     <td />
                   </tr>
                 </tfoot>
@@ -900,8 +900,8 @@ export default function EcrituresPage() {
               <Input type="text" placeholder={t('admin.entries.referencePlaceholder')} value={newEntryReference} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewEntryReference(e.target.value)} />
             </FormField>
             <FormField label={t('admin.entries.attachmentLabel')}>
-              <div className="border-2 border-dashed border-slate-300 rounded-lg p-4 text-center hover:border-emerald-400 cursor-pointer transition-colors">
-                <p className="text-sm text-slate-500">{t('admin.entries.attachmentHint')}</p>
+              <div className="border-2 border-dashed border-[var(--k-border-default)] rounded-lg p-4 text-center hover:border-emerald-400 cursor-pointer transition-colors">
+                <p className="text-sm text-[var(--k-text-tertiary)]">{t('admin.entries.attachmentHint')}</p>
               </div>
             </FormField>
           </div>

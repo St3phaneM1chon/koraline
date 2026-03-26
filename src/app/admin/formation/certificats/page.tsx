@@ -54,7 +54,7 @@ export default function CertificatesPage() {
     {
       key: 'studentName',
       header: t('admin.lms.studentName'),
-      render: (row) => <span className="font-medium text-slate-900">{row.studentName}</span>,
+      render: (row) => <span className="font-medium text-[var(--k-text-primary)]">{row.studentName}</span>,
     },
     {
       key: 'courseTitle',
@@ -65,7 +65,7 @@ export default function CertificatesPage() {
       key: 'verificationCode',
       header: t('admin.lms.verificationCode'),
       render: (row) => (
-        <code className="text-xs bg-slate-100 px-2 py-0.5 rounded font-mono">
+        <code className="text-xs bg-[var(--k-glass-thin)] px-2 py-0.5 rounded font-mono">
           {row.verificationCode.slice(0, 8)}...
         </code>
       ),

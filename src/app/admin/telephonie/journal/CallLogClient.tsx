@@ -87,20 +87,20 @@ export default function CallLogClient() {
 
   const directionIcon = (dir: string) => {
     switch (dir) {
-      case 'INBOUND': return <PhoneIncoming className="w-4 h-4 text-indigo-600" />;
+      case 'INBOUND': return <PhoneIncoming className="w-4 h-4 text-[#818cf8]" />;
       case 'OUTBOUND': return <PhoneOutgoing className="w-4 h-4 text-emerald-600" />;
-      default: return <Phone className="w-4 h-4 text-gray-400" />;
+      default: return <Phone className="w-4 h-4 text-[var(--k-text-muted)]" />;
     }
   };
 
   const statusColors: Record<string, string> = {
-    COMPLETED: 'bg-emerald-100 text-emerald-700',
-    MISSED: 'bg-red-100 text-red-700',
-    VOICEMAIL: 'bg-orange-100 text-orange-700',
-    IN_PROGRESS: 'bg-indigo-100 text-indigo-700',
-    FAILED: 'bg-gray-100 text-gray-600',
-    TRANSFERRED: 'bg-purple-100 text-purple-700',
-    RINGING: 'bg-yellow-100 text-yellow-700',
+    COMPLETED: 'bg-emerald-500/15 text-emerald-400',
+    MISSED: 'bg-red-500/15 text-red-400',
+    VOICEMAIL: 'bg-orange-500/15 text-orange-400',
+    IN_PROGRESS: 'bg-[#6366f1]/15 text-[#818cf8]',
+    FAILED: 'bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)]',
+    TRANSFERRED: 'bg-purple-500/15 text-purple-400',
+    RINGING: 'bg-yellow-500/15 text-yellow-400',
   };
 
   const statusLabelMap: Record<string, string> = {
@@ -116,20 +116,20 @@ export default function CallLogClient() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-gray-900">{t('voip.callLog.title')}</h1>
+      <h1 className="text-2xl font-bold text-[var(--k-text-primary)]">{t('voip.callLog.title')}</h1>
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-3 bg-white border border-gray-200 rounded-xl p-4">
+      <div className="flex flex-wrap gap-3 bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-xl p-4">
         <div className="flex-1 min-w-[200px]">
           <div className="relative">
-            <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--k-text-muted)]" />
             <input
               type="text"
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
               placeholder={t('voip.callLog.searchPlaceholder')}
               aria-label={t('voip.callLog.searchPlaceholder')}
-              className="w-full ps-9 pe-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full ps-9 pe-3 py-2 border border-[var(--k-border-default)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
         </div>
@@ -138,7 +138,7 @@ export default function CallLogClient() {
           value={direction}
           onChange={(e) => { setDirection(e.target.value); setPage(1); }}
           aria-label={t('voip.callLog.allDirections')}
-          className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="px-3 py-2 border border-[var(--k-border-default)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option value="">{t('voip.callLog.allDirections')}</option>
           <option value="INBOUND">{t('voip.callLog.inbound')}</option>
@@ -150,7 +150,7 @@ export default function CallLogClient() {
           value={status}
           onChange={(e) => { setStatus(e.target.value); setPage(1); }}
           aria-label={t('voip.callLog.allStatuses')}
-          className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="px-3 py-2 border border-[var(--k-border-default)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option value="">{t('voip.callLog.allStatuses')}</option>
           <option value="COMPLETED">{t('voip.status.call.completed')}</option>
@@ -164,27 +164,27 @@ export default function CallLogClient() {
           value={dateFrom}
           onChange={(e) => { setDateFrom(e.target.value); setPage(1); }}
           aria-label="Date from"
-          className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="px-3 py-2 border border-[var(--k-border-default)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
         <input
           type="date"
           value={dateTo}
           onChange={(e) => { setDateTo(e.target.value); setPage(1); }}
           aria-label="Date to"
-          className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="px-3 py-2 border border-[var(--k-border-default)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
       </div>
 
       {/* Table */}
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+      <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-xl overflow-hidden">
         {isLoading ? (
-          <div className="p-8 text-center text-gray-400">{t('common.loading')}...</div>
+          <div className="p-8 text-center text-[var(--k-text-muted)]">{t('common.loading')}...</div>
         ) : (
           <>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                  <tr className="bg-[var(--k-bg-surface)] text-[var(--k-text-tertiary)] text-xs uppercase tracking-wider">
                     <th className="px-4 py-2 text-start" />
                     <th className="px-4 py-2 text-start">{t('voip.callLog.caller')}</th>
                     <th className="px-4 py-2 text-start">{t('voip.callLog.called')}</th>
@@ -196,51 +196,51 @@ export default function CallLogClient() {
                     <th className="px-4 py-2 text-start" />
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-[var(--k-border-subtle)]">
                   {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                   {data?.callLogs?.map((call: any) => (
                     <>
                       <tr
                         key={call.id}
-                        className="hover:bg-gray-50 cursor-pointer"
+                        className="hover:bg-[var(--k-bg-surface)] cursor-pointer"
                         onClick={() => setExpandedId(expandedId === call.id ? null : call.id)}
                       >
                         <td className="px-4 py-2.5">{directionIcon(call.direction)}</td>
                         <td className="px-4 py-2.5">
-                          <div className="font-medium text-gray-900">{call.callerName || call.callerNumber}</div>
-                          {call.client && <div className="text-xs text-gray-500">{call.client.name}</div>}
+                          <div className="font-medium text-[var(--k-text-primary)]">{call.callerName || call.callerNumber}</div>
+                          {call.client && <div className="text-xs text-[var(--k-text-tertiary)]">{call.client.name}</div>}
                         </td>
-                        <td className="px-4 py-2.5 text-gray-600">{call.calledNumber}</td>
-                        <td className="px-4 py-2.5 text-gray-600">
+                        <td className="px-4 py-2.5 text-[var(--k-text-secondary)]">{call.calledNumber}</td>
+                        <td className="px-4 py-2.5 text-[var(--k-text-secondary)]">
                           {call.agent ? `${call.agent.user?.name || ''} (${call.agent.extension})` : '-'}
                         </td>
                         <td className="px-4 py-2.5">
-                          <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${statusColors[call.status] || 'bg-gray-100'}`}>
+                          <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${statusColors[call.status] || 'bg-[var(--k-glass-thin)]'}`}>
                             {statusLabel(call.status)}
                           </span>
                         </td>
-                        <td className="px-4 py-2.5 text-gray-600 tabular-nums">
+                        <td className="px-4 py-2.5 text-[var(--k-text-secondary)] tabular-nums">
                           {call.duration ? formatDuration(call.duration) : '-'}
                         </td>
-                        <td className="px-4 py-2.5 text-gray-500 text-xs">
+                        <td className="px-4 py-2.5 text-[var(--k-text-tertiary)] text-xs">
                           {new Date(call.startedAt).toLocaleString('fr-CA', { dateStyle: 'short', timeStyle: 'short' })}
                         </td>
                         <td className="px-4 py-2.5">
                           <SatisfactionBadge score={call.survey?.overallScore || null} />
                         </td>
                         <td className="px-4 py-2.5">
-                          {call.recording && <FileText className="w-4 h-4 text-gray-400" />}
+                          {call.recording && <FileText className="w-4 h-4 text-[var(--k-text-muted)]" />}
                         </td>
                       </tr>
 
                       {/* Expanded detail row */}
                       {expandedId === call.id && (
                         <tr key={`${call.id}-detail`}>
-                          <td colSpan={9} className="bg-gray-50 px-4 py-3">
+                          <td colSpan={9} className="bg-[var(--k-bg-surface)] px-4 py-3">
                             <div className="flex flex-wrap gap-4 text-sm">
                               {call.recording?.id && (
                                 <div className="flex-1 min-w-[250px]">
-                                  <span className="text-xs font-medium text-gray-500 block mb-1">
+                                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1">
                                     {t('voip.callLog.recording')}
                                   </span>
                                   <AudioPlayer
@@ -251,15 +251,15 @@ export default function CallLogClient() {
                               )}
                               {call.transcription && (
                                 <div className="flex-1 min-w-[200px]">
-                                  <span className="text-xs font-medium text-gray-500 block mb-1">
+                                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1">
                                     {t('voip.callLog.transcription')}
                                   </span>
-                                  <p className="text-gray-700">{call.transcription.summary || '-'}</p>
+                                  <p className="text-[var(--k-text-secondary)]">{call.transcription.summary || '-'}</p>
                                   {call.transcription.sentiment && (
                                     <span className={`text-xs mt-1 inline-block px-2 py-0.5 rounded-full ${
-                                      call.transcription.sentiment === 'positive' ? 'bg-emerald-100 text-emerald-700' :
-                                      call.transcription.sentiment === 'negative' ? 'bg-red-100 text-red-700' :
-                                      'bg-gray-100 text-gray-600'
+                                      call.transcription.sentiment === 'positive' ? 'bg-emerald-500/15 text-emerald-400' :
+                                      call.transcription.sentiment === 'negative' ? 'bg-red-500/15 text-red-400' :
+                                      'bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)]'
                                     }`}>
                                       {call.transcription.sentiment}
                                     </span>
@@ -268,14 +268,14 @@ export default function CallLogClient() {
                               )}
                               {call.agentNotes && (
                                 <div className="flex-1 min-w-[200px]">
-                                  <span className="text-xs font-medium text-gray-500 block mb-1">Notes</span>
-                                  <p className="text-gray-700">{call.agentNotes}</p>
+                                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1">Notes</span>
+                                  <p className="text-[var(--k-text-secondary)]">{call.agentNotes}</p>
                                 </div>
                               )}
                               {/* Bridge #8: Telephony → CRM Deals */}
                               {callBridgeData[call.id]?.crmDeals && callBridgeData[call.id].crmDeals!.length > 0 && (
                                 <div className="flex-1 min-w-[200px]">
-                                  <span className="text-xs font-medium text-gray-500 block mb-1 flex items-center gap-1">
+                                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1 flex items-center gap-1">
                                     <Briefcase className="w-3 h-3" />
                                     {t('admin.telephony.crmDeals')}
                                   </span>
@@ -284,10 +284,10 @@ export default function CallLogClient() {
                                       <Link
                                         key={deal.id}
                                         href={`/admin/crm/deals/${deal.id}`}
-                                        className="flex items-center justify-between text-xs p-1.5 rounded bg-white hover:bg-indigo-50 border border-gray-100"
+                                        className="flex items-center justify-between text-xs p-1.5 rounded bg-[var(--k-glass-thin)] backdrop-blur-sm hover:bg-[#6366f1]/10 border border-[var(--k-border-subtle)]"
                                       >
-                                        <span className="text-gray-800 truncate">{deal.title}</span>
-                                        <span className="text-gray-500 ms-2 shrink-0">{deal.stageName}</span>
+                                        <span className="text-[var(--k-text-primary)] truncate">{deal.title}</span>
+                                        <span className="text-[var(--k-text-tertiary)] ms-2 shrink-0">{deal.stageName}</span>
                                       </Link>
                                     ))}
                                   </div>
@@ -296,7 +296,7 @@ export default function CallLogClient() {
                               {/* Bridge #13: Telephony → Commerce (Recent Orders) */}
                               {callBridgeData[call.id]?.recentOrders && callBridgeData[call.id].recentOrders!.length > 0 && (
                                 <div className="flex-1 min-w-[200px]">
-                                  <span className="text-xs font-medium text-gray-500 block mb-1 flex items-center gap-1">
+                                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1 flex items-center gap-1">
                                     <ShoppingCart className="w-3 h-3" />
                                     {t('admin.bridges.recentOrders')}
                                   </span>
@@ -305,10 +305,10 @@ export default function CallLogClient() {
                                       <Link
                                         key={order.id}
                                         href={`/admin/commandes?orderId=${order.id}`}
-                                        className="flex items-center justify-between text-xs p-1.5 rounded bg-white hover:bg-indigo-50 border border-gray-100"
+                                        className="flex items-center justify-between text-xs p-1.5 rounded bg-[var(--k-glass-thin)] backdrop-blur-sm hover:bg-[#6366f1]/10 border border-[var(--k-border-subtle)]"
                                       >
-                                        <span className="text-gray-800">#{order.orderNumber}</span>
-                                        <span className="text-gray-500 ms-2 shrink-0">${order.total.toFixed(2)}</span>
+                                        <span className="text-[var(--k-text-primary)]">#{order.orderNumber}</span>
+                                        <span className="text-[var(--k-text-tertiary)] ms-2 shrink-0">${order.total.toFixed(2)}</span>
                                       </Link>
                                     ))}
                                   </div>
@@ -317,20 +317,20 @@ export default function CallLogClient() {
                               {/* Bridge #45: Telephony → Loyalty */}
                               {callBridgeData[call.id]?.loyaltyInfo && (
                                 <div className="flex-1 min-w-[150px]">
-                                  <span className="text-xs font-medium text-gray-500 block mb-1 flex items-center gap-1">
+                                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1 flex items-center gap-1">
                                     <Star className="w-3 h-3" />
                                     {t('admin.bridges.loyaltyInfo')}
                                   </span>
-                                  <div className="text-xs p-1.5 rounded bg-white border border-gray-100">
+                                  <div className="text-xs p-1.5 rounded bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)]">
                                     <span className="text-purple-700 font-medium">{callBridgeData[call.id].loyaltyInfo!.currentTier}</span>
-                                    <span className="text-gray-500 ms-2">{callBridgeData[call.id].loyaltyInfo!.currentPoints.toLocaleString()} pts</span>
+                                    <span className="text-[var(--k-text-tertiary)] ms-2">{callBridgeData[call.id].loyaltyInfo!.currentPoints.toLocaleString()} pts</span>
                                   </div>
                                 </div>
                               )}
                               {/* Bridge #46: Telephony → Email */}
                               {callBridgeData[call.id]?.recentEmails && callBridgeData[call.id].recentEmails!.length > 0 && (
                                 <div className="flex-1 min-w-[200px]">
-                                  <span className="text-xs font-medium text-gray-500 block mb-1 flex items-center gap-1">
+                                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1 flex items-center gap-1">
                                     <Mail className="w-3 h-3" />
                                     {t('admin.bridges.recentEmails')}
                                   </span>
@@ -338,11 +338,11 @@ export default function CallLogClient() {
                                     {callBridgeData[call.id].recentEmails!.slice(0, 3).map((email) => (
                                       <div
                                         key={email.id}
-                                        className="text-xs p-1.5 rounded bg-white border border-gray-100"
+                                        className="text-xs p-1.5 rounded bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)]"
                                       >
-                                        <p className="text-gray-700 truncate">{email.subject}</p>
+                                        <p className="text-[var(--k-text-secondary)] truncate">{email.subject}</p>
                                         <span className={`px-1 py-0.5 rounded text-[10px] ${
-                                          email.status === 'delivered' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
+                                          email.status === 'delivered' ? 'bg-green-500/15 text-green-400' : 'bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)]'
                                         }`}>{email.status}</span>
                                       </div>
                                     ))}
@@ -361,7 +361,7 @@ export default function CallLogClient() {
 
             {/* Pagination */}
             {data?.pagination && (
-              <div className="px-4 py-3 border-t border-gray-100 flex items-center justify-between text-sm text-gray-500">
+              <div className="px-4 py-3 border-t border-[var(--k-border-subtle)] flex items-center justify-between text-sm text-[var(--k-text-tertiary)]">
                 <span>
                   {t('voip.callLog.showing')} {((page - 1) * 25) + 1}-{Math.min(page * 25, data.pagination.total)} / {data.pagination.total}
                 </span>
@@ -369,7 +369,7 @@ export default function CallLogClient() {
                   <button
                     onClick={() => setPage(Math.max(1, page - 1))}
                     disabled={page <= 1}
-                    className="p-1 rounded hover:bg-gray-100 disabled:opacity-50"
+                    className="p-1 rounded hover:bg-[var(--k-glass-thin)] disabled:opacity-50"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
@@ -377,7 +377,7 @@ export default function CallLogClient() {
                   <button
                     onClick={() => setPage(Math.min(data.pagination.totalPages, page + 1))}
                     disabled={page >= data.pagination.totalPages}
-                    className="p-1 rounded hover:bg-gray-100 disabled:opacity-50"
+                    className="p-1 rounded hover:bg-[var(--k-glass-thin)] disabled:opacity-50"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </button>

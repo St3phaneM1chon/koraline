@@ -136,25 +136,25 @@ export default function MasteryDashboardPage() {
  label={t('learn.mastery.statsTotal')}
  value={stats.total}
  color="text-[var(--k-text-primary)]"
- bgColor="bg-white"
+ bgColor="bg-[var(--k-glass-regular)]"
  />
  <StatCard
  label={t('learn.mastery.statsMastered')}
  value={stats.mastered}
- color="text-green-700"
- bgColor="bg-green-50"
+ color="text-emerald-400"
+ bgColor="bg-[rgba(16,185,129,0.1)]"
  />
  <StatCard
  label={t('learn.mastery.statsInProgress')}
  value={stats.inProgress}
- color="text-yellow-700"
- bgColor="bg-yellow-50"
+ color="text-yellow-400"
+ bgColor="bg-[rgba(245,158,11,0.1)]"
  />
  <StatCard
  label={t('learn.mastery.statsWeak')}
  value={stats.weak}
- color="text-red-700"
- bgColor="bg-red-50"
+ color="text-red-400"
+ bgColor="bg-[rgba(244,63,94,0.1)]"
  />
  <StatCard
  label={t('learn.mastery.statsUntested')}
@@ -179,7 +179,7 @@ export default function MasteryDashboardPage() {
  <button
  key={concept.id}
  onClick={() => setSelectedConcept(concept)}
- className="px-3 py-1.5 bg-white border border-orange-200 rounded-lg text-sm text-orange-800 hover:bg-orange-100 transition-colors"
+ className="px-3 py-1.5 bg-[var(--k-glass-thin)] border border-[rgba(245,158,11,0.2)] rounded-lg text-sm text-[var(--k-accent-amber)] hover:bg-[rgba(245,158,11,0.1)] transition-colors"
  >
  {concept.name}
  </button>
@@ -198,7 +198,7 @@ export default function MasteryDashboardPage() {
  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
  selectedDomain === 'all'
  ? 'bg-gradient-to-r from-[#6366f1] to-[#818cf8] text-white'
- : 'bg-white text-[var(--k-text-secondary)] border border-[var(--k-border-default)] hover:bg-[var(--k-glass-thin)]'
+ : 'bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)] border border-[var(--k-border-default)] hover:bg-[var(--k-glass-regular)]'
  }`}
  >
  {t('learn.allArticles')} ({concepts.length})
@@ -212,7 +212,7 @@ export default function MasteryDashboardPage() {
  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
  selectedDomain === domain
  ? 'bg-gradient-to-r from-[#6366f1] to-[#818cf8] text-white'
- : 'bg-white text-[var(--k-text-secondary)] border border-[var(--k-border-default)] hover:bg-[var(--k-glass-thin)]'
+ : 'bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)] border border-[var(--k-border-default)] hover:bg-[var(--k-glass-regular)]'
  }`}
  >
  {DOMAIN_LABELS[domain] ?? domain} ({count})
@@ -243,7 +243,7 @@ export default function MasteryDashboardPage() {
  {t(`learn.mastery.${LEVEL_LABELS[concept.mastery?.currentLevel ?? 0]}`)}
  </p>
  {concept.mastery && (
- <div className="mt-2 w-full bg-white/50 rounded-full h-1.5">
+ <div className="mt-2 w-full bg-[var(--k-glass-thin)] rounded-full h-1.5">
  <div
  className={`h-1.5 rounded-full ${
  concept.status === 'mastered' ? 'bg-green-500' :
@@ -285,7 +285,7 @@ function StatCard({ label, value, color, bgColor }: {
  label: string; value: number; color: string; bgColor: string;
 }) {
  return (
- <div className={`${bgColor} rounded-xl p-4 border border-gray-100 shadow-sm`}>
+ <div className={`${bgColor} rounded-xl p-4 border border-[var(--k-border-subtle)] shadow-[var(--k-shadow-md)] backdrop-blur-xl`}>
  <p className={`text-3xl font-bold ${color}`}>{value}</p>
  <p className="text-xs text-[var(--k-text-secondary)] mt-1">{label}</p>
  </div>

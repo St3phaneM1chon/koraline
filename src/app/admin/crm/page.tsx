@@ -49,15 +49,15 @@ const ACTIVITY_ICONS: Record<string, typeof Phone> = {
 };
 
 const ACTIVITY_COLORS: Record<string, string> = {
-  CALL: 'text-green-600 bg-green-100',
-  EMAIL: 'text-indigo-600 bg-indigo-100',
-  SMS: 'text-purple-600 bg-purple-100',
-  MEETING: 'text-indigo-600 bg-indigo-100',
-  NOTE: 'text-amber-600 bg-amber-100',
-  STATUS_CHANGE: 'text-gray-600 bg-gray-200',
-  DEAL_CREATED: 'text-indigo-600 bg-indigo-100',
-  DEAL_WON: 'text-green-600 bg-green-100',
-  DEAL_LOST: 'text-red-600 bg-red-100',
+  CALL: 'text-green-400 bg-green-500/15',
+  EMAIL: 'text-[#818cf8] bg-[#6366f1]/15',
+  SMS: 'text-purple-400 bg-purple-500/15',
+  MEETING: 'text-[#818cf8] bg-[#6366f1]/15',
+  NOTE: 'text-amber-400 bg-amber-500/15',
+  STATUS_CHANGE: 'text-[var(--k-text-secondary)] bg-[var(--k-glass-thin)]',
+  DEAL_CREATED: 'text-[#818cf8] bg-[#6366f1]/15',
+  DEAL_WON: 'text-green-400 bg-green-500/15',
+  DEAL_LOST: 'text-red-400 bg-red-500/15',
 };
 
 const NAV_ITEMS = [
@@ -159,11 +159,11 @@ export default function CRMDashboardPage() {
     return (
       <div className="p-6 max-w-7xl mx-auto">
         <div className="animate-pulse space-y-6">
-          <div className="h-8 bg-gray-200 rounded w-64" />
+          <div className="h-8 bg-[var(--k-glass-thin)] rounded w-64" />
           <div className="grid grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map(i => <div key={i} className="h-24 bg-gray-200 rounded-lg" />)}
+            {[1, 2, 3, 4].map(i => <div key={i} className="h-24 bg-[var(--k-glass-thin)] rounded-lg" />)}
           </div>
-          <div className="h-64 bg-gray-200 rounded-lg" />
+          <div className="h-64 bg-[var(--k-glass-thin)] rounded-lg" />
         </div>
       </div>
     );
@@ -175,22 +175,22 @@ export default function CRMDashboardPage() {
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">{t('admin.crm.dashboardTitle')}</h1>
-        <p className="text-sm text-gray-500 mt-1">{t('admin.crm.dashboardDesc')}</p>
+        <h1 className="text-2xl font-bold text-[var(--k-text-primary)]">{t('admin.crm.dashboardTitle')}</h1>
+        <p className="text-sm text-[var(--k-text-tertiary)] mt-1">{t('admin.crm.dashboardDesc')}</p>
       </div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <button
           onClick={() => router.push('/admin/crm/leads')}
-          className="bg-white rounded-lg border px-4 py-4 text-start hover:border-indigo-300 hover:shadow-sm transition-all group"
+          className="bg-[var(--k-glass-thin)] backdrop-blur-sm rounded-lg border border-[var(--k-border-subtle)] px-4 py-4 text-start hover:border-[#6366f1]/30 hover:bg-[var(--k-glass-regular)] transition-all group"
         >
           <div className="flex items-center justify-between mb-2">
-            <Users className="h-5 w-5 text-indigo-600" />
-            <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-indigo-500 transition-colors" />
+            <Users className="h-5 w-5 text-[#818cf8]" />
+            <ArrowRight className="h-4 w-4 text-[var(--k-text-muted)] group-hover:text-[#818cf8] transition-colors" />
           </div>
-          <p className="text-2xl font-bold text-gray-900">{d?.leads.total || 0}</p>
-          <p className="text-xs text-gray-500 mt-0.5">{t('admin.crm.totalLeads')}</p>
+          <p className="text-2xl font-bold text-[var(--k-text-primary)]">{d?.leads.total || 0}</p>
+          <p className="text-xs text-[var(--k-text-tertiary)] mt-0.5">{t('admin.crm.totalLeads')}</p>
           {d && (d.leads.hotCount > 0 || d.leads.warmCount > 0) && (
             <div className="flex items-center gap-2 mt-2 text-[10px]">
               {d.leads.hotCount > 0 && <span className="text-red-500">{d.leads.hotCount} HOT</span>}
@@ -202,42 +202,42 @@ export default function CRMDashboardPage() {
 
         <button
           onClick={() => router.push('/admin/crm/deals')}
-          className="bg-white rounded-lg border px-4 py-4 text-start hover:border-indigo-300 hover:shadow-sm transition-all group"
+          className="bg-[var(--k-glass-thin)] backdrop-blur-sm rounded-lg border border-[var(--k-border-subtle)] px-4 py-4 text-start hover:border-[#6366f1]/30 hover:bg-[var(--k-glass-regular)] transition-all group"
         >
           <div className="flex items-center justify-between mb-2">
-            <Handshake className="h-5 w-5 text-indigo-600" />
-            <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-indigo-500 transition-colors" />
+            <Handshake className="h-5 w-5 text-[#818cf8]" />
+            <ArrowRight className="h-4 w-4 text-[var(--k-text-muted)] group-hover:text-[#818cf8] transition-colors" />
           </div>
-          <p className="text-2xl font-bold text-gray-900">{d?.deals.openCount || 0}</p>
-          <p className="text-xs text-gray-500 mt-0.5">{t('admin.crm.openDeals')}</p>
-          <p className="text-[10px] text-gray-400 mt-1">{d?.deals.total || 0} {t('common.total')}</p>
+          <p className="text-2xl font-bold text-[var(--k-text-primary)]">{d?.deals.openCount || 0}</p>
+          <p className="text-xs text-[var(--k-text-tertiary)] mt-0.5">{t('admin.crm.openDeals')}</p>
+          <p className="text-[10px] text-[var(--k-text-muted)] mt-1">{d?.deals.total || 0} {t('common.total')}</p>
         </button>
 
         <button
           onClick={() => router.push('/admin/crm/pipeline')}
-          className="bg-white rounded-lg border px-4 py-4 text-start hover:border-indigo-300 hover:shadow-sm transition-all group"
+          className="bg-[var(--k-glass-thin)] backdrop-blur-sm rounded-lg border border-[var(--k-border-subtle)] px-4 py-4 text-start hover:border-[#6366f1]/30 hover:bg-[var(--k-glass-regular)] transition-all group"
         >
           <div className="flex items-center justify-between mb-2">
             <DollarSign className="h-5 w-5 text-green-600" />
-            <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-indigo-500 transition-colors" />
+            <ArrowRight className="h-4 w-4 text-[var(--k-text-muted)] group-hover:text-[#818cf8] transition-colors" />
           </div>
-          <p className="text-2xl font-bold text-gray-900">{formatCurrency(d?.deals.totalValue || 0)}</p>
-          <p className="text-xs text-gray-500 mt-0.5">{t('admin.crm.totalValue')}</p>
-          <p className="text-[10px] text-indigo-600 mt-1">
+          <p className="text-2xl font-bold text-[var(--k-text-primary)]">{formatCurrency(d?.deals.totalValue || 0)}</p>
+          <p className="text-xs text-[var(--k-text-tertiary)] mt-0.5">{t('admin.crm.totalValue')}</p>
+          <p className="text-[10px] text-[#818cf8] mt-1">
             {formatCurrency(d?.deals.weightedValue || 0)} {t('admin.crm.weightedValue')}
           </p>
         </button>
 
         <button
           onClick={() => router.push('/admin/crm/forecast')}
-          className="bg-white rounded-lg border px-4 py-4 text-start hover:border-indigo-300 hover:shadow-sm transition-all group"
+          className="bg-[var(--k-glass-thin)] backdrop-blur-sm rounded-lg border border-[var(--k-border-subtle)] px-4 py-4 text-start hover:border-[#6366f1]/30 hover:bg-[var(--k-glass-regular)] transition-all group"
         >
           <div className="flex items-center justify-between mb-2">
             <Target className="h-5 w-5 text-amber-600" />
-            <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-indigo-500 transition-colors" />
+            <ArrowRight className="h-4 w-4 text-[var(--k-text-muted)] group-hover:text-[#818cf8] transition-colors" />
           </div>
-          <p className="text-2xl font-bold text-gray-900">{Math.round((d?.deals.winRate || 0) * 100)}%</p>
-          <p className="text-xs text-gray-500 mt-0.5">{t('admin.crm.winRate')}</p>
+          <p className="text-2xl font-bold text-[var(--k-text-primary)]">{Math.round((d?.deals.winRate || 0) * 100)}%</p>
+          <p className="text-xs text-[var(--k-text-tertiary)] mt-0.5">{t('admin.crm.winRate')}</p>
           <div className="flex items-center gap-2 mt-1 text-[10px]">
             <span className="text-green-600">{d?.deals.wonCount || 0}W</span>
             <span className="text-red-500">{d?.deals.lostCount || 0}L</span>
@@ -247,12 +247,12 @@ export default function CRMDashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Pipeline Funnel */}
-        <div className="lg:col-span-2 bg-white rounded-lg border">
-          <div className="flex items-center justify-between px-4 py-3 border-b">
-            <h3 className="text-sm font-semibold text-gray-700">{t('admin.crm.pipelineStages')}</h3>
+        <div className="lg:col-span-2 bg-[var(--k-glass-thin)] backdrop-blur-sm rounded-lg border border-[var(--k-border-subtle)]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--k-border-subtle)]">
+            <h3 className="text-sm font-semibold text-[var(--k-text-secondary)]">{t('admin.crm.pipelineStages')}</h3>
             <button
               onClick={() => router.push('/admin/crm/pipeline')}
-              className="text-xs text-indigo-600 hover:text-indigo-700 flex items-center gap-1"
+              className="text-xs text-[#818cf8] hover:text-[#a5b4fc] flex items-center gap-1"
             >
               {t('admin.crm.viewKanban')} <ArrowRight className="h-3 w-3" />
             </button>
@@ -265,8 +265,8 @@ export default function CRMDashboardPage() {
                   const pct = (stage.count / maxCount) * 100;
                   return (
                     <div key={stage.stageId} className="flex items-center gap-3">
-                      <span className="text-xs text-gray-500 w-24 truncate text-end">{stage.stageName}</span>
-                      <div className="flex-1 h-7 bg-gray-100 rounded-md overflow-hidden relative">
+                      <span className="text-xs text-[var(--k-text-tertiary)] w-24 truncate text-end">{stage.stageName}</span>
+                      <div className="flex-1 h-7 bg-[var(--k-glass-thin)] rounded-md overflow-hidden relative">
                         <div
                           className="h-full rounded-md transition-all"
                           style={{
@@ -287,22 +287,22 @@ export default function CRMDashboardPage() {
                 })}
               </div>
             ) : (
-              <p className="text-sm text-gray-400 text-center py-6">{t('admin.crm.noPipelineData')}</p>
+              <p className="text-sm text-[var(--k-text-muted)] text-center py-6">{t('admin.crm.noPipelineData')}</p>
             )}
           </div>
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-white rounded-lg border">
-          <div className="flex items-center justify-between px-4 py-3 border-b">
-            <h3 className="text-sm font-semibold text-gray-700">{t('admin.crm.recentActivity')}</h3>
+        <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm rounded-lg border border-[var(--k-border-subtle)]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--k-border-subtle)]">
+            <h3 className="text-sm font-semibold text-[var(--k-text-secondary)]">{t('admin.crm.recentActivity')}</h3>
           </div>
           <div className="p-3">
             {d?.recentActivities && d.recentActivities.length > 0 ? (
               <div className="space-y-0">
                 {d.recentActivities.map((activity, idx) => {
                   const Icon = ACTIVITY_ICONS[activity.type] || MessageSquare;
-                  const colors = ACTIVITY_COLORS[activity.type] || 'text-gray-500 bg-gray-100';
+                  const colors = ACTIVITY_COLORS[activity.type] || 'text-[var(--k-text-tertiary)] bg-[var(--k-glass-thin)]';
                   const isLast = idx === d.recentActivities.length - 1;
                   return (
                     <div key={activity.id} className="flex gap-2.5">
@@ -310,15 +310,15 @@ export default function CRMDashboardPage() {
                         <div className={`p-1 rounded-full ${colors.split(' ')[1]}`}>
                           <Icon className={`h-3 w-3 ${colors.split(' ')[0]}`} />
                         </div>
-                        {!isLast && <div className="w-px flex-1 bg-gray-200 my-0.5" />}
+                        {!isLast && <div className="w-px flex-1 bg-[var(--k-glass-thin)] my-0.5" />}
                       </div>
                       <div className={`flex-1 min-w-0 ${isLast ? 'pb-0' : 'pb-2.5'}`}>
-                        <p className="text-xs text-gray-900 leading-snug truncate">{activity.title}</p>
+                        <p className="text-xs text-[var(--k-text-primary)] leading-snug truncate">{activity.title}</p>
                         <div className="flex items-center gap-1.5 mt-0.5">
                           {activity.lead && (
                             <button
                               onClick={() => router.push(`/admin/crm/leads/${activity.lead!.id}`)}
-                              className="text-[10px] text-indigo-600 hover:underline truncate max-w-[100px]"
+                              className="text-[10px] text-[#818cf8] hover:underline truncate max-w-[100px]"
                             >
                               {activity.lead.contactName}
                             </button>
@@ -326,12 +326,12 @@ export default function CRMDashboardPage() {
                           {activity.deal && (
                             <button
                               onClick={() => router.push(`/admin/crm/deals/${activity.deal!.id}`)}
-                              className="text-[10px] text-indigo-600 hover:underline truncate max-w-[100px]"
+                              className="text-[10px] text-[#818cf8] hover:underline truncate max-w-[100px]"
                             >
                               {activity.deal.title}
                             </button>
                           )}
-                          <span className="text-[10px] text-gray-400">{formatTime(activity.createdAt)}</span>
+                          <span className="text-[10px] text-[var(--k-text-muted)]">{formatTime(activity.createdAt)}</span>
                         </div>
                       </div>
                     </div>
@@ -339,7 +339,7 @@ export default function CRMDashboardPage() {
                 })}
               </div>
             ) : (
-              <p className="text-sm text-gray-400 text-center py-6">{t('admin.crm.noActivities')}</p>
+              <p className="text-sm text-[var(--k-text-muted)] text-center py-6">{t('admin.crm.noActivities')}</p>
             )}
           </div>
         </div>
@@ -347,17 +347,17 @@ export default function CRMDashboardPage() {
 
       {/* Quick Navigation */}
       <div>
-        <h3 className="text-sm font-semibold text-gray-700 mb-3">{t('admin.crm.quickNav')}</h3>
+        <h3 className="text-sm font-semibold text-[var(--k-text-secondary)] mb-3">{t('admin.crm.quickNav')}</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           {NAV_ITEMS.map(({ href, icon: Icon, labelKey, fallback, desc }) => (
             <button
               key={href}
               onClick={() => router.push(href)}
-              className="bg-white rounded-lg border px-4 py-3 text-start hover:border-indigo-300 hover:shadow-sm transition-all group"
+              className="bg-[var(--k-glass-thin)] backdrop-blur-sm rounded-lg border border-[var(--k-border-subtle)] px-4 py-3 text-start hover:border-[#6366f1]/30 hover:bg-[var(--k-glass-regular)] transition-all group"
             >
-              <Icon className="h-5 w-5 text-gray-400 group-hover:text-indigo-600 transition-colors mb-2" />
-              <p className="text-sm font-medium text-gray-900">{t(labelKey) || fallback}</p>
-              <p className="text-[10px] text-gray-400 mt-0.5">{t(desc) || ''}</p>
+              <Icon className="h-5 w-5 text-[var(--k-text-muted)] group-hover:text-[#818cf8] transition-colors mb-2" />
+              <p className="text-sm font-medium text-[var(--k-text-primary)]">{t(labelKey) || fallback}</p>
+              <p className="text-[10px] text-[var(--k-text-muted)] mt-0.5">{t(desc) || ''}</p>
             </button>
           ))}
         </div>

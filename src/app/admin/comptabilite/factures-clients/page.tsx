@@ -513,12 +513,12 @@ export default function FacturesClientsPage() {
         <div>
           <button
             onClick={(e) => { e.stopPropagation(); openDetailModal(invoice); }}
-            className="font-mono text-sm text-indigo-600 hover:text-indigo-800 hover:underline font-medium"
+            className="font-mono text-sm text-[#818cf8] hover:text-[#818cf8] hover:underline font-medium"
           >
             {invoice.invoiceNumber}
           </button>
           {invoice.orderId && (
-            <p className="text-xs text-slate-500">{t('admin.customerInvoices.order')}: {invoice.orderId}</p>
+            <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.customerInvoices.order')}: {invoice.orderId}</p>
           )}
         </div>
       ),
@@ -529,9 +529,9 @@ export default function FacturesClientsPage() {
       sortable: true,
       render: (invoice) => (
         <div>
-          <p className="text-sm font-medium text-slate-900">{invoice.customerName}</p>
+          <p className="text-sm font-medium text-[var(--k-text-primary)]">{invoice.customerName}</p>
           {invoice.customerEmail && (
-            <p className="text-xs text-slate-500">{invoice.customerEmail}</p>
+            <p className="text-xs text-[var(--k-text-tertiary)]">{invoice.customerEmail}</p>
           )}
         </div>
       ),
@@ -541,7 +541,7 @@ export default function FacturesClientsPage() {
       header: t('admin.customerInvoices.date'),
       sortable: true,
       render: (invoice) => (
-        <span className="text-sm text-slate-600">
+        <span className="text-sm text-[var(--k-text-secondary)]">
           {new Date(invoice.invoiceDate).toLocaleDateString(locale)}
         </span>
       ),
@@ -553,7 +553,7 @@ export default function FacturesClientsPage() {
       render: (invoice) => {
         const isOverdue = invoice.status !== 'PAID' && invoice.status !== 'VOID' && new Date(invoice.dueDate) < new Date();
         return (
-          <span className={`text-sm ${isOverdue ? 'text-red-600 font-medium' : 'text-slate-600'}`}>
+          <span className={`text-sm ${isOverdue ? 'text-red-400 font-medium' : 'text-[var(--k-text-secondary)]'}`}>
             {new Date(invoice.dueDate).toLocaleDateString(locale)}
           </span>
         );
@@ -565,7 +565,7 @@ export default function FacturesClientsPage() {
       align: 'right',
       sortable: true,
       render: (invoice) => (
-        <span className="font-medium text-slate-900">{formatCurrency(Number(invoice.total))}</span>
+        <span className="font-medium text-[var(--k-text-primary)]">{formatCurrency(Number(invoice.total))}</span>
       ),
     },
     {
@@ -573,7 +573,7 @@ export default function FacturesClientsPage() {
       header: t('admin.customerInvoices.balance'),
       align: 'right',
       render: (invoice) => (
-        <span className={`text-sm ${Number(invoice.balance) > 0 ? 'text-amber-600 font-medium' : 'text-slate-500'}`}>
+        <span className={`text-sm ${Number(invoice.balance) > 0 ? 'text-amber-400 font-medium' : 'text-[var(--k-text-tertiary)]'}`}>
           {formatCurrency(Number(invoice.balance))}
         </span>
       ),
@@ -595,7 +595,7 @@ export default function FacturesClientsPage() {
         <div className="flex items-center justify-center gap-1" onClick={(e) => e.stopPropagation()}>
           <button
             onClick={() => openDetailModal(invoice)}
-            className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded"
+            className="p-1.5 text-[var(--k-text-tertiary)] hover:text-[#818cf8] hover:bg-[#6366f1]/10 rounded"
             title={t('admin.customerInvoices.view')}
             aria-label={t('admin.customerInvoices.view')}
           >
@@ -604,7 +604,7 @@ export default function FacturesClientsPage() {
           {invoice.status === 'DRAFT' && (
             <button
               onClick={() => openEditModal(invoice)}
-              className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded"
+              className="p-1.5 text-[var(--k-text-tertiary)] hover:text-[#818cf8] hover:bg-[#6366f1]/10 rounded"
               title={t('admin.customerInvoices.edit')}
               aria-label={t('admin.customerInvoices.edit')}
             >
@@ -613,7 +613,7 @@ export default function FacturesClientsPage() {
           )}
           <button
             onClick={() => handleDownloadPdf(invoice.id)}
-            className="p-1.5 text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 rounded"
+            className="p-1.5 text-[var(--k-text-tertiary)] hover:text-emerald-400 hover:bg-emerald-500/10 rounded"
             title={t('admin.customerInvoices.downloadPdf')}
             aria-label={t('admin.customerInvoices.downloadPdf')}
           >
@@ -622,7 +622,7 @@ export default function FacturesClientsPage() {
           {(invoice.status === 'SENT' || invoice.status === 'OVERDUE' || invoice.status === 'PARTIAL') && (
             <button
               onClick={() => openPaymentModal(invoice)}
-              className="p-1.5 text-slate-500 hover:text-green-600 hover:bg-green-50 rounded"
+              className="p-1.5 text-[var(--k-text-tertiary)] hover:text-green-400 hover:bg-green-50 rounded"
               title={t('admin.customerInvoices.recordPayment')}
               aria-label={t('admin.customerInvoices.recordPayment')}
             >
@@ -632,7 +632,7 @@ export default function FacturesClientsPage() {
           {invoice.status === 'DRAFT' && (
             <button
               onClick={() => handleSendInvoice(invoice)}
-              className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded"
+              className="p-1.5 text-[var(--k-text-tertiary)] hover:text-[#818cf8] hover:bg-[#6366f1]/10 rounded"
               title={t('admin.customerInvoices.sendInvoice')}
               aria-label={t('admin.customerInvoices.sendInvoice')}
             >
@@ -701,11 +701,11 @@ export default function FacturesClientsPage() {
 
   if (loading) return (
     <div aria-live="polite" aria-busy="true" className="p-8 space-y-4 animate-pulse">
-      <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-1/3"></div>
+      <div className="h-8 bg-[var(--k-glass-thin)] rounded w-1/3"></div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {[1,2,3,4].map(i => <div key={i} className="h-24 bg-slate-200 dark:bg-slate-700 rounded-xl"></div>)}
+        {[1,2,3,4].map(i => <div key={i} className="h-24 bg-[var(--k-glass-thin)] rounded-xl"></div>)}
       </div>
-      <div className="h-64 bg-slate-200 dark:bg-slate-700 rounded-xl"></div>
+      <div className="h-64 bg-[var(--k-glass-thin)] rounded-xl"></div>
     </div>
   );
 
@@ -719,7 +719,7 @@ export default function FacturesClientsPage() {
     <div className="space-y-6">
       {/* Success Banner */}
       {successMessage && (
-        <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 p-4 rounded-lg flex items-center gap-2">
+        <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 p-4 rounded-lg flex items-center gap-2">
           <CheckCircle className="w-5 h-5 flex-shrink-0" />
           <span>{successMessage}</span>
         </div>
@@ -727,14 +727,14 @@ export default function FacturesClientsPage() {
 
       {/* Error Banner */}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg flex items-center justify-between">
+        <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-lg flex items-center justify-between">
           <div className="flex items-center gap-2">
             <XCircle className="w-5 h-5 flex-shrink-0" />
             <span>{error}</span>
           </div>
           <button
             onClick={() => { setError(null); fetchInvoices(); }}
-            className="text-red-700 underline font-medium hover:text-red-800"
+            className="text-red-400 underline font-medium hover:text-red-400"
           >
             {t('admin.customerInvoices.cancel')}
           </button>
@@ -909,7 +909,7 @@ export default function FacturesClientsPage() {
               <select
                 value={form.paymentTerms}
                 onChange={(e) => setForm(prev => ({ ...prev, paymentTerms: e.target.value as InvoiceForm['paymentTerms'] }))}
-                className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full h-9 px-3 rounded-lg border border-[var(--k-border-default)] text-sm text-[var(--k-text-primary)] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 aria-label={t('admin.customerInvoices.paymentTerms')}
               >
                 <option value="NET15">{t('admin.customerInvoices.net15')}</option>
@@ -923,7 +923,7 @@ export default function FacturesClientsPage() {
                 type="date"
                 value={getDefaultDueDate(form.invoiceDate, form.paymentTerms)}
                 readOnly
-                className="bg-slate-50"
+                className="bg-[var(--k-bg-surface)]"
               />
             </FormField>
           </div>
@@ -931,44 +931,44 @@ export default function FacturesClientsPage() {
           {/* Line Items Table */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <h4 className="text-sm font-semibold text-slate-700">{t('admin.customerInvoices.description')}</h4>
+              <h4 className="text-sm font-semibold text-[var(--k-text-secondary)]">{t('admin.customerInvoices.description')}</h4>
               {formErrors.items && (
-                <p className="text-sm text-red-600">{formErrors.items}</p>
+                <p className="text-sm text-red-400">{formErrors.items}</p>
               )}
             </div>
-            <div className="border border-slate-200 rounded-lg overflow-hidden">
+            <div className="border border-[var(--k-border-subtle)] rounded-lg overflow-hidden">
               <table className="w-full">
-                <thead className="bg-slate-50">
+                <thead className="bg-[var(--k-bg-surface)]">
                   <tr>
-                    <th className="px-3 py-2 text-start text-xs font-semibold text-slate-500 w-[40%]">
+                    <th className="px-3 py-2 text-start text-xs font-semibold text-[var(--k-text-tertiary)] w-[40%]">
                       {t('admin.customerInvoices.description')}
                     </th>
-                    <th className="px-3 py-2 text-center text-xs font-semibold text-slate-500 w-16">
+                    <th className="px-3 py-2 text-center text-xs font-semibold text-[var(--k-text-tertiary)] w-16">
                       {t('admin.customerInvoices.qty')}
                     </th>
-                    <th className="px-3 py-2 text-end text-xs font-semibold text-slate-500 w-28">
+                    <th className="px-3 py-2 text-end text-xs font-semibold text-[var(--k-text-tertiary)] w-28">
                       {t('admin.customerInvoices.unitPrice')}
                     </th>
-                    <th className="px-3 py-2 text-center text-xs font-semibold text-slate-500 w-14">
+                    <th className="px-3 py-2 text-center text-xs font-semibold text-[var(--k-text-tertiary)] w-14">
                       {t('admin.customerInvoices.applyGst')}
                     </th>
-                    <th className="px-3 py-2 text-center text-xs font-semibold text-slate-500 w-14">
+                    <th className="px-3 py-2 text-center text-xs font-semibold text-[var(--k-text-tertiary)] w-14">
                       {t('admin.customerInvoices.applyQst')}
                     </th>
-                    <th className="px-3 py-2 text-end text-xs font-semibold text-slate-500 w-28">
+                    <th className="px-3 py-2 text-end text-xs font-semibold text-[var(--k-text-tertiary)] w-28">
                       {t('admin.customerInvoices.lineTotal')}
                     </th>
                     <th className="px-3 py-2 w-16"></th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-[var(--k-border-subtle)]">
                   {form.items.map((item, idx) => {
                     const lineTotal = item.quantity * item.unitPrice;
                     return (
                       <tr key={`line-${idx}`}>
                         <td className="px-2 py-1.5">
                           <input
-                            className={`w-full h-8 px-2 rounded border text-sm ${formErrors[`item_${idx}_desc`] ? 'border-red-300' : 'border-slate-200'} focus:outline-none focus:ring-1 focus:ring-indigo-500`}
+                            className={`w-full h-8 px-2 rounded border text-sm ${formErrors[`item_${idx}_desc`] ? 'border-red-300' : 'border-[var(--k-border-subtle)]'} focus:outline-none focus:ring-1 focus:ring-indigo-500`}
                             value={item.description}
                             onChange={(e) => updateLine(idx, { description: e.target.value })}
                             placeholder={t('admin.customerInvoices.description')}
@@ -979,7 +979,7 @@ export default function FacturesClientsPage() {
                           <input
                             type="number"
                             min={1}
-                            className="w-full h-8 px-2 rounded border border-slate-200 text-sm text-center focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                            className="w-full h-8 px-2 rounded border border-[var(--k-border-subtle)] text-sm text-center focus:outline-none focus:ring-1 focus:ring-indigo-500"
                             value={item.quantity}
                             onChange={(e) => updateLine(idx, { quantity: Math.max(1, parseInt(e.target.value) || 1) })}
                             aria-label={`Quantité, ligne ${idx + 1}`}
@@ -990,7 +990,7 @@ export default function FacturesClientsPage() {
                             type="number"
                             min={0}
                             step={0.01}
-                            className="w-full h-8 px-2 rounded border border-slate-200 text-sm text-end focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                            className="w-full h-8 px-2 rounded border border-[var(--k-border-subtle)] text-sm text-end focus:outline-none focus:ring-1 focus:ring-indigo-500"
                             value={item.unitPrice}
                             onChange={(e) => updateLine(idx, { unitPrice: Math.max(0, parseFloat(e.target.value) || 0) })}
                             aria-label={`Prix unitaire, ligne ${idx + 1}`}
@@ -1001,7 +1001,7 @@ export default function FacturesClientsPage() {
                             type="checkbox"
                             checked={item.applyGst}
                             onChange={(e) => updateLine(idx, { applyGst: e.target.checked })}
-                            className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                            className="rounded border-[var(--k-border-default)] text-[#818cf8] focus:ring-indigo-500"
                             aria-label={`Appliquer TPS, ligne ${idx + 1}`}
                           />
                         </td>
@@ -1010,18 +1010,18 @@ export default function FacturesClientsPage() {
                             type="checkbox"
                             checked={item.applyQst}
                             onChange={(e) => updateLine(idx, { applyQst: e.target.checked })}
-                            className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                            className="rounded border-[var(--k-border-default)] text-[#818cf8] focus:ring-indigo-500"
                             aria-label={`Appliquer TVQ, ligne ${idx + 1}`}
                           />
                         </td>
-                        <td className="px-3 py-1.5 text-end text-sm font-medium text-slate-900">
+                        <td className="px-3 py-1.5 text-end text-sm font-medium text-[var(--k-text-primary)]">
                           {formatCurrency(lineTotal)}
                         </td>
                         <td className="px-2 py-1.5 text-center">
                           {form.items.length > 1 && (
                             <button
                               onClick={() => removeLine(idx)}
-                              className="p-1 text-slate-400 hover:text-red-500 rounded"
+                              className="p-1 text-[var(--k-text-muted)] hover:text-red-500 rounded"
                               title={t('admin.customerInvoices.removeLine')}
                               aria-label="Supprimer la ligne"
                             >
@@ -1038,7 +1038,7 @@ export default function FacturesClientsPage() {
 
             <button
               onClick={addLine}
-              className="mt-2 text-sm text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1"
+              className="mt-2 text-sm text-[#818cf8] hover:text-[#818cf8] font-medium flex items-center gap-1"
             >
               <Plus className="w-4 h-4" />
               {t('admin.customerInvoices.addLine')}
@@ -1047,22 +1047,22 @@ export default function FacturesClientsPage() {
 
           {/* Totals Summary */}
           <div className="flex justify-end">
-            <div className="w-72 space-y-2 bg-slate-50 p-4 rounded-lg border border-slate-200">
+            <div className="w-72 space-y-2 bg-[var(--k-bg-surface)] p-4 rounded-lg border border-[var(--k-border-subtle)]">
               <div className="flex justify-between text-sm">
-                <span className="text-slate-500">{t('admin.customerInvoices.subtotal')}</span>
-                <span className="text-slate-900 font-medium">{formatCurrency(formTotals.subtotal)}</span>
+                <span className="text-[var(--k-text-tertiary)]">{t('admin.customerInvoices.subtotal')}</span>
+                <span className="text-[var(--k-text-primary)] font-medium">{formatCurrency(formTotals.subtotal)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-slate-500">{t('admin.customerInvoices.tps')}</span>
-                <span className="text-slate-900">{formatCurrency(formTotals.gst)}</span>
+                <span className="text-[var(--k-text-tertiary)]">{t('admin.customerInvoices.tps')}</span>
+                <span className="text-[var(--k-text-primary)]">{formatCurrency(formTotals.gst)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-slate-500">{t('admin.customerInvoices.tvq')}</span>
-                <span className="text-slate-900">{formatCurrency(formTotals.qst)}</span>
+                <span className="text-[var(--k-text-tertiary)]">{t('admin.customerInvoices.tvq')}</span>
+                <span className="text-[var(--k-text-primary)]">{formatCurrency(formTotals.qst)}</span>
               </div>
-              <div className="flex justify-between text-lg font-bold border-t border-slate-300 pt-2">
+              <div className="flex justify-between text-lg font-bold border-t border-[var(--k-border-default)] pt-2">
                 <span>{t('admin.customerInvoices.total')}</span>
-                <span className="text-indigo-600">{formatCurrency(formTotals.total)}</span>
+                <span className="text-[#818cf8]">{formatCurrency(formTotals.total)}</span>
               </div>
             </div>
           </div>
@@ -1168,10 +1168,10 @@ export default function FacturesClientsPage() {
             {/* Header row */}
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <h4 className="text-sm font-medium text-slate-500 mb-2">{t('admin.customerInvoices.billTo')}</h4>
-                <p className="font-medium text-slate-900">{inv.customerName}</p>
-                {inv.customerEmail && <p className="text-sm text-slate-600">{inv.customerEmail}</p>}
-                {inv.customerAddress && <p className="text-sm text-slate-600">{inv.customerAddress}</p>}
+                <h4 className="text-sm font-medium text-[var(--k-text-tertiary)] mb-2">{t('admin.customerInvoices.billTo')}</h4>
+                <p className="font-medium text-[var(--k-text-primary)]">{inv.customerName}</p>
+                {inv.customerEmail && <p className="text-sm text-[var(--k-text-secondary)]">{inv.customerEmail}</p>}
+                {inv.customerAddress && <p className="text-sm text-[var(--k-text-secondary)]">{inv.customerAddress}</p>}
               </div>
               <div className="text-end">
                 <div className="mb-2">
@@ -1179,14 +1179,14 @@ export default function FacturesClientsPage() {
                     {(statusConfig[inv.status] || statusConfig.DRAFT).label}
                   </StatusBadge>
                 </div>
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-[var(--k-text-tertiary)]">
                   {t('admin.customerInvoices.date')}: {new Date(inv.invoiceDate).toLocaleDateString(locale)}
                 </p>
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-[var(--k-text-tertiary)]">
                   {t('admin.customerInvoices.dueDate')}: {new Date(inv.dueDate).toLocaleDateString(locale)}
                 </p>
                 {inv.paidAt && (
-                  <p className="text-sm text-green-600">
+                  <p className="text-sm text-green-400">
                     {t('admin.customerInvoices.paidOn')}: {new Date(inv.paidAt).toLocaleDateString(locale)}
                   </p>
                 )}
@@ -1195,30 +1195,30 @@ export default function FacturesClientsPage() {
 
             {/* Items */}
             <div className="overflow-x-auto">
-            <table className="w-full border border-slate-200 rounded-lg overflow-hidden">
-              <thead className="bg-slate-50">
+            <table className="w-full border border-[var(--k-border-subtle)] rounded-lg overflow-hidden">
+              <thead className="bg-[var(--k-bg-surface)]">
                 <tr>
-                  <th scope="col" className="px-4 py-2 text-start text-xs font-semibold text-slate-500">
+                  <th scope="col" className="px-4 py-2 text-start text-xs font-semibold text-[var(--k-text-tertiary)]">
                     {t('admin.customerInvoices.description')}
                   </th>
-                  <th scope="col" className="px-4 py-2 text-center text-xs font-semibold text-slate-500">
+                  <th scope="col" className="px-4 py-2 text-center text-xs font-semibold text-[var(--k-text-tertiary)]">
                     {t('admin.customerInvoices.qty')}
                   </th>
-                  <th scope="col" className="px-4 py-2 text-end text-xs font-semibold text-slate-500">
+                  <th scope="col" className="px-4 py-2 text-end text-xs font-semibold text-[var(--k-text-tertiary)]">
                     {t('admin.customerInvoices.unitPrice')}
                   </th>
-                  <th scope="col" className="px-4 py-2 text-end text-xs font-semibold text-slate-500">
+                  <th scope="col" className="px-4 py-2 text-end text-xs font-semibold text-[var(--k-text-tertiary)]">
                     {t('admin.customerInvoices.total')}
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200">
+              <tbody className="divide-y divide-[var(--k-border-subtle)]">
                 {inv.items.map((item, index) => (
                   <tr key={item.id || `inv-item-${index}`}>
-                    <td className="px-4 py-3 text-slate-900">{item.description}</td>
-                    <td className="px-4 py-3 text-center text-slate-600">{item.quantity}</td>
-                    <td className="px-4 py-3 text-end text-slate-600">{formatCurrency(Number(item.unitPrice))}</td>
-                    <td className="px-4 py-3 text-end font-medium text-slate-900">{formatCurrency(Number(item.total))}</td>
+                    <td className="px-4 py-3 text-[var(--k-text-primary)]">{item.description}</td>
+                    <td className="px-4 py-3 text-center text-[var(--k-text-secondary)]">{item.quantity}</td>
+                    <td className="px-4 py-3 text-end text-[var(--k-text-secondary)]">{formatCurrency(Number(item.unitPrice))}</td>
+                    <td className="px-4 py-3 text-end font-medium text-[var(--k-text-primary)]">{formatCurrency(Number(item.total))}</td>
                   </tr>
                 ))}
               </tbody>
@@ -1229,30 +1229,30 @@ export default function FacturesClientsPage() {
             <div className="flex justify-end">
               <div className="w-72 space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-500">{t('admin.customerInvoices.subtotal')}</span>
-                  <span className="text-slate-900">{formatCurrency(Number(inv.subtotal))}</span>
+                  <span className="text-[var(--k-text-tertiary)]">{t('admin.customerInvoices.subtotal')}</span>
+                  <span className="text-[var(--k-text-primary)]">{formatCurrency(Number(inv.subtotal))}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-500">{t('admin.customerInvoices.tps')}</span>
-                  <span className="text-slate-900">{formatCurrency(Number(inv.taxTps))}</span>
+                  <span className="text-[var(--k-text-tertiary)]">{t('admin.customerInvoices.tps')}</span>
+                  <span className="text-[var(--k-text-primary)]">{formatCurrency(Number(inv.taxTps))}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-500">{t('admin.customerInvoices.tvq')}</span>
-                  <span className="text-slate-900">{formatCurrency(Number(inv.taxTvq))}</span>
+                  <span className="text-[var(--k-text-tertiary)]">{t('admin.customerInvoices.tvq')}</span>
+                  <span className="text-[var(--k-text-primary)]">{formatCurrency(Number(inv.taxTvq))}</span>
                 </div>
-                <div className="flex justify-between text-lg font-bold border-t border-slate-200 pt-2">
+                <div className="flex justify-between text-lg font-bold border-t border-[var(--k-border-subtle)] pt-2">
                   <span>{t('admin.customerInvoices.total')}</span>
-                  <span className="text-indigo-600">{formatCurrency(Number(inv.total))}</span>
+                  <span className="text-[#818cf8]">{formatCurrency(Number(inv.total))}</span>
                 </div>
                 {Number(inv.amountPaid) > 0 && (
                   <>
-                    <div className="flex justify-between text-sm text-emerald-600">
+                    <div className="flex justify-between text-sm text-emerald-400">
                       <span>{t('admin.customerInvoices.amountPaid')}</span>
                       <span>-{formatCurrency(Number(inv.amountPaid))}</span>
                     </div>
-                    <div className="flex justify-between text-lg font-bold border-t border-slate-200 pt-2">
+                    <div className="flex justify-between text-lg font-bold border-t border-[var(--k-border-subtle)] pt-2">
                       <span>{t('admin.customerInvoices.balance')}</span>
-                      <span className={Number(inv.balance) > 0 ? 'text-amber-600' : 'text-emerald-600'}>
+                      <span className={Number(inv.balance) > 0 ? 'text-amber-400' : 'text-emerald-400'}>
                         {formatCurrency(Number(inv.balance))}
                       </span>
                     </div>
@@ -1263,9 +1263,9 @@ export default function FacturesClientsPage() {
 
             {/* Notes */}
             {inv.notes && (
-              <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
-                <h4 className="text-sm font-medium text-slate-500 mb-1">{t('admin.customerInvoices.notes')}</h4>
-                <p className="text-sm text-slate-700 whitespace-pre-wrap">{inv.notes}</p>
+              <div className="p-3 bg-[var(--k-bg-surface)] rounded-lg border border-[var(--k-border-subtle)]">
+                <h4 className="text-sm font-medium text-[var(--k-text-tertiary)] mb-1">{t('admin.customerInvoices.notes')}</h4>
+                <p className="text-sm text-[var(--k-text-secondary)] whitespace-pre-wrap">{inv.notes}</p>
               </div>
             )}
           </div>
@@ -1299,14 +1299,14 @@ export default function FacturesClientsPage() {
       >
         <div className="space-y-4">
           {selectedInvoice && (
-            <div className="p-3 bg-indigo-50 rounded-lg border border-indigo-200">
+            <div className="p-3 bg-[#6366f1]/10 rounded-lg border border-indigo-200">
               <div className="flex justify-between text-sm">
-                <span className="text-indigo-700 font-medium">{t('admin.customerInvoices.total')}</span>
-                <span className="text-indigo-900 font-bold">{formatCurrency(Number(selectedInvoice.total))}</span>
+                <span className="text-[#818cf8] font-medium">{t('admin.customerInvoices.total')}</span>
+                <span className="text-[var(--k-text-primary)] font-bold">{formatCurrency(Number(selectedInvoice.total))}</span>
               </div>
               <div className="flex justify-between text-sm mt-1">
-                <span className="text-indigo-700">{t('admin.customerInvoices.balance')}</span>
-                <span className="text-indigo-900 font-medium">{formatCurrency(Number(selectedInvoice.balance))}</span>
+                <span className="text-[#818cf8]">{t('admin.customerInvoices.balance')}</span>
+                <span className="text-[var(--k-text-primary)] font-medium">{formatCurrency(Number(selectedInvoice.balance))}</span>
               </div>
             </div>
           )}
@@ -1333,7 +1333,7 @@ export default function FacturesClientsPage() {
             <select
               value={paymentForm.method}
               onChange={(e) => setPaymentForm(prev => ({ ...prev, method: e.target.value }))}
-              className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full h-9 px-3 rounded-lg border border-[var(--k-border-default)] text-sm text-[var(--k-text-primary)] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               aria-label={t('admin.customerInvoices.paymentMethod')}
             >
               <option value="BANK">{t('admin.customerInvoices.methodBank')}</option>
@@ -1379,11 +1379,11 @@ export default function FacturesClientsPage() {
         }
       >
         <div className="space-y-3">
-          <div className="flex items-center gap-3 p-3 bg-red-50 rounded-lg">
+          <div className="flex items-center gap-3 p-3 bg-red-500/10 rounded-lg">
             <AlertTriangle className="w-6 h-6 text-red-500 flex-shrink-0" />
             <div>
-              <p className="text-sm font-medium text-red-800">{t('admin.customerInvoices.confirmVoid')}</p>
-              <p className="text-sm text-red-600 mt-1">{t('admin.customerInvoices.confirmVoidDesc')}</p>
+              <p className="text-sm font-medium text-red-400">{t('admin.customerInvoices.confirmVoid')}</p>
+              <p className="text-sm text-red-400 mt-1">{t('admin.customerInvoices.confirmVoidDesc')}</p>
             </div>
           </div>
         </div>

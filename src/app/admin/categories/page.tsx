@@ -399,29 +399,29 @@ export default function CategoriesPage() {
       render: (cat) => (
         <div className={`flex items-center gap-3 ${cat.isChild ? 'ms-8' : ''}`}>
           {cat.isChild && (
-            <ChevronRight className="w-4 h-4 text-slate-300 -ms-6" />
+            <ChevronRight className="w-4 h-4 text-[var(--k-text-muted)] -ms-6" />
           )}
           <div
-            className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center bg-cover bg-center flex-shrink-0"
+            className="w-10 h-10 rounded-lg bg-[var(--k-glass-thin)] flex items-center justify-center bg-cover bg-center flex-shrink-0"
             style={cat.imageUrl ? { backgroundImage: `url(${cat.imageUrl})` } : undefined}
           >
-            {!cat.imageUrl && <FolderOpen className="w-5 h-5 text-slate-400" />}
+            {!cat.imageUrl && <FolderOpen className="w-5 h-5 text-[var(--k-text-muted)]" />}
           </div>
           <div>
-            <p className={`font-semibold text-slate-900 ${!cat.isChild ? 'text-base' : 'text-sm'}`}>
+            <p className={`font-semibold text-[var(--k-text-primary)] ${!cat.isChild ? 'text-base' : 'text-sm'}`}>
               {cat.name}
             </p>
-            <p className="text-xs text-slate-500">/{cat.slug}</p>
+            <p className="text-xs text-[var(--k-text-tertiary)]">/{cat.slug}</p>
           </div>
           {/* BUG-057 FIX: Show orphan warning badge */}
           {cat.isOrphan && (
-            <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full flex items-center gap-1">
+            <span className="text-xs bg-amber-500/15 text-amber-400 px-2 py-0.5 rounded-full flex items-center gap-1">
               <AlertTriangle className="w-3 h-3" />
               {t('admin.categories.orphan')}
             </span>
           )}
           {!cat.isChild && cat.childCount > 0 && (
-            <span className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">
+            <span className="text-xs bg-[var(--k-glass-thin)] text-[var(--k-text-tertiary)] px-2 py-0.5 rounded-full">
               {t('admin.categories.subCount', { count: cat.childCount })}
             </span>
           )}
@@ -434,7 +434,7 @@ export default function CategoriesPage() {
       align: 'center',
       width: '100px',
       render: (cat) => (
-        <span className="font-semibold text-slate-700">{cat._count.products}</span>
+        <span className="font-semibold text-[var(--k-text-secondary)]">{cat._count.products}</span>
       ),
     },
     {
@@ -448,18 +448,18 @@ export default function CategoriesPage() {
             <button
               onClick={(e) => { e.stopPropagation(); handleMoveCategory(cat.id, 'up'); }}
               disabled={reordering === cat.id}
-              className="p-1 rounded hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors disabled:opacity-50"
+              className="p-1 rounded hover:bg-[var(--k-glass-regular)] text-[var(--k-text-tertiary)] hover:text-[var(--k-text-secondary)] transition-colors disabled:opacity-50"
               title={t('admin.categories.moveUp')}
             >
               <ArrowUp className="w-3.5 h-3.5" />
             </button>
           )}
-          <span className="text-slate-500 min-w-[2rem] text-center">{cat.sortOrder}</span>
+          <span className="text-[var(--k-text-tertiary)] min-w-[2rem] text-center">{cat.sortOrder}</span>
           {reorderMode && (
             <button
               onClick={(e) => { e.stopPropagation(); handleMoveCategory(cat.id, 'down'); }}
               disabled={reordering === cat.id}
-              className="p-1 rounded hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors disabled:opacity-50"
+              className="p-1 rounded hover:bg-[var(--k-glass-regular)] text-[var(--k-text-tertiary)] hover:text-[var(--k-text-secondary)] transition-colors disabled:opacity-50"
               title={t('admin.categories.moveDown')}
             >
               <ArrowDown className="w-3.5 h-3.5" />
@@ -480,7 +480,7 @@ export default function CategoriesPage() {
             w-7 h-7 rounded-md flex items-center justify-center transition-colors
             ${cat.isActive
               ? 'bg-green-500 text-white hover:bg-green-600'
-              : 'bg-slate-200 text-slate-400 hover:bg-slate-300'}
+              : 'bg-[var(--k-glass-thin)] text-[var(--k-text-muted)] hover:bg-[var(--k-glass-regular)]'}
           `}
         >
           {cat.isActive && <Check className="w-4 h-4" />}
@@ -584,7 +584,7 @@ export default function CategoriesPage() {
 
       {/* Error Banner */}
       {error && !showForm && (
-        <div className="mx-6 mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm border border-red-200">
+        <div className="mx-6 mb-4 p-3 bg-red-500/10 text-red-400 rounded-lg text-sm border border-red-500/20">
           {error}
           <button onClick={() => setError('')} className="ms-2 font-bold">×</button>
         </div>
@@ -620,7 +620,7 @@ export default function CategoriesPage() {
         }
       >
         {error && showForm && (
-          <div className="p-3 bg-red-50 text-red-600 rounded-lg mb-4 text-sm border border-red-200">
+          <div className="p-3 bg-red-500/10 text-red-400 rounded-lg mb-4 text-sm border border-red-500/20">
             {error}
           </div>
         )}
@@ -631,7 +631,7 @@ export default function CategoriesPage() {
             <select
               value={formData.parentId}
               onChange={(e) => setFormData({ ...formData, parentId: e.target.value })}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:outline-none"
+              className="w-full px-3 py-2 border border-[var(--k-border-default)] rounded-lg text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)] focus:ring-2 focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50 focus:outline-none"
             >
               <option value="">{t('admin.categories.noParent')}</option>
               {parentOptions
@@ -718,7 +718,7 @@ export default function CategoriesPage() {
           </>
         }
       >
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-[var(--k-text-secondary)]">
           {t('admin.categories.deleteConfirmMessage')}
         </p>
       </Modal>

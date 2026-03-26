@@ -377,7 +377,7 @@ export default function InscriptionsPage() {
       key: 'userId',
       header: t('admin.lms.studentName'),
       render: (row) => (
-        <span className="text-sm font-medium text-slate-700">
+        <span className="text-sm font-medium text-[var(--k-text-secondary)]">
           {row.userId.slice(0, 12)}...
         </span>
       ),
@@ -386,7 +386,7 @@ export default function InscriptionsPage() {
       key: 'course' as keyof EnrollmentRow,
       header: t('admin.lms.courseName'),
       render: (row) => (
-        <span className="text-sm text-slate-600">{row.course.title}</span>
+        <span className="text-sm text-[var(--k-text-secondary)]">{row.course.title}</span>
       ),
     },
     {
@@ -408,13 +408,13 @@ export default function InscriptionsPage() {
             : parseFloat(String(row.progress)) || 0;
         return (
           <div className="flex items-center gap-2">
-            <div className="w-20 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+            <div className="w-20 h-1.5 bg-[var(--k-glass-thin)] rounded-full overflow-hidden">
               <div
-                className="h-full bg-indigo-500 rounded-full transition-all"
+                className="h-full bg-[#6366f1]/100 rounded-full transition-all"
                 style={{ width: `${Math.min(pct, 100)}%` }}
               />
             </div>
-            <span className="text-xs text-slate-500">{Math.round(pct)}%</span>
+            <span className="text-xs text-[var(--k-text-tertiary)]">{Math.round(pct)}%</span>
           </div>
         );
       },
@@ -423,7 +423,7 @@ export default function InscriptionsPage() {
       key: 'enrolledAt',
       header: t('admin.lms.enrolledAt'),
       render: (row) => (
-        <span className="text-xs text-slate-500">{formatDate(row.enrolledAt)}</span>
+        <span className="text-xs text-[var(--k-text-tertiary)]">{formatDate(row.enrolledAt)}</span>
       ),
     },
     {
@@ -463,13 +463,13 @@ export default function InscriptionsPage() {
       )}
 
       {/* Tab switcher */}
-      <div className="flex gap-1 p-1 bg-slate-100 rounded-xl w-fit">
+      <div className="flex gap-1 p-1 bg-[var(--k-glass-thin)] rounded-xl w-fit">
         <button
           onClick={() => setActiveTab('individual')}
           className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
             activeTab === 'individual'
-              ? 'bg-white text-slate-800 shadow-sm'
-              : 'text-slate-500 hover:text-slate-700'
+              ? 'bg-[var(--k-glass-thin)] backdrop-blur-sm text-[var(--k-text-primary)] shadow-sm'
+              : 'text-[var(--k-text-tertiary)] hover:text-[var(--k-text-secondary)]'
           }`}
         >
           <UserPlus className="w-4 h-4" />
@@ -479,8 +479,8 @@ export default function InscriptionsPage() {
           onClick={() => setActiveTab('bulk')}
           className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
             activeTab === 'bulk'
-              ? 'bg-white text-slate-800 shadow-sm'
-              : 'text-slate-500 hover:text-slate-700'
+              ? 'bg-[var(--k-glass-thin)] backdrop-blur-sm text-[var(--k-text-primary)] shadow-sm'
+              : 'text-[var(--k-text-tertiary)] hover:text-[var(--k-text-secondary)]'
           }`}
         >
           <FileSpreadsheet className="w-4 h-4" />
@@ -490,9 +490,9 @@ export default function InscriptionsPage() {
 
       {/* Individual Enrollment */}
       {activeTab === 'individual' && (
-        <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-4">
-          <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2">
-            <UserPlus className="w-4 h-4 text-indigo-600" />
+        <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-xl p-5 space-y-4">
+          <h3 className="text-sm font-semibold text-[var(--k-text-primary)] flex items-center gap-2">
+            <UserPlus className="w-4 h-4 text-[#818cf8]" />
             {t('admin.lms.enrollment.individual')}
           </h3>
 
@@ -513,7 +513,7 @@ export default function InscriptionsPage() {
                   placeholder={t('admin.lms.enrollment.searchStudent')}
                 />
                 {students.length > 0 && !selectedStudent && (
-                  <div className="absolute z-10 top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                  <div className="absolute z-10 top-full left-0 right-0 mt-1 bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-lg shadow-lg max-h-48 overflow-y-auto">
                     {students.map((s) => (
                       <button
                         key={s.id}
@@ -525,13 +525,13 @@ export default function InscriptionsPage() {
                           );
                           setStudents([]);
                         }}
-                        className="w-full text-left px-3 py-2 text-sm hover:bg-slate-50 transition-colors"
+                        className="w-full text-left px-3 py-2 text-sm hover:bg-[var(--k-bg-surface)] transition-colors"
                       >
-                        <span className="font-medium text-slate-700">
+                        <span className="font-medium text-[var(--k-text-secondary)]">
                           {s.name ?? s.email}
                         </span>
                         {s.name && (
-                          <span className="text-slate-400 ml-1">
+                          <span className="text-[var(--k-text-muted)] ml-1">
                             ({s.email})
                           </span>
                         )}
@@ -551,8 +551,8 @@ export default function InscriptionsPage() {
                 id="courseSelect"
                 value={selectedCourse}
                 onChange={(e) => setSelectedCourse(e.target.value)}
-                className="w-full h-9 px-3 rounded-lg border border-slate-300 text-sm text-slate-900
-                  bg-white focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:border-indigo-700"
+                className="w-full h-9 px-3 rounded-lg border border-[var(--k-border-default)] text-sm text-[var(--k-text-primary)]
+                  bg-[var(--k-glass-thin)] backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:border-indigo-700"
               >
                 <option value="">{t('admin.lms.enrollment.selectCourse')}</option>
                 {courses.map((c) => (
@@ -599,10 +599,10 @@ export default function InscriptionsPage() {
 
       {/* Bulk CSV */}
       {activeTab === 'bulk' && (
-        <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-4">
+        <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-xl p-5 space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2">
-              <FileSpreadsheet className="w-4 h-4 text-indigo-600" />
+            <h3 className="text-sm font-semibold text-[var(--k-text-primary)] flex items-center gap-2">
+              <FileSpreadsheet className="w-4 h-4 text-[#818cf8]" />
               {t('admin.lms.enrollment.bulk')}
             </h3>
             <Button variant="ghost" onClick={downloadCsvTemplate}>
@@ -611,7 +611,7 @@ export default function InscriptionsPage() {
             </Button>
           </div>
 
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-[var(--k-text-tertiary)]">
             {t('admin.lms.enrollment.csvFormatHint')}
           </p>
 
@@ -632,7 +632,7 @@ export default function InscriptionsPage() {
               {t('admin.lms.enrollment.csvUpload')}
             </Button>
             {csvRows.length > 0 && (
-              <span className="text-sm text-slate-600">
+              <span className="text-sm text-[var(--k-text-secondary)]">
                 {csvRows.length} {t('admin.lms.enrollment.rowsTotal')}
               </span>
             )}
@@ -654,37 +654,37 @@ export default function InscriptionsPage() {
                 )}
               </div>
 
-              <div className="border border-slate-200 rounded-lg overflow-hidden max-h-72 overflow-y-auto">
+              <div className="border border-[var(--k-border-subtle)] rounded-lg overflow-hidden max-h-72 overflow-y-auto">
                 <table className="w-full text-sm">
-                  <thead className="bg-slate-50 sticky top-0">
+                  <thead className="bg-[var(--k-bg-surface)] sticky top-0">
                     <tr>
-                      <th className="text-left px-3 py-2 text-xs font-medium text-slate-500">
+                      <th className="text-left px-3 py-2 text-xs font-medium text-[var(--k-text-tertiary)]">
                         {t('admin.lms.enrollment.email')}
                       </th>
-                      <th className="text-left px-3 py-2 text-xs font-medium text-slate-500">
+                      <th className="text-left px-3 py-2 text-xs font-medium text-[var(--k-text-tertiary)]">
                         {t('admin.lms.enrollment.courseSlug')}
                       </th>
-                      <th className="text-left px-3 py-2 text-xs font-medium text-slate-500">
+                      <th className="text-left px-3 py-2 text-xs font-medium text-[var(--k-text-tertiary)]">
                         {t('admin.lms.enrollment.deadline')}
                       </th>
-                      <th className="text-left px-3 py-2 text-xs font-medium text-slate-500">
+                      <th className="text-left px-3 py-2 text-xs font-medium text-[var(--k-text-tertiary)]">
                         {t('admin.lms.enrollment.validationStatus')}
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-[var(--k-border-subtle)]">
                     {csvRows.map((row, idx) => (
                       <tr
                         key={idx}
                         className={row.valid ? '' : 'bg-red-50/50'}
                       >
-                        <td className="px-3 py-2 text-slate-700">
+                        <td className="px-3 py-2 text-[var(--k-text-secondary)]">
                           {row.email}
                         </td>
-                        <td className="px-3 py-2 text-slate-600">
+                        <td className="px-3 py-2 text-[var(--k-text-secondary)]">
                           {row.courseSlug}
                         </td>
-                        <td className="px-3 py-2 text-slate-500">
+                        <td className="px-3 py-2 text-[var(--k-text-tertiary)]">
                           {row.deadline || '\u2014'}
                         </td>
                         <td className="px-3 py-2">
@@ -727,8 +727,8 @@ export default function InscriptionsPage() {
 
           {/* Bulk result */}
           {bulkResult && (
-            <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 space-y-3">
-              <h4 className="text-sm font-semibold text-slate-800 flex items-center gap-2">
+            <div className="rounded-lg border border-[var(--k-border-subtle)] bg-[var(--k-bg-surface)] p-4 space-y-3">
+              <h4 className="text-sm font-semibold text-[var(--k-text-primary)] flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                 {t('admin.lms.enrollment.importResults')}
               </h4>
@@ -779,10 +779,10 @@ export default function InscriptionsPage() {
                     <tbody className="divide-y divide-red-100">
                       {bulkResult.errors.map((err, idx) => (
                         <tr key={idx}>
-                          <td className="px-3 py-2 text-slate-700">
+                          <td className="px-3 py-2 text-[var(--k-text-secondary)]">
                             {err.email}
                           </td>
-                          <td className="px-3 py-2 text-slate-600">
+                          <td className="px-3 py-2 text-[var(--k-text-secondary)]">
                             {err.courseSlug}
                           </td>
                           <td className="px-3 py-2 text-red-600">
@@ -800,16 +800,16 @@ export default function InscriptionsPage() {
       )}
 
       {/* Current Enrollments */}
-      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 bg-slate-50/50">
+      <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-xl overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--k-border-subtle)] bg-[var(--k-bg-surface)]/50">
           <div className="flex items-center gap-3">
-            <div className="p-1.5 rounded-lg bg-indigo-50">
-              <Users className="w-4 h-4 text-indigo-600" />
+            <div className="p-1.5 rounded-lg bg-[#6366f1]/10">
+              <Users className="w-4 h-4 text-[#818cf8]" />
             </div>
-            <h3 className="text-sm font-semibold text-slate-800">
+            <h3 className="text-sm font-semibold text-[var(--k-text-primary)]">
               {t('admin.lms.enrollment.currentEnrollments')}
             </h3>
-            <span className="text-xs text-slate-400">
+            <span className="text-xs text-[var(--k-text-muted)]">
               {enrollmentsTotal} {t('admin.lms.enrollmentsTotal')}
             </span>
           </div>
@@ -824,7 +824,7 @@ export default function InscriptionsPage() {
 
         {enrollmentsLoading ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-5 h-5 text-slate-400 animate-spin" />
+            <Loader2 className="w-5 h-5 text-[var(--k-text-muted)] animate-spin" />
           </div>
         ) : filteredEnrollments.length === 0 ? (
           <EmptyState
@@ -851,7 +851,7 @@ export default function InscriptionsPage() {
                 {t('admin.lms.enrollment.unenrollConfirm')}
               </p>
             </div>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-[var(--k-text-secondary)]">
               <strong>{unenrollTarget.userId.slice(0, 12)}...</strong>
               {' \u2192 '}
               <strong>{unenrollTarget.course.title}</strong>

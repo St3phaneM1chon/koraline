@@ -59,13 +59,13 @@ export default function LmsDashboardPage() {
 
       {/* Compliance Alert */}
       {stats && stats.overdueCompliance > 0 && (
-        <div className="flex items-center gap-3 rounded-lg border border-red-200 bg-red-50 p-4">
-          <AlertTriangle className="h-5 w-5 text-red-600 shrink-0" />
+        <div className="flex items-center gap-3 rounded-lg border border-red-500/20 bg-red-500/10 p-4">
+          <AlertTriangle className="h-5 w-5 text-red-400 shrink-0" />
           <div>
-            <p className="font-medium text-red-800">
+            <p className="font-medium text-red-400">
               {stats.overdueCompliance} {t('admin.lms.overdueComplianceAlert')}
             </p>
-            <Link href="/admin/formation/conformite" className="text-sm text-red-600 underline">
+            <Link href="/admin/formation/conformite" className="text-sm text-red-400 underline">
               {t('admin.lms.viewDetails')}
             </Link>
           </div>
@@ -109,7 +109,7 @@ export default function LmsDashboardPage() {
         <Link href="/admin/formation/etudiants">
           <SectionCard title={t('admin.lms.manageStudents')} className="cursor-pointer transition-colors hover:bg-accent/50">
             <div className="flex items-center gap-3">
-              <Users className="h-5 w-5 text-green-600" />
+              <Users className="h-5 w-5 text-green-400" />
               <p className="text-sm text-muted-foreground">{t('admin.lms.manageStudentsDesc')}</p>
             </div>
           </SectionCard>
@@ -117,7 +117,7 @@ export default function LmsDashboardPage() {
         <Link href="/admin/formation/conformite">
           <SectionCard title={t('admin.lms.compliance')} className="cursor-pointer transition-colors hover:bg-accent/50">
             <div className="flex items-center gap-3">
-              <ShieldCheck className="h-5 w-5 text-amber-600" />
+              <ShieldCheck className="h-5 w-5 text-amber-400" />
               <p className="text-sm text-muted-foreground">{t('admin.lms.complianceDesc')}</p>
             </div>
           </SectionCard>

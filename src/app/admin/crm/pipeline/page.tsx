@@ -95,16 +95,16 @@ export default function PipelinePage() {
     <div className="h-[calc(100vh-64px)] flex flex-col">
       {/* View Toggle */}
       <div className="flex items-center justify-end px-4 pt-3 pb-1">
-        <div className="flex items-center border border-gray-300 rounded-md overflow-hidden">
+        <div className="flex items-center border border-[var(--k-border-default)] rounded-md overflow-hidden">
           <button
             onClick={() => router.push('/admin/crm/deals')}
-            className="flex items-center gap-1 px-2.5 py-1.5 text-sm text-gray-500 hover:bg-gray-50 border-r border-gray-300"
+            className="flex items-center gap-1 px-2.5 py-1.5 text-sm text-[var(--k-text-tertiary)] hover:bg-[var(--k-glass-thin)] border-r border-[var(--k-border-default)]"
             title={t('admin.crm.listView')}
           >
             <List className="h-4 w-4" />
           </button>
           <button
-            className="flex items-center gap-1 px-2.5 py-1.5 text-sm bg-indigo-50 text-indigo-700"
+            className="flex items-center gap-1 px-2.5 py-1.5 text-sm bg-[#6366f1]/10 text-[#818cf8]"
             title={t('admin.crm.kanbanView')}
           >
             <LayoutGrid className="h-4 w-4" />
@@ -116,43 +116,43 @@ export default function PipelinePage() {
       {/* Create Deal Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4" role="dialog" aria-modal="true" aria-labelledby="create-deal-modal-title">
-            <div className="flex items-center justify-between p-4 border-b">
+          <div className="bg-[var(--k-bg-surface)] rounded-xl shadow-xl border border-[var(--k-border-subtle)] w-full max-w-md mx-4" role="dialog" aria-modal="true" aria-labelledby="create-deal-modal-title">
+            <div className="flex items-center justify-between p-4 border-b border-[var(--k-border-subtle)]">
               <h2 id="create-deal-modal-title" className="text-lg font-semibold">{t('admin.crm.newDeal')}</h2>
-              <button onClick={() => setShowCreateModal(false)} className="p-1 hover:bg-gray-100 rounded">
+              <button onClick={() => setShowCreateModal(false)} className="p-1 hover:bg-[var(--k-glass-thin)] rounded">
                 <X className="h-5 w-5" />
               </button>
             </div>
             <div className="p-4 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.crm.dealTitle')}</label>
+                <label className="block text-sm font-medium text-[var(--k-text-secondary)] mb-1">{t('admin.crm.dealTitle')}</label>
                 <input
                   type="text"
                   value={formData.title}
                   onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full border border-[var(--k-border-default)] rounded-md px-3 py-2 text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)] focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50"
                   placeholder="e.g. Enterprise Contract - Acme Inc"
                   autoFocus
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.crm.dealValue')}</label>
+                <label className="block text-sm font-medium text-[var(--k-text-secondary)] mb-1">{t('admin.crm.dealValue')}</label>
                 <input
                   type="number"
                   value={formData.value}
                   onChange={(e) => setFormData((prev) => ({ ...prev, value: e.target.value }))}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full border border-[var(--k-border-default)] rounded-md px-3 py-2 text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)] focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50"
                   placeholder="0.00"
                   min="0"
                   step="0.01"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.crm.assignedTo')}</label>
+                <label className="block text-sm font-medium text-[var(--k-text-secondary)] mb-1">{t('admin.crm.assignedTo')}</label>
                 <select
                   value={formData.assignedToId}
                   onChange={(e) => setFormData((prev) => ({ ...prev, assignedToId: e.target.value }))}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full border border-[var(--k-border-default)] rounded-md px-3 py-2 text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)] focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50"
                 >
                   <option value="">{t('common.select')}</option>
                   {agents.map((a) => (
@@ -161,26 +161,26 @@ export default function PipelinePage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.crm.expectedCloseDate')}</label>
+                <label className="block text-sm font-medium text-[var(--k-text-secondary)] mb-1">{t('admin.crm.expectedCloseDate')}</label>
                 <input
                   type="date"
                   value={formData.expectedCloseDate}
                   onChange={(e) => setFormData((prev) => ({ ...prev, expectedCloseDate: e.target.value }))}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full border border-[var(--k-border-default)] rounded-md px-3 py-2 text-sm bg-[var(--k-glass-thin)] text-[var(--k-text-primary)] focus:ring-[#6366f1]/30 focus:border-[#6366f1]/50"
                 />
               </div>
             </div>
-            <div className="flex justify-end gap-2 p-4 border-t">
+            <div className="flex justify-end gap-2 p-4 border-t border-[var(--k-border-subtle)]">
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="px-4 py-2 text-sm text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                className="px-4 py-2 text-sm text-[var(--k-text-secondary)] bg-[var(--k-glass-thin)] rounded-md hover:bg-[var(--k-glass-regular)]"
               >
                 {t('common.cancel')}
               </button>
               <button
                 onClick={submitCreate}
                 disabled={creating}
-                className="px-4 py-2 text-sm text-white bg-indigo-600 rounded-md hover:bg-indigo-700 disabled:opacity-50"
+                className="px-4 py-2 text-sm text-white bg-gradient-to-r from-[#6366f1] to-[#818cf8] rounded-md hover:opacity-90 disabled:opacity-50"
               >
                 {creating ? '...' : t('common.create')}
               </button>

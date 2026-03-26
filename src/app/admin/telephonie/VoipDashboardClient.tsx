@@ -21,24 +21,24 @@ export default function VoipDashboardClient({ data }: { data: any }) {
 
   const directionIcon = (dir: string) => {
     switch (dir) {
-      case 'INBOUND': return <PhoneIncoming className="w-4 h-4 text-indigo-600" />;
+      case 'INBOUND': return <PhoneIncoming className="w-4 h-4 text-[#818cf8]" />;
       case 'OUTBOUND': return <PhoneOutgoing className="w-4 h-4 text-emerald-600" />;
-      default: return <Phone className="w-4 h-4 text-gray-400" />;
+      default: return <Phone className="w-4 h-4 text-[var(--k-text-muted)]" />;
     }
   };
 
   const statusBadge = (status: string) => {
     const colors: Record<string, string> = {
-      COMPLETED: 'bg-emerald-100 text-emerald-700',
-      MISSED: 'bg-red-100 text-red-700',
-      VOICEMAIL: 'bg-orange-100 text-orange-700',
-      IN_PROGRESS: 'bg-indigo-100 text-indigo-700',
-      FAILED: 'bg-gray-100 text-gray-600',
-      TRANSFERRED: 'bg-purple-100 text-purple-700',
-      RINGING: 'bg-yellow-100 text-yellow-700',
+      COMPLETED: 'bg-emerald-500/15 text-emerald-400',
+      MISSED: 'bg-red-500/15 text-red-400',
+      VOICEMAIL: 'bg-orange-500/15 text-orange-400',
+      IN_PROGRESS: 'bg-[#6366f1]/15 text-[#818cf8]',
+      FAILED: 'bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)]',
+      TRANSFERRED: 'bg-purple-500/15 text-purple-400',
+      RINGING: 'bg-yellow-500/15 text-yellow-400',
     };
     return (
-      <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${colors[status] || 'bg-gray-100 text-gray-600'}`}>
+      <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${colors[status] || 'bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)]'}`}>
         {t(`voip.status.call.${status.toLowerCase()}`)}
       </span>
     );
@@ -49,8 +49,8 @@ export default function VoipDashboardClient({ data }: { data: any }) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{t('voip.dashboard.title')}</h1>
-          <p className="text-sm text-gray-500 mt-1">{t('voip.dashboard.subtitle')}</p>
+          <h1 className="text-2xl font-bold text-[var(--k-text-primary)]">{t('voip.dashboard.title')}</h1>
+          <p className="text-sm text-[var(--k-text-tertiary)] mt-1">{t('voip.dashboard.subtitle')}</p>
         </div>
       </div>
 
@@ -64,20 +64,20 @@ export default function VoipDashboardClient({ data }: { data: any }) {
 
       {/* Connections Status */}
       {data.connections.length > 0 && (
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-700 mb-3">{t('voip.dashboard.connections')}</h3>
+        <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-xl p-4">
+          <h3 className="text-sm font-semibold text-[var(--k-text-secondary)] mb-3">{t('voip.dashboard.connections')}</h3>
           <div className="flex flex-wrap gap-3">
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             {data.connections.map((conn: any) => (
-              <div key={conn.id} className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-lg text-sm">
+              <div key={conn.id} className="flex items-center gap-2 px-3 py-1.5 bg-[var(--k-bg-surface)] rounded-lg text-sm">
                 {conn.isEnabled ? (
                   <CheckCircle className="w-4 h-4 text-emerald-500" />
                 ) : (
-                  <XCircle className="w-4 h-4 text-gray-400" />
+                  <XCircle className="w-4 h-4 text-[var(--k-text-muted)]" />
                 )}
                 <span className="font-medium capitalize">{conn.provider}</span>
                 {conn.syncStatus && (
-                  <span className="text-xs text-gray-400">{conn.syncStatus}</span>
+                  <span className="text-xs text-[var(--k-text-muted)]">{conn.syncStatus}</span>
                 )}
               </div>
             ))}
@@ -86,12 +86,12 @@ export default function VoipDashboardClient({ data }: { data: any }) {
       )}
 
       {/* Recent Calls */}
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-        <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-gray-700">{t('voip.dashboard.recentCalls')}</h3>
+      <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-xl overflow-hidden">
+        <div className="px-4 py-3 border-b border-[var(--k-border-subtle)] flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-[var(--k-text-secondary)]">{t('voip.dashboard.recentCalls')}</h3>
           <Link
             href="/admin/telephonie/journal"
-            className="text-sm text-indigo-600 hover:text-indigo-700 flex items-center gap-1"
+            className="text-sm text-[#818cf8] hover:text-[#818cf8] flex items-center gap-1"
           >
             {t('voip.dashboard.viewAll')} <ArrowRight className="w-3.5 h-3.5" />
           </Link>
@@ -100,7 +100,7 @@ export default function VoipDashboardClient({ data }: { data: any }) {
         <div className="overflow-x-auto">
           <table className="w-full text-sm" aria-label={t('voip.dashboard.recentCalls')}>
             <thead>
-              <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+              <tr className="bg-[var(--k-bg-surface)] text-[var(--k-text-tertiary)] text-xs uppercase tracking-wider">
                 <th className="px-4 py-2 text-start">{t('voip.callLog.direction')}</th>
                 <th className="px-4 py-2 text-start">{t('voip.callLog.caller')}</th>
                 <th className="px-4 py-2 text-start hidden sm:table-cell">{t('voip.callLog.called')}</th>
@@ -111,26 +111,26 @@ export default function VoipDashboardClient({ data }: { data: any }) {
                 <th className="px-4 py-2 text-start hidden lg:table-cell">{t('voip.callLog.satisfaction')}</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-[var(--k-border-subtle)]">
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {data.recentCalls.map((call: any) => (
-                <tr key={call.id} className="hover:bg-gray-50">
+                <tr key={call.id} className="hover:bg-[var(--k-bg-surface)]">
                   <td className="px-4 py-2.5">{directionIcon(call.direction)}</td>
                   <td className="px-4 py-2.5 max-w-[180px]">
-                    <div className="font-medium text-gray-900 truncate">{call.callerName || call.callerNumber}</div>
+                    <div className="font-medium text-[var(--k-text-primary)] truncate">{call.callerName || call.callerNumber}</div>
                     {call.client && (
-                      <div className="text-xs text-gray-500 truncate">{call.client.name || call.client.email}</div>
+                      <div className="text-xs text-[var(--k-text-tertiary)] truncate">{call.client.name || call.client.email}</div>
                     )}
                   </td>
-                  <td className="px-4 py-2.5 text-gray-600 hidden sm:table-cell truncate max-w-[140px]">{call.calledNumber}</td>
-                  <td className="px-4 py-2.5 text-gray-600 hidden md:table-cell truncate max-w-[140px]">
+                  <td className="px-4 py-2.5 text-[var(--k-text-secondary)] hidden sm:table-cell truncate max-w-[140px]">{call.calledNumber}</td>
+                  <td className="px-4 py-2.5 text-[var(--k-text-secondary)] hidden md:table-cell truncate max-w-[140px]">
                     {call.agent ? `${call.agent.user?.name || ''} (${call.agent.extension})` : '-'}
                   </td>
                   <td className="px-4 py-2.5">{statusBadge(call.status)}</td>
-                  <td className="px-4 py-2.5 text-gray-600 tabular-nums hidden sm:table-cell">
+                  <td className="px-4 py-2.5 text-[var(--k-text-secondary)] tabular-nums hidden sm:table-cell">
                     {call.duration ? formatDuration(call.duration) : '-'}
                   </td>
-                  <td className="px-4 py-2.5 text-gray-500 text-xs hidden lg:table-cell">
+                  <td className="px-4 py-2.5 text-[var(--k-text-tertiary)] text-xs hidden lg:table-cell">
                     {new Date(call.startedAt).toLocaleString(locale, { dateStyle: 'short', timeStyle: 'short' })}
                   </td>
                   <td className="px-4 py-2.5 hidden lg:table-cell">
@@ -140,7 +140,7 @@ export default function VoipDashboardClient({ data }: { data: any }) {
               ))}
               {data.recentCalls.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="px-4 py-8 text-center text-gray-400">
+                  <td colSpan={8} className="px-4 py-8 text-center text-[var(--k-text-muted)]">
                     {t('voip.dashboard.noCalls')}
                   </td>
                 </tr>
