@@ -5,21 +5,159 @@
   "grade": "D",
   "functionsAudited": 50,
   "findings": [
-    {"id": "CRM-F1", "severity": "medium", "title": "Contact create missing input sanitization (XSS)", "file": "src/app/api/admin/crm/contacts/route.ts", "line": 125, "cweId": "CWE-79", "confidence": 0.85, "status": "open"},
-    {"id": "CRM-F2", "severity": "medium", "title": "Leads list returns all PII fields", "file": "src/app/api/admin/crm/leads/route.ts", "line": 87, "cweId": "CWE-359", "confidence": 0.75, "status": "open"},
-    {"id": "CRM-F3", "severity": "medium", "title": "Lead detail loads unbounded activities/tasks", "file": "src/app/api/admin/crm/leads/[id]/route.ts", "line": 58, "cweId": "CWE-770", "confidence": 0.90, "status": "open"},
-    {"id": "CRM-F4", "severity": "medium", "title": "Workflows GET no pagination", "file": "src/app/api/admin/crm/workflows/route.ts", "line": 73, "cweId": "CWE-770", "confidence": 0.85, "status": "open"},
-    {"id": "CRM-F5", "severity": "high", "title": "Campaign PATCH allows arbitrary status change", "file": "src/app/api/admin/crm/campaigns/[id]/route.ts", "line": 145, "cweId": "CWE-840", "confidence": 0.90, "status": "open"},
-    {"id": "CRM-F6", "severity": "medium", "title": "Report export loads 10K records into memory", "file": "src/app/api/admin/crm/reports/export/route.ts", "line": 27, "cweId": "CWE-770", "confidence": 0.80, "status": "open"},
-    {"id": "CRM-F7", "severity": "high", "title": "GDPR delete logs full PII before erasure", "file": "src/app/api/admin/crm/gdpr-delete/route.ts", "line": 92, "cweId": "CWE-532", "confidence": 0.95, "status": "open"},
-    {"id": "CRM-F8", "severity": "high", "title": "GDPR delete omits CrmDeal records", "file": "src/app/api/admin/crm/gdpr-delete/route.ts", "line": 109, "cweId": "CWE-212", "confidence": 0.90, "status": "open"},
-    {"id": "CRM-F9", "severity": "high", "title": "Workflow WEBHOOK allows SSRF", "file": "src/app/api/admin/crm/workflows/route.ts", "line": 36, "cweId": "CWE-918", "confidence": 0.85, "status": "open"},
-    {"id": "CRM-F10", "severity": "medium", "title": "Campaign stats loads all activities into memory", "file": "src/app/api/admin/crm/campaigns/[id]/stats/route.ts", "line": 71, "cweId": "CWE-770", "confidence": 0.70, "status": "open"},
-    {"id": "CRM-F11", "severity": "medium", "title": "Lead capture stores IP as PII without consent", "file": "src/app/api/public/crm/lead-capture/route.ts", "line": 119, "cweId": "CWE-359", "confidence": 0.80, "status": "open"},
-    {"id": "CRM-F12", "severity": "low", "title": "Non-cryptographic random for trigger IDs", "file": "src/lib/crm/disposition-triggers.ts", "line": 51, "cweId": "CWE-330", "confidence": 0.70, "status": "open"},
-    {"id": "CRM-F13", "severity": "medium", "title": "Any admin can view any rep dashboard (IDOR)", "file": "src/app/api/admin/crm/reps/[id]/dashboard/route.ts", "line": 319, "cweId": "CWE-639", "confidence": 0.90, "status": "open"},
-    {"id": "CRM-F14", "severity": "medium", "title": "SMS campaign send TOCTOU race condition", "file": "src/app/api/admin/crm/sms-campaigns/[id]/send/route.ts", "line": 25, "cweId": "CWE-367", "confidence": 0.85, "status": "open"},
-    {"id": "CRM-F15", "severity": "low", "title": "Pipelines GET no pagination", "file": "src/app/api/admin/crm/pipelines/route.ts", "line": 42, "cweId": "CWE-770", "confidence": 0.50, "status": "open"}
+    {
+      "id": "CRM-F1",
+      "severity": "medium",
+      "title": "Contact create missing input sanitization (XSS)",
+      "file": "src/app/api/admin/crm/contacts/route.ts",
+      "line": 125,
+      "cweId": "CWE-79",
+      "confidence": 0.85,
+      "status": "fixed"
+    },
+    {
+      "id": "CRM-F2",
+      "severity": "medium",
+      "title": "Leads list returns all PII fields",
+      "file": "src/app/api/admin/crm/leads/route.ts",
+      "line": 87,
+      "cweId": "CWE-359",
+      "confidence": 0.75,
+      "status": "open"
+    },
+    {
+      "id": "CRM-F3",
+      "severity": "medium",
+      "title": "Lead detail loads unbounded activities/tasks",
+      "file": "src/app/api/admin/crm/leads/[id]/route.ts",
+      "line": 58,
+      "cweId": "CWE-770",
+      "confidence": 0.9,
+      "status": "fixed"
+    },
+    {
+      "id": "CRM-F4",
+      "severity": "medium",
+      "title": "Workflows GET no pagination",
+      "file": "src/app/api/admin/crm/workflows/route.ts",
+      "line": 73,
+      "cweId": "CWE-770",
+      "confidence": 0.85,
+      "status": "fixed"
+    },
+    {
+      "id": "CRM-F5",
+      "severity": "high",
+      "title": "Campaign PATCH allows arbitrary status change",
+      "file": "src/app/api/admin/crm/campaigns/[id]/route.ts",
+      "line": 145,
+      "cweId": "CWE-840",
+      "confidence": 0.9,
+      "status": "fixed"
+    },
+    {
+      "id": "CRM-F6",
+      "severity": "medium",
+      "title": "Report export loads 10K records into memory",
+      "file": "src/app/api/admin/crm/reports/export/route.ts",
+      "line": 27,
+      "cweId": "CWE-770",
+      "confidence": 0.8,
+      "status": "open"
+    },
+    {
+      "id": "CRM-F7",
+      "severity": "high",
+      "title": "GDPR delete logs full PII before erasure",
+      "file": "src/app/api/admin/crm/gdpr-delete/route.ts",
+      "line": 92,
+      "cweId": "CWE-532",
+      "confidence": 0.95,
+      "status": "fixed"
+    },
+    {
+      "id": "CRM-F8",
+      "severity": "high",
+      "title": "GDPR delete omits CrmDeal records",
+      "file": "src/app/api/admin/crm/gdpr-delete/route.ts",
+      "line": 109,
+      "cweId": "CWE-212",
+      "confidence": 0.9,
+      "status": "fixed"
+    },
+    {
+      "id": "CRM-F9",
+      "severity": "high",
+      "title": "Workflow WEBHOOK allows SSRF",
+      "file": "src/app/api/admin/crm/workflows/route.ts",
+      "line": 36,
+      "cweId": "CWE-918",
+      "confidence": 0.85,
+      "status": "fixed"
+    },
+    {
+      "id": "CRM-F10",
+      "severity": "medium",
+      "title": "Campaign stats loads all activities into memory",
+      "file": "src/app/api/admin/crm/campaigns/[id]/stats/route.ts",
+      "line": 71,
+      "cweId": "CWE-770",
+      "confidence": 0.7,
+      "status": "open"
+    },
+    {
+      "id": "CRM-F11",
+      "severity": "medium",
+      "title": "Lead capture stores IP as PII without consent",
+      "file": "src/app/api/public/crm/lead-capture/route.ts",
+      "line": 119,
+      "cweId": "CWE-359",
+      "confidence": 0.8,
+      "status": "fixed"
+    },
+    {
+      "id": "CRM-F12",
+      "severity": "low",
+      "title": "Non-cryptographic random for trigger IDs",
+      "file": "src/lib/crm/disposition-triggers.ts",
+      "line": 51,
+      "cweId": "CWE-330",
+      "confidence": 0.7,
+      "status": "fixed"
+    },
+    {
+      "id": "CRM-F13",
+      "severity": "medium",
+      "title": "Any admin can view any rep dashboard (IDOR)",
+      "file": "src/app/api/admin/crm/reps/[id]/dashboard/route.ts",
+      "line": 319,
+      "cweId": "CWE-639",
+      "confidence": 0.9,
+      "status": "fixed"
+    },
+    {
+      "id": "CRM-F14",
+      "severity": "medium",
+      "title": "SMS campaign send TOCTOU race condition",
+      "file": "src/app/api/admin/crm/sms-campaigns/[id]/send/route.ts",
+      "line": 25,
+      "cweId": "CWE-367",
+      "confidence": 0.85,
+      "status": "fixed"
+    },
+    {
+      "id": "CRM-F15",
+      "severity": "low",
+      "title": "Pipelines GET no pagination",
+      "file": "src/app/api/admin/crm/pipelines/route.ts",
+      "line": 42,
+      "cweId": "CWE-770",
+      "confidence": 0.5,
+      "status": "open"
+    }
   ],
-  "criticals": 0, "highs": 4, "mediums": 9, "lows": 2
+  "criticals": 0,
+  "highs": 4,
+  "mediums": 9,
+  "lows": 2
 }
