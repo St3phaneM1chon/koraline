@@ -13,6 +13,7 @@ import { addCSRFHeader } from '@/lib/csrf';
 import CartDrawer from './CartDrawer';
 import SearchModal from './SearchModal';
 import ThemeToggle from '@/components/ui/ThemeToggle';
+import { useTenantBranding } from './TenantBrandingProvider';
 
 
 // Build languages array from config (all 22 languages)
@@ -28,6 +29,7 @@ export default function Header() {
   const { t, locale } = useI18n();
   const { currency, currencies, setCurrency } = useCurrency();
   const { data: session, status } = useSession();
+  const tenant = useTenantBranding();
   
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -118,16 +120,25 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between py-4">
             
-            {/* Logo */}
+            {/* Logo — uses tenant branding */}
             <Link href="/" className="flex items-center shrink-0">
-              <Image
-                src="/images/brand/signature-header.png"
-                alt={process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}
-                width={600}
-                height={200}
-                className="h-10 sm:h-12 w-auto"
-                priority
-              />
+              {tenant.logoUrl ? (
+                <Image
+                  src={tenant.logoUrl}
+                  alt={tenant.name}
+                  width={600}
+                  height={200}
+                  className="h-10 sm:h-12 w-auto"
+                  priority
+                />
+              ) : (
+                <span
+                  className="text-xl sm:text-2xl font-bold tracking-tight"
+                  style={{ color: tenant.primaryColor }}
+                >
+                  {tenant.name}
+                </span>
+              )}
             </Link>
 
             {/* Desktop Navigation - Simplified */}

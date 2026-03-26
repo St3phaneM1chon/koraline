@@ -99,7 +99,7 @@ export default function CompareBar() {
                 >
                   <div className="w-12 h-12 bg-neutral-100 rounded-lg overflow-hidden border border-neutral-200">
                     <Image
-                      src={product.imageUrl || '/images/products/peptide-default.png'}
+                      src={product.imageUrl || '/images/products/product-placeholder.svg'}
                       alt={product.name}
                       width={48}
                       height={48}

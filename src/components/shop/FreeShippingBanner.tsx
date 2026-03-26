@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react';
 import { useI18n } from '@/i18n/client';
 import { useCurrency } from '@/contexts/CurrencyContext';
+import { useTenantBranding } from './TenantBrandingProvider';
 
 export default function FreeShippingBanner() {
   const { t } = useI18n();
   const { formatPrice } = useCurrency();
+  const tenant = useTenantBranding();
   const [isVisible, setIsVisible] = useState(true);
 
   // Hide banner on scroll down, show on scroll up
@@ -33,9 +35,10 @@ export default function FreeShippingBanner() {
     <div
       role="banner"
       aria-label={t('shop.aria.freeShippingInfo')}
-      className={`bg-accent-700 text-white text-center py-2 px-4 text-sm font-medium transition-all duration-300 ${
+      className={`text-white text-center py-2 px-4 text-sm font-medium transition-all duration-300 ${
         isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 h-0 py-0'
       }`}
+      style={{ backgroundColor: tenant.secondaryColor }}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 flex-wrap">
         <span className="flex items-center gap-2">

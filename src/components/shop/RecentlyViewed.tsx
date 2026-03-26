@@ -149,7 +149,7 @@ export default function RecentlyViewed({ excludeSlug }: RecentlyViewedProps) {
               {/* Image */}
               <div className="relative aspect-square bg-neutral-100">
                 <Image
-                  src={product.imageUrl || '/images/products/peptide-default.png'}
+                  src={product.imageUrl || '/images/products/product-placeholder.svg'}
                   alt={product.name}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"

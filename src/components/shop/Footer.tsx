@@ -8,9 +8,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useI18n } from '@/i18n/client';
 import { addCSRFHeader } from '@/lib/csrf';
+import { useTenantBranding } from './TenantBrandingProvider';
 
 export default function Footer() {
   const { t } = useI18n();
+  const tenant = useTenantBranding();
   const [email, setEmail] = useState('');
   const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [newsletterMessage, setNewsletterMessage] = useState('');
@@ -52,22 +54,25 @@ export default function Footer() {
     <footer className="bg-navy-900 text-white py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
-          {/* Logo & Info */}
+          {/* Logo & Info — uses tenant branding */}
           <div className="col-span-2">
             <div className="mb-4">
-              <Image
-                src="/images/brand/signature-header.png"
-                alt={process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}
-                width={600}
-                height={200}
-                className="h-10 w-auto brightness-0 invert"
-              />
+              {tenant.logoUrl ? (
+                <Image
+                  src={tenant.logoUrl}
+                  alt={tenant.name}
+                  width={600}
+                  height={200}
+                  className="h-10 w-auto brightness-0 invert"
+                />
+              ) : (
+                <span className="text-2xl font-bold text-white">
+                  {tenant.name}
+                </span>
+              )}
             </div>
             <p className="text-neutral-300 text-sm leading-relaxed mb-4">
-              {t('footer.description') || 'Canada\'s trusted source for high-purity research peptides. 99%+ purity guaranteed with third-party lab testing.'}
-            </p>
-            <p className="text-neutral-300 text-sm mb-2">
-              📧 <a href="mailto:info@attitudes.vip" className="text-primary-400 hover:underline">info@attitudes.vip</a>
+              {t('footer.description')}
             </p>
             <p className="text-neutral-300 text-sm">
               📍 {t('footer.location') || 'Montréal, Québec, Canada'}
@@ -81,7 +86,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Shop */}
+          {/* Shop — generic links (categories are tenant-specific) */}
           <nav aria-label={t('footer.aria.shopLinks')}>
             <h3 className="font-bold mb-4 text-white">{t('footer.shop') || 'Shop'}</h3>
             <ul className="space-y-2 text-neutral-300 text-sm">
@@ -89,19 +94,10 @@ export default function Footer() {
                 <Link href="/shop" className="hover:text-white transition-colors">{t('nav.allProducts') || 'All Products'}</Link>
               </li>
               <li>
-                <Link href="/category/recovery-repair" className="hover:text-white transition-colors">{t('nav.recovery') || 'Recovery & Repair'}</Link>
+                <Link href="/shop?sort=newest" className="hover:text-white transition-colors">{t('nav.newArrivals') || 'New Arrivals'}</Link>
               </li>
               <li>
-                <Link href="/category/weight-loss" className="hover:text-white transition-colors">{t('nav.weightLoss') || 'Weight Loss'}</Link>
-              </li>
-              <li>
-                <Link href="/category/anti-aging-longevity" className="hover:text-white transition-colors">{t('nav.antiAging') || 'Anti-Aging'}</Link>
-              </li>
-              <li>
-                <Link href="/category/supplements" className="hover:text-white transition-colors">{t('nav.supplements') || 'Supplements'}</Link>
-              </li>
-              <li>
-                <Link href="/category/accessories" className="hover:text-white transition-colors">{t('nav.accessories') || 'Accessories'}</Link>
+                <Link href="/shop?sort=bestselling" className="hover:text-white transition-colors">{t('nav.bestsellers') || 'Bestsellers'}</Link>
               </li>
             </ul>
           </nav>
@@ -225,11 +221,10 @@ export default function Footer() {
             <strong className="text-primary-400">DISCLAIMER:</strong> {t('disclaimer.text') || 'All products are intended for laboratory and research use only. Not for human consumption. Products have not been evaluated by Health Canada or the FDA. Purchasers must be 18+ years of age. By using this website, you agree that these products are being purchased for research purposes only.'}
           </p>
 
-          {/* Company Legal Identification */}
+          {/* Company Legal Identification — tenant name used */}
           <div className="mb-4 text-xs text-neutral-300 leading-relaxed">
             <p className="font-semibold text-neutral-200 mb-1">{t('footer.companyInfo')}</p>
-            <p>{t('footer.companyName')}</p>
-            <p>{t('footer.companyNeq')}</p>
+            <p>{tenant.name}</p>
             <p>{t('footer.companyAddress')}</p>
             <p>{t('footer.companyPhone')}</p>
           </div>
@@ -238,7 +233,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex items-center gap-3">
               <p className="text-sm text-neutral-400">
-                © {new Date().getFullYear()} {process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}. {t('footer.copyright') || 'All rights reserved.'}
+                © {new Date().getFullYear()} {tenant.name}. {t('footer.copyright') || 'All rights reserved.'}
               </p>
             </div>
             <div className="flex items-center gap-3 text-neutral-300">

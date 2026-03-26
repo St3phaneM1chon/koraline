@@ -44,7 +44,7 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
 
   // If no images, use default
   const displayImages = images.length > 0 ? images : [
-    { id: '1', url: '/images/products/peptide-default.png', alt: productName, type: 'main' as const }
+    { id: '1', url: '/images/products/product-placeholder.svg', alt: productName, type: 'main' as const }
   ];
 
   const selectedImage = displayImages[selectedIndex];

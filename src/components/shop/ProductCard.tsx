@@ -154,7 +154,7 @@ export default memo(function ProductCard({
       optionName: optionName,
       price: displayPrice,
       comparePrice: displayComparePrice,
-      image: selectedFormat?.image || imageUrl || '/images/products/peptide-default.png',
+      image: selectedFormat?.image || imageUrl || '/images/products/product-placeholder.svg',
       maxQuantity: selectedFormat.stockQuantity || 99,
       quantity,
     });
@@ -170,7 +170,7 @@ export default memo(function ProductCard({
           <Link href={`/product/${slug}`} aria-label={`${t('shop.viewProduct')} ${productName}`}>
             <div className="relative aspect-square bg-neutral-100 overflow-hidden rounded-t-xl">
               <Image
-                src={imageUrl || '/images/products/peptide-default.png'}
+                src={imageUrl || '/images/products/product-placeholder.svg'}
                 alt={categoryName ? `${productName} - ${categoryName}` : productName}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"

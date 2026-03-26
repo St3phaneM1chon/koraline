@@ -100,7 +100,7 @@ export default function CartCrossSell({ cartProductIds }: CartCrossSellProps) {
         comparePrice: availableFormat.comparePrice
           ? Number(availableFormat.comparePrice)
           : undefined,
-        image: product.imageUrl || '/images/products/peptide-default.png',
+        image: product.imageUrl || '/images/products/product-placeholder.svg',
         maxQuantity: availableFormat.stockQuantity || 99,
         quantity: 1,
       });
@@ -157,7 +157,7 @@ export default function CartCrossSell({ cartProductIds }: CartCrossSellProps) {
               <Link href={`/product/${product.slug}`} className="flex-shrink-0">
                 <div className="relative w-14 h-14 bg-neutral-100 rounded-lg overflow-hidden">
                   <Image
-                    src={product.imageUrl || '/images/products/peptide-default.png'}
+                    src={product.imageUrl || '/images/products/product-placeholder.svg'}
                     alt={product.name}
                     fill
                     className="object-cover"

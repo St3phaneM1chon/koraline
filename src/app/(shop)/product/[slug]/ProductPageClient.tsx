@@ -147,7 +147,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
   const [addedToCart, setAddedToCart] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string>(
-    product.productImage || '/images/products/peptide-default.png'
+    product.productImage || '/images/products/product-placeholder.svg'
   );
   const addToCartButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -227,7 +227,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
       price: effectivePrice, // Use the discounted price
       comparePrice: effectivePrice < selectedFormat.price ? selectedFormat.price : selectedFormat.comparePrice,
       sku: selectedFormat.sku,
-      image: product.productImage || '/images/products/peptide-default.png',
+      image: product.productImage || '/images/products/product-placeholder.svg',
       maxQuantity: selectedFormat.stockQuantity,
       productType: product.productType,
       quantity,
@@ -449,7 +449,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
                 >
                   <div className="aspect-square bg-neutral-100 relative">
                     <Image
-                      src={related.image || '/images/products/peptide-default.png'}
+                      src={related.image || '/images/products/product-placeholder.svg'}
                       alt={getRelatedProductName(related)}
                       fill
                       sizes="(max-width: 768px) 50vw, 25vw"

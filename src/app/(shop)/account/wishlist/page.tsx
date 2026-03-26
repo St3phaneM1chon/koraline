@@ -406,7 +406,7 @@ export default function WishlistPage() {
                 <Link href={`/product/${item.product.slug}`}>
                   <div className="relative aspect-square bg-neutral-100">
                     <Image
-                      src={item.product.imageUrl || '/images/products/peptide-default.png'}
+                      src={item.product.imageUrl || '/images/products/product-placeholder.svg'}
                       alt={item.product.name}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

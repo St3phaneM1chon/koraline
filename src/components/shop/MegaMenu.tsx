@@ -281,7 +281,7 @@ export default function MegaMenu({ isOpen, onClose }: MegaMenuProps) {
                       >
                         <div className="relative w-24 h-24 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
                           <Image
-                            src={primaryImage?.url || product.imageUrl || '/images/products/peptide-default.png'}
+                            src={primaryImage?.url || product.imageUrl || '/images/products/product-placeholder.svg'}
                             alt={product.name}
                             fill
                             sizes="96px"

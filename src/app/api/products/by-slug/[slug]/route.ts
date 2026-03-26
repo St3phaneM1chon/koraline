@@ -102,7 +102,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         purity: translated.purity ? Number(translated.purity) : undefined,
         avgMass: translated.molecularWeight ? `${Number(translated.molecularWeight)} Da` : undefined,
         categoryName: translated.category?.name || '',
-        productImage: primaryImage?.url || translated.imageUrl || '/images/products/peptide-default.png',
+        productImage: primaryImage?.url || translated.imageUrl || '/images/products/product-placeholder.svg',
         videoUrl: translated.videoUrl || undefined,
         options: translated.options.map(f => ({
           id: f.id,

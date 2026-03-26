@@ -285,7 +285,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                   {/* Image */}
                   <div className="w-20 h-20 bg-white rounded-lg overflow-hidden flex-shrink-0 relative">
                     <Image
-                      src={item.image || '/images/products/peptide-default.png'}
+                      src={item.image || '/images/products/product-placeholder.svg'}
                       alt={item.name}
                       fill
                       sizes="80px"

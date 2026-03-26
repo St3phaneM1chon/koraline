@@ -122,7 +122,7 @@ function ComparePageContent() {
       name: `${product.name} ${defaultFormat.name}`,
       optionName: defaultFormat.name,
       price: defaultFormat.price,
-      image: product.imageUrl || '/images/products/peptide-default.png',
+      image: product.imageUrl || '/images/products/product-placeholder.svg',
       maxQuantity: defaultFormat.stockQuantity || 99,
       quantity: 1,
     });
@@ -281,7 +281,7 @@ function ComparePageContent() {
                     <Link href={`/product/${product.slug}`}>
                       <div className="aspect-square bg-neutral-100 rounded-lg overflow-hidden mb-3">
                         <Image
-                          src={product.imageUrl || '/images/products/peptide-default.png'}
+                          src={product.imageUrl || '/images/products/product-placeholder.svg'}
                           alt={product.name}
                           width={200}
                           height={200}
@@ -538,7 +538,7 @@ function ComparePageContent() {
               <Link href={`/product/${product.slug}`}>
                 <div className="aspect-square bg-neutral-100 rounded-lg overflow-hidden mb-4">
                   <Image
-                    src={product.imageUrl || '/images/products/peptide-default.png'}
+                    src={product.imageUrl || '/images/products/product-placeholder.svg'}
                     alt={product.name}
                     width={300}
                     height={300}
