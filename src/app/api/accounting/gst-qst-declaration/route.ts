@@ -134,33 +134,26 @@ export const GET = withAdminGuard(async (request) => {
     // -----------------------------------------------------------------------
     const taxAccountCodes = ['1400', '1410', '2020', '2030'];
 
-    // FIX: F084 - TODO: Replace findMany+take:50000 with aggregate SQL to avoid OOM on large datasets
-    const journalLines = await prisma.journalLine.findMany({
-      where: {
-        entry: {
-          status: 'POSTED',
-          date: { gte: startDate, lte: endDate },
-        },
-        account: {
-          code: { in: taxAccountCodes },
-        },
-      },
-      include: {
-        account: { select: { code: true, name: true } },
-      },
-      take: 50000,
-    });
+    // ACCT-F4 FIX: Use raw SQL aggregate instead of loading 50K+ lines into memory
+    const taxAggregates = await prisma.$queryRaw<Array<{ code: string; total_debit: number; total_credit: number }>>`
+      SELECT a.code, COALESCE(SUM(l.debit), 0)::float as total_debit, COALESCE(SUM(l.credit), 0)::float as total_credit
+      FROM "JournalLine" l
+      JOIN "ChartOfAccount" a ON l."accountId" = a.id
+      JOIN "JournalEntry" e ON l."entryId" = e.id
+      WHERE e.status = 'POSTED'
+        AND e.date >= ${startDate} AND e.date <= ${endDate}
+        AND a.code = ANY(${taxAccountCodes})
+      GROUP BY a.code
+    `;
 
-    // Aggregate by account code
     const totals: Record<string, { debit: number; credit: number }> = {};
     for (const code of taxAccountCodes) {
       totals[code] = { debit: 0, credit: 0 };
     }
-    for (const line of journalLines) {
-      const code = line.account.code;
-      if (totals[code]) {
-        totals[code].debit += Number(line.debit);
-        totals[code].credit += Number(line.credit);
+    for (const row of taxAggregates) {
+      if (totals[row.code]) {
+        totals[row.code].debit = row.total_debit;
+        totals[row.code].credit = row.total_credit;
       }
     }
 
