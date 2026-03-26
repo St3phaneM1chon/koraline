@@ -1,0 +1,72 @@
+{
+  "source": "Autorite des marches financiers (AMF)",
+  "url": "https://lautorite.qc.ca/devenir-professionnel/assurance-de-personnes-et-assurance-collective-de-personnes",
+  "scrapedAt": "2026-03-26",
+  "program": {
+    "name": "Programme de qualification en assurance de personnes (PQAP)",
+    "passMark": 60,
+    "examValidityMonths": 12,
+    "curriculumPdf": "https://lautorite.qc.ca/fileadmin/lautorite/devenir-professionnel/dfq_curriculum_fr.pdf"
+  },
+  "modules": [
+    {
+      "code": "01-111",
+      "manual": "F-111",
+      "title": "Deontologie et pratique professionnelle",
+      "competence": "Etablir une pratique professionnelle ethique, conforme aux regles encadrant le secteur de l'assurance de personnes",
+      "specPdf": "https://lautorite.qc.ca/fileadmin/lautorite/devenir-professionnel/table-specification/01-111_llpq_ethique-qc.pdf",
+      "required": true
+    },
+    {
+      "code": "01-311",
+      "manual": "F-311",
+      "title": "Assurance vie",
+      "competence": "Recommander des produits individuels et collectifs d'assurance vie adaptes a la situation et aux besoins des clients",
+      "specPdf": "https://lautorite.qc.ca/fileadmin/lautorite/devenir-professionnel/table-specification/01-311_llpq_vie.pdf",
+      "required": true
+    },
+    {
+      "code": "01-312",
+      "manual": "F-312",
+      "title": "Assurance contre la maladie ou les accidents",
+      "competence": "Recommander des produits individuels et collectifs d'assurance contre la maladie ou les accidents adaptes a la situation et aux besoins des clients",
+      "specPdf": "https://lautorite.qc.ca/fileadmin/lautorite/devenir-professionnel/table-specification/01-312_llpq_acc-maladie.pdf",
+      "required": true
+    },
+    {
+      "code": "01-313",
+      "manual": "F-313",
+      "title": "Fonds distincts et rentes",
+      "competence": "Recommander des fonds distincts, des rentes individuelles et des regimes de rentes collectives adaptes a la situation et aux besoins des clients",
+      "specPdf": "https://lautorite.qc.ca/fileadmin/lautorite/devenir-professionnel/table-specification/01-313_llpq_fonds-distincts.pdf",
+      "required": true
+    }
+  ],
+  "disciplines": [
+    {
+      "name": "Assurance de personnes (PQAP complet)",
+      "modules": ["01-111", "01-311", "01-312", "01-313"]
+    },
+    {
+      "name": "Maladie-accidents (Code civil)",
+      "modules": ["01-111", "01-312"]
+    },
+    {
+      "name": "Assurance collective de personnes",
+      "modules": ["01-111", "01-311", "01-312", "01-313"]
+    },
+    {
+      "name": "Regimes d'assurance collective",
+      "modules": ["01-111", "01-311", "01-312"]
+    },
+    {
+      "name": "Regimes de rentes collectives",
+      "modules": ["01-111", "01-313"]
+    }
+  ],
+  "notes": {
+    "formationFiscalite": "Suggeree fortement mais non obligatoire pour personnes avec peu de notions de fiscalite",
+    "tabletteExamen": "Tablette electronique fournie pendant l'examen avec manuels de preparation",
+    "validite": "Tous les examens doivent etre valides au moment d'entreprendre une periode probatoire"
+  }
+}
