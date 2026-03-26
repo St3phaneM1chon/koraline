@@ -48,7 +48,8 @@ export async function createDispositionTrigger(config: {
   const meta = (campaign.targetCriteria as Record<string, unknown>) || {};
   const existing = (meta.dispositionTriggers as DispositionTrigger[]) || [];
   const trigger: DispositionTrigger = {
-    id: `trig-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+    // CRM-F12 FIX: Use crypto.randomUUID() instead of Math.random()
+    id: `trig-${require('crypto').randomUUID().slice(0, 12)}`,
     campaignId: config.campaignId, disposition: config.disposition.toUpperCase(),
     action: config.action, config: config.actionConfig, isActive: true,
   };

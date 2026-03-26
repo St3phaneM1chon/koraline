@@ -70,6 +70,7 @@ export const GET = withAdminGuard(async (request: NextRequest) => {
         ? (status as 'DRAFT' | 'ACTIVE' | 'PAUSED' | 'ARCHIVED')
         : undefined;
 
+    // CRM-F4 FIX: Add pagination
     const workflows = await prisma.crmWorkflow.findMany({
       where: whereStatus ? { status: whereStatus } : undefined,
       include: {
@@ -78,6 +79,7 @@ export const GET = withAdminGuard(async (request: NextRequest) => {
         createdBy: { select: { id: true, name: true } },
       },
       orderBy: { updatedAt: 'desc' },
+      take: 50,
     });
 
     return apiSuccess(workflows, { request });
