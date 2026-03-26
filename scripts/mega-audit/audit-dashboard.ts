@@ -37,10 +37,10 @@ function getDomainSummaries(): DomainSummary[] {
 
     // Read latest weekly result
     if (fs.existsSync(WEEKLY_DIR)) {
-      const files = fs.readdirSync(WEEKLY_DIR)
-        .filter(f => f.includes(`-${key}.json`) || f.includes(`-${key}-`))
-        .sort()
-        .reverse();
+      // Prefer findings files over manifests
+      const allFiles = fs.readdirSync(WEEKLY_DIR).filter(f => f.includes(`-${key}`));
+      const findingsFiles = allFiles.filter(f => f.includes('-findings.json')).sort().reverse();
+      const files = findingsFiles.length > 0 ? findingsFiles : allFiles.filter(f => f.endsWith('.json')).sort().reverse();
 
       if (files.length > 0) {
         try {
