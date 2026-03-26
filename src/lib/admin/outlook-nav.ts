@@ -113,6 +113,7 @@ export const folderSections: Record<string, NavFolderSection> = {
       {
         labelKey: 'admin.nav.clientsTools',
         items: [
+          { href: '/admin/platform/broadcast', labelKey: 'admin.nav.broadcast', icon: Megaphone },
           { href: '/admin/platform/assisted-setup', labelKey: 'admin.nav.assistedSetup', icon: Sparkles },
           { href: '/admin/platform', labelKey: 'admin.nav.platformConfig', icon: Settings },
         ],

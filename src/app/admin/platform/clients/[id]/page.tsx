@@ -15,6 +15,8 @@ import {
   ExternalLink, UserX, UserCheck, Eye, Save, Send,
   Clock, ChevronDown, AlertCircle, Check, X, ToggleLeft, ToggleRight,
   Bell, Info, AlertTriangle, Zap, GraduationCap,
+  FileText, Download, CreditCard,
+  Heart, Mail,
 } from 'lucide-react';
 import { useI18n } from '@/i18n/client';
 import { addCSRFHeader } from '@/lib/csrf';
@@ -108,6 +110,21 @@ interface TenantNotification {
   createdAt: string;
 }
 
+interface StripeInvoice {
+  id: string;
+  number: string | null;
+  date: number | null;
+  dueDate: number | null;
+  amount: number;
+  currency: string;
+  status: string | null;
+  pdfUrl: string | null;
+  hostedUrl: string | null;
+  periodStart: number | null;
+  periodEnd: number | null;
+  attemptCount: number | null;
+}
+
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
@@ -140,12 +157,23 @@ const EVENT_ICONS: Record<string, React.ElementType> = {
   CREATED: Building2, STATUS_CHANGED: AlertTriangle, PLAN_CHANGED: ShoppingCart,
   MODULE_ENABLED: ToggleRight, MODULE_DISABLED: ToggleLeft,
   NOTIFICATION_SENT: Bell, LOGIN: Users, PAYMENT_SUCCESS: Check,
+  PAYMENT_FAILED: AlertCircle, PAYMENT_SETUP: CreditCard,
+  SUBSCRIPTION_CREATED: CreditCard, SUBSCRIPTION_UPDATED: CreditCard,
+  SUBSCRIPTION_CANCELLED: X,
 };
 
 const NOTIFICATION_TYPE_CONFIG: Record<string, { bg: string; text: string; icon: React.ElementType }> = {
   info: { bg: 'rgba(59, 130, 246, 0.15)', text: '#60a5fa', icon: Info },
   warning: { bg: 'rgba(245, 158, 11, 0.15)', text: '#fbbf24', icon: AlertTriangle },
   urgent: { bg: 'rgba(244, 63, 94, 0.15)', text: '#fb7185', icon: Zap },
+};
+
+const INVOICE_STATUS_BADGES: Record<string, { bg: string; text: string; label: string }> = {
+  paid: { bg: 'rgba(16, 185, 129, 0.15)', text: '#34d399', label: 'Payee' },
+  open: { bg: 'rgba(245, 158, 11, 0.15)', text: '#fbbf24', label: 'Ouverte' },
+  draft: { bg: 'rgba(156, 163, 175, 0.15)', text: '#9ca3af', label: 'Brouillon' },
+  uncollectible: { bg: 'rgba(244, 63, 94, 0.15)', text: '#fb7185', label: 'Irrecovrable' },
+  void: { bg: 'rgba(156, 163, 175, 0.15)', text: '#9ca3af', label: 'Annulee' },
 };
 
 const PROVINCES = [
@@ -200,6 +228,29 @@ export default function ClientDetailPage() {
   const [activeTab, setActiveTab] = useState<TabKey>('overview');
   const [actionLoading, setActionLoading] = useState('');
 
+  // Onboarding state
+  const [onboarding, setOnboarding] = useState<{
+    steps: Record<string, boolean>;
+    progress: number;
+    completedCount: number;
+    totalSteps: number;
+  } | null>(null);
+
+  // Seats state
+  const [seats, setSeats] = useState<{
+    total: number;
+    max: number;
+    byRole: Record<string, number>;
+    overLimit: boolean;
+  } | null>(null);
+
+  // Health score state
+  const [health, setHealth] = useState<{
+    score: number;
+    grade: string;
+    signals: { key: string; label: string; value: boolean; impact: number }[];
+  } | null>(null);
+
   // Editable form state (for Details tab)
   const [editForm, setEditForm] = useState<Partial<TenantDetail>>({});
   const [saving, setSaving] = useState(false);
@@ -210,6 +261,10 @@ export default function ClientDetailPage() {
 
   // Event filter
   const [eventFilter, setEventFilter] = useState('all');
+
+  // Invoices
+  const [invoices, setInvoices] = useState<StripeInvoice[]>([]);
+  const [invoicesLoading, setInvoicesLoading] = useState(false);
 
   // ---------------------------------------------------------------------------
   // Data fetching
@@ -235,9 +290,67 @@ export default function ClientDetailPage() {
     }
   }, [tenantId]);
 
+  // Fetch onboarding status
+  const fetchOnboarding = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/admin/platform/clients/${tenantId}/onboarding`);
+      if (res.ok) {
+        const data = await res.json();
+        setOnboarding(data);
+      }
+    } catch { /* handled */ }
+  }, [tenantId]);
+
+  // Fetch seats
+  const fetchSeats = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/admin/platform/clients/${tenantId}/seats`);
+      if (res.ok) {
+        const data = await res.json();
+        setSeats(data);
+      }
+    } catch { /* handled */ }
+  }, [tenantId]);
+
+  // Fetch health score
+  const fetchHealth = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/admin/platform/clients/${tenantId}/health`);
+      if (res.ok) {
+        const data = await res.json();
+        setHealth(data);
+      }
+    } catch { /* handled */ }
+  }, [tenantId]);
+
   useEffect(() => {
     fetchTenant();
-  }, [fetchTenant]);
+    fetchOnboarding();
+    fetchSeats();
+    fetchHealth();
+  }, [fetchTenant, fetchOnboarding, fetchSeats, fetchHealth]);
+
+  const fetchInvoices = useCallback(async () => {
+    setInvoicesLoading(true);
+    try {
+      const res = await fetch(`/api/admin/platform/clients/${tenantId}/invoices`);
+      if (res.ok) {
+        const data = await res.json();
+        setInvoices(data.invoices || []);
+      }
+    } catch {
+      // handled
+    } finally {
+      setInvoicesLoading(false);
+    }
+  }, [tenantId]);
+
+  // Fetch invoices when switching to subscription tab
+  useEffect(() => {
+    if (activeTab === 'subscription' && invoices.length === 0 && !invoicesLoading) {
+      fetchInvoices();
+    }
+  }, [activeTab, invoices.length, invoicesLoading, fetchInvoices]);
 
   // ---------------------------------------------------------------------------
   // Actions
@@ -524,6 +637,132 @@ export default function ClientDetailPage() {
             ))}
           </div>
 
+          {/* Health Score */}
+          {health && (
+            <div className="rounded-xl border border-[var(--k-border-subtle)] bg-[var(--k-glass-thin)] backdrop-blur-md p-5">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-semibold text-[var(--k-text-primary)] flex items-center gap-2">
+                  <Heart className="w-4 h-4 text-[var(--k-accent-rose)]" />
+                  Score de sante
+                </h3>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl font-bold text-[var(--k-text-primary)]">{health.score}</span>
+                  <span
+                    className="px-3 py-1 rounded-full text-sm font-bold"
+                    style={{
+                      backgroundColor: health.grade === 'A' ? 'rgba(16,185,129,0.15)' : health.grade === 'B' ? 'rgba(59,130,246,0.15)' : health.grade === 'C' ? 'rgba(245,158,11,0.15)' : health.grade === 'D' ? 'rgba(249,115,22,0.15)' : 'rgba(244,63,94,0.15)',
+                      color: health.grade === 'A' ? '#34d399' : health.grade === 'B' ? '#60a5fa' : health.grade === 'C' ? '#fbbf24' : health.grade === 'D' ? '#fb923c' : '#fb7185',
+                    }}
+                  >
+                    {health.grade}
+                  </span>
+                </div>
+              </div>
+              <div className="space-y-2">
+                {health.signals.map(signal => (
+                  <div key={signal.key} className="flex items-center justify-between py-1.5 px-2 rounded-lg bg-[var(--k-glass-ultra-thin)]">
+                    <div className="flex items-center gap-2">
+                      {signal.impact > 0 ? (
+                        <Check className="w-3.5 h-3.5 text-[var(--k-accent-emerald)]" />
+                      ) : signal.impact < 0 ? (
+                        <X className="w-3.5 h-3.5 text-[var(--k-accent-rose)]" />
+                      ) : (
+                        <AlertCircle className="w-3.5 h-3.5 text-[var(--k-text-muted)]" />
+                      )}
+                      <span className="text-xs text-[var(--k-text-secondary)]">{signal.label}</span>
+                    </div>
+                    <span className={`text-xs font-medium ${signal.impact > 0 ? 'text-[var(--k-accent-emerald)]' : signal.impact < 0 ? 'text-[var(--k-accent-rose)]' : 'text-[var(--k-text-muted)]'}`}>
+                      {signal.impact > 0 ? `+${signal.impact}` : signal.impact}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Onboarding Progress */}
+          {onboarding && (
+            <div className="rounded-xl border border-[var(--k-border-subtle)] bg-[var(--k-glass-thin)] backdrop-blur-md p-5">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-semibold text-[var(--k-text-primary)]">Onboarding</h3>
+                <span className="text-sm font-bold text-[var(--k-text-primary)]">{onboarding.progress}%</span>
+              </div>
+              {/* Progress bar */}
+              <div className="w-full h-2.5 rounded-full bg-[var(--k-glass-thick)] mb-4 overflow-hidden">
+                <div
+                  className="h-full rounded-full transition-all duration-500"
+                  style={{
+                    width: `${onboarding.progress}%`,
+                    background: onboarding.progress === 100
+                      ? 'var(--k-accent-emerald)'
+                      : onboarding.progress >= 60
+                      ? 'var(--k-accent-indigo)'
+                      : 'var(--k-accent-amber)',
+                  }}
+                />
+              </div>
+              {/* Steps checklist */}
+              <div className="space-y-2">
+                {Object.entries(onboarding.steps).map(([key, done]) => {
+                  const labels: Record<string, string> = {
+                    branding: 'Logo et couleurs configurees',
+                    domain: 'Domaine personnalise verifie',
+                    products: 'Au moins 1 produit cree',
+                    payment: 'Abonnement Stripe actif',
+                    firstOrder: 'Premiere commande recue',
+                  };
+                  return (
+                    <div key={key} className="flex items-center gap-2.5 py-1">
+                      <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${
+                        done
+                          ? 'bg-[var(--k-accent-emerald)] bg-opacity-20'
+                          : 'bg-[var(--k-glass-regular)]'
+                      }`}>
+                        {done ? (
+                          <Check className="w-3 h-3 text-[var(--k-accent-emerald)]" />
+                        ) : (
+                          <X className="w-3 h-3 text-[var(--k-text-muted)]" />
+                        )}
+                      </div>
+                      <span className={`text-xs ${done ? 'text-[var(--k-text-primary)]' : 'text-[var(--k-text-muted)]'}`}>
+                        {labels[key] || key}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+              {/* Relancer email button */}
+              {onboarding.progress < 100 && (
+                <div className="mt-4 flex justify-end">
+                  <button
+                    onClick={async () => {
+                      try {
+                        const res = await fetch(`/api/admin/platform/clients/${tenantId}/notifications`, {
+                          method: 'POST',
+                          headers: addCSRFHeader({ 'Content-Type': 'application/json' }),
+                          body: JSON.stringify({
+                            title: 'Completez votre configuration',
+                            message: 'Votre espace Koraline n\'est pas encore completement configure. Connectez-vous pour finaliser les etapes restantes et profiter de toutes les fonctionnalites.',
+                            type: 'info',
+                          }),
+                        });
+                        if (res.ok) toast.success('Email de relance envoye');
+                        else toast.error('Erreur lors de l\'envoi');
+                      } catch {
+                        toast.error('Erreur de connexion');
+                      }
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium
+                      bg-[var(--k-accent-indigo-10)] text-[var(--k-accent-indigo)] hover:bg-indigo-500/20 transition-colors"
+                  >
+                    <Mail className="w-3.5 h-3.5" />
+                    Relancer par email
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Quick info */}
           <div className="grid md:grid-cols-2 gap-4">
             <div className="rounded-xl border border-[var(--k-border-subtle)] bg-[var(--k-glass-thin)] p-5">
@@ -780,19 +1019,164 @@ export default function ClientDetailPage() {
             <span className="text-2xl font-bold text-[var(--k-accent-emerald)]">{formatCurrency(mrr)}</span>
           </div>
 
-          {/* Employee licenses */}
+          {/* Invoices */}
           <div className="rounded-xl border border-[var(--k-border-subtle)] bg-[var(--k-glass-thin)] p-5">
-            <h3 className="text-sm font-semibold text-[var(--k-text-primary)] mb-3">Licences employes</h3>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-semibold text-[var(--k-text-primary)]">Factures Stripe</h3>
+              <div className="flex items-center gap-2">
+                {tenant.stripeCustomerId && (
+                  <a
+                    href={`https://dashboard.stripe.com/customers/${tenant.stripeCustomerId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium
+                      bg-[var(--k-glass-regular)] text-[var(--k-text-secondary)] hover:text-[var(--k-text-primary)] transition-colors"
+                  >
+                    <CreditCard className="w-3.5 h-3.5" />
+                    Stripe Dashboard
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                )}
+                <button
+                  onClick={fetchInvoices}
+                  disabled={invoicesLoading}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium
+                    bg-[var(--k-glass-regular)] text-[var(--k-text-secondary)] hover:text-[var(--k-text-primary)] transition-colors disabled:opacity-50"
+                >
+                  {invoicesLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <FileText className="w-3 h-3" />}
+                  Actualiser
+                </button>
+              </div>
+            </div>
+
+            {!tenant.stripeCustomerId ? (
+              <div className="text-center py-6">
+                <CreditCard className="w-8 h-8 text-[var(--k-text-muted)] mx-auto mb-2" />
+                <p className="text-sm text-[var(--k-text-secondary)]">Pas de compte Stripe configure</p>
+                <p className="text-xs text-[var(--k-text-muted)] mt-1">Le client sera connecte a Stripe lors du prochain paiement</p>
+              </div>
+            ) : invoicesLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="w-6 h-6 animate-spin text-[var(--k-text-muted)]" />
+              </div>
+            ) : invoices.length === 0 ? (
+              <div className="text-center py-6">
+                <FileText className="w-8 h-8 text-[var(--k-text-muted)] mx-auto mb-2" />
+                <p className="text-sm text-[var(--k-text-secondary)]">Aucune facture</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-[var(--k-border-subtle)]">
+                      <th className="text-left px-3 py-2 text-xs font-medium text-[var(--k-text-secondary)] uppercase tracking-wider">Date</th>
+                      <th className="text-left px-3 py-2 text-xs font-medium text-[var(--k-text-secondary)] uppercase tracking-wider"># Facture</th>
+                      <th className="text-right px-3 py-2 text-xs font-medium text-[var(--k-text-secondary)] uppercase tracking-wider">Montant</th>
+                      <th className="text-center px-3 py-2 text-xs font-medium text-[var(--k-text-secondary)] uppercase tracking-wider">Statut</th>
+                      <th className="text-right px-3 py-2 text-xs font-medium text-[var(--k-text-secondary)] uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[var(--k-border-subtle)]">
+                    {invoices.map((inv) => {
+                      const statusBadge = INVOICE_STATUS_BADGES[inv.status || 'draft'] || INVOICE_STATUS_BADGES.draft;
+                      return (
+                        <tr key={inv.id} className="hover:bg-[var(--k-glass-regular)] transition-colors">
+                          <td className="px-3 py-2.5 text-sm text-[var(--k-text-primary)]">
+                            {inv.date ? new Date(inv.date * 1000).toLocaleDateString('fr-CA') : '-'}
+                          </td>
+                          <td className="px-3 py-2.5 text-sm text-[var(--k-text-secondary)] font-mono">
+                            {inv.number || '-'}
+                          </td>
+                          <td className="px-3 py-2.5 text-sm text-[var(--k-text-primary)] text-right font-medium">
+                            {formatCurrency(inv.amount)}
+                          </td>
+                          <td className="px-3 py-2.5 text-center">
+                            <span
+                              className="inline-block px-2 py-0.5 rounded-full text-[10px] font-medium"
+                              style={{ backgroundColor: statusBadge.bg, color: statusBadge.text }}
+                            >
+                              {statusBadge.label}
+                            </span>
+                          </td>
+                          <td className="px-3 py-2.5 text-right">
+                            <div className="flex items-center justify-end gap-1">
+                              {inv.pdfUrl && (
+                                <a
+                                  href={inv.pdfUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  title="Telecharger PDF"
+                                  className="p-1.5 rounded-lg hover:bg-[var(--k-glass-thick)] text-[var(--k-text-muted)] hover:text-[var(--k-text-primary)] transition-colors"
+                                >
+                                  <Download className="w-3.5 h-3.5" />
+                                </a>
+                              )}
+                              {inv.hostedUrl && (
+                                <a
+                                  href={inv.hostedUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  title="Voir sur Stripe"
+                                  className="p-1.5 rounded-lg hover:bg-[var(--k-glass-thick)] text-[var(--k-text-muted)] hover:text-[var(--k-text-primary)] transition-colors"
+                                >
+                                  <ExternalLink className="w-3.5 h-3.5" />
+                                </a>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          {/* Seats / Licences */}
+          <div className="rounded-xl border border-[var(--k-border-subtle)] bg-[var(--k-glass-thin)] p-5">
+            <h3 className="text-sm font-semibold text-[var(--k-text-primary)] mb-3 flex items-center gap-2">
+              <Users className="w-4 h-4 text-[var(--k-accent-indigo)]" />
+              Licences employes
+            </h3>
+            <div className="space-y-4">
+              {/* Total progress */}
               <div>
-                <p className="text-lg font-bold text-[var(--k-text-primary)]">{stats.users} <span className="text-sm font-normal text-[var(--k-text-secondary)]">/ {tenant.maxEmployees} max</span></p>
-                <div className="w-48 h-2 rounded-full bg-[var(--k-glass-thick)] mt-2 overflow-hidden">
+                <div className="flex items-center justify-between mb-1">
+                  <p className="text-lg font-bold text-[var(--k-text-primary)]">
+                    {seats?.total ?? stats.users}
+                    <span className="text-sm font-normal text-[var(--k-text-secondary)]"> / {seats?.max ?? tenant.maxEmployees} max</span>
+                  </p>
+                  {seats?.overLimit && (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[var(--k-accent-rose-10)] text-[var(--k-accent-rose)]">
+                      Depassement
+                    </span>
+                  )}
+                </div>
+                <div className="w-full h-2.5 rounded-full bg-[var(--k-glass-thick)] overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-[var(--k-accent-indigo)]"
-                    style={{ width: `${Math.min(100, (stats.users / Math.max(1, tenant.maxEmployees)) * 100)}%` }}
+                    className={`h-full rounded-full transition-all ${
+                      seats?.overLimit ? 'bg-[var(--k-accent-rose)]' : 'bg-[var(--k-accent-indigo)]'
+                    }`}
+                    style={{ width: `${Math.min(100, ((seats?.total ?? stats.users) / Math.max(1, seats?.max ?? tenant.maxEmployees)) * 100)}%` }}
                   />
                 </div>
               </div>
+
+              {/* By role breakdown */}
+              {seats?.byRole && Object.keys(seats.byRole).length > 0 && (
+                <div>
+                  <p className="text-xs font-medium text-[var(--k-text-secondary)] mb-2">Par role</p>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    {Object.entries(seats.byRole).map(([role, count]) => (
+                      <div key={role} className="flex items-center justify-between py-1.5 px-3 rounded-lg bg-[var(--k-glass-ultra-thin)]">
+                        <span className="text-xs text-[var(--k-text-secondary)]">{role}</span>
+                        <span className="text-xs font-bold text-[var(--k-text-primary)]">{count}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -907,6 +1291,12 @@ export default function ClientDetailPage() {
               <option value="MODULE_ENABLED">Module active</option>
               <option value="MODULE_DISABLED">Module desactive</option>
               <option value="NOTIFICATION_SENT">Notification</option>
+              <option value="PAYMENT_SUCCESS">Paiement reussi</option>
+              <option value="PAYMENT_FAILED">Paiement echoue</option>
+              <option value="PAYMENT_SETUP">Config paiement</option>
+              <option value="SUBSCRIPTION_CREATED">Abo cree</option>
+              <option value="SUBSCRIPTION_UPDATED">Abo modifie</option>
+              <option value="SUBSCRIPTION_CANCELLED">Abo annule</option>
             </select>
           </div>
 

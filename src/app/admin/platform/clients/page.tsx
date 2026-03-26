@@ -12,7 +12,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Search, Plus, Building2, Users, ShoppingCart, Package,
-  Globe, ChevronDown, Loader2,
+  Globe, ChevronDown, Loader2, TrendingUp, AlertCircle, Heart,
 } from 'lucide-react';
 import { useI18n } from '@/i18n/client';
 
@@ -42,6 +42,19 @@ interface ClientTenant {
   stats: TenantStats;
   mrr: number;
 }
+
+interface HealthData {
+  score: number;
+  grade: string;
+}
+
+const GRADE_BADGE: Record<string, { bg: string; text: string }> = {
+  A: { bg: 'rgba(16, 185, 129, 0.15)', text: '#34d399' },
+  B: { bg: 'rgba(59, 130, 246, 0.15)', text: '#60a5fa' },
+  C: { bg: 'rgba(245, 158, 11, 0.15)', text: '#fbbf24' },
+  D: { bg: 'rgba(249, 115, 22, 0.15)', text: '#fb923c' },
+  F: { bg: 'rgba(244, 63, 94, 0.15)', text: '#fb7185' },
+};
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -82,6 +95,8 @@ export default function ClientListPage() {
   const [search, setSearch] = useState('');
   const [planFilter, setPlanFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [healthScores, setHealthScores] = useState<Record<string, HealthData>>({});
+  const [atRiskCount, setAtRiskCount] = useState(0);
 
   const fetchTenants = useCallback(async () => {
     try {
@@ -97,9 +112,23 @@ export default function ClientListPage() {
     }
   }, []);
 
+  const fetchHealth = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/platform/health');
+      if (res.ok) {
+        const data = await res.json();
+        setHealthScores(data.scores || {});
+        setAtRiskCount(data.atRisk || 0);
+      }
+    } catch {
+      // Silently handle
+    }
+  }, []);
+
   useEffect(() => {
     fetchTenants();
-  }, [fetchTenants]);
+    fetchHealth();
+  }, [fetchTenants, fetchHealth]);
 
   // Filtered list
   const filtered = useMemo(() => {
@@ -120,6 +149,8 @@ export default function ClientListPage() {
   const totalUsers = useMemo(() => tenants.reduce((s, t) => s + t.stats.users, 0), [tenants]);
   const totalOrders = useMemo(() => tenants.reduce((s, t) => s + t.stats.orders, 0), [tenants]);
   const totalProducts = useMemo(() => tenants.reduce((s, t) => s + t.stats.products, 0), [tenants]);
+  const suspendedCount = useMemo(() => tenants.filter(t => t.status === 'SUSPENDED').length, [tenants]);
+  const arpu = useMemo(() => tenants.length > 0 ? Math.round(totalMRR / tenants.length) : 0, [totalMRR, tenants.length]);
 
   const formatCurrency = (cents: number) => {
     return new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD' }).format(cents / 100);
@@ -166,12 +197,15 @@ export default function ClientListPage() {
       </div>
 
       {/* Stats cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
         {[
           { label: t('admin.platformClients.totalClients') || 'Clients', value: tenants.length, icon: Building2, color: 'var(--k-accent-indigo)' },
           { label: t('admin.platformClients.totalUsers') || 'Utilisateurs', value: totalUsers, icon: Users, color: 'var(--k-accent-cyan)' },
           { label: 'MRR', value: formatCurrency(totalMRR), icon: ShoppingCart, color: 'var(--k-accent-emerald)' },
+          { label: 'ARPU', value: formatCurrency(arpu), icon: TrendingUp, color: 'var(--k-accent-indigo)' },
           { label: t('admin.platformClients.totalProducts') || 'Produits', value: totalProducts, icon: Package, color: 'var(--k-accent-amber)' },
+          { label: 'Suspendus', value: suspendedCount, icon: AlertCircle, color: suspendedCount > 0 ? 'var(--k-accent-rose)' : 'var(--k-accent-emerald)' },
+          { label: 'A risque', value: atRiskCount, icon: Heart, color: atRiskCount > 0 ? 'var(--k-accent-rose)' : 'var(--k-accent-emerald)' },
         ].map((stat) => (
           <div
             key={stat.label}
@@ -265,6 +299,9 @@ export default function ClientListPage() {
                 <th className="text-left px-4 py-3 text-xs font-medium text-[var(--k-text-secondary)] uppercase tracking-wider">
                   {t('admin.platformClients.colModules') || 'Modules'}
                 </th>
+                <th className="text-center px-4 py-3 text-xs font-medium text-[var(--k-text-secondary)] uppercase tracking-wider">
+                  Sante
+                </th>
                 <th className="text-right px-4 py-3 text-xs font-medium text-[var(--k-text-secondary)] uppercase tracking-wider">
                   MRR
                 </th>
@@ -276,7 +313,7 @@ export default function ClientListPage() {
             <tbody className="divide-y divide-[var(--k-border-subtle)]">
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-12 text-center">
+                  <td colSpan={8} className="px-4 py-12 text-center">
                     <Building2 className="w-8 h-8 text-[var(--k-text-muted)] mx-auto mb-2" />
                     <p className="text-sm text-[var(--k-text-secondary)]">
                       {t('admin.platformClients.noResults') || 'Aucun client trouve'}
@@ -372,6 +409,24 @@ export default function ClientListPage() {
                             </span>
                           )}
                         </div>
+                      </td>
+
+                      {/* Health */}
+                      <td className="px-4 py-3 text-center">
+                        {(() => {
+                          const h = healthScores[tenant.id];
+                          if (!h) return <span className="text-[10px] text-[var(--k-text-muted)]">--</span>;
+                          const badge = GRADE_BADGE[h.grade] || GRADE_BADGE.F;
+                          return (
+                            <span
+                              className="inline-block px-2 py-0.5 rounded-full text-xs font-bold"
+                              style={{ backgroundColor: badge.bg, color: badge.text }}
+                              title={`Score: ${h.score}/100`}
+                            >
+                              {h.grade}
+                            </span>
+                          );
+                        })()}
                       </td>
 
                       {/* MRR */}

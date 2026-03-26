@@ -61,14 +61,29 @@ export async function POST(request: NextRequest) {
         const subscription = event.data.object as Stripe.Subscription;
         const tenantSlug = subscription.metadata?.tenant_slug;
         if (tenantSlug) {
-          await prisma.tenant.updateMany({
-            where: { slug: tenantSlug },
-            data: {
-              stripeSubscriptionId: subscription.id,
-              stripeCustomerId: subscription.customer as string,
-              status: 'ACTIVE',
-            },
-          });
+          const updated = await prisma.tenant.findFirst({ where: { slug: tenantSlug } });
+          if (updated) {
+            await prisma.tenant.update({
+              where: { id: updated.id },
+              data: {
+                stripeSubscriptionId: subscription.id,
+                stripeCustomerId: subscription.customer as string,
+                status: 'ACTIVE',
+              },
+            });
+            await prisma.tenantEvent.create({
+              data: {
+                tenantId: updated.id,
+                type: 'SUBSCRIPTION_CREATED',
+                actor: 'stripe-webhook',
+                details: {
+                  subscriptionId: subscription.id,
+                  customerId: String(subscription.customer),
+                  status: subscription.status,
+                },
+              },
+            });
+          }
           logger.info('Tenant subscription created', { tenantSlug, subscriptionId: subscription.id });
         }
         break;
@@ -80,6 +95,7 @@ export async function POST(request: NextRequest) {
           where: { stripeSubscriptionId: subscription.id },
         });
         if (tenant) {
+          const previousStatus = tenant.status;
           const newStatus = subscription.status === 'active' ? 'ACTIVE'
             : subscription.status === 'past_due' ? 'ACTIVE' // Grace period
             : subscription.status === 'canceled' ? 'CANCELLED'
@@ -91,10 +107,38 @@ export async function POST(request: NextRequest) {
             data: {
               status: newStatus as 'ACTIVE' | 'SUSPENDED' | 'CANCELLED',
               ...(subscription.cancel_at_period_end ? {
-                suspendedReason: 'Annulation programmée en fin de période',
+                suspendedReason: 'Annulation programmee en fin de periode',
               } : {}),
             },
           });
+
+          // Detect plan change from metadata
+          const newPlan = subscription.metadata?.plan;
+          const eventType = newPlan && newPlan !== tenant.plan ? 'PLAN_CHANGED' : 'SUBSCRIPTION_UPDATED';
+
+          await prisma.tenantEvent.create({
+            data: {
+              tenantId: tenant.id,
+              type: eventType,
+              actor: 'stripe-webhook',
+              details: {
+                previousStatus,
+                newStatus,
+                stripeStatus: subscription.status,
+                cancelAtPeriodEnd: subscription.cancel_at_period_end,
+                ...(newPlan ? { previousPlan: tenant.plan, newPlan } : {}),
+              },
+            },
+          });
+
+          // Update plan if changed
+          if (newPlan && newPlan !== tenant.plan) {
+            await prisma.tenant.update({
+              where: { id: tenant.id },
+              data: { plan: newPlan },
+            });
+          }
+
           logger.info('Tenant subscription updated', {
             tenantId: tenant.id,
             status: newStatus,
@@ -113,11 +157,34 @@ export async function POST(request: NextRequest) {
           await prisma.tenant.update({
             where: { id: tenant.id },
             data: {
-              status: 'CANCELLED',
+              status: 'SUSPENDED',
               suspendedAt: new Date(),
-              suspendedReason: 'Abonnement Stripe annulé',
+              suspendedReason: 'Abonnement Stripe annule',
             },
           });
+
+          await prisma.tenantEvent.create({
+            data: {
+              tenantId: tenant.id,
+              type: 'SUBSCRIPTION_CANCELLED',
+              actor: 'stripe-webhook',
+              details: {
+                subscriptionId: subscription.id,
+                canceledAt: subscription.canceled_at,
+              },
+            },
+          });
+
+          await prisma.tenantNotification.create({
+            data: {
+              tenantId: tenant.id,
+              title: 'Abonnement annule',
+              message: 'Votre abonnement Koraline a ete annule. Votre acces sera limite. Veuillez contacter le support pour reactiver votre compte.',
+              type: 'urgent',
+              createdBy: 'system',
+            },
+          });
+
           logger.info('Tenant subscription deleted', { tenantId: tenant.id });
         }
         break;
@@ -130,22 +197,52 @@ export async function POST(request: NextRequest) {
           where: { stripeCustomerId: customerId },
         });
         if (tenant) {
+          const attemptCount = invoice.attempt_count || 0;
+
           // D65: J1 rappel, J7 2e rappel, J14 mode maintenance, J30 suspendu
           logger.warn('Tenant payment failed', {
             tenantId: tenant.id,
             slug: tenant.slug,
             invoiceId: invoice.id,
-            attemptCount: invoice.attempt_count,
+            attemptCount,
+          });
+
+          // Create event for every failed attempt
+          await prisma.tenantEvent.create({
+            data: {
+              tenantId: tenant.id,
+              type: 'PAYMENT_FAILED',
+              actor: 'stripe-webhook',
+              details: {
+                invoiceId: invoice.id,
+                attemptCount,
+                amountDue: invoice.amount_due,
+                currency: invoice.currency,
+              },
+            },
+          });
+
+          // Create notification for the tenant
+          await prisma.tenantNotification.create({
+            data: {
+              tenantId: tenant.id,
+              title: 'Paiement echoue',
+              message: attemptCount >= 2
+                ? `Le paiement de votre facture a echoue apres ${attemptCount} tentatives. Votre compte sera suspendu si le probleme persiste. Veuillez verifier votre moyen de paiement.`
+                : `Le paiement de votre facture a echoue (tentative ${attemptCount}). Veuillez verifier votre moyen de paiement pour eviter une interruption de service.`,
+              type: attemptCount >= 2 ? 'urgent' : 'warning',
+              createdBy: 'system',
+            },
           });
 
           // After 2+ failed attempts, suspend
-          if ((invoice.attempt_count || 0) >= 2) {
+          if (attemptCount >= 2) {
             await prisma.tenant.update({
               where: { id: tenant.id },
               data: {
                 status: 'SUSPENDED',
                 suspendedAt: new Date(),
-                suspendedReason: `Paiement échoué (${invoice.attempt_count} tentatives)`,
+                suspendedReason: `Paiement echoue (${attemptCount} tentatives)`,
               },
             });
           }
@@ -156,20 +253,53 @@ export async function POST(request: NextRequest) {
       case 'invoice.paid': {
         const invoice = event.data.object as Stripe.Invoice;
         const customerId = invoice.customer as string;
-        // Reactivate suspended tenant on successful payment
-        const tenant = await prisma.tenant.findFirst({
-          where: { stripeCustomerId: customerId, status: 'SUSPENDED' },
+
+        // Find tenant by stripeCustomerId (any status)
+        const tenantForEvent = await prisma.tenant.findFirst({
+          where: { stripeCustomerId: customerId },
         });
-        if (tenant) {
-          await prisma.tenant.update({
-            where: { id: tenant.id },
+
+        if (tenantForEvent) {
+          // Create PAYMENT_SUCCESS event
+          await prisma.tenantEvent.create({
             data: {
-              status: 'ACTIVE',
-              suspendedAt: null,
-              suspendedReason: null,
+              tenantId: tenantForEvent.id,
+              type: 'PAYMENT_SUCCESS',
+              actor: 'stripe-webhook',
+              details: {
+                invoiceId: invoice.id,
+                invoiceNumber: invoice.number,
+                amountPaid: invoice.amount_paid,
+                currency: invoice.currency,
+              },
             },
           });
-          logger.info('Tenant reactivated after payment', { tenantId: tenant.id });
+
+          // Reactivate if suspended
+          if (tenantForEvent.status === 'SUSPENDED') {
+            await prisma.tenant.update({
+              where: { id: tenantForEvent.id },
+              data: {
+                status: 'ACTIVE',
+                suspendedAt: null,
+                suspendedReason: null,
+              },
+            });
+
+            await prisma.tenantNotification.create({
+              data: {
+                tenantId: tenantForEvent.id,
+                title: 'Compte reactive',
+                message: 'Votre paiement a ete recu avec succes. Votre compte est de nouveau actif.',
+                type: 'info',
+                createdBy: 'system',
+              },
+            });
+
+            logger.info('Tenant reactivated after payment', { tenantId: tenantForEvent.id });
+          } else {
+            logger.info('Tenant invoice paid', { tenantId: tenantForEvent.id, invoiceId: invoice.id });
+          }
         }
         break;
       }

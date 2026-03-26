@@ -71,6 +71,11 @@ model Tenant {
   postalCode            String?
   country               String?   @default("CA")
 
+  // Onboarding
+  onboardingCompleted  Boolean   @default(false)
+  onboardingSteps      Json      @default("{}")
+  onboardingStartedAt  DateTime?
+
   // Metadata
   ownerUserId     String?
   maxEmployees    Int       @default(3)

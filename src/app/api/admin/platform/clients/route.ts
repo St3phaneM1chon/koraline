@@ -16,6 +16,7 @@ import { hashSync } from 'bcryptjs';
 import { randomBytes } from 'crypto';
 import { sendEmail } from '@/lib/email';
 import { KORALINE_PLANS, KORALINE_MODULES, type KoralinePlan, type KoralineModule } from '@/lib/stripe-constants';
+import { getStripeAttitudes, getStripePriceId } from '@/lib/stripe-attitudes';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -276,6 +277,97 @@ export const POST = withAdminGuard(async (request, { session }) => {
       plan: data.plan,
       ownerEmail: ownerUser.email,
     });
+
+    // -----------------------------------------------------------------------
+    // Stripe: Create customer + subscription (non-blocking, graceful fallback)
+    // -----------------------------------------------------------------------
+    try {
+      const stripe = getStripeAttitudes();
+
+      // 1. Create Stripe customer
+      const stripeCustomer = await stripe.customers.create({
+        email: data.ownerEmail.toLowerCase().trim(),
+        name: data.companyName,
+        metadata: {
+          tenantId: tenant.id,
+          slug: data.slug,
+          plan: data.plan,
+        },
+      });
+
+      // 2. Resolve price IDs for plan + add-on modules
+      const priceItems: { price: string; quantity: number }[] = [];
+
+      const planPriceId = await getStripePriceId('plan', data.plan);
+      if (planPriceId) {
+        priceItems.push({ price: planPriceId, quantity: 1 });
+      }
+
+      // Add-on modules (only those not included in the base plan)
+      const baseModulesList = baseModules as readonly string[];
+      const addOnModules = (data.modulesEnabled || []).filter(
+        (mod: string) => !baseModulesList.includes(mod)
+      );
+      for (const mod of addOnModules) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const modPriceId = await getStripePriceId('module', mod as any).catch(() => null);
+        if (modPriceId) {
+          priceItems.push({ price: modPriceId, quantity: 1 });
+        }
+      }
+
+      // 3. Create subscription if we have at least one price item
+      let stripeSubscriptionId: string | null = null;
+      if (priceItems.length > 0) {
+        const subscription = await stripe.subscriptions.create({
+          customer: stripeCustomer.id,
+          items: priceItems,
+          metadata: {
+            tenantId: tenant.id,
+            tenant_slug: data.slug,
+            plan: data.plan,
+          },
+          collection_method: 'charge_automatically',
+        });
+        stripeSubscriptionId = subscription.id;
+      }
+
+      // 4. Update tenant with Stripe IDs
+      await prisma.tenant.update({
+        where: { id: tenant.id },
+        data: {
+          stripeCustomerId: stripeCustomer.id,
+          ...(stripeSubscriptionId ? { stripeSubscriptionId } : {}),
+        },
+      });
+
+      // 5. Create TenantEvent for payment setup
+      await prisma.tenantEvent.create({
+        data: {
+          tenantId: tenant.id,
+          type: 'PAYMENT_SETUP',
+          actor: session.user.email || 'super-admin',
+          details: {
+            stripeCustomerId: stripeCustomer.id,
+            stripeSubscriptionId,
+            priceItemsCount: priceItems.length,
+          },
+        },
+      });
+
+      logger.info('Stripe billing setup completed', {
+        tenantId: tenant.id,
+        stripeCustomerId: stripeCustomer.id,
+        stripeSubscriptionId,
+      });
+    } catch (stripeError) {
+      // Stripe failure should NOT block tenant creation
+      logger.error('Stripe billing setup failed (tenant still created)', {
+        tenantId: tenant.id,
+        slug: data.slug,
+        error: stripeError instanceof Error ? stripeError.message : String(stripeError),
+      });
+    }
 
     // Send welcome email (non-blocking)
     const baseUrl = process.env.NEXTAUTH_URL || `https://${data.slug}.koraline.app`;
