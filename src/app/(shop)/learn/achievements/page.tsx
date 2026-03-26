@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { useTranslations } from '@/hooks/useTranslations';
 
@@ -107,12 +107,36 @@ export default function AchievementsPage() {
   const { t } = useTranslations();
   const [selectedCategory, setSelectedCategory] = useState<BadgeCategory | 'all'>('all');
 
+  // P8-17 FIX: Fetch real badge + XP data from API
+  const [realData, setRealData] = useState<{
+    badges: Array<{ id: string; name: string; earned: boolean; earnedAt: string | null }>;
+    earned: number; total: number; currentStreak: number; longestStreak: number;
+  } | null>(null);
+
+  useEffect(() => {
+    Promise.all([
+      fetch('/api/lms/badges').then(r => r.json()).catch(() => null),
+      fetch('/api/lms/xp').then(r => r.json()).catch(() => null),
+    ]).then(([badgeRes, xpRes]) => {
+      if (badgeRes?.data) {
+        setRealData(badgeRes.data);
+        // Overlay real earned badges onto mock progress
+        const realEarned = new Set<string>(badgeRes.data.badges?.filter((b: { earned: boolean }) => b.earned).map((b: { id: string }) => b.id) ?? []);
+        if (realEarned.size > 0) {
+          userProgress.earnedBadgeIds = realEarned;
+        }
+        if (badgeRes.data.currentStreak) userProgress.currentStreak = badgeRes.data.currentStreak;
+      }
+      if (xpRes?.data?.balance) userProgress.totalPoints = xpRes.data.balance;
+    });
+  }, []);
+
   const filteredBadges = useMemo(() => {
     if (selectedCategory === 'all') return allBadges;
     return allBadges.filter((b) => b.category === selectedCategory);
   }, [selectedCategory]);
 
-  const earnedCount = allBadges.filter((b) => userProgress.earnedBadgeIds.has(b.id)).length;
+  const earnedCount = realData?.earned ?? allBadges.filter((b) => userProgress.earnedBadgeIds.has(b.id)).length;
   const totalCount = allBadges.length;
 
   // Compute progress for a specific badge
