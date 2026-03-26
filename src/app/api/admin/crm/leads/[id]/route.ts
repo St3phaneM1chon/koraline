@@ -55,13 +55,16 @@ export const GET = withAdminGuard(async (
       deals: {
         include: { stage: { select: { name: true, color: true } } },
       },
+      // CRM-F3 FIX: Limit tasks and activities (was unbounded)
       tasks: {
         orderBy: { createdAt: 'desc' },
+        take: 50,
       },
       activities: {
         orderBy: { createdAt: 'desc' },
+        take: 50,
         include: {
-          performedBy: { select: { id: true, name: true, email: true } },
+          performedBy: { select: { id: true, name: true } },
         },
       },
     },

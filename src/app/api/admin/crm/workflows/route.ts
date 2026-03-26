@@ -107,6 +107,29 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
 
     const { name, description, triggerType, triggerConfig, steps } = parsed.data;
 
+    // CRM-F9 FIX: Validate webhook URLs to prevent SSRF
+    if (steps) {
+      for (const step of steps) {
+        if (step.actionType === 'WEBHOOK' && step.config && typeof step.config === 'object') {
+          const webhookUrl = (step.config as Record<string, unknown>).webhookUrl;
+          if (typeof webhookUrl === 'string') {
+            try {
+              const url = new URL(webhookUrl);
+              const blocked = ['localhost', '127.0.0.1', '0.0.0.0'];
+              if (blocked.includes(url.hostname) || url.hostname.startsWith('169.254') || url.hostname.startsWith('10.') || url.hostname.startsWith('192.168.') || url.hostname.startsWith('172.')) {
+                return apiError('Webhook URL cannot target internal/private networks', ErrorCode.VALIDATION_ERROR, { status: 400, request });
+              }
+              if (url.protocol !== 'https:') {
+                return apiError('Webhook URL must use HTTPS', ErrorCode.VALIDATION_ERROR, { status: 400, request });
+              }
+            } catch {
+              return apiError('Invalid webhook URL', ErrorCode.VALIDATION_ERROR, { status: 400, request });
+            }
+          }
+        }
+      }
+    }
+
     const workflow = await prisma.crmWorkflow.create({
       data: {
         name,

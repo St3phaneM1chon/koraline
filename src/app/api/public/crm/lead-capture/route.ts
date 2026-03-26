@@ -116,7 +116,8 @@ export async function POST(request: NextRequest) {
           ...(safeMessage ? { message: safeMessage } : {}),
           ...(safeSource ? { captureSource: safeSource } : {}),
           formId: formId || undefined,
-          capturedFrom: ip,
+          // CRM-F11 FIX: Hash IP to anonymize PII (RGPD/Loi 25 compliance)
+          capturedFrom: require('crypto').createHash('sha256').update(ip + (process.env.IP_HASH_SALT || 'default')).digest('hex').slice(0, 16),
         },
         tags: form?.tags || [],
         assignedToId: form?.assignToId || undefined,

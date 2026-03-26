@@ -142,7 +142,22 @@ export const PATCH = withAdminGuard(async (
     if (name !== undefined) data.name = name;
     if (type !== undefined) data.type = type;
     if (description !== undefined) data.description = description;
-    if (status !== undefined) data.status = status;
+    // CRM-F5 FIX: Validate status transitions (was allowing any→any)
+    if (status !== undefined) {
+      const VALID_TRANSITIONS: Record<string, string[]> = {
+        DRAFT: ['SCHEDULED', 'CANCELLED'],
+        SCHEDULED: ['ACTIVE', 'CANCELLED', 'DRAFT'],
+        ACTIVE: ['PAUSED', 'COMPLETED', 'CANCELLED'],
+        PAUSED: ['ACTIVE', 'CANCELLED'],
+        COMPLETED: [],
+        CANCELLED: [],
+      };
+      const allowed = VALID_TRANSITIONS[existing!.status] ?? [];
+      if (!allowed.includes(status)) {
+        return apiError(`Cannot transition from ${existing!.status} to ${status}`, ErrorCode.VALIDATION_ERROR, { status: 400, request });
+      }
+      data.status = status;
+    }
     if (targetCriteria !== undefined) {
       data.targetCriteria = targetCriteria ? (targetCriteria as Prisma.InputJsonValue) : Prisma.JsonNull;
     }
