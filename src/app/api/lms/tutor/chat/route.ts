@@ -71,9 +71,9 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
 
   const parsed = chatRequestSchema.safeParse(body);
   if (!parsed.success) {
-    const firstError = parsed.error.errors[0];
+    // LMS2-F5 FIX: Generic error (was leaking Zod details)
     return NextResponse.json(
-      { error: firstError?.message || 'Invalid request' },
+      { error: 'Invalid chat request' },
       { status: 400 }
     );
   }
