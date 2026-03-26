@@ -89,3 +89,20 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
 
   return apiSuccess(media, { request, status: 201 });
 });
+
+// DELETE /api/admin/lms/media?id=xxx
+export const DELETE = withAdminGuard(async (request: NextRequest, { session }) => {
+  const tenantId = session.user.tenantId;
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+  if (!id) return apiError('Media ID required', ErrorCode.VALIDATION_ERROR, { request, status: 400 });
+
+  const media = await prisma.media.findFirst({
+    where: { id, tenantId },
+    select: { id: true },
+  });
+  if (!media) return apiError('Media not found', ErrorCode.NOT_FOUND, { request, status: 404 });
+
+  await prisma.media.delete({ where: { id } });
+  return apiSuccess({ success: true }, { request });
+});

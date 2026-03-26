@@ -67,16 +67,15 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
 });
 
 // Deactivate a badge (soft-delete)
-const deactivateSchema = z.object({ badgeId: z.string().min(1) });
-
+// Admin page sends: DELETE /api/admin/lms/badges?id=xxx
 export const DELETE = withAdminGuard(async (request: NextRequest, { session }) => {
   const tenantId = session.user.tenantId;
-  const body = await request.json();
-  const parsed = deactivateSchema.safeParse(body);
-  if (!parsed.success) return apiError('Invalid input', ErrorCode.VALIDATION_ERROR, { request, status: 400 });
+  const { searchParams } = new URL(request.url);
+  const badgeId = searchParams.get('id');
+  if (!badgeId) return apiError('Badge ID required', ErrorCode.VALIDATION_ERROR, { request, status: 400 });
 
   const badge = await prisma.lmsBadge.findFirst({
-    where: { id: parsed.data.badgeId, tenantId },
+    where: { id: badgeId, tenantId },
     select: { id: true },
   });
   if (!badge) return apiError('Badge not found', ErrorCode.NOT_FOUND, { request, status: 404 });

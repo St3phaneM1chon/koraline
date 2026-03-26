@@ -111,30 +111,19 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
 });
 
 // Deactivate (soft-delete) a challenge
-const deleteSchema = z.object({
-  challengeId: z.string().min(1),
-});
-
+// Admin page sends: DELETE /api/admin/lms/challenges?id=xxx
 export const DELETE = withAdminGuard(async (request: NextRequest, { session }) => {
   const tenantId = session.user.tenantId;
-  const body = await request.json();
-  const parsed = deleteSchema.safeParse(body);
-  if (!parsed.success) {
-    return apiError('Invalid input', ErrorCode.VALIDATION_ERROR, { request, status: 400 });
-  }
+  const { searchParams } = new URL(request.url);
+  const challengeId = searchParams.get('id');
+  if (!challengeId) return apiError('Challenge ID required', ErrorCode.VALIDATION_ERROR, { request, status: 400 });
 
   const challenge = await prisma.lmsChallenge.findFirst({
-    where: { id: parsed.data.challengeId, tenantId },
+    where: { id: challengeId, tenantId },
     select: { id: true },
   });
-  if (!challenge) {
-    return apiError('Challenge not found', ErrorCode.NOT_FOUND, { request, status: 404 });
-  }
+  if (!challenge) return apiError('Challenge not found', ErrorCode.NOT_FOUND, { request, status: 404 });
 
-  await prisma.lmsChallenge.update({
-    where: { id: challenge.id },
-    data: { isActive: false },
-  });
-
+  await prisma.lmsChallenge.update({ where: { id: challenge.id }, data: { isActive: false } });
   return apiSuccess({ success: true }, { request });
 });

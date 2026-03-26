@@ -144,3 +144,23 @@ export const PATCH = withAdminGuard(async (request: NextRequest, { session }) =>
 
   return apiSuccess(updated, { request });
 });
+
+// DELETE /api/admin/lms/certificate-templates?id=xxx
+export const DELETE = withAdminGuard(async (request: NextRequest, { session }) => {
+  const tenantId = session.user.tenantId;
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+  if (!id) return apiError('Template ID required', ErrorCode.VALIDATION_ERROR, { request, status: 400 });
+
+  const template = await prisma.certificateTemplate.findFirst({
+    where: { id, tenantId },
+    select: { id: true, _count: { select: { certificates: true } } },
+  });
+  if (!template) return apiError('Template not found', ErrorCode.NOT_FOUND, { request, status: 404 });
+  if (template._count.certificates > 0) {
+    return apiError('Cannot delete template with existing certificates', ErrorCode.VALIDATION_ERROR, { request, status: 400 });
+  }
+
+  await prisma.certificateTemplate.delete({ where: { id } });
+  return apiSuccess({ success: true }, { request });
+});
