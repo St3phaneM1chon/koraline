@@ -56,7 +56,7 @@ export const GET = withAdminGuard(async (request: NextRequest, { session, params
   return apiSuccess(quiz, { request });
 });
 
-export const PUT = withAdminGuard(async (request: NextRequest, { session, params }) => {
+export const PATCH = withAdminGuard(async (request: NextRequest, { session, params }) => {
   const tenantId = session.user.tenantId;
   const { id } = await params;
   const body = await request.json();

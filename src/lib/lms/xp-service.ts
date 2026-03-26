@@ -191,6 +191,7 @@ async function updateChallengeProgress(tenantId: string, userId: string, action:
           tenantId,
           userId,
           type: 'challenge_complete',
+          // NOTE: French-only — stored in DB, resolved at display time in future i18n refactor
           title: 'Defi termine!',
           message: `+${participant.challenge.xpReward} XP`,
           link: '/learn/achievements',

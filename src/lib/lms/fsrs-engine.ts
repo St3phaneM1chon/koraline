@@ -103,7 +103,7 @@ export function scheduleReview(
     nextReview,
     newDifficulty,
     newStability,
-    interval: Math.round(interval),
+    interval, // nextInterval() already returns a rounded integer
     newLapses: card.lapses + (rating === 1 ? 1 : 0), // FIX P3: track lapses
   };
 }

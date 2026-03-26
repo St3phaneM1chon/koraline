@@ -104,6 +104,7 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
           tenantId,
           userId: qa.userId,
           type: 'qa_answer',
+          // NOTE: French-only — stored in DB, resolved at display time in future i18n refactor
           title: 'Nouvelle reponse a votre question',
           message: qa.question.slice(0, 100),
         },

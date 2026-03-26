@@ -1220,6 +1220,7 @@ export async function checkAndAwardBadges(tenantId: string, userId: string) {
         data: { tenantId, badgeId: badge.id, userId },
       });
       await prisma.lmsNotification.create({
+        // NOTE: French-only — stored in DB, resolved at display time in future i18n refactor
         data: { tenantId, userId, type: 'badge_earned', title: 'Nouveau badge obtenu!', message: badge.name },
       }).catch(() => {});
       newAwards.push(badge.id);
