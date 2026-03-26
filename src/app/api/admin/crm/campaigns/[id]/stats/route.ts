@@ -68,6 +68,7 @@ export const GET = withAdminGuard(async (
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
+    // CRM-F10 FIX: Add take limit (was loading unlimited activities into memory)
     const allActivities = await prisma.crmCampaignActivity.findMany({
       where: { campaignId: id },
       select: {
@@ -78,6 +79,7 @@ export const GET = withAdminGuard(async (
         duration: true,
       },
       orderBy: { createdAt: 'asc' },
+      take: 10000, // Safety cap — for larger campaigns, use groupBy aggregation
     });
 
     // ---------------------------------------------------------------------------

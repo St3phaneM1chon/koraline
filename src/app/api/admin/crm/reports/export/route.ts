@@ -20,15 +20,20 @@ export const GET = withAdminGuard(async (request) => {
     ...(startDate ? { gte: new Date(startDate) } : {}),
     ...(endDate ? { lte: new Date(endDate) } : {}),
   };
-  const hasDateFilter = startDate || endDate;
+  // CRM-F6 FIX: Default to 90 days if no date range provided (was loading up to 10K unbounded)
+  if (!startDate) {
+    const ninetyDaysAgo = new Date();
+    ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+    dateFilter.gte = ninetyDaysAgo;
+  }
 
   switch (reportType) {
     case 'leads': {
       const leads = await prisma.crmLead.findMany({
-        where: hasDateFilter ? { createdAt: dateFilter } : undefined,
+        where: { createdAt: dateFilter },
         include: { assignedTo: { select: { name: true, email: true } } },
         orderBy: { createdAt: 'desc' },
-        take: 10000,
+        take: 5000, // Reduced from 10K
       });
 
       return csvResponse(
