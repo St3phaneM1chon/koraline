@@ -19,11 +19,15 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { auth } from '@/lib/auth-config';
+import { UserRole } from '@/types';
 import {
   type TranscriptionEvent,
   type StreamingTranscriptionConfig,
 } from '@/lib/voip/streaming-transcription';
 import { logger } from '@/lib/logger';
+
+// VOIP-F10 FIX: Roles allowed to access transcription streams
+const TRANSCRIPTION_ROLES = new Set<string>([UserRole.EMPLOYEE, UserRole.OWNER]);
 
 const transcriptionEventSchema = z.object({
   callId: z.string().min(1, 'callId is required'),
@@ -98,6 +102,12 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  // VOIP-F10 FIX: Only admin/employee roles can access transcription streams
+  const userRole = (session.user as Record<string, unknown>).role as string | undefined;
+  if (!userRole || !TRANSCRIPTION_ROLES.has(userRole)) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
   const callId = request.nextUrl.searchParams.get('callId');
   if (!callId) {
     return NextResponse.json(
@@ -164,6 +174,12 @@ export async function POST(request: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  // VOIP-F10 FIX: Only admin/employee roles can push transcription events
+  const userRole = (session.user as Record<string, unknown>).role as string | undefined;
+  if (!userRole || !TRANSCRIPTION_ROLES.has(userRole)) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
   try {

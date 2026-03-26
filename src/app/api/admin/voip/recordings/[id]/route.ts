@@ -17,7 +17,7 @@ const auditLogger = new AuditLogger({ flushSize: 10, flushIntervalMs: 60_000 });
 
 export const GET = withAdminGuard(async (
   request: NextRequest,
-  { session }: { session: { user: { id: string; name?: string | null } } }
+  { session }: { session: { user: { id: string; name?: string | null; tenantId?: string | null } } }
 ) => {
   // Extract ID from URL path
   const url = new URL(request.url);
@@ -28,15 +28,18 @@ export const GET = withAdminGuard(async (
     return NextResponse.json({ error: 'Recording ID required' }, { status: 400 });
   }
 
+  // VOIP-F8 FIX: Include tenantId to verify tenant ownership
   const recording = await prisma.callRecording.findUnique({
     where: { id },
     select: {
+      tenantId: true,
       blobUrl: true,
       format: true,
       fileSize: true,
       durationSec: true,
       callLog: {
         select: {
+          tenantId: true,
           callerNumber: true,
           calledNumber: true,
           startedAt: true,
@@ -47,6 +50,15 @@ export const GET = withAdminGuard(async (
 
   if (!recording) {
     return NextResponse.json({ error: 'Recording not found' }, { status: 404 });
+  }
+
+  // VOIP-F8 FIX: Verify tenant ownership — recording or its call log must belong to the user's tenant
+  const userTenantId = session.user.tenantId;
+  if (userTenantId) {
+    const recordingTenant = recording.tenantId || recording.callLog?.tenantId;
+    if (recordingTenant && recordingTenant !== userTenantId) {
+      return NextResponse.json({ error: 'Recording not found' }, { status: 404 });
+    }
   }
 
   // Determine download action from query param (?download=true)

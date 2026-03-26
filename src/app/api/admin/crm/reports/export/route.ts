@@ -75,7 +75,7 @@ export const GET = withAdminGuard(async (request) => {
 
     case 'deals': {
       const deals = await prisma.crmDeal.findMany({
-        where: hasDateFilter ? { createdAt: dateFilter } : undefined,
+        where: { createdAt: dateFilter },
         include: {
           stage: { select: { name: true, probability: true } },
           pipeline: { select: { name: true } },
@@ -123,7 +123,7 @@ export const GET = withAdminGuard(async (request) => {
 
     case 'calls': {
       const calls = await prisma.callLog.findMany({
-        where: hasDateFilter ? { startedAt: dateFilter } : undefined,
+        where: { startedAt: dateFilter },
         include: {
           agent: { select: { user: { select: { name: true } } } },
         },
@@ -162,7 +162,7 @@ export const GET = withAdminGuard(async (request) => {
 
     case 'agents': {
       const stats = await prisma.agentDailyStats.findMany({
-        where: hasDateFilter ? { date: dateFilter } : undefined,
+        where: { date: dateFilter },
         include: { agent: { select: { name: true, email: true } } },
         orderBy: [{ date: 'desc' }, { agentId: 'asc' }],
         take: 10000,

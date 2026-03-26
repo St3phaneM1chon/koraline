@@ -21,6 +21,15 @@ const adjustPointsSchema = z.object({
 export const POST = withAdminGuard(async (request: NextRequest, { session, params }) => {
   try {
     const id = params!.id;
+
+    // LOY-F3 FIX: Block admins from awarding points to themselves
+    if (id === session.user.id) {
+      return NextResponse.json(
+        { error: 'Admins cannot adjust their own loyalty points. Another admin must perform this action.' },
+        { status: 403 }
+      );
+    }
+
     const body = await request.json();
 
     // Validate with Zod
@@ -33,34 +42,37 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
     }
     const { amount, reason } = parsed.data;
 
-    const user = await prisma.user.findUnique({
-      where: { id },
-      select: { id: true, loyaltyPoints: true },
-    });
-    if (!user) {
-      return NextResponse.json({ error: 'Utilisateur non trouvé' }, { status: 404 });
-    }
-
-    const newPoints = user.loyaltyPoints + amount;
-    if (newPoints < 0) {
-      return NextResponse.json({ error: 'Points insuffisants' }, { status: 400 });
-    }
-
-    // G1-FLAW-10 FIX: Cap maximum balance to prevent unbounded point accumulation
+    // LOY-F6 FIX: Use interactive $transaction with atomic increment to prevent
+    // TOCTOU race where concurrent adjustments corrupt the balance.
+    // Previous code: read loyaltyPoints → compute newPoints → write (race window).
+    // Now: atomic increment inside transaction, read confirmed balance for audit.
     const MAX_POINTS_BALANCE = 10_000_000;
-    if (newPoints > MAX_POINTS_BALANCE) {
-      return NextResponse.json(
-        { error: `Resulting balance (${newPoints.toLocaleString()}) would exceed maximum allowed (${MAX_POINTS_BALANCE.toLocaleString()})` },
-        { status: 400 }
-      );
-    }
 
-    // Update user points and create transaction in a single transaction
-    const [updatedUser, transaction] = await prisma.$transaction([
-      prisma.user.update({
+    const result = await prisma.$transaction(async (tx) => {
+      const user = await tx.user.findUnique({
+        where: { id },
+        select: { id: true, loyaltyPoints: true },
+      });
+      if (!user) {
+        return { error: 'Utilisateur non trouvé', status: 404 } as const;
+      }
+
+      const projectedPoints = user.loyaltyPoints + amount;
+      if (projectedPoints < 0) {
+        return { error: 'Points insuffisants', status: 400 } as const;
+      }
+      if (projectedPoints > MAX_POINTS_BALANCE) {
+        return {
+          error: `Resulting balance (${projectedPoints.toLocaleString()}) would exceed maximum allowed (${MAX_POINTS_BALANCE.toLocaleString()})`,
+          status: 400,
+        } as const;
+      }
+
+      // Atomic increment — confirmed by DB
+      const updatedUser = await tx.user.update({
         where: { id },
         data: {
-          loyaltyPoints: newPoints,
+          loyaltyPoints: { increment: amount },
           ...(amount > 0 ? { lifetimePoints: { increment: amount } } : {}),
         },
         select: {
@@ -71,17 +83,26 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
           lifetimePoints: true,
           loyaltyTier: true,
         },
-      }),
-      prisma.loyaltyTransaction.create({
+      });
+
+      const transaction = await tx.loyaltyTransaction.create({
         data: {
           userId: id,
           type: amount > 0 ? 'EARN_BONUS' : 'ADJUST',
           points: amount,
           description: `[Admin adjustment] ${reason}`,
-          balanceAfter: newPoints,
+          balanceAfter: updatedUser.loyaltyPoints,
         },
-      }),
-    ]);
+      });
+
+      return { updatedUser, transaction, previousPoints: user.loyaltyPoints };
+    });
+
+    if ('error' in result) {
+      return NextResponse.json({ error: result.error }, { status: result.status });
+    }
+
+    const { updatedUser, transaction, previousPoints } = result;
 
     // Audit log for points adjustment (fire-and-forget)
     logAdminAction({
@@ -89,8 +110,8 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
       action: 'ADJUST_USER_POINTS',
       targetType: 'User',
       targetId: id,
-      previousValue: { loyaltyPoints: user.loyaltyPoints },
-      newValue: { loyaltyPoints: newPoints, amount, reason },
+      previousValue: { loyaltyPoints: previousPoints },
+      newValue: { loyaltyPoints: updatedUser.loyaltyPoints, amount, reason },
       ipAddress: getClientIpFromRequest(request),
       userAgent: request.headers.get('user-agent') || undefined,
     }).catch((err) => { logger.error('[admin/users/id/points] Non-blocking operation failed:', err); });
@@ -98,7 +119,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session, param
     return NextResponse.json({
       user: updatedUser,
       transaction,
-      newBalance: newPoints,
+      newBalance: updatedUser.loyaltyPoints,
     });
   } catch (error) {
     logger.error('Admin points adjustment error', { error: error instanceof Error ? error.message : String(error) });

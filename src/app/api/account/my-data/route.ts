@@ -256,6 +256,27 @@ export const GET = withUserGuard(async (_request: NextRequest, { session }) => {
       })),
     };
 
+    // COMM-F11 FIX: GDPR audit log for personal data access (Art. 15 right of access)
+    await prisma.auditLog.create({
+      data: {
+        userId,
+        action: 'GDPR_DATA_ACCESS',
+        entityType: 'User',
+        entityId: userId,
+        details: JSON.stringify({
+          type: 'self-service',
+          categoriesAccessed: [
+            'personalInfo', 'orders', 'addresses', 'reviews',
+            'wishlist', 'loyalty', 'consents', 'sessions',
+            'subscriptions', 'priceWatches', 'savedCards',
+            'referrals', 'returnRequests', 'productQuestions', 'chatConversations',
+          ],
+        }),
+      },
+    }).catch((err) => logger.error('[my-data] Audit log failed', {
+      error: err instanceof Error ? err.message : String(err),
+    }));
+
     logger.info('[my-data] User data summary generated', { userId });
 
     return NextResponse.json(data);

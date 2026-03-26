@@ -73,6 +73,25 @@ export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
       consents,
     };
 
+    // COMM-F11 FIX: GDPR audit log for admin accessing user PII
+    await prisma.auditLog.create({
+      data: {
+        userId: session.user.id,
+        action: 'GDPR_ADMIN_DATA_ACCESS',
+        entityType: 'User',
+        entityId: userId,
+        details: JSON.stringify({
+          type: 'admin-access',
+          accessedBy: session.user.id,
+          targetUser: userId,
+          categoriesAccessed: ['profile', 'orders', 'reviews', 'addresses', 'loyaltyTransactions', 'consents'],
+        }),
+        ipAddress: getClientIpFromRequest(request),
+      },
+    }).catch((err) => logger.error('[admin-gdpr] Audit log failed', {
+      error: err instanceof Error ? err.message : String(err),
+    }));
+
     return NextResponse.json(exportData);
   } catch (error) {
     logger.error('GDPR export error', { error: error instanceof Error ? error.message : String(error) });

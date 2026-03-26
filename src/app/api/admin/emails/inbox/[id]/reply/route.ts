@@ -14,6 +14,7 @@ import { generateUnsubscribeUrl } from '@/lib/email/unsubscribe';
 import { logAdminAction, getClientIpFromRequest } from '@/lib/admin-audit';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
 import { validateCsrf } from '@/lib/csrf-middleware';
+import { sanitizeText } from '@/lib/sanitize';
 import { logger } from '@/lib/logger';
 
 const replySchema = z.object({
@@ -52,6 +53,16 @@ export const POST = withAdminGuard(
       // Security #13: Strip header injection characters from email
       const sanitizedTo = String(to).replace(/[\r\n]/g, '').trim();
 
+      // COMM-F7 FIX: Sanitize HTML body to prevent XSS injection via admin reply.
+      // Allow basic HTML structure but escape dangerous content within text nodes.
+      // Remove script tags and event handlers that could execute in the recipient's client.
+      const sanitizedHtmlBody = htmlBody
+        .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
+        .replace(/\bon\w+\s*=\s*["'][^"']*["']/gi, '')
+        .replace(/\bon\w+\s*=\s*[^\s>]*/gi, '')
+        .replace(/javascript\s*:/gi, 'blocked:');
+      const sanitizedTextBody = textBody ? sanitizeText(textBody) : null;
+
       // Security: validate scheduledFor date bounds
       if (scheduledFor) {
         const scheduledDate = new Date(scheduledFor);
@@ -81,8 +92,8 @@ export const POST = withAdminGuard(
           senderId: session.user.id,
           to: sanitizedTo,
           subject,
-          htmlBody,
-          textBody: textBody || null,
+          htmlBody: sanitizedHtmlBody,
+          textBody: sanitizedTextBody,
           status: scheduledFor ? 'scheduled' : 'sending',
           scheduledFor: scheduledFor ? new Date(scheduledFor) : null,
         },
@@ -100,8 +111,8 @@ export const POST = withAdminGuard(
           const result = await sendEmail({
             to: { email: sanitizedTo },
             subject,
-            html: htmlBody,
-            text: textBody,
+            html: sanitizedHtmlBody,
+            text: sanitizedTextBody || undefined,
             from: {
               email: process.env.SMTP_FROM || 'support@biocyclepeptides.com',
               name: session.user.name || 'BioCycle Support',

@@ -194,11 +194,13 @@ export async function POST(request: NextRequest) {
 
       // SECURITY: Verify cart item prices from database and recalculate subtotal (batch queries)
       let serverSubtotal = 0;
+      let cartProducts: { id: string; price: unknown; productType: string | null }[] = [];
       if (cartItems && cartItems.length > 0) {
         const cartProductIds = [...new Set(cartItems.map((i: { productId?: string }) => i.productId).filter(Boolean) as string[])];
         const cartFormatIds = cartItems.map((i: { optionId?: string }) => i.optionId).filter(Boolean) as string[];
 
-        const [cartProducts, cartFormats] = await Promise.all([
+        let cartFormats: { id: string; price: unknown; productId: string }[] = [];
+        [cartProducts, cartFormats] = await Promise.all([
           cartProductIds.length > 0
             // ECOM-F5 FIX: Include productType for server-side shipping calculation
             ? prisma.product.findMany({ where: { id: { in: cartProductIds } }, select: { id: true, price: true, productType: true } })

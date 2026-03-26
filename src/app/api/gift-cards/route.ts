@@ -74,6 +74,17 @@ export async function POST(request: NextRequest) {
     // BUG E-21 FIX: Payment verification - admin bypass or Stripe payment required
     const isAdmin = session.user.role === 'OWNER' || session.user.role === 'EMPLOYEE';
 
+    // LOY-F2 FIX: Block employees from creating gift cards for themselves
+    if (isAdmin && recipientEmail) {
+      const creatorEmail = session.user.email?.toLowerCase();
+      if (creatorEmail && recipientEmail.toLowerCase() === creatorEmail) {
+        return NextResponse.json(
+          { error: 'Employees cannot create gift cards for themselves' },
+          { status: 403 }
+        );
+      }
+    }
+
     if (!isAdmin) {
       // Non-admin users MUST provide a valid, succeeded Stripe payment intent
       if (!paymentIntentId) {

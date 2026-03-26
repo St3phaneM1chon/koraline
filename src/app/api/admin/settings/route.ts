@@ -227,6 +227,29 @@ export const PUT = withAdminGuard(async (request, { session }) => {
             'testimonials', 'statsJson',
           ];
 
+          // COMM-F6 FIX: Validate socialLinks URLs must be https://
+          if (field === 'socialLinks' && typeof value === 'object' && value !== null) {
+            const links = value as Record<string, unknown>;
+            for (const [platform, url] of Object.entries(links)) {
+              if (url && typeof url === 'string' && url.trim() !== '') {
+                if (!url.startsWith('https://')) {
+                  return NextResponse.json(
+                    { error: `Social link for "${platform}" must start with https://` },
+                    { status: 400 }
+                  );
+                }
+                try {
+                  new URL(url);
+                } catch {
+                  return NextResponse.json(
+                    { error: `Social link for "${platform}" is not a valid URL` },
+                    { status: 400 }
+                  );
+                }
+              }
+            }
+          }
+
           if (jsonFields.includes(field) && typeof value === 'object' && value !== null) {
             value = JSON.stringify(value);
           }

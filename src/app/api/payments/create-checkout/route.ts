@@ -727,7 +727,7 @@ export async function POST(request: NextRequest) {
       const fraudResult = assessFraudRisk({
         userId: session?.user?.id || 'guest',
         email: session?.user?.email || 'guest@unknown.com',
-        total: serverTotal,
+        total: subtotalAfterAllDiscounts + serverTaxes.total + serverShipping,
         shippingCountry: country,
         shippingAddress: JSON.stringify(shippingInfo),
         orderTimestamp: new Date(),

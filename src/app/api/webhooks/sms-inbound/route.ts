@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { createHmac, timingSafeEqual } from 'crypto';
+import { verify } from 'crypto';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { getRedisClient } from '@/lib/redis';
@@ -26,22 +26,29 @@ const smsInboundSchema = z.object({
 }).passthrough();
 
 /**
- * Verify Telnyx webhook signature (HMAC-SHA256).
- * Same mechanism as the VoIP Telnyx webhook: sha256(timestamp + body).
+ * VOIP-F9 FIX: Verify Telnyx webhook signature using Ed25519 (not HMAC-SHA256).
+ * Telnyx signs webhooks with Ed25519. The public key is the TELNYX_WEBHOOK_SECRET (base64-encoded).
  */
-function verifyTelnyxSignature(
+function verifyTelnyxEd25519(
   rawBody: string,
   signature: string | null,
   timestamp: string | null,
-  secret: string
+  publicKeyBase64: string
 ): boolean {
-  if (!signature) return false;
+  if (!signature || !timestamp) return false;
   try {
-    const expected = createHmac('sha256', secret)
-      .update((timestamp || '') + rawBody)
-      .digest('hex');
-    if (signature.length !== expected.length) return false;
-    return timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
+    const signedPayload = `${timestamp}|${rawBody}`;
+    const signatureBuffer = Buffer.from(signature, 'base64');
+    const publicKeyDer = Buffer.concat([
+      Buffer.from('302a300506032b6570032100', 'hex'),
+      Buffer.from(publicKeyBase64, 'base64'),
+    ]);
+    return verify(
+      null,
+      Buffer.from(signedPayload),
+      { key: publicKeyDer, format: 'der', type: 'spki' },
+      signatureBuffer,
+    );
   } catch {
     return false;
   }
@@ -51,21 +58,23 @@ export async function POST(request: NextRequest) {
   try {
     const rawBody = await request.text();
 
-    // Verify Telnyx webhook signature
-    const signingSecret = process.env.TELNYX_WEBHOOK_SECRET;
-    if (!signingSecret) {
-      if (process.env.NODE_ENV === 'production') {
-        logger.error('[SMS Inbound] TELNYX_WEBHOOK_SECRET not configured in production');
-        return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });
-      }
-      logger.warn('[SMS Inbound] TELNYX_WEBHOOK_SECRET not set — skipping verification (dev mode)');
+    // VOIP-F9 FIX: Verify Telnyx webhook signature using Ed25519 (consistent with voip/webhooks/telnyx)
+    const publicKeyBase64 = process.env.TELNYX_WEBHOOK_SECRET;
+    if (!publicKeyBase64) {
+      logger.error('[SMS Inbound] TELNYX_WEBHOOK_SECRET not set — REJECTING request');
+      return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });
     } else {
-      const signature = request.headers.get('telnyx-signature-ed25519')
-        || request.headers.get('x-telnyx-signature');
+      const signature = request.headers.get('telnyx-signature-ed25519');
       const timestamp = request.headers.get('telnyx-timestamp');
 
-      if (!verifyTelnyxSignature(rawBody, signature, timestamp, signingSecret)) {
-        logger.warn('[SMS Inbound] Invalid or missing Telnyx signature');
+      // Replay protection: reject timestamps older than 5 minutes
+      if (!timestamp || Math.abs(Date.now() / 1000 - parseInt(timestamp)) > 300) {
+        logger.warn('[SMS Inbound] Missing or stale timestamp header');
+        return NextResponse.json({ error: 'Invalid timestamp' }, { status: 403 });
+      }
+
+      if (!verifyTelnyxEd25519(rawBody, signature, timestamp, publicKeyBase64)) {
+        logger.warn('[SMS Inbound] Invalid Ed25519 signature');
         return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
       }
     }

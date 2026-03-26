@@ -83,7 +83,24 @@ export async function checkReferralMilestones(
     const awarded: ReferralMilestone[] = [];
 
     for (const milestone of toAward) {
-      await prisma.$transaction(async (tx) => {
+      // LOY-F1 FIX: Re-check inside transaction to prevent TOCTOU race where
+      // two concurrent calls both pass the outer idempotency guard and both award.
+      const wasAwarded = await prisma.$transaction(async (tx) => {
+        // Re-verify no existing milestone inside the serializable transaction
+        const existingInTx = await tx.loyaltyTransaction.findFirst({
+          where: {
+            userId,
+            type: 'EARN_REFERRAL_MILESTONE',
+            description: milestone.description,
+          },
+          select: { id: true },
+        });
+
+        if (existingInTx) {
+          // Already awarded by a concurrent request — skip
+          return false;
+        }
+
         // Atomic increment – returns the confirmed post-increment balance
         const updatedUser = await tx.user.update({
           where: { id: userId },
@@ -103,12 +120,16 @@ export async function checkReferralMilestones(
             balanceAfter: updatedUser.loyaltyPoints,
           },
         });
+
+        return true;
       });
 
-      awarded.push(milestone);
-      logger.info(
-        `Referral milestone awarded: ${milestone.points} pts to user ${userId} (${milestone.description})`
-      );
+      if (wasAwarded) {
+        awarded.push(milestone);
+        logger.info(
+          `Referral milestone awarded: ${milestone.points} pts to user ${userId} (${milestone.description})`
+        );
+      }
     }
 
     return awarded;

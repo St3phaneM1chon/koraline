@@ -12,14 +12,6 @@ import { logger } from '@/lib/logger';
 import { db } from '@/lib/db';
 import { calculateTierName, pointsToNextTier } from '@/lib/constants';
 
-// Génère un code de parrainage unique
-function generateReferralCode(name: string | null): string {
-  const prefix = name?.split(' ')[0]?.toUpperCase().slice(0, 3) || 'BC';
-  // SECURITY: Use crypto.randomUUID for non-guessable referral codes
-  const random = crypto.randomUUID().replace(/-/g, '').substring(0, 4).toUpperCase();
-  return `${prefix}${random}`;
-}
-
 // F36 FIX: Accept NextRequest to support pagination query parameters
 export async function GET(request: NextRequest) {
   try {
@@ -36,7 +28,7 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
 
     // Récupérer l'utilisateur avec ses transactions de fidélité
-    let user = await db.user.findUnique({
+    const user = await db.user.findUnique({
       where: { email: session.user.email },
       select: {
         id: true,
@@ -66,27 +58,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // FIX: FLAW-089 - TODO: Generate referral code at signup or in a dedicated POST endpoint
-    // instead of as a side effect of GET
-    if (!user.referralCode) {
-      const referralCode = generateReferralCode(user.name);
-      await db.user.update({
-        where: { id: user.id },
-        data: { referralCode },
-      });
-      user = { ...user, referralCode };
-    }
-
-    // FIX: FLAW-088 - TODO: Move tier recalculation to a PATCH endpoint or post-purchase hook
-    // GET endpoints should be idempotent (no side effects per HTTP spec)
+    // LOY-F13 FIX: GET must not have side effects (HTTP semantics).
+    // Referral code generation moved to POST /api/referrals/generate.
+    // Tier recalculation is computed on the fly for display only — DB update
+    // happens in the earn/redeem POST endpoints where mutations belong.
     const calculatedTier = calculateTierName(user.lifetimePoints);
-    if (user.loyaltyTier !== calculatedTier) {
-      await db.user.update({
-        where: { id: user.id },
-        data: { loyaltyTier: calculatedTier },
-      });
-      user = { ...user, loyaltyTier: calculatedTier };
-    }
+    const effectiveTier = calculatedTier;
+    const effectiveReferralCode = user.referralCode;
 
     // Compter les parrainages
     const referralCount = await db.user.count({
@@ -114,9 +92,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       points: user.loyaltyPoints,
       lifetimePoints: user.lifetimePoints,
-      tier: user.loyaltyTier,
+      tier: effectiveTier,
       transactions,
-      referralCode: user.referralCode,
+      referralCode: effectiveReferralCode,
       referralCount,
       nextTier: tierProgress.nextTier,
       pointsToNextTier: tierProgress.pointsNeeded,

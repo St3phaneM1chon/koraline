@@ -95,6 +95,15 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    // LOY-F7 FIX: Self-referral check by user ID (not just email)
+    // Prevents self-referral even when email doesn't match (e.g. alias accounts)
+    if (referrer.id === session.user.id) {
+      return NextResponse.json({
+        valid: false,
+        error: 'You cannot use your own referral code',
+      });
+    }
+
     // Self-referral check: if email is provided, ensure it's not the same user
     if (email && referrer.email.toLowerCase() === email.toLowerCase()) {
       return NextResponse.json({

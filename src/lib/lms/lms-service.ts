@@ -952,51 +952,57 @@ export async function enrollUserInBundle(
     }
   }
 
-  const enrollmentIds: string[] = [];
-  const skippedCourseIds: string[] = [];
+  // FIX LMS2-F3: Wrap all enrollments in $transaction to prevent partial failure
+  // leaving inconsistent state (some courses enrolled, others not)
+  const result = await prisma.$transaction(async (tx) => {
+    const enrollmentIds: string[] = [];
+    const skippedCourseIds: string[] = [];
 
-  for (const item of bundle.items) {
-    // Check if already enrolled
-    const existing = await prisma.enrollment.findUnique({
-      where: { tenantId_courseId_userId: { tenantId, courseId: item.courseId, userId } },
-    });
+    for (const item of bundle.items) {
+      // Check if already enrolled
+      const existing = await tx.enrollment.findUnique({
+        where: { tenantId_courseId_userId: { tenantId, courseId: item.courseId, userId } },
+      });
 
-    if (existing) {
-      skippedCourseIds.push(item.courseId);
-      continue;
+      if (existing) {
+        skippedCourseIds.push(item.courseId);
+        continue;
+      }
+
+      // Count lessons
+      const totalLessons = await tx.lesson.count({
+        where: { chapter: { courseId: item.courseId }, isPublished: true },
+      });
+
+      const enrollment = await tx.enrollment.create({
+        data: {
+          tenantId,
+          courseId: item.courseId,
+          userId,
+          totalLessons,
+          enrolledBy: options?.enrolledBy ?? null,
+          enrollmentSource: options?.corporateAccountId ? 'corporate' : 'purchase',
+          corporateAccountId: options?.corporateAccountId ?? null,
+          paymentType: options?.paymentType ?? 'individual',
+          bundleOrderId: options?.bundleOrderId ?? null,
+        },
+      });
+
+      enrollmentIds.push(enrollment.id);
     }
 
-    // Count lessons
-    const totalLessons = await prisma.lesson.count({
-      where: { chapter: { courseId: item.courseId }, isPublished: true },
-    });
+    // FIX P1: Only increment bundle enrollment count if at least 1 new enrollment was created
+    if (enrollmentIds.length > 0) {
+      await tx.courseBundle.update({
+        where: { id: bundleId },
+        data: { enrollmentCount: { increment: 1 } },
+      });
+    }
 
-    const enrollment = await prisma.enrollment.create({
-      data: {
-        tenantId,
-        courseId: item.courseId,
-        userId,
-        totalLessons,
-        enrolledBy: options?.enrolledBy ?? null,
-        enrollmentSource: options?.corporateAccountId ? 'corporate' : 'purchase',
-        corporateAccountId: options?.corporateAccountId ?? null,
-        paymentType: options?.paymentType ?? 'individual',
-        bundleOrderId: options?.bundleOrderId ?? null,
-      },
-    });
+    return { enrollmentIds, skippedCourseIds };
+  });
 
-    enrollmentIds.push(enrollment.id);
-  }
-
-  // FIX P1: Only increment bundle enrollment count if at least 1 new enrollment was created
-  if (enrollmentIds.length > 0) {
-    await prisma.courseBundle.update({
-      where: { id: bundleId },
-      data: { enrollmentCount: { increment: 1 } },
-    });
-  }
-
-  return { enrollmentIds, skippedCourseIds };
+  return result;
 }
 
 // ── Corporate Accounts ──────────────────────────────────────────

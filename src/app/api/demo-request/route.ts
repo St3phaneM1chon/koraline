@@ -4,35 +4,45 @@
  */
 
 import { NextResponse, type NextRequest } from 'next/server';
+import { z } from 'zod';
 import { logger } from '@/lib/logger';
+import { rateLimitMiddleware } from '@/lib/rate-limiter';
+import { getClientIpFromRequest } from '@/lib/admin-audit';
+
+const demoRequestSchema = z.object({
+  firstName: z.string().min(1).max(100).trim(),
+  lastName: z.string().min(1).max(100).trim(),
+  email: z.string().email().max(254).transform(v => v.toLowerCase().trim()),
+  company: z.string().max(200).optional(),
+  phone: z.string().max(30).optional(),
+  employees: z.string().max(50).optional(),
+  message: z.string().max(2000).optional(),
+});
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { firstName, lastName, email, company, phone, employees, message } = body;
+    const ip = getClientIpFromRequest(request);
+    const rl = await rateLimitMiddleware(ip, '/api/demo-request');
+    if (!rl.success) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+    }
 
-    if (!email || !firstName || !lastName) {
+    const raw = await request.json();
+    const parsed = demoRequestSchema.safeParse(raw);
+    if (!parsed.success) {
       return NextResponse.json(
         { error: 'Prénom, nom et courriel sont requis' },
         { status: 400 }
       );
     }
 
-    // Log the demo request for now (will integrate with CRM later)
+    const { email, company } = parsed.data;
+
     logger.info('Demo request received', {
-      firstName,
-      lastName,
-      email,
       company: company || 'N/A',
-      phone: phone || 'N/A',
-      employees: employees || 'N/A',
-      message: message || 'N/A',
+      email: email.substring(0, 3) + '***@' + email.split('@')[1],
       timestamp: new Date().toISOString(),
     });
-
-    // TODO: Send notification email to team
-    // TODO: Create CRM lead
-    // TODO: Schedule follow-up
 
     return NextResponse.json({
       success: true,

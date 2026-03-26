@@ -123,9 +123,9 @@ export const GET = withAdminGuard(async (request) => {
         const amount = row.total_debit - row.total_credit;
         bucket.expenses += amount;
         if (!bucket.expensesByAccount[row.code]) {
-          bucket.expensesByAccount[code] = { code, name, amount: 0 };
+          bucket.expensesByAccount[row.code] = { code: row.code, name: row.name, amount: 0 };
         }
-        bucket.expensesByAccount[code].amount += amount;
+        bucket.expensesByAccount[row.code].amount += amount;
       }
     }
 

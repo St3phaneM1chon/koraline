@@ -2071,6 +2071,7 @@ model LmsXpTransaction {
 
   createdAt DateTime @default(now())
 
+  @@unique([tenantId, userId, sourceId]) // FIX LMS2-F4: Atomic dedup — DB enforces uniqueness on sourceId to prevent race condition
   @@index([tenantId, userId, createdAt])
 }
 

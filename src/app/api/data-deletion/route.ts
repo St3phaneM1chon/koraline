@@ -19,6 +19,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing signed_request' }, { status: 400 });
     }
 
+    // Verify Meta signed_request (base64url-encoded HMAC SHA256 signature)
+    const appSecret = process.env.META_APP_SECRET;
+    if (appSecret) {
+      const [encodedSig, payload] = signed_request.split('.', 2);
+      if (!encodedSig || !payload) {
+        return NextResponse.json({ error: 'Invalid signed_request format' }, { status: 400 });
+      }
+      const { createHmac } = await import('crypto');
+      const expectedSig = createHmac('sha256', appSecret)
+        .update(payload)
+        .digest('base64url');
+      if (encodedSig !== expectedSig) {
+        logger.warn('Data deletion: invalid signature');
+        return NextResponse.json({ error: 'Invalid signature' }, { status: 403 });
+      }
+    }
+
     // Log the deletion request for audit trail
     logger.info('Data deletion request received', {
       source: 'meta',

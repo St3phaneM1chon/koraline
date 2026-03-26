@@ -689,15 +689,18 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session, eventId:
     if (giftCardCode && giftCardDiscount > 0) {
       // Lock the gift card row to prevent concurrent balance modifications
       const [giftCard] = await tx.$queryRaw<{
-        id: string; balance: number; is_active: boolean;
+        id: string; balance: number; is_active: boolean; expires_at: Date | null;
       }[]>`
-        SELECT id, balance::float as balance, "isActive" as is_active
+        SELECT id, balance::float as balance, "isActive" as is_active, "expiresAt" as expires_at
         FROM "GiftCard"
         WHERE code = ${giftCardCode}
         FOR UPDATE
       `;
 
-      if (giftCard && giftCard.is_active && giftCard.balance > 0) {
+      // LOY-F5 FIX: Check expiry before deducting balance
+      const isExpired = giftCard?.expires_at && new Date() > new Date(giftCard.expires_at);
+
+      if (giftCard && giftCard.is_active && giftCard.balance > 0 && !isExpired) {
         const amountToDeduct = Math.min(giftCardDiscount, giftCard.balance);
         const newBalance = subtract(giftCard.balance, amountToDeduct);
 

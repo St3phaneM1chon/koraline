@@ -11,6 +11,7 @@
  */
 
 import { prisma } from '@/lib/db';
+import { Prisma } from '@prisma/client';
 
 const XP_VALUES: Record<string, number> = {
   lesson_complete: 10,
@@ -23,6 +24,11 @@ const XP_VALUES: Record<string, number> = {
 /**
  * Award XP to a user for an action.
  * Automatically updates the running balance.
+ *
+ * FIX LMS2-F4: Dedup is now enforced by a @@unique(tenantId, userId, sourceId)
+ * constraint on LmsXpTransaction. If two concurrent requests race past the
+ * findFirst check, the DB unique constraint rejects the second insert and we
+ * catch the P2002 error as a dedup signal — no double XP is possible.
  */
 export async function awardXp(
   tenantId: string,
@@ -34,45 +40,61 @@ export async function awardXp(
   const amount = customAmount ?? XP_VALUES[reason] ?? 0;
   if (amount === 0) return { amount: 0, newBalance: 0 };
 
-  // FIX P7-02: Dedup check INSIDE transaction to prevent race condition
-  // Returns null for dedup hit (no XP awarded), or the new balance number
-  const txResult = await prisma.$transaction(async (tx) => {
-    // Dedup check inside transaction to prevent double XP for same event
-    if (sourceId) {
-      const existing = await tx.lmsXpTransaction.findFirst({
-        where: { tenantId, userId, sourceId },
+  let newBalance: number;
+
+  try {
+    const txResult = await prisma.$transaction(async (tx) => {
+      // Fast-path dedup check (covers the common non-concurrent case)
+      if (sourceId) {
+        const existing = await tx.lmsXpTransaction.findFirst({
+          where: { tenantId, userId, sourceId },
+          select: { balance: true },
+        });
+        if (existing) return { dedup: true as const, balance: existing.balance };
+      }
+
+      const lastTransaction = await tx.lmsXpTransaction.findFirst({
+        where: { tenantId, userId },
+        orderBy: { createdAt: 'desc' },
         select: { balance: true },
       });
-      if (existing) return { dedup: true as const, balance: existing.balance };
+
+      const currentBalance = lastTransaction?.balance ?? 0;
+      const balance = currentBalance + amount;
+
+      // If two concurrent requests both pass the findFirst check, the
+      // @@unique(tenantId, userId, sourceId) constraint catches the second insert
+      await tx.lmsXpTransaction.create({
+        data: {
+          tenantId,
+          userId,
+          amount,
+          reason,
+          sourceId: sourceId ?? null,
+          balance,
+        },
+      });
+
+      return { dedup: false as const, balance };
+    });
+
+    // If dedup hit via findFirst, return early — no side effects needed
+    if (txResult.dedup) return { amount: 0, newBalance: txResult.balance };
+
+    newBalance = txResult.balance;
+  } catch (error) {
+    // FIX LMS2-F4: Catch unique constraint violation (P2002) as dedup signal
+    // This handles the race condition where two concurrent requests both pass findFirst
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+      // Another concurrent request already inserted this sourceId — treat as dedup
+      const existing = await prisma.lmsXpTransaction.findFirst({
+        where: { tenantId, userId, sourceId: sourceId ?? undefined },
+        select: { balance: true },
+      });
+      return { amount: 0, newBalance: existing?.balance ?? 0 };
     }
-
-    const lastTransaction = await tx.lmsXpTransaction.findFirst({
-      where: { tenantId, userId },
-      orderBy: { createdAt: 'desc' },
-      select: { balance: true },
-    });
-
-    const currentBalance = lastTransaction?.balance ?? 0;
-    const balance = currentBalance + amount;
-
-    await tx.lmsXpTransaction.create({
-      data: {
-        tenantId,
-        userId,
-        amount,
-        reason,
-        sourceId: sourceId ?? null,
-        balance,
-      },
-    });
-
-    return { dedup: false as const, balance };
-  });
-
-  // If dedup hit, return early — no side effects needed
-  if (txResult.dedup) return { amount: 0, newBalance: txResult.balance };
-
-  const newBalance = txResult.balance;
+    throw error;
+  }
 
   // Update leaderboard (non-blocking, upsert to create if missing)
   await prisma.lmsLeaderboard.upsert({

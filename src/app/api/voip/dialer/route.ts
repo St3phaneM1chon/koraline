@@ -10,6 +10,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { auth } from '@/lib/auth-config';
 import { logger } from '@/lib/logger';
+import { UserRole } from '@/types';
 import {
   startDialerSession,
   pauseSession,
@@ -102,7 +103,11 @@ export async function GET(request: NextRequest) {
     const view = searchParams.get('view');
 
     if (view === 'all') {
-      // Admin: see all active sessions
+      // VOIP-F11 FIX: Only OWNER/EMPLOYEE roles can see all sessions
+      const userRole = (session.user as Record<string, unknown>).role as string | undefined;
+      if (!userRole || ![UserRole.OWNER, UserRole.EMPLOYEE].includes(userRole as UserRole)) {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
       return NextResponse.json({ data: getAllSessions() });
     }
 

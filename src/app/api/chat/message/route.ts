@@ -47,17 +47,26 @@ export async function POST(request: NextRequest) {
       return res;
     }
 
-    // CSRF validation: Log-only for chat messages (non-blocking).
-    // The chat widget doesn't send CSRF tokens, and logged-in users
-    // browsing the shop will have a session cookie but no CSRF header.
-    // Rate limiting (20/hour per IP) is the primary abuse protection here.
+    // COMM-F5 FIX: CSRF enforcement for authenticated users.
+    // Visitors (no session) are exempt since the chat widget may not have CSRF tokens,
+    // but authenticated users MUST provide a valid CSRF token or Origin header to prevent
+    // cross-site request forgery attacks on their session.
     if (session?.user) {
       const csrfValid = await validateCsrf(request);
       if (!csrfValid) {
-        logger.info('Chat message without CSRF from authenticated user', {
-          userId: session.user.id,
-          ip,
-        });
+        // Fallback: check Origin header matches our app URL
+        const origin = request.headers.get('origin') || '';
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || '';
+        const appOrigin = appUrl ? new URL(appUrl).origin : '';
+        const originMatches = origin && appOrigin && origin === appOrigin;
+        if (!originMatches) {
+          logger.warn('COMM-F5: Chat message CSRF rejected for authenticated user', {
+            userId: session.user.id,
+            ip,
+            origin: origin.slice(0, 100),
+          });
+          return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+        }
       }
     }
 

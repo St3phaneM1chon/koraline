@@ -81,6 +81,8 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
+    // LOY-F8: startsAt/endsAt enforce campaign validity window.
+    // Promo codes cannot be used outside their campaign dates.
     const now = new Date();
     if (promoCode.startsAt && promoCode.startsAt > now) {
       return NextResponse.json({

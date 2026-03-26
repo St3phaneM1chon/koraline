@@ -345,7 +345,7 @@ export const GET = withAdminGuard(async (request) => {
         itrFromJournal: itr,
         customerInvoiceCount: customerInvoices.length,
         supplierInvoiceCount: supplierInvoices.length,
-        journalLineCount: journalLines.length,
+        journalLineCount: 0,
       },
       summary: {
         isRefund: totalRemittance < 0,

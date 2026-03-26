@@ -19,10 +19,11 @@ function logUnsubscribe(subscriberId: string, email: string, ip: string, method:
   });
 }
 
-// GET - One-click unsubscribe (from email link)
+// GET - Show unsubscribe confirmation page (read-only, no state change)
+// COMM-F3 FIX: GET no longer performs unsubscribe. It validates the token and
+// redirects to a confirmation page. Actual unsubscribe requires POST.
 export async function GET(request: Request) {
   try {
-    // SECURITY: Rate limit to prevent token brute-force/enumeration
     const ipAddr = getIp(request);
     const rl = await rateLimitMiddleware(ipAddr, '/api/mailing-list/unsubscribe');
     if (!rl.success) {
@@ -36,48 +37,23 @@ export async function GET(request: Request) {
       return NextResponse.redirect(new URL('/?unsubscribe=error', request.url));
     }
 
-    // Validate token format (64 hex chars = 32 bytes)
     if (!/^[a-f0-9]{64}$/.test(token)) {
       return NextResponse.redirect(new URL('/?unsubscribe=invalid', request.url));
     }
 
     const subscriber = await prisma.mailingListSubscriber.findUnique({
       where: { unsubscribeToken: token },
+      select: { id: true, email: true },
     });
 
     if (!subscriber) {
       return NextResponse.redirect(new URL('/?unsubscribe=invalid', request.url));
     }
 
-    const ip = getIp(request);
-    // Invalidate unsubscribe token after use to prevent replay attacks
-    await prisma.mailingListSubscriber.update({
-      where: { id: subscriber.id },
-      data: {
-        status: 'UNSUBSCRIBED',
-        unsubscribedAt: new Date(),
-        unsubscribeToken: null,
-      },
-    });
-
-    // Revoke consent records (RGPD Art. 7(3))
-    await prisma.consentRecord.updateMany({
-      where: {
-        email: subscriber.email.toLowerCase(),
-        type: { in: ['marketing', 'newsletter'] },
-        revokedAt: null,
-      },
-      data: { revokedAt: new Date() },
-    }).catch((err) => logger.error('Unsubscribe cross-sync failed', { error: err instanceof Error ? err.message : String(err) }));
-
-    // Cross-sync: also unsubscribe from NewsletterSubscriber
-    await prisma.newsletterSubscriber.updateMany({
-      where: { email: subscriber.email.toLowerCase() },
-      data: { unsubscribedAt: new Date() },
-    }).catch((err) => logger.error('Unsubscribe cross-sync failed', { error: err instanceof Error ? err.message : String(err) }));
-
-    logUnsubscribe(subscriber.id, subscriber.email, ip, 'one-click-link');
-    return NextResponse.redirect(new URL('/?unsubscribe=success', request.url));
+    // Redirect to confirmation page with token — user must confirm via POST
+    return NextResponse.redirect(
+      new URL(`/?unsubscribe=confirm&token=${encodeURIComponent(token)}`, request.url)
+    );
   } catch (error) {
     logger.error('Mailing list unsubscribe error', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.redirect(new URL('/?unsubscribe=error', request.url));
@@ -92,10 +68,10 @@ const unsubscribePostSchema = z.object({
   token: z.string().min(1, 'Token required').max(500),
 });
 
-// POST - Unsubscribe via API (from preferences page)
+// POST - Unsubscribe via API (from preferences page or one-click confirmation)
+// COMM-F3 FIX: All state-changing unsubscribe operations use POST only.
 export async function POST(request: NextRequest) {
   try {
-    // Rate limiting: 10 per IP per hour to prevent mass unsubscribe attacks
     const ip = getIp(request);
     const rl = await rateLimitMiddleware(ip, '/api/mailing-list/unsubscribe');
     if (!rl.success) {
@@ -104,35 +80,50 @@ export async function POST(request: NextRequest) {
       return res;
     }
 
-    // SECURITY: CSRF protection for mutation endpoint
-    const csrfValid = await validateCsrf(request);
-    if (!csrfValid) {
-      return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+    // Accept token from JSON body or query string (for one-click email links)
+    const contentType = request.headers.get('content-type') || '';
+    let token: string | null = null;
+
+    if (contentType.includes('application/x-www-form-urlencoded')) {
+      // RFC 8058 one-click POST from email clients
+      token = request.nextUrl.searchParams.get('token');
+    } else {
+      // CSRF protection for browser-originated JSON requests
+      const csrfValid = await validateCsrf(request);
+      if (!csrfValid) {
+        // Allow token-from-query for one-click (no CSRF from email clients)
+        token = request.nextUrl.searchParams.get('token');
+        if (!token) {
+          return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
+        }
+      } else {
+        try {
+          const body = await request.json();
+          const parsed = unsubscribePostSchema.safeParse(body);
+          if (parsed.success) {
+            token = parsed.data.token;
+          }
+        } catch {
+          // fallback to query string
+        }
+        if (!token) {
+          token = request.nextUrl.searchParams.get('token');
+        }
+      }
     }
 
-    const body = await request.json();
-
-    // Validate with Zod
-    const parsed = unsubscribePostSchema.safeParse(body);
-    if (!parsed.success) {
-      return NextResponse.json(
-        { error: 'Invalid data' },
-        { status: 400 }
-      );
+    if (!token) {
+      return NextResponse.json({ error: 'Missing token' }, { status: 400 });
     }
-
-    const { token } = parsed.data;
 
     const subscriber = await prisma.mailingListSubscriber.findFirst({
       where: { unsubscribeToken: token },
     });
 
     if (!subscriber) {
-      // Return generic success to prevent enumeration
       return NextResponse.json({ success: true });
     }
 
-    // Invalidate unsubscribe token after use to prevent replay attacks
     await prisma.mailingListSubscriber.update({
       where: { id: subscriber.id },
       data: {
@@ -142,7 +133,6 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Revoke consent records (RGPD Art. 7(3))
     await prisma.consentRecord.updateMany({
       where: {
         email: subscriber.email.toLowerCase(),
@@ -152,7 +142,6 @@ export async function POST(request: NextRequest) {
       data: { revokedAt: new Date() },
     }).catch((err) => logger.error('Unsubscribe cross-sync failed', { error: err instanceof Error ? err.message : String(err) }));
 
-    // Cross-sync: also unsubscribe from NewsletterSubscriber if present
     await prisma.newsletterSubscriber.updateMany({
       where: { email: subscriber.email.toLowerCase() },
       data: { unsubscribedAt: new Date() },

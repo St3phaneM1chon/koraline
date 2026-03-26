@@ -9,7 +9,7 @@ import { assertJournalBalance, assertPeriodOpen } from '@/lib/accounting/validat
 // F093 FIX: Use decimal.js directly instead of Prisma internal runtime import
 // (Prisma's internal path may change between versions and break builds)
 import Decimal from 'decimal.js';
-import { convertCurrency, subtract } from '@/lib/decimal-calculator';
+import { convertCurrency } from '@/lib/decimal-calculator';
 
 interface OrderWithItems {
   id: string;

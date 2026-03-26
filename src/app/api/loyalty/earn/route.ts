@@ -26,14 +26,37 @@ import { validateCsrf } from '@/lib/csrf-middleware';
 import { earnPointsSchema } from '@/lib/validations';
 import { checkEarningCaps } from '@/lib/loyalty/points-engine';
 
-// Points par type d'action - imported from central constants
-const POINTS_CONFIG = {
-  PURCHASE: LOYALTY_POINTS_CONFIG.pointsPerDollar,
-  SIGNUP: LOYALTY_POINTS_CONFIG.welcomeBonus,
-  REVIEW: LOYALTY_POINTS_CONFIG.reviewBonus,
-  REFERRAL: LOYALTY_POINTS_CONFIG.referralBonus,
-  BIRTHDAY: LOYALTY_POINTS_CONFIG.birthdayBonus,
-};
+// LOY-F9 FIX: Read loyalty config from DB (SiteSetting) with fallback to hardcoded constants.
+// This ensures admin-configured values (via /api/admin/loyalty/config) are actually used.
+async function getPointsConfig(): Promise<{
+  PURCHASE: number; SIGNUP: number; REVIEW: number; REFERRAL: number; BIRTHDAY: number;
+}> {
+  try {
+    const setting = await db.siteSetting.findUnique({
+      where: { key: 'loyalty_config' },
+      select: { value: true },
+    });
+    if (setting) {
+      const parsed = JSON.parse(setting.value);
+      return {
+        PURCHASE: parsed.pointsPerDollar ?? LOYALTY_POINTS_CONFIG.pointsPerDollar,
+        SIGNUP: parsed.welcomeBonus ?? LOYALTY_POINTS_CONFIG.welcomeBonus,
+        REVIEW: parsed.reviewBonus ?? LOYALTY_POINTS_CONFIG.reviewBonus,
+        REFERRAL: parsed.referralBonus ?? LOYALTY_POINTS_CONFIG.referralBonus,
+        BIRTHDAY: parsed.birthdayBonus ?? LOYALTY_POINTS_CONFIG.birthdayBonus,
+      };
+    }
+  } catch {
+    // Fall through to defaults on any parse/DB error
+  }
+  return {
+    PURCHASE: LOYALTY_POINTS_CONFIG.pointsPerDollar,
+    SIGNUP: LOYALTY_POINTS_CONFIG.welcomeBonus,
+    REVIEW: LOYALTY_POINTS_CONFIG.reviewBonus,
+    REFERRAL: LOYALTY_POINTS_CONFIG.referralBonus,
+    BIRTHDAY: LOYALTY_POINTS_CONFIG.birthdayBonus,
+  };
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -93,6 +116,9 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
+
+    // LOY-F9: Load config from DB (admin-configurable) with hardcoded fallback
+    const POINTS_CONFIG = await getPointsConfig();
 
     // Calculer les points à gagner
     let pointsToEarn = 0;
@@ -247,7 +273,42 @@ export async function POST(request: NextRequest) {
     const newLifetimeEstimate = user.lifetimePoints + pointsToEarn;
     const newTier = calculateTierName(newLifetimeEstimate);
 
-    const { updatedUser, transaction } = await db.$transaction(async (tx) => {
+    const txResult = await db.$transaction(async (tx) => {
+      // LOY-F11 / LOY-F12 FIX: Re-check dedup inside transaction for types with once-only semantics.
+      // The outer check prevents most duplicates, but concurrent requests can both pass it.
+      if (transactionType === 'EARN_BIRTHDAY') {
+        const currentYear = new Date().getFullYear();
+        const existing = await tx.loyaltyTransaction.findFirst({
+          where: {
+            userId: user.id,
+            type: 'EARN_BIRTHDAY',
+            createdAt: { gte: new Date(currentYear, 0, 1), lt: new Date(currentYear + 1, 0, 1) },
+          },
+          select: { id: true },
+        });
+        if (existing) return { duplicate: true } as const;
+      }
+
+      if (transactionType === 'EARN_SIGNUP') {
+        const existing = await tx.loyaltyTransaction.findFirst({
+          where: { userId: user.id, type: 'EARN_SIGNUP' },
+          select: { id: true },
+        });
+        if (existing) return { duplicate: true } as const;
+      }
+
+      if (transactionType === 'EARN_REVIEW' && parsed.data.productId) {
+        const existing = await tx.loyaltyTransaction.findFirst({
+          where: {
+            userId: user.id,
+            type: 'EARN_REVIEW',
+            description: { contains: parsed.data.productId },
+          },
+          select: { id: true },
+        });
+        if (existing) return { duplicate: true } as const;
+      }
+
       const updated = await tx.user.update({
         where: { id: user.id },
         data: {
@@ -274,6 +335,20 @@ export async function POST(request: NextRequest) {
 
       return { updatedUser: updated, transaction: txn };
     });
+
+    // LOY-F11: If duplicate was detected inside transaction, return gracefully
+    if ('duplicate' in txResult) {
+      return NextResponse.json({
+        success: true,
+        pointsEarned: 0,
+        newBalance: user.loyaltyPoints,
+        lifetimePoints: user.lifetimePoints,
+        tier: calculateTierName(user.lifetimePoints),
+        message: 'Points already earned for this action',
+      });
+    }
+
+    const { updatedUser, transaction } = txResult;
 
     const newPoints = updatedUser.loyaltyPoints;
     const newLifetimePoints = updatedUser.lifetimePoints;

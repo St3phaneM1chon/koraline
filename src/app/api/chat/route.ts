@@ -126,16 +126,21 @@ export async function POST(request: NextRequest) {
       return res;
     }
 
-    // FIX F-004: CSRF protection on chat creation
+    // FIX F-004 + COMM-F5: CSRF / Origin validation on chat creation.
+    // Visitors (chat widget) may lack CSRF tokens, so we also accept a matching Origin header.
     const csrfValid = await validateCsrf(request);
     if (!csrfValid) {
-      // Allow requests without CSRF only if they come with a valid session
-      // (server-side calls like webhooks). Log for monitoring.
+      const origin = request.headers.get('origin') || '';
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || '';
+      const appOrigin = appUrl ? new URL(appUrl).origin : '';
+      const originOk = origin && appOrigin && origin === appOrigin;
+
       const session = await auth();
-      if (!session?.user) {
-        // For visitors without CSRF token, still allow (widget may not have it)
-        // but rate limiting already protects against abuse
+      if (session?.user && !originOk) {
+        // Authenticated user without CSRF or valid Origin: reject
+        return NextResponse.json({ error: 'Invalid CSRF token' }, { status: 403 });
       }
+      // Visitors without CSRF but with valid Origin or rate-limited are allowed
     }
 
     // INPUT-01 FIX: Zod validation for chat conversation creation body

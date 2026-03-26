@@ -12,6 +12,22 @@ import { sendEmail } from '@/lib/email/email-service';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 
+// COMM-F8 FIX: Per-endpoint rate limiting for mobile email send (10 emails per hour per user)
+const emailRateMap = new Map<string, { count: number; resetAt: number }>();
+const EMAIL_RATE_WINDOW = 60 * 60 * 1000; // 1 hour
+const EMAIL_RATE_MAX = 10;
+
+function checkEmailRateLimit(userId: string): boolean {
+  const now = Date.now();
+  const entry = emailRateMap.get(userId);
+  if (!entry || now > entry.resetAt) {
+    emailRateMap.set(userId, { count: 1, resetAt: now + EMAIL_RATE_WINDOW });
+    return true;
+  }
+  entry.count++;
+  return entry.count <= EMAIL_RATE_MAX;
+}
+
 const sendEmailSchema = z.object({
   to: z.string().email(),
   subject: z.string().min(1).max(998),
@@ -26,6 +42,15 @@ const sendEmailSchema = z.object({
  */
 export const POST = withMobileGuard(async (request, { session }) => {
   try {
+    // COMM-F8 FIX: Enforce per-user rate limit for email sending
+    if (!checkEmailRateLimit(session.user.id)) {
+      logger.warn('[Email Send] Rate limit exceeded', { userId: session.user.id });
+      return NextResponse.json(
+        { error: 'Too many emails sent. Maximum 10 per hour.' },
+        { status: 429 }
+      );
+    }
+
     const rawBody = await request.json();
     const parsed = sendEmailSchema.safeParse(rawBody);
 

@@ -38,6 +38,28 @@ const MIME_MAP: Record<string, string> = {
   gif: 'image/gif',
 };
 
+// Magic bytes for file type verification
+const MAGIC_BYTES: Record<string, { offset: number; bytes: number[] }[]> = {
+  pdf: [{ offset: 0, bytes: [0x25, 0x50, 0x44, 0x46] }], // %PDF
+  png: [{ offset: 0, bytes: [0x89, 0x50, 0x4E, 0x47] }], // .PNG
+  jpg: [{ offset: 0, bytes: [0xFF, 0xD8, 0xFF] }],
+  jpeg: [{ offset: 0, bytes: [0xFF, 0xD8, 0xFF] }],
+  gif: [{ offset: 0, bytes: [0x47, 0x49, 0x46] }], // GIF
+  doc: [{ offset: 0, bytes: [0xD0, 0xCF, 0x11, 0xE0] }], // OLE2
+  xls: [{ offset: 0, bytes: [0xD0, 0xCF, 0x11, 0xE0] }], // OLE2
+  docx: [{ offset: 0, bytes: [0x50, 0x4B, 0x03, 0x04] }], // ZIP (OOXML)
+  xlsx: [{ offset: 0, bytes: [0x50, 0x4B, 0x03, 0x04] }], // ZIP (OOXML)
+};
+
+function validateMagicBytes(buffer: ArrayBuffer, ext: string): boolean {
+  const signatures = MAGIC_BYTES[ext];
+  if (!signatures) return true; // csv has no magic bytes
+  const view = new Uint8Array(buffer);
+  return signatures.some(sig =>
+    sig.bytes.every((byte, i) => view[sig.offset + i] === byte)
+  );
+}
+
 function getExtension(filename: string): string {
   return (filename.split('.').pop() || '').toLowerCase();
 }
@@ -99,6 +121,14 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
       }
 
       const arrayBuffer = await file.arrayBuffer();
+
+      if (!validateMagicBytes(arrayBuffer, ext)) {
+        return NextResponse.json(
+          { error: `File "${file.name}" content does not match its extension ".${ext}"` },
+          { status: 400 }
+        );
+      }
+
       const base64 = Buffer.from(arrayBuffer).toString('base64');
       const contentTypeForFile = MIME_MAP[ext] || file.type || 'application/octet-stream';
 

@@ -11,6 +11,10 @@ import { logger } from '@/lib/logger';
 const storage = new StorageService();
 const RECORDINGS_FOLDER = 'call-recordings';
 
+// VOIP-F13 FIX: Allowed audio/video formats and maximum file size for recordings
+const ALLOWED_FORMATS = new Set(['wav', 'mp3', 'ogg', 'mp4', 'webm']);
+const MAX_RECORDING_SIZE_BYTES = 500 * 1024 * 1024; // 500 MB
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -75,6 +79,12 @@ export async function uploadRecording(
       return null;
     }
 
+    // VOIP-F13 FIX: Validate recording format before fetching
+    if (!ALLOWED_FORMATS.has(recording.format)) {
+      logger.error(`[Recording] Invalid format "${recording.format}" for ${recordingId}`);
+      return null;
+    }
+
     const recordingUrl = `https://${pbxConnection.pbxHost}/recordings/${recording.localPath}`;
     const response = await fetch(recordingUrl);
 
@@ -83,7 +93,27 @@ export async function uploadRecording(
       return null;
     }
 
+    // VOIP-F13 FIX: Validate content-type from PBX response
+    const responseContentType = response.headers.get('content-type') || '';
+    const validContentTypes = ['audio/', 'video/', 'application/octet-stream'];
+    if (!validContentTypes.some(t => responseContentType.startsWith(t))) {
+      logger.error(`[Recording] Unexpected content-type "${responseContentType}" for ${recordingId}`);
+      return null;
+    }
+
     const buffer = Buffer.from(await response.arrayBuffer());
+
+    // VOIP-F13 FIX: Validate file size
+    if (buffer.length > MAX_RECORDING_SIZE_BYTES) {
+      logger.error(`[Recording] File too large (${buffer.length} bytes) for ${recordingId}`);
+      return null;
+    }
+
+    if (buffer.length === 0) {
+      logger.error(`[Recording] Empty file for ${recordingId}`);
+      return null;
+    }
+
     const filename = `call-${recording.callLogId}-${Date.now()}.${recording.format}`;
     const contentType = recording.format === 'mp3' ? 'audio/mpeg' : 'audio/wav';
 

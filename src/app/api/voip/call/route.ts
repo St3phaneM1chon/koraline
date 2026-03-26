@@ -12,18 +12,33 @@ import { z } from 'zod';
 import { logger } from '@/lib/logger';
 import { prisma } from '@/lib/db';
 import { withAdminGuard } from '@/lib/admin-api-guard';
+import { checkRateLimit } from '@/lib/security';
 import * as telnyx from '@/lib/telnyx';
 
 const TELNYX_CONNECTION_ID = process.env.TELNYX_CONNECTION_ID || '';
 const DEFAULT_CALLER_ID = process.env.TELNYX_DEFAULT_CALLER_ID || '+14388030370';
 const WEBHOOK_BASE_URL = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
 
+// VOIP-F6 FIX: Strict per-user rate limit for outbound call initiation (toll fraud prevention)
+const CALL_RATE_LIMIT = 5; // max 5 calls per minute per user
+const CALL_RATE_WINDOW_MS = 60_000;
+
 /**
  * POST - Initiate an outbound call via Telnyx Call Control.
  */
-// VOIP-F6 FIX: VoIP-specific rate limit (5 calls/min per user)
 export const POST = withAdminGuard(async (request: NextRequest, { session: _session }) => {
   try {
+    // VOIP-F6 FIX: Per-user rate limit for call initiation (toll fraud prevention)
+    const callRateKey = `voip:call:${_session.user.id}`;
+    const rateResult = checkRateLimit(callRateKey, CALL_RATE_LIMIT, CALL_RATE_WINDOW_MS);
+    if (!rateResult.allowed) {
+      const retryAfter = String(Math.ceil(rateResult.resetIn / 1000));
+      return new NextResponse(
+        JSON.stringify({ error: 'Call rate limit exceeded. Maximum 5 calls per minute.' }),
+        { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': retryAfter } }
+      );
+    }
+
     const raw = await request.json();
     const parsed = z.object({
       to: z.string().min(1),
@@ -45,6 +60,21 @@ export const POST = withAdminGuard(async (request: NextRequest, { session: _sess
     }
 
     const fromNumber = from || DEFAULT_CALLER_ID;
+
+    // VOIP-F12 FIX: Verify the "from" number belongs to the tenant (prevent caller ID spoofing)
+    if (from) {
+      const ownedNumber = await prisma.phoneNumber.findFirst({
+        where: { number: fromNumber, isActive: true },
+        select: { id: true },
+      });
+      if (!ownedNumber) {
+        return NextResponse.json(
+          { error: 'Caller ID number not authorized for this account' },
+          { status: 403 }
+        );
+      }
+    }
+
     const webhookUrl = `${WEBHOOK_BASE_URL}/api/voip/webhooks/telnyx`;
 
     // Initiate the call

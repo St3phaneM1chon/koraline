@@ -16,7 +16,7 @@ import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { z } from 'zod';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
-import { validateCsrf } from '@/lib/csrf-middleware';
+import { timingSafeEqual } from 'crypto';
 import { getClientIpFromRequest } from '@/lib/admin-audit';
 
 const activateGiftCardSchema = z.object({
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
     const authHeader = request.headers.get('x-internal-secret') ?? '';
     const headerBuf = Buffer.from(authHeader);
     const secretBuf = Buffer.from(INTERNAL_SECRET);
-    if (headerBuf.length !== secretBuf.length || !require('crypto').timingSafeEqual(headerBuf, secretBuf)) {
+    if (headerBuf.length !== secretBuf.length || !timingSafeEqual(headerBuf, secretBuf)) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }

@@ -17,12 +17,28 @@ import { z } from 'zod';
 import { logger } from '@/lib/logger';
 import { prisma } from '@/lib/db';
 import { withAdminGuard } from '@/lib/admin-api-guard';
+import { checkRateLimit } from '@/lib/security';
 
 /**
  * POST - Initiate a click-to-call outbound call.
  */
+// VOIP-F6 FIX: Strict per-user rate limit for outbound call initiation (toll fraud prevention)
+const CALL_RATE_LIMIT = 5;
+const CALL_RATE_WINDOW_MS = 60_000;
+
 export const POST = withAdminGuard(async (request: NextRequest, { session }) => {
   try {
+    // VOIP-F6 FIX: Per-user rate limit for call initiation (toll fraud prevention)
+    const callRateKey = `voip:click-to-call:${session.user.id}`;
+    const rateResult = checkRateLimit(callRateKey, CALL_RATE_LIMIT, CALL_RATE_WINDOW_MS);
+    if (!rateResult.allowed) {
+      const retryAfter = String(Math.ceil(rateResult.resetIn / 1000));
+      return new NextResponse(
+        JSON.stringify({ error: 'Call rate limit exceeded. Maximum 5 calls per minute.' }),
+        { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': retryAfter } }
+      );
+    }
+
     const raw = await request.json();
     const parsed = z.object({
       to: z.string().regex(/^\+[1-9]\d{1,14}$/, 'Must be E.164 format (e.g., +15145551234)'),
@@ -77,6 +93,20 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
 
     const connectionId = getTelnyxConnectionId();
     const callerId = from || getDefaultCallerId();
+
+    // VOIP-F12 FIX: Verify the "from" number belongs to the tenant (prevent caller ID spoofing)
+    if (from) {
+      const ownedNumber = await prisma.phoneNumber.findFirst({
+        where: { number: callerId, isActive: true },
+        select: { id: true },
+      });
+      if (!ownedNumber) {
+        return NextResponse.json(
+          { error: 'Caller ID number not authorized for this account' },
+          { status: 403 }
+        );
+      }
+    }
 
     // Step 1: Dial the agent's extension first (ring their softphone)
     const agentCallResult = await dialCall({

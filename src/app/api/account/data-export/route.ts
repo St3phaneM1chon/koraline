@@ -500,6 +500,30 @@ export const GET = withUserGuard(async (request: NextRequest, { session }) => {
       })),
     };
 
+    // COMM-F11 FIX: GDPR audit log for data export (Art. 20 right to data portability)
+    await prisma.auditLog.create({
+      data: {
+        userId,
+        action: 'GDPR_DATA_EXPORT',
+        entityType: 'User',
+        entityId: userId,
+        details: JSON.stringify({
+          format,
+          type: 'self-service',
+          orderCount: orders.length,
+          reviewCount: reviews.length,
+          categoriesExported: [
+            'profile', 'orders', 'reviews', 'addresses', 'preferences',
+            'wishlist', 'loyaltyTransactions', 'subscriptions', 'priceWatches',
+            'savedCards', 'referrals', 'returnRequests', 'productQuestions',
+            'chatConversations', 'consents', 'emailLogs', 'mailingListSubscriptions',
+          ],
+        }),
+      },
+    }).catch((err) => logger.error('[data-export] Audit log failed', {
+      error: err instanceof Error ? err.message : String(err),
+    }));
+
     logger.info('[data-export] User data export generated', {
       userId,
       format,
