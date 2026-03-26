@@ -73,7 +73,7 @@
       "line": 34,
       "cweId": "CWE-778",
       "confidence": 0.95,
-      "status": "open"
+      "status": "fixed"
     },
     {
       "id": "ECOM-F8",
