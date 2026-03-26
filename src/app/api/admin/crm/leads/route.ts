@@ -84,12 +84,14 @@ export const GET = withAdminGuard(async (request: NextRequest) => {
   }
 
   const [leads, total] = await Promise.all([
+    // CRM-F2 FIX: Use select to restrict PII in list view (was returning all fields)
     prisma.crmLead.findMany({
       where,
-      include: {
-        assignedTo: {
-          select: { name: true, email: true },
-        },
+      select: {
+        id: true, contactName: true, companyName: true, email: true,
+        source: true, status: true, score: true, temperature: true,
+        tags: true, assignedToId: true, createdAt: true, updatedAt: true,
+        assignedTo: { select: { name: true } },
       },
       orderBy: { score: 'desc' },
       skip,
