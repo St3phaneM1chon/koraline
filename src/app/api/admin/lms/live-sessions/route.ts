@@ -68,6 +68,29 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
   return apiSuccess(liveSession, { request, status: 201 });
 });
 
+export const PATCH = withAdminGuard(async (request: NextRequest, { session }) => {
+  const tenantId = session.user.tenantId;
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+  if (!id) return apiError('Session ID required', ErrorCode.VALIDATION_ERROR, { request, status: 400 });
+
+  const body = await request.json();
+  const parsed = createSchema.partial().safeParse(body);
+  if (!parsed.success) return apiError('Invalid input', ErrorCode.VALIDATION_ERROR, { request, status: 400 });
+
+  const existing = await prisma.liveSession.findFirst({ where: { id, tenantId }, select: { id: true } });
+  if (!existing) return apiError('Session not found', ErrorCode.NOT_FOUND, { request, status: 404 });
+
+  const updateData = { ...parsed.data } as Record<string, unknown>;
+  if (parsed.data.startsAt) updateData.startsAt = new Date(parsed.data.startsAt);
+  if (parsed.data.endsAt) updateData.endsAt = new Date(parsed.data.endsAt);
+
+  const updated = await prisma.liveSession.update({ where: { id }, data: updateData });
+  return apiSuccess(updated, { request });
+});
+
+export const PUT = PATCH;
+
 export const DELETE = withAdminGuard(async (request: NextRequest, { session }) => {
   const tenantId = session.user.tenantId;
   const { searchParams } = new URL(request.url);
