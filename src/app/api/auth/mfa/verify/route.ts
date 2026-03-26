@@ -46,9 +46,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // TODO: Verify TOTP code against user's mfaSecret when fully implemented
-    // For now, accept any 6-digit code (MFA not yet fully implemented)
+    // AUTH-F1 CRITICAL FIX: Verify TOTP code against user's mfaSecret
     if (!code || code.length !== 6) {
+      return NextResponse.json({ error: 'Invalid MFA code' }, { status: 401 });
+    }
+
+    const { verifyMFACode } = await import('@/lib/mfa');
+    const mfaResult = await verifyMFACode(user.id, code);
+    if (!mfaResult.valid) {
       return NextResponse.json({ error: 'Invalid MFA code' }, { status: 401 });
     }
 

@@ -22,11 +22,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Missing stripe-signature' }, { status: 400 });
   }
 
+  // PAY-F1 CRITICAL FIX: Reject when webhook secret not configured (was silently returning 200)
   const webhookSecret = process.env.STRIPE_ATTITUDES_WEBHOOK_SECRET;
   if (!webhookSecret || webhookSecret.includes('to_configure')) {
-    // In dev/test without webhook secret, parse the event directly
-    logger.warn('Stripe Attitudes webhook secret not configured, skipping signature verification');
-    return NextResponse.json({ received: true });
+    logger.error('STRIPE_ATTITUDES_WEBHOOK_SECRET not configured — rejecting webhook');
+    return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });
   }
 
   let event: Stripe.Event;

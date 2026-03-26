@@ -12,9 +12,14 @@ import { prisma } from '@/lib/db';
 import { resolvePricing, enrollUser, enrollUserInBundle } from '@/lib/lms/lms-service';
 import { STRIPE_API_VERSION } from '@/lib/stripe';
 
+// PAY-F4 FIX: Lazy singleton (was creating new Stripe instance per request)
+let _lmsStripe: Stripe | null = null;
 function getLmsStripe(): Stripe {
-  if (!process.env.STRIPE_SECRET_KEY) throw new Error('STRIPE_SECRET_KEY required');
-  return new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: STRIPE_API_VERSION });
+  if (!_lmsStripe) {
+    if (!process.env.STRIPE_SECRET_KEY) throw new Error('STRIPE_SECRET_KEY required');
+    _lmsStripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: STRIPE_API_VERSION });
+  }
+  return _lmsStripe;
 }
 
 const checkoutSchema = z.object({
