@@ -79,63 +79,50 @@ export const GET = withAdminGuard(async (request) => {
     const endOfDay = new Date(endDate);
     endOfDay.setHours(23, 59, 59, 999);
 
-    // ACCT-F6: TODO — Replace findMany with groupBy/raw SQL for large datasets
-    // Current: loads all lines into memory for monthly bucketing
-    // Future: use DATE_TRUNC + GROUP BY in raw SQL for O(accounts) instead of O(lines)
-    const lines = await prisma.journalLine.findMany({
-      where: {
-        account: { type: { in: ['REVENUE', 'EXPENSE'] } },
-        entry: {
-          status: 'POSTED',
-          date: { gte: startDate, lte: endOfDay },
-        },
-      },
-      include: {
-        account: { select: { code: true, name: true, type: true, normalBalance: true } },
-        entry: { select: { date: true } },
-      },
-    });
+    // ACCT-F6 FIX: Use raw SQL GROUP BY with DATE_TRUNC for O(accounts×months) instead of O(lines)
+    const monthlyData = await prisma.$queryRaw<Array<{
+      month: string; code: string; name: string; type: string;
+      total_debit: number; total_credit: number;
+    }>>`
+      SELECT TO_CHAR(DATE_TRUNC('month', e.date), 'YYYY-MM') as month,
+             a.code, a.name, a.type::text,
+             COALESCE(SUM(l.debit), 0)::float as total_debit,
+             COALESCE(SUM(l.credit), 0)::float as total_credit
+      FROM "JournalLine" l
+      JOIN "ChartOfAccount" a ON l."accountId" = a.id
+      JOIN "JournalEntry" e ON l."entryId" = e.id
+      WHERE e.status = 'POSTED'
+        AND e.date >= ${startDate} AND e.date <= ${endOfDay}
+        AND a.type IN ('REVENUE', 'EXPENSE')
+      GROUP BY month, a.code, a.name, a.type
+      ORDER BY month, a.code
+    `;
 
-    // ------ Bucket lines by month ------
     const allMonths = generateMonthKeys(startDate, endDate);
     const buckets = new Map<string, MonthBucket>();
 
-    // Initialize all months
     for (const mk of allMonths) {
       buckets.set(mk, {
-        revenue: 0,
-        expenses: 0,
-        netIncome: 0,
-        revenueByAccount: {},
-        expensesByAccount: {},
+        revenue: 0, expenses: 0, netIncome: 0,
+        revenueByAccount: {}, expensesByAccount: {},
       });
     }
 
-    for (const line of lines) {
-      const mk = monthKey(line.entry.date);
-      const bucket = buckets.get(mk);
-      if (!bucket) continue; // outside range
+    for (const row of monthlyData) {
+      const bucket = buckets.get(row.month);
+      if (!bucket) continue;
 
-      const debit = Number(line.debit);
-      const credit = Number(line.credit);
-      const code = line.account.code;
-      const name = line.account.name;
-
-      if (line.account.type === 'REVENUE') {
-        // Revenue normal balance is CREDIT
-        const amount = credit - debit;
+      if (row.type === 'REVENUE') {
+        const amount = row.total_credit - row.total_debit;
         bucket.revenue += amount;
-
-        if (!bucket.revenueByAccount[code]) {
-          bucket.revenueByAccount[code] = { code, name, amount: 0 };
+        if (!bucket.revenueByAccount[row.code]) {
+          bucket.revenueByAccount[row.code] = { code: row.code, name: row.name, amount: 0 };
         }
-        bucket.revenueByAccount[code].amount += amount;
+        bucket.revenueByAccount[row.code].amount += amount;
       } else {
-        // Expense normal balance is DEBIT
-        const amount = debit - credit;
+        const amount = row.total_debit - row.total_credit;
         bucket.expenses += amount;
-
-        if (!bucket.expensesByAccount[code]) {
+        if (!bucket.expensesByAccount[row.code]) {
           bucket.expensesByAccount[code] = { code, name, amount: 0 };
         }
         bucket.expensesByAccount[code].amount += amount;
