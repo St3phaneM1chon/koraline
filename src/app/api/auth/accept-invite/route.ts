@@ -59,10 +59,13 @@ export async function POST(request: NextRequest) {
 
     const { token, password } = parsed.data;
 
-    // C3-SEC-S-006 FIX: Select only needed fields (avoid fetching password hash)
+    // AUTH-F6 FIX: Hash token before lookup (matches forgot-password pattern)
+    const crypto = await import('crypto');
+    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+
     const user = await prisma.user.findFirst({
       where: {
-        inviteToken: token,
+        inviteToken: tokenHash,
         inviteTokenExpiry: { gt: new Date() },
       },
       select: { id: true, email: true },
