@@ -91,8 +91,10 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Plan invalide' }, { status: 400 });
     }
 
+    // PAY-F9 FIX: Deterministic tenant selection (orderBy for multi-owner edge case)
     const tenant = await prisma.tenant.findFirst({
       where: { ownerUserId: user.id },
+      orderBy: { createdAt: 'asc' },
     });
 
     if (!tenant) {
