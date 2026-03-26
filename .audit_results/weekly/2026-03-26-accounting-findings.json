@@ -33,7 +33,7 @@
       "line": 178,
       "cweId": "CWE-362",
       "confidence": 0.9,
-      "status": "open"
+      "status": "fixed"
     },
     {
       "id": "ACCT-F4",
@@ -73,7 +73,7 @@
       "line": 221,
       "cweId": "CWE-285",
       "confidence": 0.85,
-      "status": "open"
+      "status": "fixed"
     },
     {
       "id": "ACCT-F8",
@@ -83,7 +83,7 @@
       "line": 62,
       "cweId": "CWE-200",
       "confidence": 0.8,
-      "status": "open"
+      "status": "fixed"
     },
     {
       "id": "ACCT-F9",
@@ -113,7 +113,7 @@
       "line": 326,
       "cweId": "CWE-704",
       "confidence": 0.8,
-      "status": "open"
+      "status": "fixed"
     },
     {
       "id": "ACCT-F12",
@@ -123,7 +123,7 @@
       "line": 275,
       "cweId": "CWE-682",
       "confidence": 0.85,
-      "status": "open"
+      "status": "fixed"
     }
   ],
   "criticals": 1,
