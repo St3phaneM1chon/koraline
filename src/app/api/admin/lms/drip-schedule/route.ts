@@ -83,3 +83,30 @@ export const DELETE = withAdminGuard(async (request: NextRequest, { session }) =
 
   return apiSuccess({ success: true }, { request });
 });
+
+const updateSchema = z.object({
+  courseId: z.string().min(1).optional(),
+  chapterId: z.string().min(1).optional(),
+  unlockType: z.enum(['delay', 'date']).optional(),
+  delayDays: z.number().int().min(0).optional(),
+  unlockDate: z.string().datetime().optional(),
+});
+
+export const PATCH = withAdminGuard(async (request: NextRequest, { session }) => {
+  const tenantId = session.user.tenantId;
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+  if (!id) return apiError('ID required', ErrorCode.VALIDATION_ERROR, { request, status: 400 });
+
+  const body = await request.json();
+  const parsed = updateSchema.safeParse(body);
+  if (!parsed.success) return apiError('Invalid input', ErrorCode.VALIDATION_ERROR, { request, status: 400 });
+
+  const existing = await prisma.dripSchedule.findFirst({ where: { id, tenantId }, select: { id: true } });
+  if (!existing) return apiError('Not found', ErrorCode.NOT_FOUND, { request, status: 404 });
+
+  const updated = await prisma.dripSchedule.update({ where: { id }, data: parsed.data });
+  return apiSuccess(updated, { request });
+});
+
+export const PUT = PATCH;

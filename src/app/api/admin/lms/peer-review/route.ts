@@ -81,3 +81,27 @@ export const DELETE = withAdminGuard(async (request: NextRequest, { session }) =
 
   return apiSuccess({ success: true }, { request });
 });
+
+const updateSchema = createSchema.partial();
+
+export const PATCH = withAdminGuard(async (request: NextRequest, { session }) => {
+  const tenantId = session.user.tenantId;
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+  if (!id) return apiError('ID required', ErrorCode.VALIDATION_ERROR, { request, status: 400 });
+
+  const body = await request.json();
+  const parsed = updateSchema.safeParse(body);
+  if (!parsed.success) return apiError('Invalid input', ErrorCode.VALIDATION_ERROR, { request, status: 400 });
+
+  const existing = await prisma.peerReviewAssignment.findFirst({ where: { id, tenantId }, select: { id: true } });
+  if (!existing) return apiError('Not found', ErrorCode.NOT_FOUND, { request, status: 404 });
+
+  const updateData = { ...parsed.data } as Record<string, unknown>;
+  if (parsed.data.deadline) updateData.deadline = new Date(parsed.data.deadline);
+
+  const updated = await prisma.peerReviewAssignment.update({ where: { id }, data: updateData });
+  return apiSuccess(updated, { request });
+});
+
+export const PUT = PATCH;
