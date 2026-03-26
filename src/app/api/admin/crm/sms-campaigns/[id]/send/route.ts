@@ -22,30 +22,20 @@ export const POST = withAdminGuard(async (
   try {
     const { id } = params;
 
-    const campaign = await prisma.smsCampaign.findUnique({
-      where: { id },
-      select: { id: true, status: true, name: true },
+    // CRM-F14 FIX: Atomic status check + update to prevent TOCTOU race (double send)
+    const { count } = await prisma.smsCampaign.updateMany({
+      where: { id, status: { in: ['DRAFT', 'SCHEDULED'] } },
+      data: { status: 'SENDING', startedAt: new Date() },
     });
 
-    if (!campaign) {
-      return apiError('Campaign not found', ErrorCode.RESOURCE_NOT_FOUND, { request });
+    if (count === 0) {
+      const campaign = await prisma.smsCampaign.findUnique({ where: { id }, select: { status: true } });
+      if (!campaign) return apiError('Campaign not found', ErrorCode.RESOURCE_NOT_FOUND, { request });
+      return apiError(`Cannot send campaign with status ${campaign.status}`, ErrorCode.VALIDATION_ERROR, { status: 400, request });
     }
 
-    // Only DRAFT or SCHEDULED campaigns can be sent
-    if (campaign.status !== 'DRAFT' && campaign.status !== 'SCHEDULED') {
-      return apiError(
-        `Cannot send campaign with status ${campaign.status}. Must be DRAFT or SCHEDULED.`,
-        ErrorCode.VALIDATION_ERROR,
-        { status: 400, request }
-      );
-    }
-
-    const updated = await prisma.smsCampaign.update({
+    const updated = await prisma.smsCampaign.findUnique({
       where: { id },
-      data: {
-        status: 'SENDING',
-        startedAt: new Date(),
-      },
       include: {
         template: { select: { id: true, name: true } },
         createdBy: { select: { id: true, name: true, email: true } },

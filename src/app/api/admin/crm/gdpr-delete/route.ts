@@ -88,21 +88,13 @@ export const POST = withAdminGuard(
 
     const leadIds = leads.map((l) => l.id);
 
-    // Create audit log entry before deletion
+    // CRM-F7 FIX: Log only IDs and counts, NOT PII (defeats purpose of GDPR erasure)
     logger.info('[gdpr-delete] GDPR deletion initiated', {
       event: 'gdpr_deletion_initiated',
       requestedBy: session.user.id,
       reason,
-      contactEmail: contactEmail || null,
-      contactPhone: contactPhone || null,
-      leadId: leadId || null,
       leadsFound: leadIds.length,
-      leadData: leads.map((l) => ({
-        id: l.id,
-        name: l.contactName,
-        email: l.email,
-        phone: l.phone,
-      })),
+      leadIds, // Internal IDs only, not PII
     });
 
     // Wrap all deletions in a transaction for atomicity (GDPR requires complete erasure)

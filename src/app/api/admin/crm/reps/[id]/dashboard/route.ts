@@ -318,6 +318,14 @@ async function getQuotas(
 
 export const GET = withAdminGuard(async (request: NextRequest, { session, params }: { session: { user: { id: string; role: string } }; params: Promise<{ id: string }> }) => {
   const { id } = await params;
+
+  // CRM-F13 FIX: Restrict dashboard access to self or OWNER
+  if (id !== session.user.id && session.user.role !== 'OWNER') {
+    const { apiError } = await import('@/lib/api-response');
+    const { ErrorCode } = await import('@/lib/error-codes');
+    return apiError('You can only view your own dashboard', ErrorCode.FORBIDDEN, { status: 403, request });
+  }
+
   const { searchParams } = new URL(request.url);
   const section = searchParams.get('section') || 'overview';
   const period = (searchParams.get('period') || 'month') as Period;
