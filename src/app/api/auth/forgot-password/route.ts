@@ -60,7 +60,9 @@ export async function POST(request: NextRequest) {
     // IMPORTANT: Toujours retourner succès même si l'email n'existe pas
     // Pour éviter l'énumération des utilisateurs
     if (!user) {
-      logger.info(`Password reset requested for non-existent email: ${email}`);
+      // AUTH-F12 FIX: Mask email in logs (Loi 25 compliance)
+      const maskedEmail = email.replace(/^(.{2}).*(@.*)$/, '$1***$2');
+      logger.info(`Password reset requested for non-existent email: ${maskedEmail}`);
       return NextResponse.json({
         success: true,
         message: 'Si un compte existe avec cet email, vous recevrez un lien de réinitialisation.',
