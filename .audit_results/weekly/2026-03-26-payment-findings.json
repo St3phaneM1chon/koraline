@@ -33,7 +33,8 @@
       "line": 26,
       "cweId": "CWE-352",
       "confidence": 0.93,
-      "status": "open"
+      "status": "false_positive",
+      "criticVerdict": "false_positive"
     },
     {
       "id": "PAY-F4",
