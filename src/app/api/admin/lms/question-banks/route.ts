@@ -34,11 +34,25 @@ const addQuestionSchema = z.object({
 
 export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
   const tenantId = session.user.tenantId;
+  const { searchParams } = new URL(request.url);
+  const search = searchParams.get('search') ?? undefined;
+  const category = searchParams.get('category') ?? undefined;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const where: any = { tenantId, isActive: true };
+  if (search) {
+    where.OR = [
+      { name: { contains: search, mode: 'insensitive' } },
+      { description: { contains: search, mode: 'insensitive' } },
+    ];
+  }
+  if (category) where.category = category;
 
   const banks = await prisma.questionBank.findMany({
-    where: { tenantId, isActive: true },
+    where,
     include: { _count: { select: { questions: true } } },
     orderBy: { name: 'asc' },
+    take: 50,
   });
 
   return apiSuccess(banks, { request });
