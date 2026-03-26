@@ -1,8 +1,10 @@
 /**
- * Templates d'emails pour les commandes - BioCycle Peptides
+ * Templates d'emails pour les commandes — Koraline Multi-Tenant
+ * All templates accept optional TenantEmailBranding for tenant-specific colors/logo/name.
  */
 
 import { baseTemplate, emailComponents, escapeHtml } from './base-template';
+import type { TenantEmailBranding } from '@/lib/email/tenant-branding';
 
 const SHOP_URL = process.env.NEXT_PUBLIC_SHOP_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
 
@@ -45,6 +47,8 @@ export interface OrderData {
   refundIsPartial?: boolean;
   /** CAN-SPAM / RGPD / LCAP: unsubscribe URL (required for compliance) */
   unsubscribeUrl?: string;
+  /** Tenant branding for multi-tenant emails. If omitted, platform defaults are used. */
+  branding?: TenantEmailBranding;
 }
 
 // Helpers
@@ -63,6 +67,19 @@ function formatDate(date: Date | string, locale: string = 'fr'): string {
     month: 'long',
     day: 'numeric',
   });
+}
+
+/** Resolve the shop URL: prefer tenant branding siteUrl, then env vars */
+function resolveShopUrl(branding?: TenantEmailBranding): string {
+  return branding?.siteUrl || SHOP_URL;
+}
+
+/** Resolve the support email: prefer tenant branding, then generic placeholder */
+function resolveSupportEmail(branding?: TenantEmailBranding, isFr = true): string {
+  const email = branding?.supportEmail || 'support@attitudes.vip';
+  return isFr
+    ? `Contactez-nous à <a href="mailto:${email}" style="color: #CC5500;">${email}</a>`
+    : `Contact us at <a href="mailto:${email}" style="color: #CC5500;">${email}</a>`;
 }
 
 // ============================================
@@ -178,13 +195,11 @@ export function orderConfirmationEmail(data: OrderData): { subject: string; html
 
     ${emailComponents.button(
       isFr ? 'Voir ma commande' : 'View my order',
-      `${SHOP_URL}/account/orders`
+      `${resolveShopUrl(data.branding)}/account/orders`
     )}
 
     <p style="font-size: 14px; color: #6b7280; text-align: center;">
-      ${isFr 
-        ? 'Des questions? Contactez-nous à support@biocyclepeptides.com'
-        : 'Questions? Contact us at support@biocyclepeptides.com'}
+      ${isFr ? 'Des questions? ' : 'Questions? '}${resolveSupportEmail(data.branding, isFr)}
     </p>
   `;
 
@@ -197,6 +212,7 @@ export function orderConfirmationEmail(data: OrderData): { subject: string; html
       content,
       locale: data.locale,
       unsubscribeUrl: data.unsubscribeUrl,
+      branding: data.branding,
     }),
   };
 }
@@ -287,7 +303,7 @@ export function orderProcessingEmail(data: OrderData): { subject: string; html: 
 
     ${emailComponents.button(
       isFr ? 'Voir le statut de ma commande' : 'View order status',
-      `${SHOP_URL}/account/orders`
+      `${resolveShopUrl(data.branding)}/account/orders`
     )}
   `;
 
@@ -300,6 +316,7 @@ export function orderProcessingEmail(data: OrderData): { subject: string; html: 
       content,
       locale: data.locale,
       unsubscribeUrl: data.unsubscribeUrl,
+      branding: data.branding,
     }),
   };
 }
@@ -363,9 +380,7 @@ export function orderShippedEmail(data: OrderData): { subject: string; html: str
     </div>
 
     <p style="font-size: 14px; color: #6b7280; text-align: center; margin-top: 32px;">
-      ${isFr 
-        ? 'Des questions sur votre livraison? Contactez-nous à support@biocyclepeptides.com'
-        : 'Questions about your delivery? Contact us at support@biocyclepeptides.com'}
+      ${isFr ? 'Des questions sur votre livraison? ' : 'Questions about your delivery? '}${resolveSupportEmail(data.branding, isFr)}
     </p>
   `;
 
@@ -378,6 +393,7 @@ export function orderShippedEmail(data: OrderData): { subject: string; html: str
       content,
       locale: data.locale,
       unsubscribeUrl: data.unsubscribeUrl,
+      branding: data.branding,
     }),
   };
 }
@@ -429,7 +445,7 @@ export function orderDeliveredEmail(data: OrderData): { subject: string; html: s
 
     ${emailComponents.button(
       isFr ? '⭐ Donner mon avis (+50 points)' : '⭐ Leave a review (+50 points)',
-      `${SHOP_URL}/account/orders?review=${data.orderNumber}`
+      `${resolveShopUrl(data.branding)}/account/orders?review=${data.orderNumber}`
     )}
 
     <div style="background-color: #fef3c7; border-radius: 8px; padding: 16px; margin: 24px 0; text-align: center;">
@@ -454,13 +470,11 @@ export function orderDeliveredEmail(data: OrderData): { subject: string; html: s
 
     ${emailComponents.button(
       isFr ? 'Commander à nouveau' : 'Reorder',
-      `${SHOP_URL}/account/orders`
+      `${resolveShopUrl(data.branding)}/account/orders`
     )}
 
     <p style="font-size: 14px; color: #6b7280; text-align: center; margin-top: 32px;">
-      ${isFr 
-        ? 'Un problème avec votre commande? Contactez-nous à support@biocyclepeptides.com'
-        : 'Issue with your order? Contact us at support@biocyclepeptides.com'}
+      ${isFr ? 'Un problème avec votre commande? ' : 'Issue with your order? '}${resolveSupportEmail(data.branding, isFr)}
     </p>
   `;
 
@@ -473,6 +487,7 @@ export function orderDeliveredEmail(data: OrderData): { subject: string; html: s
       content,
       locale: data.locale,
       unsubscribeUrl: data.unsubscribeUrl,
+      branding: data.branding,
     }),
   };
 }
@@ -505,7 +520,7 @@ export function satisfactionSurveyEmail(data: OrderData): { subject: string; htm
         <tr>
           ${[1, 2, 3, 4, 5].map(star => `
           <td style="padding: 0 4px;">
-            <a href="${SHOP_URL}/feedback?order=${data.orderNumber}&rating=${star}" style="text-decoration: none; font-size: 36px; color: #f59e0b;">
+            <a href="${resolveShopUrl(data.branding)}/feedback?order=${data.orderNumber}&rating=${star}" style="text-decoration: none; font-size: 36px; color: #f59e0b;">
               ${Array.from({ length: 5 }, (_, i) => i < star ? '&#9733;' : '&#9734;').join('')}
             </a>
           </td>
@@ -514,7 +529,7 @@ export function satisfactionSurveyEmail(data: OrderData): { subject: string; htm
         <tr>
           ${[1, 2, 3, 4, 5].map(star => `
           <td style="padding: 4px 4px 0; text-align: center;">
-            <a href="${SHOP_URL}/feedback?order=${data.orderNumber}&rating=${star}" style="text-decoration: none; font-size: 24px;">
+            <a href="${resolveShopUrl(data.branding)}/feedback?order=${data.orderNumber}&rating=${star}" style="text-decoration: none; font-size: 24px;">
               ${star === 1 ? '😞' : star === 2 ? '😐' : star === 3 ? '🙂' : star === 4 ? '😊' : '🤩'}
             </a>
           </td>
@@ -534,7 +549,7 @@ export function satisfactionSurveyEmail(data: OrderData): { subject: string; htm
 
     ${emailComponents.button(
       isFr ? 'Laisser un avis détaillé' : 'Leave a detailed review',
-      `${SHOP_URL}/account/orders?review=${data.orderNumber}`
+      `${resolveShopUrl(data.branding)}/account/orders?review=${data.orderNumber}`
     )}
 
     <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 32px 0;">
@@ -555,6 +570,7 @@ export function satisfactionSurveyEmail(data: OrderData): { subject: string; htm
       content,
       locale: data.locale,
       unsubscribeUrl: data.unsubscribeUrl,
+      branding: data.branding,
     }),
   };
 }
@@ -636,13 +652,11 @@ export function orderCancelledEmail(data: OrderData): { subject: string; html: s
 
     ${emailComponents.button(
       isFr ? 'Parcourir nos produits' : 'Browse our products',
-      `${SHOP_URL}/shop`
+      `${resolveShopUrl(data.branding)}/shop`
     )}
 
     <p style="font-size: 14px; color: #6b7280; text-align: center;">
-      ${isFr
-        ? 'Des questions? Contactez-nous à support@biocyclepeptides.com'
-        : 'Questions? Contact us at support@biocyclepeptides.com'}
+      ${isFr ? 'Des questions? ' : 'Questions? '}${resolveSupportEmail(data.branding, isFr)}
     </p>
   `;
 
@@ -655,6 +669,7 @@ export function orderCancelledEmail(data: OrderData): { subject: string; html: s
       content,
       locale: data.locale,
       unsubscribeUrl: data.unsubscribeUrl,
+      branding: data.branding,
     }),
   };
 }
@@ -746,13 +761,11 @@ export function orderRefundEmail(data: OrderData): { subject: string; html: stri
 
     ${emailComponents.button(
       isFr ? 'Voir mes commandes' : 'View my orders',
-      `${SHOP_URL}/account/orders`
+      `${resolveShopUrl(data.branding)}/account/orders`
     )}
 
     <p style="font-size: 14px; color: #6b7280; text-align: center;">
-      ${isFr
-        ? 'Des questions sur votre remboursement? Contactez-nous à support@biocyclepeptides.com'
-        : 'Questions about your refund? Contact us at support@biocyclepeptides.com'}
+      ${isFr ? 'Des questions sur votre remboursement? ' : 'Questions about your refund? '}${resolveSupportEmail(data.branding, isFr)}
     </p>
   `;
 
@@ -765,6 +778,7 @@ export function orderRefundEmail(data: OrderData): { subject: string; html: stri
       content,
       locale: data.locale,
       unsubscribeUrl: data.unsubscribeUrl,
+      branding: data.branding,
     }),
   };
 }

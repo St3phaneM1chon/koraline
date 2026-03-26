@@ -9,6 +9,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { prisma, withPrismaRetry } from '@/lib/db';
 import { sendEmail, orderConfirmationEmail, generateUnsubscribeUrl, type OrderData } from '@/lib/email';
+import { loadTenantBranding } from '@/lib/email/tenant-branding';
 import { createAccountingEntriesForOrder } from '@/lib/accounting/webhook-accounting.service';
 import { generateCOGSEntry } from '@/lib/inventory';
 import { qualifyReferral } from '@/lib/referral-qualify';
@@ -1065,6 +1066,20 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session, eventId:
     data: { orderNumber, type: 'sale' },
   }).catch(() => {});
 
+  // 10. Auto-enroll in courses for FORMATION products
+  if (userId && cartItems.length > 0) {
+    try {
+      await autoEnrollFormationProducts(order.id, userId, cartItems);
+      sideEffectResults.courseAutoEnrollment = 'ok';
+    } catch (enrollError) {
+      const msg = enrollError instanceof Error ? enrollError.message : String(enrollError);
+      sideEffectResults.courseAutoEnrollment = msg;
+      logger.error('[webhook] course auto-enrollment failed', { orderNumber, error: msg });
+    }
+  } else {
+    sideEffectResults.courseAutoEnrollment = 'skipped';
+  }
+
   // ---------------------------------------------------------------------------
   // T3-5: Summary log — shows which side effects succeeded/failed/were skipped
   // ---------------------------------------------------------------------------
@@ -1374,6 +1389,7 @@ async function sendOrderConfirmationEmailAsync(orderId: string, userId: string) 
       where: { id: orderId },
       select: {
         id: true,
+        tenantId: true,
         orderNumber: true,
         subtotal: true,
         shippingCost: true,
@@ -1408,6 +1424,9 @@ async function sendOrderConfirmationEmailAsync(orderId: string, userId: string) 
 
     if (!user) return;
 
+    // Load tenant branding for multi-tenant email personalization
+    const branding = await loadTenantBranding(order.tenantId);
+
     const orderData: OrderData = {
       orderNumber: order.orderNumber,
       customerName: user.name || 'Client',
@@ -1436,6 +1455,7 @@ async function sendOrderConfirmationEmailAsync(orderId: string, userId: string) 
       locale: (user.locale as 'fr' | 'en') || 'fr',
       // CAN-SPAM / RGPD / LCAP compliance
       unsubscribeUrl: await generateUnsubscribeUrl(user.email, 'transactional', user.id).catch(() => undefined),
+      branding,
     };
 
     const emailContent = orderConfirmationEmail(orderData);
@@ -1846,4 +1866,273 @@ async function handleLmsRefund(charge: Stripe.Charge): Promise<boolean> {
   }
 
   return false;
+}
+
+// =====================================================
+// AUTO-ENROLLMENT FOR FORMATION PRODUCTS
+// =====================================================
+
+/**
+ * After an e-commerce order is completed, check if any purchased products
+ * have productType === 'FORMATION' and auto-enroll the student in the
+ * linked Course or CourseBundle. Sends an access email for each enrollment.
+ *
+ * Uses upsert-style logic (skip if already enrolled) for idempotency.
+ */
+async function autoEnrollFormationProducts(
+  orderId: string,
+  userId: string,
+  cartItems: Record<string, unknown>[]
+) {
+  // Get unique product IDs from the cart
+  const productIds = [...new Set(cartItems.map(item => String(item.productId)))];
+  if (productIds.length === 0) return;
+
+  // Fetch only FORMATION products with their course/bundle links
+  const formationProducts = await prisma.product.findMany({
+    where: {
+      id: { in: productIds },
+      productType: 'FORMATION',
+    },
+    select: {
+      id: true,
+      name: true,
+      tenantId: true,
+      courseId: true,
+      courseBundleId: true,
+    },
+  });
+
+  if (formationProducts.length === 0) return;
+
+  logger.info('[webhook] Auto-enrolling FORMATION products', {
+    orderId,
+    userId,
+    formationCount: formationProducts.length,
+    productIds: formationProducts.map(p => p.id),
+  });
+
+  // Fetch user email once for all enrollment emails
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { email: true, name: true },
+  });
+
+  for (const product of formationProducts) {
+    const tenantId = product.tenantId || 'default';
+
+    // --- Single course enrollment ---
+    if (product.courseId) {
+      try {
+        await enrollUser(tenantId, product.courseId, userId);
+        logger.info('[webhook] Auto-enrolled in course via FORMATION product', {
+          productId: product.id,
+          courseId: product.courseId,
+          userId,
+        });
+      } catch (err) {
+        if (err instanceof Error && err.message.includes('Already enrolled')) {
+          logger.info('[webhook] Already enrolled in course (idempotent)', {
+            productId: product.id,
+            courseId: product.courseId,
+            userId,
+          });
+        } else {
+          logger.error('[webhook] Course auto-enrollment failed', {
+            productId: product.id,
+            courseId: product.courseId,
+            userId,
+            error: err instanceof Error ? err.message : String(err),
+          });
+          // Continue to next product — don't block other enrollments
+          continue;
+        }
+      }
+
+      // Update enrollment source to 'purchase'
+      await prisma.enrollment.updateMany({
+        where: { tenantId, courseId: product.courseId, userId },
+        data: {
+          enrollmentSource: 'purchase',
+          paymentType: 'individual',
+        },
+      });
+
+      // Send course access email
+      if (user?.email) {
+        await sendCourseAccessEmail(user.email, user.name, product.courseId, product.name);
+      }
+    }
+
+    // --- Bundle enrollment ---
+    if (product.courseBundleId) {
+      try {
+        const result = await enrollUserInBundle(tenantId, product.courseBundleId, userId, {
+          paymentType: 'individual',
+        });
+        logger.info('[webhook] Auto-enrolled in bundle via FORMATION product', {
+          productId: product.id,
+          bundleId: product.courseBundleId,
+          userId,
+          enrolled: result.enrollmentIds.length,
+          skipped: result.skippedCourseIds.length,
+        });
+      } catch (err) {
+        logger.error('[webhook] Bundle auto-enrollment failed', {
+          productId: product.id,
+          bundleId: product.courseBundleId,
+          userId,
+          error: err instanceof Error ? err.message : String(err),
+        });
+        continue;
+      }
+
+      // Send bundle access email
+      if (user?.email) {
+        await sendBundleAccessEmail(user.email, user.name, product.courseBundleId, product.name);
+      }
+    }
+
+    // If no courseId and no courseBundleId, the FORMATION product is misconfigured
+    if (!product.courseId && !product.courseBundleId) {
+      logger.warn('[webhook] FORMATION product has no courseId or courseBundleId — skipping enrollment', {
+        productId: product.id,
+        productName: product.name,
+      });
+    }
+  }
+}
+
+/**
+ * Send a course access email to the student after auto-enrollment.
+ */
+async function sendCourseAccessEmail(
+  email: string,
+  name: string | null,
+  courseId: string,
+  productName: string
+) {
+  try {
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+      select: { title: true, slug: true },
+    });
+
+    const courseName = course?.title || productName;
+    const courseSlug = course?.slug || courseId;
+    const baseUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_BASE_URL || 'https://attitudes.vip';
+    const courseUrl = `${baseUrl}/learn/${courseSlug}`;
+    const displayName = name || 'cher(e) client(e)';
+
+    await sendEmail({
+      to: { email, name: name || undefined },
+      subject: `Votre formation est prête : ${courseName}`,
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px;">
+          <h2 style="color: #003366; margin-bottom: 16px;">Bienvenue dans votre formation !</h2>
+          <p>Bonjour ${displayName},</p>
+          <p>Votre achat a été confirmé et vous avez maintenant accès au cours :</p>
+          <div style="background: #f4f8fc; border-left: 4px solid #0066CC; padding: 16px; margin: 20px 0; border-radius: 4px;">
+            <strong style="font-size: 18px; color: #003366;">${courseName}</strong>
+          </div>
+          <p>Commencez votre apprentissage dès maintenant :</p>
+          <div style="text-align: center; margin: 24px 0;">
+            <a href="${courseUrl}" style="display: inline-block; background: #0066CC; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 16px;">
+              Accéder au cours
+            </a>
+          </div>
+          <p style="color: #666; font-size: 14px;">Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br/>
+          <a href="${courseUrl}" style="color: #0066CC;">${courseUrl}</a></p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
+          <p style="color: #999; font-size: 12px;">Cet email a été envoyé automatiquement suite à votre achat.</p>
+        </div>
+      `,
+      tags: ['course-access', 'auto-enrollment'],
+      emailType: 'transactional',
+    });
+
+    logger.info('[webhook] Course access email sent', { email: email.replace(/^(.{2}).*(@.*)$/, '$1***$2'), courseId });
+  } catch (err) {
+    // Non-blocking: log but don't throw
+    logger.error('[webhook] Course access email failed', {
+      courseId,
+      error: err instanceof Error ? err.message : String(err),
+    });
+  }
+}
+
+/**
+ * Send a bundle access email to the student after auto-enrollment.
+ */
+async function sendBundleAccessEmail(
+  email: string,
+  name: string | null,
+  bundleId: string,
+  productName: string
+) {
+  try {
+    const bundle = await prisma.courseBundle.findUnique({
+      where: { id: bundleId },
+      select: {
+        name: true,
+        slug: true,
+        items: {
+          include: { course: { select: { title: true, slug: true } } },
+          orderBy: { sortOrder: 'asc' },
+        },
+      },
+    });
+
+    const bundleName = bundle?.name || productName;
+    const baseUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_BASE_URL || 'https://attitudes.vip';
+    const dashboardUrl = `${baseUrl}/learn`;
+    const displayName = name || 'cher(e) client(e)';
+
+    // Build course list HTML
+    const courseListHtml = bundle?.items?.map(item =>
+      `<li style="margin-bottom: 8px;">
+        <a href="${baseUrl}/learn/${item.course.slug}" style="color: #0066CC; text-decoration: none; font-weight: 500;">
+          ${item.course.title}
+        </a>
+      </li>`
+    ).join('') || '<li>Voir vos cours dans votre espace formation</li>';
+
+    await sendEmail({
+      to: { email, name: name || undefined },
+      subject: `Votre programme de formation est prêt : ${bundleName}`,
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px;">
+          <h2 style="color: #003366; margin-bottom: 16px;">Bienvenue dans votre programme de formation !</h2>
+          <p>Bonjour ${displayName},</p>
+          <p>Votre achat a été confirmé et vous avez maintenant accès au programme :</p>
+          <div style="background: #f4f8fc; border-left: 4px solid #0066CC; padding: 16px; margin: 20px 0; border-radius: 4px;">
+            <strong style="font-size: 18px; color: #003366;">${bundleName}</strong>
+          </div>
+          <p>Ce programme comprend les cours suivants :</p>
+          <ul style="padding-left: 20px; color: #333;">
+            ${courseListHtml}
+          </ul>
+          <div style="text-align: center; margin: 24px 0;">
+            <a href="${dashboardUrl}" style="display: inline-block; background: #0066CC; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 16px;">
+              Accéder à mes formations
+            </a>
+          </div>
+          <p style="color: #666; font-size: 14px;">Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br/>
+          <a href="${dashboardUrl}" style="color: #0066CC;">${dashboardUrl}</a></p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
+          <p style="color: #999; font-size: 12px;">Cet email a été envoyé automatiquement suite à votre achat.</p>
+        </div>
+      `,
+      tags: ['bundle-access', 'auto-enrollment'],
+      emailType: 'transactional',
+    });
+
+    logger.info('[webhook] Bundle access email sent', { email: email.replace(/^(.{2}).*(@.*)$/, '$1***$2'), bundleId });
+  } catch (err) {
+    // Non-blocking: log but don't throw
+    logger.error('[webhook] Bundle access email failed', {
+      bundleId,
+      error: err instanceof Error ? err.message : String(err),
+    });
+  }
 }

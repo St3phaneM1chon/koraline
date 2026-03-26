@@ -10679,7 +10679,19 @@
     "missionTitle": "Ang Aming Misyon",
     "missionText": "Sa BioCycle Peptides, nagsisikap kaming magtakda ng pamantayan para sa kalidad, kaligtasan at halaga sa pag-develop at paggawa ng pharmaceutical na kalidad ng peptide products.",
     "ctaTitleNew": "Pangunahing pinagkukunan ng peptide para sa pananaliksik sa Canada",
-    "ctaTextNew": "Ipinagmamalaki na nagpapatakbo mula sa Canada. Na-lab test, 99%+ kadalisayan, mabilis na domestic shipping."
+    "ctaTextNew": "Ipinagmamalaki na nagpapatakbo mula sa Canada. Na-lab test, 99%+ kadalisayan, mabilis na domestic shipping.",
+    "welcomeTo": "Welcome to",
+    "storeComingSoon": "Our store is being prepared. Come back soon!",
+    "poweredBy": "Powered by",
+    "discoverCourses": "Discover our courses",
+    "learningDescription": "Learn with interactive courses designed for your professional success.",
+    "levelBeginner": "Beginner",
+    "levelIntermediate": "Intermediate",
+    "levelAdvanced": "Advanced",
+    "levelExpert": "Expert",
+    "free": "Free",
+    "viewCourse": "View course",
+    "browseAllCourses": "Browse all courses"
   },
   "invoice": {
     "allStatuses": "Lahat ng katayuan",

@@ -10679,7 +10679,19 @@
     "missionTitle": "우리의 사명",
     "missionText": "BioCycle Peptides에서는 고객의 연구 결과를 크게 향상시키는 제약 품질의 펩타이드 제품 개발 및 제조에서 품질, 안전 및 가치의 표준을 세우기 위해 노력합니다.",
     "ctaTitleNew": "캐나다 최고의 연구 펩타이드 공급원",
-    "ctaTextNew": "캐나다에서 자랑스럽게 운영. 실험실 테스트, 99%+ 순도, 빠른 국내 배송."
+    "ctaTextNew": "캐나다에서 자랑스럽게 운영. 실험실 테스트, 99%+ 순도, 빠른 국내 배송.",
+    "welcomeTo": "Welcome to",
+    "storeComingSoon": "Our store is being prepared. Come back soon!",
+    "poweredBy": "Powered by",
+    "discoverCourses": "Discover our courses",
+    "learningDescription": "Learn with interactive courses designed for your professional success.",
+    "levelBeginner": "Beginner",
+    "levelIntermediate": "Intermediate",
+    "levelAdvanced": "Advanced",
+    "levelExpert": "Expert",
+    "free": "Free",
+    "viewCourse": "View course",
+    "browseAllCourses": "Browse all courses"
   },
   "invoice": {
     "allStatuses": "모든 상태",

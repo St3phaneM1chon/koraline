@@ -10679,7 +10679,19 @@
     "missionTitle": "Sứ mệnh của chúng tôi",
     "missionText": "Tại BioCycle Peptides, chúng tôi nỗ lực thiết lập tiêu chuẩn về chất lượng, an toàn và giá trị trong phát triển và sản xuất các sản phẩm peptide chất lượng dược phẩm.",
     "ctaTitleNew": "Nguồn hàng đầu tại Canada cho peptide nghiên cứu",
-    "ctaTextNew": "Tự hào hoạt động tại Canada. Đã kiểm tra phòng thí nghiệm, độ tinh khiết 99%+, giao hàng nội địa nhanh."
+    "ctaTextNew": "Tự hào hoạt động tại Canada. Đã kiểm tra phòng thí nghiệm, độ tinh khiết 99%+, giao hàng nội địa nhanh.",
+    "welcomeTo": "Welcome to",
+    "storeComingSoon": "Our store is being prepared. Come back soon!",
+    "poweredBy": "Powered by",
+    "discoverCourses": "Discover our courses",
+    "learningDescription": "Learn with interactive courses designed for your professional success.",
+    "levelBeginner": "Beginner",
+    "levelIntermediate": "Intermediate",
+    "levelAdvanced": "Advanced",
+    "levelExpert": "Expert",
+    "free": "Free",
+    "viewCourse": "View course",
+    "browseAllCourses": "Browse all courses"
   },
   "invoice": {
     "allStatuses": "Tất cả trạng thái",

@@ -10679,7 +10679,19 @@
     "missionTitle": "எங்கள் நோக்கம்",
     "missionText": "BioCycle Peptides இல், மருந்துத் தரமான பெப்டைட் தயாரிப்புகளின் மேம்பாடு மற்றும் உற்பத்தியில் தரம், பாதுகாப்பு மற்றும் மதிப்பின் தரத்தை நிர்ணயிக்க நாங்கள் முயற்சிக்கிறோம்.",
     "ctaTitleNew": "கனடாவில் ஆராய்ச்சி பெப்டைடுகளுக்கான முதன்மை ஆதாரம்",
-    "ctaTextNew": "கனடாவிலிருந்து பெருமையுடன் இயங்குகிறோம். ஆய்வக சோதனை, 99%+ தூய்மை, வேகமான உள்நாட்டு அனுப்புதல்."
+    "ctaTextNew": "கனடாவிலிருந்து பெருமையுடன் இயங்குகிறோம். ஆய்வக சோதனை, 99%+ தூய்மை, வேகமான உள்நாட்டு அனுப்புதல்.",
+    "welcomeTo": "Welcome to",
+    "storeComingSoon": "Our store is being prepared. Come back soon!",
+    "poweredBy": "Powered by",
+    "discoverCourses": "Discover our courses",
+    "learningDescription": "Learn with interactive courses designed for your professional success.",
+    "levelBeginner": "Beginner",
+    "levelIntermediate": "Intermediate",
+    "levelAdvanced": "Advanced",
+    "levelExpert": "Expert",
+    "free": "Free",
+    "viewCourse": "View course",
+    "browseAllCourses": "Browse all courses"
   },
   "invoice": {
     "allStatuses": "அனைத்து நிலைகள்",

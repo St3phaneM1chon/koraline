@@ -10679,7 +10679,19 @@
     "missionTitle": "مهمتنا",
     "missionText": "في BioCycle Peptides، نسعى لتحديد معايير الجودة والسلامة والقيمة في تطوير وتصنيع منتجات ببتيدية بجودة صيدلانية تحسّن بشكل كبير نتائج أبحاث عملائنا.",
     "ctaTitleNew": "المصدر الأول في كندا لببتيدات البحث",
-    "ctaTextNew": "نعمل بفخر من كندا. مختبر معتمد، نقاء 99%+، شحن محلي سريع."
+    "ctaTextNew": "نعمل بفخر من كندا. مختبر معتمد، نقاء 99%+، شحن محلي سريع.",
+    "welcomeTo": "Welcome to",
+    "storeComingSoon": "Our store is being prepared. Come back soon!",
+    "poweredBy": "Powered by",
+    "discoverCourses": "Discover our courses",
+    "learningDescription": "Learn with interactive courses designed for your professional success.",
+    "levelBeginner": "Beginner",
+    "levelIntermediate": "Intermediate",
+    "levelAdvanced": "Advanced",
+    "levelExpert": "Expert",
+    "free": "Free",
+    "viewCourse": "View course",
+    "browseAllCourses": "Browse all courses"
   },
   "invoice": {
     "allStatuses": "جميع الحالات",

@@ -10679,7 +10679,19 @@
     "missionTitle": "Nasza misja",
     "missionText": "W BioCycle Peptides dążymy do ustanowienia standardu jakości, bezpieczeństwa i wartości w opracowywaniu i produkcji peptydów o jakości farmaceutycznej, znacząco poprawiających wyniki badań naszych klientów.",
     "ctaTitleNew": "Wiodące źródło peptydów badawczych w Kanadzie",
-    "ctaTextNew": "Z dumą działamy w Kanadzie. Przetestowane laboratoryjnie, czystość 99%+, szybka dostawa krajowa."
+    "ctaTextNew": "Z dumą działamy w Kanadzie. Przetestowane laboratoryjnie, czystość 99%+, szybka dostawa krajowa.",
+    "welcomeTo": "Welcome to",
+    "storeComingSoon": "Our store is being prepared. Come back soon!",
+    "poweredBy": "Powered by",
+    "discoverCourses": "Discover our courses",
+    "learningDescription": "Learn with interactive courses designed for your professional success.",
+    "levelBeginner": "Beginner",
+    "levelIntermediate": "Intermediate",
+    "levelAdvanced": "Advanced",
+    "levelExpert": "Expert",
+    "free": "Free",
+    "viewCourse": "View course",
+    "browseAllCourses": "Browse all courses"
   },
   "invoice": {
     "allStatuses": "Wszystkie statusy",

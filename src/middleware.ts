@@ -162,17 +162,27 @@ function getTenantOrigin(tenantSlug: string): string {
   return origins[tenantSlug] || `https://${tenantSlug}.koraline.app`;
 }
 
+// Known custom domains mapped to tenant slugs (Edge Runtime cannot query DB).
+// For new custom domains, add them here or use Koraline subdomain routing.
+const CUSTOM_DOMAIN_TO_TENANT: Record<string, string> = {
+  'biocyclepeptides.com': 'biocycle',
+  'www.biocyclepeptides.com': 'biocycle',
+  'aptitudes.vip': 'aptitudes',
+  'www.aptitudes.vip': 'aptitudes',
+};
+
 function resolveTenantFromHost(hostname: string): { tenantSlug: string; isSuperAdmin: boolean } {
   const cleanHost = hostname.split(':')[0].toLowerCase();
 
-  // Super-admin: attitudes.vip
+  // Super-admin: attitudes.vip (the SaaS platform itself)
   if (cleanHost === 'attitudes.vip' || cleanHost.endsWith('.attitudes.vip')) {
     return { tenantSlug: 'attitudes', isSuperAdmin: true };
   }
 
-  // BioCycle production
-  if (cleanHost === 'biocyclepeptides.com' || cleanHost === 'www.biocyclepeptides.com') {
-    return { tenantSlug: 'biocycle', isSuperAdmin: false };
+  // Known custom domains (BioCycle, Aptitudes, etc.)
+  const customTenant = CUSTOM_DOMAIN_TO_TENANT[cleanHost];
+  if (customTenant) {
+    return { tenantSlug: customTenant, isSuperAdmin: false };
   }
 
   // Railway production domains

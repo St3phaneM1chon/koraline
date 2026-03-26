@@ -580,6 +580,9 @@ model Product {
   fullDetails         String?
   specifications      String?
   productType         ProductType          @default(PEPTIDE)
+  // LMS link: when productType is FORMATION, one of these links the product to a course/bundle
+  courseId             String?              // FK to Course (LMS) — auto-enrollment on purchase
+  courseBundleId       String?              // FK to CourseBundle (LMS) — auto-enrollment on purchase
   price               Decimal              @db.Decimal(10, 2)
   // BUG-058 NOTE: This field is named "compareAtPrice" (Shopify convention) for the
   // product-level strike-through price. The ProductOption model uses "comparePrice"
@@ -679,6 +682,8 @@ model Product {
   @@index([isFeatured])
   @@index([isNew])
   @@index([productType])
+  @@index([courseId])
+  @@index([courseBundleId])
   @@index([sku])
   @@index([slug])
   @@index([name])

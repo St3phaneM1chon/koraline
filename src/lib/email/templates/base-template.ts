@@ -1,9 +1,11 @@
 /**
  * Template de base pour tous les emails — Multi-Tenant Koraline
  * Le nom de l'entreprise vient du tenant config (companyName parameter).
+ * Colors, logo, and URLs are driven by TenantEmailBranding when provided.
  */
 
 import { EMAIL_SENDER_NAME } from '@/lib/email/constants';
+import type { TenantEmailBranding } from '@/lib/email/tenant-branding';
 
 /** Shared HTML escape utility — use for all user-supplied strings in email templates */
 export function escapeHtml(str: string): string {
@@ -32,28 +34,45 @@ export interface BaseTemplateData {
   companyName?: string;
   /** Override the company address in the footer. Defaults to 'Montreal, QC, Canada' */
   companyAddress?: string;
+  /** Tenant branding (colors, logo, name, URLs). When provided, overrides companyName and colors. */
+  branding?: TenantEmailBranding;
 }
 
-// const LOGO_URL = 'https://attitudes.vip/images/logo-email.png'; // For future use
-const BRAND_COLOR = '#CC5500'; // Orange
-const DARK_COLOR = '#1f2937';
+// Default constants — used when no TenantEmailBranding is provided
+const DEFAULT_BRAND_COLOR = '#CC5500'; // Orange
+const DEFAULT_DARK_COLOR = '#1f2937';
 
 export function baseTemplate(data: BaseTemplateData): string {
   const {
     preheader = '', content, footerText, unsubscribeUrl, locale = 'fr',
-    darkMode = false, socialLinks,
-    companyName = EMAIL_SENDER_NAME,
+    darkMode = false, socialLinks, branding,
     companyAddress = 'Montréal, QC, Canada',
   } = data;
 
+  // Resolve branding: explicit branding > companyName prop > defaults
+  const brandColor = branding?.primaryColor || DEFAULT_BRAND_COLOR;
+  const headerBgColor = branding?.secondaryColor || DEFAULT_DARK_COLOR;
+  const companyName = branding?.tenantName || data.companyName || EMAIL_SENDER_NAME;
+  const logoUrl = branding?.logoUrl;
+  const siteUrl = branding?.siteUrl || process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
+  // Initials for the text-logo fallback (first 2 chars of company name)
+  const logoInitials = companyName.substring(0, 2).toUpperCase();
+
   const isFr = locale === 'fr';
-  
+
   const defaultFooter = isFr
-    ? `Cet email a été envoyé par ${companyName}.`
-    : `This email was sent by ${companyName}.`;
+    ? `Cet email a été envoyé par ${escapeHtml(companyName)}.`
+    : `This email was sent by ${escapeHtml(companyName)}.`;
 
   const contactText = isFr ? 'Contactez-nous' : 'Contact us';
   const viewOnlineText = isFr ? 'Voir en ligne' : 'View online';
+
+  // Build the logo cell: use an <img> if logoUrl is present, otherwise a colored initials box
+  const logoHtml = logoUrl
+    ? `<img src="${escapeHtml(logoUrl)}" alt="${escapeHtml(companyName)}" height="40" style="height: 40px; max-width: 180px; object-fit: contain;">`
+    : `<div style="width: 40px; height: 40px; background-color: ${brandColor}; border-radius: 10px; display: inline-block; text-align: center; line-height: 40px;">
+        <span style="color: white; font-weight: bold; font-size: 16px;">${logoInitials}</span>
+      </div>`;
 
   return `
 <!DOCTYPE html>
@@ -72,16 +91,16 @@ export function baseTemplate(data: BaseTemplateData): string {
   <style>
     body { margin: 0; padding: 0; background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
     .container { max-width: 600px; margin: 0 auto; }
-    .header { background-color: ${DARK_COLOR}; padding: 24px; text-align: center; }
+    .header { background-color: ${headerBgColor}; padding: 24px; text-align: center; }
     .logo { height: 40px; }
     .content { background-color: #ffffff; padding: 32px; }
     .footer { background-color: #f9fafb; padding: 24px; text-align: center; font-size: 12px; color: #6b7280; }
-    .button { display: inline-block; background-color: ${BRAND_COLOR}; color: #ffffff !important; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; }
-    .button:hover { background-color: #AD4700; }
+    .button { display: inline-block; background-color: ${brandColor}; color: #ffffff !important; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; }
+    .button:hover { opacity: 0.9; }
     .divider { border-top: 1px solid #e5e7eb; margin: 24px 0; }
-    h1, h2, h3 { color: ${DARK_COLOR}; margin-top: 0; }
+    h1, h2, h3 { color: ${headerBgColor}; margin-top: 0; }
     p { color: #4b5563; line-height: 1.6; }
-    a { color: ${BRAND_COLOR}; }
+    a { color: ${brandColor}; }
     .preheader { display: none; max-height: 0; overflow: hidden; }
     @media only screen and (max-width: 600px) {
       .content { padding: 20px !important; }
@@ -104,36 +123,34 @@ export function baseTemplate(data: BaseTemplateData): string {
     ${preheader}
     ${'&zwnj;&nbsp;'.repeat(40)}
   </div>
-  
+
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f3f4f6;">
     <tr>
       <td align="center" style="padding: 20px 10px;">
         <table role="presentation" class="container" width="600" cellspacing="0" cellpadding="0">
           <!-- Header -->
           <tr>
-            <td class="header" style="background-color: ${DARK_COLOR}; padding: 24px; text-align: center; border-radius: 12px 12px 0 0;">
+            <td class="header" style="background-color: ${headerBgColor}; padding: 24px; text-align: center; border-radius: 12px 12px 0 0;">
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                 <tr>
                   <td align="center">
                     <div style="display: inline-flex; align-items: center; gap: 12px;">
-                      <div style="width: 40px; height: 40px; background-color: ${BRAND_COLOR}; border-radius: 10px; display: inline-block; text-align: center; line-height: 40px;">
-                        <span style="color: white; font-weight: bold; font-size: 16px;">BC</span>
-                      </div>
-                      <span style="color: white; font-size: 20px; font-weight: bold;">${companyName}</span>
+                      ${logoHtml}
+                      <span style="color: white; font-size: 20px; font-weight: bold;">${escapeHtml(companyName)}</span>
                     </div>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
-          
+
           <!-- Content -->
           <tr>
             <td class="content" style="background-color: #ffffff; padding: 32px;">
               ${content}
             </td>
           </tr>
-          
+
           <!-- Footer -->
           <tr>
             <td class="footer" style="background-color: #f9fafb; padding: 24px; text-align: center; border-radius: 0 0 12px 12px;">
@@ -149,13 +166,13 @@ export function baseTemplate(data: BaseTemplateData): string {
               </p>
               ` : ''}
               <p style="margin: 0 0 12px 0; font-size: 12px; color: #9ca3af;">
-                <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/contact" style="color: #6b7280; text-decoration: underline;">${contactText}</a>
+                <a href="${siteUrl}/contact" style="color: #6b7280; text-decoration: underline;">${contactText}</a>
                 &nbsp;|&nbsp;
-                <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}" style="color: #6b7280; text-decoration: underline;">${viewOnlineText}</a>
+                <a href="${siteUrl}" style="color: #6b7280; text-decoration: underline;">${viewOnlineText}</a>
                 ${unsubscribeUrl ? `&nbsp;|&nbsp;<a href="${unsubscribeUrl}" style="color: #6b7280; text-decoration: underline;">${isFr ? 'Se désabonner' : 'Unsubscribe'}</a>` : ''}
               </p>
               <p style="margin: 0; font-size: 11px; color: #9ca3af;">
-                © ${new Date().getFullYear()} ${companyName} ${companyAddress}
+                © ${new Date().getFullYear()} ${escapeHtml(companyName)} ${companyAddress}
               </p>
             </td>
           </tr>
@@ -170,11 +187,11 @@ export function baseTemplate(data: BaseTemplateData): string {
 
 // Composants réutilisables
 export const emailComponents = {
-  button: (text: string, url: string) => `
+  button: (text: string, url: string, color?: string) => `
     <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 24px 0;">
       <tr>
         <td align="center">
-          <a href="${url}" class="button" style="display: inline-block; background-color: ${BRAND_COLOR}; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600;">${text}</a>
+          <a href="${url}" class="button" style="display: inline-block; background-color: ${color || DEFAULT_BRAND_COLOR}; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600;">${text}</a>
         </td>
       </tr>
     </table>

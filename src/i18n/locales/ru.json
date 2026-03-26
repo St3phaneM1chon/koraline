@@ -10679,7 +10679,19 @@
     "missionTitle": "Наша миссия",
     "missionText": "В BioCycle Peptides мы стремимся устанавливать стандарты качества, безопасности и ценности в разработке и производстве пептидных продуктов фармацевтического качества, значительно улучшающих результаты исследований наших клиентов.",
     "ctaTitleNew": "Ведущий источник исследовательских пептидов в Канаде",
-    "ctaTextNew": "С гордостью работаем в Канаде. Лабораторно проверено, чистота 99%+, быстрая внутренняя доставка."
+    "ctaTextNew": "С гордостью работаем в Канаде. Лабораторно проверено, чистота 99%+, быстрая внутренняя доставка.",
+    "welcomeTo": "Welcome to",
+    "storeComingSoon": "Our store is being prepared. Come back soon!",
+    "poweredBy": "Powered by",
+    "discoverCourses": "Discover our courses",
+    "learningDescription": "Learn with interactive courses designed for your professional success.",
+    "levelBeginner": "Beginner",
+    "levelIntermediate": "Intermediate",
+    "levelAdvanced": "Advanced",
+    "levelExpert": "Expert",
+    "free": "Free",
+    "viewCourse": "View course",
+    "browseAllCourses": "Browse all courses"
   },
   "invoice": {
     "allStatuses": "Все статусы",

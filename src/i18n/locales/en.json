@@ -11746,7 +11746,19 @@
     "missionTitle": "Our Mission",
     "missionText": "At BioCycle Peptides, we strive to set the standard for quality, safety and value in the development and manufacture of pharmaceutical quality peptide products that extend and significantly improve the research outcomes of our customers.",
     "ctaTitleNew": "Canada's Premier Source for Research Peptides",
-    "ctaTextNew": "Proudly operating out of Canada. Lab-tested, 99%+ purity, fast domestic shipping."
+    "ctaTextNew": "Proudly operating out of Canada. Lab-tested, 99%+ purity, fast domestic shipping.",
+    "welcomeTo": "Welcome to",
+    "storeComingSoon": "Our store is being prepared. Come back soon!",
+    "poweredBy": "Powered by",
+    "discoverCourses": "Discover our courses",
+    "learningDescription": "Learn with interactive courses designed for your professional success.",
+    "levelBeginner": "Beginner",
+    "levelIntermediate": "Intermediate",
+    "levelAdvanced": "Advanced",
+    "levelExpert": "Expert",
+    "free": "Free",
+    "viewCourse": "View course",
+    "browseAllCourses": "Browse all courses"
   },
   "invoice": {
     "allStatuses": "All statuses",
@@ -13687,6 +13699,7 @@
     "allProducts": "All Products",
     "ambassador": "Ambassadors",
     "antiAging": "Anti-Aging",
+    "bestsellers": "Bestsellers",
     "aria": {
       "accountMenu": "Account menu",
       "cartEmpty": "Cart (empty)",
@@ -13726,6 +13739,7 @@
     "logout": "Log Out",
     "muscleGrowth": "Muscle Growth",
     "myAccount": "My Account",
+    "newArrivals": "New Arrivals",
     "openMenu": "Open menu",
     "peptides": "Peptides",
     "quickLinks": "Quick Links",

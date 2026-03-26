@@ -415,13 +415,52 @@ export const authConfig: NextAuthConfig = {
           if (user.email) token.email = user.email;
           if (user.image) token.picture = user.image;
 
-          // Multi-Tenant: Set tenantId from the user's DB record
+          // Multi-Tenant: Set tenantId from the user's DB record.
+          // If user has no tenantId yet, resolve from x-tenant-slug header
+          // (set by middleware) and assign them to the current tenant.
           try {
             const userTenant = await prisma.user.findUnique({
               where: { id: user.id! },
               select: { tenantId: true },
             });
-            token.tenantId = userTenant?.tenantId || null;
+
+            if (userTenant?.tenantId) {
+              // User already associated with a tenant
+              token.tenantId = userTenant.tenantId;
+            } else {
+              // User has no tenant — resolve from current hostname via headers
+              // and assign them to this tenant (Phase 6: Tenant-Aware Login)
+              let resolvedTenantId: string | null = null;
+              try {
+                const { headers: getHeaders } = await import('next/headers');
+                const headersList = await getHeaders();
+                const tenantSlug = headersList.get('x-tenant-slug');
+                if (tenantSlug) {
+                  const tenant = await prisma.tenant.findUnique({
+                    where: { slug: tenantSlug },
+                    select: { id: true },
+                  });
+                  if (tenant) {
+                    resolvedTenantId = tenant.id;
+                    // Assign user to this tenant (fire-and-forget, non-blocking)
+                    prisma.user.update({
+                      where: { id: user.id! },
+                      data: { tenantId: tenant.id },
+                    }).catch((err) => {
+                      logger.warn('[AuthConfig] Failed to assign tenantId to user', {
+                        userId: user.id,
+                        tenantSlug,
+                        error: err instanceof Error ? err.message : String(err),
+                      });
+                    });
+                  }
+                }
+              } catch {
+                // headers() not available (e.g., during OAuth callback redirect)
+                // — tenantId will be resolved on next JWT refresh
+              }
+              token.tenantId = resolvedTenantId;
+            }
           } catch {
             token.tenantId = null;
           }
@@ -603,12 +642,37 @@ export const authConfig: NextAuthConfig = {
         // event even for existing users when allowDangerousEmailAccountLinking is enabled.
         // We must NOT overwrite an existing OWNER/EMPLOYEE role to CUSTOMER.
         if (user.id) {
+          // Phase 6: Tenant-Aware Login — assign tenantId to new OAuth users.
+          // Resolve tenant from the x-tenant-slug header set by middleware.
+          let tenantId: string | undefined;
+          try {
+            const { headers: getHeaders } = await import('next/headers');
+            const headersList = await getHeaders();
+            const tenantSlug = headersList.get('x-tenant-slug');
+            if (tenantSlug) {
+              const tenant = await prisma.tenant.findUnique({
+                where: { slug: tenantSlug },
+                select: { id: true },
+              });
+              if (tenant) {
+                tenantId = tenant.id;
+              }
+            }
+          } catch {
+            // headers() not available during OAuth callback — tenantId
+            // will be assigned on first JWT refresh (see jwt callback above)
+          }
+
           // RACE CONDITION FIX: Atomic conditional update — only sets CUSTOMER if
           // role is not already a privileged role. Prevents downgrading OWNER/EMPLOYEE
           // to CUSTOMER when createUser fires for linked-account users.
           await prisma.user.updateMany({
             where: { id: user.id, role: { notIn: ['OWNER', 'EMPLOYEE'] } },
-            data: { role: UserRole.CUSTOMER },
+            data: {
+              role: UserRole.CUSTOMER,
+              // Assign tenant if resolved and user doesn't have one yet
+              ...(tenantId ? { tenantId } : {}),
+            },
           });
         }
         // FAILLE-021 FIX: mask email in logs

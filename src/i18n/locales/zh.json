@@ -10679,7 +10679,19 @@
     "missionTitle": "我们的使命",
     "missionText": "在BioCycle Peptides，我们致力于在药品级肽产品的开发和制造中树立质量、安全和价值的标准，显著改善客户的研究成果。",
     "ctaTitleNew": "加拿大首选研究肽来源",
-    "ctaTextNew": "自豪地在加拿大运营。实验室检测，99%+纯度，快速国内配送。"
+    "ctaTextNew": "自豪地在加拿大运营。实验室检测，99%+纯度，快速国内配送。",
+    "welcomeTo": "Welcome to",
+    "storeComingSoon": "Our store is being prepared. Come back soon!",
+    "poweredBy": "Powered by",
+    "discoverCourses": "Discover our courses",
+    "learningDescription": "Learn with interactive courses designed for your professional success.",
+    "levelBeginner": "Beginner",
+    "levelIntermediate": "Intermediate",
+    "levelAdvanced": "Advanced",
+    "levelExpert": "Expert",
+    "free": "Free",
+    "viewCourse": "View course",
+    "browseAllCourses": "Browse all courses"
   },
   "invoice": {
     "allStatuses": "所有状态",

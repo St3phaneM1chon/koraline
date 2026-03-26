@@ -1,12 +1,17 @@
 import { Metadata } from 'next';
 import { prisma } from '@/lib/db';
 import HomePageClient from './HomePageClient';
+import HomePageEmpty from './HomePageEmpty';
+import HomePageLearning from './HomePageLearning';
 import type { TestimonialData } from './HomePageClient';
 import { JsonLd } from '@/components/seo/JsonLd';
+import { getTenantBranding } from '@/lib/tenant-branding';
+import { headers } from 'next/headers';
 
 // Revalidate hero slides every 60 seconds (ISR) for fresh content without blocking render
 export const revalidate = 60;
 
+// Static fallback metadata — overridden at render time by JSON-LD with tenant name
 const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
 const siteDescription = "Canada's trusted source for premium research peptides. Lab-tested, 99%+ purity, fast shipping.";
 
@@ -80,27 +85,96 @@ async function getTestimonials(): Promise<TestimonialData[]> {
   }
 }
 
+/** Count active products for the current tenant. */
+async function getProductCount(): Promise<number> {
+  try {
+    return await prisma.product.count({ where: { isActive: true } });
+  } catch {
+    return 0;
+  }
+}
+
+/** Count published courses for the current tenant (LMS module). */
+async function getCourseCount(): Promise<number> {
+  try {
+    return await prisma.course.count({ where: { status: 'PUBLISHED' } });
+  } catch {
+    return 0;
+  }
+}
+
+/** Check if a specific module is enabled for the current tenant. */
+async function isModuleEnabled(tenantSlug: string, moduleName: string): Promise<boolean> {
+  try {
+    const tenant = await prisma.tenant.findUnique({
+      where: { slug: tenantSlug },
+      select: { modulesEnabled: true },
+    });
+    if (!tenant) return false;
+    const modules: string[] = (() => {
+      try {
+        const raw = tenant.modulesEnabled;
+        if (Array.isArray(raw)) return raw;
+        if (typeof raw === 'string') return JSON.parse(raw);
+        return [];
+      } catch {
+        return [];
+      }
+    })();
+    return modules.includes(moduleName);
+  } catch {
+    return false;
+  }
+}
+
+/** Fetch published courses for learning-focused homepage. */
+async function getPublishedCourses() {
+  try {
+    const courses = await prisma.course.findMany({
+      where: { status: 'PUBLISHED' },
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        subtitle: true,
+        description: true,
+        thumbnailUrl: true,
+        level: true,
+        isFree: true,
+        price: true,
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 12,
+    });
+    return JSON.parse(JSON.stringify(courses));
+  } catch {
+    return [];
+  }
+}
+
 export default async function HomePage() {
-  const [heroSlides, testimonials] = await Promise.all([
+  const headersList = await headers();
+  const tenantSlug = headersList.get('x-tenant-slug') || 'attitudes';
+
+  const [heroSlides, testimonials, branding, productCount, courseCount, lmsEnabled] = await Promise.all([
     getHeroSlides(),
     getTestimonials(),
+    getTenantBranding(),
+    getProductCount(),
+    getCourseCount(),
+    isModuleEnabled(tenantSlug, 'lms'),
   ]);
 
   const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
+  const tenantName = branding.name;
 
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: siteName,
+    name: tenantName,
     url: siteUrl,
-    logo: `${siteUrl}/icon-512.png`,
-    description: `${siteName} - Suite Koraline SaaS e-commerce platform`,
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Montreal',
-      addressRegion: 'QC',
-      addressCountry: 'CA',
-    },
+    logo: branding.logoUrl || `${siteUrl}/icon-512.png`,
+    description: `${tenantName} - Powered by Koraline`,
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'customer service',
@@ -112,7 +186,7 @@ export default async function HomePage() {
   const webSiteSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: siteName,
+    name: tenantName,
     url: siteUrl,
     potentialAction: {
       '@type': 'SearchAction',
@@ -121,11 +195,48 @@ export default async function HomePage() {
     },
   };
 
+  // ---------------------------------------------------------------------------
+  // Dynamic Homepage: Choose the right layout based on tenant content
+  // ---------------------------------------------------------------------------
+  // 1. Tenant has products → full shop homepage (existing)
+  // 2. Tenant has courses but no products → learning-focused homepage
+  // 3. Tenant has neither → clean branded welcome page
+  // ---------------------------------------------------------------------------
+
+  const hasProducts = productCount > 0;
+  const hasCourses = lmsEnabled && courseCount > 0;
+
+  // Case 3: No products AND no courses → clean welcome page
+  if (!hasProducts && !hasCourses) {
+    return (
+      <>
+        <JsonLd data={organizationSchema} />
+        <JsonLd data={webSiteSchema} />
+        <h1 className="sr-only">{tenantName}</h1>
+        <HomePageEmpty branding={branding} />
+      </>
+    );
+  }
+
+  // Case 2: Courses but no products → learning-focused homepage
+  if (!hasProducts && hasCourses) {
+    const courses = await getPublishedCourses();
+    return (
+      <>
+        <JsonLd data={organizationSchema} />
+        <JsonLd data={webSiteSchema} />
+        <h1 className="sr-only">{tenantName}</h1>
+        <HomePageLearning branding={branding} courses={courses} />
+      </>
+    );
+  }
+
+  // Case 1: Has products → full shop homepage
   return (
     <>
       <JsonLd data={organizationSchema} />
       <JsonLd data={webSiteSchema} />
-      <h1 className="sr-only">{siteName} - Research Peptides</h1>
+      <h1 className="sr-only">{tenantName}</h1>
       <HomePageClient initialHeroSlides={heroSlides} initialTestimonials={testimonials} />
     </>
   );

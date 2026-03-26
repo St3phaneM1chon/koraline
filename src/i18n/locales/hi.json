@@ -10679,7 +10679,19 @@
     "missionTitle": "हमारा मिशन",
     "missionText": "BioCycle Peptides में, हम फार्मास्युटिकल गुणवत्ता के पेप्टाइड उत्पादों के विकास और निर्माण में गुणवत्ता, सुरक्षा और मूल्य का मानक स्थापित करने का प्रयास करते हैं।",
     "ctaTitleNew": "कनाडा में अनुसंधान पेप्टाइड्स का प्रमुख स्रोत",
-    "ctaTextNew": "गर्व से कनाडा से संचालित। प्रयोगशाला परीक्षित, 99%+ शुद्धता, तेज़ घरेलू शिपिंग।"
+    "ctaTextNew": "गर्व से कनाडा से संचालित। प्रयोगशाला परीक्षित, 99%+ शुद्धता, तेज़ घरेलू शिपिंग।",
+    "welcomeTo": "Welcome to",
+    "storeComingSoon": "Our store is being prepared. Come back soon!",
+    "poweredBy": "Powered by",
+    "discoverCourses": "Discover our courses",
+    "learningDescription": "Learn with interactive courses designed for your professional success.",
+    "levelBeginner": "Beginner",
+    "levelIntermediate": "Intermediate",
+    "levelAdvanced": "Advanced",
+    "levelExpert": "Expert",
+    "free": "Free",
+    "viewCourse": "View course",
+    "browseAllCourses": "Browse all courses"
   },
   "invoice": {
     "allStatuses": "सभी स्थितियाँ",

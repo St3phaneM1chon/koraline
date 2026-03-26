@@ -10679,7 +10679,19 @@
     "missionTitle": "Misyon Nou",
     "missionText": "Nan BioCycle Peptides, nou eseye tabli estanda kalite, sekirite ak valè nan devlopman ak fabrikasyon pwodwi peptid kalite famasetik.",
     "ctaTitleNew": "Sous Premye nan Kanada pou Peptid Rechèch",
-    "ctaTextNew": "Fyèman opere nan Kanada. Teste nan laboratwa, pirete 99%+, ekspedisyon domestik rapid."
+    "ctaTextNew": "Fyèman opere nan Kanada. Teste nan laboratwa, pirete 99%+, ekspedisyon domestik rapid.",
+    "welcomeTo": "Welcome to",
+    "storeComingSoon": "Our store is being prepared. Come back soon!",
+    "poweredBy": "Powered by",
+    "discoverCourses": "Discover our courses",
+    "learningDescription": "Learn with interactive courses designed for your professional success.",
+    "levelBeginner": "Beginner",
+    "levelIntermediate": "Intermediate",
+    "levelAdvanced": "Advanced",
+    "levelExpert": "Expert",
+    "free": "Free",
+    "viewCourse": "View course",
+    "browseAllCourses": "Browse all courses"
   },
   "invoice": {
     "allStatuses": "Tout estati",

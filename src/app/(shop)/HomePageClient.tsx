@@ -15,6 +15,7 @@ import SectionDivider from '@/components/ui/SectionDivider';
 import MoleculeBackground from '@/components/ui/MoleculeBackground';
 import { useI18n } from '@/i18n/client';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
+import { useTenantBranding } from '@/components/shop/TenantBrandingProvider';
 
 const PeptideCalculator = dynamic(() => import('@/components/shop/PeptideCalculator'), {
   loading: () => <div className="animate-pulse h-48 bg-neutral-100 rounded-xl" />,
@@ -199,6 +200,7 @@ export interface HeroSlideData {
 
 export default function HomePage({ initialHeroSlides, initialTestimonials = [] }: HomePageProps) {
   const { t, locale } = useI18n();
+  const tenant = useTenantBranding();
   const [products, setProducts] = useState<ApiProduct[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
@@ -617,13 +619,19 @@ export default function HomePage({ initialHeroSlides, initialTestimonials = [] }
         <MoleculeBackground opacity={0.08} count={10} />
         <div className={`relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center transition-all duration-700 ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
           <div className="mb-8">
-            <Image
-              src="/images/brand/signature-header.png"
-              alt={process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP'}
-              width={600}
-              height={200}
-              className="h-14 md:h-20 w-auto mx-auto brightness-0 invert"
-            />
+            {tenant.logoUrl ? (
+              <Image
+                src={tenant.logoUrl}
+                alt={tenant.name}
+                width={600}
+                height={200}
+                className="h-14 md:h-20 w-auto mx-auto brightness-0 invert"
+              />
+            ) : (
+              <span className="text-3xl md:text-5xl font-bold text-white">
+                {tenant.name}
+              </span>
+            )}
           </div>
           <h2 className="font-heading text-3xl md:text-4xl mb-4 text-white">
             {t('home.ctaTitleNew') || t('home.ctaTitle')}

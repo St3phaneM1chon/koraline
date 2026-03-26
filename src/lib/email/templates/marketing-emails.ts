@@ -21,8 +21,11 @@
 
 import { baseTemplate, emailComponents, escapeHtml } from './base-template';
 import { logger } from '@/lib/logger';
+import { EMAIL_SENDER_NAME } from '@/lib/email/constants';
 
 const SHOP_URL = process.env.NEXT_PUBLIC_SHOP_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
+const BRAND_NAME = EMAIL_SENDER_NAME || 'Koraline';
+const SUPPORT_EMAIL_ADDR = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@attitudes.vip';
 
 // FLAW-096 FIX: Sanitize customer names for email subjects (strip control chars, limit length)
 function safeSubjectName(name: string): string {
@@ -89,8 +92,8 @@ export function birthdayEmail(data: BirthdayEmailData): { subject: string; html:
     </h1>
     <p style="font-size: 18px; color: #4b5563; text-align: center;">
       ${isFr
-        ? `${safeName}, toute l'équipe BioCycle Peptides vous souhaite un merveilleux anniversaire! 🎈`
-        : `${safeName}, the entire BioCycle Peptides team wishes you a wonderful birthday! 🎈`}
+        ? `${safeName}, toute l'équipe ${BRAND_NAME} vous souhaite un merveilleux anniversaire! 🎈`
+        : `${safeName}, the entire ${BRAND_NAME} team wishes you a wonderful birthday! 🎈`}
     </p>
 
     <div style="background: #fef3c7; border-radius: 16px; padding: 32px; margin: 32px 0; text-align: center; border: 2px dashed #f59e0b;">
@@ -135,9 +138,9 @@ export function birthdayEmail(data: BirthdayEmailData): { subject: string; html:
         : 'Have an excellent day filled with joy! 🎈'}
     </p>
     <p style="font-size: 12px; color: #9ca3af; text-align: center;">
-      ${isFr 
-        ? 'L\'équipe BioCycle Peptides'
-        : 'The BioCycle Peptides Team'}
+      ${isFr
+        ? `L'équipe ${BRAND_NAME}`
+        : `The ${BRAND_NAME} Team`}
     </p>
   `;
 
@@ -172,8 +175,8 @@ export function welcomeEmail(data: WelcomeEmailData): { subject: string; html: s
   const safeName = escapeHtml(data.customerName);
 
   const subject = isFr
-    ? `🎉 Bienvenue chez BioCycle Peptides, ${safeSubjectName(data.customerName)}!`
-    : `🎉 Welcome to BioCycle Peptides, ${safeSubjectName(data.customerName)}!`;
+    ? `🎉 Bienvenue chez ${BRAND_NAME}, ${safeSubjectName(data.customerName)}!`
+    : `🎉 Welcome to ${BRAND_NAME}, ${safeSubjectName(data.customerName)}!`;
 
   const content = `
     <div style="text-align: center; margin-bottom: 24px;">
@@ -330,7 +333,7 @@ export function welcomeEmail(data: WelcomeEmailData): { subject: string; html: s
         ? 'Notre equipe est disponible du lundi au vendredi, 9h-17h EST.'
         : 'Our team is available Monday to Friday, 9am-5pm EST.'}
       <br>
-      <a href="mailto:support@biocyclepeptides.com" style="color: #CC5500;">support@biocyclepeptides.com</a>
+      <a href="mailto:${SUPPORT_EMAIL_ADDR}" style="color: #CC5500;">${SUPPORT_EMAIL_ADDR}</a>
     </p>
   `;
 

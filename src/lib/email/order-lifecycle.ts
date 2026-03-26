@@ -1,12 +1,13 @@
 /**
- * Order Lifecycle Email Dispatcher - BioCycle Peptides
+ * Order Lifecycle Email Dispatcher — Koraline Multi-Tenant
  *
  * Centralised module that:
  *  1. Loads full order + user data from the database
- *  2. Builds the OrderData payload
- *  3. Picks the right template based on the event
- *  4. Sends the email via the configured provider
- *  5. Logs the result to the audit table
+ *  2. Loads tenant branding (logo, colors, name, support email)
+ *  3. Builds the OrderData payload with branding
+ *  4. Picks the right template based on the event
+ *  5. Sends the email via the configured provider
+ *  6. Logs the result to the audit table
  *
  * Usage (fire-and-forget, never blocks the caller):
  *   sendOrderLifecycleEmail(orderId, 'SHIPPED').catch(console.error);
@@ -17,6 +18,7 @@ import { logger } from '@/lib/logger';
 import { maskEmail } from '@/lib/sanitize';
 import { sendEmail } from './email-service';
 import { generateUnsubscribeUrl } from './unsubscribe';
+import { loadTenantBranding } from './tenant-branding';
 import {
   orderConfirmationEmail,
   orderProcessingEmail,
@@ -100,14 +102,17 @@ export async function sendOrderLifecycleEmail(
       return;
     }
 
-    // ── 3. Generate unsubscribe URL (CAN-SPAM / RGPD / LCAP compliance) ─
+    // ── 3. Load tenant branding ─────────────────────────────────────────
+    const branding = await loadTenantBranding(order.tenantId);
+
+    // ── 4. Generate unsubscribe URL (CAN-SPAM / RGPD / LCAP compliance) ─
     const unsubscribeUrl = await generateUnsubscribeUrl(
       user.email,
       'transactional',
       user.id,
     ).catch(() => undefined);
 
-    // ── 4. Build OrderData ────────────────────────────────────────────────
+    // ── 5. Build OrderData ────────────────────────────────────────────────
     // Locale priority: explicit option > user profile > default 'fr'
     const locale: 'fr' | 'en' = options.locale
       ? options.locale
@@ -149,9 +154,10 @@ export async function sendOrderLifecycleEmail(
       refundAmount: options.refundAmount,
       refundIsPartial: options.refundIsPartial,
       unsubscribeUrl,
+      branding,
     };
 
-    // ── 5. Pick template ──────────────────────────────────────────────────
+    // ── 6. Pick template ──────────────────────────────────────────────────
     let emailContent: { subject: string; html: string };
 
     switch (event) {
@@ -178,7 +184,7 @@ export async function sendOrderLifecycleEmail(
         return;
     }
 
-    // ── 6. Send ───────────────────────────────────────────────────────────
+    // ── 7. Send ───────────────────────────────────────────────────────────
     const result = await sendEmail({
       to: { email: user.email, name: user.name || undefined },
       subject: emailContent.subject,
@@ -187,7 +193,7 @@ export async function sendOrderLifecycleEmail(
       unsubscribeUrl,
     });
 
-    // ── 7. Audit log ──────────────────────────────────────────────────────
+    // ── 8. Audit log ──────────────────────────────────────────────────────
     await prisma.auditLog.create({
       data: {
         userId: user.id,

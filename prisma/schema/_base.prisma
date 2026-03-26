@@ -183,6 +183,7 @@ enum ProductType {
   BUNDLE
   CAPSULE
   LAB_SUPPLY
+  FORMATION
 }
 
 enum PurchaseStatus {

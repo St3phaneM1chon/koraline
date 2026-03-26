@@ -10679,7 +10679,19 @@
     "missionTitle": "Misyon an-Nou",
     "missionText": "Dan BioCycle Peptides, nou ka éséyé tab èstandar kalité, sékirité épi valè dan dévlòpman épi fabrikasyon pwodwi péptid kalité famasetik.",
     "ctaTitleNew": "Sous Prémyè an Kanada pou Péptid Réchèch",
-    "ctaTextNew": "Fyèman ka opéré an Kanada. Tèsté an laboratwar, pirété 99%+, ékspédisyon domèstik rapid."
+    "ctaTextNew": "Fyèman ka opéré an Kanada. Tèsté an laboratwar, pirété 99%+, ékspédisyon domèstik rapid.",
+    "welcomeTo": "Welcome to",
+    "storeComingSoon": "Our store is being prepared. Come back soon!",
+    "poweredBy": "Powered by",
+    "discoverCourses": "Discover our courses",
+    "learningDescription": "Learn with interactive courses designed for your professional success.",
+    "levelBeginner": "Beginner",
+    "levelIntermediate": "Intermediate",
+    "levelAdvanced": "Advanced",
+    "levelExpert": "Expert",
+    "free": "Free",
+    "viewCourse": "View course",
+    "browseAllCourses": "Browse all courses"
   },
   "invoice": {
     "allStatuses": "Tout status",

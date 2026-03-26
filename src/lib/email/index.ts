@@ -1,5 +1,5 @@
 /**
- * Email System - BioCycle Peptides
+ * Email System — Koraline Multi-Tenant
  * Export centralisé pour le système d'emails
  */
 
@@ -8,6 +8,9 @@ export { sendEmail, type SendEmailOptions, type EmailResult, type EmailRecipient
 
 // Templates de base
 export { baseTemplate, emailComponents } from './templates/base-template';
+
+// Tenant branding
+export { loadTenantBranding, getDefaultBranding, type TenantEmailBranding } from './tenant-branding';
 
 // Templates de commandes
 export {

@@ -10679,7 +10679,19 @@
     "missionTitle": "ਸਾਡਾ ਮਿਸ਼ਨ",
     "missionText": "BioCycle Peptides ਵਿੱਚ, ਅਸੀਂ ਫਾਰਮਾਸਿਊਟੀਕਲ ਗੁਣਵੱਤਾ ਦੇ ਪੈਪਟਾਈਡ ਉਤਪਾਦਾਂ ਦੇ ਵਿਕਾਸ ਅਤੇ ਨਿਰਮਾਣ ਵਿੱਚ ਗੁਣਵੱਤਾ, ਸੁਰੱਖਿਆ ਅਤੇ ਮੁੱਲ ਦਾ ਮਿਆਰ ਸਥਾਪਿਤ ਕਰਨ ਲਈ ਯਤਨ ਕਰਦੇ ਹਾਂ।",
     "ctaTitleNew": "ਕੈਨੇਡਾ ਵਿੱਚ ਖੋਜ ਪੈਪਟਾਈਡਾਂ ਦਾ ਪ੍ਰਮੁੱਖ ਸ੍ਰੋਤ",
-    "ctaTextNew": "ਕੈਨੇਡਾ ਤੋਂ ਮਾਣ ਨਾਲ ਕੰਮ ਕਰ ਰਹੇ ਹਾਂ। ਲੈਬ ਟੈਸਟਿਡ, 99%+ ਸ਼ੁੱਧਤਾ, ਤੇਜ਼ ਘਰੇਲੂ ਸ਼ਿਪਿੰਗ।"
+    "ctaTextNew": "ਕੈਨੇਡਾ ਤੋਂ ਮਾਣ ਨਾਲ ਕੰਮ ਕਰ ਰਹੇ ਹਾਂ। ਲੈਬ ਟੈਸਟਿਡ, 99%+ ਸ਼ੁੱਧਤਾ, ਤੇਜ਼ ਘਰੇਲੂ ਸ਼ਿਪਿੰਗ।",
+    "welcomeTo": "Welcome to",
+    "storeComingSoon": "Our store is being prepared. Come back soon!",
+    "poweredBy": "Powered by",
+    "discoverCourses": "Discover our courses",
+    "learningDescription": "Learn with interactive courses designed for your professional success.",
+    "levelBeginner": "Beginner",
+    "levelIntermediate": "Intermediate",
+    "levelAdvanced": "Advanced",
+    "levelExpert": "Expert",
+    "free": "Free",
+    "viewCourse": "View course",
+    "browseAllCourses": "Browse all courses"
   },
   "invoice": {
     "allStatuses": "ਸਾਰੇ ਸਥਿਤੀਆਂ",
