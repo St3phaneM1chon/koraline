@@ -65,3 +65,20 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
 
   return apiSuccess(cohort, { request, status: 201 });
 });
+
+// Deactivate a cohort
+export const DELETE = withAdminGuard(async (request: NextRequest, { session }) => {
+  const tenantId = session.user.tenantId;
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+  if (!id) return apiError('Cohort ID required', ErrorCode.VALIDATION_ERROR, { request, status: 400 });
+
+  const cohort = await prisma.lmsCohort.findFirst({
+    where: { id, tenantId },
+    select: { id: true },
+  });
+  if (!cohort) return apiError('Cohort not found', ErrorCode.NOT_FOUND, { request, status: 404 });
+
+  await prisma.lmsCohort.update({ where: { id }, data: { isActive: false } });
+  return apiSuccess({ success: true }, { request });
+});
