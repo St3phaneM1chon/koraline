@@ -150,6 +150,14 @@ export async function POST(request: NextRequest) {
 
     const session = await auth();
 
+    // PAY-F6 FIX: Stricter rate limit for unauthenticated (guest) users
+    if (!session?.user?.id) {
+      const guestRl = await rateLimitMiddleware(ip, '/api/payments/create-checkout/guest');
+      if (!guestRl.success) {
+        return NextResponse.json({ error: 'Too many requests. Please log in.' }, { status: 429 });
+      }
+    }
+
     // BE-PAY-05: Idempotency key to prevent duplicate checkout sessions
     const idempotencyKey = request.headers.get('x-idempotency-key');
     if (idempotencyKey) {
