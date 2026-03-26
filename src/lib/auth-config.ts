@@ -8,8 +8,8 @@
  * DO NOT auto-update to newer beta versions without thorough testing.
  * Known issues with beta.4:
  *   - Cookie encryption uses the cookie NAME as salt for key derivation.
- *     If the name changes between set/read (e.g., __Secure- prefix vs no prefix),
- *     decryption fails with "could not be parsed" (see cookies config below).
+ *     The cookie name must be consistent between set and read. Railway supports
+ *     HTTPS natively, so __Secure- prefix is stable (no Azure TLS termination issue).
  *   - The CredentialsProvider returns null for auth failures (not throwing) to
  *     avoid misleading "Configuration" error pages in the beta.
  *   - PrismaAdapter linkAccount needs explicit token encryption wrapping.
@@ -33,7 +33,7 @@ import { logger } from '@/lib/logger';
 import { encryptToken } from './token-encryption';
 
 // FAILLE-085 FIX: Replace 'any' with proper Provider type from next-auth
-// TODO: FAILLE-086 - Cookie name forced to authjs.session-token (no __Secure- prefix) for Azure; review when Azure supports HTTPS E2E
+// FAILLE-086 RESOLVED: Railway supports HTTPS natively — default __Secure- cookie prefix restored
 // TODO: FAILLE-091 - encryptedAdapter cast as any; type correctly or use 'satisfies' for partial verification
 // TODO: FAILLE-092 - signOut event logs userId but not IP/user-agent; add for suspicious logout tracing
 import type { Provider } from 'next-auth/providers';
@@ -276,17 +276,14 @@ export const authConfig: NextAuthConfig = {
   adapter: encryptedAdapter as any,
   providers,
 
-  // CRITICAL: Trust proxy headers (Azure App Service terminates TLS at load balancer)
-  // Without this, Auth.js generates http:// callback URLs instead of https://
-  // causing redirect_uri_mismatch errors with Google OAuth
+  // Trust proxy headers so Auth.js generates https:// callback URLs
+  // (Railway proxies TLS but forwards x-forwarded-proto correctly)
   trustHost: true,
 
-  // CRITICAL: Force consistent cookie names WITHOUT __Secure- prefix.
-  // Azure App Service terminates TLS at the load balancer and forwards HTTP internally.
-  // Auth.js v5 encrypts cookies using the cookie NAME as salt for key derivation.
-  // If the name changes between set (__Secure- when HTTPS detected) and read (no prefix
-  // when HTTP detected internally), decryption fails with "could not be parsed".
-  // Solution: force all cookies to use non-prefixed names with secure: true.
+  // FAILLE-086 RESOLVED: Railway supports HTTPS end-to-end, so Auth.js
+  // correctly detects HTTPS and uses __Secure- prefixed cookie names.
+  // We no longer need to force non-prefixed names.
+  //
   // Apple Sign In uses response_mode=form_post, which sends a cross-site POST
   // from appleid.apple.com back to our /api/auth/callback/apple endpoint.
   // Cookies with sameSite: 'lax' are NOT sent on cross-site POST requests.
@@ -301,27 +298,27 @@ export const authConfig: NextAuthConfig = {
   // completes and is only needed on same-site requests going forward.
   cookies: {
     pkceCodeVerifier: {
-      name: 'authjs.pkce.code_verifier',
+      name: '__Secure-authjs.pkce.code_verifier',
       options: { httpOnly: true, sameSite: 'none' as const, path: '/', secure: true, maxAge: 900 },
     },
     state: {
-      name: 'authjs.state',
+      name: '__Secure-authjs.state',
       options: { httpOnly: true, sameSite: 'none' as const, path: '/', secure: true, maxAge: 900 },
     },
     nonce: {
-      name: 'authjs.nonce',
+      name: '__Secure-authjs.nonce',
       options: { httpOnly: true, sameSite: 'none' as const, path: '/', secure: true },
     },
     callbackUrl: {
-      name: 'authjs.callback-url',
+      name: '__Secure-authjs.callback-url',
       options: { httpOnly: true, sameSite: 'none' as const, path: '/', secure: true },
     },
     csrfToken: {
-      name: 'authjs.csrf-token',
+      name: '__Secure-authjs.csrf-token',
       options: { httpOnly: true, sameSite: 'none' as const, path: '/', secure: true },
     },
     sessionToken: {
-      name: 'authjs.session-token',
+      name: '__Secure-authjs.session-token',
       options: { httpOnly: true, sameSite: 'lax' as const, path: '/', secure: true },
     },
   },

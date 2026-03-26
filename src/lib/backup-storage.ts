@@ -1,6 +1,7 @@
 /**
  * Backup Storage Service
- * Lists real backups from Azure Blob Storage (production) and local filesystem (dev).
+ * Lists real backups from Azure Blob Storage (if configured) and local filesystem.
+ * On Railway (no AZURE_STORAGE_CONNECTION_STRING), only local backups are listed.
  * Feeds the admin /admin/backups dashboard with real data.
  */
 

@@ -107,6 +107,7 @@ export async function POST(request: NextRequest) {
         slug,
         name,
         domainCustom: domainCustom || null,
+        domainVerified: false,
         domainKoraline: `${slug}.koraline.app`,
         plan: plan || 'essential',
         status: 'ACTIVE',

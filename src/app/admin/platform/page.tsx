@@ -20,6 +20,7 @@ interface Tenant {
   name: string;
   domainCustom: string | null;
   domainKoraline: string | null;
+  domainVerified: boolean;
   plan: string;
   status: string;
   primaryColor: string;
@@ -175,7 +176,10 @@ export default function PlatformDashboard() {
                   </div>
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-600">
-                  {tenant.domainCustom || tenant.domainKoraline || '-'}
+                  <span>{tenant.domainCustom || tenant.domainKoraline || '-'}</span>
+                  {tenant.domainCustom && !tenant.domainVerified && (
+                    <span className="ml-1 text-xs text-amber-600">(non vérifié)</span>
+                  )}
                 </td>
                 <td className="px-4 py-3">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${planColors[tenant.plan] || 'bg-gray-100'}`}>

@@ -1,4 +1,7 @@
-# REGLE NON NEGOCIABLE: Deploiement Azure - peptide-plus
+# REGLE NON NEGOCIABLE: Deploiement Railway - Attitudes.vip (Koraline)
+
+> **Migration**: Ce fichier remplace l'ancien guide Azure. Railway est le provider depuis 2026-03-24.
+> Les credentials Azure sont conserves pour projets futurs (Azure AD OAuth, KeyVault).
 
 ## OBLIGATION #1 - SEARCH BEFORE SOLVE
 
@@ -8,212 +11,135 @@
 # 1. Memoire vectorielle (via TodoMaster)
 curl -s -X POST "http://localhost:8002/api/vector/search?query=DESCRIPTION_ERREUR&limit=5"
 
-# 2. Knowledge islands Azure
-python3 /Volumes/AI_Project/AttitudesVIP-iOS/Scripts/aurelia_knowledge_islands.py --briefing azure
-
-# 3. Knowledge islands Next.js (si erreur build)
+# 2. Knowledge islands Next.js
 python3 /Volumes/AI_Project/AttitudesVIP-iOS/Scripts/aurelia_knowledge_islands.py --briefing nextjs
 
-# 4. Fichier de reference
-# Lire: /Users/altittudes.vip/.claude-profiles/compte-b/projects/-Volumes-AI-Project/memory/deployment-azure-peptide.md
+# 3. Knowledge islands Railway
+python3 /Volumes/AI_Project/AttitudesVIP-iOS/Scripts/aurelia_knowledge_islands.py --briefing railway
 ```
-
-**Si la solution existe en memoire: l'appliquer DIRECTEMENT, sans re-investiguer.**
-**Si la solution n'existe pas: debugger, puis sauvegarder l'apprentissage (voir Obligation #3).**
 
 ---
 
-## OBLIGATION #2 - Checklist Pre-Deploiement
+## OBLIGATION #2 - Checklist Pre-Deploiement (Railway)
 
-Avant chaque `git push` qui declenche un deploy Azure, verifier **dans cet ordre**:
+Avant chaque `git push` qui declenche un deploy Railway:
 
-### A. Schema DB sync (AVANT le deploy)
+### A. Schema DB sync
 ```bash
 cd /Volumes/AI_Project/peptide-plus
 npx prisma validate
 npx prisma generate
-npm run build  # Verifier que le build local passe
+NODE_OPTIONS="--max-old-space-size=8192" npm run build
 ```
-Si le schema local a change, appliquer en production:
+Si schema change, appliquer en production:
 ```bash
 DATABASE_URL='postgresql://...' npx prisma db push
 ```
 
-### B. Variables d'environnement CI
-Verifier que **toutes** les vars requises sont dans GitHub Secrets:
-- `DATABASE_URL` (Azure PostgreSQL, pas localhost!)
+### B. Variables d'environnement Railway
+Verifier dans Railway dashboard (Settings > Variables):
+- `DATABASE_URL` (Railway PostgreSQL, PAS localhost!)
+- `REDIS_URL` (Railway Redis add-on)
 - `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`
-- `NEXTAUTH_SECRET`, `NEXTAUTH_URL`
-- `AZURE_WEBAPP_NAME`, `AZURE_PUBLISH_PROFILE`
+- `NEXTAUTH_SECRET`, `NEXTAUTH_URL=https://attitudes.vip`
+- `NODE_OPTIONS=--max-old-space-size=8192`
+- `SENTRY_DSN` (optionnel mais recommande)
 
 ### C. Lazy initialization des SDKs
-**ANTIPATTERN**: Initialiser un SDK au top-level d'un module (crash si env var absente en CI)
+**ANTIPATTERN**: Initialiser un SDK au top-level (crash si env var absente au build)
 ```typescript
-// MAUVAIS - crash au build si STRIPE_SECRET_KEY absent
+// MAUVAIS
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
-// BON - lazy init, ne crash qu'a l'appel
+// BON
 function getStripe() {
   if (!process.env.STRIPE_SECRET_KEY) throw new Error('STRIPE_SECRET_KEY not configured')
   return new Stripe(process.env.STRIPE_SECRET_KEY)
 }
 ```
-Verifier: `grep -rn "new Stripe\|new PrismaClient\|createClient" src/lib/ --include="*.ts"`
 
-### D. Generalisation des fixes
-Si un fix est applique a un fichier (ex: lazy init dans `stripe.ts`), verifier TOUS les fichiers similaires:
+### D. Pas de fichiers manquants
 ```bash
-grep -rn "process.env\." src/lib/ --include="*.ts" | grep -v "\.env"
+git diff --name-only  # Verifier que tous les imports sont commites
 ```
 
 ### E. SSR/cookies safety
-Les appels `cookies()` et `headers()` de Next.js ne fonctionnent que dans les Server Components.
-Verifier: `grep -rn "cookies()\|headers()" src/ --include="*.ts" --include="*.tsx"`
-Si utilise dans un fichier: verifier qu'il n'est PAS importe par un Client Component (`'use client'`).
+```bash
+grep -rn "cookies()\|headers()" src/ --include="*.ts" --include="*.tsx" | grep -v node_modules
+```
 
 ---
 
 ## OBLIGATION #3 - Compte-Rendu Post-Deploiement
 
-Apres **chaque** deploiement (reussi OU echoue), produire ce compte-rendu:
-
-```markdown
-## Deploy Report - YYYY-MM-DD HH:MM
-- **Commit**: <sha>
-- **Resultat**: SUCCESS / FAILURE
-- **Erreurs rencontrees**: (liste)
-- **Fixes appliques**: (liste avec fichiers modifies)
-- **Verification post-deploy**: (URL testee, status)
-- **Apprentissage**: (ce qu'on a appris de nouveau)
-```
-
-**Sauvegarder obligatoirement:**
-1. En memoire vectorielle:
+Meme obligation qu'avant. Sauvegarder en vectoriel:
 ```bash
 /opt/homebrew/bin/python3.13 /Volumes/AI_Project/AttitudesVIP-iOS/Scripts/aurelia_vector_store.py \
-  --add "Deploy peptide-plus YYYY-MM-DD: DESCRIPTION PROBLEME ET SOLUTION" \
-  --id "learning-deploy-peptide-YYYY-MM-DD"
+  --add "Deploy attitudes.vip YYYY-MM-DD: DESCRIPTION" \
+  --id "learning-deploy-railway-YYYY-MM-DD"
 ```
-2. Dans le fichier de reference: ajouter au log dans `deployment-azure-peptide.md`
 
 ---
 
-## OBLIGATION #4 - Ordering Pipeline
+## OBLIGATION #4 - Ordering Pipeline (Railway)
 
-L'ordre des operations est **critique**. Toujours respecter:
+1. `npx prisma validate`
+2. `npx prisma generate`
+3. `NODE_OPTIONS="--max-old-space-size=8192" npm run build`
+4. Schema sync production si change: `DATABASE_URL='...' npx prisma db push`
+5. `git add && git commit && git push` → Railway auto-deploy
+6. Verification: `curl -s https://attitudes.vip/api/health`
+7. Compte-rendu
 
-1. `npx prisma validate` - Schema valide?
-2. `npx prisma generate` - Client regenere?
-3. `npm run build` - Build local OK?
-4. Schema sync production (si schema change): `DATABASE_URL='...' npx prisma db push`
-5. `git add && git commit && git push` - Deploy
-6. Verification post-deploy: `curl -s https://SITE_URL/api/health`
-7. Compte-rendu (voir Obligation #3)
+**JAMAIS** pusher si le build local echoue.
 
-**JAMAIS** deployer si le build local echoue.
-**JAMAIS** deployer si le schema production n'est pas sync.
+---
+
+## DIFFERENCES RAILWAY vs AZURE
+
+| Aspect | Azure (ancien) | Railway (actuel) |
+|--------|---------------|-----------------|
+| Deploy | GitHub Actions → az webapp | git push → auto-build |
+| Build | Oryx + zip package | Nixpacks (auto-detect) |
+| Redis | Azure Cache (manquant) | Railway add-on (1 clic) |
+| Storage | Azure Blob Storage | Local filesystem / S3 |
+| DB | Azure PostgreSQL Flexible | Railway PostgreSQL |
+| SSL/TLS | Terminaison au LB (HTTP interne) | HTTPS end-to-end |
+| Cookies | Pas de __Secure- (workaround) | __Secure- fonctionne |
+| Container | 600s startup, cert update | Demarrage rapide (~30s) |
+| Filesystem | Read-only (RUN_FROM_PACKAGE) | Read-write (ephemere) |
 
 ---
 
 ## KEDB - Known Error Database
 
-### KB-PP-BUILD-001: PrismaClient crash en CI
-- **Symptome**: `Error: @prisma/client did not initialize yet` ou `DATABASE_URL environment variable is not set`
-- **Cause racine**: PrismaClient instancie au top-level d'un module, Node.js l'execute au `import` pendant le build CI ou DATABASE_URL absente dans GitHub Secrets
-- **Fix**: Wraper dans une fonction lazy:
-  ```typescript
-  // src/lib/prisma.ts
-  import { PrismaClient } from '@prisma/client'
-  const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
-  export const prisma = globalForPrisma.prisma || new PrismaClient()
-  if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
-  ```
-- **Prevention**: Verifier que DATABASE_URL est dans GitHub Secrets. Utiliser le pattern global singleton.
-- **Detecte**: 2026-02-19
+### KB universels (s'appliquent toujours)
 
-### KB-PP-BUILD-002: Stripe SDK crash en CI
-- **Symptome**: `Error: No API key provided` au build time
-- **Cause racine**: `new Stripe(process.env.STRIPE_SECRET_KEY!)` au top-level, execute pendant `next build` meme si le code n'est utilise qu'en runtime
-- **Fix**: Lazy init via fonction factory:
-  ```typescript
-  let _stripe: Stripe | null = null
-  export function getStripe(): Stripe {
-    if (!_stripe) {
-      if (!process.env.STRIPE_SECRET_KEY) throw new Error('STRIPE_SECRET_KEY missing')
-      _stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
-    }
-    return _stripe
-  }
-  ```
-- **Prevention**: JAMAIS instancier de SDK au top-level. Toujours lazy init. Chercher avec `grep -rn "new Stripe\|new.*Client(" src/lib/`.
-- **Generalisation**: Ce pattern s'applique a TOUT SDK tiers (Stripe, SendGrid, Twilio, etc.)
-- **Detecte**: 2026-02-19
+**KB-PP-BUILD-001**: PrismaClient crash en CI → Lazy init singleton
+**KB-PP-BUILD-002**: Stripe SDK crash en CI → Lazy init factory
+**KB-PP-BUILD-003**: cookies()/headers() crash SSR → force-dynamic
+**KB-PP-BUILD-004**: Schema drift → prisma db push AVANT deploy
+**KB-PP-BUILD-005**: OAuth tokens snake_case → Utiliser snake_case
+**KB-PP-BUILD-011**: FK orphan blocks prisma db push → Nettoyer orphelins avant
 
-### KB-PP-BUILD-003: cookies()/headers() crash SSR
-- **Symptome**: `Dynamic server usage: Route couldn't be rendered statically` ou `cookies is not a function`
-- **Cause racine**: `cookies()` de `next/headers` appele dans un contexte statique ou importe par un Client Component
-- **Fix**: 1) S'assurer que le fichier est un Server Component (pas de `'use client'`). 2) Utiliser `dynamic = 'force-dynamic'` si necessaire. 3) Ne PAS importer de module utilisant `cookies()` dans un Client Component.
-- **Prevention**: `grep -rn "cookies()\|headers()" src/` et verifier chaque fichier.
-- **Detecte**: 2026-02-19
+### KB Railway-specifiques
 
-### KB-PP-BUILD-004: Schema drift (champ absent en production)
-- **Symptome**: `Unknown column` ou `The column does not exist` en production, mais marche en local
-- **Cause racine**: Schema Prisma modifie localement (`npx prisma db push`) mais pas applique en production
-- **Fix**: Appliquer le schema en production AVANT le deploy:
-  ```bash
-  DATABASE_URL='postgresql://...' npx prisma db push
-  ```
-- **Prevention**: Inclure `prisma db push` dans le pipeline CI/CD ou verifier manuellement avant chaque push.
-- **Exemple**: `Category.parentId` ajoute localement mais absent en production (2026-02-19)
-- **Detecte**: 2026-02-19
+**KB-PP-RAILWAY-001**: OOM pendant build
+- **Symptome**: Build tue sans erreur, exit code 137
+- **Cause**: Next.js build depasse 4GB RAM par defaut
+- **Fix**: `NODE_OPTIONS=--max-old-space-size=8192` + `webpackMemoryOptimizations: true`
 
-### KB-PP-BUILD-005: OAuth tokens snake_case mismatch
-- **Symptome**: OAuth callback retourne succes mais platformConnection reste "Non connecte"
-- **Cause racine**: Interface TypeScript utilisait camelCase (`accessToken`) mais OAuth2 RFC 6749 renvoie snake_case (`access_token`). `tokens.accessToken` est `undefined`, `encryptToken(undefined)` retourne `null`.
-- **Fix**: Utiliser snake_case dans l'interface TS: `access_token`, `refresh_token`, `expires_in`
-- **Prevention**: TOUJOURS utiliser snake_case pour les reponses OAuth. TypeScript type assertions ne transforment PAS les donnees.
-- **Detecte**: 2026-03-01
+**KB-PP-RAILWAY-002**: Fichiers non commites
+- **Symptome**: `Module not found` en prod mais build local OK
+- **Cause**: Fichier modifie localement mais pas git add/commit
+- **Fix**: `git status` avant push
 
-### KB-PP-BUILD-006: WEBSITE_RUN_FROM_PACKAGE read-only filesystem
-- **Symptome**: App crash loop, health check HTTP 000, logs: `ENOENT: mkdir '/home/site/wwwroot/logs'`
-- **Cause racine**: `WEBSITE_RUN_FROM_PACKAGE=1` monte le ZIP en lecture seule. Toute tentative d'ecriture dans wwwroot echoue.
-- **Fix**: Utiliser `/tmp/` pour les ecritures temporaires (logs, cache). Wraper mkdirSync dans try/catch.
-- **Prevention**: JAMAIS ecrire dans `process.cwd()` ou wwwroot en production Azure avec RUN_FROM_PACKAGE. Utiliser `/tmp/` ou `/home/LogFiles/`.
-- **Generalisation**: Chercher TOUT code qui ecrit des fichiers: `grep -rn "writeFile\|mkdirSync\|createWriteStream" src/ --include="*.ts"`
-- **Detecte**: 2026-03-01
+### KB Azure (archive — ne s'appliquent plus)
 
-### KB-PP-BUILD-007: SCM container restart pendant deploy
-- **Symptome**: `Deployment has been stopped due to SCM container restart`
-- **Cause racine**: Modifier `WEBSITE_RUN_FROM_PACKAGE` via `az webapp config appsettings set` cause un restart du container SCM (Kudu), qui kill le deploy en cours.
-- **Fix**: Separer les settings infra dans un step conditionnel AVANT le deploy. Verifier si deja configure, skip si oui. Si changement, attendre 30s pour stabilisation SCM.
-- **Prevention**: Ne changer les settings infra qu'une seule fois, pas a chaque deploy.
-- **Detecte**: 2026-03-01
-
-### KB-PP-BUILD-008: Container startup timeout (230s) killed by cert update
-- **Symptome**: `ContainerTimeout: Container did not start within expected time limit of 230s`, app 504/timeout, crash loop
-- **Cause racine**: Azure Linux App Service met a jour les certificats SSL au demarrage (`Updating certificates in /etc/ssl/certs`), prenant ~3 min. Le timeout par defaut de 230s expire AVANT que `node server.js` ne soit lance.
-- **Fix**: `az webapp config appsettings set --settings WEBSITES_CONTAINER_START_TIME_LIMIT=600` (10 min)
-- **Prevention**: TOUJOURS configurer WEBSITES_CONTAINER_START_TIME_LIMIT=600 dans le pipeline deploy. Verifier avec `az webapp config appsettings list`.
-- **Detecte**: 2026-03-01
-
-### KB-PP-BUILD-009: Webex OAuth invalid_scope
-- **Symptome**: `invalid_scope` erreur retournee par Webex lors de l'autorisation OAuth
-- **Cause racine**: Les scopes demandes dans le code ne correspondent pas aux scopes configures sur l'integration dans le Webex Developer Portal. Chaque scope doit etre a la fois dans le code ET coche dans le portail.
-- **Fix**: Verifier les scopes coches sur https://developer.webex.com/my-apps/[app-name]. Adapter le code pour ne demander QUE les scopes configures.
-- **Prevention**: Avant de modifier les scopes OAuth, toujours verifier la config du portail developpeur. Les scopes `spark:recordings_read` ne sont PAS des scopes OAuth valides (utiliser `meeting:recordings_read`).
-- **Detecte**: 2026-03-01
-
-### KB-PP-BUILD-010: Config-change restart loop (container never warms up)
-- **Symptome**: Site unreachable (HTTP timeout), Azure shows "Running/Normal", SCM returns 503, container logs show repeated Azure banners
-- **Cause racine**: Chaque changement de config Azure (`az webapp config appsettings set`) redemarre le container. Le warmup prend ~583s (cert update 3min + Node startup + warmup probe). Changer plusieurs settings pendant le troubleshooting cree une boucle de restart ou le container n'atteint JAMAIS la fin du warmup (600s max).
-- **Fix**: (1) STOP toute modification de settings. (2) Lancer un deploy frais via `gh workflow run "Deploy to Azure"`. (3) Attendre 10 minutes COMPLETES sans toucher a rien. (4) Verifier avec `curl https://biocyclepeptides.azurewebsites.net/api/health`.
-- **Prevention**: JAMAIS modifier plus d'un setting a la fois pendant le troubleshooting. Grouper les changements dans le pipeline CI/CD. Ne JAMAIS utiliser `az webapp config appsettings set` en boucle rapide.
-- **Lie a**: KB-PP-BUILD-007 (SCM restart) et KB-PP-BUILD-008 (cert update timeout)
-- **Detecte**: 2026-03-10
-
-### KB-PP-BUILD-011: FK orphan data blocks prisma db push
-- **Symptome**: `Error: insert or update on table "X" violates foreign key constraint "X_fieldId_fkey"`
-- **Cause racine**: Ajout de FK constraints dans le schema Prisma alors que la DB contient des enregistrements avec des references vers des lignes supprimees (orphelins).
-- **Fix**: Nettoyer les orphelins AVANT prisma db push: `DELETE FROM "X" WHERE "fieldId" NOT IN (SELECT id FROM "Y")` pour les FK required, ou `UPDATE "X" SET "fieldId" = NULL WHERE ...` pour les FK optional (onDelete: SetNull).
-- **Prevention**: Toujours verifier les orphelins avant d'ajouter des FK: `SELECT COUNT(*) FROM "X" x LEFT JOIN "Y" y ON x."fieldId" = y.id WHERE y.id IS NULL`
-- **Detecte**: 2026-03-10
+Les KB suivants sont archives et ne s'appliquent PAS a Railway:
+- KB-PP-BUILD-006: WEBSITE_RUN_FROM_PACKAGE read-only (Azure-only)
+- KB-PP-BUILD-007: SCM container restart (Azure Kudu)
+- KB-PP-BUILD-008: Container startup 230s timeout (Azure cert update)
+- KB-PP-BUILD-009: Webex OAuth scopes (pas lie a Azure mais detecte pendant)
+- KB-PP-BUILD-010: Config-change restart loop (Azure settings)
+- KB-PP-BUILD-012: bash -e kills health check (GitHub Actions + Azure)

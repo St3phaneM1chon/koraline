@@ -18,6 +18,7 @@ interface TenantDetail {
   status: string;
   domainKoraline: string | null;
   domainCustom: string | null;
+  domainVerified: boolean;
   primaryColor: string;
   modulesEnabled: string[];
   maxEmployees: number;
@@ -123,6 +124,9 @@ export default function TenantDetailPage() {
             <div className="flex justify-between"><span className="text-gray-500">Employés</span><span className="font-medium">{tenant.employeeCount} / {tenant.maxEmployees}</span></div>
             <div className="flex justify-between"><span className="text-gray-500">Créé le</span><span className="font-medium">{new Date(tenant.createdAt).toLocaleDateString('fr-CA')}</span></div>
             <div className="flex justify-between"><span className="text-gray-500">Domaine custom</span><span className="font-medium">{tenant.domainCustom || 'Non configuré'}</span></div>
+            {tenant.domainCustom && (
+              <div className="flex justify-between"><span className="text-gray-500">DNS vérifié</span><span className={`font-medium ${tenant.domainVerified ? 'text-green-600' : 'text-red-600'}`}>{tenant.domainVerified ? 'Oui' : 'Non'}</span></div>
+            )}
           </div>
         </div>
 

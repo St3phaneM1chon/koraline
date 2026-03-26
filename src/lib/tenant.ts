@@ -41,12 +41,12 @@ export async function resolveTenantByHost(hostname: string): Promise<{ tenantId:
     return defaultTenant;
   }
 
-  // 1. Chercher par domaine custom
+  // 1. Chercher par domaine custom (only if DNS ownership verified)
   const byCustomDomain = await prisma.tenant.findUnique({
     where: { domainCustom: cleanHost },
-    select: { id: true, slug: true, status: true },
+    select: { id: true, slug: true, status: true, domainVerified: true },
   });
-  if (byCustomDomain && byCustomDomain.status === 'ACTIVE') {
+  if (byCustomDomain && byCustomDomain.status === 'ACTIVE' && byCustomDomain.domainVerified) {
     const result = { tenantId: byCustomDomain.id, slug: byCustomDomain.slug };
     tenantCache.set(cleanHost, { ...result, expiresAt: Date.now() + CACHE_TTL_MS });
     return result;

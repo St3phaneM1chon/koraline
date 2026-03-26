@@ -4,7 +4,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Production: Standalone build for Azure/Docker deployment
+  // Production: Standalone build for Docker/container deployment
   // Disabled on Railway (uses Railpack builder natively, standalone causes OOM on small instances)
   ...(process.env.RAILWAY_ENVIRONMENT ? {} : { output: 'standalone' }),
   
@@ -217,14 +217,6 @@ const nextConfig = {
   // Images - Optimisation et domaines autorisés
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**.azure.com',
-      },
-      {
-        protocol: 'https',
-        hostname: '**.blob.core.windows.net',
-      },
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',

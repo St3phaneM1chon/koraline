@@ -286,8 +286,8 @@ export function validateTwilioSignature(
 ): boolean {
   const authToken = process.env.TWILIO_AUTH_TOKEN;
   if (!authToken) {
-    logger.warn('[WhatsApp] No TWILIO_AUTH_TOKEN - skipping signature validation');
-    return true; // Allow in dev/unconfigured mode
+    logger.error('[WhatsApp] No TWILIO_AUTH_TOKEN - rejecting webhook (unsigned request)');
+    return false; // SECURITY: Reject when auth token is missing
   }
 
   try {
@@ -296,7 +296,7 @@ export function validateTwilioSignature(
     const twilio = require('twilio');
     return twilio.validateRequest(authToken, signature, url, params);
   } catch {
-    logger.warn('[WhatsApp] twilio package not installed - skipping signature validation');
-    return true;
+    logger.error('[WhatsApp] twilio package not installed - rejecting webhook (cannot verify signature)');
+    return false; // SECURITY: Reject when we cannot verify the signature
   }
 }

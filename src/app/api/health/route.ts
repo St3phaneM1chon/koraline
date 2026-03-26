@@ -184,7 +184,8 @@ export async function GET(request: NextRequest) {
   const rssMB = Math.round(memoryUsage.rss / 1024 / 1024);
   const heapUsedMB = Math.round(memoryUsage.heapUsed / 1024 / 1024);
   const heapTotalMB = Math.round(memoryUsage.heapTotal / 1024 / 1024);
-  const rssLimitMB = 1400; // B1 tier ~1.75GB, fail at 80%
+  // Railway default: 8GB; adjust via HEALTH_RSS_LIMIT_MB env var if needed
+  const rssLimitMB = parseInt(process.env.HEALTH_RSS_LIMIT_MB || '1400', 10);
 
   checks.push({
     name: 'memory',

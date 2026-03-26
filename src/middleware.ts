@@ -13,7 +13,7 @@ import { roleHasPermission } from '@/lib/permission-constants';
 
 // Security headers applied to every response (AMELIORATION-002 / FAILLE-012 / FAILLE-017 / FAILLE-089).
 // CSP is also defined in next.config.js headers() for static routes; middleware ensures dynamic
-// routes are equally protected (Azure App Service may not merge next.config headers on middleware responses).
+// routes are equally protected (some hosting platforms may not merge next.config headers on middleware responses).
 function addSecurityHeaders(response: NextResponse): void {
   // Prevent clickjacking
   response.headers.set('X-Frame-Options', 'DENY');
@@ -175,11 +175,6 @@ function resolveTenantFromHost(hostname: string): { tenantSlug: string; isSuperA
     return { tenantSlug: 'biocycle', isSuperAdmin: false };
   }
 
-  // Azure production (legacy)
-  if (cleanHost === 'biocyclepeptides.azurewebsites.net') {
-    return { tenantSlug: 'biocycle', isSuperAdmin: false };
-  }
-
   // Railway production domains
   if (cleanHost.endsWith('.up.railway.app')) {
     return { tenantSlug: 'attitudes', isSuperAdmin: true };
@@ -283,17 +278,19 @@ export async function middleware(request: NextRequest) {
         requestId,
         // FAILLE-064 FIX: Increase UA truncation from 100 to 256 for better anomaly detection
         userAgent: request.headers.get('user-agent')?.substring(0, 256),
-        // FAILLE-063 FIX: Validate IP format, prefer Azure header, use rightmost XFF
+        // FAILLE-063 FIX: Validate IP format, prefer standard headers, use rightmost XFF
+        // x-azure-clientip kept as last-resort fallback (harmless on non-Azure platforms)
         ip: (() => {
-          const azureIp = request.headers.get('x-azure-clientip');
-          if (azureIp && /^[\d.:a-fA-F]{3,45}$/.test(azureIp)) return azureIp;
           const xff = request.headers.get('x-forwarded-for');
           if (xff) {
             const ips = xff.split(',').map((i: string) => i.trim()).filter((i: string) => /^[\d.:a-fA-F]{3,45}$/.test(i));
-            return ips[ips.length - 1] || undefined;
+            if (ips.length > 0) return ips[ips.length - 1];
           }
           const realIp = request.headers.get('x-real-ip');
-          return realIp && /^[\d.:a-fA-F]{3,45}$/.test(realIp) ? realIp : undefined;
+          if (realIp && /^[\d.:a-fA-F]{3,45}$/.test(realIp)) return realIp;
+          // Fallback: Azure-specific header (no-op on Railway, kept for compatibility)
+          const azureIp = request.headers.get('x-azure-clientip');
+          return azureIp && /^[\d.:a-fA-F]{3,45}$/.test(azureIp) ? azureIp : undefined;
         })(),
         timestamp: new Date().toISOString(),
       };
@@ -367,9 +364,8 @@ export async function middleware(request: NextRequest) {
     return res;
   }
 
-  // Récupérer le token d'authentification
-  // Cookie name matches the explicit config in auth-config.ts (no __Secure- prefix)
-  // to avoid name mismatch on Azure where TLS terminates at the load balancer.
+  // Retrieve auth token from the __Secure- prefixed session cookie.
+  // Railway supports HTTPS natively, so the __Secure- prefix is stable.
   // FAILLE-023 FIX: Warn if no auth secret is configured
   if (!process.env.AUTH_SECRET && !process.env.NEXTAUTH_SECRET) {
     console.warn(JSON.stringify({ event: 'middleware_no_auth_secret', pathname }));
@@ -380,16 +376,16 @@ export async function middleware(request: NextRequest) {
       req: request,
       // FAILLE-023 FIX: Use AUTH_SECRET with NEXTAUTH_SECRET fallback (both are valid)
       secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
-      secureCookie: false,
-      cookieName: 'authjs.session-token',
+      secureCookie: true,
+      cookieName: '__Secure-authjs.session-token',
     });
   } catch (err) {
     console.error(JSON.stringify({
       event: 'middleware_getToken_error',
       pathname,
       error: String(err),
-      hasCookie: !!request.cookies.get('authjs.session-token'),
-      cookieLength: request.cookies.get('authjs.session-token')?.value?.length || 0,
+      hasCookie: !!request.cookies.get('__Secure-authjs.session-token'),
+      cookieLength: request.cookies.get('__Secure-authjs.session-token')?.value?.length || 0,
     }));
   }
 

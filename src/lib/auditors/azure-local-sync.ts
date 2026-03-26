@@ -1,4 +1,9 @@
 /**
+ * @deprecated LEGACY — Azure-specific auditor, not applicable on Railway.
+ * Retained for reference. Kudu VFS and Azure DB comparison checks will
+ * no-op without Azure credentials. General checks (critical files, build
+ * output, env vars, schema sync) remain useful regardless of hosting.
+ *
  * Auditor #26: Azure-Local Sync
  * Compares local codebase and DB with Azure deployment.
  * Checks: file presence, size mismatches, DB row count differences.

@@ -9,8 +9,10 @@ model Tenant {
   id              String    @id @default(cuid())
   slug            String    @unique                  // ex: "biocycle", "attitudes"
   name            String                             // ex: "BioCycle Peptides"
-  domainCustom    String?   @unique                  // ex: "biocyclepeptides.com"
-  domainKoraline  String?   @unique                  // ex: "biocycle.koraline.app"
+  domainCustom             String?   @unique           // ex: "biocyclepeptides.com"
+  domainKoraline           String?   @unique           // ex: "biocycle.koraline.app"
+  domainVerified           Boolean   @default(false)   // DNS TXT ownership verified
+  domainVerificationToken  String?                     // TXT record value for _attitudes-verify.{domain}
   plan            String    @default("pro")          // essential, pro, enterprise
   status          TenantStatus @default(ACTIVE)
 

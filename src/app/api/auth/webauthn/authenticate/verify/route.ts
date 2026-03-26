@@ -158,12 +158,9 @@ export async function POST(request: NextRequest) {
     cookieStore.delete('webauthn-challenge');
     cookieStore.delete('webauthn-email');
 
-    // Set the NextAuth session cookie
-    // SECURITY FIX: Always use 'authjs.session-token' WITHOUT __Secure- prefix.
-    // auth-config.ts forces this name for all environments because Azure App Service
-    // terminates TLS at the load balancer and Auth.js uses the cookie name as salt
-    // for key derivation. Mismatched names = decryption failure.
-    cookieStore.set('authjs.session-token', token, {
+    // Set the NextAuth session cookie with __Secure- prefix.
+    // Must match the cookie name in auth-config.ts (secure cookies on Railway HTTPS).
+    cookieStore.set('__Secure-authjs.session-token', token, {
       httpOnly: true,
       secure: true,
       sameSite: 'lax',

@@ -1,6 +1,7 @@
 /**
  * STORAGE SERVICE (#66)
- * Azure Blob Storage with local filesystem fallback for development.
+ * Azure Blob Storage with local filesystem fallback.
+ * On Railway (no AZURE_STORAGE_CONNECTION_STRING), automatically uses local filesystem.
  *
  * Usage:
  *   import { StorageService } from '@/lib/storage';
