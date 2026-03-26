@@ -57,6 +57,32 @@ export async function POST(request: NextRequest) {
 
     const normalizedEmail = String(email).toLowerCase().trim();
 
+    // AUTH-F3 FIX: Verify id_token server-side before trusting email claim
+    if (normalizedProvider === 'google' && idToken) {
+      try {
+        // Verify Google id_token via Google's tokeninfo endpoint
+        const tokenInfoRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(idToken)}`);
+        if (tokenInfoRes.ok) {
+          const tokenInfo = await tokenInfoRes.json() as { email?: string; email_verified?: string; aud?: string };
+          const googleClientId = process.env.GOOGLE_CLIENT_ID;
+          if (tokenInfo.email?.toLowerCase() !== normalizedEmail) {
+            return NextResponse.json({ message: 'Token email mismatch' }, { status: 401 });
+          }
+          if (tokenInfo.email_verified !== 'true') {
+            return NextResponse.json({ message: 'Email not verified by Google' }, { status: 401 });
+          }
+          if (googleClientId && tokenInfo.aud !== googleClientId) {
+            return NextResponse.json({ message: 'Invalid token audience' }, { status: 401 });
+          }
+        } else {
+          return NextResponse.json({ message: 'Invalid Google id_token' }, { status: 401 });
+        }
+      } catch {
+        logger.warn('[OAuth] Google token verification failed, rejecting', { email: normalizedEmail });
+        return NextResponse.json({ message: 'Token verification failed' }, { status: 401 });
+      }
+    }
+
     // Find or create user
     let user = await prisma.user.findUnique({
       where: { email: normalizedEmail },
