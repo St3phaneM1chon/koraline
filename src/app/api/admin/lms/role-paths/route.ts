@@ -98,6 +98,82 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
   return apiSuccess(path, { request, status: 201 });
 });
 
+const updateSchema = createSchema.partial();
+
+export const PATCH = withAdminGuard(async (request: NextRequest, { session }) => {
+  const tenantId = session.user.tenantId;
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+
+  if (!id) return apiError('id required', ErrorCode.VALIDATION_ERROR, { request });
+
+  const existing = await prisma.lmsRolePath.findFirst({
+    where: { id, tenantId },
+  });
+
+  if (!existing) return apiError('LmsRolePath not found', ErrorCode.NOT_FOUND, { request, status: 404 });
+
+  const body = await request.json();
+  const parsed = updateSchema.safeParse(body);
+
+  if (!parsed.success) {
+    return apiError('Validation failed', ErrorCode.VALIDATION_ERROR, { request });
+  }
+
+  const { steps, ...pathData } = parsed.data;
+
+  // Validate that courseIds and bundleIds in steps belong to the current tenant
+  if (steps && steps.length > 0) {
+    const courseIds = steps.map(s => s.courseId).filter((cid): cid is string => !!cid);
+    const bundleIds = steps.map(s => s.bundleId).filter((bid): bid is string => !!bid);
+
+    if (courseIds.length > 0) {
+      const validCourses = await prisma.course.findMany({
+        where: { id: { in: courseIds }, tenantId },
+        select: { id: true },
+      });
+      const validCourseIds = new Set(validCourses.map(c => c.id));
+      const invalidCourseIds = courseIds.filter(cid => !validCourseIds.has(cid));
+      if (invalidCourseIds.length > 0) {
+        return apiError('One or more courseIds do not belong to this tenant', ErrorCode.VALIDATION_ERROR, { request });
+      }
+    }
+
+    if (bundleIds.length > 0) {
+      const validBundles = await prisma.courseBundle.findMany({
+        where: { id: { in: bundleIds }, tenantId },
+        select: { id: true },
+      });
+      const validBundleIds = new Set(validBundles.map(b => b.id));
+      const invalidBundleIds = bundleIds.filter(bid => !validBundleIds.has(bid));
+      if (invalidBundleIds.length > 0) {
+        return apiError('One or more bundleIds do not belong to this tenant', ErrorCode.VALIDATION_ERROR, { request });
+      }
+    }
+  }
+
+  const updated = await prisma.lmsRolePath.update({
+    where: { id },
+    data: {
+      ...pathData,
+      ...(steps ? {
+        steps: {
+          deleteMany: {},
+          create: steps.map((step, i) => ({
+            ...step,
+            sortOrder: i,
+          })),
+        },
+      } : {}),
+    },
+    include: { steps: { orderBy: { sortOrder: 'asc' } } },
+  });
+
+  return apiSuccess(updated, { request });
+});
+
+export const PUT = PATCH;
+
 export const DELETE = withAdminGuard(async (request: NextRequest, { session }) => {
   const tenantId = session.user.tenantId;
   const { searchParams } = new URL(request.url);

@@ -44,6 +44,36 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
   return apiSuccess(tool, { request, status: 201 });
 });
 
+const updateToolSchema = createToolSchema.partial();
+
+export const PATCH = withAdminGuard(async (request: NextRequest, { session }) => {
+  const tenantId = session.user.tenantId;
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+
+  if (!id) return apiError('id required', ErrorCode.VALIDATION_ERROR, { request });
+
+  const existing = await prisma.ltiTool.findFirst({
+    where: { id, tenantId },
+  });
+
+  if (!existing) return apiError('LtiTool not found', ErrorCode.NOT_FOUND, { request, status: 404 });
+
+  const body = await request.json();
+  const parsed = updateToolSchema.safeParse(body);
+
+  if (!parsed.success) return apiError('Validation failed', ErrorCode.VALIDATION_ERROR, { request });
+
+  const tool = await prisma.ltiTool.update({
+    where: { id },
+    data: parsed.data,
+  });
+
+  return apiSuccess(tool, { request });
+});
+
+export const PUT = PATCH;
+
 export const DELETE = withAdminGuard(async (request: NextRequest, { session }) => {
   const tenantId = session.user.tenantId;
   const { searchParams } = new URL(request.url);

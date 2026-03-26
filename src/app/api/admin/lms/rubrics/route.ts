@@ -53,6 +53,41 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
   return apiSuccess(rubric, { request, status: 201 });
 });
 
+const updateSchema = createSchema.partial();
+
+export const PATCH = withAdminGuard(async (request: NextRequest, { session }) => {
+  const tenantId = session.user.tenantId;
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+
+  if (!id) return apiError('id required', ErrorCode.VALIDATION_ERROR, { request });
+
+  const existing = await prisma.gradingRubric.findFirst({
+    where: { id, tenantId },
+  });
+
+  if (!existing) return apiError('GradingRubric not found', ErrorCode.NOT_FOUND, { request, status: 404 });
+
+  const body = await request.json();
+  const parsed = updateSchema.safeParse(body);
+
+  if (!parsed.success) return apiError('Validation failed', ErrorCode.VALIDATION_ERROR, { request });
+
+  const rubric = await prisma.gradingRubric.update({
+    where: { id },
+    data: {
+      ...(parsed.data.name !== undefined ? { name: parsed.data.name } : {}),
+      ...(parsed.data.description !== undefined ? { description: parsed.data.description ?? null } : {}),
+      ...(parsed.data.maxScore !== undefined ? { maxScore: parsed.data.maxScore } : {}),
+      ...(parsed.data.criteria !== undefined ? { criteria: parsed.data.criteria } : {}),
+    },
+  });
+
+  return apiSuccess(rubric, { request });
+});
+
+export const PUT = PATCH;
+
 export const DELETE = withAdminGuard(async (request: NextRequest, { session }) => {
   const tenantId = session.user.tenantId;
   const { searchParams } = new URL(request.url);
