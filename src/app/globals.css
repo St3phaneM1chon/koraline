@@ -3,6 +3,8 @@
  * Palette: 5 nuances de gris
  */
 
+@import '../styles/koraline-tokens.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

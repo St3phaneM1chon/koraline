@@ -1,0 +1,338 @@
+/* =============================================================================
+   Koraline Dark Glass Premium — Design Token System
+   Dark-first, glass-morphism driven, with light mode overrides.
+   ============================================================================= */
+
+:root {
+  /* ---------------------------------------------------------------------------
+     Background Hierarchy
+     --------------------------------------------------------------------------- */
+  --k-bg-base: #0A0A0F;
+  --k-bg-surface: #111116;
+  --k-bg-raised: #1A1A22;
+  --k-bg-overlay: #222230;
+  --k-bg-inset: #08080C;
+
+  /* ---------------------------------------------------------------------------
+     Glass Materials (white-channel opacity)
+     --------------------------------------------------------------------------- */
+  --k-glass-ultra-thin: rgba(255, 255, 255, 0.03);
+  --k-glass-thin: rgba(255, 255, 255, 0.05);
+  --k-glass-regular: rgba(255, 255, 255, 0.08);
+  --k-glass-thick: rgba(255, 255, 255, 0.12);
+  --k-glass-chromatic: rgba(99, 102, 241, 0.08);
+
+  /* Backdrop blur intensities */
+  --k-blur-sm: 8px;
+  --k-blur-md: 16px;
+  --k-blur-lg: 24px;
+  --k-blur-xl: 40px;
+
+  /* ---------------------------------------------------------------------------
+     Borders
+     --------------------------------------------------------------------------- */
+  --k-border-subtle: rgba(255, 255, 255, 0.06);
+  --k-border-default: rgba(255, 255, 255, 0.10);
+  --k-border-strong: rgba(255, 255, 255, 0.15);
+  --k-border-focus: #6366f1;
+
+  /* ---------------------------------------------------------------------------
+     Text
+     --------------------------------------------------------------------------- */
+  --k-text-primary: rgba(255, 255, 255, 0.95);
+  --k-text-secondary: rgba(255, 255, 255, 0.60);
+  --k-text-tertiary: rgba(255, 255, 255, 0.40);
+  --k-text-muted: rgba(255, 255, 255, 0.25);
+
+  /* ---------------------------------------------------------------------------
+     Accent Colors
+     --------------------------------------------------------------------------- */
+  --k-accent-indigo: #6366f1;
+  --k-accent-cyan: #06b6d4;
+  --k-accent-emerald: #10b981;
+  --k-accent-amber: #f59e0b;
+  --k-accent-rose: #f43f5e;
+
+  /* Accent with alpha (for backgrounds / tints) */
+  --k-accent-indigo-10: rgba(99, 102, 241, 0.10);
+  --k-accent-indigo-20: rgba(99, 102, 241, 0.20);
+  --k-accent-cyan-10: rgba(6, 182, 212, 0.10);
+  --k-accent-cyan-20: rgba(6, 182, 212, 0.20);
+  --k-accent-emerald-10: rgba(16, 185, 129, 0.10);
+  --k-accent-amber-10: rgba(245, 158, 11, 0.10);
+  --k-accent-rose-10: rgba(244, 63, 94, 0.10);
+
+  /* ---------------------------------------------------------------------------
+     Gradients
+     --------------------------------------------------------------------------- */
+  --k-gradient-primary: linear-gradient(135deg, #6366f1, #06b6d4);
+  --k-gradient-success: linear-gradient(135deg, #10b981, #14b8a6);
+  --k-gradient-warning: linear-gradient(135deg, #f59e0b, #f43f5e);
+  --k-gradient-brand: linear-gradient(135deg, rgba(99, 102, 241, 0.6), rgba(6, 182, 212, 0.4));
+
+  /* Subtle gradients for card backgrounds */
+  --k-gradient-surface: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+
+  /* ---------------------------------------------------------------------------
+     Glows
+     --------------------------------------------------------------------------- */
+  --k-glow-primary: 0 0 20px rgba(99, 102, 241, 0.25),
+                     0 0 40px rgba(99, 102, 241, 0.10);
+  --k-glow-success: 0 0 20px rgba(16, 185, 129, 0.25),
+                     0 0 40px rgba(16, 185, 129, 0.10);
+  --k-glow-accent:  0 0 20px rgba(6, 182, 212, 0.25),
+                     0 0 40px rgba(6, 182, 212, 0.10);
+  --k-glow-warning: 0 0 20px rgba(245, 158, 11, 0.25),
+                     0 0 40px rgba(245, 158, 11, 0.10);
+
+  /* ---------------------------------------------------------------------------
+     Shadows
+     --------------------------------------------------------------------------- */
+  --k-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --k-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --k-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --k-shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+
+  /* ---------------------------------------------------------------------------
+     Spacing (4pt grid)
+     --------------------------------------------------------------------------- */
+  --k-space-1: 4px;
+  --k-space-2: 8px;
+  --k-space-3: 12px;
+  --k-space-4: 16px;
+  --k-space-5: 20px;
+  --k-space-6: 24px;
+  --k-space-8: 32px;
+  --k-space-10: 40px;
+  --k-space-12: 48px;
+  --k-space-16: 64px;
+
+  /* ---------------------------------------------------------------------------
+     Radii
+     --------------------------------------------------------------------------- */
+  --k-radius-sm: 6px;
+  --k-radius-md: 10px;
+  --k-radius-lg: 14px;
+  --k-radius-xl: 20px;
+  --k-radius-2xl: 24px;
+  --k-radius-pill: 9999px;
+
+  /* ---------------------------------------------------------------------------
+     Typography
+     --------------------------------------------------------------------------- */
+  --k-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --k-font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
+
+  /* ---------------------------------------------------------------------------
+     Transitions
+     --------------------------------------------------------------------------- */
+  --k-transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --k-transition-normal: 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  --k-transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =============================================================================
+   Glass Card
+   ============================================================================= */
+
+.k-glass-card {
+  background: var(--k-glass-regular);
+  backdrop-filter: blur(var(--k-blur-lg));
+  -webkit-backdrop-filter: blur(var(--k-blur-lg));
+  border: 1px solid var(--k-border-subtle);
+  border-radius: var(--k-radius-xl);
+  box-shadow: var(--k-shadow-lg);
+  transition:
+    border-color var(--k-transition-fast),
+    box-shadow var(--k-transition-fast),
+    transform var(--k-transition-fast);
+}
+
+.k-glass-card:hover {
+  border-color: var(--k-border-default);
+  box-shadow: var(--k-shadow-xl), var(--k-glow-primary);
+  transform: translateY(-2px) scale(1.008);
+}
+
+.k-glass-card--thin {
+  background: var(--k-glass-thin);
+  backdrop-filter: blur(var(--k-blur-md));
+  -webkit-backdrop-filter: blur(var(--k-blur-md));
+}
+
+.k-glass-card--thick {
+  background: var(--k-glass-thick);
+  backdrop-filter: blur(var(--k-blur-xl));
+  -webkit-backdrop-filter: blur(var(--k-blur-xl));
+}
+
+.k-glass-card--chromatic {
+  background: var(--k-glass-chromatic);
+  backdrop-filter: blur(var(--k-blur-xl));
+  -webkit-backdrop-filter: blur(var(--k-blur-xl));
+}
+
+/* =============================================================================
+   Glass Button
+   ============================================================================= */
+
+.k-glass-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--k-space-2);
+  padding: var(--k-space-2) var(--k-space-4);
+  min-height: 36px;
+  font-family: var(--k-font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--k-text-primary);
+  background: var(--k-glass-thin);
+  backdrop-filter: blur(var(--k-blur-md));
+  -webkit-backdrop-filter: blur(var(--k-blur-md));
+  border: 1px solid var(--k-border-subtle);
+  border-radius: var(--k-radius-md);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background var(--k-transition-fast),
+    border-color var(--k-transition-fast),
+    box-shadow var(--k-transition-fast);
+}
+
+.k-glass-button:hover {
+  background: var(--k-glass-regular);
+  border-color: var(--k-border-default);
+  box-shadow: var(--k-glow-primary);
+}
+
+.k-glass-button:active {
+  transform: scale(0.97);
+}
+
+.k-glass-button:focus-visible {
+  outline: 2px solid var(--k-border-focus);
+  outline-offset: 2px;
+}
+
+.k-glass-button--primary {
+  background: var(--k-accent-indigo-20);
+  border-color: rgba(99, 102, 241, 0.30);
+}
+
+.k-glass-button--primary:hover {
+  background: rgba(99, 102, 241, 0.30);
+  border-color: var(--k-accent-indigo);
+  box-shadow: var(--k-glow-primary);
+}
+
+.k-glass-button--success {
+  background: var(--k-accent-emerald-10);
+  border-color: rgba(16, 185, 129, 0.20);
+}
+
+.k-glass-button--success:hover {
+  background: rgba(16, 185, 129, 0.20);
+  border-color: var(--k-accent-emerald);
+  box-shadow: var(--k-glow-success);
+}
+
+.k-glass-button--danger {
+  background: var(--k-accent-rose-10);
+  border-color: rgba(244, 63, 94, 0.20);
+}
+
+.k-glass-button--danger:hover {
+  background: rgba(244, 63, 94, 0.20);
+  border-color: var(--k-accent-rose);
+  box-shadow: var(--k-glow-warning);
+}
+
+.k-glass-button--sm {
+  padding: var(--k-space-1) var(--k-space-3);
+  min-height: 28px;
+  font-size: 0.8125rem;
+  border-radius: var(--k-radius-sm);
+}
+
+.k-glass-button--lg {
+  padding: var(--k-space-3) var(--k-space-6);
+  min-height: 44px;
+  font-size: 1rem;
+  border-radius: var(--k-radius-lg);
+}
+
+.k-glass-button--pill {
+  border-radius: var(--k-radius-pill);
+}
+
+.k-glass-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* =============================================================================
+   Light Mode Overrides
+   ============================================================================= */
+
+[data-theme="light"] {
+  --k-bg-base: #F8F9FC;
+  --k-bg-surface: #FFFFFF;
+  --k-bg-raised: #F1F3F8;
+  --k-bg-overlay: #E8EAF0;
+  --k-bg-inset: #EDEEF3;
+
+  --k-glass-ultra-thin: rgba(255, 255, 255, 0.50);
+  --k-glass-thin: rgba(255, 255, 255, 0.65);
+  --k-glass-regular: rgba(255, 255, 255, 0.75);
+  --k-glass-thick: rgba(255, 255, 255, 0.85);
+  --k-glass-chromatic: rgba(99, 102, 241, 0.06);
+
+  --k-border-subtle: rgba(0, 0, 0, 0.06);
+  --k-border-default: rgba(0, 0, 0, 0.10);
+  --k-border-strong: rgba(0, 0, 0, 0.15);
+
+  --k-text-primary: rgba(0, 0, 0, 0.90);
+  --k-text-secondary: rgba(0, 0, 0, 0.60);
+  --k-text-tertiary: rgba(0, 0, 0, 0.40);
+  --k-text-muted: rgba(0, 0, 0, 0.25);
+
+  --k-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --k-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --k-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.10);
+  --k-shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.12);
+
+  --k-glow-primary: 0 0 20px rgba(99, 102, 241, 0.15),
+                     0 0 40px rgba(99, 102, 241, 0.05);
+  --k-glow-success: 0 0 20px rgba(16, 185, 129, 0.15),
+                     0 0 40px rgba(16, 185, 129, 0.05);
+  --k-glow-accent:  0 0 20px rgba(6, 182, 212, 0.15),
+                     0 0 40px rgba(6, 182, 212, 0.05);
+  --k-glow-warning: 0 0 20px rgba(245, 158, 11, 0.15),
+                     0 0 40px rgba(245, 158, 11, 0.05);
+}
+
+/* =============================================================================
+   Reduced Motion
+   ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .k-glass-card,
+  .k-glass-button {
+    transition: none;
+  }
+
+  .k-glass-card:hover {
+    transform: none;
+  }
+
+  .k-glass-button:active {
+    transform: none;
+  }
+}
