@@ -128,6 +128,13 @@ export function isStrongPassword(password: string): {
       message: 'Le mot de passe doit contenir au moins un chiffre',
     };
   }
+  // AUTH-F9 FIX: Require special character (consistent with signup + security.ts)
+  if (!/[!@#$%^&*(),.?":{}|<>_\-+=\[\]\\\/~`]/.test(password)) {
+    return {
+      valid: false,
+      message: 'Le mot de passe doit contenir au moins un caractere special',
+    };
+  }
   return { valid: true };
 }
 
