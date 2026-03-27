@@ -50,7 +50,8 @@ export async function generateMetadata({
   const meta = ARTICLE_META[slug];
 
   if (!meta) {
-    return { title: 'Article Not Found' };
+    // Could be an LMS course — use generic title (client-side will load course data)
+    return { title: 'Formation | Koraline' };
   }
 
   const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
