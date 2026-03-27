@@ -22,8 +22,10 @@ export default async function AdminNewProductPage() {
     redirect('/dashboard');
   }
 
+  // Explicit select to ensure id (UUID) is always passed to the client form
   const categories = await prisma.category.findMany({
     where: { isActive: true },
+    select: { id: true, name: true, slug: true },
     orderBy: { sortOrder: 'asc' },
   });
 
