@@ -1,6 +1,7 @@
 'use client';
 
 import { useParams, notFound } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useI18n } from '@/i18n/client';
 import type DOMPurifyType from 'dompurify';
@@ -540,16 +541,152 @@ Proper reconstitution requires accurate calculations. A peptide calculator simpl
  },
 };
 
-export default function ArticlePage() {
+// LMS Course landing component (when slug is a course, not an article)
+function CourseLanding({ slug }: { slug: string }) {
+ const { t } = useI18n();
+ const [course, setCourse] = useState<{ id: string; title: string; description: string; price: string; isFree: boolean; level: string; estimatedHours: number; thumbnailUrl: string | null; status: string; chapters: { id: string; title: string; lessons: { id: string; title: string }[] }[] } | null>(null);
+ const [loading, setLoading] = useState(true);
+ const [enrolled, setEnrolled] = useState(false);
+
+ useEffect(() => {
+  fetch(`/api/admin/lms/courses?slug=${slug}`)
+   .then(r => r.ok ? r.json() : null)
+   .then(data => {
+    if (data?.courses?.[0]) setCourse(data.courses[0]);
+    else if (data?.course) setCourse(data.course);
+   })
+   .catch(() => {})
+   .finally(() => setLoading(false));
+  // Check enrollment
+  fetch('/api/lms/student/dashboard')
+   .then(r => r.ok ? r.json() : null)
+   .then(data => {
+    if (data?.enrollments?.some((e: { courseSlug: string }) => e.courseSlug === slug)) {
+     setEnrolled(true);
+    }
+   })
+   .catch(() => {});
+ }, [slug]);
+
+ if (loading) {
+  return (
+   <div className="min-h-screen bg-[var(--k-bg-base)] flex items-center justify-center">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--k-accent-indigo)]" />
+   </div>
+  );
+ }
+
+ if (!course) return null; // Will trigger notFound from parent
+
+ return (
+  <div className="min-h-screen bg-[var(--k-bg-base)]">
+   <section className="bg-[var(--k-bg-surface)] border-b border-[var(--k-border-subtle)] py-12">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+     <Link href="/learn/dashboard" className="inline-flex items-center gap-2 text-[var(--k-accent-indigo)] hover:underline mb-6">
+      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+      {t('learn.backToLearning')}
+     </Link>
+     <h1 className="text-3xl font-bold text-[var(--k-text-primary)] mb-4">{course.title}</h1>
+     <p className="text-[var(--k-text-secondary)] text-lg mb-6">{course.description}</p>
+     <div className="flex flex-wrap gap-4 items-center text-sm text-[var(--k-text-tertiary)]">
+      <span className="px-3 py-1 rounded-full bg-[var(--k-accent-indigo)]/10 text-[var(--k-accent-indigo)]">{course.level}</span>
+      {course.estimatedHours > 0 && <span>{course.estimatedHours}h de formation</span>}
+      {!course.isFree && <span className="text-lg font-bold text-[var(--k-text-primary)]">{Number(course.price).toFixed(2)} $</span>}
+      {course.isFree && <span className="text-lg font-bold text-green-400">Gratuit</span>}
+     </div>
+     {enrolled ? (
+      <div className="mt-8">
+       <p className="text-green-400 font-medium mb-3">✓ Vous êtes inscrit(e) à ce cours</p>
+       {course.chapters?.[0]?.lessons?.[0] ? (
+        <Link href={`/learn/${slug}/${course.chapters[0].id}/${course.chapters[0].lessons[0].id}`}
+         className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[var(--k-accent-indigo)] text-white font-medium hover:opacity-90 transition">
+         Commencer le cours →
+        </Link>
+       ) : (
+        <p className="text-[var(--k-text-tertiary)]">Les leçons seront bientôt disponibles.</p>
+       )}
+      </div>
+     ) : (
+      <div className="mt-8">
+       <Link href={`/checkout?course=${course.id}`}
+        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[var(--k-accent-indigo)] text-white font-medium hover:opacity-90 transition">
+        {course.isFree ? "S'inscrire gratuitement" : `Acheter — ${Number(course.price).toFixed(2)} $`}
+       </Link>
+      </div>
+     )}
+    </div>
+   </section>
+   {course.chapters && course.chapters.length > 0 && (
+    <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+     <h2 className="text-xl font-bold text-[var(--k-text-primary)] mb-6">Contenu du cours</h2>
+     <div className="space-y-4">
+      {course.chapters.map((ch, i) => (
+       <div key={ch.id} className="bg-[var(--k-bg-surface)] border border-[var(--k-border-subtle)] rounded-lg p-4">
+        <h3 className="font-semibold text-[var(--k-text-primary)]">Chapitre {i + 1}: {ch.title}</h3>
+        {ch.lessons && ch.lessons.length > 0 && (
+         <ul className="mt-2 space-y-1">
+          {ch.lessons.map(lesson => (
+           <li key={lesson.id} className="text-sm text-[var(--k-text-secondary)] flex items-center gap-2">
+            <span className="w-4 h-4 rounded-full border border-[var(--k-border-subtle)] flex-shrink-0" />
+            {lesson.title}
+           </li>
+          ))}
+         </ul>
+        )}
+       </div>
+      ))}
+     </div>
+    </section>
+   )}
+  </div>
+ );
+}
+
+export default function ArticleOrCoursePage() {
  const params = useParams();
  const slug = params.slug as string;
- const { t } = useI18n();
+ const [isCourse, setIsCourse] = useState<boolean | null>(null);
 
  const article = articlesContent[slug];
 
- if (!article) {
- notFound();
+ useEffect(() => {
+  if (!article) {
+   // Not a static article — check if it's an LMS course
+   fetch(`/api/admin/lms/courses?slug=${slug}`)
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+     const found = data?.courses?.[0] || data?.course;
+     setIsCourse(!!found);
+    })
+    .catch(() => setIsCourse(false));
+  }
+ }, [slug, article]);
+
+ // If it's a known article, render article view
+ if (article) {
+  return <ArticleView article={article} slug={slug} />;
  }
+
+ // If we're still checking, show spinner
+ if (isCourse === null) {
+  return (
+   <div className="min-h-screen bg-[var(--k-bg-base)] flex items-center justify-center">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--k-accent-indigo)]" />
+   </div>
+  );
+ }
+
+ // If it's a course, show course landing
+ if (isCourse) {
+  return <CourseLanding slug={slug} />;
+ }
+
+ // Neither article nor course
+ notFound();
+}
+
+function ArticleView({ article, slug }: { article: typeof articlesContent[string]; slug: string }) {
+ const { t } = useI18n();
 
  return (
  <div className="min-h-screen bg-[var(--k-bg-base)]">
