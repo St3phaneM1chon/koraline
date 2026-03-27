@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 // FAILLE-088 FIX: POST action refactored to switch/case on discriminated union type
-// TODO: FAILLE-096 - User search (tab=users) uses general admin rate limit; add stricter limit (10/min) to prevent enumeration
+// FAILLE-096 FIX: User search (tab=users) has stricter rate limit (10/min) to prevent enumeration
 // FAILLE-097 FIX: Using _count instead of include: { users: true } (fixed in GET handler below)
 
 import { NextResponse } from 'next/server';
@@ -11,6 +11,7 @@ import { withAdminGuard } from '@/lib/admin-api-guard';
 import { logAdminAction, getClientIpFromRequest } from '@/lib/admin-audit';
 import { permissionPostSchema } from '@/lib/validations/permission';
 import { logger } from '@/lib/logger';
+import { checkRateLimit } from '@/lib/security';
 
 // GET /api/admin/permissions - List all permissions, groups, and overrides
 export const GET = withAdminGuard(async (request, _ctx) => {
@@ -58,6 +59,16 @@ export const GET = withAdminGuard(async (request, _ctx) => {
   }
 
   if (tab === 'users') {
+    // FAILLE-096 FIX: Stricter rate limit (10 req/min) for user search to prevent enumeration
+    const clientIp = getClientIpFromRequest(request);
+    const userSearchRateLimit = checkRateLimit(`user-search:${clientIp}`, 10, 60_000);
+    if (!userSearchRateLimit.allowed) {
+      return NextResponse.json(
+        { error: 'Too many user search requests. Please try again later.' },
+        { status: 429 }
+      );
+    }
+
     // FAILLE-057 FIX: Limit search param length to prevent oversized queries
     const search = (searchParams.get('search') || '').substring(0, 100);
     const users = await prisma.user.findMany({

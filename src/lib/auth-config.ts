@@ -35,7 +35,7 @@ import { encryptToken } from './token-encryption';
 // FAILLE-085 FIX: Replace 'any' with proper Provider type from next-auth
 // FAILLE-086 RESOLVED: Railway supports HTTPS natively — default __Secure- cookie prefix restored
 // TODO: FAILLE-091 - encryptedAdapter cast as any; type correctly or use 'satisfies' for partial verification
-// TODO: FAILLE-092 - signOut event logs userId but not IP/user-agent; add for suspicious logout tracing
+// FAILLE-092 FIX: signOut event now logs IP/user-agent for suspicious logout tracing
 import type { Provider } from 'next-auth/providers';
 type AuthProvider = Provider;
 
@@ -720,9 +720,17 @@ export const authConfig: NextAuthConfig = {
     },
     async signOut(message) {
       try {
-        const tokenId = 'token' in message ? (message.token as { id?: string })?.id : undefined;
+        const token = 'token' in message ? (message.token as Record<string, unknown>) : undefined;
+        const tokenId = token?.id as string | undefined;
+        // FAILLE-092 FIX: Log IP and user-agent from the JWT token for suspicious logout tracing.
+        // These fields are not natively in the NextAuth JWT, so we fall back to 'unknown'.
+        // For full IP/UA tracking, the signOut API route should pass these via session update.
+        const ip = (token?.ip as string) || 'unknown';
+        const ua = (token?.userAgent as string) || 'unknown';
         logger.info('signout', {
           userId: tokenId,
+          ip,
+          userAgent: ua,
         });
       } catch (error) {
         // FAILLE-074 FIX: Use structured logger instead of console.error

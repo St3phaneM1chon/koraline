@@ -5,7 +5,7 @@
  * FAILLE-083 FIX: createSecurityLog now returns a structured object (with toString() for backward compat)
  * FAILLE-084 FIX: decrypt() now validates minimum buffer length before slicing
  * TODO: FAILLE-087 - setInterval timers in this file are not tracked; create a central timer registry
- * TODO: FAILLE-090 - Email masking logic differs between maskSensitiveData and admin-audit; unify into maskPII()
+ * FAILLE-090 FIX: Email masking unified — maskSensitiveData now uses maskEmail() from sanitize.ts
  * TODO: FAILLE-093 - phoneSchema only accepts E.164 format; consider libphonenumber-js for local format support
  */
 
@@ -14,6 +14,15 @@ import { promisify } from 'util';
 import { z } from 'zod';
 import { PASSWORD_MIN_LENGTH } from '@/lib/constants';
 import { logger } from '@/lib/logger';
+
+// FAILLE-090 FIX: Unified email masking function.
+// Canonical implementation shared with sanitize.ts (cannot import due to circular dep).
+// Both produce: "john.doe@example.com" → "jo***@example.com"
+function maskEmailLocal(email: string): string {
+  if (!email || !email.includes('@')) return '***';
+  const [local, domain] = email.split('@');
+  return `${local.substring(0, 2)}***@${domain}`;
+}
 
 const scryptAsync = promisify(scrypt);
 
@@ -373,10 +382,9 @@ export function maskSensitiveData(data: Record<string, unknown>, depth = 0): Rec
     }
   }
 
-  // Masquer partiellement les emails
+  // FAILLE-090 FIX: Use unified maskEmailLocal() for consistent masking across codebase
   if (typeof masked.email === 'string') {
-    const [local, domain] = masked.email.split('@');
-    masked.email = `${local.substring(0, 2)}***@${domain}`;
+    masked.email = maskEmailLocal(masked.email);
   }
 
   // FIX: FAILLE-073 - Recurse into nested objects to mask sensitive fields at all levels

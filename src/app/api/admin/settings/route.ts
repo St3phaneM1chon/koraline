@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 
-// TODO: FAILLE-094 - SiteSettings create uses empty defaults; provide sensible initial values or show setup wizard
+// FAILLE-094 FIX: SiteSettings create now provides sensible initial values (siteName, locale, currency, timezone)
 // FAILLE-095 FIX: parseSafe now uses generic type parameter for better type safety
 // FAILLE-098 FIX: SiteSettings GET now uses in-memory cache with 30s TTL to reduce DB queries
 
@@ -87,8 +87,14 @@ async function getCachedSiteSettings(): Promise<Awaited<ReturnType<typeof prisma
       });
 
       if (!siteSettings) {
+        // FAILLE-094 FIX: Provide sensible initial values instead of empty defaults
         siteSettings = await prisma.siteSettings.create({
-          data: { id: 'default' },
+          data: {
+            id: 'default',
+            companyName: 'Attitudes VIP',
+            defaultCurrency: 'CAD',
+            country: 'CA',
+          },
         });
       }
 
