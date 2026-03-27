@@ -3472,6 +3472,16 @@
           "deals": "Deals",
           "conversions": "Conversions"
         }
+      },
+      "contacts": {
+        "title": "Contacts",
+        "totalCount": "total contacts",
+        "newContact": "New Contact",
+        "searchPlaceholder": "Search by name, email or phone...",
+        "noContacts": "No contacts found",
+        "noContactsDescription": "Create your first contact or adjust the filters",
+        "loadError": "Failed to load contacts",
+        "created": "Contact created"
       }
     },
     "contentList": {
@@ -6556,7 +6566,8 @@
       "crmReps360": "Rep 360°",
       "voipConference": "Conference",
       "help": "Help",
-      "tutorials": "Tutorials"
+      "tutorials": "Tutorials",
+      "crmContacts": "Contacts"
     },
     "newsletter": {
       "activeSubscribers": "Активные подписчики",
