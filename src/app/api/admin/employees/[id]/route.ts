@@ -16,6 +16,7 @@ import { logAdminAction, getClientIpFromRequest } from '@/lib/admin-audit';
 import { sendEmail } from '@/lib/email/email-service';
 import { buildInviteEmployeeEmail } from '@/lib/email/templates/invite-employee';
 import { logger } from '@/lib/logger';
+import { checkSeatLimit } from '@/lib/seat-enforcement';
 
 // Zod schema for PATCH /api/admin/employees/[id] (update employee)
 const updateEmployeeSchema = z.object({
@@ -248,6 +249,21 @@ export const PATCH = withAdminGuard(async (request, { session, params }) => {
 
     // Role change
     if (data.role !== undefined) {
+      // Seat enforcement: if promoting a non-staff user to a staff role, check limits
+      const isCurrentlyStaff = ['EMPLOYEE', 'OWNER'].includes(existing.role);
+      const isTargetStaff = ['EMPLOYEE', 'OWNER'].includes(data.role);
+      if (!isCurrentlyStaff && isTargetStaff) {
+        const tenantId = session.user.tenantId;
+        if (tenantId) {
+          const seatCheck = await checkSeatLimit(tenantId);
+          if (!seatCheck.allowed) {
+            return NextResponse.json(
+              { error: seatCheck.message || `Limite de sièges atteinte (${seatCheck.current}/${seatCheck.max}). Veuillez mettre à niveau votre plan.` },
+              { status: 403 }
+            );
+          }
+        }
+      }
       updateData.role = data.role;
     }
 
@@ -273,6 +289,17 @@ export const PATCH = withAdminGuard(async (request, { session, params }) => {
     if (data.isActive === false && existing.role !== 'OWNER') {
       updateData.role = 'PUBLIC';
     } else if (data.isActive === true && existing.role === 'PUBLIC') {
+      // Seat enforcement: check limit before reactivating a staff member
+      const tenantId = session.user.tenantId;
+      if (tenantId) {
+        const seatCheck = await checkSeatLimit(tenantId);
+        if (!seatCheck.allowed) {
+          return NextResponse.json(
+            { error: seatCheck.message || `Limite de sièges atteinte (${seatCheck.current}/${seatCheck.max}). Veuillez mettre à niveau votre plan.` },
+            { status: 403 }
+          );
+        }
+      }
       updateData.role = 'EMPLOYEE';
     }
 

@@ -15,6 +15,7 @@ import { inviteEmployeeSchema } from '@/lib/validations/employee';
 import { sendEmail } from '@/lib/email/email-service';
 import { buildInviteEmployeeEmail } from '@/lib/email/templates/invite-employee';
 import { logger } from '@/lib/logger';
+import { checkSeatLimit } from '@/lib/seat-enforcement';
 
 // GET /api/admin/employees - List employees and owners
 export const GET = withAdminGuard(async (request: NextRequest, _ctx) => {
@@ -206,6 +207,18 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
     }
     const { email, name, role, permissions, phoneNumberId } = parsed.data;
     const targetRole = role;
+
+    // Seat enforcement: check tenant employee limit before creating/promoting staff
+    const tenantId = session.user.tenantId;
+    if (tenantId) {
+      const seatCheck = await checkSeatLimit(tenantId);
+      if (!seatCheck.allowed) {
+        return NextResponse.json(
+          { error: seatCheck.message || `Limite de sièges atteinte (${seatCheck.current}/${seatCheck.max}). Veuillez mettre à niveau votre plan.` },
+          { status: 403 }
+        );
+      }
+    }
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
