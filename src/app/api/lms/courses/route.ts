@@ -19,6 +19,7 @@ export async function GET(request: NextRequest) {
 
   const { searchParams } = new URL(request.url);
   const categorySlug = searchParams.get('category') ?? undefined;
+  const slug = searchParams.get('slug') ?? undefined;
   const search = searchParams.get('search') ?? undefined;
   const level = searchParams.get('level') ?? undefined;
   // FIX P2: NaN-safe parseInt with fallback
@@ -28,6 +29,7 @@ export async function GET(request: NextRequest) {
   const where = {
     tenantId,
     status: 'PUBLISHED' as const,
+    ...(slug && { slug }),
     ...(categorySlug && { category: { slug: categorySlug } }),
     ...(level && { level: level.toUpperCase() as CourseLevel }),
     ...(search && {

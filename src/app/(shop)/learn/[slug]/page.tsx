@@ -549,7 +549,7 @@ function CourseLanding({ slug }: { slug: string }) {
  const [enrolled, setEnrolled] = useState(false);
 
  useEffect(() => {
-  fetch(`/api/admin/lms/courses?slug=${slug}`)
+  fetch(`/api/lms/courses?slug=${slug}`)
    .then(r => r.ok ? r.json() : null)
    .then(data => {
     if (data?.courses?.[0]) setCourse(data.courses[0]);
@@ -652,7 +652,7 @@ export default function ArticleOrCoursePage() {
  useEffect(() => {
   if (!article) {
    // Not a static article — check if it's an LMS course
-   fetch(`/api/admin/lms/courses?slug=${slug}`)
+   fetch(`/api/lms/courses?slug=${slug}`)
     .then(r => r.ok ? r.json() : null)
     .then(data => {
      const found = data?.courses?.[0] || data?.course;
