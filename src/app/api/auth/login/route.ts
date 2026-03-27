@@ -20,14 +20,14 @@ export async function POST(request: NextRequest) {
     // C-02 FIX: Rate limiting (5 req/min per IP for auth/login)
     const rateLimit = await checkRateLimit(ip, '/api/auth/login');
     if (!rateLimit.allowed) {
+      // SECURITY FIX 1.4: Clamp Retry-After to prevent overflow (1s–3600s)
+      const retryAfterSec = Math.min(3600, Math.max(1, Math.ceil((rateLimit.resetAt - Date.now()) / 1000)));
       return NextResponse.json(
         { message: 'Trop de tentatives. Veuillez réessayer plus tard.' },
         {
           status: 429,
           headers: {
-            'Retry-After': String(
-              Math.ceil((rateLimit.resetAt - Date.now()) / 1000)
-            ),
+            'Retry-After': String(retryAfterSec),
           },
         }
       );

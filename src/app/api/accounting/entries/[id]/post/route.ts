@@ -51,6 +51,21 @@ export const POST = withAdminGuard(async (_request, { session, params }) => {
       );
     }
 
+    // SECURITY FIX 3.1: Check if specific accounting period (month) is locked
+    const lockedPeriod = await prisma.accountingPeriod.findFirst({
+      where: {
+        startDate: { lte: entryDate },
+        endDate: { gte: entryDate },
+        status: 'CLOSED',
+      },
+    });
+    if (lockedPeriod) {
+      return NextResponse.json(
+        { error: `Impossible de valider une écriture dans la période comptable verrouillée "${lockedPeriod.name}" (${lockedPeriod.startDate.toISOString().split('T')[0]} — ${lockedPeriod.endDate.toISOString().split('T')[0]})` },
+        { status: 400 }
+      );
+    }
+
     // Verify balanced
     const totalDebits = existing.lines.reduce((s, l) => s + Number(l.debit), 0);
     const totalCredits = existing.lines.reduce((s, l) => s + Number(l.credit), 0);

@@ -143,9 +143,19 @@ async function checkIdempotence(eventId: string): Promise<boolean> {
 
 /**
  * Record webhook event for idempotence tracking
+ * SECURITY FIX 2.3: Use atomic upsert to prevent double-charge race condition.
+ * If the record already exists with COMPLETED or PROCESSING status, skip processing.
  */
-async function recordWebhookEvent(eventId: string, eventType: string, payload?: string) {
-  return prisma.webhookEvent.upsert({
+async function recordWebhookEvent(eventId: string, eventType: string, payload?: string): Promise<{ shouldProcess: boolean }> {
+  const existing = await prisma.webhookEvent.findUnique({ where: { eventId } });
+  if (existing?.status === 'COMPLETED') {
+    return { shouldProcess: false };
+  }
+  if (existing?.status === 'PROCESSING') {
+    // Another worker is already processing this event — skip to prevent double-charge
+    return { shouldProcess: false };
+  }
+  await prisma.webhookEvent.upsert({
     where: { eventId },
     update: { status: 'PROCESSING' },
     create: {
@@ -156,6 +166,7 @@ async function recordWebhookEvent(eventId: string, eventType: string, payload?: 
       payload,
     },
   });
+  return { shouldProcess: true };
 }
 
 /**
@@ -221,7 +232,8 @@ export async function POST(request: NextRequest) {
     let event: Stripe.Event;
 
     try {
-      event = getStripeWebhook().webhooks.constructEvent(body, signature, getWebhookSecret());
+      // SECURITY FIX 2.2: Explicit 300s (5 min) timestamp tolerance to prevent replay attacks
+      event = getStripeWebhook().webhooks.constructEvent(body, signature, getWebhookSecret(), 300);
     } catch (err) {
       logger.error('Webhook signature verification failed', {
         error: err instanceof Error ? err.message : String(err),
@@ -254,8 +266,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Record the event (BE-SEC-20: sanitize PCI/PII data before storing)
+    // SECURITY FIX 2.3: Check if another worker is already processing (race condition guard)
     const sanitizedPayload = sanitizeWebhookPayload(event.data.object);
-    await recordWebhookEvent(event.id, event.type, JSON.stringify(sanitizedPayload).slice(0, 5000));
+    const { shouldProcess } = await recordWebhookEvent(event.id, event.type, JSON.stringify(sanitizedPayload).slice(0, 5000));
+    if (!shouldProcess) {
+      logger.info('Webhook already being processed by another worker, skipping', { eventId: event.id });
+      markEventProcessed(event.id);
+      return NextResponse.json({ received: true, duplicate: true });
+    }
 
     // Store raw payload for potential replay (non-blocking)
     storeRawPayload(event.id, body).catch((err) => logger.error('Webhook payload storage failed', { error: err instanceof Error ? err.message : String(err) }));

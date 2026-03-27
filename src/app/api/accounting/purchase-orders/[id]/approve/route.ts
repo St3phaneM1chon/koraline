@@ -34,6 +34,27 @@ export const POST = withAdminGuard(async (_request, { session, params }) => {
       );
     }
 
+    // SECURITY FIX 3.2: Prevent self-approval — approver cannot be the PO creator
+    const currentUserId = session?.user?.id;
+    const currentUserEmail = session?.user?.email;
+    if (
+      (po.createdBy && currentUserId && po.createdBy === currentUserId) ||
+      (po.requestedBy && currentUserEmail && po.requestedBy === currentUserEmail)
+    ) {
+      return NextResponse.json(
+        { error: 'Vous ne pouvez pas approuver votre propre bon de commande' },
+        { status: 403 }
+      );
+    }
+
+    // SECURITY FIX 3.2: POs above $5000 require OWNER role
+    if (Number(po.total) > 5000 && session?.user?.role !== 'OWNER') {
+      return NextResponse.json(
+        { error: 'Les bons de commande de plus de 5 000 $ necessitent l\'approbation du proprietaire' },
+        { status: 403 }
+      );
+    }
+
     const approvedBy = session?.user?.email || session?.user?.name || 'unknown';
     const now = new Date();
 

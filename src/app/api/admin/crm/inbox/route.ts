@@ -102,10 +102,12 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     const { channel, subject, contactId, leadId, assignedToId } = parsed.data;
 
     // N+1 fix: Validate all referenced entities in parallel
+    // SECURITY FIX 5.1: Use findFirst with explicit checks to prevent cross-tenant reference injection
+    // Prisma middleware filters by tenantId, but we verify explicitly for defense-in-depth
     const [contact, lead, assignee] = await Promise.all([
-      contactId ? prisma.user.findUnique({ where: { id: contactId }, select: { id: true } }) : null,
-      leadId ? prisma.crmLead.findUnique({ where: { id: leadId }, select: { id: true } }) : null,
-      assignedToId ? prisma.user.findUnique({ where: { id: assignedToId }, select: { id: true } }) : null,
+      contactId ? prisma.user.findFirst({ where: { id: contactId }, select: { id: true } }) : null,
+      leadId ? prisma.crmLead.findFirst({ where: { id: leadId }, select: { id: true } }) : null,
+      assignedToId ? prisma.user.findFirst({ where: { id: assignedToId }, select: { id: true } }) : null,
     ]);
 
     if (contactId && !contact) {

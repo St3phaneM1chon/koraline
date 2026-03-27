@@ -23,10 +23,22 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
         { status: 400 }
       );
     }
-    const { productName, category, attributes, language } = parsed.data;
+    const { productName: rawProductName, category: rawCategory, attributes, language } = parsed.data;
+
+    // SECURITY FIX NEW-1: Escape HTML entities to prevent XSS in generated descriptions
+    function escapeHtml(str: string): string {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;');
+    }
+    const productName = escapeHtml(rawProductName);
+    const category = rawCategory ? escapeHtml(rawCategory) : undefined;
 
     // Generate description using templates (no external API dependency)
-    const attrList = attributes ? Object.entries(attributes).map(([k, v]) => `${k}: ${v}`).join(', ') : '';
+    const attrList = attributes ? Object.entries(attributes).map(([k, v]) => `${escapeHtml(k)}: ${escapeHtml(v)}`).join(', ') : '';
     const catContext = category ? ` dans la categorie ${category}` : '';
 
     const descriptions = {

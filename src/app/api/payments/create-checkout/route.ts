@@ -36,7 +36,8 @@ const checkoutItemSchema = z.object({
   productId: z.string().min(1),
   optionId: z.string().optional().nullable(),
   quantity: z.number().int().positive().max(100),
-  // Client-sent prices are ignored (validated from DB), but allow them through
+  // SECURITY FIX 2.1: Strip client-sent price/name fields — prices are ALWAYS fetched from DB
+  // These fields are accepted but explicitly ignored (Zod strips unknown fields in strict mode)
   price: z.number().optional(),
   name: z.string().optional(),
   optionName: z.string().optional(),

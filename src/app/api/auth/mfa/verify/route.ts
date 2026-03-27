@@ -35,6 +35,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid MFA token' }, { status: 401 });
     }
 
+    // SECURITY FIX 1.1: Validate token purpose to prevent reuse of general JWTs as MFA tokens
+    if (payload?.purpose !== 'mfa-challenge') {
+      return NextResponse.json({ error: 'Invalid MFA token type' }, { status: 401 });
+    }
+
     const user = await prisma.user.findUnique({
       where: { id: payload.sub as string },
       select: {
