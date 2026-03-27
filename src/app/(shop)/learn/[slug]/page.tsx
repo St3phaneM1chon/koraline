@@ -608,10 +608,29 @@ function CourseLanding({ slug }: { slug: string }) {
       </div>
      ) : (
       <div className="mt-8">
-       <Link href={`/checkout?course=${course.id}`}
-        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[var(--k-accent-indigo)] text-white font-medium hover:opacity-90 transition">
+       <button
+        onClick={async () => {
+         try {
+          const res = await fetch('/api/lms/checkout', {
+           method: 'POST',
+           headers: { 'Content-Type': 'application/json' },
+           body: JSON.stringify({ type: 'course', id: course.id }),
+          });
+          const data = await res.json();
+          if (data.data?.enrolled) {
+           window.location.href = '/learn/dashboard?checkout=success';
+          } else if (data.data?.checkoutUrl) {
+           window.location.href = data.data.checkoutUrl;
+          } else {
+           alert(data.error || 'Erreur lors du checkout');
+          }
+         } catch {
+          alert('Erreur de connexion. Veuillez réessayer.');
+         }
+        }}
+        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[var(--k-accent-indigo)] text-white font-medium hover:opacity-90 transition cursor-pointer">
         {course.isFree ? "S'inscrire gratuitement" : `Acheter — ${Number(course.price).toFixed(2)} $`}
-       </Link>
+       </button>
       </div>
      )}
     </div>
