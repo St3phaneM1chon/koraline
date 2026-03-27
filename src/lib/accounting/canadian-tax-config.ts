@@ -156,17 +156,60 @@ export interface PayrollRate {
   authority: string;
 }
 
-// FIX: F099 - These rates are specific to fiscal year 2026. TODO: Add year parameter
-// and load rates from DB/config for automatic annual updates.
-export const PAYROLL_RATES_QC_2026: PayrollRate[] = [
-  { id: 'qpp-base', name: 'QPP Base', nameFr: 'RRQ de base', employeeRate: 5.30, employerRate: 5.30, maxInsurableEarnings: 74600, annualExemption: 3500, maxContributionEmployee: 3768, maxContributionEmployer: 3768, authority: 'RQ' },
-  { id: 'qpp2', name: 'QPP2', nameFr: 'RRQ2', employeeRate: 4.00, employerRate: 4.00, maxInsurableEarnings: 85000, annualExemption: 74600, maxContributionEmployee: 416, maxContributionEmployer: 416, authority: 'RQ' },
-  { id: 'ei', name: 'Employment Insurance', nameFr: 'Assurance-emploi', employeeRate: 1.63, employerRate: 2.282, maxInsurableEarnings: 68900, annualExemption: 0, maxContributionEmployee: 1123, maxContributionEmployer: 1572, authority: 'CRA' },
-  { id: 'rqap', name: 'QPIP', nameFr: 'RQAP', employeeRate: 0.455, employerRate: 0.636, maxInsurableEarnings: 103000, annualExemption: 0, maxContributionEmployee: 469, maxContributionEmployer: 655, authority: 'RQ' },
-  { id: 'fss', name: 'Health Services Fund', nameFr: 'FSS', employeeRate: 0, employerRate: 1.65, maxInsurableEarnings: 0, annualExemption: 0, maxContributionEmployee: 0, maxContributionEmployer: 0, authority: 'RQ' },
-  { id: 'cnt', name: 'Labour Standards', nameFr: 'CNT', employeeRate: 0, employerRate: 0.07, maxInsurableEarnings: 103000, annualExemption: 0, maxContributionEmployee: 0, maxContributionEmployer: 72, authority: 'RQ' },
-  { id: 'formation', name: 'Workforce Skills Development', nameFr: 'Formation 1%', employeeRate: 0, employerRate: 1.0, maxInsurableEarnings: 0, annualExemption: 0, maxContributionEmployee: 0, maxContributionEmployer: 0, authority: 'RQ' },
-];
+// FIX: F099 - Payroll rates indexed by fiscal year so future rate changes can be
+// added without modifying existing rates. Use getPayrollRates(fiscalYear) to retrieve.
+const PAYROLL_RATES_BY_YEAR: Record<number, PayrollRate[]> = {
+  2026: [
+    { id: 'qpp-base', name: 'QPP Base', nameFr: 'RRQ de base', employeeRate: 5.30, employerRate: 5.30, maxInsurableEarnings: 74600, annualExemption: 3500, maxContributionEmployee: 3768, maxContributionEmployer: 3768, authority: 'RQ' },
+    { id: 'qpp2', name: 'QPP2', nameFr: 'RRQ2', employeeRate: 4.00, employerRate: 4.00, maxInsurableEarnings: 85000, annualExemption: 74600, maxContributionEmployee: 416, maxContributionEmployer: 416, authority: 'RQ' },
+    { id: 'ei', name: 'Employment Insurance', nameFr: 'Assurance-emploi', employeeRate: 1.63, employerRate: 2.282, maxInsurableEarnings: 68900, annualExemption: 0, maxContributionEmployee: 1123, maxContributionEmployer: 1572, authority: 'CRA' },
+    { id: 'rqap', name: 'QPIP', nameFr: 'RQAP', employeeRate: 0.455, employerRate: 0.636, maxInsurableEarnings: 103000, annualExemption: 0, maxContributionEmployee: 469, maxContributionEmployer: 655, authority: 'RQ' },
+    { id: 'fss', name: 'Health Services Fund', nameFr: 'FSS', employeeRate: 0, employerRate: 1.65, maxInsurableEarnings: 0, annualExemption: 0, maxContributionEmployee: 0, maxContributionEmployer: 0, authority: 'RQ' },
+    { id: 'cnt', name: 'Labour Standards', nameFr: 'CNT', employeeRate: 0, employerRate: 0.07, maxInsurableEarnings: 103000, annualExemption: 0, maxContributionEmployee: 0, maxContributionEmployer: 72, authority: 'RQ' },
+    { id: 'formation', name: 'Workforce Skills Development', nameFr: 'Formation 1%', employeeRate: 0, employerRate: 1.0, maxInsurableEarnings: 0, annualExemption: 0, maxContributionEmployee: 0, maxContributionEmployer: 0, authority: 'RQ' },
+  ],
+  // To add 2027 rates: simply add a new key here with the updated values.
+  // Existing 2026 rates remain untouched.
+};
+
+/**
+ * Get payroll rates for a given fiscal year.
+ *
+ * FIX: F099 - Accepts an optional fiscalYear parameter so callers can retrieve
+ * rates for any supported year. Defaults to the current calendar year.
+ * If rates for the requested year are not yet available, falls back to the
+ * most recent year that has rates defined (e.g. requesting 2028 when only
+ * 2026 is defined will return 2026 rates).
+ *
+ * @param fiscalYear - The fiscal year to retrieve rates for (defaults to current year).
+ * @returns Array of PayrollRate entries for the requested (or nearest prior) year.
+ */
+export function getPayrollRates(fiscalYear?: number): PayrollRate[] {
+  const year = fiscalYear ?? new Date().getFullYear();
+
+  // Exact match
+  if (PAYROLL_RATES_BY_YEAR[year]) {
+    return PAYROLL_RATES_BY_YEAR[year];
+  }
+
+  // Fallback: find the most recent year that has rates <= requested year
+  const availableYears = Object.keys(PAYROLL_RATES_BY_YEAR)
+    .map(Number)
+    .sort((a, b) => b - a); // descending
+
+  const fallbackYear = availableYears.find((y) => y <= year);
+  if (fallbackYear !== undefined) {
+    return PAYROLL_RATES_BY_YEAR[fallbackYear];
+  }
+
+  // If requested year is before all available years, return earliest
+  return PAYROLL_RATES_BY_YEAR[availableYears[availableYears.length - 1]] ?? [];
+}
+
+/**
+ * @deprecated Use `getPayrollRates(2026)` instead. Kept for backward compatibility.
+ */
+export const PAYROLL_RATES_QC_2026: PayrollRate[] = PAYROLL_RATES_BY_YEAR[2026];
 
 // -----------------------------------------------------------------------------
 // 6. Deductibility Rules
