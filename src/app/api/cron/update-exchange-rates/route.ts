@@ -1,87 +1,24 @@
 export const dynamic = 'force-dynamic';
 
 /**
- * @deprecated A9-P1-001: Use /api/cron/fx-rate-sync instead (Bank of Canada official rates).
- * This route is a duplicate that uses the less authoritative open.er-api.com.
- * Kept temporarily for backward compatibility with existing cron schedules.
- * TODO: Remove after verifying all cron schedules point to fx-rate-sync.
- *
- * CRON Job - Mise a jour des taux de change
- * Recupere les taux en direct depuis open.er-api.com (gratuit, sans cle API)
- * Base: CAD
+ * @deprecated Use /api/cron/fx-rate-sync instead (Bank of Canada official rates).
+ * This route existed as a duplicate using open.er-api.com.
+ * It now returns a deprecation notice and a redirect pointer.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { timingSafeEqual } from 'crypto';
-import { logger } from '@/lib/logger';
-import { updateExchangeRates } from '@/lib/exchange-rates';
-import { withJobLock } from '@/lib/cron-lock';
 
-export async function GET(request: NextRequest) {
-  // Verify cron secret (fail-closed, timing-safe comparison)
-  const authHeader = request.headers.get('authorization');
-  const cronSecret = process.env.CRON_SECRET;
-
-  if (!cronSecret) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  const providedSecret = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : '';
-  let secretsMatch = false;
-  try {
-    const a = Buffer.from(cronSecret, 'utf8');
-    const b = Buffer.from(providedSecret, 'utf8');
-    secretsMatch = a.length === b.length && timingSafeEqual(a, b);
-  } catch { secretsMatch = false; }
-
-  if (!secretsMatch) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  return withJobLock('update-exchange-rates', async () => {
-    const startTime = Date.now();
-
-    try {
-      logger.info('Exchange rates cron: starting exchange rate update');
-
-      const result = await updateExchangeRates();
-      const duration = Date.now() - startTime;
-
-      logger.info('Exchange rates cron: job complete', {
-        updated: result.updated.length,
-        skipped: result.skipped.length,
-        errors: result.errors.length,
-        durationMs: duration,
-      });
-
-      return NextResponse.json({
-        ...result,
-        durationMs: duration,
-      });
-    } catch (error) {
-      const duration = Date.now() - startTime;
-      logger.error('Exchange rates cron: job error', {
-        error: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
-        durationMs: duration,
-      });
-
-      // BE-SEC-04: Don't leak error details in production
-      return NextResponse.json(
-        {
-          success: false,
-          error: process.env.NODE_ENV === 'development'
-            ? (error instanceof Error ? error.message : 'Internal server error')
-            : 'Failed to update exchange rates',
-          durationMs: duration,
-        },
-        { status: 500 }
-      );
-    }
-  });
+export async function GET(_request: NextRequest) {
+  return NextResponse.json(
+    {
+      deprecated: true,
+      message: 'This endpoint is deprecated. Use /api/cron/fx-rate-sync instead.',
+      redirect: '/api/cron/fx-rate-sync',
+    },
+    { status: 410 }
+  );
 }
 
-// Allow POST for manual testing
 export async function POST(request: NextRequest) {
   return GET(request);
 }

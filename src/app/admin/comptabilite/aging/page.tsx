@@ -357,8 +357,8 @@ export default function AgingPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {report.byCustomer.slice(0, 15).map((customer) => (
-                    <tr key={customer.name} className="border-b border-slate-100 hover:bg-white/5">
+                  {report.byCustomer.slice(0, 15).map((customer, idx) => (
+                    <tr key={`${customer.name}-${idx}`} className="border-b border-slate-100 hover:bg-white/5">
                       <td className="py-3 px-4">
                         <div>
                           <p className="font-medium text-[var(--k-text-primary)]">{customer.name}</p>

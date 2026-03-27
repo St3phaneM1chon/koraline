@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Fragment } from 'react';
 import { Plus, Download, ChevronRight, Pencil, ClipboardList, Sparkles, FileSpreadsheet } from 'lucide-react';
 import {
   PageHeader,
@@ -560,8 +560,8 @@ export default function PlanComptablePage() {
               const isExpanded = expandedCategories.has(account.code);
 
               return (
-                <>{/* Fragment key on first tr */}
-                  <tr key={account.id} className="hover:bg-[var(--k-bg-surface)]">
+                <Fragment key={account.id}>
+                  <tr className="hover:bg-[var(--k-bg-surface)]">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         {hasChildren && (
@@ -657,7 +657,7 @@ export default function PlanComptablePage() {
                       </td>
                     </tr>
                   ))}
-                </>
+                </Fragment>
               );
             })}
           </tbody>
