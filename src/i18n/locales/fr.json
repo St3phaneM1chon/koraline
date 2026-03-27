@@ -6707,7 +6707,15 @@
       "voipCallCenter": "Centre d'appels",
       "accountingPayrollHR": "Paie & RH",
       "accountingIntegrations": "Intégrations",
-      "accountingAdvancedTools": "Outils avancés"
+      "accountingAdvancedTools": "Outils avancés",
+      "ordersAndSales": "Commandes et ventes",
+      "clientsManagement": "Gestion des clients",
+      "allClients": "Tous les clients",
+      "newClient": "Nouveau client",
+      "clientsTools": "Outils clients",
+      "broadcast": "Diffusion",
+      "assistedSetup": "Configuration assistée",
+      "platformConfig": "Configuration plateforme"
     },
     "tutorials": {
       "title": "Tutoriels",

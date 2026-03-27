@@ -6567,7 +6567,15 @@
       "voipConference": "Conference",
       "help": "Help",
       "tutorials": "Tutorials",
-      "crmContacts": "Contacts"
+      "crmContacts": "Contacts",
+      "ordersAndSales": "Orders & Sales",
+      "clientsManagement": "Client Management",
+      "allClients": "All Clients",
+      "newClient": "New Client",
+      "clientsTools": "Client Tools",
+      "broadcast": "Broadcast",
+      "assistedSetup": "Assisted Setup",
+      "platformConfig": "Platform Configuration"
     },
     "newsletter": {
       "activeSubscribers": "Aktiva prenumeranter",
