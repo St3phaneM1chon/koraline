@@ -38,15 +38,18 @@ export const GET = withUserGuard(async (_request: NextRequest, { session }) => {
       select: { currentStreak: true, longestStreak: true, lastActivityDate: true },
     }),
 
-    // All enrollments for stats
+    // All enrollments for stats + course cards
     prisma.enrollment.findMany({
       where: { tenantId, userId },
       select: {
+        id: true,
+        courseId: true,
         status: true,
         progress: true,
         lessonsCompleted: true,
         totalLessons: true,
         completedAt: true,
+        enrolledAt: true,
         complianceDeadline: true,
         complianceStatus: true,
         course: {
@@ -54,6 +57,7 @@ export const GET = withUserGuard(async (_request: NextRequest, { session }) => {
             title: true,
             slug: true,
             estimatedHours: true,
+            thumbnailUrl: true,
           },
         },
       },
@@ -109,9 +113,29 @@ export const GET = withUserGuard(async (_request: NextRequest, { session }) => {
       status: d.complianceStatus ?? 'IN_PROGRESS',
     }));
 
+  // Format enrollments for frontend course cards
+  const formattedEnrollments = enrollments.map(e => ({
+    id: e.id,
+    courseId: e.courseId,
+    courseSlug: e.course.slug,
+    courseTitle: e.course.title,
+    courseThumbnail: e.course.thumbnailUrl ?? null,
+    progress: Number(e.progress),
+    lessonsCompleted: e.lessonsCompleted,
+    totalLessons: e.totalLessons,
+    lastAccessedAt: null,
+    nextLessonId: null,
+    nextLessonTitle: null,
+    nextChapterId: null,
+    status: e.status,
+    enrolledAt: e.enrolledAt.toISOString(),
+    completedAt: e.completedAt?.toISOString() ?? null,
+  }));
+
   return NextResponse.json({
     badges,
     streak: streak?.currentStreak ?? 0,
+    enrollments: formattedEnrollments,
     stats: {
       totalCourses,
       completed,

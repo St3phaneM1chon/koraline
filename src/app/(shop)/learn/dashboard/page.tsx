@@ -128,10 +128,27 @@ export default function LearningDashboardPage() {
  useEffect(() => {
  async function fetchDashboard() {
  try {
- const res = await fetch('/api/lms/student-dashboard');
+ const res = await fetch('/api/lms/student/dashboard');
  if (!res.ok) throw new Error('Failed to load');
  const json = await res.json();
- setData(json);
+ // Normalize API response to match expected DashboardData shape
+ const normalized: DashboardData = {
+  enrollments: json.enrollments || [],
+  stats: {
+   totalCourses: json.stats?.totalCourses ?? 0,
+   completedCourses: json.stats?.completedCourses ?? json.stats?.completed ?? 0,
+   inProgressCourses: json.stats?.inProgressCourses ?? json.stats?.inProgress ?? 0,
+   hoursStudied: json.stats?.hoursStudied ?? json.stats?.totalHoursSpent ?? 0,
+   conceptsMastered: json.stats?.conceptsMastered ?? 0,
+   quizzesCompleted: json.stats?.quizzesCompleted ?? 0,
+   streakDays: json.stats?.streakDays ?? json.streak ?? 0,
+   reviewDueCount: json.stats?.reviewDueCount ?? 0,
+  },
+  recentActivity: json.recentActivity || [],
+  deadlines: json.deadlines || [],
+  badges: json.badges || [],
+ };
+ setData(normalized);
  } catch {
  setError(t('learn.dashboard.loadError'));
  } finally {

@@ -400,7 +400,12 @@ export const POST = withAdminGuard(async (request, { session }) => {
 
     return NextResponse.json({ tenant, ownerId: ownerUser.id, emailSent }, { status: 201 });
   } catch (error) {
-    logger.error('Failed to create client', { error: error instanceof Error ? error.message : String(error) });
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const errMsg = error instanceof Error ? error.message : String(error);
+    const errStack = error instanceof Error ? error.stack : undefined;
+    logger.error('Failed to create client', { error: errMsg, stack: errStack });
+    return NextResponse.json({
+      error: 'Internal server error',
+      ...(process.env.NODE_ENV !== 'production' && { details: errMsg, stack: errStack?.split('\n').slice(0, 5) })
+    }, { status: 500 });
   }
 });
