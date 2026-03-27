@@ -415,6 +415,18 @@ function calculateRelevance(text: string, searchText?: string): number {
 // ============================================
 
 const savedSearches: Map<string, SavedSearch> = new Map();
+const SAVED_SEARCHES_MAX_SIZE = 1_000;
+
+/** Evict least-used entries when over limit */
+function enforceSavedSearchesLimit(): void {
+  if (savedSearches.size <= SAVED_SEARCHES_MAX_SIZE) return;
+  // Sort by useCount ascending, evict least-used half
+  const sorted = [...savedSearches.entries()].sort((a, b) => a[1].useCount - b[1].useCount);
+  const toDelete = Math.floor(sorted.length / 2);
+  for (let i = 0; i < toDelete; i++) {
+    savedSearches.delete(sorted[i][0]);
+  }
+}
 
 /**
  * Save a search query
@@ -434,6 +446,7 @@ export function saveSearch(
     useCount: 0,
   };
 
+  enforceSavedSearchesLimit();
   savedSearches.set(search.id, search);
   return search;
 }

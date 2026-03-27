@@ -77,6 +77,8 @@ interface TelnyxWebhookPayload {
 // MessagingChannel
 // ---------------------------------------------------------------------------
 
+const MAX_CONVERSATIONS_IN_MEMORY = 500;
+
 export class MessagingChannel {
   private config: MessagingConfig;
   private conversations: Map<string, Message[]> = new Map();
@@ -420,6 +422,12 @@ export class MessagingChannel {
     }
 
     this.conversations.set(phoneNumber, existing);
+
+    // Evict oldest conversations when over limit (prevents unbounded memory growth)
+    if (this.conversations.size > MAX_CONVERSATIONS_IN_MEMORY) {
+      const firstKey = this.conversations.keys().next().value;
+      if (firstKey) this.conversations.delete(firstKey);
+    }
   }
 
   /**

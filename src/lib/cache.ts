@@ -131,6 +131,44 @@ interface CacheItem {
 const globalCacheStore = new Map<string, CacheItem>();
 const tagIndex = new Map<string, Set<string>>();
 
+// Maximum number of entries in the L1 in-memory cache to prevent unbounded growth.
+// With ~268 pages and various cached queries, 5000 is generous but bounded.
+const GLOBAL_CACHE_MAX_SIZE = 5_000;
+
+/**
+ * Evict expired entries first, then oldest entries if still over limit.
+ * Prevents unbounded memory growth in long-running server processes.
+ */
+function enforceGlobalCacheMaxSize(): void {
+  if (globalCacheStore.size <= GLOBAL_CACHE_MAX_SIZE) return;
+
+  const now = Date.now();
+
+  // Pass 1: remove expired entries
+  for (const [key, item] of globalCacheStore.entries()) {
+    if (now >= item.expiry) {
+      for (const tag of item.tags) {
+        tagIndex.get(tag)?.delete(key);
+      }
+      globalCacheStore.delete(key);
+    }
+  }
+
+  // Pass 2: if still over limit, evict oldest half (Map preserves insertion order)
+  if (globalCacheStore.size > GLOBAL_CACHE_MAX_SIZE) {
+    const toDelete = Math.floor(globalCacheStore.size / 2);
+    let deleted = 0;
+    for (const [key, item] of globalCacheStore.entries()) {
+      if (deleted >= toDelete) break;
+      for (const tag of item.tags) {
+        tagIndex.get(tag)?.delete(key);
+      }
+      globalCacheStore.delete(key);
+      deleted++;
+    }
+  }
+}
+
 // ---------------------------------------------------------------------------
 // L2 Redis helpers (fire-and-forget, never throw)
 // ---------------------------------------------------------------------------
@@ -236,7 +274,8 @@ export async function cacheGetOrSet<T>(
   // Miss: fetch fresh value
   const value = await fn();
 
-  // Store in L1
+  // Store in L1 (enforce max size to prevent unbounded memory growth)
+  enforceGlobalCacheMaxSize();
   globalCacheStore.set(key, { value, expiry: Date.now() + ttl * 1000, tags });
   for (const tag of tags) {
     if (!tagIndex.has(tag)) tagIndex.set(tag, new Set());
@@ -268,6 +307,7 @@ export function cacheSet<T>(key: string, value: T, options?: { ttl?: number; tag
   const ttl = options?.ttl ?? CacheTTL.CONFIG;
   const tags = options?.tags ?? [];
 
+  enforceGlobalCacheMaxSize();
   globalCacheStore.set(key, {
     value,
     expiry: Date.now() + ttl * 1000,
@@ -415,4 +455,30 @@ export async function invalidateCache(pattern: string): Promise<void> {
       error: err instanceof Error ? err.message : String(err),
     });
   }
+}
+
+// ---------------------------------------------------------------------------
+// Periodic L1 cache cleanup — evict expired entries every 5 minutes
+// ---------------------------------------------------------------------------
+
+function cleanupExpiredCacheEntries(): void {
+  const now = Date.now();
+  for (const [key, item] of globalCacheStore.entries()) {
+    if (now >= item.expiry) {
+      for (const tag of item.tags) {
+        tagIndex.get(tag)?.delete(key);
+      }
+      globalCacheStore.delete(key);
+    }
+  }
+  // Clean up empty tag sets
+  for (const [tag, keys] of tagIndex.entries()) {
+    if (keys.size === 0) {
+      tagIndex.delete(tag);
+    }
+  }
+}
+
+if (typeof setInterval !== 'undefined') {
+  setInterval(cleanupExpiredCacheEntries, 5 * 60 * 1000);
 }

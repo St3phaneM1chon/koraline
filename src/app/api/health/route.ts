@@ -203,13 +203,29 @@ export async function GET(request: NextRequest) {
   const rssMB = Math.round(memoryUsage.rss / 1024 / 1024);
   const heapUsedMB = Math.round(memoryUsage.heapUsed / 1024 / 1024);
   const heapTotalMB = Math.round(memoryUsage.heapTotal / 1024 / 1024);
-  // Railway default: 8GB; adjust via HEALTH_RSS_LIMIT_MB env var if needed
-  const rssLimitMB = parseInt(process.env.HEALTH_RSS_LIMIT_MB || '1400', 10);
+  // Railway default: 8GB container. A large Next.js app (268 pages, LMS, CRM,
+  // accounting, VoIP) legitimately uses 1.5-2.5GB RSS after warm-up. Threshold
+  // set to 3GB to avoid false "fail" while still catching runaway leaks.
+  // Override via HEALTH_RSS_LIMIT_MB env var if needed.
+  const rssLimitMB = parseInt(process.env.HEALTH_RSS_LIMIT_MB || '3072', 10);
+
+  // Warn at 75% of limit, fail at limit
+  const rssWarnMB = Math.round(rssLimitMB * 0.75);
+  const memoryStatus: 'pass' | 'warn' | 'fail' =
+    rssMB >= rssLimitMB ? 'fail' : rssMB >= rssWarnMB ? 'warn' : 'pass';
 
   checks.push({
     name: 'memory',
-    status: rssMB < rssLimitMB ? 'pass' : 'fail',
+    status: memoryStatus,
     message: `RSS: ${rssMB}MB, Heap: ${heapUsedMB}MB / ${heapTotalMB}MB`,
+    details: {
+      rssMB,
+      heapUsedMB,
+      heapTotalMB,
+      externalMB: Math.round(memoryUsage.external / 1024 / 1024),
+      rssLimitMB,
+      rssWarnMB,
+    },
   });
 
   // Check 8: Sentry configuration
