@@ -13439,7 +13439,13 @@
         "fillIn": "Fill In",
         "matching": "Matching",
         "ordering": "Ordering"
-      }
+      },
+      "loading": "Loading quiz...",
+      "errorLoading": "Unable to load quiz",
+      "maxAttemptsReached": "Maximum number of attempts reached",
+      "lastScore": "Last score",
+      "lessonMarkedComplete": "This lesson has been marked as complete.",
+      "retryQuiz": "Retry quiz"
     },
     "quizList": "Quiz Bank",
     "quizTitle": "Quiz Title",

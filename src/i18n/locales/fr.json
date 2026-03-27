@@ -13437,7 +13437,13 @@
         "fillIn": "Remplir",
         "matching": "Association",
         "ordering": "Mise en ordre"
-      }
+      },
+      "loading": "Chargement du quiz...",
+      "errorLoading": "Impossible de charger le quiz",
+      "maxAttemptsReached": "Nombre maximum de tentatives atteint",
+      "lastScore": "Dernier score",
+      "lessonMarkedComplete": "Cette lecon a ete marquee comme completee.",
+      "retryQuiz": "Reessayer le quiz"
     },
     "quizList": "Banque de quiz",
     "quizTitle": "Titre du quiz",
