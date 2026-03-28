@@ -1,6 +1,6 @@
 /**
  * PAGE CATALOGUE
- * Liste de tous les produits peptides avec filtres et catégories hiérarchiques
+ * Liste de tous les produits produits avec filtres et catégories hiérarchiques
  */
 
 // P-02 FIX: Use ISR instead of force-dynamic for catalog (products don't change every second)
@@ -17,10 +17,10 @@ import type { Locale } from '@/i18n/config';
 
 export const metadata: Metadata = {
   title: 'Catalogue',
-  description: 'Parcourez notre catalogue complet de peptides de recherche premium. Filtrez par catégorie, type et prix. Testés en laboratoire, pureté 99 %+.',
+  description: 'Parcourez notre catalogue complet de produits premium. Filtrez par catégorie, type et prix. Testés en laboratoire, pureté 99 %+.',
   openGraph: {
     title: 'Catalogue | Koraline',
-    description: 'Catalogue complet de peptides de recherche premium. Testés en laboratoire, pureté 99 %+.',
+    description: 'Catalogue complet de produits premium. Testés en laboratoire, pureté 99 %+.',
     url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/catalogue`,
     siteName: 'Koraline',
     type: 'website',
@@ -285,7 +285,7 @@ export default async function CataloguePage({ searchParams }: CataloguePageProps
                             : 'text-gray-600 hover:bg-gray-50'
                         }`}
                       >
-                        {type === 'PEPTIDE' ? t('catalogue.peptides') : type === 'SUPPLEMENT' ? t('catalogue.supplements') : t('catalogue.accessories')}
+                        {type === 'PEPTIDE' ? t('catalogue.produits') : type === 'SUPPLEMENT' ? t('catalogue.supplements') : t('catalogue.accessories')}
                       </Link>
                     </li>
                   ))}

@@ -2,10 +2,10 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Tarifs',
-  description: 'Consultez les tarifs Koraline. Prix compétitifs sur les peptides de recherche premium avec rabais de volume et options d\'abonnement.',
+  description: 'Consultez les tarifs Koraline. Prix compétitifs sur les produits premium avec rabais de volume et options d\'abonnement.',
   openGraph: {
     title: 'Tarifs | Koraline',
-    description: 'Prix compétitifs sur les peptides de recherche premium avec rabais de volume.',
+    description: 'Prix compétitifs sur les produits premium avec rabais de volume.',
     url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/tarifs`,
     siteName: 'Koraline',
     type: 'website',

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Carrieres chez Koraline | Rejoignez notre equipe',
-  description: 'Rejoignez l\'équipe Koraline. Explorez nos postes ouverts et découvrez notre culture d\'entreprise dédiée à la recherche sur les peptides.',
+  description: 'Rejoignez l\'équipe Koraline. Explorez nos postes ouverts et découvrez notre culture d\'entreprise dédiée à la recherche sur les produits.',
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/carrieres`,
   },

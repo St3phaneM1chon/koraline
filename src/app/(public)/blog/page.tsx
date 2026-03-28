@@ -26,14 +26,14 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: 'Blog - Koraline',
     description:
-      'Read the latest articles about research peptides, lab protocols, and scientific discoveries from the Koraline team.',
+      'Read the latest articles about produits, lab protocols, and scientific discoveries from the Koraline team.',
     alternates: {
       canonical: `${siteUrl}/blog`,
     },
     openGraph: {
       title: 'Blog - Koraline',
       description:
-        'Read the latest articles about research peptides, lab protocols, and scientific discoveries.',
+        'Read the latest articles about produits, lab protocols, and scientific discoveries.',
       url: `${siteUrl}/blog`,
       type: 'website',
     },
@@ -173,7 +173,7 @@ export default async function BlogPage() {
         >
           <h1 className="font-heading" style={{ fontSize: '42px', fontWeight: 700, marginBottom: '16px' }}>Blog</h1>
           <p style={{ fontSize: '18px', opacity: 0.9 }}>
-            {t('blog.subtitle') || 'Research insights, protocols, and scientific discoveries in peptide research'}
+            {t('blog.subtitle') || 'Research insights, protocols, and scientific discoveries in recherche'}
           </p>
         </section>
 

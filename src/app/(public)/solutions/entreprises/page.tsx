@@ -7,13 +7,13 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Solutions peptidiques pour entreprises et laboratoires | Koraline',
-  description: 'Approvisionnement en peptides de recherche pour entreprises et laboratoires. Volume, comptes dedies, support technique et livraison rapide au Canada.',
+  description: 'Approvisionnement en produits pour entreprises et laboratoires. Volume, comptes dedies, support technique et livraison rapide au Canada.',
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/solutions/entreprises`,
   },
   openGraph: {
     title: 'Solutions peptidiques pour entreprises et laboratoires | Koraline',
-    description: 'Approvisionnement en peptides de recherche pour entreprises et laboratoires. Volume, comptes dedies et support technique.',
+    description: 'Approvisionnement en produits pour entreprises et laboratoires. Volume, comptes dedies et support technique.',
     url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/solutions/entreprises`,
     siteName: 'Koraline',
     type: 'website',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Solutions peptidiques pour entreprises et laboratoires | Koraline',
-    description: 'Approvisionnement en peptides de recherche pour entreprises et laboratoires. Volume, comptes dedies et support technique.',
+    description: 'Approvisionnement en produits pour entreprises et laboratoires. Volume, comptes dedies et support technique.',
   },
 };
 
