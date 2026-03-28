@@ -5,6 +5,7 @@ import { useCurrency } from '@/contexts/CurrencyContext';
 import WishlistButton from '@/components/shop/WishlistButton';
 import PriceDropButton from '@/components/shop/PriceDropButton';
 import StockAlertButton from '@/components/shop/StockAlertButton';
+import BuyNowButton from '@/components/shop/BuyNowButton';
 
 interface ProductActionsProps {
   productId: string;
@@ -61,6 +62,17 @@ export default function ProductActions({
             : t('shop.outOfStock')
         }
       </button>
+
+      {/* G21: Buy Now - Express Checkout */}
+      {selectedFormatInStock && (
+        <BuyNowButton
+          productId={productId}
+          optionId={selectedFormatId}
+          quantity={quantity}
+          variant="primary"
+          className="mt-3"
+        />
+      )}
 
       {/* Research Disclaimer - LEGAL REQUIREMENT */}
       <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mt-4 mb-4">

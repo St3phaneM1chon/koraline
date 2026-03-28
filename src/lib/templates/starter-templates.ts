@@ -562,6 +562,60 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
       },
     ],
   },
+
+  // 13. Portfolio Gallery (G29)
+  {
+    slug: 'portfolio-gallery',
+    name: 'Portfolio Gallery',
+    description: 'Masonry gallery portfolio with category filters, lightbox, and project details.',
+    category: 'portfolio',
+    thumbnail: null,
+    sections: [
+      {
+        id: 'hero',
+        type: 'text',
+        title: 'Our Work',
+        content:
+          '<p>A curated selection of our projects. Filter by category, click to explore full case studies.</p>',
+      },
+      {
+        id: 'gallery',
+        type: 'image',
+        title: 'Featured Projects',
+        imageUrl: '/images/placeholder-portfolio.jpg',
+      },
+      {
+        id: 'project-types',
+        type: 'features',
+        title: 'What We Do',
+        items: [
+          { icon: '🎨', title: 'Branding', description: 'Visual identity and brand systems.' },
+          { icon: '💻', title: 'Web Design', description: 'Responsive websites and web apps.' },
+          { icon: '📱', title: 'Mobile', description: 'Native and cross-platform mobile apps.' },
+          { icon: '📸', title: 'Photography', description: 'Product and lifestyle photography.' },
+        ],
+      },
+      {
+        id: 'stats',
+        type: 'stats',
+        title: 'By the Numbers',
+        items: [
+          { value: '120+', label: 'Projects Completed' },
+          { value: '45', label: 'Clients' },
+          { value: '8', label: 'Awards' },
+          { value: '5', label: 'Years' },
+        ],
+      },
+      {
+        id: 'cta',
+        type: 'cta',
+        title: 'Start Your Project',
+        subtitle: 'Ready to bring your vision to life? Get in touch.',
+        ctaText: 'Contact Us',
+        ctaUrl: '/contact',
+      },
+    ],
+  },
 ];
 
 /**
