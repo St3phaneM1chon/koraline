@@ -1,0 +1,157 @@
+// =============================================================================
+// PERSONALIZATION — Visitor behavior tracking, recommendations, segmentation
+// =============================================================================
+
+model VisitorProfile {
+  id          String   @id @default(cuid())
+  tenantId    String?
+  visitorId   String   // cookie-based anonymous ID
+  userId      String?  // linked user ID if logged in
+  segments    Json     @default("[]")   // ["new_visitor", "high_value", ...]
+  pageViews   Int      @default(0)
+  totalTimeMs Int      @default(0)      // cumulative time spent in ms
+  lastVisit   DateTime @default(now())
+  firstVisit  DateTime @default(now())
+  metadata    Json     @default("{}")   // { lastProducts: [], lastCategories: [], device: "..." }
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  events      VisitorEvent[]
+
+  @@unique([tenantId, visitorId])
+  @@index([tenantId, userId])
+  @@index([tenantId, lastVisit])
+  @@index([segments])
+}
+
+model VisitorEvent {
+  id          String   @id @default(cuid())
+  tenantId    String?
+  visitorId   String
+  profileId   String
+  type        String   // page_view, product_view, add_to_cart, purchase, search, click
+  target      String?  // URL, product ID, category ID, search term
+  metadata    Json     @default("{}")  // { referrer, duration, value }
+  createdAt   DateTime @default(now())
+
+  profile     VisitorProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, visitorId, createdAt])
+  @@index([profileId, type])
+  @@index([type, createdAt])
+  @@index([tenantId, type])
+}
+
+model PersonalizationRule {
+  id          String   @id @default(cuid())
+  tenantId    String?
+  name        String
+  description String?
+  segment     String   // new_visitor, returning, high_value, at_risk, all
+  action      String   // show_banner, recommend_products, show_popup, custom_cta, highlight_category
+  config      Json     @default("{}")  // { message, productIds, bannerUrl, ... }
+  isActive    Boolean  @default(true)
+  priority    Int      @default(0)
+  startsAt    DateTime?
+  endsAt      DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([tenantId, isActive])
+  @@index([segment, isActive])
+}
+
+// =============================================================================
+// PERFORMANCE — Web Vitals + page load monitoring
+// =============================================================================
+
+model WebVitalEntry {
+  id        String   @id @default(cuid())
+  tenantId  String?
+  page      String   // URL path, e.g. /products/123
+  metric    String   // LCP, FID, CLS, TTFB, INP
+  value     Float    // metric value (ms or unitless for CLS)
+  rating    String   // good, needs-improvement, poor
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([tenantId, page, metric])
+  @@index([metric, createdAt])
+  @@index([tenantId, createdAt])
+}
+
+// =============================================================================
+// WHITE-LABEL — Per-tenant branding beyond basic colors
+// =============================================================================
+
+model WhiteLabelConfig {
+  id                  String   @id @default(cuid())
+  tenantId            String   @unique
+  // Login page
+  loginLogoUrl        String?
+  loginBackgroundUrl  String?
+  loginBackgroundColor String?
+  loginTagline        String?
+  // Branding
+  faviconUrl          String?
+  customCss           String?  @db.Text
+  emailDomain         String?  // e.g. mail.client.com
+  emailFromName       String?
+  // Powered-by
+  removePoweredBy     Boolean  @default(false)  // premium only
+  // Custom pages
+  custom404Title      String?
+  custom404Message    String?
+  custom404ImageUrl   String?
+  // Metadata
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([tenantId])
+}
+
+// =============================================================================
+// WORKFLOW AUTOMATION — Pre-built + custom automations (extends email automation)
+// =============================================================================
+
+model WorkflowAutomation {
+  id          String   @id @default(cuid())
+  tenantId    String?
+  name        String
+  description String?
+  type        String   // welcome, abandoned_cart, birthday, review_request, reengagement, custom
+  trigger     String   // user.registered, cart.abandoned, user.birthday, order.delivered, user.inactive
+  conditions  Json     @default("[]")   // [{ field: "daysInactive", operator: "gt", value: "30" }]
+  actions     Json     @default("[]")   // [{ type: "email", templateId: "...", delay: "2h" }]
+  isActive    Boolean  @default(true)
+  lastRunAt   DateTime?
+  runCount    Int      @default(0)
+  successCount Int     @default(0)
+  failCount   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  logs        WorkflowAutomationLog[]
+
+  @@index([tenantId, isActive])
+  @@index([trigger, isActive])
+  @@index([type])
+}
+
+model WorkflowAutomationLog {
+  id           String   @id @default(cuid())
+  tenantId     String?
+  automationId String
+  status       String   // success, failure, skipped
+  targetEmail  String?
+  targetUserId String?
+  details      Json     @default("{}")
+  error        String?
+  createdAt    DateTime @default(now())
+
+  automation   WorkflowAutomation @relation(fields: [automationId], references: [id], onDelete: Cascade)
+
+  @@index([automationId, createdAt])
+  @@index([tenantId, createdAt])
+  @@index([status])
+}

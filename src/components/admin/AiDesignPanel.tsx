@@ -70,6 +70,14 @@ interface DesignSuggestions {
   contentHints: ContentHint[];
 }
 
+interface GeneratedContentData {
+  hero?: { headline: string; subtitle: string; ctaLabel: string };
+  features?: Array<{ icon: string; title: string; description: string }>;
+  about?: string;
+  cta?: { headline: string; subtitle: string; buttonLabel: string };
+  faq?: Array<{ question: string; answer: string }>;
+}
+
 interface GeneratedSection {
   type: string;
   [key: string]: unknown;
@@ -136,7 +144,7 @@ export default function AiDesignPanel({
 
   // Results
   const [suggestions, setSuggestions] = useState<DesignSuggestions | null>(null);
-  const [generatedContent, setGeneratedContent] = useState<Record<string, unknown> | null>(null);
+  const [generatedContent, setGeneratedContent] = useState<GeneratedContentData | null>(null);
   const [improvedText, setImprovedText] = useState<string | null>(null);
 
   // Loading / error
@@ -204,7 +212,7 @@ export default function AiDesignPanel({
       length: 'medium',
       sections: ['hero', 'features', 'cta', 'faq'],
     });
-    if (result) setGeneratedContent(result as Record<string, unknown>);
+    if (result) setGeneratedContent(result as GeneratedContentData);
   }, [callApi, topic, tone, t]);
 
   const handleImproveText = useCallback(async () => {
@@ -532,7 +540,7 @@ export default function AiDesignPanel({
                   <div className="rounded-lg border border-gray-200 p-3 dark:border-gray-700">
                     <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">Features</h4>
                     <div className="space-y-2">
-                      {(generatedContent.features as Array<Record<string, string>>).map((f, i) => (
+                      {generatedContent.features.map((f, i) => (
                         <div key={i} className="flex items-start gap-2 rounded bg-gray-50 p-2 dark:bg-gray-800">
                           <span className="text-base">{f.icon}</span>
                           <div className="min-w-0 flex-1">
@@ -567,7 +575,7 @@ export default function AiDesignPanel({
                   <div className="rounded-lg border border-gray-200 p-3 dark:border-gray-700">
                     <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">FAQ</h4>
                     <div className="space-y-2">
-                      {(generatedContent.faq as Array<Record<string, string>>).map((f, i) => (
+                      {generatedContent.faq.map((f, i) => (
                         <div key={i} className="rounded bg-gray-50 p-2 dark:bg-gray-800">
                           <p className="text-sm font-medium text-gray-900 dark:text-white">{f.question}</p>
                           <p className="mt-0.5 text-xs text-gray-500">{f.answer}</p>

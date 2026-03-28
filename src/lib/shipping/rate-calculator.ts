@@ -314,7 +314,7 @@ export async function calculateCarrierRates(req: CarrierRateRequest): Promise<Ca
 
     if (cached) {
       return {
-        rates: cached.rates as CarrierRateResult[],
+        rates: cached.rates as unknown as CarrierRateResult[],
         cached: true,
         expiresAt: cached.expiresAt.toISOString(),
       };
