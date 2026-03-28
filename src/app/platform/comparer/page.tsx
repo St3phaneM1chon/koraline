@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { softwareApplicationSchema } from '@/lib/structured-data';
+import { PlatformBreadcrumbs } from '@/components/marketing';
 
 /* -------------------------------------------------------------------------- */
 /*  Metadata                                                                  */
@@ -236,6 +237,15 @@ function CellValue({ value }: { value: string | true | false }) {
 export default function ComparePage() {
   return (
     <>
+      {/* Breadcrumbs */}
+      <PlatformBreadcrumbs
+        items={[
+          { label: 'Accueil', href: '/platform' },
+          { label: 'Solutions', href: '/platform/pour/ecommerce' },
+          { label: 'Comparaison' },
+        ]}
+      />
+
       {/* Schema.org Structured Data — SoftwareApplication for comparison context */}
       <JsonLd
         data={softwareApplicationSchema({

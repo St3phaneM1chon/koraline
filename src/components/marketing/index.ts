@@ -5,3 +5,4 @@ export { ScreenshotSection } from './ScreenshotSection';
 export { IntegrationFlow } from './IntegrationFlow';
 export { TestimonialBlock } from './TestimonialBlock';
 export { PricingCTA } from './PricingCTA';
+export { PlatformBreadcrumbs } from './PlatformBreadcrumbs';

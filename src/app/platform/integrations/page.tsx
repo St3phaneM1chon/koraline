@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { getAllModules } from '@/lib/marketing/module-data';
+import { PlatformBreadcrumbs } from '@/components/marketing';
 
 export const metadata: Metadata = {
   title: 'Integrations — Suite Koraline | Attitudes VIP',
@@ -95,6 +96,15 @@ export default function IntegrationsPage() {
 
   return (
     <div className="bg-white">
+      {/* Breadcrumbs */}
+      <PlatformBreadcrumbs
+        items={[
+          { label: 'Accueil', href: '/platform' },
+          { label: 'Fonctionnalites', href: '/platform/features' },
+          { label: 'Integrations' },
+        ]}
+      />
+
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white pt-20 pb-16 text-center">
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">

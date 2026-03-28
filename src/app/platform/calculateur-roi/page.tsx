@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import ROICalculatorPage from './ROICalculatorClient';
+import { PlatformBreadcrumbs } from '@/components/marketing';
 
 export const metadata: Metadata = {
   title: 'Calculateur ROI — Combien pourriez-vous economiser? | Attitudes VIP',
@@ -24,5 +25,16 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <ROICalculatorPage />;
+  return (
+    <>
+      <PlatformBreadcrumbs
+        items={[
+          { label: 'Accueil', href: '/platform' },
+          { label: 'Solutions', href: '/platform/pour/ecommerce' },
+          { label: 'Calculateur ROI' },
+        ]}
+      />
+      <ROICalculatorPage />
+    </>
+  );
 }

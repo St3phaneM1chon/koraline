@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { PlatformBreadcrumbs } from '@/components/marketing';
 
 /* -------------------------------------------------------------------------- */
 /*  Metadata                                                                  */
@@ -125,6 +126,15 @@ function ArrowRightIcon() {
 export default function PartnersPage() {
   return (
     <>
+      {/* Breadcrumbs */}
+      <PlatformBreadcrumbs
+        items={[
+          { label: 'Accueil', href: '/platform' },
+          { label: 'Entreprise', href: '/a-propos' },
+          { label: 'Partenaires' },
+        ]}
+      />
+
       {/* ================================================================ */}
       {/* HERO                                                             */}
       {/* ================================================================ */}

@@ -10,6 +10,7 @@ import {
   BentoGrid,
   IntegrationFlow,
   PricingCTA,
+  PlatformBreadcrumbs,
 } from '@/components/marketing';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { softwareApplicationSchema } from '@/lib/structured-data';
@@ -70,6 +71,15 @@ export default async function ModuleFeaturePage({ params }: PageProps) {
 
   return (
     <div>
+      {/* Breadcrumbs */}
+      <PlatformBreadcrumbs
+        items={[
+          { label: 'Accueil', href: '/platform' },
+          { label: 'Fonctionnalites', href: '/platform/features' },
+          { label: mod.name },
+        ]}
+      />
+
       {/* Schema.org Structured Data */}
       <JsonLd
         data={softwareApplicationSchema({

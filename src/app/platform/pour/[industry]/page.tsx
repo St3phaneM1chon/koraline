@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { PlatformBreadcrumbs } from '@/components/marketing';
 
 /* -------------------------------------------------------------------------- */
 /*  Industry Data                                                             */
@@ -120,6 +121,15 @@ const industries = {
 
 type IndustryKey = keyof typeof industries;
 
+/** Short labels for breadcrumb display */
+const industryBreadcrumbLabels: Record<IndustryKey, string> = {
+  ecommerce: 'Boutiques en ligne',
+  services: 'Entreprises de services',
+  coaching: 'Coachs et consultants',
+  formation: 'Organismes de formation',
+  b2b: 'Entreprises B2B',
+};
+
 /* -------------------------------------------------------------------------- */
 /*  Static Params                                                             */
 /* -------------------------------------------------------------------------- */
@@ -237,8 +247,19 @@ export default async function IndustryPage({
   const data = industries[slug as IndustryKey];
   if (!data) notFound();
 
+  const breadcrumbLabel = industryBreadcrumbLabels[slug as IndustryKey] || data.title;
+
   return (
     <>
+      {/* Breadcrumbs */}
+      <PlatformBreadcrumbs
+        items={[
+          { label: 'Accueil', href: '/platform' },
+          { label: 'Solutions', href: '/platform/pour/ecommerce' },
+          { label: breadcrumbLabel },
+        ]}
+      />
+
       {/* ================================================================ */}
       {/* HERO                                                             */}
       {/* ================================================================ */}
