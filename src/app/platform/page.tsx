@@ -1,6 +1,12 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { KORALINE_PLANS, KORALINE_MODULES, KORALINE_LICENSES } from '@/lib/stripe-attitudes';
+import { JsonLd } from '@/components/seo/JsonLd';
+import {
+  organizationSchema,
+  softwareApplicationSchema,
+  faqSchema,
+} from '@/lib/structured-data';
 
 export const metadata: Metadata = {
   title: 'Suite Koraline — Votre boutique en ligne, cle en main | Attitudes VIP',
@@ -22,39 +28,102 @@ export const metadata: Metadata = {
 const FEATURES = [
   {
     title: 'Commerce',
+    slug: 'commerce',
     description:
       'Catalogue, inventaire, commandes, paiements Stripe, livraison, bundles, abonnements. Tout ce qu\'il faut pour vendre.',
     icon: FeatureIconShop,
   },
   {
     title: 'CRM',
+    slug: 'crm',
     description:
       'Gestion clients, pipeline de ventes, leads, deals, suivi d\'activites, segmentation avancee.',
     icon: FeatureIconCRM,
   },
   {
     title: 'Comptabilite',
+    slug: 'comptabilite',
     description:
       'Journal d\'ecritures, plan comptable, rapports financiers, TVQ/TPS, conciliation, exportation comptable.',
     icon: FeatureIconAccounting,
   },
   {
     title: 'Marketing',
+    slug: 'marketing',
     description:
       'Campagnes courriel, newsletter, codes promo, SEO integre, blog, reseaux sociaux, ambassadeurs.',
     icon: FeatureIconMarketing,
   },
   {
     title: 'Communications',
+    slug: 'telephonie',
     description:
       'Telephonie VoIP, chat en direct, tickets support, emails transactionnels, notifications push.',
     icon: FeatureIconComms,
   },
   {
     title: 'IA Aurelia',
+    slug: 'ia',
     description:
       'Assistante IA integree: redaction, analyse, suggestions, automatisation, support client intelligent.',
     icon: FeatureIconAI,
+  },
+];
+
+const INTEGRATIONS_PREVIEW = [
+  {
+    title: 'De l\'achat a la comptabilite',
+    description:
+      'Un client passe commande. Le CRM se met a jour, la facture est generee et l\'ecriture comptable est enregistree — automatiquement.',
+    steps: ['Commerce', 'CRM', 'Comptabilite'],
+    icon: '🛒',
+  },
+  {
+    title: 'Du lead au client fidele',
+    description:
+      'Un prospect remplit un formulaire. Le CRM cree le lead, le marketing envoie une sequence, et le programme de fidelite s\'active apres le premier achat.',
+    steps: ['Marketing', 'CRM', 'Fidelite'],
+    icon: '🤝',
+  },
+  {
+    title: 'Du ticket a la resolution',
+    description:
+      'Un client envoie un message. Aurelia analyse le probleme, le ticket est cree, l\'equipe est notifiee par VoIP — historique complet dans le CRM.',
+    steps: ['Communications', 'IA', 'CRM'],
+    icon: '🎧',
+  },
+];
+
+const INDUSTRIES = [
+  {
+    slug: 'ecommerce',
+    title: 'Boutiques en ligne',
+    tagline: 'Commerce, CRM, marketing et comptabilite — tout integre pour vendre en ligne.',
+    icon: '🛍️',
+  },
+  {
+    slug: 'services',
+    title: 'Entreprises de services',
+    tagline: 'Gerez vos clients, facturez et communiquez depuis une seule plateforme.',
+    icon: '💼',
+  },
+  {
+    slug: 'coaching',
+    title: 'Coachs et consultants',
+    tagline: 'Automatisez votre admin, vendez vos formations et fidelisez vos clients.',
+    icon: '🎯',
+  },
+  {
+    slug: 'formation',
+    title: 'Organismes de formation',
+    tagline: 'LMS professionnel, vente de cours en ligne et suivi des apprenants.',
+    icon: '🎓',
+  },
+  {
+    slug: 'b2b',
+    title: 'Entreprises B2B',
+    tagline: 'Pipeline de ventes, telephonie VoIP et comptabilite unifies pour votre equipe.',
+    icon: '🏢',
   },
 ];
 
@@ -197,6 +266,37 @@ export default function PlatformLandingPage() {
 
   return (
     <>
+      {/* Schema.org Structured Data */}
+      <JsonLd
+        data={softwareApplicationSchema({
+          name: 'Suite Koraline',
+          description:
+            'Plateforme SaaS tout-en-un pour PME : commerce, CRM, comptabilite, marketing, telephonie, formation et IA. A partir de 149$/mois.',
+          applicationCategory: 'BusinessApplication',
+          operatingSystem: 'Web',
+          offers: { price: 149, priceCurrency: 'CAD' },
+          featureList: [
+            'Commerce en ligne',
+            'CRM',
+            'Comptabilite',
+            'Marketing',
+            'Telephonie VoIP',
+            'Formation LMS',
+            'IA Aurelia',
+            'Emails',
+            'Medias',
+            'Fidelite',
+            'Communaute',
+          ],
+        })}
+      />
+      <JsonLd data={organizationSchema()} />
+      <JsonLd
+        data={faqSchema(
+          FAQ_ITEMS.map((item) => ({ question: item.q, answer: item.a }))
+        )}
+      />
+
       {/* ================================================================== */}
       {/* HERO                                                               */}
       {/* ================================================================== */}
@@ -278,16 +378,23 @@ export default function PlatformLandingPage() {
             {FEATURES.map((feature) => {
               const Icon = feature.icon;
               return (
-                <div
+                <Link
                   key={feature.title}
+                  href={`/platform/features/${feature.slug}`}
                   className="group relative p-8 bg-white rounded-2xl border border-gray-100 hover:border-[#0066CC]/20 hover:shadow-lg hover:shadow-blue-50 transition-all duration-300"
                 >
                   <div className="w-12 h-12 bg-blue-50 text-[#0066CC] rounded-xl flex items-center justify-center mb-5 group-hover:bg-[#0066CC] group-hover:text-white transition-colors duration-300">
                     <Icon />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">{feature.title}</h3>
-                  <p className="text-sm text-gray-500 leading-relaxed">{feature.description}</p>
-                </div>
+                  <p className="text-sm text-gray-500 leading-relaxed mb-4">{feature.description}</p>
+                  <span className="inline-flex items-center gap-1 text-sm font-semibold text-[#0066CC] group-hover:gap-2 transition-all">
+                    En savoir plus
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                    </svg>
+                  </span>
+                </Link>
               );
             })}
           </div>
@@ -317,6 +424,59 @@ export default function PlatformLandingPage() {
                 <p className="text-sm text-gray-500 leading-relaxed">{item.description}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================================================================== */}
+      {/* INTEGRATIONS                                                       */}
+      {/* ================================================================== */}
+      <section className="py-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Comment tout fonctionne ensemble
+            </h2>
+            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+              Vos modules communiquent nativement. Les donnees circulent automatiquement — sans integrations a configurer.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {INTEGRATIONS_PREVIEW.map((workflow) => (
+              <div
+                key={workflow.title}
+                className="relative p-8 bg-white rounded-2xl border border-gray-100 hover:shadow-lg hover:shadow-blue-50 transition-all duration-300"
+              >
+                <div className="text-3xl mb-4">{workflow.icon}</div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{workflow.title}</h3>
+                <p className="text-sm text-gray-500 leading-relaxed mb-5">{workflow.description}</p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {workflow.steps.map((step, i) => (
+                    <span key={step} className="flex items-center gap-2">
+                      <span className="text-xs font-semibold text-[#0066CC] bg-blue-50 px-2.5 py-1 rounded-full">
+                        {step}
+                      </span>
+                      {i < workflow.steps.length - 1 && (
+                        <svg className="w-3.5 h-3.5 text-gray-300" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                        </svg>
+                      )}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="text-center">
+            <Link
+              href="/platform/integrations"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 font-semibold rounded-full hover:bg-gray-200 transition-colors text-sm"
+            >
+              Voir toutes les integrations
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+            </Link>
           </div>
         </div>
       </section>
@@ -462,9 +622,46 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ================================================================== */}
-      {/* FAQ                                                                */}
+      {/* INDUSTRIES                                                         */}
       {/* ================================================================== */}
       <section className="py-24 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Pour chaque type d&apos;entreprise
+            </h2>
+            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+              Que vous vendiez des produits, des services ou des formations, Koraline s&apos;adapte a votre realite.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {INDUSTRIES.map((industry) => (
+              <Link
+                key={industry.slug}
+                href={`/platform/pour/${industry.slug}`}
+                className="group p-6 bg-white rounded-2xl border border-gray-100 hover:border-[#0066CC]/20 hover:shadow-lg hover:shadow-blue-50 transition-all duration-300"
+              >
+                <div className="text-3xl mb-4">{industry.icon}</div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-[#0066CC] transition-colors">
+                  {industry.title}
+                </h3>
+                <p className="text-sm text-gray-500 leading-relaxed mb-4">{industry.tagline}</p>
+                <span className="inline-flex items-center gap-1 text-sm font-semibold text-[#0066CC] group-hover:gap-2 transition-all">
+                  Decouvrir
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                  </svg>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================================================================== */}
+      {/* FAQ                                                                */}
+      {/* ================================================================== */}
+      <section className="py-24 bg-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">

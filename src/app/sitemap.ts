@@ -87,6 +87,33 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: '/plan-du-site', changeFrequency: 'monthly', priority: 0.4 },
   ];
 
+  // --- Platform / Marketing pages ---
+  const platformPages: { path: string; changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency']; priority: number }[] = [
+    { path: '/platform/features',                changeFrequency: 'weekly',  priority: 0.9 },
+    { path: '/platform/features/commerce',       changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/platform/features/crm',            changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/platform/features/comptabilite',   changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/platform/features/marketing',      changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/platform/features/telephonie',     changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/platform/features/formation',      changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/platform/features/emails',         changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/platform/features/media',          changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/platform/features/fidelite',       changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/platform/features/communaute',     changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/platform/features/ia',             changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/platform/integrations',            changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/platform/pour/ecommerce',          changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/platform/pour/services',           changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/platform/pour/coaching',           changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/platform/pour/formation',          changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/platform/pour/b2b',               changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/platform/calculateur-roi',         changeFrequency: 'monthly', priority: 0.7 },
+    { path: '/platform/comparer',               changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/platform/partenaires',            changeFrequency: 'monthly', priority: 0.7 },
+    { path: '/changelog',                       changeFrequency: 'weekly',  priority: 0.6 },
+    { path: '/status',                          changeFrequency: 'daily',   priority: 0.5 },
+  ];
+
   // --- Legal pages (rarely updated, low priority) ---
   const legalPages: { path: string; changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency']; priority: number }[] = [
     { path: '/mentions-legales/conditions',       changeFrequency: 'yearly', priority: 0.3 },
@@ -105,6 +132,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...clientPages,
     ...resourcePages,
     ...corporatePages,
+    ...platformPages,
     ...legalPages,
   ];
 

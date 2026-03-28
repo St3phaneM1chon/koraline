@@ -6,11 +6,20 @@ export const metadata: Metadata = {
   title: 'Integrations — Suite Koraline | Attitudes VIP',
   description:
     'Decouvrez comment les 11 modules Koraline fonctionnent ensemble. Vos donnees circulent automatiquement entre commerce, CRM, comptabilite, marketing et plus.',
+  alternates: { canonical: 'https://attitudes.vip/platform/integrations' },
   openGraph: {
     title: 'Integrations — Suite Koraline',
     description:
       'La puissance du tout-en-un. 11 modules connectes nativement.',
     url: 'https://attitudes.vip/platform/integrations',
+    siteName: 'Attitudes VIP',
+    type: 'website',
+    locale: 'fr_CA',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Integrations — Suite Koraline',
+    description: 'La puissance du tout-en-un. 11 modules connectes nativement.',
   },
 };
 

@@ -9,12 +9,20 @@ export const metadata: Metadata = {
   title: 'Devenez partenaire Koraline — Programme de partenariat | Attitudes VIP',
   description:
     'Rejoignez le programme de partenariat Koraline. Referral, Revendeur ou Agence — gagnez des commissions et developpez votre business.',
+  alternates: { canonical: 'https://attitudes.vip/platform/partenaires' },
   openGraph: {
     title: 'Devenez partenaire Koraline',
     description:
       'Rejoignez le programme de partenariat Koraline. Referral, Revendeur ou Agence.',
     url: 'https://attitudes.vip/platform/partenaires',
+    siteName: 'Attitudes VIP',
     type: 'website',
+    locale: 'fr_CA',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Devenez partenaire Koraline',
+    description: 'Rejoignez le programme de partenariat Koraline. Referral, Revendeur ou Agence.',
   },
 };
 

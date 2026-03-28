@@ -11,6 +11,8 @@ import {
   IntegrationFlow,
   PricingCTA,
 } from '@/components/marketing';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { softwareApplicationSchema } from '@/lib/structured-data';
 
 /* -------------------------------------------------------------------------- */
 /*  Static params — pre-render all 11 module pages at build time              */
@@ -33,13 +35,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const mod = getModuleBySlug(slug);
   if (!mod) return {};
 
+  const url = `https://attitudes.vip/platform/features/${mod.slug}`;
   return {
     title: `${mod.name} — Suite Koraline | Attitudes VIP`,
     description: mod.description,
+    alternates: { canonical: url },
     openGraph: {
       title: `${mod.name} — Suite Koraline`,
       description: mod.tagline,
-      url: `https://attitudes.vip/platform/features/${mod.slug}`,
+      url,
+      siteName: 'Attitudes VIP',
+      type: 'website',
+      locale: 'fr_CA',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${mod.name} — Suite Koraline`,
+      description: mod.tagline,
     },
   };
 }
@@ -58,6 +70,21 @@ export default async function ModuleFeaturePage({ params }: PageProps) {
 
   return (
     <div>
+      {/* Schema.org Structured Data */}
+      <JsonLd
+        data={softwareApplicationSchema({
+          name: `${mod.name} — Suite Koraline`,
+          description: mod.description,
+          url: `https://attitudes.vip/platform/features/${mod.slug}`,
+          applicationCategory: 'BusinessApplication',
+          operatingSystem: 'Web',
+          ...(mod.addonPrice
+            ? { offers: { price: mod.addonPrice / 100, priceCurrency: 'CAD' } }
+            : {}),
+          featureList: mod.features.map((f) => f.title),
+        })}
+      />
+
       {/* 1. Hero */}
       <FeatureHero
         icon={mod.icon}

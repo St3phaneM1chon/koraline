@@ -1,5 +1,6 @@
 const SITE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
 const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
+const ORG_LEGAL_NAME = 'Attitudes VIP inc.';
 const DEFAULT_LOGO = `${SITE_URL}/icon-512.png`;
 
 export function organizationSchema() {
@@ -7,13 +8,15 @@ export function organizationSchema() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: SITE_NAME,
+    legalName: ORG_LEGAL_NAME,
     url: SITE_URL,
     logo: DEFAULT_LOGO,
     description:
-      "Canada's trusted source for premium research peptides. Lab-tested, 99%+ purity, fast shipping.",
+      'Plateforme SaaS tout-en-un pour PME : commerce, CRM, comptabilite, marketing, telephonie, formation et IA. Fait au Quebec.',
     address: {
       '@type': 'PostalAddress',
       addressCountry: 'CA',
+      addressRegion: 'QC',
     },
     contactPoint: {
       '@type': 'ContactPoint',
@@ -21,7 +24,6 @@ export function organizationSchema() {
       url: `${SITE_URL}/contact`,
       availableLanguage: ['English', 'French'],
     },
-    // sameAs omitted until social profiles are configured
   };
 }
 
@@ -188,5 +190,129 @@ export function articleSchema(article: ArticleSchemaInput) {
         url: DEFAULT_LOGO,
       },
     },
+  };
+}
+
+// ---------------------------------------------------------------------------
+// SoftwareApplication schema (Koraline platform / individual modules)
+// ---------------------------------------------------------------------------
+
+interface SoftwareAppInput {
+  name: string;
+  description: string;
+  url?: string;
+  applicationCategory?: string;
+  operatingSystem?: string;
+  offers?: {
+    price: number; // in dollars (not cents)
+    priceCurrency?: string;
+    billingPeriod?: string;
+  };
+  featureList?: string[];
+}
+
+export function softwareApplicationSchema(app: SoftwareAppInput) {
+  const schema: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: app.name,
+    description: app.description,
+    url: app.url || SITE_URL,
+    applicationCategory: app.applicationCategory || 'BusinessApplication',
+    operatingSystem: app.operatingSystem || 'Web',
+    provider: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+  };
+
+  if (app.offers) {
+    schema.offers = {
+      '@type': 'Offer',
+      price: app.offers.price.toFixed(2),
+      priceCurrency: app.offers.priceCurrency || 'CAD',
+      url: `${SITE_URL}/platform/pricing`,
+    };
+  }
+
+  if (app.featureList && app.featureList.length > 0) {
+    schema.featureList = app.featureList.join(', ');
+  }
+
+  return schema;
+}
+
+// ---------------------------------------------------------------------------
+// ItemList schema (list of modules, products, etc.)
+// ---------------------------------------------------------------------------
+
+interface ItemListEntry {
+  name: string;
+  url: string;
+  description?: string;
+  image?: string;
+}
+
+export function itemListSchema(items: ItemListEntry[], listName?: string) {
+  const schema: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      url: item.url.startsWith('http') ? item.url : `${SITE_URL}${item.url}`,
+      ...(item.description ? { description: item.description } : {}),
+      ...(item.image ? { image: item.image } : {}),
+    })),
+  };
+
+  if (listName) {
+    schema.name = listName;
+  }
+
+  return schema;
+}
+
+// ---------------------------------------------------------------------------
+// Pricing / Offer catalog schema (for pricing pages)
+// ---------------------------------------------------------------------------
+
+interface PlanOffer {
+  name: string;
+  description: string;
+  price: number; // in dollars (not cents)
+  priceCurrency?: string;
+  url?: string;
+  features?: string[];
+}
+
+export function offerCatalogSchema(plans: PlanOffer[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: 'Suite Koraline',
+    description:
+      'Plateforme SaaS tout-en-un pour PME : commerce, CRM, comptabilite, marketing, telephonie, formation et IA.',
+    brand: {
+      '@type': 'Brand',
+      name: SITE_NAME,
+    },
+    url: `${SITE_URL}/platform/pricing`,
+    offers: plans.map((plan) => ({
+      '@type': 'Offer',
+      name: plan.name,
+      description: plan.description,
+      price: plan.price.toFixed(2),
+      priceCurrency: plan.priceCurrency || 'CAD',
+      url: plan.url || `${SITE_URL}/platform/pricing`,
+      priceValidUntil: new Date(new Date().getFullYear() + 1, 0, 1)
+        .toISOString()
+        .split('T')[0],
+      ...(plan.features && plan.features.length > 0
+        ? { itemOffered: { '@type': 'Service', name: plan.name, description: plan.features.join(', ') } }
+        : {}),
+    })),
   };
 }

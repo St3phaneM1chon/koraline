@@ -141,14 +141,23 @@ export async function generateMetadata({
   const data = industries[slug as IndustryKey];
   if (!data) return { title: 'Koraline' };
 
+  const url = `https://attitudes.vip/platform/pour/${slug}`;
   return {
     title: `${data.title} — Suite Koraline | Attitudes VIP`,
     description: data.subtitle,
+    alternates: { canonical: url },
     openGraph: {
       title: `${data.title} — Suite Koraline`,
       description: data.subtitle,
-      url: `https://attitudes.vip/platform/pour/${slug}`,
+      url,
+      siteName: 'Attitudes VIP',
       type: 'website',
+      locale: 'fr_CA',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${data.title} — Suite Koraline`,
+      description: data.subtitle,
     },
   };
 }

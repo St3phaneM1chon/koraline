@@ -1,16 +1,27 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { getAllModules } from '@/lib/marketing/module-data';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { itemListSchema } from '@/lib/structured-data';
 
 export const metadata: Metadata = {
   title: 'Fonctionnalites — Suite Koraline | Attitudes VIP',
   description:
     '11 modules integres qui fonctionnent ensemble. Commerce, CRM, comptabilite, marketing, telephonie, formation, emails, medias, fidelite, communaute et IA. Pas de patchwork.',
+  alternates: { canonical: 'https://attitudes.vip/platform/features' },
   openGraph: {
     title: 'Fonctionnalites — Suite Koraline',
     description:
       '11 modules integres qui fonctionnent ensemble. Pas de patchwork.',
     url: 'https://attitudes.vip/platform/features',
+    siteName: 'Attitudes VIP',
+    type: 'website',
+    locale: 'fr_CA',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Fonctionnalites — Suite Koraline',
+    description: '11 modules integres qui fonctionnent ensemble. Pas de patchwork.',
   },
 };
 
@@ -19,6 +30,18 @@ export default function FeaturesOverviewPage() {
 
   return (
     <div className="bg-white">
+      {/* Schema.org Structured Data — ItemList of all 11 modules */}
+      <JsonLd
+        data={itemListSchema(
+          modules.map((mod) => ({
+            name: mod.name,
+            url: `/platform/features/${mod.slug}`,
+            description: mod.tagline,
+          })),
+          'Modules Suite Koraline'
+        )}
+      />
+
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white pt-20 pb-16 text-center">
         {/* Subtle decorative elements */}

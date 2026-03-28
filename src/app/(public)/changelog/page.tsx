@@ -6,10 +6,25 @@ const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip';
 
 export async function generateMetadata(): Promise<Metadata> {
+  const title = `Journal des mises à jour - ${siteName}`;
+  const description = `Suivez les dernières améliorations, nouvelles fonctionnalités et corrections de la Suite Koraline par ${siteName}.`;
   return {
-    title: `Journal des mises à jour - ${siteName}`,
-    description: `Suivez les dernières améliorations, nouvelles fonctionnalités et corrections de la Suite Koraline par ${siteName}.`,
+    title,
+    description,
     alternates: { canonical: `${appUrl}/changelog` },
+    openGraph: {
+      title,
+      description,
+      url: `${appUrl}/changelog`,
+      siteName,
+      type: 'website',
+      locale: 'fr_CA',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
   };
 }
 

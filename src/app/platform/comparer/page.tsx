@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { softwareApplicationSchema } from '@/lib/structured-data';
 
 /* -------------------------------------------------------------------------- */
 /*  Metadata                                                                  */
@@ -9,12 +11,20 @@ export const metadata: Metadata = {
   title: 'Pourquoi choisir Koraline? Comparaison avec vos outils actuels | Attitudes VIP',
   description:
     'Comparez Koraline avec Shopify, Mailchimp, QuickBooks et HubSpot. Une seule plateforme, un seul prix.',
+  alternates: { canonical: 'https://attitudes.vip/platform/comparer' },
   openGraph: {
     title: 'Pourquoi choisir Koraline?',
     description:
       'Comparez Koraline avec Shopify, Mailchimp, QuickBooks et HubSpot. Une seule plateforme, un seul prix.',
     url: 'https://attitudes.vip/platform/comparer',
+    siteName: 'Attitudes VIP',
     type: 'website',
+    locale: 'fr_CA',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Pourquoi choisir Koraline?',
+    description: 'Comparez Koraline avec Shopify, Mailchimp, QuickBooks et HubSpot. Une seule plateforme, un seul prix.',
   },
 };
 
@@ -226,6 +236,22 @@ function CellValue({ value }: { value: string | true | false }) {
 export default function ComparePage() {
   return (
     <>
+      {/* Schema.org Structured Data — SoftwareApplication for comparison context */}
+      <JsonLd
+        data={softwareApplicationSchema({
+          name: 'Suite Koraline',
+          description:
+            'Plateforme tout-en-un qui remplace Shopify, Mailchimp, QuickBooks et HubSpot. Commerce, CRM, comptabilite, marketing, telephonie, formation et IA pour 299$/mois.',
+          url: 'https://attitudes.vip/platform/comparer',
+          applicationCategory: 'BusinessApplication',
+          operatingSystem: 'Web',
+          offers: { price: 299, priceCurrency: 'CAD' },
+          featureList: comparisonData
+            .filter((row) => row.koraline === true || typeof row.koraline === 'string')
+            .map((row) => row.category),
+        })}
+      />
+
       {/* ================================================================ */}
       {/* HERO                                                             */}
       {/* ================================================================ */}

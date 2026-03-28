@@ -2,6 +2,8 @@ import { Fragment } from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { KORALINE_PLANS, KORALINE_MODULES, KORALINE_LICENSES } from '@/lib/stripe-attitudes';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { offerCatalogSchema } from '@/lib/structured-data';
 
 export const metadata: Metadata = {
   title: 'Tarifs — Suite Koraline | Attitudes VIP',
@@ -104,6 +106,19 @@ export default function PricingPage() {
 
   return (
     <>
+      {/* Schema.org Structured Data — Product with Offers for each plan */}
+      <JsonLd
+        data={offerCatalogSchema(
+          plans.map(([, plan]) => ({
+            name: plan.name,
+            description: plan.description,
+            price: plan.monthlyPrice / 100,
+            priceCurrency: 'CAD',
+            features: [...plan.features] as string[],
+          }))
+        )}
+      />
+
       {/* Hero */}
       <section className="bg-gradient-to-b from-blue-50 to-white pt-20 pb-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
