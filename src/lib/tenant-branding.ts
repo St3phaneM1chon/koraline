@@ -43,6 +43,7 @@ export interface TenantBranding {
   id: string;
   slug: string;
   name: string;
+  legalName: string;
   logoUrl: string | null;
   primaryColor: string;
   secondaryColor: string;
@@ -68,6 +69,7 @@ const DEFAULT_BRANDING: TenantBranding = {
   id: '',
   slug: 'default',
   name: process.env.NEXT_PUBLIC_SITE_NAME || '',
+  legalName: '',
   logoUrl: null,
   primaryColor: '#0066CC',
   secondaryColor: '#003366',
@@ -117,6 +119,7 @@ export const getTenantBranding = cache(async (): Promise<TenantBranding> => {
           id: true,
           slug: true,
           name: true,
+          legalName: true,
           logoUrl: true,
           primaryColor: true,
           secondaryColor: true,
@@ -151,6 +154,7 @@ export const getTenantBranding = cache(async (): Promise<TenantBranding> => {
       id: tenant.id,
       slug: tenant.slug,
       name: tenant.name,
+      legalName: tenant.legalName || '',
       logoUrl: tenant.logoUrl,
       primaryColor: tenant.primaryColor,
       secondaryColor: tenant.secondaryColor,
