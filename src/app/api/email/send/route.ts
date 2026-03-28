@@ -64,8 +64,8 @@ export const POST = withMobileGuard(async (request, { session }) => {
     const { to, subject, body, bodyHtml, replyToId, fromAccount } = parsed.data;
 
     // Validate sender against allowed domains
-    const allowedDomains = ['biocyclepeptides.com', 'attitudes.vip'];
-    const senderEmail = fromAccount || 'info@biocyclepeptides.com';
+    const allowedDomains = ['attitudes.vip'];
+    const senderEmail = fromAccount || 'info@attitudes.vip';
     const senderDomain = senderEmail.split('@')[1]?.toLowerCase();
 
     if (senderDomain && !allowedDomains.includes(senderDomain)) {

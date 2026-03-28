@@ -61,7 +61,7 @@ export async function GET(_request: Request) {
             adminLanguage: 'fr',
             chatbotEnabled: true,
             chatbotGreeting: null,
-            notifyEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@biocyclepeptides.com',
+            notifyEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@attitudes.vip',
             notifyOnNewChat: true,
             notifyOnEscalation: true,
             widgetColor: '#f97316',
@@ -93,7 +93,7 @@ export async function GET(_request: Request) {
           adminLanguage: 'fr',
           chatbotEnabled: true,
           chatbotGreeting: null,
-          notifyEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@biocyclepeptides.com',
+          notifyEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@attitudes.vip',
           notifyOnNewChat: true,
           notifyOnEscalation: true,
           // F-053 FIX: Align default with Prisma schema (#f97316)

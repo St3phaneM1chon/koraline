@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
     const subject = stripControlChars(stripHtml(String(validation.data.subject))).trim();
     const message = stripControlChars(stripHtml(String(validation.data.message))).trim();
 
-    const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@biocyclepeptides.com';
+    const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@attitudes.vip';
 
     // Envoyer le message par email au support
     const result = await sendEmail({

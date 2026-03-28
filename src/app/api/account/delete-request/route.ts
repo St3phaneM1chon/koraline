@@ -93,7 +93,7 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
 
     // Create anonymized values
     const emailHash = createHash('sha256').update(originalEmail).digest('hex').substring(0, 16);
-    const anonymizedEmail = `deleted_${emailHash}@deleted.biocyclepeptides.com`;
+    const anonymizedEmail = `deleted_${emailHash}@deleted.attitudes.vip`;
     const deletionDate = new Date();
     const permanentDeletionDate = new Date(deletionDate.getTime() + GRACE_PERIOD_DAYS * 24 * 60 * 60 * 1000);
 
@@ -377,7 +377,7 @@ function buildDeletionConfirmEmailEn(permanentDate: Date): string {
       <p style="margin:0;color:#92400e;"><strong>Grace Period:</strong> Your remaining data will be permanently deleted on <strong>${formatted}</strong>.</p>
     </div>
 
-    <p>If you believe this was done in error, please contact us immediately at <a href="mailto:support@biocyclepeptides.com">support@biocyclepeptides.com</a>.</p>
+    <p>If you believe this was done in error, please contact us immediately at <a href="mailto:support@attitudes.vip">support@attitudes.vip</a>.</p>
 
     <p>Thank you for having been a BioCycle Peptides customer.</p>
   `;
@@ -406,7 +406,7 @@ function buildDeletionConfirmEmailFr(permanentDate: Date): string {
       <p style="margin:0;color:#92400e;"><strong>Periode de grace :</strong> Vos donnees restantes seront supprimees definitivement le <strong>${formatted}</strong>.</p>
     </div>
 
-    <p>Si vous croyez que cette action a ete faite par erreur, veuillez nous contacter immediatement a <a href="mailto:support@biocyclepeptides.com">support@biocyclepeptides.com</a>.</p>
+    <p>Si vous croyez que cette action a ete faite par erreur, veuillez nous contacter immediatement a <a href="mailto:support@attitudes.vip">support@attitudes.vip</a>.</p>
 
     <p>Merci d'avoir ete client(e) de BioCycle Peptides.</p>
   `;

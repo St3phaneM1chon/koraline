@@ -18,7 +18,7 @@ const COMPANY_STATIC = {
   city: 'Montreal, QC H3C 1K3',
   country: 'Canada',
   phone: '(514) 555-0199',
-  email: 'support@biocyclepeptides.com',
+  email: 'support@attitudes.vip',
   website: 'www.attitudes.vip',
 };
 

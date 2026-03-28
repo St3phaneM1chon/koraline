@@ -48,7 +48,7 @@ export const GET = withMobileGuard(async (request, { session: _session }) => {
     const messages = conversations.map(conv => {
       const latestEmail = conv.inboundEmails[0];
       // Determine real recipient: use 'to' field from InboundEmail, fallback to info@
-      const toEmail = latestEmail?.to || 'info@biocyclepeptides.com';
+      const toEmail = latestEmail?.to || 'info@attitudes.vip';
       return {
         id: conv.id,
         subject: conv.subject || '(Sans objet)',

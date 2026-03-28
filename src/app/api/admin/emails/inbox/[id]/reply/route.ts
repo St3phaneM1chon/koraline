@@ -114,10 +114,10 @@ export const POST = withAdminGuard(
             html: sanitizedHtmlBody,
             text: sanitizedTextBody || undefined,
             from: {
-              email: process.env.SMTP_FROM || 'support@biocyclepeptides.com',
+              email: process.env.SMTP_FROM || 'support@attitudes.vip',
               name: session.user.name || 'BioCycle Support',
             },
-            replyTo: process.env.SMTP_FROM || 'support@biocyclepeptides.com',
+            replyTo: process.env.SMTP_FROM || 'support@attitudes.vip',
             unsubscribeUrl,
           });
 

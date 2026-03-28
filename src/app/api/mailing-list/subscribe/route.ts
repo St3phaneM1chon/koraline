@@ -165,7 +165,7 @@ export async function POST(request: NextRequest) {
           <p style="font-size:12px;color:#666;">
             <strong>Exp\u00e9diteur :</strong> BioCycle Peptides Inc.<br/>
             Montr\u00e9al, Qu\u00e9bec, Canada<br/>
-            Contact : support@biocyclepeptides.com
+            Contact : support@attitudes.vip
           </p>
         </div>
       `,

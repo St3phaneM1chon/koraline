@@ -74,7 +74,7 @@ export async function GET(
     const currencyCode = order.currency?.code || 'CAD';
     const companyName = 'BioCycle Peptides Inc.';
     const companyAddress = '1234 Research Blvd, Montreal, QC H3A 1A1, Canada';
-    const companyEmail = 'billing@biocyclepeptides.com';
+    const companyEmail = 'billing@attitudes.vip';
 
     const invoiceDate = order.createdAt.toLocaleDateString('en-CA');
     const invoiceNumber = `INV-${order.orderNumber}`;
