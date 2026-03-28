@@ -4032,7 +4032,12 @@
       "briefingPrompt": "Click \"Get Briefing\" to see your AI-powered daily priorities",
       "overdueDeals": "Overdue Deals",
       "uncontactedLeads": "New Leads",
-      "overdueTasks": "Overdue Tasks"
+      "overdueTasks": "Overdue Tasks",
+      "configureWidgets": "Configure Widgets",
+      "platformSaas": "Platform SaaS",
+      "saasClients": "Active Clients",
+      "saasMRR": "MRR",
+      "saasNewThisMonth": "New this month"
     },
     "dataTable": {
       "noData": "No data",

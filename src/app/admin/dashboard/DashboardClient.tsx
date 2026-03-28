@@ -31,6 +31,7 @@ import {
   Star,
   Megaphone,
   PhoneCall,
+  Globe,
 } from 'lucide-react';
 import AIInsightsWidget from '@/components/admin/AIInsightsWidget';
 import MorningBriefingWidget from '@/components/admin/MorningBriefingWidget';
@@ -77,11 +78,18 @@ interface LmsStats {
   overdueCompliance: number;
 }
 
+interface PlatformSaasStats {
+  totalTenants: number;
+  totalMRR: number;
+  newClientsThisMonth: number;
+}
+
 interface DashboardClientProps {
   stats: DashboardStats;
   lmsStats?: LmsStats;
   recentOrders: RecentOrder[];
   recentUsers: RecentUser[];
+  platformSaas?: PlatformSaasStats | null;
 }
 
 // --------------------------------------------------
@@ -112,7 +120,7 @@ interface CrossModuleData {
 }
 
 // #16: Dashboard widget visibility toggle
-const DASHBOARD_WIDGET_KEYS = ['kpis', 'aiInsights', 'morningBriefing', 'recentOrders', 'recentUsers', 'crossModule', 'lms'] as const;
+const DASHBOARD_WIDGET_KEYS = ['kpis', 'aiInsights', 'morningBriefing', 'recentOrders', 'recentUsers', 'crossModule', 'lms', 'saas'] as const;
 type WidgetKey = typeof DASHBOARD_WIDGET_KEYS[number];
 const WIDGET_STORAGE_KEY = 'dashboard-visible-widgets';
 
@@ -127,7 +135,7 @@ function getVisibleWidgets(): Record<WidgetKey, boolean> {
   return Object.fromEntries(DASHBOARD_WIDGET_KEYS.map(k => [k, true])) as Record<WidgetKey, boolean>;
 }
 
-export default function DashboardClient({ stats, lmsStats, recentOrders, recentUsers }: DashboardClientProps) {
+export default function DashboardClient({ stats, lmsStats, recentOrders, recentUsers, platformSaas }: DashboardClientProps) {
   const { t, locale } = useI18n();
   const router = useRouter();
   const [crossModule, setCrossModule] = useState<CrossModuleData | null>(null);
@@ -281,7 +289,7 @@ export default function DashboardClient({ stats, lmsStats, recentOrders, recentU
                     : 'bg-[var(--k-glass-thin)] border-[var(--k-border-subtle)] text-[var(--k-text-muted)]'
                 }`}
               >
-                {key === 'kpis' ? 'KPIs' : key === 'aiInsights' ? 'AI Insights' : key === 'morningBriefing' ? 'Morning Briefing' : key === 'recentOrders' ? 'Recent Orders' : key === 'recentUsers' ? 'Recent Users' : key === 'crossModule' ? 'Cross-Module' : 'LMS'}
+                {key === 'kpis' ? 'KPIs' : key === 'aiInsights' ? 'AI Insights' : key === 'morningBriefing' ? 'Morning Briefing' : key === 'recentOrders' ? 'Recent Orders' : key === 'recentUsers' ? 'Recent Users' : key === 'crossModule' ? 'Cross-Module' : key === 'lms' ? 'LMS' : key === 'saas' ? 'Platform SaaS' : key}
               </button>
             ))}
           </div>
@@ -387,6 +395,38 @@ export default function DashboardClient({ stats, lmsStats, recentOrders, recentU
             </div>
           </div>
         </div>
+      )}
+
+      {/* Platform SaaS Widget (super-admin only) */}
+      {visibleWidgets.saas && platformSaas && (
+        <Link
+          href="/admin/platform/clients"
+          className="block rounded-xl bg-gradient-to-r from-indigo-500/5 to-cyan-500/5 border border-[var(--k-border-subtle)] hover:border-[var(--k-border-default)] p-5 transition-all"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold flex items-center gap-2 text-[var(--k-text-primary)]">
+              <Globe className="w-5 h-5 text-indigo-400" />
+              {t('admin.dashboard.platformSaas') || 'Platform SaaS'}
+            </h3>
+            <span className="text-xs text-[#818cf8] flex items-center gap-1">
+              {t('admin.dashboard.viewAll')} <ArrowUpRight className="w-3 h-3" />
+            </span>
+          </div>
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <p className="text-2xl font-bold text-[var(--k-text-primary)]">{platformSaas.totalTenants}</p>
+              <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.dashboard.saasClients') || 'Clients'}</p>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-emerald-400">{formatCurrency(platformSaas.totalMRR, locale)}</p>
+              <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.dashboard.saasMRR') || 'MRR'}</p>
+            </div>
+            <div>
+              <p className={`text-2xl font-bold ${platformSaas.newClientsThisMonth > 0 ? 'text-indigo-400' : 'text-[var(--k-text-primary)]'}`}>{platformSaas.newClientsThisMonth}</p>
+              <p className="text-xs text-[var(--k-text-tertiary)]">{t('admin.dashboard.saasNewThisMonth') || 'Nouveaux ce mois'}</p>
+            </div>
+          </div>
+        </Link>
       )}
 
       {/* Quick Actions */}

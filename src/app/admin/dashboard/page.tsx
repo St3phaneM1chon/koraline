@@ -10,6 +10,7 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth-config';
 import { prisma } from '@/lib/db';
 import { UserRole } from '@/types';
+import { KORALINE_PLANS, KORALINE_MODULES, type KoralinePlan, type KoralineModule } from '@/lib/stripe-constants';
 import DashboardClient from './DashboardClient';
 import Loading from './loading';
 
@@ -154,10 +155,59 @@ async function fetchAdminData() {
 }
 
 // --------------------------------------------------
+// Platform SaaS data (super-admin only)
+// --------------------------------------------------
+
+function parseModules(raw: unknown): string[] {
+  if (Array.isArray(raw)) return raw as string[];
+  if (typeof raw === 'string') {
+    try { return JSON.parse(raw) as string[]; } catch { return []; }
+  }
+  return [];
+}
+
+function computeTenantMRR(plan: string, modulesEnabled: string[]): number {
+  const planPrice = KORALINE_PLANS[plan as KoralinePlan]?.monthlyPrice || 0;
+  const modulePrice = modulesEnabled.reduce((sum, key) => {
+    return sum + (KORALINE_MODULES[key as KoralineModule]?.monthlyPrice || 0);
+  }, 0);
+  return planPrice + modulePrice;
+}
+
+async function fetchPlatformSaas(): Promise<{
+  totalTenants: number;
+  totalMRR: number;
+  newClientsThisMonth: number;
+} | null> {
+  try {
+    const startOfMonth = new Date(Date.UTC(new Date().getUTCFullYear(), new Date().getUTCMonth(), 1));
+    const tenants = await prisma.tenant.findMany({
+      select: { id: true, plan: true, status: true, modulesEnabled: true, createdAt: true },
+    });
+
+    const activeTenants = tenants.filter(t => t.status === 'ACTIVE');
+    let totalMRR = 0;
+    for (const t of activeTenants) {
+      totalMRR += computeTenantMRR(t.plan, parseModules(t.modulesEnabled));
+    }
+
+    const newClientsThisMonth = tenants.filter(t => t.createdAt >= startOfMonth).length;
+
+    return {
+      totalTenants: activeTenants.length,
+      totalMRR: Math.round(totalMRR / 100), // Convert cents to dollars
+      newClientsThisMonth,
+    };
+  } catch {
+    return null;
+  }
+}
+
+// --------------------------------------------------
 // Page Component
 // --------------------------------------------------
 
-async function DashboardContent() {
+async function DashboardContent({ isSuperAdmin }: { isSuperAdmin: boolean }) {
   let stats: Awaited<ReturnType<typeof fetchAdminData>>['stats'];
   let lms: Awaited<ReturnType<typeof fetchAdminData>>['lms'];
   let recentOrders: Awaited<ReturnType<typeof fetchAdminData>>['recentOrders'];
@@ -172,12 +222,16 @@ async function DashboardContent() {
     recentUsers = [];
   }
 
+  // Fetch platform SaaS data only for super-admins
+  const platformSaas = isSuperAdmin ? await fetchPlatformSaas() : null;
+
   return (
     <DashboardClient
       stats={stats}
       lmsStats={lms}
       recentOrders={JSON.parse(JSON.stringify(recentOrders))}
       recentUsers={JSON.parse(JSON.stringify(recentUsers))}
+      platformSaas={platformSaas}
     />
   );
 }
@@ -193,9 +247,12 @@ export default async function AdminDashboard() {
     redirect('/dashboard');
   }
 
+  const isSuperAdmin = session.user.role === UserRole.OWNER &&
+    session.user.tenantId === (process.env.PLATFORM_TENANT_ID || '');
+
   return (
     <Suspense fallback={<Loading />}>
-      <DashboardContent />
+      <DashboardContent isSuperAdmin={isSuperAdmin} />
     </Suspense>
   );
 }

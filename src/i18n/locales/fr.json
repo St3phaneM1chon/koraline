@@ -4073,7 +4073,11 @@
       "overdueDeals": "Deals en retard",
       "uncontactedLeads": "Nouveaux leads",
       "overdueTasks": "Tâches en retard",
-      "configureWidgets": "Configurer les widgets"
+      "configureWidgets": "Configurer les widgets",
+      "platformSaas": "Plateforme SaaS",
+      "saasClients": "Clients actifs",
+      "saasMRR": "MRR",
+      "saasNewThisMonth": "Nouveaux ce mois"
     },
     "dataTable": {
       "noData": "Aucune donnée",
