@@ -186,7 +186,10 @@ export const GET = withAdminGuard(async (_request, { session: _session }) => {
       { status: 500 }
     );
   }
-}, { requiredPermission: 'admin.settings', requireMfa: true });
+}, { requiredPermission: 'admin.settings' });
+// NOTE: requireMfa removed from GET — reading settings must always work,
+// especially on first access when the super-admin's tenant has no SiteSettings yet.
+// MFA is still enforced on PUT/PATCH mutations below.
 
 // PUT /api/admin/settings - Update settings
 // FAILLE-004 FIX: Require admin.settings permission for settings mutations (defense-in-depth)
