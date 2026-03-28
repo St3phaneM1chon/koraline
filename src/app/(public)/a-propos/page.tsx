@@ -104,7 +104,7 @@ export default async function AboutPage() {
               className="text-lg mb-8 max-w-lg mx-auto"
               style={{ color: 'var(--k-text-secondary, rgba(255,255,255,0.60))' }}
             >
-              {settings.companyDescription || `Welcome to ${companyName}. Our about page is being prepared.`}
+              {settings.companyDescription || `Bienvenue chez ${companyName}. Notre page à propos est en préparation.`}
             </p>
             <Link
               href="/contact"
@@ -114,7 +114,7 @@ export default async function AboutPage() {
                 color: '#fff',
               }}
             >
-              Contact Us
+              Nous contacter
             </Link>
           </div>
         )}
@@ -131,28 +131,28 @@ export default async function AboutPage() {
             className="text-lg font-semibold mb-4"
             style={{ color: 'var(--k-text-primary, rgba(255,255,255,0.95))' }}
           >
-            Learn More
+            En savoir plus
           </h3>
           <div className="flex flex-wrap justify-center gap-3">
             <AboutNavLink href="/a-propos/mission">Mission</AboutNavLink>
-            <AboutNavLink href="/a-propos/valeurs">Values</AboutNavLink>
-            <AboutNavLink href="/a-propos/histoire">History</AboutNavLink>
-            <AboutNavLink href="/a-propos/engagements">Commitments</AboutNavLink>
-            <AboutNavLink href="/a-propos/equipe">Team</AboutNavLink>
+            <AboutNavLink href="/a-propos/valeurs">Valeurs</AboutNavLink>
+            <AboutNavLink href="/a-propos/histoire">Histoire</AboutNavLink>
+            <AboutNavLink href="/a-propos/engagements">Engagements</AboutNavLink>
+            <AboutNavLink href="/a-propos/equipe">Équipe</AboutNavLink>
           </div>
         </div>
 
         {/* CTA */}
         <div className="mt-8 text-center">
           <Link
-            href="/shop"
+            href="/pricing"
             className="inline-flex items-center px-8 py-3.5 rounded-xl font-semibold text-lg transition-colors"
             style={{
               background: 'var(--k-accent, #6366f1)',
               color: '#fff',
             }}
           >
-            Explore Our Products
+            Découvrir nos solutions
           </Link>
         </div>
       </div>
