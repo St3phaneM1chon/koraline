@@ -299,6 +299,9 @@ model User {
   // LMS (Formation)
   studentProfile         StudentProfile?       @relation("UserStudentProfile")
 
+  // Membership / Paywall
+  memberships            Membership[]          @relation("UserMemberships")
+
   @@index([role])
   @@index([createdAt])
   @@index([loyaltyTier])
