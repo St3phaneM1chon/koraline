@@ -19,7 +19,7 @@ import {
   Filter, MessageSquare, ListChecks, Trophy, CheckSquare,
   ToggleRight, Bot, Building2, Palette, Boxes, GraduationCap,
   UserPlus, Medal, ShieldCheck, ExternalLink, Crown, Layers,
-  Store, RotateCcw, Share2,
+  Store, RotateCcw, Share2, Type,
 } from 'lucide-react';
 import { TeamsIcon, ZoomIcon, WebexIcon, GoogleMeetIcon, WhatsAppIcon } from '@/components/admin/icons/platform-icons';
 
@@ -298,6 +298,8 @@ export const folderSections: Record<string, NavFolderSection> = {
           { href: '/admin/media/images', labelKey: 'admin.nav.mediaImages', icon: ImageIcon },
           { href: '/admin/media/library', labelKey: 'admin.nav.mediaLibrary', icon: Play },
           { href: '/admin/media/brand-kit', labelKey: 'admin.nav.brandKit', icon: Palette },
+          { href: '/admin/logo-maker', labelKey: 'admin.nav.logoMaker', icon: Sparkles },
+          { href: '/admin/fonts', labelKey: 'admin.nav.customFonts', icon: Type },
           { href: '/admin/media/social-scheduler', labelKey: 'admin.nav.socialScheduler', icon: Calendar },
         ],
         collapsible: true,
