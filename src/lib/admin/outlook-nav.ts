@@ -18,7 +18,7 @@ import {
   Workflow, ClipboardList, Mic, ArrowRightLeft, PhoneForwarded,
   Filter, MessageSquare, ListChecks, Trophy, CheckSquare,
   ToggleRight, Bot, Building2, Palette, Boxes, GraduationCap,
-  UserPlus, Medal, ShieldCheck, ExternalLink, Crown,
+  UserPlus, Medal, ShieldCheck, ExternalLink, Crown, Layers,
 } from 'lucide-react';
 import { TeamsIcon, ZoomIcon, WebexIcon, GoogleMeetIcon, WhatsAppIcon } from '@/components/admin/icons/platform-icons';
 
@@ -172,6 +172,7 @@ export const folderSections: Record<string, NavFolderSection> = {
           { href: '/admin/promotions', labelKey: 'admin.nav.promotions', icon: Percent },
           { href: '/admin/bannieres', labelKey: 'admin.nav.banners', icon: ImageIcon },
           { href: '/admin/upsell', labelKey: 'admin.nav.upsell', icon: TrendingUp },
+          { href: '/admin/formulaires', labelKey: 'admin.nav.formBuilder', icon: FileEdit },
         ],
         defaultOpen: true,
       },
@@ -734,6 +735,8 @@ export const folderSections: Record<string, NavFolderSection> = {
           { href: '/admin/webhooks', labelKey: 'admin.nav.webhooks', icon: ArrowRightLeft },
           { href: '/admin/securite', labelKey: 'admin.nav.security', icon: Shield },
           { href: '/admin/contenu', labelKey: 'admin.nav.contentPages', icon: FileText },
+          { href: '/admin/cms', labelKey: 'admin.nav.cmsCollections', icon: Layers },
+          { href: '/admin/galeries', labelKey: 'admin.nav.galleries', icon: ImageIcon },
         ],
         collapsible: true,
         defaultOpen: true,
@@ -805,7 +808,7 @@ export function getActiveRailId(pathname: string): string {
   if (pathname.startsWith('/admin/telephonie')) return 'telephony';
   // CRM call center routes are in telephony folder pane but keep CRM rail active (paths start with /admin/crm/)
   if (pathname.startsWith('/admin/crm') || pathname.startsWith('/admin/scraper') || pathname.startsWith('/admin/chat')) return 'crm';
-  if (pathname.startsWith('/admin/permissions') || pathname.startsWith('/admin/employes') || pathname.startsWith('/admin/parametres') || pathname.startsWith('/admin/devises') || pathname.startsWith('/admin/traductions') || pathname.startsWith('/admin/webhooks') || pathname.startsWith('/admin/securite') || pathname.startsWith('/admin/tutoriels') || pathname.startsWith('/admin/contenu')) return 'system';
+  if (pathname.startsWith('/admin/permissions') || pathname.startsWith('/admin/employes') || pathname.startsWith('/admin/parametres') || pathname.startsWith('/admin/devises') || pathname.startsWith('/admin/traductions') || pathname.startsWith('/admin/webhooks') || pathname.startsWith('/admin/securite') || pathname.startsWith('/admin/tutoriels') || pathname.startsWith('/admin/contenu') || pathname.startsWith('/admin/cms') || pathname.startsWith('/admin/galeries')) return 'system';
   return 'dashboard';
 }
 

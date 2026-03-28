@@ -727,3 +727,83 @@ model BrandKit {
   @@index([isActive])
   @@index([tenantId])
 }
+
+// =============================================
+// CMS Dynamic Collections (Phase 2.4)
+// =============================================
+model CmsCollection {
+  id          String   @id @default(cuid())
+  tenantId    String?
+  name        String
+  slug        String
+  description String?
+  fields      Json     // field schema definitions [{name, type, required, options}]
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  items       CmsItem[]
+
+  @@unique([tenantId, slug])
+  @@index([isActive])
+  @@index([tenantId])
+}
+
+model CmsItem {
+  id           String   @id @default(cuid())
+  tenantId     String?
+  collectionId String
+  data         Json     // field values matching collection schema
+  slug         String?
+  isPublished  Boolean  @default(true)
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  collection   CmsCollection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, collectionId])
+  @@index([collectionId, isPublished])
+  @@index([slug])
+  @@index([tenantId])
+}
+
+// =============================================
+// Image Gallery / Portfolio (Phase 2.5)
+// =============================================
+model Gallery {
+  id          String   @id @default(cuid())
+  tenantId    String?
+  name        String
+  slug        String
+  description String?
+  layout      String   @default("grid") // grid, masonry, carousel, lightbox
+  columns     Int      @default(3)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  images      GalleryImage[]
+
+  @@unique([tenantId, slug])
+  @@index([isActive])
+  @@index([tenantId])
+}
+
+model GalleryImage {
+  id        String   @id @default(cuid())
+  tenantId  String?
+  galleryId String
+  imageUrl  String
+  title     String?
+  caption   String?
+  altText   String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  gallery   Gallery @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+
+  @@index([galleryId, sortOrder])
+  @@index([tenantId])
+}

@@ -1,0 +1,50 @@
+// ──────────────────────────────────────────────────────────────────
+// FORMS MODULE — Enhanced Visual Form Builder (Mega Mandat P8 / Phase 2.3)
+// Generic form builder decoupled from CRM — usable for contact, surveys,
+// event registration, feedback, and more.
+// ──────────────────────────────────────────────────────────────────
+
+/// A form definition (visual builder output).
+/// `fields` stores an ordered array of FormFieldDefinition objects:
+///   { id, type, label, placeholder, required, validation, options, ... }
+/// `settings` stores submit behaviour:
+///   { notifyEmails, redirectUrl, webhookUrl, successMessage, recaptcha }
+model FormDefinition {
+  id          String   @id @default(cuid())
+  tenantId    String?
+  name        String
+  slug        String
+  description String?
+  fields      Json     // Array<FormFieldDefinition>
+  settings    Json     @default("{}")
+  isActive    Boolean  @default(true)
+  submitCount Int      @default(0)
+  createdById String
+  createdBy   User     @relation("FormDefinitionCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  submissions FormSubmission[]
+
+  @@unique([tenantId, slug])
+  @@index([tenantId, isActive])
+  @@index([createdById])
+}
+
+/// A single submission to a FormDefinition.
+/// `data` mirrors the field IDs → submitted values.
+model FormSubmission {
+  id        String   @id @default(cuid())
+  tenantId  String?
+  formId    String
+  data      Json     // Record<fieldId, value>
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  form FormDefinition @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, formId])
+  @@index([formId, createdAt])
+  @@index([createdAt])
+}
