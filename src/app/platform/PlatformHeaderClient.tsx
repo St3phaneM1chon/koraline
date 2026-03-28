@@ -67,6 +67,20 @@ function NavDropdown({ label, items }: { label: string; items: DropdownItem[] })
     };
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setOpen(false);
+        // Return focus to the trigger button
+        const button = ref.current?.querySelector('button');
+        button?.focus();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [open]);
+
   const handleMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setOpen(true);
@@ -97,18 +111,24 @@ function NavDropdown({ label, items }: { label: string; items: DropdownItem[] })
           viewBox="0 0 24 24"
           stroke="currentColor"
           strokeWidth={2}
+          aria-hidden="true"
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 mt-2 w-52 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
+        <div
+          className="absolute top-full left-0 mt-2 w-52 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50"
+          role="menu"
+          aria-label={label}
+        >
           {items.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className="block px-4 py-2.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors"
+              role="menuitem"
               onClick={() => setOpen(false)}
             >
               {item.label}
@@ -130,6 +150,19 @@ function ProduitMegaMenu() {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setOpen(false);
+        const button = ref.current?.querySelector('button');
+        button?.focus();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [open]);
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -161,13 +194,18 @@ function ProduitMegaMenu() {
           viewBox="0 0 24 24"
           stroke="currentColor"
           strokeWidth={2}
+          aria-hidden="true"
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
 
       {open && (
-        <div className="absolute top-full -left-4 mt-2 w-[520px] bg-white rounded-xl shadow-lg border border-gray-100 p-4 z-50">
+        <div
+          className="absolute top-full -left-4 mt-2 w-[520px] bg-white rounded-xl shadow-lg border border-gray-100 p-4 z-50"
+          role="menu"
+          aria-label="Produit"
+        >
           <div className="grid grid-cols-2 gap-x-4">
             {/* Column 1 */}
             <div className="space-y-0.5">
@@ -176,6 +214,7 @@ function ProduitMegaMenu() {
                   key={item.href}
                   href={item.href}
                   className="block px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors group"
+                  role="menuitem"
                   onClick={() => setOpen(false)}
                 >
                   <span className="block text-sm font-medium text-gray-900 group-hover:text-[#0066CC] transition-colors">
@@ -194,6 +233,7 @@ function ProduitMegaMenu() {
                   key={item.href}
                   href={item.href}
                   className="block px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors group"
+                  role="menuitem"
                   onClick={() => setOpen(false)}
                 >
                   <span className="block text-sm font-medium text-gray-900 group-hover:text-[#0066CC] transition-colors">
@@ -229,6 +269,7 @@ function MobileMenuSection({
         type="button"
         onClick={() => setOpen((v) => !v)}
         className="w-full flex items-center justify-between py-2.5 text-sm font-medium text-gray-900"
+        aria-expanded={open}
       >
         {label}
         <svg
@@ -237,6 +278,7 @@ function MobileMenuSection({
           viewBox="0 0 24 24"
           stroke="currentColor"
           strokeWidth={2}
+          aria-hidden="true"
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
@@ -262,7 +304,7 @@ function MobileMenuSection({
 function MobileMenu({ onClose }: { onClose: () => void }) {
   return (
     <div className="md:hidden bg-white border-b border-gray-100 shadow-lg">
-      <nav className="max-w-7xl mx-auto px-4 py-4 space-y-1">
+      <nav className="max-w-7xl mx-auto px-4 py-4 space-y-1" aria-label="Menu mobile">
         <MobileMenuSection label="Produit" items={produitItems} onClose={onClose} />
         <MobileMenuSection label="Solutions" items={solutionsItems} onClose={onClose} />
         <MobileMenuSection label="Entreprise" items={entrepriseItems} onClose={onClose} />
@@ -327,7 +369,7 @@ export function PlatformHeaderClient({ company }: { company: CompanyBranding }) 
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-8" aria-label="Navigation principale">
             <ProduitMegaMenu />
             <NavDropdown label="Solutions" items={solutionsItems} />
             <NavDropdown label="Entreprise" items={entrepriseItems} />
@@ -360,11 +402,11 @@ export function PlatformHeaderClient({ company }: { company: CompanyBranding }) 
               aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? (
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               ) : (
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               )}

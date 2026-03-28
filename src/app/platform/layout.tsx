@@ -27,7 +27,7 @@ function PlatformFooter({ company }: { company: CompanyBranding }) {
   const location = [company.city, company.province, company.country].filter(Boolean).join(', ');
 
   return (
-    <footer className="bg-[#003366] text-white">
+    <footer className="bg-[#003366] text-white" role="contentinfo">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8 mb-12">
           {/* Brand */}

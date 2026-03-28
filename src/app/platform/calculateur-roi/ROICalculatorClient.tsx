@@ -21,7 +21,7 @@ const EXTRA_SEAT_PRICE = 25; // average $/month per extra seat
 
 function ArrowRightIcon() {
   return (
-    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
     </svg>
   );
@@ -29,7 +29,7 @@ function ArrowRightIcon() {
 
 function DollarIcon() {
   return (
-    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
     </svg>
   );
@@ -37,7 +37,7 @@ function DollarIcon() {
 
 function ClockIcon() {
   return (
-    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
     </svg>
   );
@@ -45,7 +45,7 @@ function ClockIcon() {
 
 function ChartIcon() {
   return (
-    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
     </svg>
   );
@@ -54,6 +54,8 @@ function ChartIcon() {
 /* -------------------------------------------------------------------------- */
 /*  Slider component                                                          */
 /* -------------------------------------------------------------------------- */
+
+let sliderId = 0;
 
 function Slider({
   label,
@@ -72,18 +74,20 @@ function Slider({
   step?: number;
   suffix?: string;
 }) {
+  const [id] = useState(() => `slider-${++sliderId}`);
   const pct = ((value - min) / (max - min)) * 100;
 
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
-        <label className="text-sm font-medium text-gray-700">{label}</label>
-        <span className="text-lg font-bold text-gray-900 tabular-nums">
+        <label htmlFor={id} className="text-sm font-medium text-gray-700">{label}</label>
+        <span className="text-lg font-bold text-gray-900 tabular-nums" aria-live="polite">
           {value}
           {suffix}
         </span>
       </div>
       <input
+        id={id}
         type="range"
         min={min}
         max={max}
@@ -94,9 +98,12 @@ function Slider({
         style={{
           background: `linear-gradient(to right, #0066CC ${pct}%, #e5e7eb ${pct}%)`,
         }}
-        aria-label={label}
+        aria-valuemin={min}
+        aria-valuemax={max}
+        aria-valuenow={value}
+        aria-valuetext={`${value}${suffix}`}
       />
-      <div className="flex justify-between text-xs text-gray-400 mt-1">
+      <div className="flex justify-between text-xs text-gray-400 mt-1" aria-hidden="true">
         <span>{min}{suffix}</span>
         <span>{max}{suffix}</span>
       </div>
@@ -318,7 +325,7 @@ export default function ROICalculatorPage() {
             </div>
 
             {/* ---- Results ---- */}
-            <div className="space-y-6">
+            <div className="space-y-6" aria-live="polite" aria-atomic="true">
               <div className="grid gap-6">
                 <StatCard
                   icon={<DollarIcon />}
@@ -358,6 +365,11 @@ export default function ROICalculatorPage() {
                     <div className="h-4 bg-gray-100 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-red-400 rounded-full transition-all duration-700"
+                        role="progressbar"
+                        aria-valuenow={currentCost}
+                        aria-valuemin={0}
+                        aria-valuemax={Math.max(currentCost, results.koralineCost)}
+                        aria-label={`Cout actuel: ${currentCost}$ par mois`}
                         style={{ width: `${Math.min(100, (currentCost / Math.max(currentCost, results.koralineCost)) * 100)}%` }}
                       />
                     </div>
@@ -371,6 +383,11 @@ export default function ROICalculatorPage() {
                     <div className="h-4 bg-gray-100 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-[#0066CC] rounded-full transition-all duration-700"
+                        role="progressbar"
+                        aria-valuenow={results.koralineCost}
+                        aria-valuemin={0}
+                        aria-valuemax={Math.max(currentCost, results.koralineCost)}
+                        aria-label={`Cout Koraline: ${results.koralineCost}$ par mois`}
                         style={{ width: `${Math.min(100, (results.koralineCost / Math.max(currentCost, results.koralineCost)) * 100)}%` }}
                       />
                     </div>
