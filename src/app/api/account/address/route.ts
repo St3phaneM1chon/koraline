@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 /**
- * API Account Address - BioCycle Peptides
+ * API Account Address - Attitudes VIP
  * Gestion des adresses utilisateur via le modèle UserAddress
  */
 

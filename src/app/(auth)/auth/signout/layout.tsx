@@ -3,12 +3,12 @@ export const dynamic = 'force-dynamic';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Sign Out | BioCycle Peptides',
-  description: 'You have been signed out of your BioCycle Peptides account.',
+  title: 'Sign Out | Attitudes VIP',
+  description: 'You have been signed out of your Attitudes VIP account.',
   robots: { index: false, follow: false },
   openGraph: {
-    title: 'Sign Out | BioCycle Peptides',
-    description: 'You have been signed out of your BioCycle Peptides account.',
+    title: 'Sign Out | Attitudes VIP',
+    description: 'You have been signed out of your Attitudes VIP account.',
   },
 };
 

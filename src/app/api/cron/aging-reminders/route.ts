@@ -190,7 +190,7 @@ function buildReminderEmail(
         </tr>
       </table>
       <p style="font-size:13px;color:#94a3b8;margin-top:24px;">
-        Pour toute question, contactez-nous a support@biocyclepeptides.com
+        Pour toute question, contactez-nous a support@attitudes.vip
       </p>
     `,
   });

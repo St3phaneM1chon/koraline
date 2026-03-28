@@ -52,7 +52,7 @@ export const POST = withAdminGuard(async (_request: NextRequest, { params, sessi
       const { sendEmail } = await import('@/lib/email/email-service');
       await sendEmail({
         to: { email: user.email, name: user.name || undefined },
-        subject: 'Password Reset - BioCycle Peptides',
+        subject: 'Password Reset - Attitudes VIP',
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h2>Password Reset</h2>

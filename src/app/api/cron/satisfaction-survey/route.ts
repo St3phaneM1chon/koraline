@@ -23,8 +23,8 @@ export const dynamic = 'force-dynamic';
  * Configurable SiteSetting keys (module: 'satisfaction_survey'):
  *   satisfaction_survey.delay_days       - Default: 5
  *   satisfaction_survey.bonus_points     - Default: 50
- *   satisfaction_survey.feedback_base_url - Default: https://biocyclepeptides.com/feedback
- *   satisfaction_survey.review_base_url  - Default: https://biocyclepeptides.com/account/orders
+ *   satisfaction_survey.feedback_base_url - Default: https://attitudes.vip/feedback
+ *   satisfaction_survey.review_base_url  - Default: https://attitudes.vip/account/orders
  *
  * Configuration Vercel (vercel.json):
  * {

@@ -38,7 +38,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
       `Watch here: ${videoUrl}`,
       '',
       'Thank you,',
-      'BioCycle Peptides',
+      'Attitudes VIP',
     ].join('\n');
 
     const result = await sendTextMessage(phoneNumber, message);

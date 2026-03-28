@@ -349,7 +349,7 @@ export const GET = withUserGuard(async (_request: NextRequest, { session, params
       total: Number(order.total),
       trackingNumber: order.trackingNumber ?? null,
       carrier: order.carrier ?? null,
-      companyName: settings?.companyName ?? 'BioCycle Peptides Inc.',
+      companyName: settings?.companyName ?? 'Attitudes VIP Inc.',
     });
 
     return new NextResponse(html, {

@@ -1,5 +1,5 @@
 /**
- * PAGE D'INSCRIPTION - BioCycle Peptides
+ * PAGE D'INSCRIPTION - Attitudes VIP
  * Création de compte avec validation
  * Note: 'use client' pages cannot export route segment config like `dynamic`.
  * Data is fetched client-side via useEffect hooks, not SSR.
@@ -188,7 +188,7 @@ function SignUpContent() {
           <Link href="/" className="flex justify-center mb-8">
             <Image
               src="/images/brand/signature-header.png"
-              alt="BioCycle Peptides"
+              alt="Attitudes VIP"
               width={600}
               height={200}
               className="h-16 w-auto"

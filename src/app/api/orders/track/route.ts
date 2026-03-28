@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 /**
- * API Order Tracking - BioCycle Peptides
+ * API Order Tracking - Attitudes VIP
  * Recherche une commande par numéro + email et retourne le statut de livraison
  */
 

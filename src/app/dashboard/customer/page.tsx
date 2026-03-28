@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 /**
- * DASHBOARD CLIENT - BioCycle Peptides
+ * DASHBOARD CLIENT - Attitudes VIP
  * Commandes, points de fidélité, réapprovisionnement rapide
  */
 

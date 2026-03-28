@@ -242,7 +242,7 @@ async function publishToTikTok(post: SocialPostData): Promise<PublishResult> {
       return {
         success: true,
         externalId: data.data.publish_id,
-        externalUrl: `https://www.tiktok.com/@biocyclepeptides`,
+        externalUrl: `https://www.tiktok.com/@attitudesvip`,
       };
     }
     return { success: false, error: data.error?.message || 'TikTok publish failed' };

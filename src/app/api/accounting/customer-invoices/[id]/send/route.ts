@@ -113,7 +113,7 @@ export const POST = withAdminGuard(async (_request: NextRequest, { session, para
     // ---------------------------------------------------------------
     const emailResult = await sendEmail({
       to: { email: existing.customerEmail, name: existing.customerName },
-      subject: `Facture ${existing.invoiceNumber} - BioCycle Peptides - ${formatCAD(total)}`,
+      subject: `Facture ${existing.invoiceNumber} - Attitudes VIP - ${formatCAD(total)}`,
       html: emailBody,
       attachments: [
         {
@@ -186,7 +186,7 @@ export const POST = withAdminGuard(async (_request: NextRequest, { session, para
       await prisma.emailLog.create({
         data: {
           to: existing.customerEmail,
-          subject: `Facture ${existing.invoiceNumber} - BioCycle Peptides`,
+          subject: `Facture ${existing.invoiceNumber} - Attitudes VIP`,
           templateId: 'invoice-send',
           status: 'sent',
           messageId: emailResult.messageId || undefined,

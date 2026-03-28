@@ -63,7 +63,7 @@ export async function GET(request: Request) {
         email: subscriber.email.toLowerCase(),
         type: 'marketing',
         source: `double_optin_${subscriber.consentMethod || 'website_form'}`,
-        consentText: 'Consentement confirmé par double opt-in. J\'accepte de recevoir les promotions, codes promo, spéciaux et nouveaux produits de BioCycle Peptides.',
+        consentText: 'Consentement confirmé par double opt-in. J\'accepte de recevoir les promotions, codes promo, spéciaux et nouveaux produits de Attitudes VIP.',
         grantedAt: confirmedAt,
         ipAddress: ip,
       },

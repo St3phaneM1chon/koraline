@@ -183,7 +183,7 @@ interface MissedCallData {
 
 function buildMissedCallEmail(call: MissedCallData): string {
   const time = call.startedAt.toLocaleString('fr-CA', { timeZone: 'America/Toronto' });
-  const appName = process.env.NEXT_PUBLIC_APP_NAME || 'BioCycle Peptides';
+  const appName = process.env.NEXT_PUBLIC_APP_NAME || 'Attitudes VIP';
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
   return `
@@ -218,7 +218,7 @@ interface VoicemailData {
 function buildVoicemailEmail(vm: VoicemailData): string {
   const time = vm.createdAt.toLocaleString('fr-CA', { timeZone: 'America/Toronto' });
   const duration = vm.durationSec ? `${Math.floor(vm.durationSec / 60)}:${String(vm.durationSec % 60).padStart(2, '0')}` : '';
-  const appName = process.env.NEXT_PUBLIC_APP_NAME || 'BioCycle Peptides';
+  const appName = process.env.NEXT_PUBLIC_APP_NAME || 'Attitudes VIP';
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
   return `

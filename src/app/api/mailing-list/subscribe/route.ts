@@ -140,11 +140,11 @@ export async function POST(request: NextRequest) {
 
     await sendEmail({
       to: { email: email.toLowerCase() },
-      subject: 'Confirmez votre inscription - BioCycle Peptides',
+      subject: 'Confirmez votre inscription - Attitudes VIP',
       html: `
         <div style="max-width:600px;margin:0 auto;font-family:Arial,sans-serif;">
           <h2>Confirmez votre inscription</h2>
-          <p>Merci de votre int\u00e9r\u00eat pour BioCycle Peptides !</p>
+          <p>Merci de votre int\u00e9r\u00eat pour Attitudes VIP !</p>
           <p>Pour confirmer votre inscription \u00e0 notre liste de diffusion et recevoir nos promotions, codes promo, sp\u00e9ciaux et nouveaux produits, veuillez cliquer sur le bouton ci-dessous :</p>
           <p style="text-align:center;margin:30px 0;">
             <a href="${confirmUrl}" style="background:#0284c7;color:white;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold;">
@@ -163,7 +163,7 @@ export async function POST(request: NextRequest) {
             <strong>Cat\u00e9gories :</strong> ${selectedPrefs.join(', ')}
           </p>
           <p style="font-size:12px;color:#666;">
-            <strong>Exp\u00e9diteur :</strong> BioCycle Peptides Inc.<br/>
+            <strong>Exp\u00e9diteur :</strong> Attitudes VIP Inc.<br/>
             Montr\u00e9al, Qu\u00e9bec, Canada<br/>
             Contact : support@attitudes.vip
           </p>

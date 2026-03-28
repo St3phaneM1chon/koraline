@@ -45,14 +45,14 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
       fr: {
         short: `${productName}${catContext} - Peptide de recherche de haute qualite. ${attrList ? `Caracteristiques: ${attrList}.` : ''} Certificat d'analyse disponible.`,
         full: `Decouvrez ${productName}, un peptide de recherche${catContext} soigneusement synthetise selon les normes les plus strictes de l'industrie. ${attrList ? `\n\nSpecifications: ${attrList}` : ''}\n\nChaque lot est accompagne d'un certificat d'analyse (COA) et d'un rapport HPLC attestant de la purete du produit. Stockage recommande: refrigere a -20\u00b0C.\n\nA usage de recherche uniquement.`,
-        meta: `${productName} - Peptide de recherche haute qualite | BioCycle Peptides`,
-        metaDesc: `Achetez ${productName}${catContext}. Purete certifiee, COA inclus. Livraison rapide au Canada. BioCycle Peptides.`,
+        meta: `${productName} - Peptide de recherche haute qualite | Attitudes VIP`,
+        metaDesc: `Achetez ${productName}${catContext}. Purete certifiee, COA inclus. Livraison rapide au Canada. Attitudes VIP.`,
       },
       en: {
         short: `${productName}${catContext ? ` in ${category}` : ''} - High-quality research peptide. ${attrList ? `Features: ${attrList}.` : ''} Certificate of Analysis included.`,
         full: `Discover ${productName}, a research peptide${catContext ? ` in ${category}` : ''} carefully synthesized to the highest industry standards. ${attrList ? `\n\nSpecifications: ${attrList}` : ''}\n\nEach batch includes a Certificate of Analysis (COA) and HPLC report confirming product purity. Recommended storage: refrigerated at -20\u00b0C.\n\nFor research use only.`,
-        meta: `${productName} - High Quality Research Peptide | BioCycle Peptides`,
-        metaDesc: `Buy ${productName}${catContext ? ` in ${category}` : ''}. Certified purity, COA included. Fast shipping in Canada. BioCycle Peptides.`,
+        meta: `${productName} - High Quality Research Peptide | Attitudes VIP`,
+        metaDesc: `Buy ${productName}${catContext ? ` in ${category}` : ''}. Certified purity, COA included. Fast shipping in Canada. Attitudes VIP.`,
       },
     };
 

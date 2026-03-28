@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 /**
- * API Newsletter - BioCycle Peptides
+ * API Newsletter - Attitudes VIP
  * Gère les inscriptions à la newsletter
  */
 
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
         email: email.toLowerCase(),
         type: 'newsletter',
         source: `website_${source || 'footer'}`,
-        consentText: 'J\'accepte de recevoir la newsletter et les promotions de BioCycle Peptides.',
+        consentText: 'J\'accepte de recevoir la newsletter et les promotions de Attitudes VIP.',
         grantedAt: new Date(),
         ipAddress: ip,
       },
@@ -148,10 +148,10 @@ export async function POST(request: NextRequest) {
 
         await sendEmail({
           to: { email: lowerEmail },
-          subject: 'Confirmez votre inscription - BioCycle Peptides',
+          subject: 'Confirmez votre inscription - Attitudes VIP',
           html: `<div style="max-width:600px;margin:0 auto;font-family:Arial,sans-serif;">
             <h2>Confirmez votre inscription</h2>
-            <p>Merci de votre int\u00e9r\u00eat pour BioCycle Peptides !</p>
+            <p>Merci de votre int\u00e9r\u00eat pour Attitudes VIP !</p>
             <p>Pour confirmer votre inscription, veuillez cliquer sur le bouton ci-dessous :</p>
             <p style="text-align:center;margin:30px 0;">
               <a href="${confirmUrl}" style="background:#0284c7;color:white;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold;">Confirmer mon inscription</a>

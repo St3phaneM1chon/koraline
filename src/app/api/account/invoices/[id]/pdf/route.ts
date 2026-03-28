@@ -13,7 +13,7 @@ import { logger } from '@/lib/logger';
 
 // Company information (tax numbers loaded from DB at runtime)
 const COMPANY_STATIC = {
-  name: 'BioCycle Peptides Inc.',
+  name: 'Attitudes VIP Inc.',
   address: '1234 Boulevard des Sciences',
   city: 'Montreal, QC H3C 1K3',
   country: 'Canada',

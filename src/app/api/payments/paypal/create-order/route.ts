@@ -389,7 +389,7 @@ export async function POST(request: NextRequest) {
         purchase_units: [{
           reference_id: `order_${Date.now()}`,
           custom_id: JSON.stringify({ userId: session.user.id, researchConsentAccepted: !!researchConsentAccepted, researchConsentTimestamp: researchConsentTimestamp || '' }),
-          description: 'Commande BioCycle Peptides',
+          description: 'Commande Attitudes VIP',
           amount: {
             currency_code: currency.toUpperCase(),
             value: serverTotal.toFixed(2),
@@ -456,7 +456,7 @@ export async function POST(request: NextRequest) {
           } : undefined,
         }],
         application_context: {
-          brand_name: 'BioCycle Peptides',
+          brand_name: 'Attitudes VIP',
           landing_page: 'LOGIN',
           user_action: 'PAY_NOW',
           return_url: `${process.env.NEXT_PUBLIC_APP_URL}/checkout/success`,

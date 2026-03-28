@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 /**
- * API Currencies - BioCycle Peptides
+ * API Currencies - Attitudes VIP
  * Retourne les devises actives avec leurs taux de change depuis la DB
  */
 

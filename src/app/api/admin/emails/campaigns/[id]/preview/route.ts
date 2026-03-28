@@ -15,7 +15,7 @@ const SAMPLE_VARS: Record<string, string> = {
   prenom: 'Jean',
   email: 'jean.dupont@example.com',
   nom: 'Dupont',
-  company: 'BioCycle Peptides',
+  company: 'Attitudes VIP',
 };
 
 export const GET = withAdminGuard(

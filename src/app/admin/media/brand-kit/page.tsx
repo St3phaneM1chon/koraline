@@ -74,7 +74,7 @@ export default function BrandKitPage() {
   ];
 
   const fonts = [
-    { nameKey: 'fontHeadings', family: brandKit?.fontHeading || 'Inter', weight: '700', size: '24-36px', sample: 'BioCycle Peptides' },
+    { nameKey: 'fontHeadings', family: brandKit?.fontHeading || 'Inter', weight: '700', size: '24-36px', sample: 'Attitudes VIP' },
     { nameKey: 'fontBody', family: brandKit?.fontBody || 'Inter', weight: '400', size: '14-16px', sample: 'Peptides de recherche de haute qualité' },
     { nameKey: 'fontCaptions', family: 'Inter', weight: '500', size: '11-12px', sample: 'CODE PROMO: BIOCYCLE10' },
   ];
@@ -247,11 +247,11 @@ export default function BrandKitPage() {
         </h2>
         <div className="grid grid-cols-2 gap-6">
           <div className="p-8 bg-[var(--k-glass-thin)] border border-[var(--k-border-subtle)] rounded-xl text-center">
-            <div className="text-2xl font-bold text-emerald-600 mb-2">BioCycle Peptides</div>
+            <div className="text-2xl font-bold text-emerald-600 mb-2">Attitudes VIP</div>
             <div className="text-xs text-slate-400">{t('admin.media.brandKit.logoLight')}</div>
           </div>
           <div className="p-8 bg-slate-800 border border-slate-700 rounded-xl text-center">
-            <div className="text-2xl font-bold text-emerald-400 mb-2">BioCycle Peptides</div>
+            <div className="text-2xl font-bold text-emerald-400 mb-2">Attitudes VIP</div>
             <div className="text-xs text-slate-400">{t('admin.media.brandKit.logoDark')}</div>
           </div>
         </div>

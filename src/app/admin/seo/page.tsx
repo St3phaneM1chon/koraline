@@ -211,7 +211,7 @@ export default function SEOPage() {
       '@context': 'https://schema.org',
       '@type': 'Product',
       name: product.metaTitle || product.name,
-      description: product.metaDescription || `${product.name} par BioCycle Peptides`,
+      description: product.metaDescription || `${product.name} par Attitudes VIP`,
       url: `${globalSettings.siteUrl}/products/${product.slug}`,
       brand: {
         '@type': 'Brand',
@@ -427,7 +427,7 @@ export default function SEOPage() {
 
   const handleRibbonResetDefaults = useCallback(() => {
     setGlobalSettings({
-      siteName: 'BioCycle Peptides',
+      siteName: 'Attitudes VIP',
       siteUrl: 'https://biocycle.ca',
       defaultOgImage: '/og-image.jpg',
       googleAnalyticsId: '',
@@ -766,7 +766,7 @@ export default function SEOPage() {
                               <div className="p-3">
                                 <p className="text-[10px] text-slate-400 uppercase">{globalSettings.siteUrl.replace('https://', '')}</p>
                                 <p className="text-sm font-semibold text-[var(--k-text-primary)] mt-0.5">{product.metaTitle || product.name}</p>
-                                <p className="text-xs text-[var(--k-text-secondary)] mt-0.5 line-clamp-2">{product.metaDescription || 'Peptide de recherche par BioCycle Peptides'}</p>
+                                <p className="text-xs text-[var(--k-text-secondary)] mt-0.5 line-clamp-2">{product.metaDescription || 'Peptide de recherche par Attitudes VIP'}</p>
                               </div>
                             </div>
                           </div>

@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
  *   - Push notification to staff
  *
  * Configure in Telnyx Portal > Messaging > Inbound webhook:
- *   https://biocyclepeptides.com/api/voip/webhooks/sms
+ *   https://attitudes.vip/api/voip/webhooks/sms
  */
 
 import { NextRequest, NextResponse } from 'next/server';

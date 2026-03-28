@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 /**
- * API Contact - BioCycle Peptides
+ * API Contact - Attitudes VIP
  * Reçoit et traite les messages du formulaire de contact
  */
 

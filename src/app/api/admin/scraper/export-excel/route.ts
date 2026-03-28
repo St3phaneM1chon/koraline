@@ -88,7 +88,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
     const results = parsed.data.results;
 
     const workbook = new ExcelJS.Workbook();
-    workbook.creator = 'BioCycle Peptides - LeadEngine';
+    workbook.creator = 'Attitudes VIP - LeadEngine';
     workbook.created = new Date();
 
     const sheet = workbook.addWorksheet('Google Maps', {

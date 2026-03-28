@@ -175,7 +175,7 @@ export default function MediaLinkedInPage() {
             label: t('admin.integrations.publicLinkLabel'),
             value: publicLink,
             onChange: setPublicLink,
-            placeholder: 'https://linkedin.com/company/biocyclepeptides',
+            placeholder: 'https://linkedin.com/company/attitudesvip',
             type: 'url',
             hint: t('admin.integrations.publicLinkHint'),
           },

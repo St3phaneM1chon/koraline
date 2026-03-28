@@ -63,7 +63,7 @@ export const POST = withAdminGuard(async (request: NextRequest) => {
         discount: Number(order.discount),
         total: Number(order.total),
         currency: 'CAD',
-        companyName: settings?.companyName || 'BioCycle Peptides Inc.',
+        companyName: settings?.companyName || 'Attitudes VIP Inc.',
         companyAddress: settings?.companyAddress || undefined,
         tpsNumber: settings?.tpsNumber || undefined,
         tvqNumber: settings?.tvqNumber || undefined,

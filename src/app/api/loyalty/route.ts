@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 /**
- * API Loyalty - BioCycle Peptides
+ * API Loyalty - Attitudes VIP
  * Récupère les données de fidélité de l'utilisateur
  */
 

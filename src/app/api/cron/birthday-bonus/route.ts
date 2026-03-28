@@ -78,8 +78,8 @@ async function sendBirthdayBonusEmail(params: BirthdayBonusEmailParams): Promise
     </h1>
     <p style="font-size: 18px; color: #4b5563; text-align: center;">
       ${isFr
-        ? `${safeName}, toute l'équipe BioCycle Peptides vous souhaite un merveilleux anniversaire! 🎈`
-        : `${safeName}, the entire BioCycle Peptides team wishes you a wonderful birthday! 🎈`}
+        ? `${safeName}, toute l'équipe Attitudes VIP vous souhaite un merveilleux anniversaire! 🎈`
+        : `${safeName}, the entire Attitudes VIP team wishes you a wonderful birthday! 🎈`}
     </p>
 
     <div style="background-color: #d1fae5; border-radius: 16px; padding: 32px; margin: 32px 0; text-align: center; border: 2px solid #34d399;">
@@ -112,7 +112,7 @@ async function sendBirthdayBonusEmail(params: BirthdayBonusEmailParams): Promise
         : 'Have an excellent day filled with joy! 🎈'}
     </p>
     <p style="font-size: 12px; color: #9ca3af; text-align: center;">
-      ${isFr ? 'L\'équipe BioCycle Peptides' : 'The BioCycle Peptides Team'}
+      ${isFr ? 'L\'équipe Attitudes VIP' : 'The Attitudes VIP Team'}
     </p>
   `;
 

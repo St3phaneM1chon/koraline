@@ -117,7 +117,7 @@ export const POST = withAdminGuard(async (_request: NextRequest, { session, para
         </div>` : ''}
         <p style="font-size:14px;color:#475569;">
           Merci de confirmer la reception de ce bon de commande.<br/>
-          BioCycle Peptides Inc.
+          Attitudes VIP Inc.
         </p>
       `,
     });
@@ -125,7 +125,7 @@ export const POST = withAdminGuard(async (_request: NextRequest, { session, para
     // Send email
     const emailResult = await sendEmail({
       to: { email: po.supplierEmail, name: po.supplierName },
-      subject: `Bon de commande ${po.poNumber} - BioCycle Peptides - ${formatCAD(total)}`,
+      subject: `Bon de commande ${po.poNumber} - Attitudes VIP - ${formatCAD(total)}`,
       html: emailBody,
       tags: ['purchase-order', 'transactional'],
       emailType: 'transactional',
@@ -178,7 +178,7 @@ export const POST = withAdminGuard(async (_request: NextRequest, { session, para
       await prisma.emailLog.create({
         data: {
           to: po.supplierEmail,
-          subject: `Bon de commande ${po.poNumber} - BioCycle Peptides`,
+          subject: `Bon de commande ${po.poNumber} - Attitudes VIP`,
           templateId: 'purchase-order-send',
           status: 'sent',
           messageId: emailResult.messageId || undefined,

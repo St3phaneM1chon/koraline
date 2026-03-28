@@ -1,5 +1,5 @@
 /**
- * PAGE RÉINITIALISATION MOT DE PASSE - BioCycle Peptides
+ * PAGE RÉINITIALISATION MOT DE PASSE - Attitudes VIP
  * Formulaire pour définir un nouveau mot de passe
  */
 
@@ -162,7 +162,7 @@ function ResetPasswordContent() {
           <Link href="/" className="flex justify-center mb-8">
             <Image
               src="/images/brand/signature-header.png"
-              alt="BioCycle Peptides"
+              alt="Attitudes VIP"
               width={600}
               height={200}
               className="h-16 w-auto"

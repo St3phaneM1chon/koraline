@@ -76,7 +76,7 @@ export const POST = withMobileGuard(async (request, { session }) => {
       );
     }
 
-    const senderName = session.user.name || 'BioCycle Peptides';
+    const senderName = session.user.name || 'Attitudes VIP';
 
     // Send via the email service (handles provider fallback, rate limiting, etc.)
     let result;

@@ -294,7 +294,7 @@ function buildDigestEmail(
         </a>
       </p>
       <p style="color:#6b7280;font-size:12px;margin-top:20px;">
-        This is an automated alert from BioCycle Peptides inventory monitoring.
+        This is an automated alert from Attitudes VIP inventory monitoring.
       </p>
     </div>
   `;

@@ -1,5 +1,5 @@
 /**
- * PAGE ACCEPTER L'INVITATION - BioCycle Peptides
+ * PAGE ACCEPTER L'INVITATION - Attitudes VIP
  * Formulaire pour configurer le mot de passe d'un nouvel employé
  */
 
@@ -133,7 +133,7 @@ function AcceptInviteContent() {
           <Link href="/" className="flex justify-center mb-8">
             <Image
               src="/images/brand/signature-header.png"
-              alt="BioCycle Peptides"
+              alt="Attitudes VIP"
               width={600}
               height={200}
               className="h-16 w-auto"

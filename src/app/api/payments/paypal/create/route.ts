@@ -152,7 +152,7 @@ export async function POST(request: NextRequest) {
           },
         ],
         application_context: {
-          brand_name: 'BioCycle Peptides',
+          brand_name: 'Attitudes VIP',
           landing_page: 'NO_PREFERENCE',
           user_action: 'PAY_NOW',
           return_url: `${process.env.NEXT_PUBLIC_APP_URL}/checkout/paypal/success?product=${productId}`,

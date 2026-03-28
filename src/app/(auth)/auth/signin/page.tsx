@@ -1,5 +1,5 @@
 /**
- * PAGE DE CONNEXION - BioCycle Peptides
+ * PAGE DE CONNEXION - Attitudes VIP
  * Multi-providers + Email/Password + MFA
  * Note: 'use client' pages cannot export route segment config like `dynamic`.
  * Auth state is managed client-side via next-auth/react hooks.
@@ -118,7 +118,7 @@ function SignInContent() {
           <Link href="/" className="flex justify-center mb-8">
             <Image
               src="/images/brand/signature-header.png"
-              alt="BioCycle Peptides"
+              alt="Attitudes VIP"
               width={600}
               height={200}
               className="h-16 w-auto"

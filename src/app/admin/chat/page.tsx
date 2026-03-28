@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Panel Admin Chat - BioCycle Peptides
+ * Panel Admin Chat - Attitudes VIP
  * Interface pour repondre aux messages clients
  */
 

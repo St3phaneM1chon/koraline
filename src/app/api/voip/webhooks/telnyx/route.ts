@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
  * - streaming.started / streaming.stopped (transcription)
  *
  * Configure this URL in Telnyx Portal:
- *   https://biocyclepeptides.com/api/voip/webhooks/telnyx
+ *   https://attitudes.vip/api/voip/webhooks/telnyx
  *
  * SECURITY AUDIT 2026-03-15: PAYMENT-PCI — VERIFIED SAFE.
  * POST handler verifies Telnyx Ed25519 signature using TELNYX_WEBHOOK_SECRET (public key).

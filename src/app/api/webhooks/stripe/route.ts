@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
  * This route returns 410 Gone to signal the URL is no longer valid.
  *
  * Update your Stripe dashboard webhook endpoint to:
- *   https://biocyclepeptides.com/api/payments/webhook
+ *   https://attitudes.vip/api/payments/webhook
  *
  * AUDIT: Signature verified via stripe.webhooks.constructEvent() in /api/payments/webhook.
  * This stub route performs NO webhook processing — it only returns 410 Gone.

@@ -1,5 +1,5 @@
 /**
- * PAGE MOT DE PASSE OUBLIÉ - BioCycle Peptides
+ * PAGE MOT DE PASSE OUBLIÉ - Attitudes VIP
  * Demande de réinitialisation du mot de passe
  */
 
@@ -82,7 +82,7 @@ export default function ForgotPasswordPage() {
           <Link href="/" className="flex justify-center mb-8">
             <Image
               src="/images/brand/signature-header.png"
-              alt="BioCycle Peptides"
+              alt="Attitudes VIP"
               width={600}
               height={200}
               className="h-16 w-auto"
@@ -157,8 +157,8 @@ export default function ForgotPasswordPage() {
           </h3>
           <p className="text-sm text-gray-600">
             {t('faq.contactUs')}{' '}
-            <a href="mailto:support@biocyclepeptides.com" className="text-primary-600 hover:underline">
-              support@biocyclepeptides.com
+            <a href="mailto:support@attitudes.vip" className="text-primary-600 hover:underline">
+              support@attitudes.vip
             </a>
           </p>
         </div>

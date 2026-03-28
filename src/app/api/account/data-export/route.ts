@@ -386,7 +386,7 @@ export const GET = withUserGuard(async (request: NextRequest, { session }) => {
         userId: user.id,
         format: format === 'csv' ? 'CSV' : 'JSON',
         version: '1.0',
-        service: 'BioCycle Peptides',
+        service: 'Attitudes VIP',
       },
       profile: {
         ...user,

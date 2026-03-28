@@ -159,7 +159,7 @@ export default function MediaVimeoPage() {
             label: t('admin.integrations.publicLinkLabel'),
             value: publicLink,
             onChange: setPublicLink,
-            placeholder: 'https://vimeo.com/biocyclepeptides',
+            placeholder: 'https://vimeo.com/attitudesvip',
             type: 'url',
             hint: t('admin.integrations.publicLinkHint'),
           },

@@ -141,7 +141,7 @@ export default function MediaXPage() {
             label: 'X Username',
             value: username,
             onChange: setUsername,
-            placeholder: '@biocyclepeptides',
+            placeholder: '@attitudesvip',
             hint: 'Your X account handle',
           },
           {

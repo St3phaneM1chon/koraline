@@ -325,7 +325,7 @@ export const GET = withAdminGuard(async (_request, { params }) => {
     if (taxPst > 0) taxes.push({ label: 'PST', amount: taxPst });
 
     // ── Company info ─────────────────────────────────────────────────────────
-    const companyName = settings?.companyName ?? 'BioCycle Peptides Inc.';
+    const companyName = settings?.companyName ?? 'Attitudes VIP Inc.';
     const companyAddressParts = [
       settings?.companyAddress,
       settings?.companyCity && settings?.companyProvince

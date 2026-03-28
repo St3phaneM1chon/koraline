@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
-  description: 'Your BioCycle Peptides dashboard.',
+  description: 'Your Attitudes VIP dashboard.',
   robots: { index: false, follow: false },
 };
 

@@ -210,7 +210,7 @@ export default function SocialSchedulerPage() {
 
   const generateCaption = () => {
     const captions = [
-      '🧬 Peptides de recherche de qualité supérieure, maintenant disponibles chez BioCycle Peptides! Certificat d\'analyse inclus avec chaque commande. #peptides #research #quality',
+      '🧬 Peptides de recherche de qualité supérieure, maintenant disponibles chez Attitudes VIP! Certificat d\'analyse inclus avec chaque commande. #peptides #research #quality',
       '🔬 Vous cherchez des peptides de recherche fiables? Notre laboratoire garantit une pureté de 98%+ sur chaque lot. Découvrez notre catalogue! #biocycle #science',
       '💎 Livraison gratuite sur les commandes de 150$+! Profitez de nos peptides certifiés avec analyse HPLC. attitudes.vip #research #peptides',
     ];

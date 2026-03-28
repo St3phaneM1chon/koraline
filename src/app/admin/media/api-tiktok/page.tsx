@@ -177,7 +177,7 @@ export default function MediaTikTokPage() {
             label: t('admin.integrations.publicLinkLabel'),
             value: publicLink,
             onChange: setPublicLink,
-            placeholder: 'https://tiktok.com/@biocyclepeptides',
+            placeholder: 'https://tiktok.com/@attitudesvip',
             type: 'url',
             hint: t('admin.integrations.publicLinkHint'),
           },

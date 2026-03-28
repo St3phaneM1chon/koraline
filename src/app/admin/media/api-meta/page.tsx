@@ -199,7 +199,7 @@ export default function MediaMetaPage() {
             label: t('admin.integrations.publicLinkLabel'),
             value: publicLink,
             onChange: setPublicLink,
-            placeholder: 'https://facebook.com/biocyclepeptides',
+            placeholder: 'https://facebook.com/attitudesvip',
             type: 'url',
             hint: t('admin.integrations.publicLinkHint'),
           },

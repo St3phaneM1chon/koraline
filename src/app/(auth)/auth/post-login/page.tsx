@@ -4,7 +4,7 @@ import { auth } from '@/lib/auth-config';
 import PostLoginClientFallback from './PostLoginClientFallback';
 
 export const metadata: Metadata = {
-  title: 'Redirecting... | BioCycle Peptides',
+  title: 'Redirecting... | Attitudes VIP',
   description: 'Processing your login and redirecting you to the appropriate page.',
   robots: { index: false, follow: false },
 };

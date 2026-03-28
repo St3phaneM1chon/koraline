@@ -309,8 +309,8 @@ export const POST = withUserGuard(async (request: NextRequest, { session }) => {
     await sendEmail({
       to: { email: originalEmail, name: user.name || undefined },
       subject: isFr
-        ? 'Confirmation de suppression de compte - BioCycle Peptides'
-        : 'Account Deletion Confirmation - BioCycle Peptides',
+        ? 'Confirmation de suppression de compte - Attitudes VIP'
+        : 'Account Deletion Confirmation - Attitudes VIP',
       html: baseTemplate({
         content: emailContent,
         locale,
@@ -379,7 +379,7 @@ function buildDeletionConfirmEmailEn(permanentDate: Date): string {
 
     <p>If you believe this was done in error, please contact us immediately at <a href="mailto:support@attitudes.vip">support@attitudes.vip</a>.</p>
 
-    <p>Thank you for having been a BioCycle Peptides customer.</p>
+    <p>Thank you for having been a Attitudes VIP customer.</p>
   `;
 }
 
@@ -408,6 +408,6 @@ function buildDeletionConfirmEmailFr(permanentDate: Date): string {
 
     <p>Si vous croyez que cette action a ete faite par erreur, veuillez nous contacter immediatement a <a href="mailto:support@attitudes.vip">support@attitudes.vip</a>.</p>
 
-    <p>Merci d'avoir ete client(e) de BioCycle Peptides.</p>
+    <p>Merci d'avoir ete client(e) de Attitudes VIP.</p>
   `;
 }

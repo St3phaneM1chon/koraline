@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 /**
- * API Loyalty Earn - BioCycle Peptides
+ * API Loyalty Earn - Attitudes VIP
  * Gagne des points de fidélité
  *
  * FIXED: FLAW-070 - Composite index @@index([userId, type]) added to LoyaltyTransaction model in schema.prisma

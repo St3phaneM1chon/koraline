@@ -26,7 +26,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }: { s
 
   const result = await sendEmail({
     to: { email: testEmail },
-    subject: 'BioCycle Peptides - Test de connexion email',
+    subject: 'Attitudes VIP - Test de connexion email',
     html: '<h2>Configuration email r\u00e9ussie!</h2><p>Si vous recevez ce message, votre syst\u00e8me email fonctionne correctement.</p>',
     tags: ['admin-test'],
   });

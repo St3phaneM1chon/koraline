@@ -81,7 +81,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }: { s
 
     const result = await sendEmail({
       to: { email: testEmail },
-      subject: 'BioCycle Peptides - Email Configuration Test',
+      subject: 'Attitudes VIP - Email Configuration Test',
       html: '<h2>Email configuration test successful!</h2><p>Your email provider is correctly configured.</p><p style="color:#6b7280;font-size:12px;">Sent at: ' + new Date().toISOString() + '</p>',
       tags: ['admin-test'],
     });

@@ -165,7 +165,7 @@ export default function MediaYouTubePage() {
             label: t('admin.integrations.publicLinkLabel'),
             value: publicLink,
             onChange: setPublicLink,
-            placeholder: 'https://youtube.com/@biocyclepeptides',
+            placeholder: 'https://youtube.com/@attitudesvip',
             type: 'url',
             hint: t('admin.integrations.publicLinkHint'),
           },

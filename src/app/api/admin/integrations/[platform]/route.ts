@@ -294,7 +294,7 @@ export const POST = withAdminGuard(async (request: NextRequest, _ctx) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               '@type': 'MessageCard',
-              summary: 'BioCycle Peptides - Test',
+              summary: 'Attitudes VIP - Test',
               sections: [{ activityTitle: 'Connection test successful', activitySubtitle: new Date().toISOString() }],
             }),
           });

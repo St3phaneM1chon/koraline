@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Authentication | BioCycle Peptides',
-  description: 'Sign in or create your BioCycle Peptides account.',
+  title: 'Authentication | Attitudes VIP',
+  description: 'Sign in or create your Attitudes VIP account.',
   robots: { index: false, follow: false },
 };
 

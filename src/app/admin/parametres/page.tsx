@@ -51,7 +51,7 @@ export default function ParametresPage() {
   const { t, locale } = useI18n();
   const [settings, setSettings] = useState({
     // General
-    siteName: 'BioCycle Peptides',
+    siteName: 'Attitudes VIP',
     logoUrl: '',
     siteEmail: 'info@biocycle.ca',
     supportEmail: 'support@biocycle.ca',
@@ -160,7 +160,7 @@ export default function ParametresPage() {
       const kv = data.settings || {};
 
       setSettings({
-        siteName: ss.companyName || 'BioCycle Peptides',
+        siteName: ss.companyName || 'Attitudes VIP',
         logoUrl: ss.logoUrl || '',
         siteEmail: ss.email || 'info@biocycle.ca',
         supportEmail: ss.supportEmail || 'support@biocycle.ca',
@@ -263,7 +263,7 @@ export default function ParametresPage() {
 
   const handleRibbonResetDefaults = useCallback(() => {
     setSettings({
-      siteName: 'BioCycle Peptides',
+      siteName: 'Attitudes VIP',
       logoUrl: '',
       siteEmail: 'info@biocycle.ca',
       supportEmail: 'support@biocycle.ca',

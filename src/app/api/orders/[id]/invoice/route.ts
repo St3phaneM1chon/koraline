@@ -72,7 +72,7 @@ export async function GET(
     // Build invoice HTML
     const currencySymbol = order.currency?.symbol || '$';
     const currencyCode = order.currency?.code || 'CAD';
-    const companyName = 'BioCycle Peptides Inc.';
+    const companyName = 'Attitudes VIP Inc.';
     const companyAddress = '1234 Research Blvd, Montreal, QC H3A 1A1, Canada';
     const companyEmail = 'billing@attitudes.vip';
 
