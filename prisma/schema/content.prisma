@@ -683,6 +683,31 @@ model ContactMessage {
 // ---------------------------------------------------------------------------
 // Brand Kit (C-05: Persistent brand settings)
 // ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Page Template Marketplace (Phase 1.2: Template Library)
+// ---------------------------------------------------------------------------
+model PageTemplate {
+  id          String   @id @default(cuid())
+  tenantId    String?
+  slug        String
+  name        String
+  description String?
+  category    String   @default("general") // business, portfolio, landing, blog, etc.
+  thumbnail   String?  // preview image URL
+  sections    Json     @default("[]") // pre-configured section layout
+  isSystem    Boolean  @default(false) // system templates can't be deleted
+  isPublic    Boolean  @default(true) // visible in template picker
+  usageCount  Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([tenantId, slug])
+  @@index([category])
+  @@index([isPublic])
+  @@index([isSystem])
+  @@index([tenantId])
+}
+
 model BrandKit {
   id             String   @id @default(cuid())
   tenantId       String?

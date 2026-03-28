@@ -14,6 +14,7 @@ import { useI18n } from '@/i18n/client';
 import { toast } from 'sonner';
 import { useRibbonAction } from '@/hooks/useRibbonAction';
 import { addCSRFHeader } from '@/lib/csrf';
+import { PageBuilder, builderSectionsToJson, jsonToBuilderSections } from '@/components/admin/PageBuilder';
 
 interface Page {
   id: string;
@@ -29,6 +30,7 @@ interface Page {
   isPublished: boolean;
   publishedAt: string | null;
   updatedAt: string;
+  sections: unknown;
   translations: { locale: string }[];
 }
 
@@ -82,6 +84,7 @@ export default function ContenuPage() {
   const [editingPage, setEditingPage] = useState<Page | null>(null);
   const [pageForm, setPageForm] = useState({
     title: '', slug: '', content: '', excerpt: '', metaTitle: '', metaDescription: '', template: 'default', heroImageUrl: '', parentSlug: '', isPublished: false,
+    builderSections: [] as Array<{ id: string; type: string; data: Record<string, unknown> }>,
   });
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -141,10 +144,11 @@ export default function ContenuPage() {
         metaDescription: page.metaDescription || '', template: page.template,
         heroImageUrl: page.heroImageUrl || '', parentSlug: page.parentSlug || '',
         isPublished: page.isPublished,
+        builderSections: jsonToBuilderSections(page.sections),
       });
     } else {
       setEditingPage(null);
-      setPageForm({ title: '', slug: '', content: '', excerpt: '', metaTitle: '', metaDescription: '', template: 'default', heroImageUrl: '', parentSlug: '', isPublished: false });
+      setPageForm({ title: '', slug: '', content: '', excerpt: '', metaTitle: '', metaDescription: '', template: 'default', heroImageUrl: '', parentSlug: '', isPublished: false, builderSections: [] });
     }
     setPageModal(true);
   };
@@ -153,7 +157,18 @@ export default function ContenuPage() {
     setSaving(true);
     try {
       const method = editingPage ? 'PUT' : 'POST';
-      const body = editingPage ? { id: editingPage.id, ...pageForm } : pageForm;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { builderSections, ...formData } = pageForm;
+      // When template is "sections", serialize the builder sections into the sections field
+      const isSectionsTemplate = pageForm.template === 'sections';
+      const sections = isSectionsTemplate ? builderSectionsToJson(pageForm.builderSections) : undefined;
+      // Provide a default content for sections template (required by API schema)
+      if (isSectionsTemplate && !formData.content) {
+        formData.content = '<!-- Page builder sections -->';
+      }
+      const body = editingPage
+        ? { id: editingPage.id, ...formData, ...(sections ? { sections } : {}) }
+        : { ...formData, ...(sections ? { sections } : {}) };
 
       const res = await fetch('/api/admin/content/pages', {
         method,
@@ -782,15 +797,18 @@ export default function ContenuPage() {
               placeholder={t('admin.content.fieldExcerptPlaceholder')}
             />
           </FormField>
-          <FormField label={t('admin.content.fieldContent')} required>
-            <Textarea
-              value={pageForm.content}
-              onChange={e => setPageForm(f => ({ ...f, content: e.target.value }))}
-              placeholder={t('admin.content.fieldContentPlaceholder')}
-              rows={12}
-              className="font-mono text-sm"
-            />
-          </FormField>
+          {/* Content textarea is hidden when using the sections page builder */}
+          {pageForm.template !== 'sections' && (
+            <FormField label={t('admin.content.fieldContent')} required>
+              <Textarea
+                value={pageForm.content}
+                onChange={e => setPageForm(f => ({ ...f, content: e.target.value }))}
+                placeholder={t('admin.content.fieldContentPlaceholder')}
+                rows={12}
+                className="font-mono text-sm"
+              />
+            </FormField>
+          )}
           <div className="grid grid-cols-2 gap-4">
             <FormField label={t('admin.content.fieldMetaTitle')} hint={t('admin.content.fieldMetaTitleHint')}>
               <Input
@@ -820,6 +838,18 @@ export default function ContenuPage() {
                 placeholder={t('admin.content.fieldHeroImageUrlPlaceholder')}
               />
             </FormField>
+          )}
+          {/* ── Page Builder for "sections" template ──────────────── */}
+          {pageForm.template === 'sections' && (
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Page Builder — Sections
+              </label>
+              <PageBuilder
+                sections={pageForm.builderSections}
+                onChange={(newSections) => setPageForm(f => ({ ...f, builderSections: newSections }))}
+              />
+            </div>
           )}
           <FormField label={t('admin.content.fieldParentSlug')} hint={t('admin.content.fieldParentSlugHint')}>
             <div className="flex items-center gap-1">

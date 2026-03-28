@@ -10,12 +10,36 @@
 
 import Link from 'next/link';
 import { ContentPageData } from '@/lib/content-pages';
+import type {
+  TextImageSection,
+  GallerySection,
+  VideoSection,
+  TeamSection,
+  PricingTableSection,
+  FAQAccordionSection,
+  ContactFormSection,
+  MapSection,
+  CountdownSection,
+  LogoCarouselSection,
+} from '@/lib/homepage-sections';
+import {
+  TextImageRenderer,
+  GalleryRenderer,
+  VideoRenderer,
+  TeamRenderer,
+  PricingTableRenderer,
+  FAQAccordionRenderer,
+  ContactFormRenderer,
+  MapRenderer,
+  CountdownRenderer,
+  LogoCarouselRenderer,
+} from './sections';
 
 // ── Section types for the "sections" template ───────────────────────
 
 interface PageSection {
   id?: string;
-  type: 'text' | 'features' | 'cta' | 'stats' | 'testimonial' | 'faq' | 'image';
+  type: string;
   title?: string;
   subtitle?: string;
   content?: string;
@@ -30,6 +54,8 @@ interface PageSection {
   imageUrl?: string;
   ctaText?: string;
   ctaUrl?: string;
+  // Extended fields for new section types (passed as-is to typed renderers)
+  [key: string]: unknown;
 }
 
 // ── Main renderer ───────────────────────────────────────────────────
@@ -376,6 +402,28 @@ function SectionRenderer({ section }: { section: PageSection }) {
           )}
         </div>
       );
+
+    // ── New section types (Phase 1.1 — Page Builder) ──────────────
+    case 'text_image':
+      return <TextImageRenderer section={section as unknown as TextImageSection} />;
+    case 'gallery':
+      return <GalleryRenderer section={section as unknown as GallerySection} />;
+    case 'video':
+      return <VideoRenderer section={section as unknown as VideoSection} />;
+    case 'team':
+      return <TeamRenderer section={section as unknown as TeamSection} />;
+    case 'pricing_table':
+      return <PricingTableRenderer section={section as unknown as PricingTableSection} />;
+    case 'faq_accordion':
+      return <FAQAccordionRenderer section={section as unknown as FAQAccordionSection} />;
+    case 'contact_form':
+      return <ContactFormRenderer section={section as unknown as ContactFormSection} />;
+    case 'map':
+      return <MapRenderer section={section as unknown as MapSection} />;
+    case 'countdown':
+      return <CountdownRenderer section={section as unknown as CountdownSection} />;
+    case 'logo_carousel':
+      return <LogoCarouselRenderer section={section as unknown as LogoCarouselSection} />;
 
     default:
       return null;

@@ -72,6 +72,102 @@ export interface CustomHTMLSection {
   content: string; // HTML string (sanitized before render)
 }
 
+// ── New Section Types (Phase 1.1 — Page Builder) ─────────────────────
+
+export interface TextImageSection {
+  type: 'text_image';
+  title?: string;
+  content: string;
+  imageUrl: string;
+  imageAlt?: string;
+  layout: 'image_left' | 'image_right'; // which side the image goes
+}
+
+export interface GallerySection {
+  type: 'gallery';
+  title?: string;
+  columns: 2 | 3 | 4;
+  images: Array<{ url: string; alt?: string; caption?: string }>;
+}
+
+export interface VideoSection {
+  type: 'video';
+  title?: string;
+  videoUrl: string; // YouTube or Vimeo embed URL
+  aspectRatio?: '16:9' | '4:3'; // default 16:9
+}
+
+export interface TeamSection {
+  type: 'team';
+  title?: string;
+  subtitle?: string;
+  members: Array<{
+    name: string;
+    role: string;
+    photoUrl?: string;
+    bio?: string;
+  }>;
+}
+
+export interface PricingTableSection {
+  type: 'pricing_table';
+  title?: string;
+  subtitle?: string;
+  plans: Array<{
+    name: string;
+    price: string;
+    period?: string; // e.g. "/month"
+    features: string[];
+    ctaLabel?: string;
+    ctaHref?: string;
+    highlighted?: boolean;
+  }>;
+}
+
+export interface FAQAccordionSection {
+  type: 'faq_accordion';
+  title?: string;
+  items: Array<{ question: string; answer: string }>;
+}
+
+export interface ContactFormSection {
+  type: 'contact_form';
+  title?: string;
+  subtitle?: string;
+  fields: Array<{
+    name: string;
+    label: string;
+    type: 'text' | 'email' | 'tel' | 'textarea' | 'select';
+    required?: boolean;
+    options?: string[]; // for select type
+  }>;
+  submitLabel?: string;
+  recipientEmail?: string;
+}
+
+export interface MapSection {
+  type: 'map';
+  title?: string;
+  embedUrl: string; // Google Maps embed URL
+  height?: number; // default 400
+}
+
+export interface CountdownSection {
+  type: 'countdown';
+  title?: string;
+  subtitle?: string;
+  targetDate: string; // ISO date string
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+export interface LogoCarouselSection {
+  type: 'logo_carousel';
+  title?: string;
+  logos: Array<{ url: string; alt: string; href?: string }>;
+  speed?: 'slow' | 'normal' | 'fast';
+}
+
 // ── Union Type ───────────────────────────────────────────────────────
 
 export type HomepageSection =
@@ -83,7 +179,17 @@ export type HomepageSection =
   | CTASection
   | StatsSection
   | NewsletterSection
-  | CustomHTMLSection;
+  | CustomHTMLSection
+  | TextImageSection
+  | GallerySection
+  | VideoSection
+  | TeamSection
+  | PricingTableSection
+  | FAQAccordionSection
+  | ContactFormSection
+  | MapSection
+  | CountdownSection
+  | LogoCarouselSection;
 
 export type HomepageSectionType = HomepageSection['type'];
 
@@ -142,6 +248,16 @@ const VALID_TYPES: HomepageSectionType[] = [
   'stats',
   'newsletter',
   'custom_html',
+  'text_image',
+  'gallery',
+  'video',
+  'team',
+  'pricing_table',
+  'faq_accordion',
+  'contact_form',
+  'map',
+  'countdown',
+  'logo_carousel',
 ];
 
 /** Validate and parse homepage sections from raw JSON. Returns empty array on invalid input. */

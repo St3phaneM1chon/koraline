@@ -21,6 +21,7 @@ const createPageSchema = z.object({
   heroImageUrl: z.string().max(2000).optional(),
   parentSlug: z.string().max(200).optional(),
   isPublished: z.boolean().optional(),
+  sections: z.any().optional(), // JSON array for page builder sections
 });
 
 const updatePageSchema = z.object({
@@ -35,6 +36,7 @@ const updatePageSchema = z.object({
   heroImageUrl: z.string().max(2000).optional(),
   parentSlug: z.string().max(200).optional(),
   isPublished: z.boolean().optional(),
+  sections: z.any().optional(), // JSON array for page builder sections
 });
 
 // GET /api/admin/content/pages - List all pages
@@ -76,7 +78,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
     if (!parsed.success) {
       return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
-    const { title, slug, content, excerpt, metaTitle, metaDescription, template, heroImageUrl, parentSlug, isPublished } = parsed.data;
+    const { title, slug, content, excerpt, metaTitle, metaDescription, template, heroImageUrl, parentSlug, isPublished, sections } = parsed.data;
 
     // BE-SEC-06: Sanitize content to prevent stored XSS
     const safeTitle = typeof title === 'string' ? stripHtml(title) : title;
@@ -107,6 +109,7 @@ export const POST = withAdminGuard(async (request: NextRequest, { session }) => 
         isPublished: isPublished || false,
         publishedAt: isPublished ? new Date() : null,
         createdBy: session.user.id,
+        ...(sections !== undefined ? { sections } : {}),
       },
     });
 
@@ -147,7 +150,7 @@ export const PUT = withAdminGuard(async (request: NextRequest, { session }) => {
     if (!parsed.success) {
       return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
-    const { id, title, slug, content, excerpt, metaTitle, metaDescription, template, heroImageUrl, parentSlug, isPublished } = parsed.data;
+    const { id, title, slug, content, excerpt, metaTitle, metaDescription, template, heroImageUrl, parentSlug, isPublished, sections } = parsed.data;
 
     const existing = await prisma.page.findUnique({ where: { id } });
     if (!existing) {
@@ -188,6 +191,7 @@ export const PUT = withAdminGuard(async (request: NextRequest, { session }) => {
         parentSlug: safeParentSlug2 !== undefined ? (safeParentSlug2 || null) : existing.parentSlug,
         isPublished: nowPublished,
         publishedAt: !wasPublished && nowPublished ? new Date() : existing.publishedAt,
+        ...(sections !== undefined ? { sections } : {}),
       },
     });
 
