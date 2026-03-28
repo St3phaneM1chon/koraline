@@ -2,6 +2,8 @@
  * Tenant Email Templates — Koraline SaaS Platform
  *
  * Emails sent to tenant owners for subscription lifecycle events.
+ * All templates use proper Attitudes VIP / Koraline branding with
+ * consistent header, footer, and #0066CC brand color.
  */
 
 interface TenantWelcomeData {
@@ -11,6 +13,30 @@ interface TenantWelcomeData {
   plan: string;
   planName: string;
   domainKoraline: string;
+  adminUrl: string;
+}
+
+interface TenantOwnerCredentialsData {
+  tenantName: string;
+  ownerName: string;
+  ownerEmail: string;
+  temporaryPassword: string;
+  resetPasswordUrl: string;
+  adminUrl: string;
+  planName: string;
+  domainKoraline: string;
+}
+
+interface TenantPasswordResetData {
+  ownerName: string;
+  resetUrl: string;
+  expiresInHours: number;
+  adminInitiated?: boolean;
+}
+
+interface TenantOnboardingReminderData {
+  tenantName: string;
+  ownerName: string;
   adminUrl: string;
 }
 
@@ -39,7 +65,17 @@ interface ModuleAccumulationData {
   adminUrl: string;
 }
 
-function tenantBaseTemplate(content: string): string {
+/** Escape user-supplied strings before inserting into HTML email templates. */
+function escapeHtmlTenant(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
+export function tenantBaseTemplate(content: string): string {
   return `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -230,6 +266,151 @@ export function tenantModuleAccumulationEmail(data: ModuleAccumulationData): { s
 
   return {
     subject: `Accumulation de données activée : ${data.moduleName}`,
+    html: tenantBaseTemplate(content),
+  };
+}
+
+/**
+ * Welcome email with credentials — sent when a super-admin creates a new tenant/client.
+ * Contains the temporary password + password reset link.
+ */
+export function tenantOwnerCredentialsEmail(data: TenantOwnerCredentialsData): { subject: string; html: string } {
+  const content = `
+    <h1>Bienvenue sur Koraline !</h1>
+    <p>Bonjour ${escapeHtmlTenant(data.ownerName)},</p>
+    <p>
+      Votre espace <strong>${escapeHtmlTenant(data.tenantName)}</strong> a &eacute;t&eacute; cr&eacute;&eacute;
+      sur la plateforme Koraline by Attitudes&nbsp;VIP. Tout est pr&ecirc;t pour que vous puissiez
+      d&eacute;marrer.
+    </p>
+
+    <div class="info-box">
+      <div class="info-row">
+        <span class="info-label">Plan</span>
+        <span class="info-value">${escapeHtmlTenant(data.planName)}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Adresse</span>
+        <span class="info-value">${escapeHtmlTenant(data.domainKoraline)}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Courriel</span>
+        <span class="info-value">${escapeHtmlTenant(data.ownerEmail)}</span>
+      </div>
+    </div>
+
+    <h2>Vos acc&egrave;s temporaires</h2>
+    <p>
+      Utilisez les identifiants ci-dessous pour votre premi&egrave;re connexion.
+      <strong>Nous vous recommandons fortement de d&eacute;finir un nouveau mot de passe imm&eacute;diatement.</strong>
+    </p>
+
+    <div style="background: #fff8f0; border: 1px solid #fcd9b6; border-radius: 12px; padding: 16px; margin: 16px 0;">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+        <tr>
+          <td style="padding: 6px 0; font-size: 14px; color: #6a6a6a;">Courriel</td>
+          <td style="padding: 6px 0; font-size: 14px; font-weight: 600; color: #1a1a1a;">${escapeHtmlTenant(data.ownerEmail)}</td>
+        </tr>
+        <tr>
+          <td style="padding: 6px 0; font-size: 14px; color: #6a6a6a;">Mot de passe temporaire</td>
+          <td style="padding: 6px 0; font-size: 14px; font-weight: 600; color: #1a1a1a; font-family: monospace; letter-spacing: 1px;">${escapeHtmlTenant(data.temporaryPassword)}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="btn-container">
+      <a href="${data.resetPasswordUrl}" class="btn">D&eacute;finir mon mot de passe</a>
+    </div>
+
+    <p style="text-align: center; font-size: 13px; color: #666; margin-top: 0;">
+      ou connectez-vous directement &agrave; votre tableau de bord&nbsp;:
+    </p>
+    <div class="btn-container" style="margin-top: 8px;">
+      <a href="${data.adminUrl}" style="display: inline-block; padding: 12px 24px; background: #003366; color: #ffffff; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 14px;">Acc&eacute;der &agrave; mon admin</a>
+    </div>
+
+    <h2>Prochaines &eacute;tapes</h2>
+    <p>1. <strong>D&eacute;finissez</strong> votre mot de passe personnel</p>
+    <p>2. <strong>Personnalisez</strong> votre boutique (logo, couleurs, branding)</p>
+    <p>3. <strong>Ajoutez</strong> vos produits et cat&eacute;gories</p>
+    <p>4. <strong>Configurez</strong> vos modes de paiement et livraison</p>
+    <p>5. <strong>Lancez</strong> votre boutique en ligne&nbsp;!</p>
+
+    <p style="font-size: 13px; color: #666; margin-top: 24px;">
+      Besoin d&rsquo;aide&nbsp;? Notre &eacute;quipe est disponible pour vous accompagner.
+      R&eacute;pondez simplement &agrave; cet email ou contactez-nous &agrave;
+      <a href="mailto:support@attitudes.vip" style="color: #0066CC;">support@attitudes.vip</a>.
+    </p>
+  `;
+
+  return {
+    subject: `Bienvenue sur Koraline — Vos accès pour ${data.tenantName}`,
+    html: tenantBaseTemplate(content),
+  };
+}
+
+/**
+ * Password reset email for tenant owners/users — Koraline branded.
+ * Used by admin-initiated password resets.
+ */
+export function tenantPasswordResetEmail(data: TenantPasswordResetData): { subject: string; html: string } {
+  const initiatorText = data.adminInitiated
+    ? 'Un administrateur a demand&eacute; la r&eacute;initialisation de votre mot de passe.'
+    : 'Vous avez demand&eacute; la r&eacute;initialisation de votre mot de passe.';
+
+  const content = `
+    <h1>R&eacute;initialisation du mot de passe</h1>
+    <p>Bonjour ${escapeHtmlTenant(data.ownerName)},</p>
+    <p>${initiatorText}</p>
+    <p>
+      Cliquez sur le bouton ci-dessous pour d&eacute;finir un nouveau mot de passe.
+      Ce lien est valide pendant <strong>${data.expiresInHours}&nbsp;heure${data.expiresInHours > 1 ? 's' : ''}</strong>.
+    </p>
+
+    <div class="btn-container">
+      <a href="${data.resetUrl}" class="btn">R&eacute;initialiser mon mot de passe</a>
+    </div>
+
+    <p style="font-size: 13px; color: #666;">
+      Si vous n&rsquo;avez pas demand&eacute; cette r&eacute;initialisation, vous pouvez ignorer cet
+      email en toute s&eacute;curit&eacute;. Votre mot de passe actuel restera inchang&eacute;.
+    </p>
+
+    <p style="font-size: 12px; color: #999; margin-top: 24px;">
+      Pour votre s&eacute;curit&eacute;, ne partagez jamais ce lien avec quiconque.
+    </p>
+  `;
+
+  return {
+    subject: 'Réinitialisation de votre mot de passe — Koraline',
+    html: tenantBaseTemplate(content),
+  };
+}
+
+/**
+ * Onboarding reminder wrapper — wraps step-specific content in the tenant base template.
+ */
+export function tenantOnboardingReminderEmail(
+  data: TenantOnboardingReminderData,
+  stepContent: string,
+  subject: string,
+): { subject: string; html: string } {
+  const content = `
+    <h1>${escapeHtmlTenant(subject)}</h1>
+    <p>Bonjour ${escapeHtmlTenant(data.ownerName)},</p>
+    ${stepContent}
+    <div class="btn-container">
+      <a href="${data.adminUrl}" class="btn">Acc&eacute;der &agrave; mon tableau de bord</a>
+    </div>
+    <p style="font-size: 13px; color: #666;">
+      Besoin d&rsquo;aide&nbsp;? R&eacute;pondez simplement &agrave; cet email ou contactez-nous &agrave;
+      <a href="mailto:support@attitudes.vip" style="color: #0066CC;">support@attitudes.vip</a>.
+    </p>
+    <p style="font-size: 12px; color: #999;">L&rsquo;&eacute;quipe Koraline by Attitudes&nbsp;VIP</p>
+  `;
+
+  return {
+    subject,
     html: tenantBaseTemplate(content),
   };
 }

@@ -26,6 +26,7 @@ import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { sendEmail } from '@/lib/email/email-service';
 import { computeOnboardingStatus } from '@/lib/tenant-onboarding';
+import { tenantOnboardingReminderEmail } from '@/lib/email/templates/tenant-emails';
 
 // CRON secret verification
 function verifyCronSecret(request: NextRequest): boolean {
@@ -53,7 +54,8 @@ interface ReminderStep {
   stepKey: string; // onboarding step to check
   eventType: string; // TenantEvent type to prevent re-send
   subject: string;
-  html: (tenantName: string, ownerName: string) => string;
+  /** Returns the step-specific body content (without greeting/wrapper — those come from the template). */
+  bodyContent: (tenantName: string) => string;
 }
 
 const REMINDER_STEPS: ReminderStep[] = [
@@ -61,60 +63,51 @@ const REMINDER_STEPS: ReminderStep[] = [
     dayOffset: 1,
     stepKey: 'branding',
     eventType: 'ONBOARDING_REMINDER_BRANDING',
-    subject: 'Bienvenue sur Koraline — Configurez votre branding',
-    html: (tenantName, ownerName) => `
-      <p>Bonjour ${ownerName},</p>
-      <p>Votre espace <strong>${tenantName}</strong> est pret! La premiere etape pour personnaliser votre boutique est de configurer votre branding.</p>
+    subject: 'Configurez votre branding',
+    bodyContent: (tenantName) => `
+      <p>Votre espace <strong>${tenantName}</strong> est pr&ecirc;t&nbsp;! La premi&egrave;re &eacute;tape pour personnaliser votre boutique est de configurer votre branding.</p>
       <ul>
-        <li>Telechargez votre logo</li>
+        <li>T&eacute;l&eacute;chargez votre logo</li>
         <li>Choisissez vos couleurs de marque</li>
-        <li>Selectionnez votre police</li>
+        <li>S&eacute;lectionnez votre police</li>
       </ul>
-      <p>Connectez-vous a votre tableau de bord pour commencer.</p>
-      <p>L'equipe Koraline</p>
     `,
   },
   {
     dayOffset: 3,
     stepKey: 'products',
     eventType: 'ONBOARDING_REMINDER_PRODUCTS',
-    subject: 'Ajoutez votre premier produit sur Koraline',
-    html: (tenantName, ownerName) => `
-      <p>Bonjour ${ownerName},</p>
-      <p>Votre boutique <strong>${tenantName}</strong> attend ses premiers produits!</p>
-      <p>Ajoutez votre premier produit en quelques clics depuis le menu Catalogue de votre tableau de bord.</p>
-      <p>L'equipe Koraline</p>
+    subject: 'Ajoutez votre premier produit',
+    bodyContent: (tenantName) => `
+      <p>Votre boutique <strong>${tenantName}</strong> attend ses premiers produits&nbsp;!</p>
+      <p>Ajoutez votre premier produit en quelques clics depuis le menu <strong>Catalogue</strong> de votre tableau de bord.</p>
     `,
   },
   {
     dayOffset: 7,
     stepKey: 'domain',
     eventType: 'ONBOARDING_REMINDER_DOMAIN',
-    subject: 'Configurez votre domaine personnalise',
-    html: (tenantName, ownerName) => `
-      <p>Bonjour ${ownerName},</p>
-      <p>Saviez-vous que vous pouvez utiliser votre propre nom de domaine pour <strong>${tenantName}</strong>?</p>
-      <p>Un domaine personnalise renforce la confiance de vos clients et ameliore votre image de marque.</p>
-      <p>Configurez-le dans Systeme > Parametres > Domaine.</p>
-      <p>L'equipe Koraline</p>
+    subject: 'Configurez votre domaine personnalis\u00e9',
+    bodyContent: (tenantName) => `
+      <p>Saviez-vous que vous pouvez utiliser votre propre nom de domaine pour <strong>${tenantName}</strong>&nbsp;?</p>
+      <p>Un domaine personnalis&eacute; renforce la confiance de vos clients et am&eacute;liore votre image de marque.</p>
+      <p>Configurez-le dans <strong>Syst&egrave;me &gt; Param&egrave;tres &gt; Domaine</strong>.</p>
     `,
   },
   {
     dayOffset: 14,
     stepKey: 'firstOrder',
     eventType: 'ONBOARDING_REMINDER_HELP',
-    subject: 'Besoin d\'aide pour lancer votre boutique?',
-    html: (tenantName, ownerName) => `
-      <p>Bonjour ${ownerName},</p>
-      <p>Nous avons remarque que <strong>${tenantName}</strong> n'a pas encore recu sa premiere commande.</p>
-      <p>C'est normal — le lancement prend du temps. Voici quelques conseils:</p>
+    subject: 'Besoin d\u0027aide pour lancer votre boutique\u00a0?',
+    bodyContent: (tenantName) => `
+      <p>Nous avons remarqu&eacute; que <strong>${tenantName}</strong> n&rsquo;a pas encore re&ccedil;u sa premi&egrave;re commande.</p>
+      <p>C&rsquo;est normal &mdash; le lancement prend du temps. Voici quelques conseils&nbsp;:</p>
       <ul>
-        <li>Partagez votre boutique sur les reseaux sociaux</li>
-        <li>Envoyez une campagne email a vos contacts existants</li>
+        <li>Partagez votre boutique sur les r&eacute;seaux sociaux</li>
+        <li>Envoyez une campagne email &agrave; vos contacts existants</li>
         <li>Utilisez des codes promo pour les premiers clients</li>
       </ul>
-      <p>Besoin d'accompagnement? Repondez a cet email et nous planifierons une demo personnalisee.</p>
-      <p>L'equipe Koraline</p>
+      <p>Besoin d&rsquo;accompagnement&nbsp;? R&eacute;pondez &agrave; cet email et nous planifierons une d&eacute;mo personnalis&eacute;e.</p>
     `,
   },
 ];
@@ -189,12 +182,22 @@ export async function POST(request: NextRequest) {
           continue;
         }
 
-        // Send reminder email
+        // Send reminder email with Koraline/Attitudes VIP branded template
         try {
+          const adminUrl = `https://${tenant.name}.koraline.app/admin`;
+          const reminderEmail = tenantOnboardingReminderEmail(
+            {
+              tenantName: tenant.name,
+              ownerName: owner.name || 'cher client',
+              adminUrl,
+            },
+            step.bodyContent(tenant.name),
+            step.subject,
+          );
           await sendEmail({
             to: { email: owner.email, name: owner.name || undefined },
-            subject: step.subject,
-            html: step.html(tenant.name, owner.name || 'cher client'),
+            subject: reminderEmail.subject,
+            html: reminderEmail.html,
             emailType: 'transactional',
           });
 

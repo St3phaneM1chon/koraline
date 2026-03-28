@@ -5,6 +5,7 @@ import { withAdminGuard } from '@/lib/admin-api-guard';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import crypto from 'crypto';
+import { tenantPasswordResetEmail } from '@/lib/email/templates/tenant-emails';
 
 /**
  * POST /api/admin/users/[id]/reset-password
@@ -50,19 +51,16 @@ export const POST = withAdminGuard(async (_request: NextRequest, { params, sessi
 
     try {
       const { sendEmail } = await import('@/lib/email/email-service');
+      const resetEmail = tenantPasswordResetEmail({
+        ownerName: user.name || 'Utilisateur',
+        resetUrl,
+        expiresInHours: 24,
+        adminInitiated: true,
+      });
       await sendEmail({
         to: { email: user.email, name: user.name || undefined },
-        subject: 'Password Reset - Attitudes VIP',
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2>Password Reset</h2>
-            <p>An administrator has requested a password reset for your account.</p>
-            <a href="${resetUrl}" style="display: inline-block; background: #4f46e5; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; margin: 16px 0;">
-              Reset Password
-            </a>
-            <p style="color: #666; font-size: 14px;">This link expires in 24 hours. If you did not expect this, please ignore this email.</p>
-          </div>
-        `,
+        subject: resetEmail.subject,
+        html: resetEmail.html,
         emailType: 'transactional',
       });
     } catch (emailErr) {

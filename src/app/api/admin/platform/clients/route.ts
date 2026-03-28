@@ -16,6 +16,7 @@ import { hashSync } from 'bcryptjs';
 import { randomBytes } from 'crypto';
 import { sendEmail } from '@/lib/email';
 import { KORALINE_PLANS, KORALINE_MODULES, type KoralinePlan, type KoralineModule } from '@/lib/stripe-constants';
+import { tenantOwnerCredentialsEmail } from '@/lib/email/templates/tenant-emails';
 import { getStripeAttitudes, getStripePriceId } from '@/lib/stripe-attitudes';
 
 // ---------------------------------------------------------------------------
@@ -381,16 +382,29 @@ export const POST = withAdminGuard(async (request, { session }) => {
       });
     }
 
-    // Send welcome email (non-blocking, track status)
+    // Send welcome email with credentials (non-blocking, track status)
     const baseUrl = process.env.NEXTAUTH_URL || `https://${data.slug}.koraline.app`;
     const resetPasswordUrl = `${baseUrl}/auth/reset-password?token=${resetToken}`;
+    const adminUrl = `${baseUrl}/admin`;
+    const planInfo2 = KORALINE_PLANS[data.plan];
+
+    const welcomeEmail = tenantOwnerCredentialsEmail({
+      tenantName: tenant.name,
+      ownerName: data.ownerName,
+      ownerEmail: ownerUser.email,
+      temporaryPassword,
+      resetPasswordUrl,
+      adminUrl,
+      planName: planInfo2?.name || data.plan,
+      domainKoraline: `${data.slug}.koraline.app`,
+    });
 
     let emailSent = false;
     try {
       await sendEmail({
         to: { email: ownerUser.email, name: ownerUser.name || undefined },
-        subject: 'Bienvenue sur Koraline — Votre compte est pret',
-        html: `<p>Votre espace ${tenant.name} a ete cree. Connectez-vous sur ${data.slug}.koraline.app avec votre email et le mot de passe temporaire ci-dessous, puis changez-le immediatement.</p><p>Mot de passe: <code>${temporaryPassword}</code></p><p><a href="${resetPasswordUrl}">Definir mon mot de passe</a></p>`,
+        subject: welcomeEmail.subject,
+        html: welcomeEmail.html,
         emailType: 'transactional',
       });
       emailSent = true;
