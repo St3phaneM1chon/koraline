@@ -7,6 +7,7 @@ export const dynamic = 'force-dynamic';
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { checkRateLimit } from '@/lib/rate-limiter';
@@ -127,7 +128,7 @@ function validateSubmission(
 // ── GET /api/forms/[slug] ────────────────────────────────────────
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   context: { params: Promise<{ slug: string }> }
 ) {
   try {
@@ -155,8 +156,8 @@ export async function GET(
 
     // Strip sensitive settings from public response
     const publicSettings = {
-      successMessage: (form.settings as Record<string, unknown>)?.successMessage,
-      redirectUrl: (form.settings as Record<string, unknown>)?.redirectUrl,
+      successMessage: (form.settings as unknown as Record<string, unknown>)?.successMessage,
+      redirectUrl: (form.settings as unknown as Record<string, unknown>)?.redirectUrl,
     };
 
     return NextResponse.json({
@@ -219,7 +220,7 @@ export async function POST(
     }
 
     // Validate against field definitions
-    const fieldDefs = (form.fields as FieldDef[]) || [];
+    const fieldDefs = (form.fields as unknown as FieldDef[]) || [];
     const { valid, errors } = validateSubmission(fieldDefs, submittedData);
     if (!valid) {
       return NextResponse.json({ error: 'Validation failed', fieldErrors: errors }, { status: 400 });
@@ -242,7 +243,7 @@ export async function POST(
         data: {
           formId: form.id,
           tenantId: form.tenantId,
-          data: cleanData,
+          data: cleanData as unknown as Prisma.InputJsonValue,
           ip: ip || undefined,
           userAgent,
         },
@@ -254,7 +255,7 @@ export async function POST(
       }),
     ]);
 
-    const settings = form.settings as Record<string, unknown>;
+    const settings = form.settings as unknown as Record<string, unknown>;
     const successMessage = (settings?.successMessage as string) || 'Thank you for your submission!';
     const redirectUrl = (settings?.redirectUrl as string) || undefined;
 

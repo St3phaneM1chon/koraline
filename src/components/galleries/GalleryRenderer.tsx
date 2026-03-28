@@ -77,7 +77,7 @@ export default function GalleryRenderer({
   const [loading, setLoading] = useState(!initialGallery);
   const [error, setError] = useState<string | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [, setCarouselIndex] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const finalLayout = overrideLayout || (gallery?.layout as 'grid' | 'masonry' | 'carousel' | 'lightbox') || 'grid';
