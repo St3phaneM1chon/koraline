@@ -1491,7 +1491,7 @@ export default function EmailsPage() {
                 <div className="space-y-3">
                   <h2 className="text-lg font-semibold text-[var(--k-text-primary)]">{selectedSentEmail.subject}</h2>
                   <div className="flex items-center gap-4 text-sm text-[var(--k-text-secondary)] flex-wrap">
-                    <span><strong>{t('admin.emailConfig.from')}:</strong> {emailSettings['email.senderEmail'] || 'noreply@biocyclepeptides.com'}</span>
+                    <span><strong>{t('admin.emailConfig.from')}:</strong> {emailSettings['email.senderEmail'] || 'noreply@attitudes.vip'}</span>
                     <span><strong>{t('admin.emailConfig.recipient')}:</strong> {selectedSentEmail.to}</span>
                     <span>{new Date(selectedSentEmail.sentAt).toLocaleString(locale)}</span>
                     <span className={`px-2 py-0.5 text-xs rounded-full font-medium ${
@@ -1628,13 +1628,13 @@ export default function EmailsPage() {
                 </select>
               </FormField>
               <FormField label={t('admin.emailConfig.senderEmail')} hint={t('admin.emailConfig.senderEmailHint')}>
-                <Input type="email" defaultValue={emailSettings['email.senderEmail'] || 'noreply@biocyclepeptides.com'} data-field="senderEmail" />
+                <Input type="email" defaultValue={emailSettings['email.senderEmail'] || 'noreply@attitudes.vip'} data-field="senderEmail" />
               </FormField>
               <FormField label={t('admin.emailConfig.senderName')}>
-                <Input type="text" defaultValue={emailSettings['email.senderName'] || 'BioCycle Peptides'} data-field="senderName" />
+                <Input type="text" defaultValue={emailSettings['email.senderName'] || 'Attitudes VIP'} data-field="senderName" />
               </FormField>
               <FormField label={t('admin.emailConfig.replyEmail')} hint={t('admin.emailConfig.replyEmailHint')}>
-                <Input type="email" defaultValue={emailSettings['email.replyEmail'] || 'support@biocyclepeptides.com'} data-field="replyEmail" />
+                <Input type="email" defaultValue={emailSettings['email.replyEmail'] || 'support@attitudes.vip'} data-field="replyEmail" />
               </FormField>
             </div>
           </div>
@@ -1846,13 +1846,13 @@ export default function EmailsPage() {
               <Input value={accountForm.name} onChange={(e) => setAccountForm({ ...accountForm, name: e.target.value })} placeholder="Support, Marketing..." />
             </FormField>
             <FormField label="Adresse email">
-              <Input type="email" value={accountForm.email} onChange={(e) => setAccountForm({ ...accountForm, email: e.target.value })} placeholder="support@biocyclepeptides.com" />
+              <Input type="email" value={accountForm.email} onChange={(e) => setAccountForm({ ...accountForm, email: e.target.value })} placeholder="support@attitudes.vip" />
             </FormField>
             <FormField label="Nom d'affichage">
-              <Input value={accountForm.displayName} onChange={(e) => setAccountForm({ ...accountForm, displayName: e.target.value })} placeholder="BioCycle Support" />
+              <Input value={accountForm.displayName} onChange={(e) => setAccountForm({ ...accountForm, displayName: e.target.value })} placeholder="Service client" />
             </FormField>
             <FormField label="Répondre à (Reply-To)">
-              <Input type="email" value={accountForm.replyTo} onChange={(e) => setAccountForm({ ...accountForm, replyTo: e.target.value })} placeholder="reply@biocyclepeptides.com" />
+              <Input type="email" value={accountForm.replyTo} onChange={(e) => setAccountForm({ ...accountForm, replyTo: e.target.value })} placeholder="reply@attitudes.vip" />
             </FormField>
           </div>
 
@@ -1926,7 +1926,7 @@ export default function EmailsPage() {
               value={accountForm.signature}
               onChange={(e) => setAccountForm({ ...accountForm, signature: e.target.value })}
               rows={4}
-              placeholder="<p>Cordialement,<br/>L'équipe BioCycle Peptides</p>"
+              placeholder="<p>Cordialement,<br/>L'équipe Attitudes VIP</p>"
             />
           </FormField>
         </div>

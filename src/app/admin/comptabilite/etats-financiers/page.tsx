@@ -327,7 +327,7 @@ export default function EtatsFinanciersPage() {
         <SectionCard
           title={t('admin.financialStatements.incomeStatementTitle')}
           theme={theme}
-          headerAction={<span className="text-sm text-slate-500">BioCycle Peptides Inc. - {periodLabel}</span>}
+          headerAction={<span className="text-sm text-slate-500">{periodLabel}</span>}
           noPadding
         >
           {totalRevenue === 0 && totalCogs === 0 && totalExpenses === 0 ? (
@@ -530,7 +530,7 @@ export default function EtatsFinanciersPage() {
         <SectionCard
           title={t('admin.financialStatements.cashFlowTitle')}
           theme={theme}
-          headerAction={<span className="text-sm text-slate-500">BioCycle Peptides Inc. - {periodLabel}</span>}
+          headerAction={<span className="text-sm text-slate-500">{periodLabel}</span>}
           noPadding
         >
           <div className="overflow-x-auto">

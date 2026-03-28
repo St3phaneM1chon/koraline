@@ -652,7 +652,7 @@ export default function TimeTrackingPage() {
     <div className="space-y-6">
       <PageHeader
         title="Suivi du temps"
-        subtitle="Feuilles de temps, minuteur et rapports - BioCycle Peptides"
+        subtitle="Feuilles de temps, minuteur et rapports"
         theme={theme}
         actions={
           <div className="flex gap-2">

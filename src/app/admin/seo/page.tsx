@@ -57,8 +57,8 @@ export default function SEOPage() {
   const [aiLoading, setAiLoading] = useState<string | null>(null);
 
   const [globalSettings, setGlobalSettings] = useState({
-    siteName: 'BioCycle Peptides',
-    siteUrl: 'https://biocycle.ca',
+    siteName: '',
+    siteUrl: '',
     defaultOgImage: '/og-image.jpg',
     googleAnalyticsId: '',
     googleTagManagerId: '',
@@ -199,7 +199,7 @@ export default function SEOPage() {
     setAiLoading(productId);
     // Simulate AI suggestion (replace with actual API call when available)
     await new Promise(resolve => setTimeout(resolve, 800));
-    const suggestion = `${productName} - Peptide de recherche de haute qualité par BioCycle Peptides. Certificat d'analyse inclus. Livraison rapide au Canada.`.substring(0, 160);
+    const suggestion = `${productName} - Produit de haute qualité. Livraison rapide au Canada.`.substring(0, 160);
     setProductMetaDesc(suggestion);
     setAiLoading(null);
     toast.success('Suggestion IA générée');

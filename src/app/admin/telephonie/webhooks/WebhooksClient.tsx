@@ -218,7 +218,7 @@ export default function WebhooksClient({
         const testPayload = {
           event: 'test.ping',
           timestamp: new Date().toISOString(),
-          data: { message: 'Test webhook delivery from BioCycle Peptides VoIP', webhookId: wh.id },
+          data: { message: 'VoIP Test webhook delivery', webhookId: wh.id },
           webhookId: wh.id,
         };
 

@@ -91,7 +91,7 @@ export function parseBlocksFromTextContent(textContent: string | null | undefine
 }
 
 const DEFAULT_BLOCKS: TemplateBlock[] = [
-  { id: '1', type: 'header', content: { text: 'BioCycle Peptides', align: 'center' } },
+  { id: '1', type: 'header', content: { text: 'Votre entreprise', align: 'center' } },
   { id: '2', type: 'text', content: { text: 'Bonjour {{firstName}},\n\nDecouvrez nos dernieres nouveautes!', align: 'left' } },
   { id: '3', type: 'cta', content: { text: 'Voir les produits', url: 'https://attitudes.vip/products', color: '#059669' } },
 ];
@@ -289,7 +289,7 @@ export default function TemplateBuilder({ templateId, initialBlocks, onSaved }: 
             type="text"
             value={templateSubject}
             onChange={e => setTemplateSubject(e.target.value)}
-            placeholder="ex: Bienvenue chez BioCycle Peptides!"
+            placeholder="ex: Bienvenue chez nous!"
             className="w-full px-3 py-2 text-sm border border-[var(--k-border-subtle)] rounded-lg focus:ring-1 focus:ring-indigo-400 focus:border-indigo-400"
           />
         </div>

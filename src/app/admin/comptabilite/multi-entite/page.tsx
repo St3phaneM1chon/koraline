@@ -1261,7 +1261,7 @@ export default function MultiEntityPage() {
               <Input
                 value={entityForm.name}
                 onChange={(e) => setEntityForm((f) => ({ ...f, name: e.target.value }))}
-                placeholder="BioCycle Peptides Inc."
+                placeholder="Votre entreprise"
               />
             </FormField>
             <FormField label={t('admin.multiEntity.code')} required>

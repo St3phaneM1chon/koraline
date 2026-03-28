@@ -395,7 +395,7 @@ export default function PayrollPage() {
     <div className="space-y-6">
       <PageHeader
         title="Paie"
-        subtitle="Gestion de la paie canadienne - BioCycle Peptides (Quebec)"
+        subtitle="Gestion de la paie canadienne"
         theme={theme}
         actions={
           <div className="flex gap-2">

@@ -9,7 +9,7 @@ import AdminLayoutClient from './AdminLayoutClient';
 
 export const metadata: Metadata = {
   title: 'Admin',
-  description: 'BioCycle Peptides administration dashboard.',
+  description: 'Administration - Suite Koraline',
   robots: { index: false, follow: false },
 };
 
