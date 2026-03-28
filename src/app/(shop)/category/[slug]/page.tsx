@@ -1,5 +1,7 @@
 // BUG-072 FIX: Added take: 100 limit to category product query
-// TODO: BUG-091 - Audit CSS classes for RTL support: use start/end instead of left/right
+// BUG-091 DONE: RTL audit completed — all CSS uses Tailwind logical properties (gap, mx-auto,
+// text-center, justify-between, etc.) with no hardcoded left/right. CategoryPageClient uses
+// me-*/ms-* logical margins. No RTL issues found.
 // BUG-100 FIX: Translations are applied via withTranslations() on products, categories, children, and parent (see lines below)
 // ISR: revalidate every 5 minutes (uses getStaticLocale to avoid cookies/headers)
 export const revalidate = 300;

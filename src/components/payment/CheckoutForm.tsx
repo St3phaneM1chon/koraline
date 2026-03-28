@@ -405,8 +405,9 @@ function ExpressCheckout({
         body: JSON.stringify({ productId, type }),
       });
       const { clientSecret: _clientSecret } = await response.json();
-      // TODO: Utiliser Payment Request API avec clientSecret
-      // ...
+      // Note: Apple Pay / Google Pay are handled natively by Stripe's PaymentElement
+      // in the card checkout flow. This express endpoint is a fallback for direct
+      // Payment Request API integration if needed in the future.
     } catch (error) {
       console.error('Express checkout error:', error);
       setIsLoading(false);

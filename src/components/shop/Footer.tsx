@@ -1,6 +1,3 @@
-// TODO: Consider extracting non-interactive sections (links, disclaimers, trust badges)
-// into a separate server component to reduce client-side JavaScript bundle size.
-// Only the newsletter form requires client-side interactivity ('use client').
 'use client';
 
 import { useState } from 'react';

@@ -17,8 +17,17 @@
  *
  * Requires: CREATE EXTENSION IF NOT EXISTS pg_trgm;
  *
- * TODO: Consider migrating to PostgreSQL full-text search (tsvector/tsquery)
- * for relevance-ranked results instead of simple ILIKE matching.
+ * FTS MIGRATION PLAN (PostgreSQL tsvector/tsquery):
+ * Phase 1: Add tsvector columns with GIN indexes to JournalEntry, CustomerInvoice,
+ *   SupplierInvoice, BankTransaction. Use generated columns or triggers to keep
+ *   tsvector in sync with source text fields (description, entryNumber, customerName, etc.).
+ * Phase 2: Create a Prisma raw-query search function using ts_query + ts_rank for
+ *   relevance-ranked results, replacing the current ILIKE `contains` approach.
+ * Phase 3: Add language-aware search (french/english) via regconfig parameter.
+ * Phase 4: Consider pg_trgm trigram indexes (already noted above) as a complement
+ *   for fuzzy/partial matching that tsvector does not cover.
+ * Prerequisite: CREATE EXTENSION IF NOT EXISTS pg_trgm; (already noted above)
+ * Effort estimate: ~2-3 days, requires Prisma $queryRaw for tsvector queries.
  */
 
 import { db as prisma } from '@/lib/db';
