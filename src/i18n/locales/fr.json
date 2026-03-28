@@ -11720,10 +11720,21 @@
     "footer": "Montreal, QC, Canada"
   },
   "faq": {
-    "title": "Questions fréquemment posées",
-    "subtitle": "Trouvez des réponses aux questions courantes sur nos produits, la livraison et nos politiques.",
+    "title": "Foire aux questions",
+    "subtitle": "Trouvez les réponses à vos questions sur la Suite Koraline, ses fonctionnalités et le support technique.",
     "searchPlaceholder": "Rechercher des questions...",
     "categories": "Catégories",
+    "category": {
+      "general": "Général",
+      "technique": "Technique",
+      "formation": "Formation / LMS",
+      "aboutPeptides": "À propos",
+      "reconstitution": "Reconstitution et stockage",
+      "ordering": "Commande et paiement",
+      "shipping": "Expédition et livraison",
+      "returns": "Retours et remboursements",
+      "quality": "Qualité et sécurité"
+    },
     "aboutPeptides": "À propos",
     "reconstitutionStorage": "Reconstitution et stockage",
     "orderingPayment": "Commande et paiement",
@@ -11731,7 +11742,7 @@
     "returnsRefunds": "Retours et remboursements",
     "qualitySafety": "Qualité et sécurité",
     "stillHaveQuestions": "Vous avez encore des questions?",
-    "contactUs": "Contactez-nous",
+    "contactUs": "Notre équipe est là pour vous aider avec toutes vos questions sur Koraline.",
     "calculatorButton": "Essayer le calculateur",
     "calculatorDesc": "Calculez les dosages précis de produits avec notre calculateur d'injection",
     "calculatorTitle": "Calculateur d'injection de produits",

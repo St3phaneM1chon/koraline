@@ -11727,8 +11727,19 @@
     "calculatorDesc": "Calculate precise peptide dosages with our injection calculator",
     "calculatorTitle": "Peptide Injection Calculator",
     "categories": "Categories",
+    "category": {
+      "general": "General",
+      "technique": "Technical",
+      "formation": "Training / LMS",
+      "aboutPeptides": "About Peptides",
+      "reconstitution": "Reconstitution & Storage",
+      "ordering": "Ordering & Payment",
+      "shipping": "Shipping & Delivery",
+      "returns": "Returns & Refunds",
+      "quality": "Quality & Safety"
+    },
     "contactButton": "Contact Support",
-    "contactUs": "Contact Us",
+    "contactUs": "Our team is here to help with any questions about Koraline.",
     "empty": "No questions found",
     "loading": "Loading...",
     "orderingPayment": "Ordering & Payment",
@@ -11738,7 +11749,7 @@
     "searchPlaceholder": "Search questions...",
     "shippingDelivery": "Shipping & Delivery",
     "stillHaveQuestions": "Still have questions?",
-    "subtitle": "Find answers to common questions about our products, shipping, and policies.",
+    "subtitle": "Find answers to common questions about the Koraline Suite, its features, and technical support.",
     "title": "Frequently Asked Questions"
   },
   "flashSale": {

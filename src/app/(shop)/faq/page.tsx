@@ -10,16 +10,16 @@ import { prisma } from '@/lib/db';
 const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Attitudes VIP';
 
 export const metadata: Metadata = {
-  title: 'Frequently Asked Questions',
+  title: 'Foire aux questions',
   description:
-    `Find answers to common questions about research peptides, ordering, shipping, reconstitution, and quality at ${siteName}.`,
+    `Trouvez les réponses à vos questions sur la Suite Koraline, les fonctionnalités, la tarification, la formation en ligne et le support technique chez ${siteName}.`,
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/faq`,
   },
   openGraph: {
     title: `FAQ - ${siteName}`,
     description:
-      'Find answers to common questions about research peptides, ordering, shipping, and quality.',
+      'Réponses à vos questions sur la Suite Koraline : gestion commerciale, comptabilité, CRM, formation en ligne et plus.',
     url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/faq`,
     type: 'website',
     images: [
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: `FAQ - ${siteName}`,
     description:
-      'Find answers to common questions about research peptides, ordering, shipping, and quality.',
+      'Réponses à vos questions sur la Suite Koraline : gestion commerciale, comptabilité, CRM, formation en ligne et plus.',
     images: [`${process.env.NEXT_PUBLIC_APP_URL || 'https://attitudes.vip'}/api/og?title=FAQ&type=page`],
   },
 };

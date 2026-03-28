@@ -6,14 +6,15 @@ import { useI18n } from '@/i18n/client';
 
 // Map DB category slugs to display names and icons
 const categoryMeta: Record<string, { name: string; nameKey: string; icon: string }> = {
+  'general': { name: 'General', nameKey: 'faq.category.general', icon: '\u2753' },
+  'technique': { name: 'Technical', nameKey: 'faq.category.technique', icon: '\u2699\uFE0F' },
+  'formation': { name: 'Training / LMS', nameKey: 'faq.category.formation', icon: '\uD83C\uDF93' },
   'about-peptides': { name: 'About Peptides', nameKey: 'faq.category.aboutPeptides', icon: '\uD83D\uDD2C' },
   'reconstitution': { name: 'Reconstitution & Storage', nameKey: 'faq.category.reconstitution', icon: '\uD83D\uDC89' },
   'ordering': { name: 'Ordering & Payment', nameKey: 'faq.category.ordering', icon: '\uD83D\uDED2' },
   'shipping': { name: 'Shipping & Delivery', nameKey: 'faq.category.shipping', icon: '\uD83D\uDE9A' },
   'returns': { name: 'Returns & Refunds', nameKey: 'faq.category.returns', icon: '\u21A9\uFE0F' },
   'quality': { name: 'Quality & Safety', nameKey: 'faq.category.quality', icon: '\u2705' },
-  // Fallback for general or any other category
-  'general': { name: 'General', nameKey: 'faq.category.general', icon: '\u2753' },
 };
 
 function getCategoryMeta(category: string) {
