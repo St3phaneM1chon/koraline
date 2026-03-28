@@ -368,10 +368,23 @@ export async function middleware(request: NextRequest) {
   // --- Performance optimization: skip getToken() for public routes ---
   // These routes never need authentication checks. By returning early we avoid
   // the cost of JWT decoding (crypto) on every public page load.
+  // IMPORTANT: This list must cover ALL paths in the (public) route group so they
+  // are served correctly on every tenant domain (including super-admin attitudes.vip).
+  // Missing entries here cause those pages to fall through to the auth code path,
+  // which can produce 404s or unnecessary latency.
   const publicPathPrefixes = [
+    // Original entries
     '/shop', '/products', '/blog', '/about', '/contact',
     '/legal', '/faq', '/search', '/community',
     '/platform', // SaaS landing pages (served via rewrite for attitudes.vip)
+    // All (public) route group pages — keep in sync with src/app/(public)/
+    '/a-propos', '/accessibilite', '/actualites', '/aide',
+    '/carrieres', '/catalogue', '/changelog', '/clients',
+    '/cours', '/demo', '/docs', '/mentions-legales',
+    '/onboarding', '/p', '/plan-du-site', '/presse',
+    '/privacy', '/ressources', '/securite', '/signup',
+    '/solutions', '/status', '/support', '/tarifs',
+    '/terms', '/verify',
   ];
   const isPublicPage =
     pathname === '/' ||
