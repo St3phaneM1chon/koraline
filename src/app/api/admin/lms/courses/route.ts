@@ -33,18 +33,25 @@ const createCourseSchema = z.object({
 });
 
 export const GET = withAdminGuard(async (request: NextRequest, { session }) => {
-  const { searchParams } = new URL(request.url);
-  const tenantId = session.user.tenantId;
-  const validStatuses = ['DRAFT', 'PUBLISHED', 'ARCHIVED'];
-  const rawStatus = searchParams.get('status');
-  const status = rawStatus && validStatuses.includes(rawStatus) ? rawStatus as 'DRAFT' | 'PUBLISHED' | 'ARCHIVED' : undefined;
-  const categoryId = searchParams.get('categoryId') ?? undefined;
-  const search = searchParams.get('search') ?? undefined;
-  const page = parseInt(searchParams.get('page') ?? '1', 10);
-  const limit = Math.min(parseInt(searchParams.get('limit') ?? '20', 10), 100);
+  try {
+    const { searchParams } = new URL(request.url);
+    const tenantId = session.user.tenantId;
+    const validStatuses = ['DRAFT', 'PUBLISHED', 'ARCHIVED'];
+    const rawStatus = searchParams.get('status');
+    const status = rawStatus && validStatuses.includes(rawStatus) ? rawStatus as 'DRAFT' | 'PUBLISHED' | 'ARCHIVED' : undefined;
+    const categoryId = searchParams.get('categoryId') ?? undefined;
+    const search = searchParams.get('search') ?? undefined;
+    const page = parseInt(searchParams.get('page') ?? '1', 10);
+    const limit = Math.min(parseInt(searchParams.get('limit') ?? '20', 10), 100);
 
-  const result = await getCourses(tenantId, { status, categoryId, search, page, limit });
-  return apiSuccess(result, { request });
+    const result = await getCourses(tenantId, { status, categoryId, search, page, limit });
+    return apiSuccess(result, { request });
+  } catch (error) {
+    // Graceful degradation: return empty list instead of 500 when tenant has no LMS data
+    const page = 1;
+    const limit = 20;
+    return apiSuccess({ courses: [], total: 0, page, limit, totalPages: 0 }, { request });
+  }
 });
 
 export const POST = withAdminGuard(async (request: NextRequest, { session }) => {

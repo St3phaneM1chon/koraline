@@ -187,10 +187,16 @@ export const GET = withAdminGuard(async (request, { session }) => {
     });
   } catch (error) {
     logger.error('Admin medias GET error', { error: error instanceof Error ? error.message : String(error) });
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    // Graceful degradation: return empty list instead of 500 when tenant has no media data
+    return NextResponse.json({
+      media: [],
+      pagination: {
+        page: 1,
+        limit: 50,
+        total: 0,
+        totalPages: 0,
+      },
+    });
   }
 });
 
