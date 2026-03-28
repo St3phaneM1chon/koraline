@@ -25,6 +25,9 @@ export interface ContentPageData {
   metaDescription: string | null;
   updatedAt: Date;
   template: string;
+  sections: unknown;
+  heroImageUrl: string | null;
+  parentSlug: string | null;
 }
 
 export interface SiteContactInfo {
@@ -62,6 +65,9 @@ export const getContentPage = cache(async (slug: string): Promise<ContentPageDat
         metaDescription: true,
         updatedAt: true,
         template: true,
+        sections: true,
+        heroImageUrl: true,
+        parentSlug: true,
       },
     });
     return page;
