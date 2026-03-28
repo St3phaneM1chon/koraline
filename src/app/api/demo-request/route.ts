@@ -9,6 +9,11 @@ import { logger } from '@/lib/logger';
 import { rateLimitMiddleware } from '@/lib/rate-limiter';
 import { getClientIpFromRequest } from '@/lib/admin-audit';
 
+const VALID_MODULES = [
+  'commerce', 'crm', 'accounting', 'marketing',
+  'lms', 'voip', 'loyalty', 'media',
+] as const;
+
 const demoRequestSchema = z.object({
   firstName: z.string().min(1).max(100).trim(),
   lastName: z.string().min(1).max(100).trim(),
@@ -16,6 +21,7 @@ const demoRequestSchema = z.object({
   company: z.string().max(200).optional(),
   phone: z.string().max(30).optional(),
   employees: z.string().max(50).optional(),
+  modules: z.array(z.enum(VALID_MODULES)).max(8).optional().default([]),
   message: z.string().max(2000).optional(),
 });
 
@@ -36,11 +42,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { email, company } = parsed.data;
+    const { email, company, modules } = parsed.data;
 
     logger.info('Demo request received', {
       company: company || 'N/A',
       email: email.substring(0, 3) + '***@' + email.split('@')[1],
+      modules: modules && modules.length > 0 ? modules.join(', ') : 'none',
       timestamp: new Date().toISOString(),
     });
 
