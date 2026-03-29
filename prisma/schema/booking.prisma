@@ -58,6 +58,9 @@ model Booking {
   notes         String?
   paymentStatus String?  // pending, paid, refunded
   paymentAmount Decimal? @db.Decimal(10, 2)
+  stripePaymentIntentId  String?  @unique
+  stripeCheckoutSessionId String?
+  journalEntryId         String?  // FK to accounting JournalEntry
   reminderSent  Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -102,15 +105,18 @@ model Event {
 }
 
 model EventRegistration {
-  id        String   @id @default(cuid())
-  tenantId  String?
-  eventId   String
-  name      String
-  email     String
-  phone     String?
-  status    String   @default("registered") // registered, attended, cancelled
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String   @id @default(cuid())
+  tenantId      String?
+  eventId       String
+  name          String
+  email         String
+  phone         String?
+  status        String   @default("registered") // registered, attended, cancelled
+  paymentStatus String?  // pending, paid, refunded (for paid events)
+  stripePaymentIntentId String? @unique
+  amountPaid    Decimal? @db.Decimal(10, 2)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
 

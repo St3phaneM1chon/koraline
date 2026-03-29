@@ -928,6 +928,7 @@ model AiTutorSession {
 /// Message dans une session de tutorat IA
 model AiTutorMessage {
   id        String         @id @default(cuid())
+  tenantId  String
   sessionId String
   session   AiTutorSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   role      String // "user", "assistant", "system"
@@ -944,6 +945,7 @@ model AiTutorMessage {
 
   createdAt DateTime @default(now())
 
+  @@index([tenantId, sessionId, createdAt])
   @@index([sessionId, createdAt])
 }
 

@@ -1492,6 +1492,7 @@ REGLES:
       // Save user message
       await prisma.aiTutorMessage.create({
         data: {
+          tenantId,
           sessionId: session.id,
           role: 'user',
           content: message,
@@ -1501,6 +1502,7 @@ REGLES:
       // Save assistant response with enriched metadata
       await prisma.aiTutorMessage.create({
         data: {
+          tenantId,
           sessionId: session.id,
           role: 'assistant',
           content: claudeResponse.content,
