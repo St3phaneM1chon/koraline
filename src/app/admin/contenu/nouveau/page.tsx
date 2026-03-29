@@ -103,12 +103,16 @@ export default function NewPageTemplatePicker() {
             {/* AI Prompt Suggestions */}
             <div className="flex flex-wrap gap-2">
               {[
-                'Site pour un restaurant gastronomique à Montréal',
-                'Page d\'atterrissage SaaS avec tarifs et FAQ',
+                'Restaurant gastronomique à Montréal',
+                'SaaS avec tarifs, FAQ et témoignages',
                 'Portfolio photographe professionnel',
                 'Cabinet d\'avocats en droit des affaires',
                 'Boutique en ligne de produits artisanaux',
                 'Clinique dentaire familiale',
+                'Startup IA avec essai gratuit',
+                'Consultant en stratégie d\'entreprise',
+                'Salon de coiffure et spa à Laval',
+                'Entreprise de construction résidentielle',
               ].map((suggestion, i) => (
                 <button
                   key={i}
@@ -184,9 +188,9 @@ export default function NewPageTemplatePicker() {
             <div className="p-4 space-y-1.5">
               <h3 className="font-semibold text-sm group-hover:text-blue-600 transition-colors">{template.name}</h3>
               <p className="text-xs text-zinc-500 line-clamp-1">{template.description}</p>
-              <div className="flex items-center justify-between text-xs text-zinc-400">
-                <span>{template.category}</span>
-                <span>{template.sections.length} sections</span>
+              <div className="flex items-center justify-between text-xs">
+                <span className="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-md font-medium">{template.category}</span>
+                <span className="text-zinc-400">{template.sections.length} sections</span>
               </div>
             </div>
           </button>
