@@ -7008,7 +7008,11 @@
       "personalization": "Personnalisation",
       "automations": "Automatisations",
       "whiteLabel": "White-Label",
-      "performance": "Performance"
+      "performance": "Performance",
+      "clients": "Clients",
+      "contentAndSeo": "Contenu et SEO",
+      "engagement": "Engagement",
+      "infrastructure": "Infrastructure"
     },
     "socialCommerce": {
       "title": "Commerce social",

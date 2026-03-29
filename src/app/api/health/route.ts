@@ -203,14 +203,14 @@ export async function GET(request: NextRequest) {
   const rssMB = Math.round(memoryUsage.rss / 1024 / 1024);
   const heapUsedMB = Math.round(memoryUsage.heapUsed / 1024 / 1024);
   const heapTotalMB = Math.round(memoryUsage.heapTotal / 1024 / 1024);
-  // Railway default: 8GB container. A large Next.js app (268 pages, LMS, CRM,
-  // accounting, VoIP) legitimately uses 1.5-2.5GB RSS after warm-up. Threshold
-  // set to 3GB to avoid false "fail" while still catching runaway leaks.
+  // Railway Pro: 8GB container. A large Next.js app (460+ pages, 435 models,
+  // LMS, CRM, accounting, VoIP, 30+ modules) legitimately uses 2-3GB RSS
+  // after warm-up. Limit set to 4GB to catch leaks. Warn at 85%.
   // Override via HEALTH_RSS_LIMIT_MB env var if needed.
-  const rssLimitMB = parseInt(process.env.HEALTH_RSS_LIMIT_MB || '3072', 10);
+  const rssLimitMB = parseInt(process.env.HEALTH_RSS_LIMIT_MB || '4096', 10);
 
-  // Warn at 75% of limit, fail at limit
-  const rssWarnMB = Math.round(rssLimitMB * 0.75);
+  // Warn at 85% of limit, fail at limit
+  const rssWarnMB = Math.round(rssLimitMB * 0.85);
   const memoryStatus: 'pass' | 'warn' | 'fail' =
     rssMB >= rssLimitMB ? 'fail' : rssMB >= rssWarnMB ? 'warn' : 'pass';
 
