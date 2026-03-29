@@ -40,6 +40,7 @@ export const railItems: NavRailItem[] = [
   { id: 'dashboard', labelKey: 'admin.nav.dashboard', icon: LayoutDashboard },
   { id: 'clients', labelKey: 'admin.nav.clients', icon: Building2, superAdminOnly: true },
   { id: 'commerce', labelKey: 'admin.nav.commerce', icon: ShoppingCart, badge: 'pendingOrders', requiredModule: 'commerce' },
+  { id: 'website', labelKey: 'admin.nav.website', icon: Globe },
   { id: 'marketing', labelKey: 'admin.nav.marketing', icon: Megaphone, requiredModule: 'marketing' },
   { id: 'media', labelKey: 'admin.nav.mediaSection', icon: Video, requiredModule: 'media' },
   { id: 'emails', labelKey: 'admin.nav.emails', icon: Mail, badge: 'inboxCount', requiredModule: 'emails' },
@@ -165,6 +166,44 @@ export const folderSections: Record<string, NavFolderSection> = {
         ],
         collapsible: true,
         defaultOpen: false,
+      },
+    ],
+  },
+
+  website: {
+    railId: 'website',
+    title: 'admin.nav.website',
+    groups: [
+      {
+        labelKey: 'admin.nav.websitePages',
+        items: [
+          { href: '/admin/contenu', labelKey: 'admin.nav.pageBuilder', icon: Layout },
+          { href: '/admin/blog', labelKey: 'admin.nav.blog', icon: PenLine },
+          { href: '/admin/galeries', labelKey: 'admin.nav.galleries', icon: ImageIcon },
+          { href: '/admin/cms', labelKey: 'admin.nav.cmsCollections', icon: Layers },
+        ],
+        defaultOpen: true,
+      },
+      {
+        labelKey: 'admin.nav.websiteDesign',
+        items: [
+          { href: '/admin/bannieres', labelKey: 'admin.nav.banners', icon: ImageIcon },
+          { href: '/admin/logo-maker', labelKey: 'admin.nav.logoMaker', icon: Palette },
+          { href: '/admin/fonts', labelKey: 'admin.nav.customFonts', icon: Type },
+          { href: '/admin/white-label', labelKey: 'admin.nav.whiteLabel', icon: Palette },
+        ],
+        collapsible: true,
+        defaultOpen: true,
+      },
+      {
+        labelKey: 'admin.nav.websiteSeo',
+        items: [
+          { href: '/admin/seo', labelKey: 'admin.nav.seo', icon: Search },
+          { href: '/admin/formulaires', labelKey: 'admin.nav.formBuilder', icon: FileEdit },
+          { href: '/admin/personalization', labelKey: 'admin.nav.personalization', icon: Target },
+        ],
+        collapsible: true,
+        defaultOpen: true,
       },
     ],
   },

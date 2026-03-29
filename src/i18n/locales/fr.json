@@ -7012,7 +7012,12 @@
       "clients": "Clients",
       "contentAndSeo": "Contenu et SEO",
       "engagement": "Engagement",
-      "infrastructure": "Infrastructure"
+      "infrastructure": "Infrastructure",
+      "website": "Site Internet",
+      "websitePages": "Pages et contenu",
+      "websiteDesign": "Design et marque",
+      "websiteSeo": "SEO et formulaires",
+      "pageBuilder": "Constructeur de pages"
     },
     "socialCommerce": {
       "title": "Commerce social",
