@@ -403,6 +403,7 @@ export const folderSections: Record<string, NavFolderSection> = {
       {
         items: [
           { href: '/admin/telephonie', labelKey: 'admin.nav.voipDashboard', icon: Layout },
+          { href: '/admin/telephonie/messages', labelKey: 'admin.nav.voipMessages', icon: MessageSquare },
           { href: '/admin/telephonie/journal', labelKey: 'admin.nav.voipCallLog', icon: PhoneCall },
           { href: '/admin/telephonie/enregistrements', labelKey: 'admin.nav.voipRecordings', icon: Headphones },
           { href: '/admin/telephonie/messagerie', labelKey: 'admin.nav.voipVoicemail', icon: Voicemail },
