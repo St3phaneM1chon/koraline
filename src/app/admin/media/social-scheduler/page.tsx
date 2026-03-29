@@ -5,6 +5,7 @@ import {
   Calendar, Send, Clock, Instagram, Facebook, Twitter,
   Plus, Sparkles, Trash2, Loader2, ExternalLink, RefreshCw,
   ChevronLeft, ChevronRight, Eye, AlertCircle, Image as ImageIcon,
+  Copy, XCircle, Smartphone,
 } from 'lucide-react';
 import { useI18n } from '@/i18n/client';
 import { fetchWithCSRF } from '@/lib/csrf';
@@ -89,6 +90,19 @@ export default function SocialSchedulerPage() {
   // Calendar view
   const [viewMode, setViewMode] = useState<'list' | 'calendar'>('list');
   const [calendarMonth, setCalendarMonth] = useState(new Date());
+
+  // Bulk schedule state
+  const [showBulk, setShowBulk] = useState(false);
+  const [bulkPosts, setBulkPosts] = useState<Array<{
+    platform: Platform;
+    content: string;
+    imageUrl: string;
+    scheduledAt: string;
+  }>>([]);
+  const [bulkSaving, setBulkSaving] = useState(false);
+
+  // Preview state
+  const [previewPost, setPreviewPost] = useState<SocialPost | null>(null);
 
   // -----------------------------------------------------------------------
   // Data loading
@@ -219,6 +233,74 @@ export default function SocialSchedulerPage() {
   };
 
   // -----------------------------------------------------------------------
+  // Bulk schedule
+  // -----------------------------------------------------------------------
+
+  const addBulkRow = () => {
+    setBulkPosts(prev => [...prev, { platform: 'instagram', content: '', imageUrl: '', scheduledAt: '' }]);
+  };
+
+  const removeBulkRow = (idx: number) => {
+    setBulkPosts(prev => prev.filter((_, i) => i !== idx));
+  };
+
+  const updateBulkRow = (idx: number, field: string, value: string) => {
+    setBulkPosts(prev => prev.map((row, i) => i === idx ? { ...row, [field]: value } : row));
+  };
+
+  const submitBulk = async () => {
+    const valid = bulkPosts.filter(p => p.content && p.scheduledAt);
+    if (valid.length === 0) {
+      toast.error(t('admin.media.socialScheduler.contentDateRequired'));
+      return;
+    }
+    setBulkSaving(true);
+    let succeeded = 0;
+    let failed = 0;
+    for (const post of valid) {
+      try {
+        const res = await fetchWithCSRF('/api/admin/social-posts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            platform: post.platform,
+            content: post.content,
+            imageUrl: post.imageUrl || null,
+            scheduledAt: new Date(post.scheduledAt).toISOString(),
+            status: 'scheduled',
+          }),
+        });
+        if (res.ok) succeeded++;
+        else failed++;
+      } catch {
+        failed++;
+      }
+    }
+    setBulkSaving(false);
+    toast.success(`${succeeded} ${t('admin.media.socialScheduler.postScheduled')}${failed > 0 ? ` (${failed} ${t('admin.media.socialScheduler.statusFailed')})` : ''}`);
+    setBulkPosts([]);
+    setShowBulk(false);
+    loadPosts();
+    loadStats();
+  };
+
+  const cancelPost = async (id: string) => {
+    try {
+      const res = await fetchWithCSRF(`/api/admin/social-posts/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'cancelled' }),
+      });
+      if (!res.ok) throw new Error('Cancel failed');
+      toast.success(t('admin.media.socialScheduler.postCancelled'));
+      loadPosts();
+      loadStats();
+    } catch {
+      toast.error(t('admin.media.socialScheduler.cancelFailed'));
+    }
+  };
+
+  // -----------------------------------------------------------------------
   // Helpers
   // -----------------------------------------------------------------------
 
@@ -231,6 +313,7 @@ export default function SocialSchedulerPage() {
       case 'scheduled': return 'bg-indigo-100 text-indigo-700';
       case 'publishing': return 'bg-amber-100 text-amber-700';
       case 'failed': return 'bg-red-100 text-red-700';
+      case 'cancelled': return 'bg-slate-200 text-slate-600';
       default: return 'bg-slate-100 text-slate-600';
     }
   };
@@ -241,6 +324,7 @@ export default function SocialSchedulerPage() {
       case 'scheduled': return t('admin.media.socialScheduler.statusScheduled');
       case 'publishing': return t('admin.media.socialScheduler.statusPublishing');
       case 'failed': return t('admin.media.socialScheduler.statusFailed');
+      case 'cancelled': return t('admin.media.socialScheduler.statusCancelled');
       default: return t('admin.media.socialScheduler.statusDraft');
     }
   };
@@ -307,6 +391,12 @@ export default function SocialSchedulerPage() {
             <RefreshCw className="w-4 h-4" />
           </button>
           <button
+            onClick={() => { setShowBulk(!showBulk); if (!showBulk && bulkPosts.length === 0) addBulkRow(); }}
+            className="flex items-center gap-2 px-4 py-2 border border-[var(--k-border-subtle)] text-slate-600 rounded-lg hover:bg-white/5 text-sm font-medium"
+          >
+            <Copy className="w-4 h-4" /> {t('admin.media.socialScheduler.bulkSchedule')}
+          </button>
+          <button
             onClick={() => setShowComposer(!showComposer)}
             className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#6366f1] to-[#818cf8] text-white rounded-lg hover:bg-indigo-700 text-sm font-medium"
           >
@@ -355,6 +445,7 @@ export default function SocialSchedulerPage() {
           <option value="scheduled">{t('admin.media.socialScheduler.statusScheduled')}</option>
           <option value="published">{t('admin.media.socialScheduler.statusPublished')}</option>
           <option value="failed">{t('admin.media.socialScheduler.statusFailed')}</option>
+          <option value="cancelled">{t('admin.media.socialScheduler.statusCancelled')}</option>
         </select>
       </div>
 
@@ -441,6 +532,127 @@ export default function SocialSchedulerPage() {
                 {creating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Clock className="w-4 h-4" />}
                 {t('admin.media.socialScheduler.schedule')}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bulk Schedule */}
+      {showBulk && (
+        <div className="bg-[var(--k-glass-thin)] rounded-xl border border-[var(--k-border-subtle)] p-6">
+          <h3 className="font-semibold text-slate-800 mb-4">{t('admin.media.socialScheduler.bulkSchedule')}</h3>
+          <div className="space-y-3">
+            {bulkPosts.map((row, idx) => (
+              <div key={idx} className="flex items-start gap-3 p-3 bg-white/50 rounded-lg border border-slate-100">
+                <select
+                  value={row.platform}
+                  onChange={e => updateBulkRow(idx, 'platform', e.target.value)}
+                  className="px-2 py-1.5 border border-[var(--k-border-subtle)] rounded text-sm"
+                >
+                  {PLATFORMS.map(p => (
+                    <option key={p} value={p}>{platformConfig[p].label}</option>
+                  ))}
+                </select>
+                <textarea
+                  value={row.content}
+                  onChange={e => updateBulkRow(idx, 'content', e.target.value)}
+                  placeholder={t('admin.media.socialScheduler.writePlaceholder')}
+                  rows={2}
+                  className="flex-1 px-3 py-1.5 border border-[var(--k-border-subtle)] rounded text-sm resize-none"
+                />
+                <input
+                  type="datetime-local"
+                  value={row.scheduledAt}
+                  onChange={e => updateBulkRow(idx, 'scheduledAt', e.target.value)}
+                  className="px-2 py-1.5 border border-[var(--k-border-subtle)] rounded text-sm"
+                />
+                <button onClick={() => removeBulkRow(idx)} className="p-1.5 text-red-400 hover:text-red-600">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center justify-between mt-4">
+            <button onClick={addBulkRow} className="flex items-center gap-1 text-sm text-indigo-600 hover:underline">
+              <Plus className="w-4 h-4" /> {t('admin.media.socialScheduler.addRow')}
+            </button>
+            <div className="flex items-center gap-2">
+              <button onClick={() => { setShowBulk(false); setBulkPosts([]); }} className="px-4 py-2 text-slate-500 hover:bg-slate-100 rounded-lg text-sm">
+                {t('admin.media.socialScheduler.cancel')}
+              </button>
+              <button
+                onClick={submitBulk}
+                disabled={bulkSaving}
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#6366f1] to-[#818cf8] text-white rounded-lg text-sm font-medium disabled:opacity-50"
+              >
+                {bulkSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Calendar className="w-4 h-4" />}
+                {t('admin.media.socialScheduler.scheduleBulk')} ({bulkPosts.filter(p => p.content && p.scheduledAt).length})
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Platform Preview Modal */}
+      {previewPost && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4" onClick={() => setPreviewPost(null)}>
+          <div className="bg-white rounded-2xl w-full max-w-md shadow-xl" onClick={e => e.stopPropagation()}>
+            <div className="p-4 border-b flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Smartphone className="w-5 h-5 text-slate-500" />
+                <span className="font-medium text-slate-800">
+                  {t('admin.media.socialScheduler.preview')} - {platformConfig[previewPost.platform as Platform]?.label || previewPost.platform}
+                </span>
+              </div>
+              <button onClick={() => setPreviewPost(null)} className="p-1 hover:bg-slate-100 rounded">
+                <XCircle className="w-5 h-5 text-slate-400" />
+              </button>
+            </div>
+            <div className="p-4">
+              {/* Platform-specific preview */}
+              <div className="border border-slate-200 rounded-xl overflow-hidden">
+                {/* Header */}
+                <div className="flex items-center gap-3 p-3">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${platformConfig[previewPost.platform as Platform]?.color || 'bg-slate-100'}`}>
+                    {(() => {
+                      const cfg = platformConfig[previewPost.platform as Platform];
+                      const Icon = cfg?.icon || Send;
+                      return <Icon className="w-4 h-4" />;
+                    })()}
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-slate-800">Attitudes VIP</div>
+                    <div className="text-xs text-slate-400">{formatDate(previewPost.scheduledAt)}</div>
+                  </div>
+                </div>
+                {/* Image */}
+                {previewPost.imageUrl && (
+                  <div className="w-full aspect-square bg-slate-100 flex items-center justify-center">
+                    <img
+                      src={previewPost.imageUrl}
+                      alt=""
+                      className="w-full h-full object-cover"
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    />
+                  </div>
+                )}
+                {/* Content */}
+                <div className="p-3">
+                  <p className="text-sm text-slate-700 whitespace-pre-wrap">
+                    {previewPost.platform === 'twitter'
+                      ? previewPost.content.slice(0, 280)
+                      : previewPost.content}
+                  </p>
+                  {previewPost.platform === 'twitter' && previewPost.content.length > 280 && (
+                    <span className="text-xs text-red-500">{t('admin.media.socialScheduler.truncated')}</span>
+                  )}
+                </div>
+                {/* Footer */}
+                <div className="px-3 pb-3 flex items-center gap-4 text-xs text-slate-400">
+                  <span>{platformConfig[previewPost.platform as Platform]?.maxChars || '?'} {t('admin.media.socialScheduler.charLimit')}</span>
+                  <span>{previewPost.content.length} {t('admin.media.socialScheduler.charsUsed')}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -539,9 +751,17 @@ export default function SocialSchedulerPage() {
                     )}
                   </div>
                   <div className="flex items-center gap-1 flex-shrink-0">
+                    <button onClick={() => setPreviewPost(post)} className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg" title={t('admin.media.socialScheduler.preview')}>
+                      <Eye className="w-4 h-4" />
+                    </button>
                     {['draft', 'scheduled', 'failed'].includes(post.status) && (
                       <button onClick={() => publishNow(post.id)} className="p-2 text-slate-400 hover:text-green-600 hover:bg-green-50 rounded-lg" title={t('admin.media.socialScheduler.publishNow')}>
                         <Send className="w-4 h-4" />
+                      </button>
+                    )}
+                    {['scheduled', 'draft'].includes(post.status) && (
+                      <button onClick={() => cancelPost(post.id)} className="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg" title={t('admin.media.socialScheduler.cancelPost')}>
+                        <XCircle className="w-4 h-4" />
                       </button>
                     )}
                     <button onClick={() => deletePost(post.id)} className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg" title={t('admin.media.socialScheduler.deletePost')}>

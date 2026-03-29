@@ -19,7 +19,7 @@ const patchSchema = z.object({
   content: z.string().min(1).max(63206).optional(),
   imageUrl: z.string().url().nullable().optional(),
   scheduledAt: z.string().datetime().optional(),
-  status: z.enum(['draft', 'scheduled']).optional(),
+  status: z.enum(['draft', 'scheduled', 'cancelled']).optional(),
 }).strict();
 
 export const PATCH = withAdminGuard(async (request: NextRequest, context: RouteParams) => {
@@ -36,8 +36,8 @@ export const PATCH = withAdminGuard(async (request: NextRequest, context: RouteP
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
-    // Only allow editing draft/scheduled posts
-    if (!['draft', 'scheduled'].includes(existing.status)) {
+    // Only allow editing draft/scheduled/cancelled posts
+    if (!['draft', 'scheduled', 'cancelled'].includes(existing.status)) {
       return NextResponse.json({ error: 'Cannot edit a published or publishing post' }, { status: 400 });
     }
 

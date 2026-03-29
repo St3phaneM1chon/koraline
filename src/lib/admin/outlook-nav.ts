@@ -775,6 +775,7 @@ export const folderSections: Record<string, NavFolderSection> = {
           { href: '/admin/traductions', labelKey: 'admin.nav.translations', icon: Languages },
           { href: '/admin/traduction-auto', labelKey: 'admin.nav.autoTranslate', icon: Globe },
           { href: '/admin/webhooks', labelKey: 'admin.nav.webhooks', icon: ArrowRightLeft },
+          { href: '/admin/integrations', labelKey: 'admin.nav.zapierMake', icon: Zap },
           { href: '/admin/securite', labelKey: 'admin.nav.security', icon: Shield },
           { href: '/admin/white-label', labelKey: 'admin.nav.whiteLabel', icon: Palette },
           { href: '/admin/contenu', labelKey: 'admin.nav.contentPages', icon: FileText },

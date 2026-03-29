@@ -315,6 +315,47 @@ model WebhookDelivery {
 }
 
 // =====================================================
+// G27: Integration Webhooks (Zapier / Make Connector)
+// =====================================================
+model IntegrationWebhook {
+  id            String    @id @default(cuid())
+  tenantId      String
+  name          String
+  url           String    // External webhook URL (Zapier/Make)
+  events        Json      @default("[]") // Events to trigger: ["order.created", "customer.created", ...]
+  secret        String?   // HMAC-SHA256 signing secret
+  isActive      Boolean   @default(true)
+  lastTriggered DateTime?
+  failCount     Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deliveryLogs  IntegrationWebhookLog[]
+
+  @@index([tenantId, isActive])
+  @@index([createdAt])
+}
+
+model IntegrationWebhookLog {
+  id          String   @id @default(cuid())
+  webhookId   String
+  event       String
+  payload     Json
+  statusCode  Int?     // HTTP response status
+  response    String?  @db.Text
+  duration    Int?     // ms
+  success     Boolean  @default(false)
+  attempt     Int      @default(1)
+  error       String?
+  createdAt   DateTime @default(now())
+  webhook     IntegrationWebhook @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+
+  @@index([webhookId])
+  @@index([event])
+  @@index([createdAt])
+  @@index([success])
+}
+
+// =====================================================
 // PHASE 4 COMPLIANCE: Audit Trail + Recurring Templates
 // =====================================================
 model AuditTrail {
