@@ -295,5 +295,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Database may not be available during build
   }
 
-  return [...staticPages, ...productPages, ...categoryPages, ...blogPages, ...articlePages, ...coursePages, ...bundlePages];
+  // Visual editor pages (/p/[slug])
+  let visualEditorPages: MetadataRoute.Sitemap = [];
+  try {
+    const pages = await prisma.page.findMany({
+      where: { isPublished: true },
+      select: { slug: true, updatedAt: true },
+    });
+    visualEditorPages = pages.map((p) => {
+      const url = `${baseUrl}/p/${p.slug}`;
+      return {
+        url,
+        lastModified: p.updatedAt,
+        changeFrequency: 'weekly' as const,
+        priority: 0.7,
+        alternates: buildAlternates(url),
+      };
+    });
+  } catch {
+    // Database may not be available during build
+  }
+
+  return [...staticPages, ...productPages, ...categoryPages, ...blogPages, ...articlePages, ...coursePages, ...bundlePages, ...visualEditorPages];
 }
