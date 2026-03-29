@@ -177,6 +177,7 @@ export const folderSections: Record<string, NavFolderSection> = {
       {
         labelKey: 'admin.nav.websitePages',
         items: [
+          { href: '/admin/contenu/editeur', labelKey: 'admin.nav.visualEditor', icon: Sparkles },
           { href: '/admin/contenu', labelKey: 'admin.nav.pageBuilder', icon: Layout },
           { href: '/admin/blog', labelKey: 'admin.nav.blog', icon: PenLine },
           { href: '/admin/galeries', labelKey: 'admin.nav.galleries', icon: ImageIcon },
@@ -882,7 +883,7 @@ export const folderSections: Record<string, NavFolderSection> = {
 /** Determine which rail section is active based on the current pathname */
 export function getActiveRailId(pathname: string): string {
   // Website section — must come BEFORE marketing/media/system which also claim some of these paths
-  if (pathname.startsWith('/admin/contenu') || pathname.startsWith('/admin/cms') || pathname.startsWith('/admin/galeries') || pathname.startsWith('/admin/blog') || pathname.startsWith('/admin/seo') || pathname.startsWith('/admin/formulaires') || pathname.startsWith('/admin/logo-maker') || pathname.startsWith('/admin/fonts') || pathname.startsWith('/admin/white-label') || pathname.startsWith('/admin/personalization') || pathname.startsWith('/admin/bannieres')) return 'website';
+  if (pathname.startsWith('/admin/contenu') || pathname.startsWith('/admin/cms') || pathname.startsWith('/admin/galeries') || pathname.startsWith('/admin/blog') || pathname.startsWith('/admin/seo') || pathname.startsWith('/admin/formulaires') || pathname.startsWith('/admin/logo-maker') || pathname.startsWith('/admin/fonts') || pathname.startsWith('/admin/white-label') || pathname.startsWith('/admin/personalization') || pathname.startsWith('/admin/bannieres') || pathname.startsWith('/admin/editeur')) return 'website';
   if (pathname.startsWith('/admin/platform')) return 'clients';
   if (pathname.startsWith('/admin/formation')) return 'formation';
   if (pathname.startsWith('/admin/comptabilite') || pathname.startsWith('/admin/fiscal') || pathname.startsWith('/admin/paiements')) return 'accounting';
