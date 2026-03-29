@@ -2,13 +2,14 @@
 
 /**
  * ConnectionsClient - Manage VoIP provider connections (Telnyx, VoIP.ms).
+ * Uses admin design system. French labels. Dark mode support.
  */
 
 import { useState } from 'react';
-import { useI18n } from '@/i18n/client';
+import { PageHeader, SectionCard, Button } from '@/components/admin';
 import {
   Wifi, WifiOff, TestTube, Trash2, Save,
-  CheckCircle, XCircle, Loader2,
+  CheckCircle, XCircle, Loader2, Shield, Eye, EyeOff,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { addCSRFHeader } from '@/lib/csrf';
@@ -28,10 +29,10 @@ interface Connection {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function ConnectionsClient({ initialConnections }: { initialConnections: any[] }) {
-  const { t } = useI18n();
   const [connections, setConnections] = useState<Connection[]>(initialConnections);
   const [editing, setEditing] = useState<Provider | null>(null);
   const [testing, setTesting] = useState<string | null>(null);
+  const [showSecrets, setShowSecrets] = useState(false);
   const [form, setForm] = useState({
     provider: '' as Provider,
     apiKey: '',
@@ -58,9 +59,9 @@ export default function ConnectionsClient({ initialConnections }: { initialConne
         return [...prev, data.connection];
       });
       setEditing(null);
-      toast.success(t('voip.connections.saved'));
+      toast.success('Connexion enregistr\u00e9e');
     } catch {
-      toast.error(t('voip.connections.saveFailed'));
+      toast.error('Erreur lors de l\u2019enregistrement');
     }
   };
 
@@ -74,38 +75,43 @@ export default function ConnectionsClient({ initialConnections }: { initialConne
       });
       const data = await res.json();
       if (data.ok) {
-        toast.success(`${provider}: ${data.message}`);
+        toast.success(`${provider} : Connexion r\u00e9ussie`);
       } else {
-        toast.error(`${provider}: ${data.message}`);
+        toast.error(`${provider} : ${data.message}`);
       }
     } catch {
-      toast.error(t('voip.connections.testFailed'));
+      toast.error('Erreur lors du test');
     } finally {
       setTesting(null);
     }
   };
 
   const handleDelete = async (provider: string) => {
-    if (!confirm(t('voip.connections.confirmDelete'))) return;
+    if (!confirm('Supprimer cette connexion ? Les num\u00e9ros associ\u00e9s seront d\u00e9sactiv\u00e9s.')) return;
     try {
       await fetch(`/api/admin/voip/connections?provider=${provider}`, { method: 'DELETE', headers: addCSRFHeader({}) });
       setConnections((prev) => prev.filter((c) => c.provider !== provider));
-      toast.success(t('voip.connections.deleted'));
+      toast.success('Connexion supprim\u00e9e');
     } catch {
-      toast.error(t('voip.connections.deleteFailed'));
+      toast.error('Erreur lors de la suppression');
     }
   };
 
   const providers: { id: Provider; label: string; description: string }[] = [
-    { id: 'telnyx', label: 'Telnyx', description: t('voip.connections.telnyxDesc') },
-    { id: 'voipms', label: 'VoIP.ms', description: t('voip.connections.voipmsDesc') },
+    { id: 'telnyx', label: 'Telnyx', description: 'Fournisseur VoIP principal \u2014 Appels, SMS, SIP Trunking' },
+    { id: 'voipms', label: 'VoIP.ms', description: 'Fournisseur VoIP alternatif \u2014 Tarifs avantageux Canada' },
   ];
+
+  const inputStyles = 'w-full px-3 py-2 bg-[var(--k-bg-surface)] border border-[var(--k-border-default)] rounded-lg text-sm text-[var(--k-text-primary)] placeholder:text-[var(--k-text-muted)] focus:outline-none focus:ring-2 focus:ring-indigo-500';
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">{t('voip.connections.title')}</h1>
-      </div>
+      <PageHeader
+        title="Connexions VoIP"
+        subtitle="Configurez et g\u00e9rez vos fournisseurs de t\u00e9l\u00e9phonie"
+        backHref="/admin/telephonie"
+        backLabel="T\u00e9l\u00e9phonie"
+      />
 
       <div className="grid gap-4">
         {providers.map((prov) => {
@@ -113,39 +119,49 @@ export default function ConnectionsClient({ initialConnections }: { initialConne
           const isEditing = editing === prov.id;
 
           return (
-            <div key={prov.id} className="bg-[var(--k-glass-thin)] border border-gray-200 rounded-xl p-4">
-              <div className="flex items-center justify-between mb-3">
+            <SectionCard key={prov.id}>
+              {/* Provider Header */}
+              <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   {conn?.isEnabled ? (
-                    <Wifi className="w-5 h-5 text-emerald-500" />
+                    <div className="p-2 rounded-lg bg-emerald-500/15">
+                      <Wifi className="w-5 h-5 text-emerald-500" />
+                    </div>
                   ) : (
-                    <WifiOff className="w-5 h-5 text-gray-400" />
+                    <div className="p-2 rounded-lg bg-[var(--k-glass-thin)]">
+                      <WifiOff className="w-5 h-5 text-[var(--k-text-muted)]" />
+                    </div>
                   )}
                   <div>
-                    <span className="font-semibold text-gray-900">{prov.label}</span>
-                    <span className="text-sm text-gray-500 ms-2">{prov.description}</span>
+                    <h3 className="font-semibold text-[var(--k-text-primary)]">{prov.label}</h3>
+                    <p className="text-sm text-[var(--k-text-tertiary)]">{prov.description}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   {conn && (
                     <>
-                      <button
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        icon={testing === prov.id ? Loader2 : TestTube}
                         onClick={() => handleTest(prov.id)}
                         disabled={testing === prov.id}
-                        className="flex items-center gap-1 px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
+                        loading={testing === prov.id}
                       >
-                        {testing === prov.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <TestTube className="w-3.5 h-3.5" />}
-                        Test
-                      </button>
+                        Tester
+                      </Button>
                       <button
                         onClick={() => handleDelete(prov.id)}
-                        className="p-1.5 text-gray-400 hover:text-red-600"
+                        className="p-1.5 rounded-lg text-[var(--k-text-muted)] hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                        aria-label="Supprimer la connexion"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </>
                   )}
-                  <button
+                  <Button
+                    variant="primary"
+                    size="sm"
                     onClick={() => {
                       setEditing(isEditing ? null : prov.id);
                       setForm({
@@ -155,76 +171,102 @@ export default function ConnectionsClient({ initialConnections }: { initialConne
                         isEnabled: conn?.isEnabled ?? true,
                       });
                     }}
-                    className="px-3 py-1.5 text-sm bg-indigo-500 text-white rounded-lg hover:bg-indigo-600"
                   >
-                    {conn ? t('voip.connections.edit') : t('voip.connections.configure')}
-                  </button>
+                    {conn ? 'Modifier' : 'Configurer'}
+                  </Button>
                 </div>
               </div>
 
-              {/* Status */}
+              {/* Connection Status */}
               {conn && !isEditing && (
-                <div className="flex flex-wrap gap-4 text-sm text-gray-600">
-                  <div className="flex items-center gap-1">
-                    {conn.hasApiKey ? <CheckCircle className="w-3.5 h-3.5 text-emerald-500" /> : <XCircle className="w-3.5 h-3.5 text-gray-300" />}
-                    API Key
+                <div className="flex flex-wrap gap-4 text-sm border-t border-[var(--k-border-subtle)] pt-4">
+                  <div className="flex items-center gap-1.5 text-[var(--k-text-secondary)]">
+                    {conn.hasApiKey ? <CheckCircle className="w-3.5 h-3.5 text-emerald-500" /> : <XCircle className="w-3.5 h-3.5 text-[var(--k-text-muted)]" />}
+                    Cl\u00e9 API
                   </div>
-                  <div className="flex items-center gap-1">
-                    {conn.hasApiSecret ? <CheckCircle className="w-3.5 h-3.5 text-emerald-500" /> : <XCircle className="w-3.5 h-3.5 text-gray-300" />}
-                    API Secret
+                  <div className="flex items-center gap-1.5 text-[var(--k-text-secondary)]">
+                    {conn.hasApiSecret ? <CheckCircle className="w-3.5 h-3.5 text-emerald-500" /> : <XCircle className="w-3.5 h-3.5 text-[var(--k-text-muted)]" />}
+                    Secret API
                   </div>
-                  <div>{conn.phoneNumberCount} {t('voip.connections.numbers')}</div>
+                  <div className="flex items-center gap-1.5 text-[var(--k-text-secondary)]">
+                    <Shield className="w-3.5 h-3.5 text-[#818cf8]" />
+                    {conn.phoneNumberCount} num\u00e9ro{conn.phoneNumberCount > 1 ? 's' : ''}
+                  </div>
+                  {conn.lastSyncAt && (
+                    <div className="text-[var(--k-text-tertiary)]">
+                      Derni\u00e8re sync : {new Date(conn.lastSyncAt).toLocaleString('fr-CA', { dateStyle: 'short', timeStyle: 'short' })}
+                    </div>
+                  )}
+                  {conn.syncStatus && (
+                    <span className={`text-xs px-2 py-0.5 rounded-full ${
+                      conn.syncStatus === 'SUCCESS' ? 'bg-emerald-500/15 text-emerald-400' :
+                      conn.syncStatus === 'FAILED' ? 'bg-red-500/15 text-red-400' :
+                      'bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)]'
+                    }`}>
+                      {conn.syncStatus}
+                    </span>
+                  )}
                 </div>
               )}
 
-              {/* Edit form */}
+              {/* Edit Form */}
               {isEditing && (
-                <div className="mt-3 border-t border-gray-100 pt-3 space-y-3">
-                  <div className="grid grid-cols-2 gap-3">
+                <div className="mt-3 border-t border-[var(--k-border-subtle)] pt-4 space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-xs font-medium text-gray-500">API Key</label>
-                      <input
-                        type="password"
-                        value={form.apiKey}
-                        onChange={(e) => setForm({ ...form, apiKey: e.target.value })}
-                        placeholder={conn?.hasApiKey ? '••••••••' : 'Enter API key'}
-                        className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                      />
+                      <label className="block text-sm font-medium text-[var(--k-text-secondary)] mb-1">Cl\u00e9 API</label>
+                      <div className="relative">
+                        <input
+                          type={showSecrets ? 'text' : 'password'}
+                          value={form.apiKey}
+                          onChange={(e) => setForm({ ...form, apiKey: e.target.value })}
+                          placeholder={conn?.hasApiKey ? '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022' : 'Saisissez la cl\u00e9 API'}
+                          className={inputStyles}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowSecrets(!showSecrets)}
+                          className="absolute end-2 top-1/2 -translate-y-1/2 p-1 text-[var(--k-text-muted)] hover:text-[var(--k-text-secondary)]"
+                          aria-label={showSecrets ? 'Masquer' : 'Afficher'}
+                        >
+                          {showSecrets ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
                     </div>
                     <div>
-                      <label className="text-xs font-medium text-gray-500">API Secret</label>
+                      <label className="block text-sm font-medium text-[var(--k-text-secondary)] mb-1">Secret API</label>
                       <input
-                        type="password"
+                        type={showSecrets ? 'text' : 'password'}
                         value={form.apiSecret}
                         onChange={(e) => setForm({ ...form, apiSecret: e.target.value })}
-                        placeholder={conn?.hasApiSecret ? '••••••••' : 'Enter API secret'}
-                        className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                        placeholder={conn?.hasApiSecret ? '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022' : 'Saisissez le secret API'}
+                        className={inputStyles}
                       />
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <label className="flex items-center gap-2 text-sm">
+                    <label className="flex items-center gap-2 text-sm text-[var(--k-text-secondary)]">
                       <input
                         type="checkbox"
                         checked={form.isEnabled}
                         onChange={(e) => setForm({ ...form, isEnabled: e.target.checked })}
-                        className="rounded"
+                        className="rounded border-[var(--k-border-default)]"
                       />
-                      {t('voip.connections.enabled')}
+                      Connexion activ\u00e9e
                     </label>
                     <div className="flex gap-2">
-                      <button onClick={() => setEditing(null)} className="px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">
-                        {t('common.cancel')}
-                      </button>
-                      <button onClick={handleSave} className="flex items-center gap-1 px-3 py-1.5 text-sm bg-indigo-500 text-white rounded-lg hover:bg-indigo-600">
-                        <Save className="w-3.5 h-3.5" /> {t('common.save')}
-                      </button>
+                      <Button variant="ghost" onClick={() => setEditing(null)}>
+                        Annuler
+                      </Button>
+                      <Button variant="primary" icon={Save} onClick={handleSave}>
+                        Enregistrer
+                      </Button>
                     </div>
                   </div>
                 </div>
               )}
-            </div>
+            </SectionCard>
           );
         })}
       </div>

@@ -2,16 +2,16 @@
 
 /**
  * VoIP Dashboard Client Component
- * Renders KPI cards, recent calls table, and connection status.
+ * Enhanced: KPI stat cards, connection status, quick actions, recent calls, active extensions.
  */
 
 import { useI18n } from '@/i18n/client';
-import CallStats from '@/components/voip/CallStats';
-import SatisfactionBadge from '@/components/voip/SatisfactionBadge';
+import { PageHeader, StatCard, SectionCard, Button, EmptyState } from '@/components/admin';
 import { formatDuration } from '@/hooks/useCallState';
 import {
-  Phone, PhoneIncoming, PhoneOutgoing,
-  ArrowRight, CheckCircle, XCircle,
+  Phone, PhoneIncoming, PhoneOutgoing, PhoneMissed,
+  Clock, MessageSquare, ArrowRight, CheckCircle, XCircle,
+  Wifi, WifiOff, Headphones, Send, FileText, Users,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -44,59 +44,138 @@ export default function VoipDashboardClient({ data }: { data: any }) {
     );
   };
 
+  // Determine connection status
+  const telnyxConn = data.connections?.find((c: { provider: string }) => c.provider === 'telnyx');
+  const isConnected = telnyxConn?.isEnabled ?? false;
+
   return (
     <div className="space-y-6" role="main" aria-label={t('voip.dashboard.title')}>
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-bold text-[var(--k-text-primary)]">{t('voip.dashboard.title')}</h1>
-          <p className="text-sm text-[var(--k-text-tertiary)] mt-1">{t('voip.dashboard.subtitle')}</p>
-        </div>
-      </div>
-
-      {/* KPI Cards */}
-      <CallStats
-        today={data.today}
-        satisfaction={data.satisfaction}
-        activeAgents={data.activeAgents}
-        unreadVoicemails={data.unreadVoicemails}
+      <PageHeader
+        title={t('voip.dashboard.title')}
+        subtitle={t('voip.dashboard.subtitle')}
+        actions={
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--k-glass-thin)] border border-[var(--k-border-subtle)]">
+              {isConnected ? (
+                <Wifi className="w-4 h-4 text-emerald-500" />
+              ) : (
+                <WifiOff className="w-4 h-4 text-red-400" />
+              )}
+              <span className="text-sm text-[var(--k-text-secondary)]">
+                Telnyx: {isConnected ? 'Connect\u00e9' : 'D\u00e9connect\u00e9'}
+              </span>
+            </div>
+          </div>
+        }
       />
 
-      {/* Connections Status */}
-      {data.connections.length > 0 && (
-        <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-[var(--k-text-secondary)] mb-3">{t('voip.dashboard.connections')}</h3>
+      {/* KPI Stat Cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <StatCard
+          label="Appels aujourd'hui"
+          value={data.today.calls}
+          icon={Phone}
+        />
+        <StatCard
+          label="Appels manqu\u00e9s"
+          value={data.today.missed}
+          icon={PhoneMissed}
+        />
+        <StatCard
+          label="Dur\u00e9e moyenne"
+          value={formatDuration(data.today.avgDuration)}
+          icon={Clock}
+        />
+        <StatCard
+          label="Messages SMS"
+          value={data.smsCount ?? 0}
+          icon={MessageSquare}
+        />
+      </div>
+
+      {/* Quick Actions */}
+      <SectionCard title="Actions rapides">
+        <div className="flex flex-wrap gap-3">
+          <Link href="/admin/telephonie/journal">
+            <Button variant="outline" icon={FileText}>
+              Voir le journal
+            </Button>
+          </Link>
+          <Link href="/admin/telephonie/extensions">
+            <Button variant="outline" icon={Headphones}>
+              Extensions
+            </Button>
+          </Link>
+          <Link href="/admin/telephonie/numeros">
+            <Button variant="outline" icon={Phone}>
+              Num\u00e9ros
+            </Button>
+          </Link>
+          <Link href="/admin/telephonie/messages">
+            <Button variant="outline" icon={Send}>
+              Envoyer un SMS
+            </Button>
+          </Link>
+        </div>
+      </SectionCard>
+
+      {/* Connection Status */}
+      {data.connections && data.connections.length > 0 && (
+        <SectionCard title={t('voip.dashboard.connections')}>
           <div className="flex flex-wrap gap-3">
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             {data.connections.map((conn: any) => (
-              <div key={conn.id} className="flex items-center gap-2 px-3 py-1.5 bg-[var(--k-bg-surface)] rounded-lg text-sm">
+              <div key={conn.id} className="flex items-center gap-2 px-3 py-2 bg-[var(--k-bg-surface)] rounded-lg text-sm border border-[var(--k-border-subtle)]">
                 {conn.isEnabled ? (
                   <CheckCircle className="w-4 h-4 text-emerald-500" />
                 ) : (
                   <XCircle className="w-4 h-4 text-[var(--k-text-muted)]" />
                 )}
-                <span className="font-medium capitalize">{conn.provider}</span>
+                <span className="font-medium capitalize text-[var(--k-text-primary)]">{conn.provider}</span>
                 {conn.syncStatus && (
                   <span className="text-xs text-[var(--k-text-muted)]">{conn.syncStatus}</span>
                 )}
               </div>
             ))}
           </div>
-        </div>
+        </SectionCard>
       )}
 
+      {/* Active Extensions */}
+      <SectionCard
+        title="Extensions actives"
+        headerAction={
+          <Link href="/admin/telephonie/extensions" className="text-sm text-[#818cf8] hover:underline flex items-center gap-1">
+            Tout voir <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        }
+      >
+        <div className="flex flex-wrap gap-3">
+          {data.activeAgents > 0 ? (
+            <div className="flex items-center gap-2 text-sm text-[var(--k-text-secondary)]">
+              <Users className="w-4 h-4 text-emerald-500" />
+              <span className="font-medium text-[var(--k-text-primary)]">{data.activeAgents}</span>
+              {data.activeAgents === 1 ? 'agent en ligne' : 'agents en ligne'}
+            </div>
+          ) : (
+            <p className="text-sm text-[var(--k-text-muted)]">Aucun agent en ligne</p>
+          )}
+        </div>
+      </SectionCard>
+
       {/* Recent Calls */}
-      <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-xl overflow-hidden">
-        <div className="px-4 py-3 border-b border-[var(--k-border-subtle)] flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-[var(--k-text-secondary)]">{t('voip.dashboard.recentCalls')}</h3>
+      <SectionCard
+        title={t('voip.dashboard.recentCalls')}
+        noPadding
+        headerAction={
           <Link
             href="/admin/telephonie/journal"
-            className="text-sm text-[#818cf8] hover:text-[#818cf8] flex items-center gap-1"
+            className="text-sm text-[#818cf8] hover:underline flex items-center gap-1"
           >
             {t('voip.dashboard.viewAll')} <ArrowRight className="w-3.5 h-3.5" />
           </Link>
-        </div>
-
+        }
+      >
         <div className="overflow-x-auto">
           <table className="w-full text-sm" aria-label={t('voip.dashboard.recentCalls')}>
             <thead>
@@ -108,13 +187,12 @@ export default function VoipDashboardClient({ data }: { data: any }) {
                 <th className="px-4 py-2 text-start">{t('voip.callLog.status')}</th>
                 <th className="px-4 py-2 text-start hidden sm:table-cell">{t('voip.callLog.duration')}</th>
                 <th className="px-4 py-2 text-start hidden lg:table-cell">{t('voip.callLog.date')}</th>
-                <th className="px-4 py-2 text-start hidden lg:table-cell">{t('voip.callLog.satisfaction')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[var(--k-border-subtle)]">
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {data.recentCalls.map((call: any) => (
-                <tr key={call.id} className="hover:bg-[var(--k-bg-surface)]">
+                <tr key={call.id} className="hover:bg-[var(--k-bg-surface)] transition-colors">
                   <td className="px-4 py-2.5">{directionIcon(call.direction)}</td>
                   <td className="px-4 py-2.5 max-w-[180px]">
                     <div className="font-medium text-[var(--k-text-primary)] truncate">{call.callerName || call.callerNumber}</div>
@@ -133,22 +211,23 @@ export default function VoipDashboardClient({ data }: { data: any }) {
                   <td className="px-4 py-2.5 text-[var(--k-text-tertiary)] text-xs hidden lg:table-cell">
                     {new Date(call.startedAt).toLocaleString(locale, { dateStyle: 'short', timeStyle: 'short' })}
                   </td>
-                  <td className="px-4 py-2.5 hidden lg:table-cell">
-                    <SatisfactionBadge score={call.survey?.overallScore || null} />
-                  </td>
                 </tr>
               ))}
               {data.recentCalls.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="px-4 py-8 text-center text-[var(--k-text-muted)]">
-                    {t('voip.dashboard.noCalls')}
+                  <td colSpan={7} className="px-4 py-8 text-center">
+                    <EmptyState
+                      icon={Phone}
+                      title={t('voip.dashboard.noCalls')}
+                      description="Aucun appel enregistr\u00e9 aujourd'hui"
+                    />
                   </td>
                 </tr>
               )}
             </tbody>
           </table>
         </div>
-      </div>
+      </SectionCard>
     </div>
   );
 }

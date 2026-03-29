@@ -1,12 +1,14 @@
 'use client';
 
 /**
- * CallLogClient - Interactive call log table with filters.
+ * CallLogClient - Interactive call log table with filters, search, pagination.
+ * Uses admin design system components. French labels.
  */
 
-import { useState } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import useSWR from 'swr';
 import { useI18n } from '@/i18n/client';
+import { PageHeader, SectionCard, EmptyState } from '@/components/admin';
 import { formatDuration } from '@/hooks/useCallState';
 import SatisfactionBadge from '@/components/voip/SatisfactionBadge';
 import AudioPlayer from '@/components/voip/AudioPlayer';
@@ -16,7 +18,6 @@ import {
   Star, Mail,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useCallback, useEffect, useRef } from 'react';
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
@@ -29,7 +30,8 @@ export default function CallLogClient() {
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [expandedId, setExpandedId] = useState<string | null>(null);
-  // Bridges #8 + #13 + #45 + #46: CRM deals, orders, loyalty, emails for expanded call
+
+  // Bridge data for expanded call details
   const [callBridgeData, setCallBridgeData] = useState<Record<string, {
     crmDeals?: Array<{ id: string; title: string; stageName: string; value: number }> | null;
     recentOrders?: Array<{ id: string; orderNumber: string; status: string; total: number; createdAt: string }> | null;
@@ -42,7 +44,6 @@ export default function CallLogClient() {
     if (fetchedBridgeRef.current.has(callId)) return;
     fetchedBridgeRef.current.add(callId);
     try {
-      // Fetch main bridge + loyalty + emails in parallel
       const [mainRes, loyaltyRes, emailsRes] = await Promise.all([
         fetch(`/api/admin/voip/call-logs/${callId}`),
         fetch(`/api/admin/voip/call-logs/${callId}/loyalty`),
@@ -104,279 +105,158 @@ export default function CallLogClient() {
   };
 
   const statusLabelMap: Record<string, string> = {
-    COMPLETED: 'statusCompleted',
-    MISSED: 'statusMissed',
-    VOICEMAIL: 'statusVoicemail',
-    FAILED: 'statusFailed',
-    RINGING: 'statusRinging',
-    IN_PROGRESS: 'statusInProgress',
-    TRANSFERRED: 'statusTransferred',
+    COMPLETED: 'Compl\u00e9t\u00e9',
+    MISSED: 'Manqu\u00e9',
+    VOICEMAIL: 'Messagerie vocale',
+    FAILED: '\u00c9chou\u00e9',
+    RINGING: 'En sonnerie',
+    IN_PROGRESS: 'En cours',
+    TRANSFERRED: 'Transf\u00e9r\u00e9',
   };
-  const statusLabel = (s: string) => t(`voip.admin.callLog.${statusLabelMap[s] ?? s}`);
+
+  const statusLabel = (s: string) => statusLabelMap[s] ?? s;
+
+  const inputStyles = 'px-3 py-2 bg-[var(--k-bg-surface)] border border-[var(--k-border-default)] rounded-lg text-sm text-[var(--k-text-primary)] placeholder:text-[var(--k-text-muted)] focus:outline-none focus:ring-2 focus:ring-indigo-500';
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-[var(--k-text-primary)]">{t('voip.callLog.title')}</h1>
+      <PageHeader
+        title="Journal des appels"
+        subtitle="Historique complet de tous les appels entrants, sortants et internes"
+        backHref="/admin/telephonie"
+        backLabel="T\u00e9l\u00e9phonie"
+      />
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-3 bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-xl p-4">
-        <div className="flex-1 min-w-[200px]">
-          <div className="relative">
-            <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--k-text-muted)]" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-              placeholder={t('voip.callLog.searchPlaceholder')}
-              aria-label={t('voip.callLog.searchPlaceholder')}
-              className="w-full ps-9 pe-3 py-2 border border-[var(--k-border-default)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
+      <SectionCard>
+        <div className="flex flex-wrap gap-3">
+          <div className="flex-1 min-w-[200px]">
+            <div className="relative">
+              <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--k-text-muted)]" />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+                placeholder="Rechercher un num\u00e9ro..."
+                aria-label="Rechercher un num\u00e9ro"
+                className={`${inputStyles} w-full ps-9`}
+              />
+            </div>
           </div>
+
+          <select
+            value={direction}
+            onChange={(e) => { setDirection(e.target.value); setPage(1); }}
+            aria-label="Filtrer par direction"
+            className={inputStyles}
+          >
+            <option value="">Toutes les directions</option>
+            <option value="INBOUND">Entrant</option>
+            <option value="OUTBOUND">Sortant</option>
+            <option value="INTERNAL">Interne</option>
+          </select>
+
+          <select
+            value={status}
+            onChange={(e) => { setStatus(e.target.value); setPage(1); }}
+            aria-label="Filtrer par statut"
+            className={inputStyles}
+          >
+            <option value="">Tous les statuts</option>
+            <option value="COMPLETED">Compl\u00e9t\u00e9</option>
+            <option value="MISSED">Manqu\u00e9</option>
+            <option value="VOICEMAIL">Messagerie vocale</option>
+            <option value="FAILED">\u00c9chou\u00e9</option>
+          </select>
+
+          <input
+            type="date"
+            value={dateFrom}
+            onChange={(e) => { setDateFrom(e.target.value); setPage(1); }}
+            aria-label="Date de d\u00e9but"
+            className={inputStyles}
+          />
+          <input
+            type="date"
+            value={dateTo}
+            onChange={(e) => { setDateTo(e.target.value); setPage(1); }}
+            aria-label="Date de fin"
+            className={inputStyles}
+          />
         </div>
-
-        <select
-          value={direction}
-          onChange={(e) => { setDirection(e.target.value); setPage(1); }}
-          aria-label={t('voip.callLog.allDirections')}
-          className="px-3 py-2 border border-[var(--k-border-default)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        >
-          <option value="">{t('voip.callLog.allDirections')}</option>
-          <option value="INBOUND">{t('voip.callLog.inbound')}</option>
-          <option value="OUTBOUND">{t('voip.callLog.outbound')}</option>
-          <option value="INTERNAL">{t('voip.callLog.internal')}</option>
-        </select>
-
-        <select
-          value={status}
-          onChange={(e) => { setStatus(e.target.value); setPage(1); }}
-          aria-label={t('voip.callLog.allStatuses')}
-          className="px-3 py-2 border border-[var(--k-border-default)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        >
-          <option value="">{t('voip.callLog.allStatuses')}</option>
-          <option value="COMPLETED">{t('voip.status.call.completed')}</option>
-          <option value="MISSED">{t('voip.status.call.missed')}</option>
-          <option value="VOICEMAIL">{t('voip.status.call.voicemail')}</option>
-          <option value="FAILED">{t('voip.status.call.failed')}</option>
-        </select>
-
-        <input
-          type="date"
-          value={dateFrom}
-          onChange={(e) => { setDateFrom(e.target.value); setPage(1); }}
-          aria-label="Date from"
-          className="px-3 py-2 border border-[var(--k-border-default)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-        <input
-          type="date"
-          value={dateTo}
-          onChange={(e) => { setDateTo(e.target.value); setPage(1); }}
-          aria-label="Date to"
-          className="px-3 py-2 border border-[var(--k-border-default)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
+      </SectionCard>
 
       {/* Table */}
-      <div className="bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)] rounded-xl overflow-hidden">
+      <SectionCard noPadding>
         {isLoading ? (
           <div className="p-8 text-center text-[var(--k-text-muted)]">{t('common.loading')}...</div>
         ) : (
           <>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full text-sm" aria-label="Journal des appels">
                 <thead>
                   <tr className="bg-[var(--k-bg-surface)] text-[var(--k-text-tertiary)] text-xs uppercase tracking-wider">
                     <th className="px-4 py-2 text-start" />
-                    <th className="px-4 py-2 text-start">{t('voip.callLog.caller')}</th>
-                    <th className="px-4 py-2 text-start">{t('voip.callLog.called')}</th>
-                    <th className="px-4 py-2 text-start">{t('voip.callLog.agent')}</th>
-                    <th className="px-4 py-2 text-start">{t('voip.callLog.status')}</th>
-                    <th className="px-4 py-2 text-start">{t('voip.callLog.duration')}</th>
-                    <th className="px-4 py-2 text-start">{t('voip.callLog.date')}</th>
-                    <th className="px-4 py-2 text-start">{t('voip.callLog.satisfaction')}</th>
+                    <th className="px-4 py-2 text-start">De</th>
+                    <th className="px-4 py-2 text-start">Vers</th>
+                    <th className="px-4 py-2 text-start">Agent</th>
+                    <th className="px-4 py-2 text-start">Statut</th>
+                    <th className="px-4 py-2 text-start">Dur\u00e9e</th>
+                    <th className="px-4 py-2 text-start">Date</th>
+                    <th className="px-4 py-2 text-start">Satisfaction</th>
                     <th className="px-4 py-2 text-start" />
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[var(--k-border-subtle)]">
                   {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                   {data?.callLogs?.map((call: any) => (
-                    <>
-                      <tr
-                        key={call.id}
-                        className="hover:bg-[var(--k-bg-surface)] cursor-pointer"
-                        onClick={() => setExpandedId(expandedId === call.id ? null : call.id)}
-                      >
-                        <td className="px-4 py-2.5">{directionIcon(call.direction)}</td>
-                        <td className="px-4 py-2.5">
-                          <div className="font-medium text-[var(--k-text-primary)]">{call.callerName || call.callerNumber}</div>
-                          {call.client && <div className="text-xs text-[var(--k-text-tertiary)]">{call.client.name}</div>}
-                        </td>
-                        <td className="px-4 py-2.5 text-[var(--k-text-secondary)]">{call.calledNumber}</td>
-                        <td className="px-4 py-2.5 text-[var(--k-text-secondary)]">
-                          {call.agent ? `${call.agent.user?.name || ''} (${call.agent.extension})` : '-'}
-                        </td>
-                        <td className="px-4 py-2.5">
-                          <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${statusColors[call.status] || 'bg-[var(--k-glass-thin)]'}`}>
-                            {statusLabel(call.status)}
-                          </span>
-                        </td>
-                        <td className="px-4 py-2.5 text-[var(--k-text-secondary)] tabular-nums">
-                          {call.duration ? formatDuration(call.duration) : '-'}
-                        </td>
-                        <td className="px-4 py-2.5 text-[var(--k-text-tertiary)] text-xs">
-                          {new Date(call.startedAt).toLocaleString('fr-CA', { dateStyle: 'short', timeStyle: 'short' })}
-                        </td>
-                        <td className="px-4 py-2.5">
-                          <SatisfactionBadge score={call.survey?.overallScore || null} />
-                        </td>
-                        <td className="px-4 py-2.5">
-                          {call.recording && <FileText className="w-4 h-4 text-[var(--k-text-muted)]" />}
-                        </td>
-                      </tr>
-
-                      {/* Expanded detail row */}
-                      {expandedId === call.id && (
-                        <tr key={`${call.id}-detail`}>
-                          <td colSpan={9} className="bg-[var(--k-bg-surface)] px-4 py-3">
-                            <div className="flex flex-wrap gap-4 text-sm">
-                              {call.recording?.id && (
-                                <div className="flex-1 min-w-[250px]">
-                                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1">
-                                    {t('voip.callLog.recording')}
-                                  </span>
-                                  <AudioPlayer
-                                    src={`/api/admin/voip/recordings/${call.recording.id}`}
-                                    duration={call.recording.durationSec}
-                                  />
-                                </div>
-                              )}
-                              {call.transcription && (
-                                <div className="flex-1 min-w-[200px]">
-                                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1">
-                                    {t('voip.callLog.transcription')}
-                                  </span>
-                                  <p className="text-[var(--k-text-secondary)]">{call.transcription.summary || '-'}</p>
-                                  {call.transcription.sentiment && (
-                                    <span className={`text-xs mt-1 inline-block px-2 py-0.5 rounded-full ${
-                                      call.transcription.sentiment === 'positive' ? 'bg-emerald-500/15 text-emerald-400' :
-                                      call.transcription.sentiment === 'negative' ? 'bg-red-500/15 text-red-400' :
-                                      'bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)]'
-                                    }`}>
-                                      {call.transcription.sentiment}
-                                    </span>
-                                  )}
-                                </div>
-                              )}
-                              {call.agentNotes && (
-                                <div className="flex-1 min-w-[200px]">
-                                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1">Notes</span>
-                                  <p className="text-[var(--k-text-secondary)]">{call.agentNotes}</p>
-                                </div>
-                              )}
-                              {/* Bridge #8: Telephony → CRM Deals */}
-                              {callBridgeData[call.id]?.crmDeals && callBridgeData[call.id].crmDeals!.length > 0 && (
-                                <div className="flex-1 min-w-[200px]">
-                                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1 flex items-center gap-1">
-                                    <Briefcase className="w-3 h-3" />
-                                    {t('admin.telephony.crmDeals')}
-                                  </span>
-                                  <div className="space-y-1">
-                                    {callBridgeData[call.id].crmDeals!.map((deal) => (
-                                      <Link
-                                        key={deal.id}
-                                        href={`/admin/crm/deals/${deal.id}`}
-                                        className="flex items-center justify-between text-xs p-1.5 rounded bg-[var(--k-glass-thin)] backdrop-blur-sm hover:bg-[#6366f1]/10 border border-[var(--k-border-subtle)]"
-                                      >
-                                        <span className="text-[var(--k-text-primary)] truncate">{deal.title}</span>
-                                        <span className="text-[var(--k-text-tertiary)] ms-2 shrink-0">{deal.stageName}</span>
-                                      </Link>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-                              {/* Bridge #13: Telephony → Commerce (Recent Orders) */}
-                              {callBridgeData[call.id]?.recentOrders && callBridgeData[call.id].recentOrders!.length > 0 && (
-                                <div className="flex-1 min-w-[200px]">
-                                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1 flex items-center gap-1">
-                                    <ShoppingCart className="w-3 h-3" />
-                                    {t('admin.bridges.recentOrders')}
-                                  </span>
-                                  <div className="space-y-1">
-                                    {callBridgeData[call.id].recentOrders!.map((order) => (
-                                      <Link
-                                        key={order.id}
-                                        href={`/admin/commandes?orderId=${order.id}`}
-                                        className="flex items-center justify-between text-xs p-1.5 rounded bg-[var(--k-glass-thin)] backdrop-blur-sm hover:bg-[#6366f1]/10 border border-[var(--k-border-subtle)]"
-                                      >
-                                        <span className="text-[var(--k-text-primary)]">#{order.orderNumber}</span>
-                                        <span className="text-[var(--k-text-tertiary)] ms-2 shrink-0">${order.total.toFixed(2)}</span>
-                                      </Link>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-                              {/* Bridge #45: Telephony → Loyalty */}
-                              {callBridgeData[call.id]?.loyaltyInfo && (
-                                <div className="flex-1 min-w-[150px]">
-                                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1 flex items-center gap-1">
-                                    <Star className="w-3 h-3" />
-                                    {t('admin.bridges.loyaltyInfo')}
-                                  </span>
-                                  <div className="text-xs p-1.5 rounded bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)]">
-                                    <span className="text-purple-700 font-medium">{callBridgeData[call.id].loyaltyInfo!.currentTier}</span>
-                                    <span className="text-[var(--k-text-tertiary)] ms-2">{callBridgeData[call.id].loyaltyInfo!.currentPoints.toLocaleString()} pts</span>
-                                  </div>
-                                </div>
-                              )}
-                              {/* Bridge #46: Telephony → Email */}
-                              {callBridgeData[call.id]?.recentEmails && callBridgeData[call.id].recentEmails!.length > 0 && (
-                                <div className="flex-1 min-w-[200px]">
-                                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1 flex items-center gap-1">
-                                    <Mail className="w-3 h-3" />
-                                    {t('admin.bridges.recentEmails')}
-                                  </span>
-                                  <div className="space-y-1">
-                                    {callBridgeData[call.id].recentEmails!.slice(0, 3).map((email) => (
-                                      <div
-                                        key={email.id}
-                                        className="text-xs p-1.5 rounded bg-[var(--k-glass-thin)] backdrop-blur-sm border border-[var(--k-border-subtle)]"
-                                      >
-                                        <p className="text-[var(--k-text-secondary)] truncate">{email.subject}</p>
-                                        <span className={`px-1 py-0.5 rounded text-[10px] ${
-                                          email.status === 'delivered' ? 'bg-green-500/15 text-green-400' : 'bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)]'
-                                        }`}>{email.status}</span>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      )}
-                    </>
+                    <CallLogRow
+                      key={call.id}
+                      call={call}
+                      isExpanded={expandedId === call.id}
+                      onToggle={() => setExpandedId(expandedId === call.id ? null : call.id)}
+                      directionIcon={directionIcon}
+                      statusColors={statusColors}
+                      statusLabel={statusLabel}
+                      bridgeData={callBridgeData[call.id]}
+                      t={t}
+                    />
                   ))}
+                  {(!data?.callLogs || data.callLogs.length === 0) && (
+                    <tr>
+                      <td colSpan={9} className="px-4 py-8">
+                        <EmptyState
+                          icon={Phone}
+                          title="Aucun appel trouv\u00e9"
+                          description="Modifiez vos filtres ou attendez de nouveaux appels."
+                        />
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
 
             {/* Pagination */}
-            {data?.pagination && (
+            {data?.pagination && data.pagination.totalPages > 1 && (
               <div className="px-4 py-3 border-t border-[var(--k-border-subtle)] flex items-center justify-between text-sm text-[var(--k-text-tertiary)]">
                 <span>
-                  {t('voip.callLog.showing')} {((page - 1) * 25) + 1}-{Math.min(page * 25, data.pagination.total)} / {data.pagination.total}
+                  {((page - 1) * 25) + 1}-{Math.min(page * 25, data.pagination.total)} sur {data.pagination.total}
                 </span>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setPage(Math.max(1, page - 1))}
                     disabled={page <= 1}
+                    aria-label="Page pr\u00e9c\u00e9dente"
                     className="p-1 rounded hover:bg-[var(--k-glass-thin)] disabled:opacity-50"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
-                  <span>{page} / {data.pagination.totalPages}</span>
+                  <span className="text-[var(--k-text-primary)]">{page} / {data.pagination.totalPages}</span>
                   <button
                     onClick={() => setPage(Math.min(data.pagination.totalPages, page + 1))}
                     disabled={page >= data.pagination.totalPages}
+                    aria-label="Page suivante"
                     className="p-1 rounded hover:bg-[var(--k-glass-thin)] disabled:opacity-50"
                   >
                     <ChevronRight className="w-4 h-4" />
@@ -386,7 +266,187 @@ export default function CallLogClient() {
             )}
           </>
         )}
-      </div>
+      </SectionCard>
     </div>
+  );
+}
+
+/* Extracted row component to keep JSX key usage clean */
+function CallLogRow({
+  call,
+  isExpanded,
+  onToggle,
+  directionIcon,
+  statusColors,
+  statusLabel,
+  bridgeData,
+  t,
+}: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  call: any;
+  isExpanded: boolean;
+  onToggle: () => void;
+  directionIcon: (d: string) => React.ReactNode;
+  statusColors: Record<string, string>;
+  statusLabel: (s: string) => string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  bridgeData?: any;
+  t: (key: string) => string;
+}) {
+  return (
+    <>
+      <tr
+        className="hover:bg-[var(--k-bg-surface)] cursor-pointer transition-colors"
+        onClick={onToggle}
+      >
+        <td className="px-4 py-2.5">{directionIcon(call.direction)}</td>
+        <td className="px-4 py-2.5">
+          <div className="font-medium text-[var(--k-text-primary)]">{call.callerName || call.callerNumber}</div>
+          {call.client && <div className="text-xs text-[var(--k-text-tertiary)]">{call.client.name}</div>}
+        </td>
+        <td className="px-4 py-2.5 text-[var(--k-text-secondary)]">{call.calledNumber}</td>
+        <td className="px-4 py-2.5 text-[var(--k-text-secondary)]">
+          {call.agent ? `${call.agent.user?.name || ''} (${call.agent.extension})` : '-'}
+        </td>
+        <td className="px-4 py-2.5">
+          <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${statusColors[call.status] || 'bg-[var(--k-glass-thin)]'}`}>
+            {statusLabel(call.status)}
+          </span>
+        </td>
+        <td className="px-4 py-2.5 text-[var(--k-text-secondary)] tabular-nums">
+          {call.duration ? formatDuration(call.duration) : '-'}
+        </td>
+        <td className="px-4 py-2.5 text-[var(--k-text-tertiary)] text-xs">
+          {new Date(call.startedAt).toLocaleString('fr-CA', { dateStyle: 'short', timeStyle: 'short' })}
+        </td>
+        <td className="px-4 py-2.5">
+          <SatisfactionBadge score={call.survey?.overallScore || null} />
+        </td>
+        <td className="px-4 py-2.5">
+          {call.recording && <FileText className="w-4 h-4 text-[var(--k-text-muted)]" />}
+        </td>
+      </tr>
+
+      {/* Expanded detail row */}
+      {isExpanded && (
+        <tr>
+          <td colSpan={9} className="bg-[var(--k-bg-surface)] px-4 py-3">
+            <div className="flex flex-wrap gap-4 text-sm">
+              {call.recording?.id && (
+                <div className="flex-1 min-w-[250px]">
+                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1">
+                    Enregistrement
+                  </span>
+                  <AudioPlayer
+                    src={`/api/admin/voip/recordings/${call.recording.id}`}
+                    duration={call.recording.durationSec}
+                  />
+                </div>
+              )}
+              {call.transcription && (
+                <div className="flex-1 min-w-[200px]">
+                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1">
+                    Transcription
+                  </span>
+                  <p className="text-[var(--k-text-secondary)]">{call.transcription.summary || '-'}</p>
+                  {call.transcription.sentiment && (
+                    <span className={`text-xs mt-1 inline-block px-2 py-0.5 rounded-full ${
+                      call.transcription.sentiment === 'positive' ? 'bg-emerald-500/15 text-emerald-400' :
+                      call.transcription.sentiment === 'negative' ? 'bg-red-500/15 text-red-400' :
+                      'bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)]'
+                    }`}>
+                      {call.transcription.sentiment}
+                    </span>
+                  )}
+                </div>
+              )}
+              {call.agentNotes && (
+                <div className="flex-1 min-w-[200px]">
+                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1">Notes de l&apos;agent</span>
+                  <p className="text-[var(--k-text-secondary)]">{call.agentNotes}</p>
+                </div>
+              )}
+              {/* Bridge: CRM Deals */}
+              {bridgeData?.crmDeals && bridgeData.crmDeals.length > 0 && (
+                <div className="flex-1 min-w-[200px]">
+                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1 flex items-center gap-1">
+                    <Briefcase className="w-3 h-3" />
+                    {t('admin.telephony.crmDeals')}
+                  </span>
+                  <div className="space-y-1">
+                    {bridgeData.crmDeals.map((deal: { id: string; title: string; stageName: string }) => (
+                      <Link
+                        key={deal.id}
+                        href={`/admin/crm/deals/${deal.id}`}
+                        className="flex items-center justify-between text-xs p-1.5 rounded bg-[var(--k-glass-thin)] hover:bg-[#6366f1]/10 border border-[var(--k-border-subtle)]"
+                      >
+                        <span className="text-[var(--k-text-primary)] truncate">{deal.title}</span>
+                        <span className="text-[var(--k-text-tertiary)] ms-2 shrink-0">{deal.stageName}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {/* Bridge: Recent Orders */}
+              {bridgeData?.recentOrders && bridgeData.recentOrders.length > 0 && (
+                <div className="flex-1 min-w-[200px]">
+                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1 flex items-center gap-1">
+                    <ShoppingCart className="w-3 h-3" />
+                    Commandes r\u00e9centes
+                  </span>
+                  <div className="space-y-1">
+                    {bridgeData.recentOrders.map((order: { id: string; orderNumber: string; total: number }) => (
+                      <Link
+                        key={order.id}
+                        href={`/admin/commandes?orderId=${order.id}`}
+                        className="flex items-center justify-between text-xs p-1.5 rounded bg-[var(--k-glass-thin)] hover:bg-[#6366f1]/10 border border-[var(--k-border-subtle)]"
+                      >
+                        <span className="text-[var(--k-text-primary)]">#{order.orderNumber}</span>
+                        <span className="text-[var(--k-text-tertiary)] ms-2 shrink-0">${order.total.toFixed(2)}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {/* Bridge: Loyalty */}
+              {bridgeData?.loyaltyInfo && (
+                <div className="flex-1 min-w-[150px]">
+                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1 flex items-center gap-1">
+                    <Star className="w-3 h-3" />
+                    Fid\u00e9lit\u00e9
+                  </span>
+                  <div className="text-xs p-1.5 rounded bg-[var(--k-glass-thin)] border border-[var(--k-border-subtle)]">
+                    <span className="text-purple-400 font-medium">{bridgeData.loyaltyInfo.currentTier}</span>
+                    <span className="text-[var(--k-text-tertiary)] ms-2">{bridgeData.loyaltyInfo.currentPoints.toLocaleString()} pts</span>
+                  </div>
+                </div>
+              )}
+              {/* Bridge: Email */}
+              {bridgeData?.recentEmails && bridgeData.recentEmails.length > 0 && (
+                <div className="flex-1 min-w-[200px]">
+                  <span className="text-xs font-medium text-[var(--k-text-tertiary)] block mb-1 flex items-center gap-1">
+                    <Mail className="w-3 h-3" />
+                    Courriels r\u00e9cents
+                  </span>
+                  <div className="space-y-1">
+                    {bridgeData.recentEmails.slice(0, 3).map((email: { id: string; subject: string; status: string }) => (
+                      <div
+                        key={email.id}
+                        className="text-xs p-1.5 rounded bg-[var(--k-glass-thin)] border border-[var(--k-border-subtle)]"
+                      >
+                        <p className="text-[var(--k-text-secondary)] truncate">{email.subject}</p>
+                        <span className={`px-1 py-0.5 rounded text-[10px] ${
+                          email.status === 'delivered' ? 'bg-emerald-500/15 text-emerald-400' : 'bg-[var(--k-glass-thin)] text-[var(--k-text-secondary)]'
+                        }`}>{email.status}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </td>
+        </tr>
+      )}
+    </>
   );
 }
