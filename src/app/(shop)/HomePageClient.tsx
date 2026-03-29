@@ -13,6 +13,7 @@ import HeroSlider from '@/components/shop/HeroSlider';
 import ScienceStorySection from '@/components/shop/ScienceStorySection';
 import SectionDivider from '@/components/ui/SectionDivider';
 import MoleculeBackground from '@/components/ui/MoleculeBackground';
+import AnimatedSection from '@/components/ui/AnimatedSection';
 import { useI18n } from '@/i18n/client';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { useTenantBranding } from '@/components/shop/TenantBrandingProvider';
@@ -569,19 +570,19 @@ export default function HomePage({ initialHeroSlides, initialTestimonials = [] }
       </section>
 
       {/* 11. Calculator */}
-      <section className="py-16 bg-neutral-50">
+      <AnimatedSection animation="fadeInUp" as="section" className="py-16 bg-neutral-50">
         <div id="calculator" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="font-heading text-3xl text-center text-neutral-900 mb-8">{t('home.calculatorTitle')}</h2>
           <PeptideCalculator />
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* 12. Trust Badges */}
-      <section className="py-12 bg-neutral-100">
+      <AnimatedSection animation="fadeIn" delay={200} as="section" className="py-12 bg-neutral-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <TrustBadges variant="horizontal" showAll={true} />
         </div>
-      </section>
+      </AnimatedSection>
 
       <SectionDivider fromColor="#F5F5F4" toColor="#0F2440" variant="wave" />
 

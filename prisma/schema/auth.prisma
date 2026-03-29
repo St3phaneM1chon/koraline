@@ -305,6 +305,9 @@ model User {
   // Forms Builder
   formDefinitions        FormDefinition[]      @relation("FormDefinitionCreator")
 
+  // Affiliate Marketing
+  affiliateLinks         AffiliateLink[]       @relation("UserAffiliateLinks")
+
   @@index([role])
   @@index([createdAt])
   @@index([loyaltyTier])

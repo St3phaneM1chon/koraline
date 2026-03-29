@@ -70,3 +70,51 @@ model Booking {
   @@index([serviceId, startTime])
   @@index([customerEmail])
 }
+
+// =============================================================================
+// EVENTS MODULE (builds on top of booking)
+// =============================================================================
+
+model Event {
+  id           String   @id @default(cuid())
+  tenantId     String?
+  title        String
+  slug         String
+  description  String?  @db.Text
+  location     String?
+  isOnline     Boolean  @default(false)
+  meetingUrl   String?
+  startDate    DateTime
+  endDate      DateTime
+  maxAttendees Int?
+  price        Decimal  @default(0) @db.Decimal(10, 2)
+  currency     String   @default("CAD")
+  imageUrl     String?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  registrations EventRegistration[]
+
+  @@unique([tenantId, slug])
+  @@index([tenantId, startDate])
+  @@index([isActive, startDate])
+}
+
+model EventRegistration {
+  id        String   @id @default(cuid())
+  tenantId  String?
+  eventId   String
+  name      String
+  email     String
+  phone     String?
+  status    String   @default("registered") // registered, attended, cancelled
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, eventId, email])
+  @@index([eventId])
+  @@index([tenantId, status])
+}

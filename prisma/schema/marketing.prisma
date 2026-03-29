@@ -172,3 +172,28 @@ model ShoppableLinkClick {
   @@index([shoppableLinkId])
   @@index([tenantId, createdAt])
 }
+
+// ---------------------------------------------------------------------------
+// Affiliate Link (Affiliate Marketing System — extends ambassador module)
+// ---------------------------------------------------------------------------
+model AffiliateLink {
+  id          String   @id @default(cuid())
+  tenantId    String?
+  userId      String   // affiliate user (ambassador)
+  code        String   // unique referral code
+  url         String?  // custom destination URL
+  clicks      Int      @default(0)
+  conversions Int      @default(0)
+  revenue     Decimal  @default(0) @db.Decimal(12, 2)
+  commission  Decimal  @default(0) @db.Decimal(12, 2)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation("UserAffiliateLinks", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, code])
+  @@index([tenantId, userId])
+  @@index([code])
+  @@index([isActive])
+}

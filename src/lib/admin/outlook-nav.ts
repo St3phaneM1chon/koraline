@@ -11,7 +11,7 @@ import {
   Briefcase, Calculator, PenLine, FileSpreadsheet, Landmark, TrendingUp,
   BarChart2, Activity, UserCheck, Settings, Shield, FlaskConical, Languages,
   Megaphone, Inbox, FileBarChart, Layout, Receipt, CreditCard, Clock,
-  BookOpen, Import, Ruler, Scale, Calendar, FileCheck, Zap, Target,
+  BookOpen, Import, Ruler, Scale, Calendar, CalendarDays, FileCheck, Zap, Target,
   Trash2, AlertTriangle, StickyNote, FolderSearch, FileEdit, Globe,
   ClipboardCheck, Database, Sparkles, Play, Wifi, Monitor,
   Phone, PhoneCall, Voicemail, Headphones, BarChart3, GitBranch,
@@ -19,7 +19,7 @@ import {
   Filter, MessageSquare, ListChecks, Trophy, CheckSquare,
   ToggleRight, Bot, Building2, Palette, Boxes, GraduationCap,
   UserPlus, Medal, ShieldCheck, ExternalLink, Crown, Layers,
-  Store, RotateCcw, Share2, Type,
+  Store, RotateCcw, Share2, Type, Link2,
 } from 'lucide-react';
 import { TeamsIcon, ZoomIcon, WebexIcon, GoogleMeetIcon, WhatsAppIcon } from '@/components/admin/icons/platform-icons';
 
@@ -146,12 +146,14 @@ export const folderSections: Record<string, NavFolderSection> = {
           { href: '/admin/clients', labelKey: 'admin.nav.distributors', icon: Briefcase },
           { href: '/admin/abonnements', labelKey: 'admin.nav.subscriptions', icon: RefreshCw },
           { href: '/admin/reservations', labelKey: 'admin.nav.bookings', icon: Calendar },
+          { href: '/admin/evenements', labelKey: 'admin.nav.events', icon: CalendarDays },
           { href: '/admin/inventaire', labelKey: 'admin.nav.inventory', icon: Archive },
           { href: '/admin/fournisseurs', labelKey: 'admin.nav.suppliers', icon: Truck },
           { href: '/admin/livraison', labelKey: 'admin.nav.shippingZones', icon: Package },
           { href: '/admin/retours', labelKey: 'admin.nav.returnsExchanges', icon: RotateCcw },
           { href: '/admin/bnpl', labelKey: 'admin.nav.bnplProviders', icon: CreditCard },
           { href: '/admin/tarifs-transporteurs', labelKey: 'admin.nav.carrierRates', icon: Calculator },
+          { href: '/admin/dropshipping', labelKey: 'admin.nav.dropshipping', icon: Truck },
         ],
         defaultOpen: true,
       },
@@ -185,6 +187,7 @@ export const folderSections: Record<string, NavFolderSection> = {
         labelKey: 'admin.nav.engagement',
         items: [
           { href: '/admin/ambassadeurs', labelKey: 'admin.nav.ambassadors', icon: Award },
+          { href: '/admin/affilies', labelKey: 'admin.nav.affiliateLinks', icon: Link2 },
           { href: '/admin/fidelite', labelKey: 'admin.nav.loyaltyProgram', icon: Gift },
           { href: '/admin/membership', labelKey: 'admin.nav.membership', icon: Crown },
         ],
@@ -770,6 +773,7 @@ export const folderSections: Record<string, NavFolderSection> = {
         items: [
           { href: '/admin/devises', labelKey: 'admin.nav.currencies', icon: DollarSign },
           { href: '/admin/traductions', labelKey: 'admin.nav.translations', icon: Languages },
+          { href: '/admin/traduction-auto', labelKey: 'admin.nav.autoTranslate', icon: Globe },
           { href: '/admin/webhooks', labelKey: 'admin.nav.webhooks', icon: ArrowRightLeft },
           { href: '/admin/securite', labelKey: 'admin.nav.security', icon: Shield },
           { href: '/admin/white-label', labelKey: 'admin.nav.whiteLabel', icon: Palette },
@@ -840,8 +844,8 @@ export function getActiveRailId(pathname: string): string {
   if (pathname.startsWith('/admin/formation')) return 'formation';
   if (pathname.startsWith('/admin/comptabilite') || pathname.startsWith('/admin/fiscal') || pathname.startsWith('/admin/paiements')) return 'accounting';
   if (pathname.startsWith('/admin/emails') || pathname.startsWith('/admin/newsletter')) return 'emails';
-  if (pathname.startsWith('/admin/commandes') || pathname.startsWith('/admin/customers') || pathname.startsWith('/admin/clients') || pathname.startsWith('/admin/abonnements') || pathname.startsWith('/admin/inventaire') || pathname.startsWith('/admin/fournisseurs') || pathname.startsWith('/admin/produits') || pathname.startsWith('/admin/categories') || pathname.startsWith('/admin/bundles') || pathname.startsWith('/admin/avis') || pathname.startsWith('/admin/questions') || pathname.startsWith('/admin/livraison') || pathname.startsWith('/admin/retours') || pathname.startsWith('/admin/bnpl') || pathname.startsWith('/admin/tarifs-transporteurs')) return 'commerce';
-  if (pathname.startsWith('/admin/promo-codes') || pathname.startsWith('/admin/promotions') || pathname.startsWith('/admin/bannieres') || pathname.startsWith('/admin/upsell') || pathname.startsWith('/admin/ambassadeurs') || pathname.startsWith('/admin/fidelite') || pathname.startsWith('/admin/membership') || pathname.startsWith('/admin/seo') || pathname.startsWith('/admin/ab-tests') || pathname.startsWith('/admin/social-commerce') || pathname.startsWith('/admin/personnalisation') || pathname.startsWith('/admin/automatisations') || pathname.startsWith('/admin/formulaires')) return 'marketing';
+  if (pathname.startsWith('/admin/commandes') || pathname.startsWith('/admin/customers') || pathname.startsWith('/admin/clients') || pathname.startsWith('/admin/abonnements') || pathname.startsWith('/admin/inventaire') || pathname.startsWith('/admin/fournisseurs') || pathname.startsWith('/admin/produits') || pathname.startsWith('/admin/categories') || pathname.startsWith('/admin/bundles') || pathname.startsWith('/admin/avis') || pathname.startsWith('/admin/questions') || pathname.startsWith('/admin/livraison') || pathname.startsWith('/admin/retours') || pathname.startsWith('/admin/bnpl') || pathname.startsWith('/admin/tarifs-transporteurs') || pathname.startsWith('/admin/dropshipping') || pathname.startsWith('/admin/evenements') || pathname.startsWith('/admin/reservations')) return 'commerce';
+  if (pathname.startsWith('/admin/promo-codes') || pathname.startsWith('/admin/promotions') || pathname.startsWith('/admin/bannieres') || pathname.startsWith('/admin/upsell') || pathname.startsWith('/admin/ambassadeurs') || pathname.startsWith('/admin/affilies') || pathname.startsWith('/admin/fidelite') || pathname.startsWith('/admin/membership') || pathname.startsWith('/admin/seo') || pathname.startsWith('/admin/ab-tests') || pathname.startsWith('/admin/social-commerce') || pathname.startsWith('/admin/personnalisation') || pathname.startsWith('/admin/automatisations') || pathname.startsWith('/admin/formulaires')) return 'marketing';
   if (pathname.startsWith('/admin/media') || pathname.startsWith('/admin/webinaires') || pathname.startsWith('/admin/blog')) return 'media';
   if (pathname.startsWith('/admin/rapports') || pathname.startsWith('/admin/analytics')) return 'dashboard';
   if (pathname.startsWith('/admin/logs') || pathname.startsWith('/admin/uat') || pathname.startsWith('/admin/diagnostics') || pathname.startsWith('/admin/navigateur') || pathname.startsWith('/admin/mots-magiques') || pathname.startsWith('/admin/audits') || pathname.startsWith('/admin/backups') || pathname.startsWith('/admin/monitoring') || pathname.startsWith('/admin/performance') || pathname.startsWith('/admin/system/crons')) return 'dev';
@@ -849,7 +853,7 @@ export function getActiveRailId(pathname: string): string {
   // CRM call center routes are in telephony folder pane but keep CRM rail active (paths start with /admin/crm/)
   if (pathname.startsWith('/admin/crm') || pathname.startsWith('/admin/scraper') || pathname.startsWith('/admin/chat')) return 'crm';
   if (pathname.startsWith('/admin/marketplace')) return 'marketplace';
-  if (pathname.startsWith('/admin/permissions') || pathname.startsWith('/admin/employes') || pathname.startsWith('/admin/parametres') || pathname.startsWith('/admin/devises') || pathname.startsWith('/admin/traductions') || pathname.startsWith('/admin/webhooks') || pathname.startsWith('/admin/securite') || pathname.startsWith('/admin/white-label') || pathname.startsWith('/admin/tutoriels') || pathname.startsWith('/admin/contenu') || pathname.startsWith('/admin/cms') || pathname.startsWith('/admin/galeries')) return 'system';
+  if (pathname.startsWith('/admin/permissions') || pathname.startsWith('/admin/employes') || pathname.startsWith('/admin/parametres') || pathname.startsWith('/admin/devises') || pathname.startsWith('/admin/traductions') || pathname.startsWith('/admin/traduction-auto') || pathname.startsWith('/admin/webhooks') || pathname.startsWith('/admin/securite') || pathname.startsWith('/admin/white-label') || pathname.startsWith('/admin/tutoriels') || pathname.startsWith('/admin/contenu') || pathname.startsWith('/admin/cms') || pathname.startsWith('/admin/galeries')) return 'system';
   return 'dashboard';
 }
 

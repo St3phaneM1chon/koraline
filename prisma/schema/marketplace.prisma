@@ -68,3 +68,67 @@ model AppReview {
   @@unique([tenantId, appId, userId])
   @@index([appId])
 }
+
+// =============================================================================
+// DROPSHIPPING / PRINT-ON-DEMAND INTEGRATION (G11)
+// =============================================================================
+// Enables tenants to connect Printful, Printify, Spocket, DSers providers
+// and sync products / forward orders automatically.
+
+model DropshipProvider {
+  id        String   @id @default(cuid())
+  tenantId  String
+  provider  String   // printful, printify, spocket, dsers
+  apiKey    String?
+  isActive  Boolean  @default(true)
+  config    Json     @default("{}")
+  syncedAt  DateTime?
+  createdAt DateTime @default(now())
+
+  products DropshipProduct[]
+
+  @@unique([tenantId, provider])
+  @@index([tenantId])
+  @@index([isActive])
+}
+
+model DropshipProduct {
+  id         String   @id @default(cuid())
+  tenantId   String
+  providerId String
+  externalId String   // provider's product ID
+  productId  String?  // linked Koraline product
+  syncStatus String   @default("pending") // pending, synced, error
+  metadata   Json     @default("{}")
+  lastSyncAt DateTime?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  provider DropshipProvider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, providerId])
+  @@index([externalId])
+  @@index([productId])
+  @@index([syncStatus])
+}
+
+model DropshipOrder {
+  id              String   @id @default(cuid())
+  tenantId        String
+  providerId      String
+  orderId         String   // Koraline order ID
+  externalOrderId String?  // provider's order ID
+  status          String   @default("pending") // pending, forwarded, processing, shipped, delivered, error
+  trackingNumber  String?
+  trackingUrl     String?
+  errorMessage    String?
+  metadata        Json     @default("{}")
+  forwardedAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([orderId])
+  @@index([providerId])
+  @@index([status])
+}
