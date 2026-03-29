@@ -66,7 +66,17 @@ function VisualEditorInner() {
   const [saving, setSaving] = useState(false);
   const [aiGenerating, setAiGenerating] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [fontPreset, setFontPreset] = useState('system');
+  const [fontPreset, setFontPreset] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('koraline-font-preset') || 'system';
+    }
+    return 'system';
+  });
+
+  // Persist font choice
+  useEffect(() => {
+    localStorage.setItem('koraline-font-preset', fontPreset);
+  }, [fontPreset]);
 
   // Load existing page or create new
   useEffect(() => {
