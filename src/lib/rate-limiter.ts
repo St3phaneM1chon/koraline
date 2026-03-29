@@ -155,6 +155,10 @@ const RATE_LIMIT_CONFIGS: Record<string, { windowMs: number; maxRequests: number
   'categories': { windowMs: 60000, maxRequests: 60 },
   'search': { windowMs: 60000, maxRequests: 30 },
 
+  // G15: Agentic Storefront — generous for AI agents (100 req/min)
+  'storefront': { windowMs: 60000, maxRequests: 100 },
+  'storefront/search': { windowMs: 60000, maxRequests: 60 },
+
   // Checkout - strict
   'checkout': { windowMs: 60000, maxRequests: 10 },
   'payments': { windowMs: 60000, maxRequests: 10 },
@@ -291,6 +295,9 @@ function getEndpointType(path: string): string {
     if (segments[1]?.startsWith('email-preferences')) return 'email-preferences';
     // Demo request
     if (segments[1] === 'demo-request') return 'demo-request';
+    // G15: Agentic Storefront — distinguish search from catalog
+    if (segments[1] === 'storefront' && segments[2] === 'search') return 'storefront/search';
+    if (segments[1] === 'storefront') return 'storefront';
     return segments[1] || 'default';
   }
 
