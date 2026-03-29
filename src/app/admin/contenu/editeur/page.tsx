@@ -200,44 +200,13 @@ export default function VisualEditorPage() {
   );
 }
 
-/**
- * Get template data for pre-built templates
- */
-function getTemplateData(template: string): unknown[] {
-  const templates: Record<string, unknown[]> = {
-    business: [
-      { id: 's1', type: 'hero', data: { title: 'Votre entreprise', subtitle: 'Solutions professionnelles adaptées à vos besoins', ctaText: 'Découvrir', ctaUrl: '#services', variant: 'centered', animation: 'fadeIn' } },
-      { id: 's2', type: 'features', data: { title: 'Nos services', columns: '3', items: [{ icon: '💼', title: 'Conseil', description: 'Expertise stratégique' }, { icon: '🔧', title: 'Solutions', description: 'Sur mesure' }, { icon: '📊', title: 'Résultats', description: 'Mesurables' }], animation: 'slideUp' } },
-      { id: 's3', type: 'stats', data: { items: [{ value: '500+', label: 'Clients' }, { value: '99%', label: 'Satisfaction' }, { value: '15+', label: 'Années' }], animation: 'fadeIn' } },
-      { id: 's4', type: 'testimonials', data: { title: 'Témoignages', items: [{ quote: 'Service exceptionnel!', author: 'Marie L.', role: 'CEO' }], animation: 'fadeIn' } },
-      { id: 's5', type: 'cta', data: { title: 'Prêt à commencer?', subtitle: 'Contactez-nous dès aujourd\'hui', buttonText: 'Nous contacter', buttonUrl: '#contact', animation: 'fadeIn', backgroundColor: '#2563eb', textColor: '#ffffff' } },
-    ],
-    landing: [
-      { id: 's1', type: 'hero', data: { title: 'Le meilleur produit pour votre business', subtitle: 'Essayez gratuitement pendant 14 jours', ctaText: 'Essai gratuit', ctaUrl: '#', ctaSecondaryText: 'Voir la démo', variant: 'centered', animation: 'fadeIn' } },
-      { id: 's2', type: 'features', data: { title: 'Pourquoi nous choisir', columns: '3', items: [{ icon: '⚡', title: 'Rapide', description: 'Résultats en minutes' }, { icon: '🛡️', title: 'Fiable', description: '99.9% uptime' }, { icon: '🎯', title: 'Précis', description: 'IA avancée' }], animation: 'slideUp' } },
-      { id: 's3', type: 'pricing_table', data: { title: 'Forfaits', plans: [{ name: 'Starter', price: '29$', period: '/mois', features: '5 utilisateurs\n10 GB\nSupport email', ctaText: 'Commencer', highlighted: 'false' }, { name: 'Pro', price: '79$', period: '/mois', features: '25 utilisateurs\n100 GB\nSupport prioritaire\nAPI', ctaText: 'Essai gratuit', highlighted: 'true' }], animation: 'slideUp' } },
-      { id: 's4', type: 'faq_accordion', data: { title: 'Questions fréquentes', items: [{ question: 'Puis-je annuler à tout moment?', answer: 'Oui, sans frais.' }], animation: 'fadeIn' } },
-      { id: 's5', type: 'cta', data: { title: 'Lancez-vous maintenant', buttonText: 'Commencer gratuitement', buttonUrl: '#', animation: 'fadeIn', backgroundColor: '#059669', textColor: '#ffffff' } },
-    ],
-    portfolio: [
-      { id: 's1', type: 'hero', data: { title: 'Mon Portfolio', subtitle: 'Créateur passionné', ctaText: 'Voir mes projets', variant: 'centered', animation: 'fadeIn' } },
-      { id: 's2', type: 'gallery', data: { title: 'Projets récents', columns: '3', images: [{ url: '', alt: 'Projet 1' }, { url: '', alt: 'Projet 2' }, { url: '', alt: 'Projet 3' }, { url: '', alt: 'Projet 4' }, { url: '', alt: 'Projet 5' }, { url: '', alt: 'Projet 6' }], animation: 'fadeIn' } },
-      { id: 's3', type: 'text_image', data: { title: 'À propos', content: 'Je suis un créateur passionné avec 10 ans d\'expérience.', layout: 'imageRight', animation: 'slideUp' } },
-      { id: 's4', type: 'contact_form', data: { title: 'Me contacter', subtitle: 'Discutons de votre projet', animation: 'fadeIn' } },
-    ],
-    restaurant: [
-      { id: 's1', type: 'hero', data: { title: 'Bienvenue chez nous', subtitle: 'Cuisine authentique depuis 1990', ctaText: 'Réserver', variant: 'fullscreen', animation: 'fadeIn', backgroundColor: '#1a1a2e', textColor: '#ffffff' } },
-      { id: 's2', type: 'features', data: { title: 'Notre Menu', columns: '3', items: [{ icon: '🥗', title: 'Entrées', description: 'À partir de 12$' }, { icon: '🥩', title: 'Plats', description: 'À partir de 24$' }, { icon: '🍰', title: 'Desserts', description: 'À partir de 9$' }], animation: 'slideUp' } },
-      { id: 's3', type: 'gallery', data: { title: 'Notre ambiance', columns: '4', images: [{ url: '', alt: 'Salle' }, { url: '', alt: 'Cuisine' }, { url: '', alt: 'Terrasse' }, { url: '', alt: 'Bar' }], animation: 'fadeIn' } },
-      { id: 's4', type: 'map', data: { title: 'Nous trouver', embedUrl: '', height: '350', animation: 'none' } },
-    ],
-    ecommerce: [
-      { id: 's1', type: 'hero', data: { title: 'Découvrez nos produits', subtitle: 'Livraison gratuite dès 75$', ctaText: 'Voir la boutique', ctaUrl: '/shop', variant: 'centered', animation: 'fadeIn' } },
-      { id: 's2', type: 'featured_products', data: { title: 'Meilleures ventes', limit: 4, animation: 'slideUp' } },
-      { id: 's3', type: 'features', data: { title: 'Pourquoi acheter chez nous', columns: '4', items: [{ icon: '🚚', title: 'Livraison rapide', description: '2-5 jours' }, { icon: '↩️', title: 'Retours gratuits', description: '30 jours' }, { icon: '🔒', title: 'Paiement sécurisé', description: 'SSL 256-bit' }, { icon: '💬', title: 'Support 24/7', description: 'Chat & téléphone' }], animation: 'slideUp' } },
-      { id: 's4', type: 'newsletter', data: { title: 'Restez informé', subtitle: '10% de rabais sur votre première commande', buttonText: 'S\'inscrire', animation: 'fadeIn', backgroundColor: '#f8fafc' } },
-    ],
-  };
+// Import template library
+import { getTemplateById } from '@/lib/puck/templates';
 
-  return templates[template] || [];
+/**
+ * Get template data from the central templates library (25 templates)
+ */
+function getTemplateData(templateId: string): unknown[] {
+  const template = getTemplateById(templateId);
+  return template?.sections || [];
 }
